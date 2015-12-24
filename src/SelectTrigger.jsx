@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import assign from 'object-assign';
 import Trigger from 'rc-trigger';
 import Tree, { TreeNode } from 'rc-tree';
-import {getValuePropValue, filterMin} from './util';
+import { filterMin } from './util';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -103,7 +103,7 @@ const SelectTrigger = React.createClass({
 
   renderFilterOptionsFromChildren(children) {
     let posArr = [];
-    let filterPos = [];
+    const filterPos = [];
     const props = this.props;
     const inputValue = props.inputValue;
 
@@ -157,7 +157,7 @@ const SelectTrigger = React.createClass({
           node: filterChildren[pos],
         };
       });
-      for (var i = 1; i < levelArr.length; i++) {
+      for (let i = 1; i < levelArr.length; i++) {
         level[levelArr[i]].forEach(cur => {
           loop(childrenArr, cur, (arr, index) => {
             arr[index].children = arr[index].children || [];
@@ -207,25 +207,28 @@ const SelectTrigger = React.createClass({
       [`${dropdownPrefixCls}--${multiple ? 'multiple' : 'single'}`]: 1,
     };
     let visible = props.visible;
-    let search = multiple || props.combobox || !props.showSearch ? null : (
+    const search = multiple || props.combobox || !props.showSearch ? null : (
       <span className={`${dropdownPrefixCls}-search`}>{props.inputElement}</span>
     );
     const treeNodes = this.renderFilterOptionsFromChildren(props.options);
     let notFoundContent;
     if (!treeNodes.length) {
       if (props.notFoundContent) {
-        notFoundContent = [<span>{props.notFoundContent}</span>];
+        notFoundContent = <span>{props.notFoundContent}</span>;
       }
       if (!search) {
         visible = false;
       }
     }
-    const popupElement = this.renderPopupElement({
+    let popupElement = this.renderPopupElement({
       treeNodes,
       search,
       multiple,
       visible,
     });
+    if (notFoundContent) {
+      popupElement = notFoundContent;
+    }
 
     return (<Trigger action={props.disabled ? [] : ['click']}
                      ref="trigger"

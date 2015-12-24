@@ -2,8 +2,7 @@
 
 import 'rc-tree-select/assets/index.less';
 import 'rc-tree/assets/index.css';
-import TreeSelect from 'rc-tree-select';
-import Tree, {TreeNode} from 'rc-tree';
+import TreeSelect, { TreeNode } from 'rc-tree-select';
 import { gData } from './util';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -29,13 +28,13 @@ const Demo = React.createClass({
       showIcon: false,
       showLine: true,
     };
-    return (<div style={{padding:'10px 30px'}}>
-      <h3></h3>
+    return (<div style={{padding: '10px 30px'}}>
+      <h3>more</h3>
       <TreeSelect style={{width: 300}} onSelect={this.onSelect} multiple treeProps={treeProps}>
         {loop(gData)}
       </TreeSelect>
     </div>);
-  }
+  },
 });
 
 ReactDOM.render(<Demo />, document.getElementById('__react-content'));

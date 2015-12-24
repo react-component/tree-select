@@ -54,5 +54,5 @@ export function filterMin(arr) {
     }
   });
   return a;
-};
+}
 // console.log(filterMin(['0-0','0-1', '0-10', '0-0-1', '0-1-1', '0-10-0']));

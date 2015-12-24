@@ -16,9 +16,9 @@ const Demo = React.createClass({
   },
   componentDidMount() {
     console.log(this.refs);
-    this.setState({
-      data: [1],
-    });
+    // this.setState({
+    //   data: [1],
+    // });
   },
   onChange(value) {
     console.log('change', value);
@@ -30,7 +30,6 @@ const Demo = React.createClass({
     console.log('selected: ', info);
   },
   render() {
-    const data = this.state.data;
     const loop = data => {
       return data.map((item) => {
         if (item.children) {
@@ -46,7 +45,7 @@ const Demo = React.createClass({
       </Tree>
     </Option>);
     return (<div>
-      <p style={{color:'red'}}> not work!</p>
+      <p style={{color: 'red'}}> not work!</p>
       <Select
         ref="select"
         style={{width: 200}}

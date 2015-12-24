@@ -28,6 +28,7 @@ const Test = React.createClass({
         <TreeSelect style={{width: 300}}
               value={this.state.value}
               dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
+              treeProps={{defaultExpandAll: true}}
               onChange={this.onChange}>
           <TreeNode value="parent 1" title="parent 1" key="0-1">
             <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
