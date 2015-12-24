@@ -11,44 +11,28 @@ import ReactDOM from 'react-dom';
 const Demo = React.createClass({
   getInitialState() {
     return {
-      visible: false,
-      sel: '',
     };
   },
-  onVisibleChange(visible) {
-    this.setState({
-      visible: visible
-    });
-  },
-  handleSelect(info) {
+  onSelect(info) {
     console.log('selected: ', info);
-    this.setState({
-      visible: false,
-      sel: info.node.props.title,
-    });
   },
   render() {
     const loop = data => {
       return data.map((item) => {
         if (item.children) {
-          return <TreeNode key={item.key} title={item.key}>{loop(item.children)}</TreeNode>;
+          return <TreeNode key={item.key} value={item.key} title={item.key}>{loop(item.children)}</TreeNode>;
         }
-        return <TreeNode key={item.key} title={item.key} />;
+        return <TreeNode key={item.key} value={item.key} title={item.key} />;
       });
     };
-    const overlay = (<Tree defaultExpandAll={false}
-          onSelect={this.handleSelect}>
-      {loop(gData)}
-    </Tree>);
-
+    const treeProps = {
+      showIcon: false,
+      showLine: true,
+    };
     return (<div style={{padding:'10px 30px'}}>
-      <h3>with tree</h3>
-      <TreeSelect trigger={['click']}
-         onVisibleChange={this.onVisibleChange}
-         visible={this.state.visible}
-         closeOnSelect={false}
-         overlay={overlay} animation="slide-up">
-        <input key={Date.now()} placeholder="选择岗位节点" defaultValue={this.state.sel} readOnly />
+      <h3></h3>
+      <TreeSelect style={{width: 300}} onSelect={this.onSelect} multiple treeProps={treeProps}>
+        {loop(gData)}
       </TreeSelect>
     </div>);
   }

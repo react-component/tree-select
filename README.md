@@ -73,13 +73,23 @@ see examples
 
 ## API
 
-### props
+### TreeSelect props
 
 | name     | description    | type     | default      |
 |----------|----------------|----------|--------------|
 |className | additional css class of root dom node | String | '' |
 |prefixCls | prefix class | String | '' |
+|transitionName | popup content's animation className | String | '' |
+|multiple | whether multiple select | bool | false |
+|[select-props](https://github.com/react-component/select#select-props) | the same as select props | ||
+|treeProps | the same as tree props | | [tree-props](https://github.com/react-component/tree#tree-props) |
 
+### TreeNode props
+
+| name     | description    | type     | default      |
+|----------|----------------|----------|--------------|
+|value | default as optionFilterProp | String | 'value' |
+|[treenode-props](https://github.com/react-component/tree#treenode-props) | the same as treeNode props|||
 
 
 ## Test Case
@@ -91,5 +101,4 @@ http://localhost:8000/tests/runner.html?coverage
 http://localhost:8000/node_modules/rc-server/node_modules/node-jscover/lib/front-end/jscoverage.html?w=http://localhost:8000/tests/runner.html?coverage
 
 ## License
-
 rc-tree-select is released under the MIT license.
