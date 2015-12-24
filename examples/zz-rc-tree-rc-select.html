@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>zz-rc-tree-rc-select.js - example - rc-tree-select@0.1.0</title>
+  <title>zz-rc-tree-rc-select.js - example - rc-tree-select@0.2.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-tree-select@0.1.0</h1>
+    <h1>rc-tree-select@0.2.0</h1>
 
     <p>tree-select ui component for react</p>
   </div>
@@ -282,9 +282,9 @@ import { gData } from <span class="hljs-string">'./util'</span>;
   },
   componentDidMount() {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>.refs);
-    <span class="hljs-keyword">this</span>.setState({
-      data: [<span class="hljs-number">1</span>],
-    });
+    <span class="hljs-comment">// this.setState({</span>
+    <span class="hljs-comment">//   data: [1],</span>
+    <span class="hljs-comment">// });</span>
   },
   onChange(value) {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'change'</span>, value);
@@ -296,7 +296,6 @@ import { gData } from <span class="hljs-string">'./util'</span>;
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'selected: '</span>, info);
   },
   render() {
-    <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">this</span>.state.data;
     <span class="hljs-keyword">const</span> loop = data =&gt; {
       <span class="hljs-keyword">return</span> data.map((item) =&gt; {
         <span class="hljs-keyword">if</span> (item.children) {
@@ -312,7 +311,7 @@ import { gData } from <span class="hljs-string">'./util'</span>;
       <span class="hljs-tag">&lt;/<span class="hljs-title">Tree</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>);
     return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{color:'red'}}</span>&gt;</span> not work!<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{color:</span> '<span class="hljs-attribute">red</span>'}}&gt;</span> not work!<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
         <span class="hljs-attribute">ref</span>=<span class="hljs-value">"select"</span>
         <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">200</span>}}
