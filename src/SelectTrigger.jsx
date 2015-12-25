@@ -193,7 +193,7 @@ const SelectTrigger = React.createClass({
     return (<div>
       {newProps.search}
       <Tree ref={this.savePopupElement} multiple={newProps.multiple}
-        {...props.treeProps} onSelect={props.onSelect} defaultSelectedKeys={props.value}>
+        {...props.treeProps} onSelect={props.onSelect}>
         {loop(newProps.treeNodes)}
       </Tree>
     </div>);

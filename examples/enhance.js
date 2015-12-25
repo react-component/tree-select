@@ -10,10 +10,28 @@ import ReactDOM from 'react-dom';
 const Demo = React.createClass({
   getInitialState() {
     return {
+      value: [],
     };
   },
-  onSelect(info) {
-    console.log('selected: ', info);
+  onDeselect(selectedValue) {
+    console.log('onDeselect', selectedValue);
+    const newVal = [...this.state.value];
+    newVal.splice(newVal.indexOf(selectedValue), 1);
+    this.setState({
+      value: newVal,
+    });
+  },
+  onSelect(selectedKey, node, selectedKeys) {
+    console.log('selected: ', selectedKey, selectedKeys);
+    this.setState({
+      value: selectedKeys,
+    });
+  },
+  onCheck(info) {
+    console.log('onCheck:', info);
+    this.setState({
+      value: info.checkedKeys,
+    });
   },
   render() {
     const loop = data => {
@@ -27,10 +45,17 @@ const Demo = React.createClass({
     const treeProps = {
       showIcon: false,
       showLine: true,
+      checkable: true,
+      defaultCheckedKeys: this.state.value,
+      defaultSelectedKeys:  this.state.value,
+      // selectedKeys:  this.state.value,
+      // checkedKeys: this.state.value,
+      onCheck: this.onCheck,
     };
     return (<div style={{padding: '10px 30px'}}>
       <h3>more</h3>
-      <TreeSelect style={{width: 300}} onSelect={this.onSelect} multiple treeProps={treeProps}>
+      <TreeSelect style={{width: 300}} value={this.state.value} multiple treeProps={treeProps}
+        onSelect={this.onSelect} onDeselect={this.onDeselect}>
         {loop(gData)}
       </TreeSelect>
     </div>);

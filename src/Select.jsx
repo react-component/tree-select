@@ -211,7 +211,7 @@ const Select = React.createClass({
     const props = this.props;
     const selectedValue = getValuePropValue(item);
     const selectedLabel = this.getLabelFromOption(item);
-    props.onSelect(selectedValue, item);
+    props.onSelect(selectedValue, item, info.selectedKeys);
     if (isMultipleOrTags(props)) {
       if (value.indexOf(selectedValue) !== -1) {
         return;
