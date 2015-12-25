@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>enhance.js - example - rc-tree-select@0.2.0</title>
+  <title>enhance.js - example - rc-tree-select@0.2.1</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-tree-select@0.2.0</h1>
+    <h1>rc-tree-select@0.2.1</h1>
 
     <p>tree-select ui component for react</p>
   </div>
@@ -276,10 +276,28 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
 <span class="hljs-keyword">const</span> Demo = React.createClass({
   getInitialState() {
     <span class="hljs-keyword">return</span> {
+      value: [],
     };
   },
-  onSelect(info) {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'selected: '</span>, info);
+  onDeselect(selectedValue) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onDeselect'</span>, selectedValue);
+    <span class="hljs-keyword">const</span> newVal = [...this.state.value];
+    newVal.splice(newVal.indexOf(selectedValue), <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">this</span>.setState({
+      value: newVal,
+    });
+  },
+  onSelect(selectedKey, node, selectedKeys) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'selected: '</span>, selectedKey, selectedKeys);
+    <span class="hljs-keyword">this</span>.setState({
+      value: selectedKeys,
+    });
+  },
+  onCheck(info) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onCheck:'</span>, info);
+    <span class="hljs-keyword">this</span>.setState({
+      value: info.checkedKeys,
+    });
   },
   render() {
     <span class="hljs-keyword">const</span> loop = data =&gt; {
@@ -293,10 +311,17 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
     <span class="hljs-keyword">const</span> treeProps = {
       showIcon: <span class="hljs-literal">false</span>,
       showLine: <span class="hljs-literal">true</span>,
+      checkable: <span class="hljs-literal">true</span>,
+      defaultCheckedKeys: <span class="hljs-keyword">this</span>.state.value,
+      defaultSelectedKeys:  <span class="hljs-keyword">this</span>.state.value,
+      <span class="hljs-comment">// selectedKeys:  this.state.value,</span>
+      <span class="hljs-comment">// checkedKeys: this.state.value,</span>
+      onCheck: <span class="hljs-keyword">this</span>.onCheck,
     };
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{padding:</span> '<span class="hljs-attribute">10px</span> <span class="hljs-attribute">30px</span>'}}&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">h3</span>&gt;</span>more<span class="hljs-tag">&lt;/<span class="hljs-title">h3</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}} <span class="hljs-attribute">onSelect</span>=<span class="hljs-value">{this.onSelect}</span> <span class="hljs-attribute">multiple</span> <span class="hljs-attribute">treeProps</span>=<span class="hljs-value">{treeProps}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}} <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span> <span class="hljs-attribute">multiple</span> <span class="hljs-attribute">treeProps</span>=<span class="hljs-value">{treeProps}</span>
+        <span class="hljs-attribute">onSelect</span>=<span class="hljs-value">{this.onSelect}</span> <span class="hljs-attribute">onDeselect</span>=<span class="hljs-value">{this.onDeselect}</span>&gt;</span>
         {loop(gData)}
       <span class="hljs-tag">&lt;/<span class="hljs-title">TreeSelect</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);

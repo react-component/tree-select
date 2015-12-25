@@ -17,6 +17,8 @@ webpackJsonp([0],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+	
 	__webpack_require__(2);
 	
 	__webpack_require__(3);
@@ -39,10 +41,29 @@ webpackJsonp([0],{
 	  displayName: 'Demo',
 	
 	  getInitialState: function getInitialState() {
-	    return {};
+	    return {
+	      value: []
+	    };
 	  },
-	  onSelect: function onSelect(info) {
-	    console.log('selected: ', info);
+	  onDeselect: function onDeselect(selectedValue) {
+	    console.log('onDeselect', selectedValue);
+	    var newVal = [].concat(_toConsumableArray(this.state.value));
+	    newVal.splice(newVal.indexOf(selectedValue), 1);
+	    this.setState({
+	      value: newVal
+	    });
+	  },
+	  onSelect: function onSelect(selectedKey, node, selectedKeys) {
+	    console.log('selected: ', selectedKey, selectedKeys);
+	    this.setState({
+	      value: selectedKeys
+	    });
+	  },
+	  onCheck: function onCheck(info) {
+	    console.log('onCheck:', info);
+	    this.setState({
+	      value: info.checkedKeys
+	    });
 	  },
 	  render: function render() {
 	    var loop = function loop(data) {
@@ -59,7 +80,13 @@ webpackJsonp([0],{
 	    };
 	    var treeProps = {
 	      showIcon: false,
-	      showLine: true
+	      showLine: true,
+	      checkable: true,
+	      defaultCheckedKeys: this.state.value,
+	      defaultSelectedKeys: this.state.value,
+	      // selectedKeys:  this.state.value,
+	      // checkedKeys: this.state.value,
+	      onCheck: this.onCheck
 	    };
 	    return _react2['default'].createElement(
 	      'div',
@@ -71,7 +98,8 @@ webpackJsonp([0],{
 	      ),
 	      _react2['default'].createElement(
 	        _rcTreeSelect2['default'],
-	        { style: { width: 300 }, onSelect: this.onSelect, multiple: true, treeProps: treeProps },
+	        { style: { width: 300 }, value: this.state.value, multiple: true, treeProps: treeProps,
+	          onSelect: this.onSelect, onDeselect: this.onDeselect },
 	        loop(_util.gData)
 	      )
 	    );
