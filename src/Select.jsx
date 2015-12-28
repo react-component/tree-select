@@ -211,9 +211,9 @@ const Select = React.createClass({
     const props = this.props;
     const selectedValue = getValuePropValue(item);
     const selectedLabel = this.getLabelFromOption(item);
-    if (check) {
+    if (check && props.onCheck) {
       props.onCheck(selectedValue, item, info.checkedKeys);
-    } else {
+    } else if (props.onSelect) {
       props.onSelect(selectedValue, item, info.selectedKeys);
     }
 
