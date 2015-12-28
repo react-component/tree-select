@@ -21,20 +21,20 @@ webpackJsonp([1],{
 	
 	__webpack_require__(3);
 	
-	var _react = __webpack_require__(7);
+	var _react = __webpack_require__(4);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(164);
+	var _reactDom = __webpack_require__(161);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _rcTreeSelect = __webpack_require__(4);
+	var _rcTreeSelect = __webpack_require__(162);
 	
 	var _rcTreeSelect2 = _interopRequireDefault(_rcTreeSelect);
 	
-	var Test = _react2['default'].createClass({
-	  displayName: 'Test',
+	var Demo = _react2['default'].createClass({
+	  displayName: 'Demo',
 	
 	  getInitialState: function getInitialState() {
 	    return {
@@ -90,7 +90,7 @@ webpackJsonp([1],{
 	  }
 	});
 	
-	_reactDom2['default'].render(_react2['default'].createElement(Test, null), document.getElementById('__react-content'));
+	_reactDom2['default'].render(_react2['default'].createElement(Demo, null), document.getElementById('__react-content'));
 
 /***/ }
 
