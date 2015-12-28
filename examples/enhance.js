@@ -27,10 +27,10 @@ const Demo = React.createClass({
       value: selectedKeys,
     });
   },
-  onCheck(info) {
-    console.log('onCheck:', info);
+  onCheck(checkedKey, node, checkedKeys) {
+    console.log('onCheck:', checkedKey);
     this.setState({
-      value: info.checkedKeys,
+      value: checkedKeys,
     });
   },
   render() {
@@ -50,12 +50,12 @@ const Demo = React.createClass({
       defaultSelectedKeys:  this.state.value,
       // selectedKeys:  this.state.value,
       // checkedKeys: this.state.value,
-      onCheck: this.onCheck,
+      // onCheck: this.onCheck,
     };
     return (<div style={{padding: '10px 30px'}}>
       <h3>more</h3>
-      <TreeSelect style={{width: 300}} value={this.state.value} multiple treeProps={treeProps}
-        onSelect={this.onSelect} onDeselect={this.onDeselect}>
+      <TreeSelect style={{width: 300}} defaultValue={this.state.value} multiple treeProps={treeProps}
+        onSelect={this.onSelect} onCheck={this.onCheck} onDeselect={this.onDeselect}>
         {loop(gData)}
       </TreeSelect>
     </div>);

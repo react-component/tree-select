@@ -81,7 +81,7 @@ see examples
 |prefixCls | prefix class | String | '' |
 |multiple | whether multiple select | bool | false |
 |[select-props](https://github.com/react-component/select#select-props) | the same as select props | ||
-|treeProps | the same as tree props | | [tree-props](https://github.com/react-component/tree#tree-props) |
+|treeProps | the same as tree props  (except onSelect and onCheck) | | [tree-props](https://github.com/react-component/tree#tree-props) |
 
 ### TreeNode props
 

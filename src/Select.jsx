@@ -200,8 +200,8 @@ const Select = React.createClass({
     }
   },
 
-  onSelect(info) {
-    if (!info.selected) {
+  onSelect(info, check) {
+    if (!check && !info.selected) {
       this.onDeselect(info);
       return;
     }
@@ -211,13 +211,20 @@ const Select = React.createClass({
     const props = this.props;
     const selectedValue = getValuePropValue(item);
     const selectedLabel = this.getLabelFromOption(item);
-    props.onSelect(selectedValue, item, info.selectedKeys);
+    if (check) {
+      props.onCheck(selectedValue, item, info.checkedKeys);
+    } else {
+      props.onSelect(selectedValue, item, info.selectedKeys);
+    }
+
     if (isMultipleOrTags(props)) {
-      if (value.indexOf(selectedValue) !== -1) {
+      if (!check && value.indexOf(selectedValue) !== -1) {
         return;
       }
-      value = value.concat([selectedValue]);
-      label = label.concat([selectedLabel]);
+      value = !check ? value.concat([selectedValue]) : [...info.checkedKeys];
+      label = !check ? label.concat([selectedLabel]) : info.allCheckedNodes.map(item => {
+        return this.getLabelFromOption(item);
+      });
     } else {
       if (value[0] === selectedValue) {
         this.setOpenState(false);
@@ -227,6 +234,7 @@ const Select = React.createClass({
       label = [selectedLabel];
       this.setOpenState(false);
     }
+
     this.fireChange(value, label);
     this.setState({
       inputValue: '',
