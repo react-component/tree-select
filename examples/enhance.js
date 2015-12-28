@@ -2,10 +2,10 @@
 
 import 'rc-tree-select/assets/index.less';
 import 'rc-tree/assets/index.css';
-import TreeSelect, { TreeNode } from 'rc-tree-select';
-import { gData } from './util';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import TreeSelect, { TreeNode } from 'rc-tree-select';
+import { gData } from './util';
 
 const Demo = React.createClass({
   getInitialState() {

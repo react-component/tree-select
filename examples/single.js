@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import TreeSelect, { TreeNode } from 'rc-tree-select';
 
-const Test = React.createClass({
+const Demo = React.createClass({
   getInitialState() {
     return {
       value: '1',
@@ -45,4 +45,4 @@ const Test = React.createClass({
   },
 });
 
-ReactDOM.render(<Test />, document.getElementById('__react-content'));
+ReactDOM.render(<Demo />, document.getElementById('__react-content'));

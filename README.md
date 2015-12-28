@@ -79,7 +79,6 @@ see examples
 |----------|----------------|----------|--------------|
 |className | additional css class of root dom node | String | '' |
 |prefixCls | prefix class | String | '' |
-|transitionName | popup content's animation className | String | '' |
 |multiple | whether multiple select | bool | false |
 |[select-props](https://github.com/react-component/select#select-props) | the same as select props | ||
 |treeProps | the same as tree props | | [tree-props](https://github.com/react-component/tree#tree-props) |
