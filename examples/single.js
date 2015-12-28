@@ -73,16 +73,16 @@ webpackJsonp([1],{
 	            _rcTreeSelect.TreeNode,
 	            { value: 'parent 1-0', title: 'parent 1-0', key: '0-1-1' },
 	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf', title: 'leaf', key: 'random' }),
-	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf', title: 'leaf' })
+	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf', title: 'leaf', key: 'random1' })
 	          ),
 	          _react2['default'].createElement(
 	            _rcTreeSelect.TreeNode,
-	            { value: 'parent 1-1', title: 'parent 1-1' },
+	            { value: 'parent 1-1', title: 'parent 1-1', key: 'random2' },
 	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'sss', title: _react2['default'].createElement(
 	                'span',
 	                { style: { color: 'red' } },
 	                'sss'
-	              ) })
+	              ), key: 'random3' })
 	          )
 	        )
 	      )

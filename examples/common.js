@@ -19983,9 +19983,9 @@
 	    var props = this.props;
 	    var selectedValue = (0, _util.getValuePropValue)(item);
 	    var selectedLabel = this.getLabelFromOption(item);
-	    if (check) {
+	    if (check && props.onCheck) {
 	      props.onCheck(selectedValue, item, info.checkedKeys);
-	    } else {
+	    } else if (props.onSelect) {
 	      props.onSelect(selectedValue, item, info.selectedKeys);
 	    }
 	
