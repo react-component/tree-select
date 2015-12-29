@@ -88,12 +88,8 @@ const SelectTrigger = React.createClass({
     const loop = (children, level) => {
       React.Children.forEach(children, (item, index) => {
         const pos = `${level}-${index}`;
-        let newChildren = item.props.children;
-        if (newChildren) {
-          if (!Array.isArray(newChildren)) {
-            newChildren = [newChildren];
-          }
-          loop(newChildren, pos);
+        if (item.props.children) {
+          loop(item.props.children, pos);
         }
         callback(item, index, pos);
       });
