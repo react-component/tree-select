@@ -35,6 +35,7 @@ const Select = React.createClass({
     animation: PropTypes.string,
     choiceTransitionName: PropTypes.string,
     onChange: PropTypes.func,
+    onCheck: PropTypes.func,
     onSelect: PropTypes.func,
     onSearch: PropTypes.func,
     searchPlaceholder: PropTypes.string,
@@ -59,6 +60,7 @@ const Select = React.createClass({
       searchPlaceholder: '',
       defaultValue: [],
       onChange: noop,
+      onCheck: noop,
       onSelect: noop,
       onSearch: noop,
       onDeselect: noop,
@@ -211,9 +213,9 @@ const Select = React.createClass({
     const props = this.props;
     const selectedValue = getValuePropValue(item);
     const selectedLabel = this.getLabelFromOption(item);
-    if (check && props.onCheck) {
+    if (check) {
       props.onCheck(selectedValue, item, info.checkedKeys);
-    } else if (props.onSelect) {
+    } else {
       props.onSelect(selectedValue, item, info.selectedKeys);
     }
 
@@ -281,11 +283,27 @@ const Select = React.createClass({
       return null;
     }
     let label = null;
-    React.Children.forEach(children, (child) => {
-      if (getValuePropValue(child) === value) {
-        label = this.getLabelFromOption(child);
-      }
-    });
+    // menu option 只有一层，treeNode 是多层嵌套
+    // React.Children.forEach(children, (child) => {
+    //   if (getValuePropValue(child) === value) {
+    //     label = this.getLabelFromOption(child);
+    //   }
+    // });
+    const loop = (children, level) => {
+      React.Children.forEach(children, (item, index) => {
+        let newChildren = item.props.children;
+        if (newChildren) {
+          if (!Array.isArray(newChildren)) {
+            newChildren = [newChildren];
+          }
+          loop(newChildren);
+        }
+        if (getValuePropValue(item) === value) {
+          label = this.getLabelFromOption(item);
+        }
+      });
+    };
+    loop(children, 0);
     return label;
   },
 

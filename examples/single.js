@@ -9,7 +9,7 @@ import TreeSelect, { TreeNode } from 'rc-tree-select';
 const Demo = React.createClass({
   getInitialState() {
     return {
-      value: '1',
+      value: 'leaf1',
     };
   },
   onChange(e) {
@@ -26,14 +26,14 @@ const Demo = React.createClass({
       <div style={{margin: 20}}>
         <h2>Single Select</h2>
         <TreeSelect style={{width: 300}}
-              value={this.state.value}
+              value={this.state.value} optionLabelProp="title"
               dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
               treeProps={{defaultExpandAll: true}}
               onChange={this.onChange}>
           <TreeNode value="parent 1" title="parent 1" key="0-1">
             <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
-              <TreeNode value="leaf" title="leaf" key="random" />
-              <TreeNode value="leaf" title="leaf" key="random1" />
+              <TreeNode value="leaf1" title="my leaf" key="random" />
+              <TreeNode value="leaf2" title="your leaf" key="random1" />
             </TreeNode>
             <TreeNode value="parent 1-1" title="parent 1-1" key="random2">
               <TreeNode value="sss" title={<span style={{color: 'red'}}>sss</span>} key="random3" />

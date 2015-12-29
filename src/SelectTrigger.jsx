@@ -173,7 +173,7 @@ const SelectTrigger = React.createClass({
     return childrenArr;
   },
 
-  renderPopupElement(newProps) {
+  renderTree(treeProps) {
     const props = this.props;
 
     const loop = data => {
@@ -190,13 +190,10 @@ const SelectTrigger = React.createClass({
       });
     };
 
-    return (<div>
-      {newProps.search}
-      <Tree ref={this.savePopupElement} multiple={newProps.multiple}
+    return (<Tree ref={this.savePopupElement} multiple={treeProps.multiple}
         {...props.treeProps} onSelect={props.onSelect} onCheck={(info) => { props.onSelect(info, 'check'); }}>
-        {loop(newProps.treeNodes)}
-      </Tree>
-    </div>);
+        {loop(treeProps.treeNodes)}
+    </Tree>);
   },
   render() {
     const props = this.props;
@@ -220,15 +217,10 @@ const SelectTrigger = React.createClass({
         visible = false;
       }
     }
-    let popupElement = this.renderPopupElement({
-      treeNodes,
-      search,
-      multiple,
-      visible,
-    });
-    if (notFoundContent) {
-      popupElement = notFoundContent;
-    }
+    let popupElement = (<div>
+      {search}
+      {notFoundContent ? notFoundContent : this.renderTree({treeNodes, multiple,})}
+    </div>);
 
     return (<Trigger action={props.disabled ? [] : ['click']}
                      ref="trigger"
