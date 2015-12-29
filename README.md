@@ -36,7 +36,7 @@ React TreeSelect Component
 
 ## Screenshots
 
-<img src="" width="288"/>
+<img src="https://os.alipayobjects.com/rmsportal/HUhyhmpWyiGKnZF.png" width="288"/>
 
 
 ## Development
