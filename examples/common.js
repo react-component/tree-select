@@ -19805,6 +19805,7 @@
 	    animation: _react.PropTypes.string,
 	    choiceTransitionName: _react.PropTypes.string,
 	    onChange: _react.PropTypes.func,
+	    onCheck: _react.PropTypes.func,
 	    onSelect: _react.PropTypes.func,
 	    onSearch: _react.PropTypes.func,
 	    searchPlaceholder: _react.PropTypes.string,
@@ -19829,6 +19830,7 @@
 	      searchPlaceholder: '',
 	      defaultValue: [],
 	      onChange: noop,
+	      onCheck: noop,
 	      onSelect: noop,
 	      onSearch: noop,
 	      onDeselect: noop,
@@ -19983,9 +19985,9 @@
 	    var props = this.props;
 	    var selectedValue = (0, _util.getValuePropValue)(item);
 	    var selectedLabel = this.getLabelFromOption(item);
-	    if (check && props.onCheck) {
+	    if (check) {
 	      props.onCheck(selectedValue, item, info.checkedKeys);
-	    } else if (props.onSelect) {
+	    } else {
 	      props.onSelect(selectedValue, item, info.selectedKeys);
 	    }
 	
@@ -20055,11 +20057,27 @@
 	      return null;
 	    }
 	    var label = null;
-	    _react2['default'].Children.forEach(children, function (child) {
-	      if ((0, _util.getValuePropValue)(child) === value) {
-	        label = _this2.getLabelFromOption(child);
-	      }
-	    });
+	    // menu option 只有一层，treeNode 是多层嵌套
+	    // React.Children.forEach(children, (child) => {
+	    //   if (getValuePropValue(child) === value) {
+	    //     label = this.getLabelFromOption(child);
+	    //   }
+	    // });
+	    var loop = function loop(children, level) {
+	      _react2['default'].Children.forEach(children, function (item, index) {
+	        var newChildren = item.props.children;
+	        if (newChildren) {
+	          if (!Array.isArray(newChildren)) {
+	            newChildren = [newChildren];
+	          }
+	          loop(newChildren);
+	        }
+	        if ((0, _util.getValuePropValue)(item) === value) {
+	          label = _this2.getLabelFromOption(item);
+	        }
+	      });
+	    };
+	    loop(children, 0);
 	    return label;
 	  },
 	
@@ -23544,7 +23562,7 @@
 	    return childrenArr;
 	  },
 	
-	  renderPopupElement: function renderPopupElement(newProps) {
+	  renderTree: function renderTree(treeProps) {
 	    var props = this.props;
 	
 	    var loop = function loop(data) {
@@ -23566,17 +23584,12 @@
 	    };
 	
 	    return _react2['default'].createElement(
-	      'div',
-	      null,
-	      newProps.search,
-	      _react2['default'].createElement(
-	        _rcTree2['default'],
-	        _extends({ ref: this.savePopupElement, multiple: newProps.multiple
-	        }, props.treeProps, { onSelect: props.onSelect, onCheck: function (info) {
-	            props.onSelect(info, 'check');
-	          } }),
-	        loop(newProps.treeNodes)
-	      )
+	      _rcTree2['default'],
+	      _extends({ ref: this.savePopupElement, multiple: treeProps.multiple
+	      }, props.treeProps, { onSelect: props.onSelect, onCheck: function (info) {
+	          props.onSelect(info, 'check');
+	        } }),
+	      loop(treeProps.treeNodes)
 	    );
 	  },
 	  render: function render() {
@@ -23606,15 +23619,12 @@
 	        visible = false;
 	      }
 	    }
-	    var popupElement = this.renderPopupElement({
-	      treeNodes: treeNodes,
-	      search: search,
-	      multiple: multiple,
-	      visible: visible
-	    });
-	    if (notFoundContent) {
-	      popupElement = notFoundContent;
-	    }
+	    var popupElement = _react2['default'].createElement(
+	      'div',
+	      null,
+	      search,
+	      notFoundContent ? notFoundContent : this.renderTree({ treeNodes: treeNodes, multiple: multiple })
+	    );
 	
 	    return _react2['default'].createElement(
 	      _rcTrigger2['default'],

@@ -38,7 +38,7 @@ webpackJsonp([1],{
 	
 	  getInitialState: function getInitialState() {
 	    return {
-	      value: '1'
+	      value: 'leaf1'
 	    };
 	  },
 	  onChange: function onChange(e) {
@@ -62,7 +62,7 @@ webpackJsonp([1],{
 	      _react2['default'].createElement(
 	        _rcTreeSelect2['default'],
 	        { style: { width: 300 },
-	          value: this.state.value,
+	          value: this.state.value, optionLabelProp: 'title',
 	          dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
 	          treeProps: { defaultExpandAll: true },
 	          onChange: this.onChange },
@@ -72,8 +72,8 @@ webpackJsonp([1],{
 	          _react2['default'].createElement(
 	            _rcTreeSelect.TreeNode,
 	            { value: 'parent 1-0', title: 'parent 1-0', key: '0-1-1' },
-	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf', title: 'leaf', key: 'random' }),
-	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf', title: 'leaf', key: 'random1' })
+	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf1', title: 'my leaf', key: 'random' }),
+	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf2', title: 'your leaf', key: 'random1' })
 	          ),
 	          _react2['default'].createElement(
 	            _rcTreeSelect.TreeNode,
