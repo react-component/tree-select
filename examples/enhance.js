@@ -15,43 +15,37 @@ webpackJsonp([0],{
 	
 	'use strict';
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	__webpack_require__(2);
 	
 	__webpack_require__(3);
 	
-	var _react = __webpack_require__(4);
+	__webpack_require__(4);
+	
+	var _react = __webpack_require__(5);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(161);
+	var _reactDom = __webpack_require__(162);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _rcTreeSelect = __webpack_require__(162);
+	var _rcTreeSelect = __webpack_require__(163);
 	
 	var _rcTreeSelect2 = _interopRequireDefault(_rcTreeSelect);
 	
-	var _util = __webpack_require__(221);
+	var _util = __webpack_require__(222);
 	
 	var Demo = _react2['default'].createClass({
 	  displayName: 'Demo',
 	
 	  getInitialState: function getInitialState() {
 	    return {
-	      value: []
+	      value: ['0-0']
 	    };
-	  },
-	  onDeselect: function onDeselect(selectedValue) {
-	    console.log('onDeselect', selectedValue);
-	    var newVal = [].concat(_toConsumableArray(this.state.value));
-	    newVal.splice(newVal.indexOf(selectedValue), 1);
-	    this.setState({
-	      value: newVal
-	    });
 	  },
 	  onSelect: function onSelect(selectedKey, node, selectedKeys) {
 	    console.log('selected: ', selectedKey, selectedKeys);
@@ -59,10 +53,10 @@ webpackJsonp([0],{
 	      value: selectedKeys
 	    });
 	  },
-	  onCheck: function onCheck(checkedKey, node, checkedKeys) {
-	    console.log('onCheck:', checkedKey);
+	  onChange: function onChange(value) {
+	    console.log('selected ' + value);
 	    this.setState({
-	      value: checkedKeys
+	      value: value
 	    });
 	  },
 	  render: function render() {
@@ -78,16 +72,15 @@ webpackJsonp([0],{
 	        return _react2['default'].createElement(_rcTreeSelect.TreeNode, { key: item.key, value: item.key, title: item.key });
 	      });
 	    };
-	    var treeProps = {
-	      showIcon: false,
-	      showLine: true,
-	      checkable: true,
-	      defaultCheckedKeys: this.state.value,
-	      defaultSelectedKeys: this.state.value
+	    var tProps = {
+	      // defaultValue: this.state.value,
+	      value: this.state.value,
+	      onChange: this.onChange,
+	      onSelect: this.onSelect,
+	      multiple: true,
+	      // treeCheckable: true,
+	      treeDefaultExpandAll: true
 	    };
-	    // selectedKeys:  this.state.value,
-	    // checkedKeys: this.state.value,
-	    // onCheck: this.onCheck,
 	    return _react2['default'].createElement(
 	      'div',
 	      { style: { padding: '10px 30px' } },
@@ -98,8 +91,7 @@ webpackJsonp([0],{
 	      ),
 	      _react2['default'].createElement(
 	        _rcTreeSelect2['default'],
-	        { style: { width: 300 }, defaultValue: this.state.value, multiple: true, treeProps: treeProps,
-	          onSelect: this.onSelect, onCheck: this.onCheck, onDeselect: this.onDeselect },
+	        _extends({ style: { width: 300 } }, tProps),
 	        loop(_util.gData)
 	      )
 	    );
@@ -110,7 +102,14 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 221:
+/***/ 4:
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+
+/***/ 222:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -119,9 +118,9 @@ webpackJsonp([0],{
 	  value: true
 	});
 	
-	var x = 5;
-	var y = 3;
-	var z = 2;
+	var x = 3;
+	var y = 2;
+	var z = 1;
 	var gData = [];
 	
 	var generateData = function generateData(_level, _preKey, _tns) {

@@ -3,12 +3,12 @@ webpackJsonp([1],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(222);
+	module.exports = __webpack_require__(223);
 
 
 /***/ },
 
-/***/ 222:
+/***/ 223:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint no-console: 0 */
@@ -17,19 +17,19 @@ webpackJsonp([1],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	__webpack_require__(2);
-	
 	__webpack_require__(3);
 	
-	var _react = __webpack_require__(4);
+	__webpack_require__(2);
+	
+	var _react = __webpack_require__(5);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(161);
+	var _reactDom = __webpack_require__(162);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _rcTreeSelect = __webpack_require__(162);
+	var _rcTreeSelect = __webpack_require__(163);
 	
 	var _rcTreeSelect2 = _interopRequireDefault(_rcTreeSelect);
 	
@@ -61,10 +61,9 @@ webpackJsonp([1],{
 	      ),
 	      _react2['default'].createElement(
 	        _rcTreeSelect2['default'],
-	        { style: { width: 300 },
+	        { style: { width: 300 }, dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
 	          value: this.state.value, optionLabelProp: 'title',
-	          dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
-	          treeProps: { defaultExpandAll: true },
+	          treeDefaultExpandAll: true,
 	          onChange: this.onChange },
 	        _react2['default'].createElement(
 	          _rcTreeSelect.TreeNode,
@@ -73,7 +72,7 @@ webpackJsonp([1],{
 	            _rcTreeSelect.TreeNode,
 	            { value: 'parent 1-0', title: 'parent 1-0', key: '0-1-1' },
 	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf1', title: 'my leaf', key: 'random' }),
-	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf2', title: 'your leaf', key: 'random1' })
+	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf2', title: 'your leaf', key: 'random1', disabled: true })
 	          ),
 	          _react2['default'].createElement(
 	            _rcTreeSelect.TreeNode,
