@@ -67,7 +67,7 @@ const SelectTrigger = React.createClass({
   },
 
   filterTree(treeNode) {
-    return this.props.inputValue && treeNode.props.value.indexOf(this.props.inputValue) > -1;
+    return this.props.inputValue && treeNode.props[this.props.treeNodeFilterProp].indexOf(this.props.inputValue) > -1;
   },
 
   filterTreeNode(input, child) {
