@@ -29,8 +29,8 @@ const SelectTrigger = React.createClass({
   propTypes: {
     dropdownMatchSelectWidth: PropTypes.bool,
     visible: PropTypes.bool,
-    filterOption: PropTypes.any,
-    options: PropTypes.any,
+    filterTreeNode: PropTypes.any,
+    treeNodes: PropTypes.any,
     prefixCls: PropTypes.string,
     popupClassName: PropTypes.string,
     children: PropTypes.any,
@@ -66,18 +66,22 @@ const SelectTrigger = React.createClass({
     return `${this.props.prefixCls}-dropdown`;
   },
 
-  filterOption(input, child) {
+  filterTree(treeNode) {
+    return this.props.inputValue && treeNode.props.value.indexOf(this.props.inputValue) > -1;
+  },
+
+  filterTreeNode(input, child) {
     if (!input) {
       return true;
     }
-    const filterOption = this.props.filterOption;
-    if (!filterOption) {
+    const filterTreeNode = this.props.filterTreeNode;
+    if (!filterTreeNode) {
       return true;
     }
     if (child.props.disabled) {
       return false;
     }
-    return filterOption.call(this, input, child);
+    return filterTreeNode.call(this, input, child);
   },
 
   savePopupElement(menu) {
@@ -104,7 +108,7 @@ const SelectTrigger = React.createClass({
     const inputValue = props.inputValue;
 
     this.loopAllChildren(children, (child, index, pos) => {
-      if (this.filterOption(inputValue, child)) {
+      if (this.filterTreeNode(inputValue, child)) {
         posArr.push(pos);
       }
     });
@@ -185,9 +189,31 @@ const SelectTrigger = React.createClass({
         return <TreeNode {...tProps} />;
       });
     };
+// debugger
+    const trProps = {
+      multiple: treeProps.multiple,
+      showIcon: props.treeIcon,
+      showLine: props.treeLine,
+      defaultExpandAll: props.treeDefaultExpandAll,
+      checkable: props.treeCheckable,
+      onSelect: props.onSelect,
+      onCheck: (info) => { props.onSelect(info, 'check'); },
+      filterTreeNode: this.filterTree,
+    };
+    const vals = props.value || props.defaultValue;
+    const keys = [];
+    this.loopAllChildren(props.treeNodes, (child, index, pos) => {
+      if (vals.indexOf(child.props.value) > -1) {
+        keys.push(child.key);
+      }
+    });
+    if (trProps.checkable) {
+      trProps.checkedKeys = keys;
+    } else {
+      trProps.selectedKeys = keys;
+    }
 
-    return (<Tree ref={this.savePopupElement} multiple={treeProps.multiple}
-        {...props.treeProps} onSelect={props.onSelect} onCheck={(info) => { props.onSelect(info, 'check'); }}>
+    return (<Tree ref={this.savePopupElement} {...trProps}>
         {loop(treeProps.treeNodes)}
     </Tree>);
   },
@@ -203,7 +229,7 @@ const SelectTrigger = React.createClass({
     const search = multiple || props.combobox || !props.showSearch ? null : (
       <span className={`${dropdownPrefixCls}-search`}>{props.inputElement}</span>
     );
-    const treeNodes = this.renderFilterOptionsFromChildren(props.options);
+    const treeNodes = this.renderFilterOptionsFromChildren(props.treeNodes);
     let notFoundContent;
     if (!treeNodes.length) {
       if (props.notFoundContent) {

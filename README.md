@@ -85,7 +85,6 @@ see examples
 |dropdownMatchSelectWidth | whether dropdown's with is same with select | bool | true |
 |dropdownClassName | additional className applied to dropdown | String | - |
 |dropdownStyle | additional style applied to dropdown | Object | {} |
-|dropdownMenuStyle | additional style applied to dropdown menu | Object | {} |
 |notFoundContent | specify content to show when no result matches. | String | 'Not Found' |
 |showSearch | whether show search input in single mode | bool | true |
 |allowClear | whether allowClear | bool | false |
@@ -94,21 +93,25 @@ see examples
 |combobox | enable combobox mode(can not set multiple at the same time) | bool | false |
 |multiple | whether multiple select | bool | false |
 |disabled | whether disabled select | bool | false |
-|filterOption | whether filter options by input value. default filter by option's optionFilterProp prop's value | bool | true/Function(inputValue:string, option:Option) |
-|optionFilterProp | which prop value of option will be used for filter if filterOption is true | String | 'value' |
-|optionLabelProp | which prop value of option will render as content of select | String | 'value' |
 |defaultValue | initial selected option(s) | String/Array<String> | - |
 |value | current selected option(s) | String/Array<String> | - |
 |onChange | called when select an option or input value change(combobox) | function(value, label) | - |
 |onSearch | called when input changed | function | - |
-
+|treeIcon | show tree icon | bool | false |
+|treeLine | show tree line | bool | false |
+|treeDefaultExpandAll | show tree icon | bool | false |
+|treeCheckable | whether tree show checkbox | bool | false |
+|filterTreeNode | filter some treeNodes as you need. it should return true | function(treeNode) | - |
+|treeNodeFilterProp | which prop value of treeNode will be used for filter if filterTreeNode return true | String | 'value' |
+|treeNodeLabelProp | which prop value of treeNode will render as content of select | String | 'value' |
 
 ### TreeNode props
 
 | name     | description    | type     | default      |
 |----------|----------------|----------|--------------|
-|value | default as optionFilterProp | String | 'value' |
-
+|key | the unique key of treeNode, you must setting  | String | - |
+|value | default as treeNodeFilterProp | String | 'value' |
+|disabled | disable treeNode | bool | false |
 
 ## Test Case
 

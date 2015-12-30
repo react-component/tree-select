@@ -14,7 +14,7 @@ function noop() {
 }
 
 function filterFn(input, child) {
-  return String(getPropValue(child, this.props.optionFilterProp)).indexOf(input) > -1;
+  return String(getPropValue(child, this.props.treeNodeFilterProp)).indexOf(input) > -1;
 }
 
 function saveRef(name, component) {
@@ -24,53 +24,55 @@ function saveRef(name, component) {
 const Select = React.createClass({
   propTypes: {
     multiple: PropTypes.bool,
-    filterOption: PropTypes.any,
+    filterTreeNode: PropTypes.any,
     showSearch: PropTypes.bool,
     disabled: PropTypes.bool,
     showArrow: PropTypes.bool,
     tags: PropTypes.bool,
     transitionName: PropTypes.string,
-    optionLabelProp: PropTypes.string,
-    optionFilterProp: PropTypes.string,
+    treeNodeLabelProp: PropTypes.string,
+    treeNodeFilterProp: PropTypes.string,
     animation: PropTypes.string,
     choiceTransitionName: PropTypes.string,
     onChange: PropTypes.func,
-    onCheck: PropTypes.func,
     onSelect: PropTypes.func,
     onSearch: PropTypes.func,
     searchPlaceholder: PropTypes.string,
     placeholder: PropTypes.any,
-    onDeselect: PropTypes.func,
     value: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
     defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
     label: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
     defaultLabel: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
     dropdownStyle: PropTypes.object,
     maxTagTextLength: PropTypes.number,
-    treeProps: PropTypes.object,
+    treeIcon: PropTypes.bool,
+    treeLine: PropTypes.bool,
+    treeDefaultExpandAll: PropTypes.bool,
+    treeCheckable: PropTypes.bool,
   },
 
   getDefaultProps() {
     return {
       prefixCls: 'rc-select',
-      filterOption: filterFn,
+      filterTreeNode: filterFn,
       showSearch: true,
       allowClear: false,
       placeholder: '',
       searchPlaceholder: '',
       defaultValue: [],
       onChange: noop,
-      onCheck: noop,
       onSelect: noop,
       onSearch: noop,
-      onDeselect: noop,
       showArrow: true,
       dropdownMatchSelectWidth: true,
       dropdownStyle: {},
-      dropdownMenuStyle: {},
-      optionFilterProp: 'value',
-      optionLabelProp: 'value',
+      treeNodeFilterProp: 'value',
+      treeNodeLabelProp: 'value',
       notFoundContent: 'Not Found',
+      treeIcon: false,
+      treeLine: false,
+      treeDefaultExpandAll: false,
+      treeCheckable: false,
     };
   },
 
@@ -171,7 +173,6 @@ const Select = React.createClass({
         const label = state.label.concat();
         const popValue = value.pop();
         label.pop();
-        props.onDeselect(popValue);
         this.fireChange(value, label);
       }
       return;
@@ -205,7 +206,7 @@ const Select = React.createClass({
   onSelect(info, check) {
     if (!check && !info.selected) {
       this.onDeselect(info);
-      return;
+      // return;
     }
     const item = info.node;
     let value = this.state.value;
@@ -214,7 +215,7 @@ const Select = React.createClass({
     const selectedValue = getValuePropValue(item);
     const selectedLabel = this.getLabelFromOption(item);
     if (check) {
-      props.onCheck(selectedValue, item, info.checkedKeys);
+      props.onSelect(selectedValue, item, info.checkedKeys);
     } else {
       props.onSelect(selectedValue, item, info.selectedKeys);
     }
@@ -243,7 +244,7 @@ const Select = React.createClass({
     });
     if (isCombobox(props)) {
       this.setState({
-        inputValue: getPropValue(item, props.optionLabelProp),
+        inputValue: getPropValue(item, props.treeNodeLabelProp),
       });
     }
   },
@@ -304,7 +305,7 @@ const Select = React.createClass({
   },
 
   getLabelFromOption(child) {
-    return getPropValue(child, this.props.optionLabelProp);
+    return getPropValue(child, this.props.treeNodeLabelProp);
   },
 
   getLabelFromProps(props, value, init) {
@@ -409,10 +410,6 @@ const Select = React.createClass({
     if (index !== -1) {
       label.splice(index, 1);
     }
-    const canMultiple = isMultipleOrTags(props);
-    if (canMultiple) {
-      props.onDeselect(selectedValue);
-    }
     this.fireChange(value, label);
   },
 
@@ -512,7 +509,7 @@ const Select = React.createClass({
                          onClick={this.onClearSelection}/>);
     return (
       <SelectTrigger {...props}
-        options={props.children}
+        treeNodes={props.children}
         multiple={multiple}
         disabled={disabled}
         visible={state.open}
