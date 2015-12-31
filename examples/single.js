@@ -1,7 +1,6 @@
 /* eslint no-console: 0 */
 
 import 'rc-tree-select/assets/index.less';
-import 'rc-tree/assets/index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TreeSelect, { TreeNode } from 'rc-tree-select';
@@ -27,7 +26,7 @@ const Demo = React.createClass({
         <h2>Single Select</h2>
         <TreeSelect style={{width: 300}} dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
               value={this.state.value} optionLabelProp="title"
-              treeDefaultExpandAll={true}
+              treeDefaultExpandAll
               onChange={this.onChange}>
           <TreeNode value="parent 1" title="parent 1" key="0-1">
             <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">

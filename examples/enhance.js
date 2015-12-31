@@ -1,6 +1,5 @@
 // use jsx to render html, do not modify simple.html
 
-import 'rc-tree/assets/index.css';
 import 'rc-tree-select/assets/index.less';
 import 'rc-tree-select/assets/demo.less';
 import React from 'react';

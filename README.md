@@ -99,7 +99,7 @@ see examples
 |onSearch | called when input changed | function | - |
 |treeIcon | show tree icon | bool | false |
 |treeLine | show tree line | bool | false |
-|treeDefaultExpandAll | show tree icon | bool | false |
+|treeDefaultExpandAll | default expand all treeNode | bool | false |
 |treeCheckable | whether tree show checkbox | bool | false |
 |filterTreeNode | filter some treeNodes as you need. it should return true | function(treeNode) | - |
 |treeNodeFilterProp | which prop value of treeNode will be used for filter if filterTreeNode return true | String | 'value' |
@@ -110,10 +110,10 @@ see examples
 
 | name     | description    | type     | default      |
 |----------|----------------|----------|--------------|
+|disabled | disable treeNode | bool | false |
 |key | the unique key of treeNode, you must setting  | String | - |
 |value | default as treeNodeFilterProp | String | 'value' |
 |title | tree/subTree's title | String | '---' |
-|disabled | disable treeNode | bool | false |
 |isLeaf | whether it's leaf node | bool | false |
 
 

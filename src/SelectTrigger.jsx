@@ -189,9 +189,10 @@ const SelectTrigger = React.createClass({
         return <TreeNode {...tProps} />;
       });
     };
-// debugger
+
     const trProps = {
       multiple: treeProps.multiple,
+      prefixCls: props.prefixCls + '-tree',
       showIcon: props.treeIcon,
       showLine: props.treeLine,
       defaultExpandAll: props.treeDefaultExpandAll,

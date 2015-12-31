@@ -1,4 +1,4 @@
-import 'rc-tree/assets/index.css';
+
 import 'rc-tree-select/assets/index.less';
 import React from 'react';
 import ReactDOM from 'react-dom';

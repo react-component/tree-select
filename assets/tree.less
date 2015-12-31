@@ -1,0 +1,169 @@
+@treePrefixCls: rc-tree-select-tree;
+.@{treePrefixCls} {
+  margin: 0;
+  padding: 5px;
+  li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    white-space: nowrap;
+    outline: 0;
+    a[draggable], a[draggable=true] {
+      color: #333;
+      -moz-user-select: none;
+      -khtml-user-select: none;
+      -webkit-user-select: none;
+      user-select: none;
+      /* Required to make elements draggable in old WebKit */
+      -khtml-user-drag: element;
+      -webkit-user-drag: element;
+    }
+    &.filter-node {
+      > a {
+        color: #A60000!important;
+        font-weight: bold!important;
+      }
+    }
+    &.drag-over {
+      > a[draggable] {
+        background-color: #316AC5;
+        color: white;
+        border: 1px #316AC5 solid;
+        opacity: 0.8;
+      }
+    }
+    &.drag-over-gap-top {
+      > a[draggable] {
+        border-top: 2px blue solid;
+      }
+    }
+    &.drag-over-gap-bottom {
+      > a[draggable] {
+        border-bottom: 2px blue solid;
+      }
+    }
+    ul {
+      margin: 0;
+      padding: 0 0 0 18px;
+      &.@{treePrefixCls}-line {
+        background: url("https://t.alipayobjects.com/images/T13BtfXl0mXXXXXXXX.gif") 0 0 repeat-y;
+      }
+    }
+    a {
+      display: inline-block;
+      padding: 1px 3px 0 0;
+      margin: 0;
+      cursor: pointer;
+      height: 17px;
+      text-decoration: none;
+      vertical-align: top;
+    }
+    span {
+      &.@{treePrefixCls}-switcher-noop,
+      &.@{treePrefixCls}-switcher,
+      &.@{treePrefixCls}-checkbox,
+      &.@{treePrefixCls}-iconEle {
+        line-height: 16px;
+        margin-right: 2px;
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        vertical-align: middle;
+        border: 0 none;
+        cursor: pointer;
+        outline: none;
+        background-color: transparent;
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+        background-image: url("https://t.alipayobjects.com/images/T1.ANfXhXtXXXXXXXX.png");
+      }
+      &.@{treePrefixCls}-icon_loading {
+        margin-right: 2px;
+        vertical-align: top;
+        background: url(https://t.alipayobjects.com/images/rmsweb/T1YxhiXgJbXXXXXXXX.gif) no-repeat scroll 0 0 transparent;
+      }
+      &.@{treePrefixCls}-switcher-noop {
+        background-image: none;
+      }
+      &.@{treePrefixCls}-switcher {
+        &-disabled {
+          background: #fff;
+          position: relative;
+          &:after {
+            content: ' ';
+            position: absolute;
+            top: 8px;
+            left: 6px;
+            color: gray;
+          }
+        }
+        &.@{treePrefixCls}-roots_open {
+          background-position: -93px -56px;
+        }
+        &.@{treePrefixCls}-roots_close {
+          background-position: -75px -56px;
+        }
+        &.@{treePrefixCls}-center_open {
+          background-position: -92px -18px;
+        }
+        &.@{treePrefixCls}-center_close {
+          background-position: -74px -18px;
+        }
+        &.@{treePrefixCls}-bottom_open {
+          background-position: -92px -36px;
+        }
+        &.@{treePrefixCls}-bottom_close {
+          background-position: -74px -36px;
+        }
+        &.@{treePrefixCls}-noline_open {
+          background-position: -92px -72px;
+        }
+        &.@{treePrefixCls}-noline_close {
+          background-position: -74px -72px;
+        }
+      }
+      &.@{treePrefixCls}-checkbox {
+        width: 13px;
+        height: 13px;
+        margin: 0 3px;
+        background-position: 0 0;
+        &.@{treePrefixCls}-checkbox-checked {
+          background-position: -14px 0;
+        }
+        &.@{treePrefixCls}-checkbox-indeterminate {
+          background-position: -14px -28px;
+        }
+        &-disabled {
+          background-position: 0 -28px!important;
+        }
+      }
+    }
+  }
+  &-child-tree {
+    display: none;
+    &-open {
+      display: block;
+    }
+  }
+  &-treenode-disabled {
+    >span,
+    >a {
+      color: gray;
+    }
+  }
+  &-node-selected {
+    background-color: #ffe6b0;
+    border: 1px #ffb951 solid;
+    opacity: 0.8;
+  }
+  &-icon__open {
+    margin-right: 2px;
+    background-position: -110px -16px;
+    vertical-align: top;
+  }
+  &-icon__close {
+    margin-right: 2px;
+    background-position: -110px 0;
+    vertical-align: top;
+  }
+}

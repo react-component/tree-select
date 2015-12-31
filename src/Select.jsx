@@ -54,7 +54,7 @@ const Select = React.createClass({
 
   getDefaultProps() {
     return {
-      prefixCls: 'rc-select',
+      prefixCls: 'rc-tree-select',
       filterTreeNode: filterFn,
       showSearch: true,
       allowClear: false,
