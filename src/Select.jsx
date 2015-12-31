@@ -46,7 +46,10 @@ const Select = React.createClass({
     treeIcon: PropTypes.bool,
     treeLine: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
-    treeCheckable: PropTypes.bool,
+    treeCheckable: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.node,
+    ]),
     treeNodeLabelProp: PropTypes.string,
     treeNodeFilterProp: PropTypes.string,
     loadData: PropTypes.func,
