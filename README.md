@@ -95,7 +95,8 @@ see examples
 |disabled | whether disabled select | bool | false |
 |defaultValue | initial selected option(s) | String/Array<String> | - |
 |value | current selected option(s) | String/Array<String> | - |
-|onChange | called when select an option or input value change(combobox) | function(value, label) | - |
+|onChange | called when select treeNode or input value change(combobox) | function(value, label) | - |
+|onSelect | called when select treeNode | function | - |
 |onSearch | called when input changed | function | - |
 |treeIcon | show tree icon | bool | false |
 |treeLine | show tree line | bool | false |

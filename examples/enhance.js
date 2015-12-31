@@ -40,7 +40,7 @@ const Demo = React.createClass({
       onChange: this.onChange,
       onSelect: this.onSelect,
       multiple: true,
-      // treeCheckable: true,
+      treeCheckable: true,
       treeDefaultExpandAll: true,
     };
     return (<div style={{padding: '10px 30px'}}>
