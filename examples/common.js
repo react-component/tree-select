@@ -19810,7 +19810,7 @@
 	    treeIcon: _react.PropTypes.bool,
 	    treeLine: _react.PropTypes.bool,
 	    treeDefaultExpandAll: _react.PropTypes.bool,
-	    treeCheckable: _react.PropTypes.bool,
+	    treeCheckable: _react.PropTypes.oneOfType([_react.PropTypes.bool, _react.PropTypes.node]),
 	    treeNodeLabelProp: _react.PropTypes.string,
 	    treeNodeFilterProp: _react.PropTypes.string,
 	    loadData: _react.PropTypes.func
