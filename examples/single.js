@@ -11,7 +11,7 @@ const Demo = React.createClass({
       value: 'leaf1',
     };
   },
-  onChange(e) {
+  onChange(e, label) {
     let value;
     if (e.target) {
       value = e.target.value;

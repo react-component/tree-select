@@ -14,13 +14,13 @@ const Demo = React.createClass({
     };
   },
   onSelect(selectedKey, node, selectedKeys) {
-    console.log('selected: ', selectedKey, selectedKeys);
+    console.log('onSelect: ', selectedKey, selectedKeys);
     this.setState({
       value: selectedKeys,
     });
   },
-  onChange(value) {
-    console.log('selected ' + value);
+  onChange(value, label) {
+    console.log('onChange ', value, label);
     this.setState({
       value: value,
     });
