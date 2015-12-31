@@ -30,8 +30,6 @@ const Select = React.createClass({
     showArrow: PropTypes.bool,
     tags: PropTypes.bool,
     transitionName: PropTypes.string,
-    treeNodeLabelProp: PropTypes.string,
-    treeNodeFilterProp: PropTypes.string,
     animation: PropTypes.string,
     choiceTransitionName: PropTypes.string,
     onChange: PropTypes.func,
@@ -49,6 +47,9 @@ const Select = React.createClass({
     treeLine: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
     treeCheckable: PropTypes.bool,
+    treeNodeLabelProp: PropTypes.string,
+    treeNodeFilterProp: PropTypes.string,
+    loadData: PropTypes.func,
   },
 
   getDefaultProps() {
@@ -66,13 +67,13 @@ const Select = React.createClass({
       showArrow: true,
       dropdownMatchSelectWidth: true,
       dropdownStyle: {},
-      treeNodeFilterProp: 'value',
-      treeNodeLabelProp: 'value',
       notFoundContent: 'Not Found',
       treeIcon: false,
       treeLine: false,
       treeDefaultExpandAll: false,
       treeCheckable: false,
+      treeNodeFilterProp: 'value',
+      treeNodeLabelProp: 'value',
     };
   },
 

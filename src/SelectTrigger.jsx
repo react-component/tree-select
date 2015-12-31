@@ -213,6 +213,11 @@ const SelectTrigger = React.createClass({
       trProps.selectedKeys = keys;
     }
 
+    // async loadData
+    if (props.loadData) {
+      trProps.loadData = props.loadData;
+    }
+
     return (<Tree ref={this.savePopupElement} {...trProps}>
         {loop(treeProps.treeNodes)}
     </Tree>);

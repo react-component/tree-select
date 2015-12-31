@@ -104,6 +104,7 @@ see examples
 |filterTreeNode | filter some treeNodes as you need. it should return true | function(treeNode) | - |
 |treeNodeFilterProp | which prop value of treeNode will be used for filter if filterTreeNode return true | String | 'value' |
 |treeNodeLabelProp | which prop value of treeNode will render as content of select | String | 'value' |
+|loadData | load data asynchronously | function(node) | - |
 
 ### TreeNode props
 
@@ -111,7 +112,10 @@ see examples
 |----------|----------------|----------|--------------|
 |key | the unique key of treeNode, you must setting  | String | - |
 |value | default as treeNodeFilterProp | String | 'value' |
+|title | tree/subTree's title | String | '---' |
 |disabled | disable treeNode | bool | false |
+|isLeaf | whether it's leaf node | bool | false |
+
 
 ## Test Case
 
