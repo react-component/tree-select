@@ -17,17 +17,15 @@ webpackJsonp([0],[
 	
 	__webpack_require__(2);
 	
-	__webpack_require__(3);
-	
-	var _react = __webpack_require__(4);
+	var _react = __webpack_require__(3);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(161);
+	var _reactDom = __webpack_require__(160);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _rcTreeSelect = __webpack_require__(162);
+	var _rcTreeSelect = __webpack_require__(161);
 	
 	var _rcTreeSelect2 = _interopRequireDefault(_rcTreeSelect);
 	

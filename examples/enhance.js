@@ -3,12 +3,12 @@ webpackJsonp([1],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(221);
+	module.exports = __webpack_require__(220);
 
 
 /***/ },
 
-/***/ 221:
+/***/ 220:
 /***/ function(module, exports, __webpack_require__) {
 
 	// use jsx to render html, do not modify simple.html
@@ -21,23 +21,21 @@ webpackJsonp([1],{
 	
 	__webpack_require__(2);
 	
-	__webpack_require__(3);
+	__webpack_require__(221);
 	
-	__webpack_require__(222);
-	
-	var _react = __webpack_require__(4);
+	var _react = __webpack_require__(3);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(161);
+	var _reactDom = __webpack_require__(160);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _rcTreeSelect = __webpack_require__(162);
+	var _rcTreeSelect = __webpack_require__(161);
 	
 	var _rcTreeSelect2 = _interopRequireDefault(_rcTreeSelect);
 	
-	var _util = __webpack_require__(223);
+	var _util = __webpack_require__(222);
 	
 	var Demo = _react2['default'].createClass({
 	  displayName: 'Demo',
@@ -102,14 +100,14 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 222:
+/***/ 221:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 223:
+/***/ 222:
 /***/ function(module, exports) {
 
 	'use strict';
