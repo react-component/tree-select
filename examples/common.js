@@ -19849,6 +19849,9 @@
 	    } else {
 	      value = (0, _util.toArray)(props.defaultValue);
 	    }
+	    if (this.props.treeCheckable) {
+	      value = (0, _util.getTreeNodesStates)(this.props.children, value).checkedKeys;
+	    }
 	    var label = this.getLabelFromProps(props, value, 1);
 	    var inputValue = '';
 	    if (props.combobox) {
@@ -19861,6 +19864,9 @@
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    if ('value' in nextProps) {
 	      var value = (0, _util.toArray)(nextProps.value);
+	      if (nextProps.treeCheckable) {
+	        value = (0, _util.getTreeNodesStates)(nextProps.children, value).checkedKeys;
+	      }
 	      var label = this.getLabelFromProps(nextProps, value);
 	      this.setState({
 	        value: value,
@@ -19968,9 +19974,10 @@
 	    }
 	  },
 	
-	  onSelect: function onSelect(info, check) {
+	  onSelect: function onSelect(info) {
 	    var _this = this;
 	
+	    var check = info.event === 'check';
 	    if (!check && !info.selected) {
 	      this.onDeselect(info);
 	      // return;
@@ -19981,19 +19988,19 @@
 	    var props = this.props;
 	    var selectedValue = (0, _util.getValuePropValue)(item);
 	    var selectedLabel = this.getLabelFromOption(item);
+	
 	    if (check) {
-	      props.onSelect(selectedValue, item, info.checkedKeys);
-	    } else {
-	      props.onSelect(selectedValue, item, info.selectedKeys);
+	      info.filterAllCheckedKeys = (0, _util.getCheckedKeys)(info.node, info.checkedKeys, info.allCheckedNodesKeys);
 	    }
+	    props.onSelect(selectedValue, info);
 	
 	    if ((0, _util.isMultipleOrTags)(props)) {
 	      if (!check && value.indexOf(selectedValue) !== -1) {
 	        return;
 	      }
 	      value = !check ? value.concat([selectedValue]) : [].concat(_toConsumableArray(info.checkedKeys));
-	      label = !check ? label.concat([selectedLabel]) : info.allCheckedNodes.map(function (item) {
-	        return _this.getLabelFromOption(item);
+	      label = !check ? label.concat([selectedLabel]) : info.allCheckedNodesKeys.map(function (item) {
+	        return _this.getLabelFromOption(item.node);
 	      });
 	    } else {
 	      if (value[0] === selectedValue) {
@@ -20060,7 +20067,7 @@
 	    //   }
 	    // });
 	    var loop = function loop(children, level) {
-	      _react2['default'].Children.forEach(children, function (item, index) {
+	      _react2['default'].Children.forEach(children, function (item) {
 	        if (item.props.children) {
 	          loop(item.props.children);
 	        }
@@ -23260,7 +23267,7 @@
 
 /***/ },
 /* 195 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -23274,7 +23281,18 @@
 	exports.isMultipleOrTagsOrCombobox = isMultipleOrTagsOrCombobox;
 	exports.isSingleMode = isSingleMode;
 	exports.toArray = toArray;
-	exports.filterMin = filterMin;
+	exports.getCheckedKeys = getCheckedKeys;
+	exports.loopAllChildren = loopAllChildren;
+	exports.filterMinPos = filterMinPos;
+	exports.getTreeNodesStates = getTreeNodesStates;
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
 	
 	function getValuePropValue(child) {
 	  var props = child.props;
@@ -23320,7 +23338,57 @@
 	  return ret;
 	}
 	
-	function filterMin(arr) {
+	function isInclude(smallArray, bigArray) {
+	  // attention: [0,0,1] [0,0,10]
+	  return smallArray.every(function (ii, i) {
+	    return ii === bigArray[i];
+	  });
+	}
+	
+	function getCheckedKeys(node, checkedKeys, allCheckedNodesKeys) {
+	  var nodeKey = node.props.eventKey;
+	  var newCks = [].concat(_toConsumableArray(checkedKeys));
+	  var nodePos = undefined;
+	  var unCheck = allCheckedNodesKeys.some(function (item) {
+	    if (item.key === nodeKey) {
+	      nodePos = item.pos;
+	      return true;
+	    }
+	  });
+	  if (unCheck) {
+	    (function () {
+	      var nArr = nodePos.split('-');
+	      newCks = [];
+	      allCheckedNodesKeys.forEach(function (item) {
+	        var iArr = item.pos.split('-');
+	        if (item.pos === nodePos || nArr.length > iArr.length && isInclude(iArr, nArr) || nArr.length < iArr.length && isInclude(nArr, iArr)) {
+	          // 过滤掉 非父级节点 和 所有子节点。
+	          // 因为 node节点 不选时，其 非父级节点 和 所有子节点 都不选。
+	          return;
+	        }
+	        newCks.push(item.key);
+	      });
+	    })();
+	  } else {
+	    newCks.push(nodeKey);
+	  }
+	  return newCks;
+	}
+	
+	function loopAllChildren(childs, callback) {
+	  var loop = function loop(children, level) {
+	    _react2['default'].Children.forEach(children, function (item, index) {
+	      var pos = level + '-' + index;
+	      if (item.props.children) {
+	        loop(item.props.children, pos);
+	      }
+	      callback(item, index, pos, item.key || pos);
+	    });
+	  };
+	  loop(childs, 0);
+	}
+	
+	function filterMinPos(arr) {
 	  var a = [];
 	  arr.forEach(function (item) {
 	    var b = a.filter(function (i) {
@@ -23333,7 +23401,109 @@
 	  return a;
 	}
 	
-	// console.log(filterMin(['0-0','0-1', '0-10', '0-0-1', '0-1-1', '0-10-0']));
+	// console.log(filterMinPos(['0-0','0-1', '0-10', '0-0-1', '0-1-1', '0-10-0']));
+	
+	function handleCheckState(obj, checkedPosArr, checkIt) {
+	  var stripTail = function stripTail(str) {
+	    var arr = str.match(/(.+)(-[^-]+)$/);
+	    var st = '';
+	    if (arr && arr.length === 3) {
+	      st = arr[1];
+	    }
+	    return st;
+	  };
+	  // stripTail('x-xx-sss-xx')
+	  var splitPos = function splitPos(pos) {
+	    return pos.split('-');
+	  };
+	  checkedPosArr.forEach(function (_pos) {
+	    // 设置子节点，全选或全不选
+	    Object.keys(obj).forEach(function (i) {
+	      if (splitPos(i).length > splitPos(_pos).length && i.indexOf(_pos) === 0) {
+	        obj[i].checkPart = false;
+	        obj[i].checked = checkIt;
+	      }
+	    });
+	    // 循环设置父节点的 选中 或 半选状态
+	    var loop = function loop(__pos) {
+	      var _posLen = splitPos(__pos).length;
+	      if (_posLen <= 2) {
+	        // e.g. '0-0', '0-1'
+	        return;
+	      }
+	      var sibling = 0;
+	      var siblingChecked = 0;
+	      var parentPos = stripTail(__pos);
+	      Object.keys(obj).forEach(function (i) {
+	        if (splitPos(i).length === _posLen && i.indexOf(parentPos) === 0) {
+	          sibling++;
+	          if (obj[i].checked) {
+	            siblingChecked++;
+	          } else if (obj[i].checkPart) {
+	            siblingChecked += 0.5;
+	          }
+	        }
+	      });
+	      var parent = obj[parentPos];
+	      // sibling 不会等于0
+	      // 全不选 - 全选 - 半选
+	      if (siblingChecked === 0) {
+	        parent.checked = false;
+	        parent.checkPart = false;
+	      } else if (siblingChecked === sibling) {
+	        parent.checked = true;
+	        parent.checkPart = false;
+	      } else {
+	        parent.checkPart = true;
+	        parent.checked = false;
+	      }
+	      loop(parentPos);
+	    };
+	    loop(_pos);
+	  });
+	}
+	
+	function getCheckKeys(treeNodesStates) {
+	  var checkPartKeys = [];
+	  var checkedKeys = [];
+	  var checkedNodes = [];
+	  var checkedNodesKeys = [];
+	  Object.keys(treeNodesStates).forEach(function (item) {
+	    var itemObj = treeNodesStates[item];
+	    if (itemObj.checked) {
+	      checkedKeys.push(itemObj.key);
+	      checkedNodes.push(itemObj.node);
+	      checkedNodesKeys.push({ key: itemObj.key, node: itemObj.node, pos: item });
+	    } else if (itemObj.checkPart) {
+	      checkPartKeys.push(itemObj.key);
+	    }
+	  });
+	  return {
+	    checkPartKeys: checkPartKeys, checkedKeys: checkedKeys, checkedNodes: checkedNodes, checkedNodesKeys: checkedNodesKeys, treeNodesStates: treeNodesStates
+	  };
+	}
+	
+	function getTreeNodesStates(children, checkedKeys) {
+	  var checkedPos = [];
+	  var treeNodesStates = {};
+	  loopAllChildren(children, function (item, index, pos, newKey) {
+	    var checked = false;
+	    if (checkedKeys.indexOf(newKey) !== -1) {
+	      checked = true;
+	      checkedPos.push(pos);
+	    }
+	    treeNodesStates[pos] = {
+	      node: item,
+	      key: newKey,
+	      checked: checked,
+	      checkPart: false
+	    };
+	  });
+	
+	  handleCheckState(treeNodesStates, filterMinPos(checkedPos.sort()), true);
+	
+	  return getCheckKeys(treeNodesStates);
+	}
 
 /***/ },
 /* 196 */
@@ -23461,19 +23631,6 @@
 	    this.popupMenu = menu;
 	  },
 	
-	  loopAllChildren: function loopAllChildren(childs, callback) {
-	    var loop = function loop(children, level) {
-	      _react2['default'].Children.forEach(children, function (item, index) {
-	        var pos = level + '-' + index;
-	        if (item.props.children) {
-	          loop(item.props.children, pos);
-	        }
-	        callback(item, index, pos);
-	      });
-	    };
-	    loop(childs, 0);
-	  },
-	
 	  renderFilterOptionsFromChildren: function renderFilterOptionsFromChildren(children) {
 	    var _this = this;
 	
@@ -23482,15 +23639,15 @@
 	    var props = this.props;
 	    var inputValue = props.inputValue;
 	
-	    this.loopAllChildren(children, function (child, index, pos) {
+	    (0, _util.loopAllChildren)(children, function (child, index, pos) {
 	      if (_this.filterTreeNode(inputValue, child)) {
 	        posArr.push(pos);
 	      }
 	    });
-	    posArr = (0, _util.filterMin)(posArr);
+	    posArr = (0, _util.filterMinPos)(posArr);
 	
 	    var filterChildren = {};
-	    this.loopAllChildren(children, function (child, index, pos) {
+	    (0, _util.loopAllChildren)(children, function (child, index, pos) {
 	      posArr.forEach(function (item) {
 	        if (item.indexOf(pos) === 0 && filterPos.indexOf(pos) === -1) {
 	          filterPos.push(pos);
@@ -23578,23 +23735,22 @@
 	      showLine: props.treeLine,
 	      defaultExpandAll: props.treeDefaultExpandAll,
 	      checkable: props.treeCheckable,
-	      onSelect: props.onSelect,
-	      onCheck: function onCheck(info) {
-	        props.onSelect(info, 'check');
-	      },
 	      filterTreeNode: this.filterTree
 	    };
 	    var vals = props.value || props.defaultValue;
 	    var keys = [];
-	    this.loopAllChildren(props.treeNodes, function (child, index, pos) {
+	    (0, _util.loopAllChildren)(props.treeNodes, function (child, index, pos) {
 	      if (vals.indexOf(child.props.value) > -1) {
 	        keys.push(child.key);
 	      }
 	    });
+	    // 为避免混乱，checkable 模式下，select 失效
 	    if (trProps.checkable) {
 	      trProps.checkedKeys = keys;
+	      trProps.onCheck = props.onSelect;
 	    } else {
 	      trProps.selectedKeys = keys;
+	      trProps.onSelect = props.onSelect;
 	    }
 	
 	    // async loadData
@@ -25598,7 +25754,7 @@
 	
 	var _Tree2 = _interopRequireDefault(_Tree);
 	
-	var _TreeNode = __webpack_require__(217);
+	var _TreeNode = __webpack_require__(218);
 	
 	var _TreeNode2 = _interopRequireDefault(_TreeNode);
 	
@@ -25637,32 +25793,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _objectAssign = __webpack_require__(197);
+	
+	var _objectAssign2 = _interopRequireDefault(_objectAssign);
+	
 	var _classnames = __webpack_require__(168);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _TreeNode = __webpack_require__(217);
-	
-	var _TreeNode2 = _interopRequireDefault(_TreeNode);
-	
-	var _util = __webpack_require__(218);
-	
-	var splitPos = function splitPos(pos) {
-	  return pos.split('-');
-	};
-	var filterMin = function filterMin(arr) {
-	  var a = [];
-	  arr.forEach(function (item) {
-	    var b = a.filter(function (i) {
-	      return item.indexOf(i) === 0 && (item[i.length] === '-' || !item[i.length]);
-	    });
-	    if (!b.length) {
-	      a.push(item);
-	    }
-	  });
-	  return a;
-	};
-	// console.log(filterMin(['0-0','0-1', '0-10', '0-0-1', '0-1-1', '0-10-0']));
+	var _util = __webpack_require__(217);
 	
 	function noop() {}
 	
@@ -25700,32 +25839,6 @@
 	      var selectedKeys = this.getDefaultSelectedKeys(nextProps, true);
 	      this.setState((_setState = {}, _defineProperty(_setState, expandedKeys && 'expandedKeys', expandedKeys), _defineProperty(_setState, checkedKeys && 'checkedKeys', checkedKeys), _defineProperty(_setState, selectedKeys && 'selectedKeys', selectedKeys), _setState));
 	    }
-	
-	    /*
-	    // ie8
-	    createDragElement(treeNode) {
-	      const props = this.props;
-	       // copy treeNode and it's childNodes, remove data-reactid attribute.
-	      let tn = treeNode.refs.selectHandle.cloneNode(true);
-	      [...tn.childNodes].forEach(child => {
-	        if (child.nodeType !== 1) {
-	          return;
-	        }
-	        child.removeAttribute('data-reactid');
-	      });
-	      tn.removeAttribute('data-reactid');
-	       // make element
-	      const li = document.createElement("li");
-	      li.className = treeNode.props.className || '';
-	      li.appendChild(tn);
-	      const ul = document.createElement("ul");
-	      ul.className = `${props.prefixCls}-dragUl ${classNames(props.className, props.prefixCls)}`;
-	      ul.appendChild(li);
-	       ul.setAttribute('draggable', 'true');
-	      this.refs.tree.parentNode.insertBefore(ul, this.refs.tree);
-	      ul.focus();
-	    }
-	    */
 	  }, {
 	    key: 'onDragStart',
 	    value: function onDragStart(e, treeNode) {
@@ -25843,71 +25956,68 @@
 	    value: function onExpand(treeNode) {
 	      var _this2 = this;
 	
-	      var thisProps = this.props;
-	      var tnProps = treeNode.props;
+	      var expand = !treeNode.props.expanded;
+	      var controlled = ('expandedKeys' in this.props);
 	      var expandedKeys = [].concat(_toConsumableArray(this.state.expandedKeys));
-	      var expanded = !tnProps.expanded;
-	      var index = expandedKeys.indexOf(tnProps.eventKey);
-	      if (expanded) {
-	        if (index === -1) {
-	          expandedKeys.push(tnProps.eventKey);
-	          if (thisProps.loadData) {
-	            return thisProps.loadData(treeNode).then(function () {
-	              _this2.setState({
-	                expandedKeys: expandedKeys
-	              });
-	            })['catch'](function () {
-	              // console.error('Something went wrong', reason);
-	            });
+	      var index = expandedKeys.indexOf(treeNode.props.eventKey);
+	      if (!controlled) {
+	        if (expand) {
+	          if (index === -1) {
+	            expandedKeys.push(treeNode.props.eventKey);
 	          }
-	        }
-	      } else {
+	        } else {
 	          expandedKeys.splice(index, 1);
 	        }
-	      if (!('expandedKeys' in this.props)) {
 	        this.setState({ expandedKeys: expandedKeys });
+	        this.props.onExpand(treeNode, expand, expandedKeys);
+	      } else {
+	        this.props.onExpand(treeNode, !expand, expandedKeys);
 	      }
-	      thisProps.onExpand(treeNode, expanded, expandedKeys);
+	
+	      // after data loaded, need set new expandedKeys
+	      if (expand && this.props.loadData) {
+	        return this.props.loadData(treeNode).then(function () {
+	          if (!controlled) {
+	            _this2.setState({ expandedKeys: expandedKeys });
+	          }
+	        });
+	      }
 	    }
 	  }, {
 	    key: 'onCheck',
 	    value: function onCheck(treeNode) {
 	      var _this3 = this;
 	
-	      var tnProps = treeNode.props;
-	      var checked = !tnProps.checked;
-	      if (tnProps.checkPart) {
+	      var checked = !treeNode.props.checked;
+	      if (treeNode.props.checkPart) {
 	        checked = true;
 	      }
-	      var pos = undefined;
-	      Object.keys(this.treeNodesStates).forEach(function (item) {
-	        var itemObj = _this3.treeNodesStates[item];
-	        if (itemObj.key === (treeNode.key || tnProps.eventKey)) {
-	          pos = item;
-	          itemObj.checked = checked;
-	          itemObj.checkPart = false;
-	        }
-	      });
-	      this.handleCheckState(this.treeNodesStates, [pos], !checked);
-	      var checkKeys = this.getCheckKeys();
-	      this.checkPartKeys = checkKeys.checkPartKeys;
-	      var checkedKeys = checkKeys.checkedKeys;
+	      var key = treeNode.key || treeNode.props.eventKey;
+	      var checkedKeys = [].concat(_toConsumableArray(this.state.checkedKeys));
+	      if (checked && checkedKeys.indexOf(key) === -1) {
+	        checkedKeys.push(key);
+	      }
+	      var checkKeys = (0, _util.getTreeNodesStates)(this.props.children, checkedKeys, checked, key);
+	      // this.checkPartKeys = checkKeys.checkPartKeys;
 	      var newSt = {
 	        event: 'check',
 	        node: treeNode,
-	        allCheckedNodes: checkKeys.checkedNodes
+	        allCheckedNodesKeys: checkKeys.checkedNodesKeys
 	      };
 	      if (!('checkedKeys' in this.props)) {
 	        this.setState({
-	          checkedKeys: checkedKeys
+	          checkedKeys: checkKeys.checkedKeys
 	        });
 	        newSt.checked = checked;
 	      } else {
-	        checkedKeys = this.state.checkedKeys;
-	        newSt.allCheckedNodes = Object.keys(this.treeNodesStates).filter(function (item) {
-	          var itemObj = _this3.treeNodesStates[item];
+	        checkedKeys = [].concat(_toConsumableArray(this.state.checkedKeys));
+	        newSt.allCheckedNodesKeys = [];
+	        Object.keys(checkKeys.treeNodesStates).forEach(function (item) {
+	          var itemObj = checkKeys.treeNodesStates[item];
+	          // 此处用 this.checkedKeys，能包含上一次所有选中的节点，
+	          // 供用户判断点击节点，下次是否需要选中
 	          if (_this3.checkedKeys.indexOf(itemObj.key) !== -1) {
-	            return itemObj.node;
+	            newSt.allCheckedNodesKeys.push({ key: itemObj.key, node: itemObj.node, pos: item });
 	          }
 	        });
 	      }
@@ -25942,7 +26052,7 @@
 	        });
 	        newSt.selected = selected;
 	      } else {
-	        selectedKeys = this.state.selectedKeys;
+	        selectedKeys = [].concat(_toConsumableArray(this.state.selectedKeys));
 	      }
 	      newSt.selectedKeys = selectedKeys;
 	      props.onSelect(newSt);
@@ -25987,17 +26097,35 @@
 	      e.preventDefault();
 	    }
 	  }, {
-	    key: 'getDefaultExpandedKeys',
-	    value: function getDefaultExpandedKeys(props, willReceiveProps) {
+	    key: 'getFilterExpandedKeys',
+	    value: function getFilterExpandedKeys(props) {
 	      var defaultExpandedKeys = props.defaultExpandedKeys;
-	      if (props.defaultExpandAll) {
-	        defaultExpandedKeys = [];
-	        this.loopAllChildren(props.children, function (item, index, pos) {
-	          var key = item.key || pos;
-	          defaultExpandedKeys.push(key);
+	      var expandedPosArr = [];
+	      if (props.autoExpandParent) {
+	        (0, _util.loopAllChildren)(props.children, function (item, index, pos, newKey) {
+	          if (defaultExpandedKeys.indexOf(newKey) > -1) {
+	            expandedPosArr.push(pos);
+	          }
 	        });
 	      }
-	      var expandedKeys = willReceiveProps ? undefined : defaultExpandedKeys;
+	      var filterExpandedKeys = [];
+	      (0, _util.loopAllChildren)(props.children, function (item, index, pos, newKey) {
+	        if (props.defaultExpandAll) {
+	          filterExpandedKeys.push(newKey);
+	        } else if (props.autoExpandParent) {
+	          expandedPosArr.forEach(function (p) {
+	            if ((pos.split('-').length < p.split('-').length && p.indexOf(pos) === 0 || pos === p) && filterExpandedKeys.indexOf(newKey) === -1) {
+	              filterExpandedKeys.push(newKey);
+	            }
+	          });
+	        }
+	      });
+	      return filterExpandedKeys.length ? filterExpandedKeys : defaultExpandedKeys;
+	    }
+	  }, {
+	    key: 'getDefaultExpandedKeys',
+	    value: function getDefaultExpandedKeys(props, willReceiveProps) {
+	      var expandedKeys = willReceiveProps ? undefined : this.getFilterExpandedKeys(props);
 	      if ('expandedKeys' in props) {
 	        expandedKeys = props.expandedKeys || [];
 	      }
@@ -26023,27 +26151,6 @@
 	      return selectedKeys;
 	    }
 	  }, {
-	    key: 'getCheckKeys',
-	    value: function getCheckKeys() {
-	      var _this4 = this;
-	
-	      var checkPartKeys = [];
-	      var checkedKeys = [];
-	      var checkedNodes = [];
-	      Object.keys(this.treeNodesStates).forEach(function (item) {
-	        var itemObj = _this4.treeNodesStates[item];
-	        if (itemObj.checked) {
-	          checkedKeys.push(itemObj.key);
-	          checkedNodes.push(itemObj.node);
-	        } else if (itemObj.checkPart) {
-	          checkPartKeys.push(itemObj.key);
-	        }
-	      });
-	      return {
-	        checkPartKeys: checkPartKeys, checkedKeys: checkedKeys, checkedNodes: checkedNodes
-	      };
-	    }
-	  }, {
 	    key: 'getOriginExpandedKeys',
 	    value: function getOriginExpandedKeys() {
 	      if (!this._originExpandedKeys && 'expandedKeys' in this.props) {
@@ -26064,12 +26171,10 @@
 	  }, {
 	    key: 'getDragNodes',
 	    value: function getDragNodes(treeNode) {
-	      var _this5 = this;
-	
 	      var dragNodesKeys = [];
-	      Object.keys(this.treeNodesStates).forEach(function (item) {
-	        if (item.indexOf(treeNode.props.pos) === 0) {
-	          dragNodesKeys.push(_this5.treeNodesStates[item].key);
+	      (0, _util.loopAllChildren)(this.props.children, function (item, index, pos, newKey) {
+	        if (pos.indexOf(treeNode.props.pos) === 0) {
+	          dragNodesKeys.push(newKey);
 	        }
 	      });
 	      return dragNodesKeys;
@@ -26098,87 +26203,6 @@
 	        return false;
 	      }
 	      return filterTreeNode.call(this, treeNode);
-	    }
-	  }, {
-	    key: 'handleCheckState',
-	    value: function handleCheckState(obj, checkedArr, unCheckEvent) {
-	      var evt = false;
-	      if (typeof unCheckEvent === 'boolean') {
-	        evt = true;
-	      }
-	      // stripTail('x-xx-sss-xx')
-	      var stripTail = function stripTail(str) {
-	        var arr = str.match(/(.+)(-[^-]+)$/);
-	        var st = '';
-	        if (arr && arr.length === 3) {
-	          st = arr[1];
-	        }
-	        return st;
-	      };
-	      checkedArr.forEach(function (_pos) {
-	        Object.keys(obj).forEach(function (i) {
-	          if (splitPos(i).length > splitPos(_pos).length && i.indexOf(_pos) === 0) {
-	            obj[i].checkPart = false;
-	            if (evt) {
-	              if (unCheckEvent) {
-	                obj[i].checked = false;
-	              } else {
-	                obj[i].checked = true;
-	              }
-	            } else {
-	              obj[i].checked = true;
-	            }
-	          }
-	        });
-	        var loop = function loop(__pos) {
-	          var _posLen = splitPos(__pos).length;
-	          if (_posLen <= 2) {
-	            return;
-	          }
-	          var sibling = 0;
-	          var siblingChecked = 0;
-	          var parentPos = stripTail(__pos);
-	          Object.keys(obj).forEach(function (i) {
-	            if (splitPos(i).length === _posLen && i.indexOf(parentPos) === 0) {
-	              sibling++;
-	              if (obj[i].checked) {
-	                siblingChecked++;
-	              } else if (obj[i].checkPart) {
-	                siblingChecked += 0.5;
-	              }
-	            }
-	          });
-	          var parent = obj[parentPos];
-	          // sibling 不会等于0
-	          // 全不选 - 全选 - 半选
-	          if (siblingChecked === 0) {
-	            parent.checked = false;
-	            parent.checkPart = false;
-	          } else if (siblingChecked === sibling) {
-	            parent.checked = true;
-	            parent.checkPart = false;
-	          } else {
-	            parent.checkPart = true;
-	            parent.checked = false;
-	          }
-	          loop(parentPos);
-	        };
-	        loop(_pos);
-	      });
-	    }
-	  }, {
-	    key: 'loopAllChildren',
-	    value: function loopAllChildren(childs, callback) {
-	      var loop = function loop(children, level) {
-	        _react2['default'].Children.forEach(children, function (item, index) {
-	          var pos = level + '-' + index;
-	          if (item.props.children && item.type === _TreeNode2['default']) {
-	            loop(item.props.children, pos);
-	          }
-	          callback(item, index, pos);
-	        });
-	      };
-	      loop(childs, 0);
 	    }
 	  }, {
 	    key: 'renderTreeNode',
@@ -26214,13 +26238,14 @@
 	        openAnimation: props.openAnimation,
 	        filterTreeNode: this.filterTreeNode.bind(this)
 	      };
+	      if (this.treeNodesStates[pos]) {
+	        (0, _objectAssign2['default'])(cloneProps, this.treeNodesStates[pos].siblingPos);
+	      }
 	      return _react2['default'].cloneElement(child, cloneProps);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this6 = this;
-	
 	      var props = this.props;
 	      var domProps = {
 	        className: (0, _classnames2['default'])(props.className, props.prefixCls),
@@ -26231,27 +26256,10 @@
 	        domProps.onKeyDown = this.onKeyDown;
 	      }
 	      // console.log(this.state.expandedKeys, this._originExpandedKeys, props.children);
-	      var checkedKeys = this.state.checkedKeys;
-	      var checkedPos = [];
-	      this.treeNodesStates = {};
-	      this.loopAllChildren(props.children, function (item, index, pos) {
-	        var key = item.key || pos;
-	        var checked = false;
-	        if (checkedKeys.indexOf(key) !== -1) {
-	          checked = true;
-	          checkedPos.push(pos);
-	        }
-	        _this6.treeNodesStates[pos] = {
-	          node: item,
-	          key: key,
-	          checked: checked,
-	          checkPart: false
-	        };
-	      });
-	      this.handleCheckState(this.treeNodesStates, filterMin(checkedPos.sort()));
-	      var checkKeys = this.getCheckKeys();
+	      var checkKeys = (0, _util.getTreeNodesStates)(props.children, this.state.checkedKeys, true);
 	      this.checkPartKeys = checkKeys.checkPartKeys;
 	      this.checkedKeys = checkKeys.checkedKeys;
+	      this.treeNodesStates = checkKeys.treeNodesStates;
 	
 	      return _react2['default'].createElement(
 	        'ul',
@@ -26266,11 +26274,14 @@
 	
 	Tree.propTypes = {
 	  prefixCls: _react.PropTypes.string,
+	  children: _react.PropTypes.any,
 	  checkable: _react.PropTypes.oneOfType([_react.PropTypes.bool, _react.PropTypes.node]),
 	  multiple: _react.PropTypes.bool,
 	  showLine: _react.PropTypes.bool,
 	  showIcon: _react.PropTypes.bool,
+	  autoExpandParent: _react.PropTypes.bool,
 	  defaultExpandAll: _react.PropTypes.bool,
+	  expandedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
 	  defaultExpandedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
 	  checkedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
 	  defaultCheckedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
@@ -26300,6 +26311,7 @@
 	  draggable: false,
 	  showLine: false,
 	  showIcon: true,
+	  autoExpandParent: true,
 	  defaultExpandAll: false,
 	  defaultExpandedKeys: [],
 	  defaultCheckedKeys: [],
@@ -26319,6 +26331,255 @@
 
 /***/ },
 /* 217 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports.browser = browser;
+	exports.getOffset = getOffset;
+	exports.loopAllChildren = loopAllChildren;
+	exports.filterMinPos = filterMinPos;
+	exports.getTreeNodesStates = getTreeNodesStates;
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _TreeNode = __webpack_require__(218);
+	
+	var _TreeNode2 = _interopRequireDefault(_TreeNode);
+	
+	function browser(ua) {
+	  var tem = undefined;
+	  var M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+	  if (/trident/i.test(M[1])) {
+	    tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+	    return 'IE ' + (tem[1] || '');
+	  }
+	  if (M[1] === 'Chrome') {
+	    tem = ua.match(/\b(OPR|Edge)\/(\d+)/);
+	    if (tem) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+	  }
+	  M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
+	  tem = ua.match(/version\/(\d+)/i);
+	  if (tem) {
+	    M.splice(1, 1, tem[1]);
+	  }
+	  return M.join(' ');
+	}
+	
+	// export function getOffset(el) {
+	//   const obj = el.getBoundingClientRect();
+	//   return {
+	//     left: obj.left + document.body.scrollLeft,
+	//     top: obj.top + document.body.scrollTop,
+	//     width: obj.width,
+	//     height: obj.height
+	//   };
+	// }
+	
+	// // iscroll offset
+	// offset = function (el) {
+	//   var left = -el.offsetLeft,
+	//     top = -el.offsetTop;
+	
+	//   // jshint -W084
+	//   while (el = el.offsetParent) {
+	//     left -= el.offsetLeft;
+	//     top -= el.offsetTop;
+	//   }
+	//   // jshint +W084
+	
+	//   return {
+	//     left: left,
+	//     top: top
+	//   };
+	// }
+	
+	function getOffset(ele) {
+	  var el = ele;
+	  var _x = 0;
+	  var _y = 0;
+	  while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+	    _x += el.offsetLeft - el.scrollLeft;
+	    _y += el.offsetTop - el.scrollTop;
+	    el = el.offsetParent;
+	  }
+	  return { top: _y, left: _x };
+	}
+	
+	function getChildrenlength(children) {
+	  var len = 1;
+	  if (Array.isArray(children)) {
+	    len = children.length;
+	  }
+	  return len;
+	}
+	
+	function getSiblingPos(index, len, siblingPos) {
+	  if (len === 1) {
+	    siblingPos.first = true;
+	    siblingPos.last = true;
+	  } else {
+	    siblingPos.first = index === 0;
+	    siblingPos.last = index === len - 1;
+	  }
+	  return siblingPos;
+	}
+	
+	function loopAllChildren(childs, callback) {
+	  var loop = function loop(children, level) {
+	    var len = getChildrenlength(children);
+	    _react2['default'].Children.forEach(children, function (item, index) {
+	      var pos = level + '-' + index;
+	      if (item.props.children && item.type === _TreeNode2['default']) {
+	        loop(item.props.children, pos);
+	      }
+	      callback(item, index, pos, item.key || pos, getSiblingPos(index, len, {}));
+	    });
+	  };
+	  loop(childs, 0);
+	}
+	
+	function filterMinPos(arr) {
+	  var a = [];
+	  arr.forEach(function (item) {
+	    var b = a.filter(function (i) {
+	      return item.indexOf(i) === 0 && (item[i.length] === '-' || !item[i.length]);
+	    });
+	    if (!b.length) {
+	      a.push(item);
+	    }
+	  });
+	  return a;
+	}
+	
+	// console.log(filterMinPos(['0-0','0-1', '0-10', '0-0-1', '0-1-1', '0-10-0']));
+	
+	// stripTail('x-xx-sss-xx')
+	var stripTail = function stripTail(str) {
+	  var arr = str.match(/(.+)(-[^-]+)$/);
+	  var st = '';
+	  if (arr && arr.length === 3) {
+	    st = arr[1];
+	  }
+	  return st;
+	};
+	var splitPos = function splitPos(pos) {
+	  return pos.split('-');
+	};
+	
+	function handleCheckState(obj, checkedPosArr, checkIt) {
+	  checkedPosArr.forEach(function (_pos) {
+	    // 设置子节点，全选或全不选
+	    Object.keys(obj).forEach(function (i) {
+	      if (splitPos(i).length > splitPos(_pos).length && i.indexOf(_pos) === 0) {
+	        obj[i].checkPart = false;
+	        obj[i].checked = checkIt;
+	      }
+	    });
+	    // 循环设置父节点的 选中 或 半选状态
+	    var loop = function loop(__pos) {
+	      var _posLen = splitPos(__pos).length;
+	      if (_posLen <= 2) {
+	        // e.g. '0-0', '0-1'
+	        return;
+	      }
+	      var sibling = 0;
+	      var siblingChecked = 0;
+	      var parentPos = stripTail(__pos);
+	      Object.keys(obj).forEach(function (i) {
+	        if (splitPos(i).length === _posLen && i.indexOf(parentPos) === 0) {
+	          sibling++;
+	          if (obj[i].checked) {
+	            siblingChecked++;
+	          } else if (obj[i].checkPart) {
+	            siblingChecked += 0.5;
+	          }
+	        }
+	      });
+	      var parent = obj[parentPos];
+	      // sibling 不会等于0
+	      // 全不选 - 全选 - 半选
+	      if (siblingChecked === 0) {
+	        parent.checked = false;
+	        parent.checkPart = false;
+	      } else if (siblingChecked === sibling) {
+	        parent.checked = true;
+	        parent.checkPart = false;
+	      } else {
+	        parent.checkPart = true;
+	        parent.checked = false;
+	      }
+	      loop(parentPos);
+	    };
+	    loop(_pos);
+	  });
+	}
+	
+	function getCheckKeys(treeNodesStates) {
+	  var checkPartKeys = [];
+	  var checkedKeys = [];
+	  var checkedNodes = [];
+	  var checkedNodesKeys = [];
+	  Object.keys(treeNodesStates).forEach(function (item) {
+	    var itemObj = treeNodesStates[item];
+	    if (itemObj.checked) {
+	      checkedKeys.push(itemObj.key);
+	      checkedNodes.push(itemObj.node);
+	      checkedNodesKeys.push({ key: itemObj.key, node: itemObj.node, pos: item });
+	    } else if (itemObj.checkPart) {
+	      checkPartKeys.push(itemObj.key);
+	    }
+	  });
+	  return {
+	    checkPartKeys: checkPartKeys, checkedKeys: checkedKeys, checkedNodes: checkedNodes, checkedNodesKeys: checkedNodesKeys, treeNodesStates: treeNodesStates
+	  };
+	}
+	
+	function getTreeNodesStates(children, checkedKeys, checkIt, unCheckKey) {
+	  var checkedPos = [];
+	  var treeNodesStates = {};
+	  loopAllChildren(children, function (item, index, pos, newKey, siblingPos) {
+	    var checked = false;
+	    if (checkedKeys.indexOf(newKey) !== -1) {
+	      checked = true;
+	      checkedPos.push(pos);
+	    }
+	    treeNodesStates[pos] = {
+	      node: item,
+	      key: newKey,
+	      checked: checked,
+	      checkPart: false,
+	      siblingPos: siblingPos
+	    };
+	  });
+	  // debugger
+	  handleCheckState(treeNodesStates, filterMinPos(checkedPos.sort()), true);
+	
+	  if (!checkIt && unCheckKey) {
+	    var pos = undefined;
+	    Object.keys(treeNodesStates).forEach(function (item) {
+	      var itemObj = treeNodesStates[item];
+	      if (itemObj.key === unCheckKey) {
+	        pos = item;
+	        itemObj.checked = checkIt;
+	        itemObj.checkPart = false;
+	      }
+	    });
+	    handleCheckState(treeNodesStates, [pos], checkIt);
+	  }
+	
+	  return getCheckKeys(treeNodesStates);
+	}
+
+/***/ },
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26357,7 +26618,7 @@
 	
 	var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 	
-	var _util = __webpack_require__(218);
+	var _util = __webpack_require__(217);
 	
 	var browserUa = (0, _util.browser)(window.navigator.userAgent || '');
 	var ieOrEdge = /.*(IE|Edge).+/.test(browserUa);
@@ -26466,9 +26727,7 @@
 	      if (callbackPromise && typeof callbackPromise === 'object') {
 	        (function () {
 	          var setLoading = function setLoading(dataLoading) {
-	            _this2.setState({
-	              dataLoading: dataLoading
-	            });
+	            _this2.setState({ dataLoading: dataLoading });
 	          };
 	          setLoading(true);
 	          callbackPromise.then(function () {
@@ -26487,26 +26746,6 @@
 	      e.preventDefault();
 	    }
 	  }, {
-	    key: 'getPosition',
-	    value: function getPosition(pos) {
-	      var obj = {
-	        last: false,
-	        center: false
-	      };
-	      var siblings = Object.keys(this.props.root.treeNodesStates).filter(function (item) {
-	        var len = pos.length;
-	        return len === item.length && pos.substring(0, len - 2) === item.substring(0, len - 2);
-	      });
-	      var sLen = siblings.length;
-	      var posIndex = Number(pos.substr(-1, 1));
-	      if (sLen === 1 || posIndex === sLen - 1) {
-	        obj.last = true;
-	      } else {
-	        obj.center = true;
-	      }
-	      return obj;
-	    }
-	  }, {
 	    key: 'renderSwitcher',
 	    value: function renderSwitcher(props, expandedState) {
 	      var prefixCls = props.prefixCls;
@@ -26516,15 +26755,13 @@
 	        return _react2['default'].createElement('span', { className: (0, _classnames2['default'])(switcherCls) });
 	      }
 	
-	      var posObj = this.getPosition(props.pos);
-	
 	      if (!props.showLine) {
 	        switcherCls[prefixCls + '-noline_' + expandedState] = true;
 	      } else if (props.pos === '0-0') {
 	        switcherCls[prefixCls + '-roots_' + expandedState] = true;
 	      } else {
-	        switcherCls[prefixCls + '-center_' + expandedState] = posObj.center;
-	        switcherCls[prefixCls + '-bottom_' + expandedState] = posObj.last;
+	        switcherCls[prefixCls + '-center_' + expandedState] = !props.last;
+	        switcherCls[prefixCls + '-bottom_' + expandedState] = props.last;
 	      }
 	      return _react2['default'].createElement('span', { className: (0, _classnames2['default'])(switcherCls), onClick: this.onExpand });
 	    }
@@ -26567,17 +26804,15 @@
 	      }
 	      var children = props.children;
 	      var newChildren = children;
-	      if (!children) {
-	        return children;
-	      }
-	      if (children.type === TreeNode || Array.isArray(children) && children.every(function (item) {
+	      var allTreeNode = Array.isArray(children) && children.every(function (item) {
 	        return item.type === TreeNode;
-	      })) {
+	      });
+	      if (children && (children.type === TreeNode || allTreeNode)) {
 	        var _cls;
 	
 	        var cls = (_cls = {}, _defineProperty(_cls, props.prefixCls + '-child-tree', true), _defineProperty(_cls, props.prefixCls + '-child-tree-open', props.expanded), _cls);
 	        if (props.showLine) {
-	          cls[props.prefixCls + '-line'] = this.getPosition(props.pos).center;
+	          cls[props.prefixCls + '-line'] = !props.last;
 	        }
 	        var animProps = {};
 	        if (props.openTransitionName) {
@@ -26643,9 +26878,10 @@
 	          domProps.onClick = function (e) {
 	            e.preventDefault();
 	            _this3.onSelect();
-	            if (props.checkable) {
-	              _this3.onCheck();
-	            }
+	            // not fire check event
+	            // if (props.checkable) {
+	            //   this.onCheck();
+	            // }
 	          };
 	          if (props.onRightClick) {
 	            domProps.onContextMenu = _this3.onContextMenu;
@@ -26696,10 +26932,23 @@
 	
 	      var filterCls = props.filterTreeNode(this) ? 'filter-node' : '';
 	
+	      var noopSwitcher = function noopSwitcher() {
+	        var _cls2;
+	
+	        var cls = (_cls2 = {}, _defineProperty(_cls2, prefixCls + '-switcher', true), _defineProperty(_cls2, prefixCls + '-switcher-noop', true), _cls2);
+	        if (props.showLine) {
+	          cls[prefixCls + '-center_docu'] = !props.last;
+	          cls[prefixCls + '-bottom_docu'] = props.last;
+	        } else {
+	          cls[prefixCls + '-noline_docu'] = true;
+	        }
+	        return _react2['default'].createElement('span', { className: (0, _classnames2['default'])(cls) });
+	      };
+	
 	      return _react2['default'].createElement(
 	        'li',
 	        _extends({}, liProps, { ref: 'li', className: (0, _classnames2['default'])(props.className, disabledCls, dragOverCls, filterCls) }),
-	        canRenderSwitcher ? this.renderSwitcher(props, expandedState) : _react2['default'].createElement('span', { className: prefixCls + '-switcher-noop' }),
+	        canRenderSwitcher ? this.renderSwitcher(props, expandedState) : noopSwitcher(),
 	        props.checkable ? this.renderCheckbox(props) : null,
 	        selectHandle(),
 	        newChildren
@@ -26723,77 +26972,6 @@
 	
 	exports['default'] = TreeNode;
 	module.exports = exports['default'];
-
-/***/ },
-/* 218 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	exports.browser = browser;
-	exports.getOffset = getOffset;
-	
-	function browser(ua) {
-	  var tem = undefined;
-	  var M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
-	  if (/trident/i.test(M[1])) {
-	    tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
-	    return 'IE ' + (tem[1] || '');
-	  }
-	  if (M[1] === 'Chrome') {
-	    tem = ua.match(/\b(OPR|Edge)\/(\d+)/);
-	    if (tem) return tem.slice(1).join(' ').replace('OPR', 'Opera');
-	  }
-	  M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
-	  tem = ua.match(/version\/(\d+)/i);
-	  if (tem) {
-	    M.splice(1, 1, tem[1]);
-	  }
-	  return M.join(' ');
-	}
-	
-	// export function getOffset(el) {
-	//   const obj = el.getBoundingClientRect();
-	//   return {
-	//     left: obj.left + document.body.scrollLeft,
-	//     top: obj.top + document.body.scrollTop,
-	//     width: obj.width,
-	//     height: obj.height
-	//   };
-	// }
-	
-	// // iscroll offset
-	// offset = function (el) {
-	//   var left = -el.offsetLeft,
-	//     top = -el.offsetTop;
-	
-	//   // jshint -W084
-	//   while (el = el.offsetParent) {
-	//     left -= el.offsetLeft;
-	//     top -= el.offsetTop;
-	//   }
-	//   // jshint +W084
-	
-	//   return {
-	//     left: left,
-	//     top: top
-	//   };
-	// }
-	
-	function getOffset(ele) {
-	  var el = ele;
-	  var _x = 0;
-	  var _y = 0;
-	  while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
-	    _x += el.offsetLeft - el.scrollLeft;
-	    _y += el.offsetTop - el.scrollTop;
-	    el = el.offsetParent;
-	  }
-	  return { top: _y, left: _x };
-	}
 
 /***/ },
 /* 219 */

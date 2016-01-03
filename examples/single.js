@@ -39,7 +39,7 @@ webpackJsonp([2],{
 	      value: 'leaf1'
 	    };
 	  },
-	  onChange: function onChange(e) {
+	  onChange: function onChange(e, label) {
 	    var value = undefined;
 	    if (e.target) {
 	      value = e.target.value;

@@ -19,6 +19,8 @@ webpackJsonp([1],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+	
 	__webpack_require__(2);
 	
 	__webpack_require__(221);
@@ -45,19 +47,64 @@ webpackJsonp([1],{
 	      value: ['0-0']
 	    };
 	  },
-	  onSelect: function onSelect(selectedKey, node, selectedKeys) {
-	    console.log('selected: ', selectedKey, selectedKeys);
+	  onSelect: function onSelect(selectedValue, info) {
+	    console.log('onSelect: ', selectedValue, info);
+	    var newVal = [].concat(_toConsumableArray(this.state.value));
+	
+	    function setNewVal(i) {
+	      var index = i;
+	      if (index > -1) {
+	        index = newVal.indexOf(info.node.props.value);
+	        if (index > -1) {
+	          newVal.splice(index, 1);
+	        }
+	      } else if (index === -1) {
+	        newVal.push(info.node.props.value);
+	      }
+	    }
+	
+	    function getNode(arr, val) {
+	      var node = undefined;
+	      return arr.some(function (item) {
+	        if (item.key === val) {
+	          node = item.node;
+	          return true;
+	        }
+	      }) && node;
+	    }
+	
+	    if (info.event === 'select') {
+	      setNewVal(info.selectedKeys.indexOf(info.node.props.eventKey));
+	    } else if (info.event === 'check') {
+	      newVal = [];
+	      info.filterAllCheckedKeys.forEach(function (item) {
+	        var node = getNode(info.allCheckedNodesKeys, item);
+	        if (node) {
+	          newVal.push(node.props.value);
+	        } else if (info.node.props.eventKey === item) {
+	          newVal.push(info.node.props.value);
+	        }
+	      });
+	    }
 	    this.setState({
-	      value: selectedKeys
+	      value: newVal
 	    });
 	  },
-	  onChange: function onChange(value) {
-	    console.log('selected ' + value);
-	    this.setState({
-	      value: value
-	    });
+	  onChange: function onChange(value, label) {
+	    console.log('onChange ', value, label);
+	    // this.setState({
+	    //   value: value,
+	    // });
 	  },
 	  render: function render() {
+	    var tProps = {
+	      value: this.state.value,
+	      onChange: this.onChange,
+	      onSelect: this.onSelect,
+	      multiple: true,
+	      treeCheckable: true,
+	      treeDefaultExpandAll: true
+	    };
 	    var loop = function loop(data) {
 	      return data.map(function (item) {
 	        if (item.children) {
@@ -69,15 +116,6 @@ webpackJsonp([1],{
 	        }
 	        return _react2['default'].createElement(_rcTreeSelect.TreeNode, { key: item.key, value: item.key, title: item.key });
 	      });
-	    };
-	    var tProps = {
-	      // defaultValue: this.state.value,
-	      value: this.state.value,
-	      onChange: this.onChange,
-	      onSelect: this.onSelect,
-	      multiple: true,
-	      // treeCheckable: true,
-	      treeDefaultExpandAll: true
 	    };
 	    return _react2['default'].createElement(
 	      'div',
