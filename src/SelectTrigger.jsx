@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import assign from 'object-assign';
 import Trigger from 'rc-trigger';
 import Tree, { TreeNode } from 'rc-tree';
-import { filterMin } from './util';
+import { filterMinPos, loopAllChildren } from './util';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -88,34 +88,21 @@ const SelectTrigger = React.createClass({
     this.popupMenu = menu;
   },
 
-  loopAllChildren(childs, callback) {
-    const loop = (children, level) => {
-      React.Children.forEach(children, (item, index) => {
-        const pos = `${level}-${index}`;
-        if (item.props.children) {
-          loop(item.props.children, pos);
-        }
-        callback(item, index, pos);
-      });
-    };
-    loop(childs, 0);
-  },
-
   renderFilterOptionsFromChildren(children) {
     let posArr = [];
     const filterPos = [];
     const props = this.props;
     const inputValue = props.inputValue;
 
-    this.loopAllChildren(children, (child, index, pos) => {
+    loopAllChildren(children, (child, index, pos) => {
       if (this.filterTreeNode(inputValue, child)) {
         posArr.push(pos);
       }
     });
-    posArr = filterMin(posArr);
+    posArr = filterMinPos(posArr);
 
     const filterChildren = {};
-    this.loopAllChildren(children, (child, index, pos) => {
+    loopAllChildren(children, (child, index, pos) => {
       posArr.forEach(item => {
         if (item.indexOf(pos) === 0 && filterPos.indexOf(pos) === -1) {
           filterPos.push(pos);
@@ -197,21 +184,22 @@ const SelectTrigger = React.createClass({
       showLine: props.treeLine,
       defaultExpandAll: props.treeDefaultExpandAll,
       checkable: props.treeCheckable,
-      onSelect: props.onSelect,
-      onCheck: (info) => { props.onSelect(info, 'check'); },
       filterTreeNode: this.filterTree,
     };
     const vals = props.value || props.defaultValue;
     const keys = [];
-    this.loopAllChildren(props.treeNodes, (child, index, pos) => {
+    loopAllChildren(props.treeNodes, (child, index, pos) => {
       if (vals.indexOf(child.props.value) > -1) {
         keys.push(child.key);
       }
     });
+    // 为避免混乱，checkable 模式下，select 失效
     if (trProps.checkable) {
       trProps.checkedKeys = keys;
+      trProps.onCheck = props.onSelect;
     } else {
       trProps.selectedKeys = keys;
+      trProps.onSelect = props.onSelect;
     }
 
     // async loadData

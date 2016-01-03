@@ -101,7 +101,7 @@ see examples
 |treeIcon | show tree icon | bool | false |
 |treeLine | show tree line | bool | false |
 |treeDefaultExpandAll | default expand all treeNode | bool | false |
-|treeCheckable | whether tree show checkbox | bool | false |
+|treeCheckable | whether tree show checkbox (select callback will not fire) | bool | false |
 |filterTreeNode | filter some treeNodes as you need. it should return true | function(treeNode) | - |
 |treeNodeFilterProp | which prop value of treeNode will be used for filter if filterTreeNode return true | String | 'value' |
 |treeNodeLabelProp | which prop value of treeNode will render as content of select | String | 'value' |

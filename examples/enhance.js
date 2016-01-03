@@ -13,19 +13,64 @@ const Demo = React.createClass({
       value: ['0-0'],
     };
   },
-  onSelect(selectedKey, node, selectedKeys) {
-    console.log('onSelect: ', selectedKey, selectedKeys);
+  onSelect(selectedValue, info) {
+    console.log('onSelect: ', selectedValue, info);
+    let newVal = [...this.state.value];
+
+    function setNewVal(i) {
+      let index = i;
+      if (index > -1) {
+        index = newVal.indexOf(info.node.props.value);
+        if (index > -1) {
+          newVal.splice(index, 1);
+        }
+      } else if (index === -1) {
+        newVal.push(info.node.props.value);
+      }
+    }
+
+    function getNode(arr, val) {
+      let node;
+      return arr.some(item => {
+        if (item.key === val) {
+          node = item.node;
+          return true;
+        }
+      }) && node;
+    }
+
+    if (info.event === 'select') {
+      setNewVal(info.selectedKeys.indexOf(info.node.props.eventKey));
+    } else if (info.event === 'check') {
+      newVal = [];
+      info.filterAllCheckedKeys.forEach((item) => {
+        const node = getNode(info.allCheckedNodesKeys, item);
+        if (node) {
+          newVal.push(node.props.value);
+        } else if (info.node.props.eventKey === item) {
+          newVal.push(info.node.props.value);
+        }
+      });
+    }
     this.setState({
-      value: selectedKeys,
+      value: newVal,
     });
   },
   onChange(value, label) {
     console.log('onChange ', value, label);
-    this.setState({
-      value: value,
-    });
+    // this.setState({
+    //   value: value,
+    // });
   },
   render() {
+    const tProps = {
+      value: this.state.value,
+      onChange: this.onChange,
+      onSelect: this.onSelect,
+      multiple: true,
+      treeCheckable: true,
+      treeDefaultExpandAll: true,
+    };
     const loop = data => {
       return data.map((item) => {
         if (item.children) {
@@ -33,15 +78,6 @@ const Demo = React.createClass({
         }
         return <TreeNode key={item.key} value={item.key} title={item.key} />;
       });
-    };
-    const tProps = {
-      // defaultValue: this.state.value,
-      value: this.state.value,
-      onChange: this.onChange,
-      onSelect: this.onSelect,
-      multiple: true,
-      treeCheckable: true,
-      treeDefaultExpandAll: true,
     };
     return (<div style={{padding: '10px 30px'}}>
       <h3>more</h3>

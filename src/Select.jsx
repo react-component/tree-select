@@ -6,7 +6,7 @@ import Animate from 'rc-animate';
 import {
   getPropValue, getValuePropValue, isCombobox,
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
-  isSingleMode, toArray,
+  isSingleMode, toArray, getCheckedKeys, getTreeNodesStates,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 
@@ -88,6 +88,9 @@ const Select = React.createClass({
     } else {
       value = toArray(props.defaultValue);
     }
+    if (this.props.treeCheckable) {
+      value = getTreeNodesStates(this.props.children, value).checkedKeys;
+    }
     const label = this.getLabelFromProps(props, value, 1);
     let inputValue = '';
     if (props.combobox) {
@@ -99,7 +102,10 @@ const Select = React.createClass({
 
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
-      const value = toArray(nextProps.value);
+      let value = toArray(nextProps.value);
+      if (nextProps.treeCheckable) {
+        value = getTreeNodesStates(nextProps.children, value).checkedKeys;
+      }
       const label = this.getLabelFromProps(nextProps, value);
       this.setState({
         value,
@@ -207,7 +213,8 @@ const Select = React.createClass({
     }
   },
 
-  onSelect(info, check) {
+  onSelect(info) {
+    const check = info.event === 'check';
     if (!check && !info.selected) {
       this.onDeselect(info);
       // return;
@@ -218,19 +225,19 @@ const Select = React.createClass({
     const props = this.props;
     const selectedValue = getValuePropValue(item);
     const selectedLabel = this.getLabelFromOption(item);
+
     if (check) {
-      props.onSelect(selectedValue, item, info.checkedKeys);
-    } else {
-      props.onSelect(selectedValue, item, info.selectedKeys);
+      info.filterAllCheckedKeys = getCheckedKeys(info.node, info.checkedKeys, info.allCheckedNodesKeys);
     }
+    props.onSelect(selectedValue, info);
 
     if (isMultipleOrTags(props)) {
       if (!check && value.indexOf(selectedValue) !== -1) {
         return;
       }
       value = !check ? value.concat([selectedValue]) : [...info.checkedKeys];
-      label = !check ? label.concat([selectedLabel]) : info.allCheckedNodes.map(item => {
-        return this.getLabelFromOption(item);
+      label = !check ? label.concat([selectedLabel]) : info.allCheckedNodesKeys.map(item => {
+        return this.getLabelFromOption(item.node);
       });
     } else {
       if (value[0] === selectedValue) {
@@ -295,7 +302,7 @@ const Select = React.createClass({
     //   }
     // });
     const loop = (children, level) => {
-      React.Children.forEach(children, (item, index) => {
+      React.Children.forEach(children, (item) => {
         if (item.props.children) {
           loop(item.props.children);
         }
