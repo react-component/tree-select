@@ -70,13 +70,14 @@ const Demo = React.createClass({
       multiple: true,
       treeCheckable: true,
       treeDefaultExpandAll: true,
+      // treeNodeLabelProp: 'title',
     };
     const loop = data => {
       return data.map((item) => {
         if (item.children) {
-          return <TreeNode key={item.key} value={item.key} title={item.key}>{loop(item.children)}</TreeNode>;
+          return <TreeNode key={item.key} value={item.key} title={item.key + ' label'}>{loop(item.children)}</TreeNode>;
         }
-        return <TreeNode key={item.key} value={item.key} title={item.key} />;
+        return <TreeNode key={item.key} value={item.key} title={item.key + ' label'} />;
       });
     };
     return (<div style={{padding: '10px 30px'}}>

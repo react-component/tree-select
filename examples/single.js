@@ -12,6 +12,7 @@ const Demo = React.createClass({
     };
   },
   onChange(e, label) {
+    console.log(e, label);
     let value;
     if (e.target) {
       value = e.target.value;

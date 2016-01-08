@@ -76,7 +76,7 @@ const Select = React.createClass({
       treeDefaultExpandAll: false,
       treeCheckable: false,
       treeNodeFilterProp: 'value',
-      treeNodeLabelProp: 'value',
+      treeNodeLabelProp: 'title',
     };
   },
 
