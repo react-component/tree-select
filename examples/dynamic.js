@@ -111,11 +111,11 @@ webpackJsonp([0],[
 	        if (item.children) {
 	          return _react2['default'].createElement(
 	            _rcTreeSelect.TreeNode,
-	            { title: item.name, value: item.name, key: item.key },
+	            { title: item.name + ' label', value: item.name, key: item.key },
 	            loop(item.children)
 	          );
 	        }
-	        return _react2['default'].createElement(_rcTreeSelect.TreeNode, { title: item.name, value: item.name, key: item.key, isLeaf: item.isLeaf });
+	        return _react2['default'].createElement(_rcTreeSelect.TreeNode, { title: item.name + ' label', value: item.name, key: item.key, isLeaf: item.isLeaf });
 	      });
 	    };
 	    var treeNodes = loop(this.state.treeData);

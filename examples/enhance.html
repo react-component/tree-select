@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>enhance.js - example - rc-tree-select@0.3.4</title>
+  <title>enhance.js - example - rc-tree-select@0.3.5</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-tree-select@0.3.4</h1>
+    <h1>rc-tree-select@0.3.5</h1>
 
     <p>tree-select ui component for react</p>
   </div>
@@ -336,13 +336,14 @@ import { gData } from <span class="hljs-string">'./util'</span>;
       multiple: <span class="hljs-literal">true</span>,
       treeCheckable: <span class="hljs-literal">true</span>,
       treeDefaultExpandAll: <span class="hljs-literal">true</span>,
+      <span class="hljs-comment">// treeNodeLabelProp: 'title',</span>
     };
     <span class="hljs-keyword">const</span> loop = data =&gt; {
       <span class="hljs-keyword">return</span> data.map((item) =&gt; {
         <span class="hljs-keyword">if</span> (item.children) {
-          <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">{item.key}</span>&gt;</span>{loop(item.children)}<span class="hljs-tag">&lt;/<span class="hljs-title">TreeNode</span>&gt;</span>;</span>
+          <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">{item.key</span> + ' <span class="hljs-attribute">label</span>'}&gt;</span>{loop(item.children)}<span class="hljs-tag">&lt;/<span class="hljs-title">TreeNode</span>&gt;</span>;</span>
         }
-        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">{item.key}</span> /&gt;</span>;</span>
+        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">{item.key</span> + ' <span class="hljs-attribute">label</span>'} /&gt;</span>;</span>
       });
     };
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{padding:</span> '<span class="hljs-attribute">10px</span> <span class="hljs-attribute">30px</span>'}}&gt;</span>

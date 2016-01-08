@@ -40,6 +40,7 @@ webpackJsonp([2],{
 	    };
 	  },
 	  onChange: function onChange(e, label) {
+	    console.log(e, label);
 	    var value = undefined;
 	    if (e.target) {
 	      value = e.target.value;

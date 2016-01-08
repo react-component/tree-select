@@ -105,16 +105,17 @@ webpackJsonp([1],{
 	      treeCheckable: true,
 	      treeDefaultExpandAll: true
 	    };
+	    // treeNodeLabelProp: 'title',
 	    var loop = function loop(data) {
 	      return data.map(function (item) {
 	        if (item.children) {
 	          return _react2['default'].createElement(
 	            _rcTreeSelect.TreeNode,
-	            { key: item.key, value: item.key, title: item.key },
+	            { key: item.key, value: item.key, title: item.key + ' label' },
 	            loop(item.children)
 	          );
 	        }
-	        return _react2['default'].createElement(_rcTreeSelect.TreeNode, { key: item.key, value: item.key, title: item.key });
+	        return _react2['default'].createElement(_rcTreeSelect.TreeNode, { key: item.key, value: item.key, title: item.key + ' label' });
 	      });
 	    };
 	    return _react2['default'].createElement(
