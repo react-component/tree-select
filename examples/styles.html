@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>zz-rc-tree-rc-select.js - example - rc-tree-select@0.3.5</title>
+  <title>styles.js - example - rc-tree-select@0.3.5</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,71 +263,19 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   </div>
   <div class="example" id="__react-content"></div>
   <script src="common.js?nowrap"></script>
-  <script src="zz-rc-tree-rc-select.js?nowrap"></script>
-  <div class="highlight"><pre><code language="js"><span class="hljs-comment">// use jsx to render html, do not modify simple.html</span>
-import <span class="hljs-string">'rc-select/assets/index.css'</span>;
-import <span class="hljs-string">'rc-tree/assets/index.css'</span>;
+  <script src="styles.js?nowrap"></script>
+  <div class="highlight"><pre><code language="js">export <span class="hljs-keyword">const</span> regionStyle = {
+  border: <span class="hljs-string">'1px solid red'</span>,
+  marginTop: <span class="hljs-number">10</span>,
+  padding: <span class="hljs-number">10</span>,
+};
 
-import React from <span class="hljs-string">'react'</span>;
-import ReactDOM from <span class="hljs-string">'react-dom'</span>;
-import Select, {Option} from <span class="hljs-string">'rc-select'</span>;
-import Tree, {TreeNode} from <span class="hljs-string">'rc-tree'</span>;
-import { gData } from <span class="hljs-string">'./util'</span>;
-
-<span class="hljs-keyword">const</span> Demo = React.createClass({
-  getInitialState() {
-    <span class="hljs-keyword">return</span> {
-      data: [],
-    };
-  },
-  componentDidMount() {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>.refs);
-    <span class="hljs-comment">// this.setState({</span>
-    <span class="hljs-comment">//   data: [1],</span>
-    <span class="hljs-comment">// });</span>
-  },
-  onChange(value) {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'change'</span>, value);
-  },
-  onSelect(value) {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'select '</span>, value);
-  },
-  handleSelect(info) {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'selected: '</span>, info);
-  },
-  render() {
-    <span class="hljs-keyword">const</span> loop = data =&gt; {
-      <span class="hljs-keyword">return</span> data.map((item) =&gt; {
-        <span class="hljs-keyword">if</span> (item.children) {
-          <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">{item.key}</span>&gt;</span>{loop(item.children)}<span class="hljs-tag">&lt;/<span class="hljs-title">TreeNode</span>&gt;</span>;</span>
-        }
-        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">{item.key}</span> /&gt;</span>;</span>
-      });
-    };
-    <span class="hljs-keyword">const</span> option = (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{Date.now()</span> + '<span class="hljs-attribute">1</span>'}&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">Tree</span> <span class="hljs-attribute">defaultExpandAll</span>=<span class="hljs-value">{false}</span>
-            <span class="hljs-attribute">onSelect</span>=<span class="hljs-value">{this.handleSelect}</span> <span class="hljs-attribute">multiple</span>&gt;</span>
-        {loop(gData)}
-      <span class="hljs-tag">&lt;/<span class="hljs-title">Tree</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>);
-    return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{color:</span> '<span class="hljs-attribute">red</span>'}}&gt;</span> not work!<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
-        <span class="hljs-attribute">ref</span>=<span class="hljs-value">"select"</span>
-        <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">200</span>}}
-        <span class="hljs-attribute">combobox</span>
-        <span class="hljs-attribute">showSearch</span>=<span class="hljs-value">{false}</span>
-        <span class="hljs-attribute">defaultActiveFirstOption</span>=<span class="hljs-value">{false}</span>
-        <span class="hljs-attribute">notFoundContent</span>=<span class="hljs-value">""</span>
-        <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span> <span class="hljs-attribute">onSelect</span>=<span class="hljs-value">{this.onSelect}</span>&gt;</span>
-        {this.state.data.length ? option : null}
-      <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
-  },
-});
-
-ReactDOM.render(<span class="hljs-tag">&lt;<span class="hljs-title">Demo</span> /&gt;</span>, document.getElementById('__react-content'));
-</span></code></pre></div>
+export <span class="hljs-keyword">const</span> errorStyle = {
+  color: <span class="hljs-string">'red'</span>,
+  marginTop: <span class="hljs-number">10</span>,
+  padding: <span class="hljs-number">10</span>,
+};
+</code></pre></div>
 </div>
 <a href="https://github.com/react-component/tree-select">
   <img style="position: absolute; top: 0; right: 0; border: 0;"

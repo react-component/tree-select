@@ -60,8 +60,9 @@ webpackJsonp([2],{
 	      ),
 	      _react2['default'].createElement(
 	        _rcTreeSelect2['default'],
-	        { style: { width: 300 }, dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
-	          value: this.state.value, optionLabelProp: 'title',
+	        { style: { width: 300 },
+	          dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
+	          value: this.state.value, treeNodeLabelProp: 'title',
 	          treeDefaultExpandAll: true,
 	          onChange: this.onChange },
 	        _react2['default'].createElement(

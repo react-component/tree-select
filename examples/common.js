@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		3:0
+/******/ 		4:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"dynamic","1":"enhance","2":"single"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"dynamic","1":"enhance","2":"single","3":"validity"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -19787,6 +19787,7 @@
 	  displayName: 'Select',
 	
 	  propTypes: {
+	    children: _react.PropTypes.any,
 	    multiple: _react.PropTypes.bool,
 	    filterTreeNode: _react.PropTypes.any,
 	    showSearch: _react.PropTypes.bool,
@@ -19942,7 +19943,7 @@
 	      var value = state.value.concat();
 	      if (value.length) {
 	        var label = state.label.concat();
-	        var popValue = value.pop();
+	        value.pop();
 	        label.pop();
 	        this.fireChange(value, label);
 	      }
@@ -19999,8 +20000,8 @@
 	        return;
 	      }
 	      value = !check ? value.concat([selectedValue]) : [].concat(_toConsumableArray(info.checkedKeys));
-	      label = !check ? label.concat([selectedLabel]) : info.allCheckedNodesKeys.map(function (item) {
-	        return _this.getLabelFromOption(item.node);
+	      label = !check ? label.concat([selectedLabel]) : info.allCheckedNodesKeys.map(function (i) {
+	        return _this.getLabelFromOption(i.node);
 	      });
 	    } else {
 	      if (value[0] === selectedValue) {
@@ -20066,8 +20067,8 @@
 	    //     label = this.getLabelFromOption(child);
 	    //   }
 	    // });
-	    var loop = function loop(children, level) {
-	      _react2['default'].Children.forEach(children, function (item) {
+	    var loop = function loop(childs) {
+	      _react2['default'].Children.forEach(childs, function (item) {
 	        if (item.props.children) {
 	          loop(item.props.children);
 	        }
@@ -23610,7 +23611,8 @@
 	  },
 	
 	  filterTree: function filterTree(treeNode) {
-	    return this.props.inputValue && treeNode.props[this.props.treeNodeFilterProp].indexOf(this.props.inputValue) > -1;
+	    var props = this.props;
+	    return props.inputValue && treeNode.props[props.treeNodeFilterProp].indexOf(props.inputValue) > -1;
 	  },
 	
 	  filterTreeNode: function filterTreeNode(input, child) {
@@ -23691,16 +23693,17 @@
 	          node: filterChildren[pos]
 	        };
 	      });
-	      for (var i = 1; i < levelArr.length; i++) {
-	        level[levelArr[i]].forEach(function (cur) {
-	          loop(childrenArr, cur, function (arr, index) {
-	            arr[index].children = arr[index].children || [];
-	            arr[index].children.push({
-	              pos: cur,
-	              node: filterChildren[cur]
-	            });
+	      var loopFn = function loopFn(cur) {
+	        loop(childrenArr, cur, function (arr, index) {
+	          arr[index].children = arr[index].children || [];
+	          arr[index].children.push({
+	            pos: cur,
+	            node: filterChildren[cur]
 	          });
 	        });
+	      };
+	      for (var i = 1; i < levelArr.length; i++) {
+	        level[levelArr[i]].forEach(loopFn);
 	      }
 	    }
 	    // console.log(childrenArr);
@@ -23739,7 +23742,7 @@
 	    };
 	    var vals = props.value || props.defaultValue;
 	    var keys = [];
-	    (0, _util.loopAllChildren)(props.treeNodes, function (child, index, pos) {
+	    (0, _util.loopAllChildren)(props.treeNodes, function (child) {
 	      if (vals.indexOf(child.props.value) > -1) {
 	        keys.push(child.key);
 	      }
