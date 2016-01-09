@@ -67,7 +67,8 @@ const SelectTrigger = React.createClass({
   },
 
   filterTree(treeNode) {
-    return this.props.inputValue && treeNode.props[this.props.treeNodeFilterProp].indexOf(this.props.inputValue) > -1;
+    const props = this.props;
+    return props.inputValue && treeNode.props[props.treeNodeFilterProp].indexOf(props.inputValue) > -1;
   },
 
   filterTreeNode(input, child) {
@@ -144,16 +145,17 @@ const SelectTrigger = React.createClass({
           node: filterChildren[pos],
         };
       });
-      for (let i = 1; i < levelArr.length; i++) {
-        level[levelArr[i]].forEach(cur => {
-          loop(childrenArr, cur, (arr, index) => {
-            arr[index].children = arr[index].children || [];
-            arr[index].children.push({
-              pos: cur,
-              node: filterChildren[cur],
-            });
+      const loopFn = cur => {
+        loop(childrenArr, cur, (arr, index) => {
+          arr[index].children = arr[index].children || [];
+          arr[index].children.push({
+            pos: cur,
+            node: filterChildren[cur],
           });
         });
+      };
+      for (let i = 1; i < levelArr.length; i++) {
+        level[levelArr[i]].forEach(loopFn);
       }
     }
     // console.log(childrenArr);
@@ -188,7 +190,7 @@ const SelectTrigger = React.createClass({
     };
     const vals = props.value || props.defaultValue;
     const keys = [];
-    loopAllChildren(props.treeNodes, (child, index, pos) => {
+    loopAllChildren(props.treeNodes, (child) => {
       if (vals.indexOf(child.props.value) > -1) {
         keys.push(child.key);
       }
@@ -233,9 +235,9 @@ const SelectTrigger = React.createClass({
         visible = false;
       }
     }
-    let popupElement = (<div>
+    const popupElement = (<div>
       {search}
-      {notFoundContent ? notFoundContent : this.renderTree({treeNodes, multiple,})}
+      {notFoundContent ? notFoundContent : this.renderTree({treeNodes, multiple})}
     </div>);
 
     return (<Trigger action={props.disabled ? [] : ['click']}

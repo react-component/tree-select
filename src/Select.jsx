@@ -23,6 +23,7 @@ function saveRef(name, component) {
 
 const Select = React.createClass({
   propTypes: {
+    children: PropTypes.any,
     multiple: PropTypes.bool,
     filterTreeNode: PropTypes.any,
     showSearch: PropTypes.bool,
@@ -181,7 +182,7 @@ const Select = React.createClass({
       const value = state.value.concat();
       if (value.length) {
         const label = state.label.concat();
-        const popValue = value.pop();
+        value.pop();
         label.pop();
         this.fireChange(value, label);
       }
@@ -236,8 +237,8 @@ const Select = React.createClass({
         return;
       }
       value = !check ? value.concat([selectedValue]) : [...info.checkedKeys];
-      label = !check ? label.concat([selectedLabel]) : info.allCheckedNodesKeys.map(item => {
-        return this.getLabelFromOption(item.node);
+      label = !check ? label.concat([selectedLabel]) : info.allCheckedNodesKeys.map(i => {
+        return this.getLabelFromOption(i.node);
       });
     } else {
       if (value[0] === selectedValue) {
@@ -301,8 +302,8 @@ const Select = React.createClass({
     //     label = this.getLabelFromOption(child);
     //   }
     // });
-    const loop = (children, level) => {
-      React.Children.forEach(children, (item) => {
+    const loop = (childs) => {
+      React.Children.forEach(childs, (item) => {
         if (item.props.children) {
           loop(item.props.children);
         }
