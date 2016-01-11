@@ -44,7 +44,7 @@ webpackJsonp([1],{
 	
 	  getInitialState: function getInitialState() {
 	    return {
-	      value: ['0-0']
+	      value: []
 	    };
 	  },
 	  onSelect: function onSelect(selectedValue, info) {

@@ -27011,6 +27011,10 @@
 	})(_react2['default'].Component);
 	
 	exports['default'] = TreeNode;
+	
+	TreeNode.propTypes = {
+	  value: _react2['default'].PropTypes.string
+	};
 	module.exports = exports['default'];
 
 /***/ }
