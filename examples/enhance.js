@@ -10,7 +10,7 @@ import { gData } from './util';
 const Demo = React.createClass({
   getInitialState() {
     return {
-      value: ['0-0'],
+      value: [],
     };
   },
   onSelect(selectedValue, info) {

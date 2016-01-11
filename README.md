@@ -113,7 +113,7 @@ see examples
 |----------|----------------|----------|--------------|
 |disabled | disable treeNode | bool | false |
 |key | the unique key of treeNode, you must setting  | String | - |
-|value | default as treeNodeFilterProp | String | 'value' |
+|value | default as treeNodeFilterProp | String | '' |
 |title | tree/subTree's title | String | '---' |
 |isLeaf | whether it's leaf node | bool | false |
 
