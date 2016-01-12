@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>enhance.js - example - rc-tree-select@0.3.6</title>
+  <title>enhance.js - example - rc-tree-select@0.4.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-tree-select@0.3.6</h1>
+    <h1>rc-tree-select@0.4.0</h1>
 
     <p>tree-select ui component for react</p>
   </div>
@@ -266,14 +266,34 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <script src="enhance.js?nowrap"></script>
   <div class="highlight"><pre><code language="js"><span class="hljs-comment">// use jsx to render html, do not modify simple.html</span>
 
-import <span class="hljs-string">'rc-tree-select/assets/index.css'</span>;
-import <span class="hljs-string">'rc-tree-select/assets/demo.css'</span>;
-import React from <span class="hljs-string">'react'</span>;
-import ReactDOM from <span class="hljs-string">'react-dom'</span>;
-import TreeSelect, { TreeNode } from <span class="hljs-string">'rc-tree-select'</span>;
-import { gData } from <span class="hljs-string">'./util'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-tree-select/assets/index.css'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-tree-select/assets/demo.css'</span>;
+<span class="hljs-keyword">import</span> React, {PropTypes} <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+<span class="hljs-keyword">import</span> TreeSelect, { TreeNode } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-tree-select'</span>;
+<span class="hljs-keyword">import</span> { gData, getFilterValue } <span class="hljs-keyword">from</span> <span class="hljs-string">'./util'</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getNode</span>(<span class="hljs-params">arr, val</span>) </span>{
+  <span class="hljs-keyword">let</span> node;
+  <span class="hljs-keyword">return</span> arr.some(item =&gt; {
+    <span class="hljs-keyword">if</span> (item.key === val) {
+      node = item.node;
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+  }) &amp;&amp; node;
+}
 
 <span class="hljs-keyword">const</span> Demo = React.createClass({
+  propTypes: {
+    multiple: PropTypes.bool,
+    treeCheckable: PropTypes.bool,
+  },
+  getDefaultProps() {
+    <span class="hljs-keyword">return</span> {
+      multiple: <span class="hljs-literal">true</span>,
+      treeCheckable: <span class="hljs-literal">false</span>,
+    };
+  },
   getInitialState() {
     <span class="hljs-keyword">return</span> {
       value: [],
@@ -283,67 +303,84 @@ import { gData } from <span class="hljs-string">'./util'</span>;
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onSelect: '</span>, selectedValue, info);
     <span class="hljs-keyword">let</span> newVal = [...this.state.value];
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setNewVal</span><span class="hljs-params">(i)</span> </span>{
-      <span class="hljs-keyword">let</span> index = i;
-      <span class="hljs-keyword">if</span> (index &gt; -<span class="hljs-number">1</span>) {
-        index = newVal.indexOf(info.node.props.value);
-        <span class="hljs-keyword">if</span> (index &gt; -<span class="hljs-number">1</span>) {
-          newVal.splice(index, <span class="hljs-number">1</span>);
-        }
-      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (index === -<span class="hljs-number">1</span>) {
-        newVal.push(info.node.props.value);
-      }
-    }
-
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getNode</span><span class="hljs-params">(arr, val)</span> </span>{
-      <span class="hljs-keyword">let</span> node;
-      <span class="hljs-keyword">return</span> arr.some(item =&gt; {
-        <span class="hljs-keyword">if</span> (item.key === val) {
-          node = item.node;
-          <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-        }
-      }) &amp;&amp; node;
-    }
-
     <span class="hljs-keyword">if</span> (info.event === <span class="hljs-string">'select'</span>) {
-      setNewVal(info.selectedKeys.indexOf(info.node.props.eventKey));
+      newVal = <span class="hljs-keyword">this</span>.getSelectVal(newVal, info);
+      <span class="hljs-keyword">this</span>.event = <span class="hljs-string">'select'</span>;
     } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (info.event === <span class="hljs-string">'check'</span>) {
-      newVal = [];
-      info.filterAllCheckedKeys.forEach((item) =&gt; {
-        <span class="hljs-keyword">const</span> node = getNode(info.allCheckedNodesKeys, item);
-        <span class="hljs-keyword">if</span> (node) {
-          newVal.push(node.props.value);
-        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (info.node.props.eventKey === item) {
-          newVal.push(info.node.props.value);
-        }
-      });
+      newVal = <span class="hljs-keyword">this</span>.getCheckVal(newVal, info);
     }
     <span class="hljs-keyword">this</span>.setState({
       value: newVal,
     });
   },
-  onChange(value, label) {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange '</span>, value, label);
-    <span class="hljs-comment">// this.setState({</span>
-    <span class="hljs-comment">//   value: value,</span>
-    <span class="hljs-comment">// });</span>
+  onChange(value, label, preStateValue) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange '</span>, value, label, <span class="hljs-keyword">this</span>.state.value, preStateValue);
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.event === <span class="hljs-string">'select'</span>) {
+      <span class="hljs-keyword">this</span>.setState({
+        value,
+      });
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">const</span> val = [...value];
+    <span class="hljs-keyword">const</span> sVal = preStateValue;
+    <span class="hljs-keyword">const</span> delVal = [...sVal];
+    <span class="hljs-keyword">if</span> (!val.every(item =&gt; {
+      <span class="hljs-keyword">if</span> (sVal.indexOf(item) &gt; -<span class="hljs-number">1</span>) {
+        delVal.splice(delVal.indexOf(item), <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+      }
+    })) {
+      <span class="hljs-built_in">console</span>.error(<span class="hljs-string">'受控组件，改变（只允许删除）后的 value 需要是 state.value 的子集'</span>);
+    }
+    <span class="hljs-keyword">this</span>.setState({
+      value: getFilterValue(val, sVal, delVal),
+    });
+  },
+  getSelectVal(val, info) {
+    <span class="hljs-keyword">let</span> newVal = val;
+    <span class="hljs-keyword">let</span> index = info.selectedKeys.indexOf(info.node.props.eventKey);
+    <span class="hljs-keyword">if</span> (index &gt; -<span class="hljs-number">1</span>) {
+      index = newVal.indexOf(info.node.props.value);
+      <span class="hljs-keyword">if</span> (index &gt; -<span class="hljs-number">1</span>) {
+        newVal.splice(index, <span class="hljs-number">1</span>);
+      }
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (index === -<span class="hljs-number">1</span>) {
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.props.multiple) {
+        newVal.push(info.node.props.value);
+      } <span class="hljs-keyword">else</span> {
+        newVal = [info.node.props.value];
+      }
+    }
+    <span class="hljs-keyword">return</span> newVal;
+  },
+  getCheckVal(val, info) {
+    <span class="hljs-keyword">let</span> newVal = val;
+    newVal = [];
+    info.filterAllCheckedKeys.forEach((item) =&gt; {
+      <span class="hljs-keyword">const</span> node = getNode(info.allCheckedNodesKeys, item);
+      <span class="hljs-keyword">if</span> (node) {
+        newVal.push(node.props.value);
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (info.node.props.eventKey === item) {
+        newVal.push(info.node.props.value);
+      }
+    });
+    <span class="hljs-keyword">return</span> newVal;
   },
   render() {
     <span class="hljs-keyword">const</span> tProps = {
       value: <span class="hljs-keyword">this</span>.state.value,
       onChange: <span class="hljs-keyword">this</span>.onChange,
       onSelect: <span class="hljs-keyword">this</span>.onSelect,
-      multiple: <span class="hljs-literal">true</span>,
-      treeCheckable: <span class="hljs-literal">true</span>,
+      multiple: <span class="hljs-keyword">this</span>.props.multiple,
+      treeCheckable: <span class="hljs-keyword">this</span>.props.treeCheckable,
       treeDefaultExpandAll: <span class="hljs-literal">true</span>,
-      <span class="hljs-comment">// treeNodeLabelProp: 'title',</span>
     };
     <span class="hljs-keyword">const</span> loop = data =&gt; {
       <span class="hljs-keyword">return</span> data.map((item) =&gt; {
         <span class="hljs-keyword">if</span> (item.children) {
-          <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">{item.key</span> + ' <span class="hljs-attribute">label</span>'}&gt;</span>{loop(item.children)}<span class="hljs-tag">&lt;/<span class="hljs-title">TreeNode</span>&gt;</span>;</span>
+          <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{item.value}</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">{item.key</span> + ' <span class="hljs-attribute">label</span>'}&gt;</span>{loop(item.children)}<span class="hljs-tag">&lt;/<span class="hljs-title">TreeNode</span>&gt;</span>;</span>
         }
-        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">{item.key</span> + ' <span class="hljs-attribute">label</span>'} /&gt;</span>;</span>
+        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{item.value}</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">{item.key</span> + ' <span class="hljs-attribute">label</span>'} /&gt;</span>;</span>
       });
     };
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{padding:</span> '<span class="hljs-attribute">10px</span> <span class="hljs-attribute">30px</span>'}}&gt;</span>
@@ -351,11 +388,11 @@ import { gData } from <span class="hljs-string">'./util'</span>;
       <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}} {<span class="hljs-attribute">...tProps</span>}&gt;</span>
         {loop(gData)}
       <span class="hljs-tag">&lt;/<span class="hljs-title">TreeSelect</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
   },
 });
 
-ReactDOM.render(<span class="hljs-tag">&lt;<span class="hljs-title">Demo</span> /&gt;</span>, document.getElementById('__react-content'));
+ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Demo</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>
 </div>
 <a href="https://github.com/react-component/tree-select">

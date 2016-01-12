@@ -3,12 +3,12 @@ webpackJsonp([2],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(223);
+	module.exports = __webpack_require__(221);
 
 
 /***/ },
 
-/***/ 223:
+/***/ 221:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint no-console: 0 */
@@ -39,8 +39,8 @@ webpackJsonp([2],{
 	      value: 'leaf1'
 	    };
 	  },
-	  onChange: function onChange(e, label) {
-	    console.log(e, label);
+	  onChange: function onChange(e, label, preStateValue) {
+	    console.log(e, label, this.state.value, preStateValue);
 	    var value = undefined;
 	    if (e.target) {
 	      value = e.target.value;

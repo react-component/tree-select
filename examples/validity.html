@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>validity.js - example - rc-tree-select@0.3.6</title>
+  <title>validity.js - example - rc-tree-select@0.4.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-tree-select@0.3.6</h1>
+    <h1>rc-tree-select@0.4.0</h1>
 
     <p>tree-select ui component for react</p>
   </div>
@@ -266,24 +266,26 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <script src="validity.js?nowrap"></script>
   <div class="highlight"><pre><code language="js"><span class="hljs-comment">// use jsx to render html, do not modify simple.html</span>
 
-import <span class="hljs-string">'rc-tree-select/assets/index.css'</span>;
-import <span class="hljs-string">'rc-tree-select/assets/demo.css'</span>;
-import React, {Component, PropTypes} from <span class="hljs-string">'react'</span>;
-import ReactDOM from <span class="hljs-string">'react-dom'</span>;
-import TreeSelect, { TreeNode } from <span class="hljs-string">'rc-tree-select'</span>;
-import {createForm} from <span class="hljs-string">'rc-form'</span>;
-import {regionStyle, errorStyle} from <span class="hljs-string">'./styles'</span>;
-import { gData } from <span class="hljs-string">'./util'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-tree-select/assets/index.css'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-tree-select/assets/demo.css'</span>;
+<span class="hljs-keyword">import</span> React, {Component, PropTypes} <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+<span class="hljs-keyword">import</span> TreeSelect, { TreeNode } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-tree-select'</span>;
+<span class="hljs-keyword">import</span> {createForm} <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
+<span class="hljs-keyword">import</span> {regionStyle, errorStyle} <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
+<span class="hljs-keyword">import</span> { gData } <span class="hljs-keyword">from</span> <span class="hljs-string">'./util'</span>;
 
 <span class="hljs-keyword">const</span> Demo = React.createClass({
   propTypes: {
     form: PropTypes.object,
+    value: PropTypes.array,
+    onChange: PropTypes.func,
   },
   onSelect(selectedValue, info) {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onSelect: '</span>, selectedValue, info);
     <span class="hljs-keyword">let</span> newVal = [...this.props.value];
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setNewVal</span><span class="hljs-params">(i)</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setNewVal</span>(<span class="hljs-params">i</span>) </span>{
       <span class="hljs-keyword">let</span> index = i;
       <span class="hljs-keyword">if</span> (index &gt; -<span class="hljs-number">1</span>) {
         index = newVal.indexOf(info.node.props.value);
@@ -295,7 +297,7 @@ import { gData } from <span class="hljs-string">'./util'</span>;
       }
     }
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getNode</span><span class="hljs-params">(arr, val)</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getNode</span>(<span class="hljs-params">arr, val</span>) </span>{
       <span class="hljs-keyword">let</span> node;
       <span class="hljs-keyword">return</span> arr.some(item =&gt; {
         <span class="hljs-keyword">if</span> (item.key === val) {
@@ -320,18 +322,11 @@ import { gData } from <span class="hljs-string">'./util'</span>;
     }
     <span class="hljs-keyword">this</span>.props.onChange(newVal);
   },
-  onChange(value, label) {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange '</span>, value, label);
-  },
   render() {
-    <span class="hljs-keyword">const</span> props = <span class="hljs-keyword">this</span>.props;
-    <span class="hljs-keyword">const</span> {getFieldProps, getFieldError, isFieldValidating} = props.form;
-    <span class="hljs-keyword">const</span> errors = getFieldError(<span class="hljs-string">'treeselect'</span>);
-
     <span class="hljs-keyword">const</span> tProps = {
       <span class="hljs-comment">// defaultValue: this.props.value,</span>
       value: <span class="hljs-keyword">this</span>.props.value,
-      onChange: <span class="hljs-keyword">this</span>.onChange,
+      <span class="hljs-comment">// onChange: this.onChange,</span>
       onSelect: <span class="hljs-keyword">this</span>.onSelect,
       multiple: <span class="hljs-literal">true</span>,
       treeCheckable: <span class="hljs-literal">true</span>,
@@ -346,153 +341,65 @@ import { gData } from <span class="hljs-string">'./util'</span>;
         <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">{item.key</span> + ' <span class="hljs-attribute">label</span>'} /&gt;</span>;</span>
       });
     };
-    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{color:</span> '<span class="hljs-attribute">blue</span>'}}&gt;</span>not work rightly<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">200</span>}} {<span class="hljs-attribute">...tProps</span>} {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">treeselect</span>', {
-          <span class="hljs-attribute">validateTrigger:</span> '<span class="hljs-attribute">onSelect</span>',
-          <span class="hljs-attribute">trigger:</span> '<span class="hljs-attribute">onSelect</span>',
-          <span class="hljs-attribute">initialValue:</span> <span class="hljs-attribute">this.props.value</span>,
-          <span class="hljs-attribute">rules:</span> [
-            {<span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>, <span class="hljs-attribute">type:</span> '<span class="hljs-attribute">array</span>'},
-          ],
-        })}&gt;</span>
-          {loop(gData)}
-        <span class="hljs-tag">&lt;/<span class="hljs-title">TreeSelect</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
-        {(errors) ? errors.join(',') : null}
-      <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
-        {isFieldValidating('treeselect') ? 'validating' : null}
-      <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
-  },
-});
-
-const Demo1 = React.createClass({
-  propTypes: {
-    form: PropTypes.object,
-  },
-  onSelect(selectedValue, info) {
-    console.log('onSelect: ', selectedValue, info);
-    let newVal = [...this.props.value];
-
-    function setNewVal(i) {
-      let index = i;
-      if (index &gt; -1) {
-        index = newVal.indexOf(info.node.props.value);
-        if (index &gt; -1) {
-          newVal.splice(index, 1);
-        }
-      } else if (index === -1) {
-        newVal.push(info.node.props.value);
-      }
-    }
-
-    function getNode(arr, val) {
-      let node;
-      return arr.some(item =&gt; {
-        if (item.key === val) {
-          node = item.node;
-          return true;
-        }
-      }) &amp;&amp; node;
-    }
-
-    if (info.event === 'select') {
-      setNewVal(info.selectedKeys.indexOf(info.node.props.eventKey));
-    } else if (info.event === 'check') {
-      newVal = [];
-      info.filterAllCheckedKeys.forEach((item) =&gt; {
-        const node = getNode(info.allCheckedNodesKeys, item);
-        if (node) {
-          newVal.push(node.props.value);
-        } else if (info.node.props.eventKey === item) {
-          newVal.push(info.node.props.value);
-        }
-      });
-    }
-    this.props.onChange(newVal);
-  },
-  render() {
-    const tProps = {
-      // defaultValue: this.props.value,
-      value: this.props.value,
-      // onChange: this.onChange,
-      onSelect: this.onSelect,
-      multiple: true,
-      treeCheckable: true,
-      treeDefaultExpandAll: true,
-      // treeNodeLabelProp: 'title',
-    };
-    const loop = data =&gt; {
-      return data.map((item) =&gt; {
-        if (item.children) {
-          return <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">{item.key</span> + ' <span class="hljs-attribute">label</span>'}&gt;</span>{loop(item.children)}<span class="hljs-tag">&lt;/<span class="hljs-title">TreeNode</span>&gt;</span>;</span>
-        }
-        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">{item.key</span> + ' <span class="hljs-attribute">label</span>'} /&gt;</span>;</span>
-      });
-    };
     <span class="hljs-keyword">return</span> (
         <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">200</span>}} {<span class="hljs-attribute">...tProps</span>}&gt;</span>
           {loop(gData)}
         <span class="hljs-tag">&lt;/<span class="hljs-title">TreeSelect</span>&gt;</span>
-      );
+      )</span>;
   },
 });
 
 @createForm({
-  // mapPropsToFields(props) {
-  //   console.log('mapPropsToFields', props);
-  //   return props.formState;
-  // },
+  <span class="hljs-comment">// mapPropsToFields(props) {</span>
+  <span class="hljs-comment">//   console.log('mapPropsToFields', props);</span>
+  <span class="hljs-comment">//   return props.formState;</span>
+  <span class="hljs-comment">// },</span>
   onFieldsChange(props, fields) {
-    console.log('onFieldsChange', fields);
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onFieldsChange'</span>, fields);
   },
 })
-class Form extends Component {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Form</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
   static propTypes = {
     form: PropTypes.object,
   };
 
   constructor(props) {
-    super(props);
-    this.state = {
-      value: ['0-0-0'],
-      initialValue: ['0-0-0'],
+    <span class="hljs-keyword">super</span>(props);
+    <span class="hljs-keyword">this</span>.state = {
+      value: [<span class="hljs-string">'0-0-0'</span>],
+      initialValue: [<span class="hljs-string">'0-0-0'</span>],
     };
   }
 
   onChange(newVal) {
-    console.log('newVal', newVal);
-    this.setState({
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'newVal'</span>, newVal);
+    <span class="hljs-keyword">this</span>.setState({
       value: newVal,
     });
   }
 
   onSubmit = (e) =&gt; {
-    console.log('submit');
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'submit'</span>);
     e.preventDefault();
-    this.props.form.validateFields((error, values)=&gt; {
-      if (!error) {
-        console.log('ok', values);
-      } else {
-        console.log('error', error, values);
+    <span class="hljs-keyword">this</span>.props.form.validateFields((error, values)=&gt; {
+      <span class="hljs-keyword">if</span> (!error) {
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'ok'</span>, values);
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'error'</span>, error, values);
       }
     });
   };
 
   reset = (e) =&gt; {
     e.preventDefault();
-    this.props.form.resetFields();
+    <span class="hljs-keyword">this</span>.props.form.resetFields();
   };
 
   render() {
-    const {form} = this.props;
-    const {getFieldProps, getFieldError, isFieldValidating} = form;
-    const errors = getFieldError('treeselect1');
-    return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{margin:</span> <span class="hljs-attribute">20</span>}}&gt;</span>
+    <span class="hljs-keyword">const</span> {form} = <span class="hljs-keyword">this</span>.props;
+    <span class="hljs-keyword">const</span> {getFieldProps, getFieldError, isFieldValidating} = form;
+    <span class="hljs-keyword">const</span> errors = getFieldError(<span class="hljs-string">'treeselect1'</span>);
+    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{margin:</span> <span class="hljs-attribute">20</span>}}&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>validity<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">form</span> <span class="hljs-attribute">onSubmit</span>=<span class="hljs-value">{this.onSubmit}</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
@@ -502,12 +409,10 @@ class Form extends Component {
           <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
 
-        <span class="hljs-tag">&lt;<span class="hljs-title">Demo</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span> <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange.bind(this)}</span> /&gt;</span>
-
         <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{color:</span> '<span class="hljs-attribute">blue</span>'}}&gt;</span>work rightly<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">Demo1</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">treeselect1</span>', {
+            <span class="hljs-tag">&lt;<span class="hljs-title">Demo</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">treeselect1</span>', {
               <span class="hljs-attribute">initialValue:</span> <span class="hljs-attribute">this.state.value</span>,
               <span class="hljs-attribute">rules:</span> [
                 {<span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>, <span class="hljs-attribute">type:</span> '<span class="hljs-attribute">array</span>'},
@@ -528,11 +433,11 @@ class Form extends Component {
           <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"submit"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"submit"</span>/&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">form</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
   }
 }
 
-ReactDOM.render(<span class="hljs-tag">&lt;<span class="hljs-title">Form</span> /&gt;</span>, document.getElementById('__react-content'));
+ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Form</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>
 </div>
 <a href="https://github.com/react-component/tree-select">

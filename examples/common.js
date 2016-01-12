@@ -1114,7 +1114,7 @@
 	 * will remain to ensure logic does not differ in production.
 	 */
 	
-	var invariant = function (condition, format, a, b, c, d, e, f) {
+	function invariant(condition, format, a, b, c, d, e, f) {
 	  if (process.env.NODE_ENV !== 'production') {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
@@ -1128,15 +1128,16 @@
 	    } else {
 	      var args = [a, b, c, d, e, f];
 	      var argIndex = 0;
-	      error = new Error('Invariant Violation: ' + format.replace(/%s/g, function () {
+	      error = new Error(format.replace(/%s/g, function () {
 	        return args[argIndex++];
 	      }));
+	      error.name = 'Invariant Violation';
 	    }
 	
 	    error.framesToPop = 1; // we don't care about invariant's own frame
 	    throw error;
 	  }
-	};
+	}
 	
 	module.exports = invariant;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
@@ -10563,8 +10564,8 @@
 	     */
 	    // autoCapitalize and autoCorrect are supported in Mobile Safari for
 	    // keyboard hints.
-	    autoCapitalize: null,
-	    autoCorrect: null,
+	    autoCapitalize: MUST_USE_ATTRIBUTE,
+	    autoCorrect: MUST_USE_ATTRIBUTE,
 	    // autoSave allows WebKit/Blink to persist values of input fields on page reloads
 	    autoSave: null,
 	    // color is for Safari mask-icon link
@@ -10595,9 +10596,7 @@
 	    httpEquiv: 'http-equiv'
 	  },
 	  DOMPropertyNames: {
-	    autoCapitalize: 'autocapitalize',
 	    autoComplete: 'autocomplete',
-	    autoCorrect: 'autocorrect',
 	    autoFocus: 'autofocus',
 	    autoPlay: 'autoplay',
 	    autoSave: 'autosave',
@@ -13676,7 +13675,7 @@
 	    var value = LinkedValueUtils.getValue(props);
 	
 	    if (value != null) {
-	      updateOptions(this, props, value);
+	      updateOptions(this, Boolean(props.multiple), value);
 	    }
 	  }
 	}
@@ -16711,11 +16710,14 @@
 	 * @typechecks
 	 */
 	
+	/* eslint-disable fb-www/typeof-undefined */
+	
 	/**
 	 * Same as document.activeElement but wraps in a try-catch block. In IE it is
 	 * not safe to call document.activeElement if there is nothing focused.
 	 *
-	 * The activeElement will be null only if the document or document body is not yet defined.
+	 * The activeElement will be null only if the document or document body is not
+	 * yet defined.
 	 */
 	'use strict';
 	
@@ -16723,7 +16725,6 @@
 	  if (typeof document === 'undefined') {
 	    return null;
 	  }
-	
 	  try {
 	    return document.activeElement || document.body;
 	  } catch (e) {
@@ -18463,7 +18464,9 @@
 	  'setValueForProperty': 'update attribute',
 	  'setValueForAttribute': 'update attribute',
 	  'deleteValueForProperty': 'remove attribute',
-	  'dangerouslyReplaceNodeWithMarkupByID': 'replace'
+	  'setValueForStyles': 'update styles',
+	  'replaceNodeWithMarkup': 'replace',
+	  'updateTextContent': 'set textContent'
 	};
 	
 	function getTotalTime(measurements) {
@@ -18655,18 +18658,23 @@
 	'use strict';
 	
 	var performance = __webpack_require__(147);
-	var curPerformance = performance;
+	
+	var performanceNow;
 	
 	/**
 	 * Detect if we can use `window.performance.now()` and gracefully fallback to
 	 * `Date.now()` if it doesn't exist. We need to support Firefox < 15 for now
 	 * because of Facebook's testing infrastructure.
 	 */
-	if (!curPerformance || !curPerformance.now) {
-	  curPerformance = Date;
+	if (performance.now) {
+	  performanceNow = function () {
+	    return performance.now();
+	  };
+	} else {
+	  performanceNow = function () {
+	    return Date.now();
+	  };
 	}
-	
-	var performanceNow = curPerformance.now.bind(curPerformance);
 	
 	module.exports = performanceNow;
 
@@ -18715,7 +18723,7 @@
 	
 	'use strict';
 	
-	module.exports = '0.14.3';
+	module.exports = '0.14.6';
 
 /***/ },
 /* 149 */
@@ -19723,7 +19731,7 @@
 	
 	var _Select2 = _interopRequireDefault(_Select);
 	
-	var _TreeNode = __webpack_require__(219);
+	var _TreeNode = __webpack_require__(217);
 	
 	var _TreeNode2 = _interopRequireDefault(_TreeNode);
 	
@@ -19979,7 +19987,7 @@
 	    var _this = this;
 	
 	    var check = info.event === 'check';
-	    if (!check && !info.selected) {
+	    if (!check && typeof info.selected === 'boolean' && !info.selected) {
 	      this.onDeselect(info);
 	      // return;
 	    }
@@ -20008,8 +20016,10 @@
 	        this.setOpenState(false);
 	        return;
 	      }
-	      value = [selectedValue];
-	      label = [selectedLabel];
+	      value = !check ? [selectedValue] : [].concat(_toConsumableArray(info.checkedKeys));
+	      label = !check ? [selectedLabel] : info.allCheckedNodesKeys.map(function (i) {
+	        return _this.getLabelFromOption(i.node);
+	      });
 	      this.setOpenState(false);
 	    }
 	
@@ -20207,6 +20217,18 @@
 	    }
 	  },
 	
+	  isValueChange: function isValueChange(value) {
+	    var sv = this.state.value;
+	    if (typeof sv === 'string') {
+	      sv = [sv];
+	    }
+	    if (value.length !== sv.length || !value.every(function (val, index) {
+	      return sv[index] === val;
+	    })) {
+	      return true;
+	    }
+	  },
+	
 	  fireChange: function fireChange(value, label) {
 	    var props = this.props;
 	    if (!('value' in props)) {
@@ -20214,7 +20236,9 @@
 	        value: value, label: label
 	      });
 	    }
-	    props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label));
+	    if (this.isValueChange(value)) {
+	      props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label), [].concat(_toConsumableArray(this.state.value)));
+	    }
 	  },
 	  renderTopControlNode: function renderTopControlNode() {
 	    var _this5 = this;
@@ -20488,7 +20512,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	  Copyright (c) 2015 Jed Watson.
+	  Copyright (c) 2016 Jed Watson.
 	  Licensed under the MIT License (MIT), see
 	  http://jedwatson.github.io/classnames
 	*/
@@ -20500,7 +20524,7 @@
 		var hasOwn = {}.hasOwnProperty;
 	
 		function classNames () {
-			var classes = '';
+			var classes = [];
 	
 			for (var i = 0; i < arguments.length; i++) {
 				var arg = arguments[i];
@@ -20509,19 +20533,19 @@
 				var argType = typeof arg;
 	
 				if (argType === 'string' || argType === 'number') {
-					classes += ' ' + arg;
+					classes.push(arg);
 				} else if (Array.isArray(arg)) {
-					classes += ' ' + classNames.apply(null, arg);
+					classes.push(classNames.apply(null, arg));
 				} else if (argType === 'object') {
 					for (var key in arg) {
 						if (hasOwn.call(arg, key) && arg[key]) {
-							classes += ' ' + key;
+							classes.push(key);
 						}
 					}
 				}
 			}
 	
-			return classes.substr(1);
+			return classes.join(' ');
 		}
 	
 		if (typeof module !== 'undefined' && module.exports) {
@@ -23363,8 +23387,8 @@
 	      allCheckedNodesKeys.forEach(function (item) {
 	        var iArr = item.pos.split('-');
 	        if (item.pos === nodePos || nArr.length > iArr.length && isInclude(iArr, nArr) || nArr.length < iArr.length && isInclude(nArr, iArr)) {
-	          // 过滤掉 非父级节点 和 所有子节点。
-	          // 因为 node节点 不选时，其 非父级节点 和 所有子节点 都不选。
+	          // 过滤掉 父级节点 和 所有子节点。
+	          // 因为 node节点 不选时，其 父级节点 和 所有子节点 都不选。
 	          return;
 	        }
 	        newCks.push(item.key);
@@ -23534,15 +23558,15 @@
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _objectAssign = __webpack_require__(197);
+	var _objectAssign = __webpack_require__(183);
 	
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
-	var _rcTrigger = __webpack_require__(198);
+	var _rcTrigger = __webpack_require__(197);
 	
 	var _rcTrigger2 = _interopRequireDefault(_rcTrigger);
 	
-	var _rcTree = __webpack_require__(215);
+	var _rcTree = __webpack_require__(213);
 	
 	var _rcTree2 = _interopRequireDefault(_rcTree);
 	
@@ -23825,59 +23849,14 @@
 
 /***/ },
 /* 197 */
-/***/ function(module, exports) {
-
-	/* eslint-disable no-unused-vars */
-	'use strict';
-	var hasOwnProperty = Object.prototype.hasOwnProperty;
-	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-	
-	function toObject(val) {
-		if (val === null || val === undefined) {
-			throw new TypeError('Object.assign cannot be called with null or undefined');
-		}
-	
-		return Object(val);
-	}
-	
-	module.exports = Object.assign || function (target, source) {
-		var from;
-		var to = toObject(target);
-		var symbols;
-	
-		for (var s = 1; s < arguments.length; s++) {
-			from = Object(arguments[s]);
-	
-			for (var key in from) {
-				if (hasOwnProperty.call(from, key)) {
-					to[key] = from[key];
-				}
-			}
-	
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
-				for (var i = 0; i < symbols.length; i++) {
-					if (propIsEnumerable.call(from, symbols[i])) {
-						to[symbols[i]] = from[symbols[i]];
-					}
-				}
-			}
-		}
-	
-		return to;
-	};
-
-
-/***/ },
-/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(199);
+	module.exports = __webpack_require__(198);
 
 /***/ },
-/* 199 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23900,11 +23879,11 @@
 	
 	var _rcUtil = __webpack_require__(164);
 	
-	var _Popup = __webpack_require__(200);
+	var _Popup = __webpack_require__(199);
 	
 	var _Popup2 = _interopRequireDefault(_Popup);
 	
-	var _utils = __webpack_require__(213);
+	var _utils = __webpack_require__(212);
 	
 	function noop() {}
 	
@@ -23987,7 +23966,7 @@
 	        var self = _this;
 	        _reactDom2['default'].unstable_renderSubtreeIntoContainer(_this, _this.getPopupElement(), _this.getPopupContainer(), function renderPopup() {
 	          if (this.isMounted()) {
-	            self.popupDomNode = _reactDom2['default'].findDOMNode(this);
+	            self.popupDomNode = (0, _reactDom.findDOMNode)(this);
 	          } else {
 	            self.popupDomNode = null;
 	          }
@@ -24023,7 +24002,7 @@
 	    if (popupContainer) {
 	      _reactDom2['default'].unmountComponentAtNode(popupContainer);
 	      if (this.props.getPopupContainer) {
-	        var mountNode = this.props.getPopupContainer();
+	        var mountNode = this.props.getPopupContainer((0, _reactDom.findDOMNode)(this));
 	        mountNode.removeChild(popupContainer);
 	      } else {
 	        document.body.removeChild(popupContainer);
@@ -24091,7 +24070,7 @@
 	
 	  onDocumentClick: function onDocumentClick(event) {
 	    var target = event.target;
-	    var root = _reactDom2['default'].findDOMNode(this);
+	    var root = (0, _reactDom.findDOMNode)(this);
 	    var popupNode = this.getPopupDomNode();
 	    if (!_rcUtil.Dom.contains(root, target) && !_rcUtil.Dom.contains(popupNode, target)) {
 	      this.setPopupVisible(false);
@@ -24107,7 +24086,7 @@
 	    if (!this.popupContainer) {
 	      this.popupContainer = document.createElement('div');
 	      if (this.props.getPopupContainer) {
-	        var mountNode = this.props.getPopupContainer();
+	        var mountNode = this.props.getPopupContainer((0, _reactDom.findDOMNode)(this));
 	        mountNode.appendChild(this.popupContainer);
 	      } else {
 	        document.body.appendChild(this.popupContainer);
@@ -24229,7 +24208,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 200 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24248,7 +24227,7 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _rcAlign = __webpack_require__(201);
+	var _rcAlign = __webpack_require__(200);
 	
 	var _rcAlign2 = _interopRequireDefault(_rcAlign);
 	
@@ -24256,7 +24235,7 @@
 	
 	var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 	
-	var _PopupInner = __webpack_require__(212);
+	var _PopupInner = __webpack_require__(211);
 	
 	var _PopupInner2 = _interopRequireDefault(_PopupInner);
 	
@@ -24389,7 +24368,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 201 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// export this package's api
@@ -24401,7 +24380,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _Align = __webpack_require__(202);
+	var _Align = __webpack_require__(201);
 	
 	var _Align2 = _interopRequireDefault(_Align);
 	
@@ -24409,7 +24388,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 202 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24428,13 +24407,13 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _domAlign = __webpack_require__(203);
+	var _domAlign = __webpack_require__(202);
 	
 	var _domAlign2 = _interopRequireDefault(_domAlign);
 	
 	var _rcUtil = __webpack_require__(164);
 	
-	var _isWindow = __webpack_require__(211);
+	var _isWindow = __webpack_require__(210);
 	
 	var _isWindow2 = _interopRequireDefault(_isWindow);
 	
@@ -24566,7 +24545,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 203 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24582,27 +24561,27 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _utils = __webpack_require__(204);
+	var _utils = __webpack_require__(203);
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
-	var _getOffsetParent = __webpack_require__(205);
+	var _getOffsetParent = __webpack_require__(204);
 	
 	var _getOffsetParent2 = _interopRequireDefault(_getOffsetParent);
 	
-	var _getVisibleRectForElement = __webpack_require__(206);
+	var _getVisibleRectForElement = __webpack_require__(205);
 	
 	var _getVisibleRectForElement2 = _interopRequireDefault(_getVisibleRectForElement);
 	
-	var _adjustForViewport = __webpack_require__(207);
+	var _adjustForViewport = __webpack_require__(206);
 	
 	var _adjustForViewport2 = _interopRequireDefault(_adjustForViewport);
 	
-	var _getRegion = __webpack_require__(208);
+	var _getRegion = __webpack_require__(207);
 	
 	var _getRegion2 = _interopRequireDefault(_getRegion);
 	
-	var _getElFuturePos = __webpack_require__(209);
+	var _getElFuturePos = __webpack_require__(208);
 	
 	var _getElFuturePos2 = _interopRequireDefault(_getElFuturePos);
 	
@@ -24769,7 +24748,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 204 */
+/* 203 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25267,7 +25246,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 205 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25278,7 +25257,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _utils = __webpack_require__(204);
+	var _utils = __webpack_require__(203);
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
@@ -25325,7 +25304,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 206 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25336,11 +25315,11 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _utils = __webpack_require__(204);
+	var _utils = __webpack_require__(203);
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
-	var _getOffsetParent = __webpack_require__(205);
+	var _getOffsetParent = __webpack_require__(204);
 	
 	var _getOffsetParent2 = _interopRequireDefault(_getOffsetParent);
 	
@@ -25406,7 +25385,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 207 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25417,7 +25396,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _utils = __webpack_require__(204);
+	var _utils = __webpack_require__(203);
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
@@ -25466,7 +25445,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 208 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25477,7 +25456,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _utils = __webpack_require__(204);
+	var _utils = __webpack_require__(203);
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
@@ -25507,7 +25486,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 209 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25518,7 +25497,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _getAlignOffset = __webpack_require__(210);
+	var _getAlignOffset = __webpack_require__(209);
 	
 	var _getAlignOffset2 = _interopRequireDefault(_getAlignOffset);
 	
@@ -25548,7 +25527,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 210 */
+/* 209 */
 /***/ function(module, exports) {
 
 	/**
@@ -25593,7 +25572,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 211 */
+/* 210 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -25612,7 +25591,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 212 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25658,7 +25637,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 213 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25671,7 +25650,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _objectAssign = __webpack_require__(214);
+	var _objectAssign = __webpack_require__(183);
 	
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
@@ -25697,52 +25676,7 @@
 	}
 
 /***/ },
-/* 214 */
-/***/ function(module, exports) {
-
-	/* eslint-disable no-unused-vars */
-	'use strict';
-	var hasOwnProperty = Object.prototype.hasOwnProperty;
-	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-	
-	function toObject(val) {
-		if (val === null || val === undefined) {
-			throw new TypeError('Object.assign cannot be called with null or undefined');
-		}
-	
-		return Object(val);
-	}
-	
-	module.exports = Object.assign || function (target, source) {
-		var from;
-		var to = toObject(target);
-		var symbols;
-	
-		for (var s = 1; s < arguments.length; s++) {
-			from = Object(arguments[s]);
-	
-			for (var key in from) {
-				if (hasOwnProperty.call(from, key)) {
-					to[key] = from[key];
-				}
-			}
-	
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
-				for (var i = 0; i < symbols.length; i++) {
-					if (propIsEnumerable.call(from, symbols[i])) {
-						to[symbols[i]] = from[symbols[i]];
-					}
-				}
-			}
-		}
-	
-		return to;
-	};
-
-
-/***/ },
-/* 215 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25753,11 +25687,11 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _Tree = __webpack_require__(216);
+	var _Tree = __webpack_require__(214);
 	
 	var _Tree2 = _interopRequireDefault(_Tree);
 	
-	var _TreeNode = __webpack_require__(218);
+	var _TreeNode = __webpack_require__(216);
 	
 	var _TreeNode2 = _interopRequireDefault(_TreeNode);
 	
@@ -25767,7 +25701,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 216 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25786,8 +25720,6 @@
 	
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
@@ -25796,7 +25728,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _objectAssign = __webpack_require__(197);
+	var _objectAssign = __webpack_require__(183);
 	
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
@@ -25804,7 +25736,7 @@
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _util = __webpack_require__(217);
+	var _util = __webpack_require__(215);
 	
 	function noop() {}
 	
@@ -25835,18 +25767,24 @@
 	  _createClass(Tree, [{
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
-	      var _setState;
-	
 	      var expandedKeys = this.getDefaultExpandedKeys(nextProps, true);
 	      var checkedKeys = this.getDefaultCheckedKeys(nextProps, true);
 	      var selectedKeys = this.getDefaultSelectedKeys(nextProps, true);
-	      this.setState((_setState = {}, _defineProperty(_setState, expandedKeys && 'expandedKeys', expandedKeys), _defineProperty(_setState, checkedKeys && 'checkedKeys', checkedKeys), _defineProperty(_setState, selectedKeys && 'selectedKeys', selectedKeys), _setState));
+	      var st = {};
+	      if (expandedKeys) {
+	        st.expandedKeys = expandedKeys;
+	      }
+	      if (checkedKeys) {
+	        st.checkedKeys = checkedKeys;
+	      }
+	      if (selectedKeys) {
+	        st.selectedKeys = selectedKeys;
+	      }
+	      this.setState(st);
 	    }
 	  }, {
 	    key: 'onDragStart',
 	    value: function onDragStart(e, treeNode) {
-	      // console.log(this.refs.tree.parentNode, treeNode.refs.selectHandle);
-	      // this.createDragElement(treeNode);
 	      this.dragNode = treeNode;
 	      this.dragNodesKeys = this.getDragNodes(treeNode);
 	      var st = {
@@ -25856,9 +25794,6 @@
 	      if (expandedKeys) {
 	        // Controlled expand, save and then reset
 	        this.getOriginExpandedKeys();
-	        // if ('expandedKeys' in this.props) {
-	        //   this._originExpandedKeys = [...this.state.expandedKeys];
-	        // }
 	        st.expandedKeys = expandedKeys;
 	      }
 	      this.setState(st);
@@ -25866,6 +25801,12 @@
 	        event: e,
 	        node: treeNode
 	      });
+	      try {
+	        // ie throw error
+	        e.dataTransfer.setData('text/plain', 'firefox-need-it');
+	      } finally {
+	        // empty
+	      }
 	    }
 	  }, {
 	    key: 'onDragEnterGap',
@@ -25876,17 +25817,14 @@
 	      var pageY = e.pageY;
 	      var gapHeight = 2;
 	      if (pageY > offsetTop + offsetHeight - gapHeight) {
-	        // console.log('enter gap');
-	        this.dropPos = 1;
+	        this.dropPosition = 1;
 	        return 1;
 	      }
 	      if (pageY < offsetTop + gapHeight) {
-	        // console.log('ee');
-	        this.dropPos = -1;
+	        this.dropPosition = -1;
 	        return -1;
 	      }
-	      // console.log('xx');
-	      this.dropPos = 0;
+	      this.dropPosition = 0;
 	      return 0;
 	    }
 	  }, {
@@ -25899,7 +25837,6 @@
 	        });
 	        return;
 	      }
-	      // console.log('en...', this.dropPos);
 	      var st = {
 	        dragOverNodeKey: treeNode.props.eventKey
 	      };
@@ -25912,7 +25849,7 @@
 	      this.props.onTreeDragEnter({
 	        event: e,
 	        node: treeNode,
-	        expandedKeys: expandedKeys || this.state.expandedKeys
+	        expandedKeys: expandedKeys && [].concat(_toConsumableArray(expandedKeys)) || [].concat(_toConsumableArray(this.state.expandedKeys))
 	      });
 	    }
 	  }, {
@@ -25929,7 +25866,10 @@
 	    key: 'onDrop',
 	    value: function onDrop(e, treeNode) {
 	      var key = treeNode.props.eventKey;
-	      if (this.dragNode.props.eventKey === key) {
+	      if (this.dragNodesKeys.indexOf(key) > -1) {
+	        if (console.warn) {
+	          console.warn('can not drop to dragNode and its children');
+	        }
 	        return;
 	      }
 	      var st = {
@@ -25943,14 +25883,14 @@
 	        event: e,
 	        node: treeNode,
 	        dragNode: this.dragNode,
-	        dragNodesKeys: this.dragNodesKeys,
-	        dropPos: this.dropPos + Number(posArr[posArr.length - 1])
+	        dragNodesKeys: [].concat(_toConsumableArray(this.dragNodesKeys)),
+	        dropPosition: this.dropPosition + Number(posArr[posArr.length - 1])
 	      };
-	      if (this.dropPos !== 0) {
+	      if (this.dropPosition !== 0) {
 	        res.dropToGap = true;
 	      }
 	      if ('expandedKeys' in this.props) {
-	        res.originExpandedKeys = this._originExpandedKeys || [].concat(_toConsumableArray(this.state.expandedKeys));
+	        res.originExpandedKeys = [].concat(_toConsumableArray(this._originExpandedKeys)) || [].concat(_toConsumableArray(this.state.expandedKeys));
 	      }
 	      this.props.onTreeDrop(res);
 	    }
@@ -25972,9 +25912,11 @@
 	          expandedKeys.splice(index, 1);
 	        }
 	        this.setState({ expandedKeys: expandedKeys });
-	        this.props.onExpand(treeNode, expand, expandedKeys);
+	        // remember the return object, such as expandedKeys, must clone!!
+	        // so you can avoid outer code change it.
+	        this.props.onExpand(treeNode, expand, [].concat(_toConsumableArray(expandedKeys)));
 	      } else {
-	        this.props.onExpand(treeNode, !expand, expandedKeys);
+	        this.props.onExpand(treeNode, !expand, [].concat(_toConsumableArray(expandedKeys)));
 	      }
 	
 	      // after data loaded, need set new expandedKeys
@@ -26024,7 +25966,7 @@
 	          }
 	        });
 	      }
-	      newSt.checkedKeys = checkedKeys;
+	      newSt.checkedKeys = [].concat(_toConsumableArray(checkedKeys));
 	      this.props.onCheck(newSt);
 	    }
 	  }, {
@@ -26057,7 +25999,7 @@
 	      } else {
 	        selectedKeys = [].concat(_toConsumableArray(this.state.selectedKeys));
 	      }
-	      newSt.selectedKeys = selectedKeys;
+	      newSt.selectedKeys = [].concat(_toConsumableArray(selectedKeys));
 	      props.onSelect(newSt);
 	    }
 	  }, {
@@ -26103,11 +26045,11 @@
 	    key: 'getFilterExpandedKeys',
 	    value: function getFilterExpandedKeys(props) {
 	      var defaultExpandedKeys = props.defaultExpandedKeys;
-	      var expandedPosArr = [];
+	      var expandedPositionArr = [];
 	      if (props.autoExpandParent) {
 	        (0, _util.loopAllChildren)(props.children, function (item, index, pos, newKey) {
 	          if (defaultExpandedKeys.indexOf(newKey) > -1) {
-	            expandedPosArr.push(pos);
+	            expandedPositionArr.push(pos);
 	          }
 	        });
 	      }
@@ -26116,8 +26058,8 @@
 	        if (props.defaultExpandAll) {
 	          filterExpandedKeys.push(newKey);
 	        } else if (props.autoExpandParent) {
-	          expandedPosArr.forEach(function (p) {
-	            if ((pos.split('-').length < p.split('-').length && p.indexOf(pos) === 0 || pos === p) && filterExpandedKeys.indexOf(newKey) === -1) {
+	          expandedPositionArr.forEach(function (p) {
+	            if ((p.split('-').length > pos.split('-').length && (0, _util.isInclude)(pos.split('-'), p.split('-')) || pos === p) && filterExpandedKeys.indexOf(newKey) === -1) {
 	              filterExpandedKeys.push(newKey);
 	            }
 	          });
@@ -26146,10 +26088,18 @@
 	  }, {
 	    key: 'getDefaultSelectedKeys',
 	    value: function getDefaultSelectedKeys(props, willReceiveProps) {
-	      var defaultSelectedKeys = props.multiple ? [].concat(_toConsumableArray(props.defaultSelectedKeys)) : [props.defaultSelectedKeys[0]];
-	      var selectedKeys = willReceiveProps ? undefined : defaultSelectedKeys;
+	      var getKeys = function getKeys(keys) {
+	        if (props.multiple) {
+	          return [].concat(_toConsumableArray(keys));
+	        }
+	        if (keys.length) {
+	          return [keys[0]];
+	        }
+	        return keys;
+	      };
+	      var selectedKeys = willReceiveProps ? undefined : getKeys(props.defaultSelectedKeys);
 	      if ('selectedKeys' in props) {
-	        selectedKeys = props.multiple ? [].concat(_toConsumableArray(props.selectedKeys)) : [props.selectedKeys[0]];
+	        selectedKeys = getKeys(props.selectedKeys);
 	      }
 	      return selectedKeys;
 	    }
@@ -26175,8 +26125,10 @@
 	    key: 'getDragNodes',
 	    value: function getDragNodes(treeNode) {
 	      var dragNodesKeys = [];
+	      var tPArr = treeNode.props.pos.split('-');
 	      (0, _util.loopAllChildren)(this.props.children, function (item, index, pos, newKey) {
-	        if (pos.indexOf(treeNode.props.pos) === 0) {
+	        var pArr = pos.split('-');
+	        if (treeNode.props.pos === pos || tPArr.length < pArr.length && (0, _util.isInclude)(tPArr, pArr)) {
 	          dragNodesKeys.push(newKey);
 	        }
 	      });
@@ -26230,9 +26182,9 @@
 	        showIcon: props.showIcon,
 	        checkable: props.checkable,
 	        draggable: props.draggable,
-	        dragOver: state.dragOverNodeKey === key && this.dropPos === 0,
-	        dragOverGapTop: state.dragOverNodeKey === key && this.dropPos === -1,
-	        dragOverGapBottom: state.dragOverNodeKey === key && this.dropPos === 1,
+	        dragOver: state.dragOverNodeKey === key && this.dropPosition === 0,
+	        dragOverGapTop: state.dragOverNodeKey === key && this.dropPosition === -1,
+	        dragOverGapBottom: state.dragOverNodeKey === key && this.dropPosition === 1,
 	        expanded: state.expandedKeys.indexOf(key) !== -1,
 	        selected: state.selectedKeys.indexOf(key) !== -1,
 	        checked: this.checkedKeys.indexOf(key) !== -1,
@@ -26242,7 +26194,7 @@
 	        filterTreeNode: this.filterTreeNode.bind(this)
 	      };
 	      if (this.treeNodesStates[pos]) {
-	        (0, _objectAssign2['default'])(cloneProps, this.treeNodesStates[pos].siblingPos);
+	        (0, _objectAssign2['default'])(cloneProps, this.treeNodesStates[pos].siblingPosition);
 	      }
 	      return _react2['default'].cloneElement(child, cloneProps);
 	    }
@@ -26333,7 +26285,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 217 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26344,7 +26296,8 @@
 	exports.browser = browser;
 	exports.getOffset = getOffset;
 	exports.loopAllChildren = loopAllChildren;
-	exports.filterMinPos = filterMinPos;
+	exports.filterMinPosition = filterMinPosition;
+	exports.isInclude = isInclude;
 	exports.getTreeNodesStates = getTreeNodesStates;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -26353,7 +26306,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _TreeNode = __webpack_require__(218);
+	var _TreeNode = __webpack_require__(216);
 	
 	var _TreeNode2 = _interopRequireDefault(_TreeNode);
 	
@@ -26424,15 +26377,15 @@
 	  return len;
 	}
 	
-	function getSiblingPos(index, len, siblingPos) {
+	function getSiblingPosition(index, len, siblingPosition) {
 	  if (len === 1) {
-	    siblingPos.first = true;
-	    siblingPos.last = true;
+	    siblingPosition.first = true;
+	    siblingPosition.last = true;
 	  } else {
-	    siblingPos.first = index === 0;
-	    siblingPos.last = index === len - 1;
+	    siblingPosition.first = index === 0;
+	    siblingPosition.last = index === len - 1;
 	  }
-	  return siblingPos;
+	  return siblingPosition;
 	}
 	
 	function loopAllChildren(childs, callback) {
@@ -26443,13 +26396,13 @@
 	      if (item.props.children && item.type === _TreeNode2['default']) {
 	        loop(item.props.children, pos);
 	      }
-	      callback(item, index, pos, item.key || pos, getSiblingPos(index, len, {}));
+	      callback(item, index, pos, item.key || pos, getSiblingPosition(index, len, {}));
 	    });
 	  };
 	  loop(childs, 0);
 	}
 	
-	function filterMinPos(arr) {
+	function filterMinPosition(arr) {
 	  var a = [];
 	  arr.forEach(function (item) {
 	    var b = a.filter(function (i) {
@@ -26462,42 +26415,52 @@
 	  return a;
 	}
 	
-	// console.log(filterMinPos(['0-0','0-1', '0-10', '0-0-1', '0-1-1', '0-10-0']));
+	// console.log(filterMinPosition(['0-0','0-1', '0-10', '0-0-1', '0-1-1', '0-10-0']));
 	
-	// stripTail('x-xx-sss-xx')
-	var stripTail = function stripTail(str) {
-	  var arr = str.match(/(.+)(-[^-]+)$/);
-	  var st = '';
-	  if (arr && arr.length === 3) {
-	    st = arr[1];
-	  }
-	  return st;
-	};
-	var splitPos = function splitPos(pos) {
-	  return pos.split('-');
-	};
+	function isInclude(smallArray, bigArray) {
+	  return smallArray.every(function (ii, i) {
+	    return ii === bigArray[i];
+	  });
+	}
 	
-	function handleCheckState(obj, checkedPosArr, checkIt) {
-	  checkedPosArr.forEach(function (_pos) {
+	// console.log(isInclude(['0', '1'], ['0', '10', '1']));
+	
+	function handleCheckState(obj, checkedPositionArr, checkIt) {
+	  var stripTail = function stripTail(str) {
+	    var arr = str.match(/(.+)(-[^-]+)$/);
+	    var st = '';
+	    if (arr && arr.length === 3) {
+	      st = arr[1];
+	    }
+	    return st;
+	  };
+	  // console.log(stripTail('0-101-000'));
+	  var splitPosition = function splitPosition(pos) {
+	    return pos.split('-');
+	  };
+	  checkedPositionArr.forEach(function (_pos) {
 	    // 设置子节点，全选或全不选
+	    var _posArr = splitPosition(_pos);
 	    Object.keys(obj).forEach(function (i) {
-	      if (splitPos(i).length > splitPos(_pos).length && i.indexOf(_pos) === 0) {
+	      var iArr = splitPosition(i);
+	      if (iArr.length > _posArr.length && isInclude(_posArr, iArr)) {
 	        obj[i].checkPart = false;
 	        obj[i].checked = checkIt;
 	      }
 	    });
 	    // 循环设置父节点的 选中 或 半选状态
 	    var loop = function loop(__pos) {
-	      var _posLen = splitPos(__pos).length;
+	      var _posLen = splitPosition(__pos).length;
 	      if (_posLen <= 2) {
 	        // e.g. '0-0', '0-1'
 	        return;
 	      }
 	      var sibling = 0;
 	      var siblingChecked = 0;
-	      var parentPos = stripTail(__pos);
+	      var parentPosition = stripTail(__pos);
 	      Object.keys(obj).forEach(function (i) {
-	        if (splitPos(i).length === _posLen && i.indexOf(parentPos) === 0) {
+	        var iArr = splitPosition(i);
+	        if (iArr.length === _posLen && isInclude(splitPosition(parentPosition), iArr)) {
 	          sibling++;
 	          if (obj[i].checked) {
 	            siblingChecked++;
@@ -26506,7 +26469,7 @@
 	          }
 	        }
 	      });
-	      var parent = obj[parentPos];
+	      var parent = obj[parentPosition];
 	      // sibling 不会等于0
 	      // 全不选 - 全选 - 半选
 	      if (siblingChecked === 0) {
@@ -26519,7 +26482,7 @@
 	        parent.checkPart = true;
 	        parent.checked = false;
 	      }
-	      loop(parentPos);
+	      loop(parentPosition);
 	    };
 	    loop(_pos);
 	  });
@@ -26546,24 +26509,24 @@
 	}
 	
 	function getTreeNodesStates(children, checkedKeys, checkIt, unCheckKey) {
-	  var checkedPos = [];
+	  var checkedPosition = [];
 	  var treeNodesStates = {};
-	  loopAllChildren(children, function (item, index, pos, newKey, siblingPos) {
+	  loopAllChildren(children, function (item, index, pos, newKey, siblingPosition) {
 	    var checked = false;
 	    if (checkedKeys.indexOf(newKey) !== -1) {
 	      checked = true;
-	      checkedPos.push(pos);
+	      checkedPosition.push(pos);
 	    }
 	    treeNodesStates[pos] = {
 	      node: item,
 	      key: newKey,
 	      checked: checked,
 	      checkPart: false,
-	      siblingPos: siblingPos
+	      siblingPosition: siblingPosition
 	    };
 	  });
 	  // debugger
-	  handleCheckState(treeNodesStates, filterMinPos(checkedPos.sort()), true);
+	  handleCheckState(treeNodesStates, filterMinPosition(checkedPosition.sort()), true);
 	
 	  if (!checkIt && unCheckKey) {
 	    var pos = undefined;
@@ -26582,7 +26545,7 @@
 	}
 
 /***/ },
-/* 218 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26609,7 +26572,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _objectAssign = __webpack_require__(197);
+	var _objectAssign = __webpack_require__(183);
 	
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
@@ -26621,7 +26584,7 @@
 	
 	var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 	
-	var _util = __webpack_require__(217);
+	var _util = __webpack_require__(215);
 	
 	var browserUa = (0, _util.browser)(window.navigator.userAgent || '');
 	var ieOrEdge = /.*(IE|Edge).+/.test(browserUa);
@@ -26715,6 +26678,7 @@
 	  }, {
 	    key: 'onDrop',
 	    value: function onDrop(e) {
+	      e.preventDefault();
 	      e.stopPropagation();
 	      this.setState({
 	        dragNodeHighlight: false
@@ -26753,11 +26717,6 @@
 	    value: function renderSwitcher(props, expandedState) {
 	      var prefixCls = props.prefixCls;
 	      var switcherCls = _defineProperty({}, prefixCls + '-switcher', true);
-	      if (props.disabled) {
-	        switcherCls[prefixCls + '-switcher-disabled'] = true;
-	        return _react2['default'].createElement('span', { className: (0, _classnames2['default'])(switcherCls) });
-	      }
-	
 	      if (!props.showLine) {
 	        switcherCls[prefixCls + '-noline_' + expandedState] = true;
 	      } else if (props.pos === '0-0') {
@@ -26765,6 +26724,10 @@
 	      } else {
 	        switcherCls[prefixCls + '-center_' + expandedState] = !props.last;
 	        switcherCls[prefixCls + '-bottom_' + expandedState] = props.last;
+	      }
+	      if (props.disabled) {
+	        switcherCls[prefixCls + '-switcher-disabled'] = true;
+	        return _react2['default'].createElement('span', { className: (0, _classnames2['default'])(switcherCls) });
 	      }
 	      return _react2['default'].createElement('span', { className: (0, _classnames2['default'])(switcherCls), onClick: this.onExpand });
 	    }
@@ -26782,7 +26745,7 @@
 	      if (typeof props.checkable !== 'boolean') {
 	        customEle = props.checkable;
 	      }
-	      if (props.disabled) {
+	      if (props.disabled || props.disableCheckbox) {
 	        checkboxCls[prefixCls + '-checkbox-disabled'] = true;
 	        return _react2['default'].createElement(
 	          'span',
@@ -26907,7 +26870,7 @@
 	        }
 	        return _react2['default'].createElement(
 	          'a',
-	          _extends({ ref: 'selectHandle', title: content }, domProps),
+	          _extends({ ref: 'selectHandle', title: typeof content === 'string' ? content : '' }, domProps),
 	          icon,
 	          title
 	        );
@@ -26964,6 +26927,8 @@
 	
 	TreeNode.propTypes = {
 	  prefixCls: _react.PropTypes.string,
+	  disabled: _react.PropTypes.bool,
+	  disableCheckbox: _react.PropTypes.bool,
 	  expanded: _react.PropTypes.bool,
 	  isLeaf: _react.PropTypes.bool,
 	  root: _react.PropTypes.object,
@@ -26977,7 +26942,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 219 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

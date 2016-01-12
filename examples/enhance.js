@@ -3,12 +3,12 @@ webpackJsonp([1],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(220);
+	module.exports = __webpack_require__(218);
 
 
 /***/ },
 
-/***/ 220:
+/***/ 218:
 /***/ function(module, exports, __webpack_require__) {
 
 	// use jsx to render html, do not modify simple.html
@@ -23,7 +23,7 @@ webpackJsonp([1],{
 	
 	__webpack_require__(2);
 	
-	__webpack_require__(221);
+	__webpack_require__(219);
 	
 	var _react = __webpack_require__(3);
 	
@@ -37,11 +37,31 @@ webpackJsonp([1],{
 	
 	var _rcTreeSelect2 = _interopRequireDefault(_rcTreeSelect);
 	
-	var _util = __webpack_require__(222);
+	var _util = __webpack_require__(220);
+	
+	function getNode(arr, val) {
+	  var node = undefined;
+	  return arr.some(function (item) {
+	    if (item.key === val) {
+	      node = item.node;
+	      return true;
+	    }
+	  }) && node;
+	}
 	
 	var Demo = _react2['default'].createClass({
 	  displayName: 'Demo',
 	
+	  propTypes: {
+	    multiple: _react.PropTypes.bool,
+	    treeCheckable: _react.PropTypes.bool
+	  },
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      multiple: true,
+	      treeCheckable: false
+	    };
+	  },
 	  getInitialState: function getInitialState() {
 	    return {
 	      value: []
@@ -51,71 +71,88 @@ webpackJsonp([1],{
 	    console.log('onSelect: ', selectedValue, info);
 	    var newVal = [].concat(_toConsumableArray(this.state.value));
 	
-	    function setNewVal(i) {
-	      var index = i;
-	      if (index > -1) {
-	        index = newVal.indexOf(info.node.props.value);
-	        if (index > -1) {
-	          newVal.splice(index, 1);
-	        }
-	      } else if (index === -1) {
-	        newVal.push(info.node.props.value);
-	      }
-	    }
-	
-	    function getNode(arr, val) {
-	      var node = undefined;
-	      return arr.some(function (item) {
-	        if (item.key === val) {
-	          node = item.node;
-	          return true;
-	        }
-	      }) && node;
-	    }
-	
 	    if (info.event === 'select') {
-	      setNewVal(info.selectedKeys.indexOf(info.node.props.eventKey));
+	      newVal = this.getSelectVal(newVal, info);
+	      this.event = 'select';
 	    } else if (info.event === 'check') {
-	      newVal = [];
-	      info.filterAllCheckedKeys.forEach(function (item) {
-	        var node = getNode(info.allCheckedNodesKeys, item);
-	        if (node) {
-	          newVal.push(node.props.value);
-	        } else if (info.node.props.eventKey === item) {
-	          newVal.push(info.node.props.value);
-	        }
-	      });
+	      newVal = this.getCheckVal(newVal, info);
 	    }
 	    this.setState({
 	      value: newVal
 	    });
 	  },
-	  onChange: function onChange(value, label) {
-	    console.log('onChange ', value, label);
-	    // this.setState({
-	    //   value: value,
-	    // });
+	  onChange: function onChange(value, label, preStateValue) {
+	    console.log('onChange ', value, label, this.state.value, preStateValue);
+	    if (this.event === 'select') {
+	      this.setState({
+	        value: value
+	      });
+	      return;
+	    }
+	    var val = [].concat(_toConsumableArray(value));
+	    var sVal = preStateValue;
+	    var delVal = [].concat(_toConsumableArray(sVal));
+	    if (!val.every(function (item) {
+	      if (sVal.indexOf(item) > -1) {
+	        delVal.splice(delVal.indexOf(item), 1);
+	        return true;
+	      }
+	    })) {
+	      console.error('受控组件，改变（只允许删除）后的 value 需要是 state.value 的子集');
+	    }
+	    this.setState({
+	      value: (0, _util.getFilterValue)(val, sVal, delVal)
+	    });
+	  },
+	  getSelectVal: function getSelectVal(val, info) {
+	    var newVal = val;
+	    var index = info.selectedKeys.indexOf(info.node.props.eventKey);
+	    if (index > -1) {
+	      index = newVal.indexOf(info.node.props.value);
+	      if (index > -1) {
+	        newVal.splice(index, 1);
+	      }
+	    } else if (index === -1) {
+	      if (this.props.multiple) {
+	        newVal.push(info.node.props.value);
+	      } else {
+	        newVal = [info.node.props.value];
+	      }
+	    }
+	    return newVal;
+	  },
+	  getCheckVal: function getCheckVal(val, info) {
+	    var newVal = val;
+	    newVal = [];
+	    info.filterAllCheckedKeys.forEach(function (item) {
+	      var node = getNode(info.allCheckedNodesKeys, item);
+	      if (node) {
+	        newVal.push(node.props.value);
+	      } else if (info.node.props.eventKey === item) {
+	        newVal.push(info.node.props.value);
+	      }
+	    });
+	    return newVal;
 	  },
 	  render: function render() {
 	    var tProps = {
 	      value: this.state.value,
 	      onChange: this.onChange,
 	      onSelect: this.onSelect,
-	      multiple: true,
-	      treeCheckable: true,
+	      multiple: this.props.multiple,
+	      treeCheckable: this.props.treeCheckable,
 	      treeDefaultExpandAll: true
 	    };
-	    // treeNodeLabelProp: 'title',
 	    var loop = function loop(data) {
 	      return data.map(function (item) {
 	        if (item.children) {
 	          return _react2['default'].createElement(
 	            _rcTreeSelect.TreeNode,
-	            { key: item.key, value: item.key, title: item.key + ' label' },
+	            { key: item.key, value: item.value, title: item.key + ' label' },
 	            loop(item.children)
 	          );
 	        }
-	        return _react2['default'].createElement(_rcTreeSelect.TreeNode, { key: item.key, value: item.key, title: item.key + ' label' });
+	        return _react2['default'].createElement(_rcTreeSelect.TreeNode, { key: item.key, value: item.value, title: item.key + ' label' });
 	      });
 	    };
 	    return _react2['default'].createElement(
@@ -139,14 +176,14 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 221:
+/***/ 219:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 222:
+/***/ 220:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -167,7 +204,7 @@ webpackJsonp([1],{
 	  var children = [];
 	  for (var i = 0; i < x; i++) {
 	    var key = preKey + '-' + i;
-	    tns.push({ title: key, key: key });
+	    tns.push({ title: key, key: key, value: key });
 	    if (i < y) {
 	      children.push(key);
 	    }
@@ -183,7 +220,65 @@ webpackJsonp([1],{
 	};
 	generateData(z);
 	
+	function loopData(data, callback) {
+	  var loop = function loop(d) {
+	    var level = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+	
+	    d.forEach(function (item, index) {
+	      var pos = level + '-' + index;
+	      if (item.children) {
+	        loop(item.children, pos);
+	      }
+	      callback(item, index, pos);
+	    });
+	  };
+	  loop(data);
+	}
+	
+	function isInclude(smallArray, bigArray) {
+	  return smallArray.every(function (ii, i) {
+	    return ii === bigArray[i];
+	  });
+	}
+	// console.log(isInclude(['0', '1'], ['0', '10', '1']));
+	
+	function getFilterValue(val, sVal, delVal) {
+	  var allPos = [];
+	  var delPos = [];
+	  loopData(gData, function (item, index, pos) {
+	    if (sVal.indexOf(item.value) > -1) {
+	      allPos.push(pos);
+	    }
+	    if (delVal.indexOf(item.value) > -1) {
+	      delPos.push(pos);
+	    }
+	  });
+	  var newPos = [];
+	  delPos.forEach(function (item) {
+	    var nArr = item.split('-');
+	    allPos.forEach(function (i) {
+	      var iArr = i.split('-');
+	      if (item === i || nArr.length > iArr.length && isInclude(iArr, nArr) || nArr.length < iArr.length && isInclude(nArr, iArr)) {
+	        // 过滤掉 父级节点 和 所有子节点。
+	        // 因为 node节点 不选时，其 父级节点 和 所有子节点 都不选。
+	        return;
+	      }
+	      newPos.push(i);
+	    });
+	  });
+	  var newVal = [];
+	  if (newPos.length) {
+	    loopData(gData, function (item, index, pos) {
+	      if (newPos.indexOf(pos) > -1) {
+	        newVal.push(item.value);
+	      }
+	    });
+	  }
+	  return newVal;
+	}
+	
 	exports.gData = gData;
+	exports.getFilterValue = getFilterValue;
 
 /***/ }
 
