@@ -11,8 +11,8 @@ const Demo = React.createClass({
       value: 'leaf1',
     };
   },
-  onChange(e, label) {
-    console.log(e, label);
+  onChange(e, label, preStateValue) {
+    console.log(e, label, this.state.value, preStateValue);
     let value;
     if (e.target) {
       value = e.target.value;

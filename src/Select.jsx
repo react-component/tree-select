@@ -216,7 +216,7 @@ const Select = React.createClass({
 
   onSelect(info) {
     const check = info.event === 'check';
-    if (!check && !info.selected) {
+    if (!check && typeof info.selected === 'boolean' && !info.selected) {
       this.onDeselect(info);
       // return;
     }
@@ -245,8 +245,10 @@ const Select = React.createClass({
         this.setOpenState(false);
         return;
       }
-      value = [selectedValue];
-      label = [selectedLabel];
+      value = !check ? [selectedValue] : [...info.checkedKeys];
+      label = !check ? [selectedLabel] : info.allCheckedNodesKeys.map(i => {
+        return this.getLabelFromOption(i.node);
+      });
       this.setOpenState(false);
     }
 
@@ -432,6 +434,16 @@ const Select = React.createClass({
     }
   },
 
+  isValueChange(value) {
+    let sv = this.state.value;
+    if (typeof sv === 'string') {
+      sv = [sv];
+    }
+    if (value.length !== sv.length || !value.every((val, index) => {return sv[index] === val;})) {
+      return true;
+    }
+  },
+
   fireChange(value, label) {
     const props = this.props;
     if (!('value' in props)) {
@@ -439,7 +451,9 @@ const Select = React.createClass({
         value, label,
       });
     }
-    props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label));
+    if (this.isValueChange(value)) {
+      props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label), [...this.state.value]);
+    }
   },
   renderTopControlNode() {
     const value = this.state.value;

@@ -12,101 +12,8 @@ import { gData } from './util';
 const Demo = React.createClass({
   propTypes: {
     form: PropTypes.object,
-  },
-  onSelect(selectedValue, info) {
-    console.log('onSelect: ', selectedValue, info);
-    let newVal = [...this.props.value];
-
-    function setNewVal(i) {
-      let index = i;
-      if (index > -1) {
-        index = newVal.indexOf(info.node.props.value);
-        if (index > -1) {
-          newVal.splice(index, 1);
-        }
-      } else if (index === -1) {
-        newVal.push(info.node.props.value);
-      }
-    }
-
-    function getNode(arr, val) {
-      let node;
-      return arr.some(item => {
-        if (item.key === val) {
-          node = item.node;
-          return true;
-        }
-      }) && node;
-    }
-
-    if (info.event === 'select') {
-      setNewVal(info.selectedKeys.indexOf(info.node.props.eventKey));
-    } else if (info.event === 'check') {
-      newVal = [];
-      info.filterAllCheckedKeys.forEach((item) => {
-        const node = getNode(info.allCheckedNodesKeys, item);
-        if (node) {
-          newVal.push(node.props.value);
-        } else if (info.node.props.eventKey === item) {
-          newVal.push(info.node.props.value);
-        }
-      });
-    }
-    this.props.onChange(newVal);
-  },
-  onChange(value, label) {
-    console.log('onChange ', value, label);
-  },
-  render() {
-    const props = this.props;
-    const {getFieldProps, getFieldError, isFieldValidating} = props.form;
-    const errors = getFieldError('treeselect');
-
-    const tProps = {
-      // defaultValue: this.props.value,
-      value: this.props.value,
-      onChange: this.onChange,
-      onSelect: this.onSelect,
-      multiple: true,
-      treeCheckable: true,
-      treeDefaultExpandAll: true,
-      // treeNodeLabelProp: 'title',
-    };
-    const loop = data => {
-      return data.map((item) => {
-        if (item.children) {
-          return <TreeNode key={item.key} value={item.key} title={item.key + ' label'}>{loop(item.children)}</TreeNode>;
-        }
-        return <TreeNode key={item.key} value={item.key} title={item.key + ' label'} />;
-      });
-    };
-    return (<div style={regionStyle}>
-      <div>
-        <p style={{color: 'blue'}}>not work rightly</p>
-        <TreeSelect style={{width: 200}} {...tProps} {...getFieldProps('treeselect', {
-          validateTrigger: 'onSelect',
-          trigger: 'onSelect',
-          initialValue: this.props.value,
-          rules: [
-            {required: true, type: 'array'},
-          ],
-        })}>
-          {loop(gData)}
-        </TreeSelect>
-      </div>
-      <p style={errorStyle}>
-        {(errors) ? errors.join(',') : null}
-      </p>
-      <p style={errorStyle}>
-        {isFieldValidating('treeselect') ? 'validating' : null}
-      </p>
-    </div>);
-  },
-});
-
-const Demo1 = React.createClass({
-  propTypes: {
-    form: PropTypes.object,
+    value: PropTypes.array,
+    onChange: PropTypes.func,
   },
   onSelect(selectedValue, info) {
     console.log('onSelect: ', selectedValue, info);
@@ -236,12 +143,10 @@ class Form extends Component {
           </p>
         </div>
 
-        <Demo form={form} value={this.state.value} onChange={this.onChange.bind(this)} />
-
         <div style={regionStyle}>
           <div>
             <p style={{color: 'blue'}}>work rightly</p>
-            <Demo1 form={form} value={this.state.value} {...getFieldProps('treeselect1', {
+            <Demo form={form} value={this.state.value} {...getFieldProps('treeselect1', {
               initialValue: this.state.value,
               rules: [
                 {required: true, type: 'array'},
