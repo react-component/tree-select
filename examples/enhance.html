@@ -291,7 +291,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   getDefaultProps() {
     <span class="hljs-keyword">return</span> {
       multiple: <span class="hljs-literal">true</span>,
-      treeCheckable: <span class="hljs-literal">false</span>,
+      treeCheckable: <span class="hljs-literal">true</span>,
     };
   },
   getInitialState() {
@@ -317,7 +317,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange '</span>, value, label, <span class="hljs-keyword">this</span>.state.value, preStateValue);
     <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.event === <span class="hljs-string">'select'</span>) {
       <span class="hljs-keyword">this</span>.setState({
-        value,
+        value: value || [],
       });
       <span class="hljs-keyword">return</span>;
     }

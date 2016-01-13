@@ -59,7 +59,7 @@ webpackJsonp([1],{
 	  getDefaultProps: function getDefaultProps() {
 	    return {
 	      multiple: true,
-	      treeCheckable: false
+	      treeCheckable: true
 	    };
 	  },
 	  getInitialState: function getInitialState() {
@@ -85,7 +85,7 @@ webpackJsonp([1],{
 	    console.log('onChange ', value, label, this.state.value, preStateValue);
 	    if (this.event === 'select') {
 	      this.setState({
-	        value: value
+	        value: value || []
 	      });
 	      return;
 	    }
