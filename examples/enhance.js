@@ -25,7 +25,7 @@ const Demo = React.createClass({
   getDefaultProps() {
     return {
       multiple: true,
-      treeCheckable: false,
+      treeCheckable: true,
     };
   },
   getInitialState() {
@@ -51,7 +51,7 @@ const Demo = React.createClass({
     console.log('onChange ', value, label, this.state.value, preStateValue);
     if (this.event === 'select') {
       this.setState({
-        value,
+        value: value || [],
       });
       return;
     }
