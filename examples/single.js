@@ -52,6 +52,9 @@ webpackJsonp([2],{
 	  onSearch: function onSearch(value) {
 	    console.log('onSearch', value);
 	  },
+	  onClick: function onClick(e) {
+	    console.log('onClick', 'do your self', e);
+	  },
 	  render: function render() {
 	    return _react2['default'].createElement(
 	      'div',
@@ -67,6 +70,7 @@ webpackJsonp([2],{
 	          dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
 	          value: this.state.value, treeNodeLabelProp: 'title',
 	          treeDefaultExpandAll: true,
+	          onClick: this.onClick,
 	          onSearch: this.onSearch,
 	          onChange: this.onChange },
 	        _react2['default'].createElement(

@@ -19805,6 +19805,7 @@
 	    transitionName: _react.PropTypes.string,
 	    animation: _react.PropTypes.string,
 	    choiceTransitionName: _react.PropTypes.string,
+	    onClick: _react.PropTypes.func,
 	    onChange: _react.PropTypes.func,
 	    onSelect: _react.PropTypes.func,
 	    onSearch: _react.PropTypes.func,
@@ -19834,6 +19835,7 @@
 	      placeholder: '',
 	      searchPlaceholder: '',
 	      defaultValue: [],
+	      onClick: noop,
 	      onChange: noop,
 	      onSelect: noop,
 	      onSearch: noop,
@@ -20359,6 +20361,7 @@
 	        'span',
 	        {
 	          style: props.style,
+	          onClick: props.onClick,
 	          className: (0, _classnames2['default'])(rootCls) },
 	        _react2['default'].createElement(
 	          'span',
