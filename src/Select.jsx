@@ -33,6 +33,7 @@ const Select = React.createClass({
     transitionName: PropTypes.string,
     animation: PropTypes.string,
     choiceTransitionName: PropTypes.string,
+    onClick: PropTypes.func,
     onChange: PropTypes.func,
     onSelect: PropTypes.func,
     onSearch: PropTypes.func,
@@ -65,6 +66,7 @@ const Select = React.createClass({
       placeholder: '',
       searchPlaceholder: '',
       defaultValue: [],
+      onClick: noop,
       onChange: noop,
       onSelect: noop,
       onSearch: noop,
@@ -547,6 +549,7 @@ const Select = React.createClass({
         ref="trigger">
         <span
           style={props.style}
+          onClick={props.onClick}
           className={classnames(rootCls)}>
           <span ref="selection"
                 key="selection"

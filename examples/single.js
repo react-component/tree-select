@@ -24,6 +24,9 @@ const Demo = React.createClass({
   onSearch(value) {
     console.log('onSearch', value);
   },
+  onClick(e) {
+    console.log('onClick', 'do your self', e);
+  },
   render() {
     return (
       <div style={{margin: 20}}>
@@ -32,6 +35,7 @@ const Demo = React.createClass({
                     dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
                     value={this.state.value} treeNodeLabelProp="title"
                     treeDefaultExpandAll
+                    onClick={this.onClick}
                     onSearch={this.onSearch}
                     onChange={this.onChange}>
           <TreeNode value="parent 1" title="parent 1" key="0-1">
