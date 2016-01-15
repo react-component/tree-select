@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>util.js - example - rc-tree-select@0.4.1</title>
+  <title>util.js - example - rc-tree-select@1.0.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-tree-select@0.4.1</h1>
+    <h1>rc-tree-select@1.0.0</h1>
 
     <p>tree-select ui component for react</p>
   </div>
@@ -276,7 +276,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 
   <span class="hljs-keyword">const</span> children = [];
   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; x; i++) {
-    <span class="hljs-keyword">const</span> key = <span class="hljs-string">`<span class="hljs-subst">${preKey}</span>-<span class="hljs-subst">${i}</span>`</span>;
+    <span class="hljs-keyword">const</span> key = `${preKey}-${i}`;
     tns.push({title: key, key: key, value: key});
     <span class="hljs-keyword">if</span> (i &lt; y) {
       children.push(key);
@@ -294,10 +294,10 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 generateData(z);
 
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">loopData</span>(<span class="hljs-params">data, callback</span>) </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">loopData</span><span class="hljs-params">(data, callback)</span> </span>{
   <span class="hljs-keyword">const</span> loop = (d, level = <span class="hljs-number">0</span>) =&gt; {
     d.forEach((item, index) =&gt; {
-      <span class="hljs-keyword">const</span> pos = <span class="hljs-string">`<span class="hljs-subst">${level}</span>-<span class="hljs-subst">${index}</span>`</span>;
+      <span class="hljs-keyword">const</span> pos = `${level}-${index}`;
       <span class="hljs-keyword">if</span> (item.children) {
         loop(item.children, pos);
       }
@@ -307,14 +307,14 @@ generateData(z);
   loop(data);
 }
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isInclude</span>(<span class="hljs-params">smallArray, bigArray</span>) </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isInclude</span><span class="hljs-params">(smallArray, bigArray)</span> </span>{
   <span class="hljs-keyword">return</span> smallArray.every((ii, i) =&gt; {
     <span class="hljs-keyword">return</span> ii === bigArray[i];
   });
 }
 <span class="hljs-comment">// console.log(isInclude(['0', '1'], ['0', '10', '1']));</span>
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getFilterValue</span>(<span class="hljs-params">val, sVal, delVal</span>) </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getFilterValue</span><span class="hljs-params">(val, sVal, delVal)</span> </span>{
   <span class="hljs-keyword">const</span> allPos = [];
   <span class="hljs-keyword">const</span> delPos = [];
   loopData(gData, (item, index, pos) =&gt; {
@@ -351,7 +351,7 @@ generateData(z);
   <span class="hljs-keyword">return</span> newVal;
 }
 
-<span class="hljs-keyword">export</span> { gData, getFilterValue };
+export { gData, getFilterValue };
 </code></pre></div>
 </div>
 <a href="https://github.com/react-component/tree-select">

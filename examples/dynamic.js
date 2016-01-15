@@ -78,29 +78,24 @@ webpackJsonp([0],[
 	  propTypes: {},
 	  getInitialState: function getInitialState() {
 	    return {
-	      treeData: []
+	      treeData: [{ name: 'pNode 01', key: '0-0' }, { name: 'pNode 02', key: '0-1' }, { name: 'pNode 03', key: '0-2', isLeaf: true }],
+	      value: undefined
 	    };
 	  },
-	  componentDidMount: function componentDidMount() {
-	    var _this = this;
-	
-	    setTimeout(function () {
-	      _this.setState({
-	        treeData: [{ name: 'pNode 01', key: '0-0' }, { name: 'pNode 02', key: '0-1' }, { name: 'pNode 03', key: '0-2', isLeaf: true }]
-	      });
-	    }, 100);
-	  },
-	  onSelect: function onSelect(info) {
-	    console.log('selected', info);
+	  onChange: function onChange(value) {
+	    console.log(value);
+	    this.setState({
+	      value: value
+	    });
 	  },
 	  onLoadData: function onLoadData(treeNode) {
-	    var _this2 = this;
+	    var _this = this;
 	
 	    return new Promise(function (resolve) {
 	      setTimeout(function () {
-	        var treeData = [].concat(_toConsumableArray(_this2.state.treeData));
+	        var treeData = [].concat(_toConsumableArray(_this.state.treeData));
 	        getNewTreeData(treeData, treeNode.props.eventKey, generateTreeNodes(treeNode), 2);
-	        _this2.setState({ treeData: treeData });
+	        _this.setState({ treeData: treeData });
 	        resolve();
 	      }, 500);
 	    });
@@ -111,11 +106,16 @@ webpackJsonp([0],[
 	        if (item.children) {
 	          return _react2['default'].createElement(
 	            _rcTreeSelect.TreeNode,
-	            { title: item.name + ' label', value: item.name, key: item.key },
+	            { title: item.name + ' label',
+	              value: item.name,
+	              key: item.key },
 	            loop(item.children)
 	          );
 	        }
-	        return _react2['default'].createElement(_rcTreeSelect.TreeNode, { title: item.name + ' label', value: item.name, key: item.key, isLeaf: item.isLeaf });
+	        return _react2['default'].createElement(_rcTreeSelect.TreeNode, { title: item.name + ' label',
+	          value: item.name,
+	          key: item.key,
+	          isLeaf: item.isLeaf });
 	      });
 	    };
 	    var treeNodes = loop(this.state.treeData);
@@ -129,7 +129,10 @@ webpackJsonp([0],[
 	      ),
 	      _react2['default'].createElement(
 	        _rcTreeSelect2['default'],
-	        { style: { width: 300 }, onSelect: this.onSelect, loadData: this.onLoadData },
+	        { style: { width: 300 },
+	          value: this.state.value,
+	          onChange: this.onChange,
+	          loadData: this.onLoadData },
 	        treeNodes
 	      )
 	    );

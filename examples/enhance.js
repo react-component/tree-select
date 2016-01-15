@@ -19,8 +19,6 @@ webpackJsonp([1],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
-	
 	__webpack_require__(2);
 	
 	__webpack_require__(219);
@@ -39,16 +37,6 @@ webpackJsonp([1],{
 	
 	var _util = __webpack_require__(220);
 	
-	function getNode(arr, val) {
-	  var node = undefined;
-	  return arr.some(function (item) {
-	    if (item.key === val) {
-	      node = item.node;
-	      return true;
-	    }
-	  }) && node;
-	}
-	
 	var Demo = _react2['default'].createClass({
 	  displayName: 'Demo',
 	
@@ -64,80 +52,20 @@ webpackJsonp([1],{
 	  },
 	  getInitialState: function getInitialState() {
 	    return {
-	      value: []
+	      value: undefined
 	    };
 	  },
-	  onSelect: function onSelect(selectedValue, info) {
-	    console.log('onSelect: ', selectedValue, info);
-	    var newVal = [].concat(_toConsumableArray(this.state.value));
-	
-	    if (info.event === 'select') {
-	      newVal = this.getSelectVal(newVal, info);
-	    } else if (info.event === 'check') {
-	      newVal = this.getCheckVal(newVal, info);
-	    }
+	  onChange: function onChange(value) {
+	    console.log('onChange ', value);
+	    // can filter parent node if all its children is included
 	    this.setState({
-	      value: newVal
+	      value: value
 	    });
-	  },
-	  onChange: function onChange(value, label, preStateValue) {
-	    console.log('onChange ', value, label, this.state.value, preStateValue);
-	    if (!this.props.treeCheckable) {
-	      this.setState({
-	        value: value || []
-	      });
-	      return;
-	    }
-	    var val = [].concat(_toConsumableArray(value));
-	    var sVal = preStateValue;
-	    var delVal = [].concat(_toConsumableArray(sVal));
-	    if (!val.every(function (item) {
-	      if (sVal.indexOf(item) > -1) {
-	        delVal.splice(delVal.indexOf(item), 1);
-	        return true;
-	      }
-	    })) {
-	      console.error('受控组件，改变（只允许删除）后的 value 需要是 state.value 的子集');
-	    }
-	    this.setState({
-	      value: (0, _util.getFilterValue)(val, sVal, delVal)
-	    });
-	  },
-	  getSelectVal: function getSelectVal(val, info) {
-	    var newVal = val;
-	    var index = info.selectedKeys.indexOf(info.node.props.eventKey);
-	    if (index > -1) {
-	      index = newVal.indexOf(info.node.props.value);
-	      if (index > -1) {
-	        newVal.splice(index, 1);
-	      }
-	    } else if (index === -1) {
-	      if (this.props.multiple) {
-	        newVal.push(info.node.props.value);
-	      } else {
-	        newVal = [info.node.props.value];
-	      }
-	    }
-	    return newVal;
-	  },
-	  getCheckVal: function getCheckVal(val, info) {
-	    var newVal = val;
-	    newVal = [];
-	    info.filterAllCheckedKeys.forEach(function (item) {
-	      var node = getNode(info.allCheckedNodesKeys, item);
-	      if (node) {
-	        newVal.push(node.props.value);
-	      } else if (info.node.props.eventKey === item) {
-	        newVal.push(info.node.props.value);
-	      }
-	    });
-	    return newVal;
 	  },
 	  render: function render() {
 	    var tProps = {
 	      value: this.state.value,
 	      onChange: this.onChange,
-	      onSelect: this.onSelect,
 	      multiple: this.props.multiple,
 	      treeCheckable: this.props.treeCheckable,
 	      treeDefaultExpandAll: true
@@ -147,7 +75,8 @@ webpackJsonp([1],{
 	        if (item.children) {
 	          return _react2['default'].createElement(
 	            _rcTreeSelect.TreeNode,
-	            { key: item.key, value: item.value, title: item.key + ' label' },
+	            { key: item.key, value: item.value,
+	              title: item.key + ' label' },
 	            loop(item.children)
 	          );
 	        }

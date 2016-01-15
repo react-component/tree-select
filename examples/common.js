@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"dynamic","1":"enhance","2":"single","3":"validity"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"dynamic","1":"enhance","2":"form","3":"single"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -19985,13 +19985,12 @@
 	    }
 	  },
 	
-	  onSelect: function onSelect(info) {
+	  onSelect: function onSelect(selectedKeys, info) {
 	    var _this = this;
 	
 	    var check = info.event === 'check';
 	    if (!check && typeof info.selected === 'boolean' && !info.selected) {
 	      this.onDeselect(info);
-	      // return;
 	    }
 	    var item = info.node;
 	    var value = this.state.value;
@@ -19999,28 +19998,24 @@
 	    var props = this.props;
 	    var selectedValue = (0, _util.getValuePropValue)(item);
 	    var selectedLabel = this.getLabelFromOption(item);
-	
-	    if (check) {
-	      info.filterAllCheckedKeys = (0, _util.getCheckedKeys)(info.node, info.checkedKeys, info.allCheckedNodesKeys);
-	    }
-	    props.onSelect(selectedValue, info);
-	
+	    props.onSelect(selectedValue, item);
+	    var selectedNodes = info.checkedNodes || info.selectedNodes;
 	    if ((0, _util.isMultipleOrTags)(props)) {
 	      if (!check && value.indexOf(selectedValue) !== -1) {
 	        return;
 	      }
-	      value = !check ? value.concat([selectedValue]) : [].concat(_toConsumableArray(info.checkedKeys));
-	      label = !check ? label.concat([selectedLabel]) : info.allCheckedNodesKeys.map(function (i) {
-	        return _this.getLabelFromOption(i.node);
+	      value = !check ? value.concat([selectedValue]) : [].concat(_toConsumableArray(selectedKeys));
+	      label = !check ? label.concat([selectedLabel]) : selectedNodes.map(function (node) {
+	        return _this.getLabelFromOption(node);
 	      });
 	    } else {
 	      if (value[0] === selectedValue) {
 	        this.setOpenState(false);
 	        return;
 	      }
-	      value = !check ? [selectedValue] : [].concat(_toConsumableArray(info.checkedKeys));
-	      label = !check ? [selectedLabel] : info.allCheckedNodesKeys.map(function (i) {
-	        return _this.getLabelFromOption(i.node);
+	      value = !check ? [selectedValue] : [].concat(_toConsumableArray(selectedKeys));
+	      label = !check ? [selectedLabel] : selectedNodes.map(function (node) {
+	        return _this.getLabelFromOption(node);
 	      });
 	      this.setOpenState(false);
 	    }
@@ -21592,40 +21587,37 @@
 /* 176 */
 /***/ function(module, exports) {
 
-	/**
-	 * lodash 3.0.4 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	/* WEBPACK VAR INJECTION */(function(global) {/**
+	 * lodash 3.0.5 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modularize exports="npm" -o ./`
+	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
 	
-	/**
-	 * Checks if `value` is object-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
+	/** Used as references for various `Number` constants. */
+	var MAX_SAFE_INTEGER = 9007199254740991;
 	
-	/** Used for native method references. */
-	var objectProto = Object.prototype;
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]',
+	    funcTag = '[object Function]',
+	    genTag = '[object GeneratorFunction]';
+	
+	/** Used for built-in method references. */
+	var objectProto = global.Object.prototype;
 	
 	/** Used to check objects for own properties. */
 	var hasOwnProperty = objectProto.hasOwnProperty;
 	
-	/** Native method references. */
-	var propertyIsEnumerable = objectProto.propertyIsEnumerable;
-	
 	/**
-	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
-	 * of an array-like value.
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
 	 */
-	var MAX_SAFE_INTEGER = 9007199254740991;
+	var objectToString = objectProto.toString;
+	
+	/** Built-in value references. */
+	var propertyIsEnumerable = objectProto.propertyIsEnumerable;
 	
 	/**
 	 * The base implementation of `_.property` without support for deep paths.
@@ -21653,31 +21645,7 @@
 	var getLength = baseProperty('length');
 	
 	/**
-	 * Checks if `value` is array-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
-	 */
-	function isArrayLike(value) {
-	  return value != null && isLength(getLength(value));
-	}
-	
-	/**
-	 * Checks if `value` is a valid array-like length.
-	 *
-	 * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
-	 */
-	function isLength(value) {
-	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-	}
-	
-	/**
-	 * Checks if `value` is classified as an `arguments` object.
+	 * Checks if `value` is likely an `arguments` object.
 	 *
 	 * @static
 	 * @memberOf _
@@ -21693,12 +21661,181 @@
 	 * // => false
 	 */
 	function isArguments(value) {
-	  return isObjectLike(value) && isArrayLike(value) &&
-	    hasOwnProperty.call(value, 'callee') && !propertyIsEnumerable.call(value, 'callee');
+	  // Safari 8.1 incorrectly makes `arguments.callee` enumerable in strict mode.
+	  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+	    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+	}
+	
+	/**
+	 * Checks if `value` is array-like. A value is considered array-like if it's
+	 * not a function and has a `value.length` that's an integer greater than or
+	 * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @type Function
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 * @example
+	 *
+	 * _.isArrayLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLike(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLike('abc');
+	 * // => true
+	 *
+	 * _.isArrayLike(_.noop);
+	 * // => false
+	 */
+	function isArrayLike(value) {
+	  return value != null &&
+	    !(typeof value == 'function' && isFunction(value)) && isLength(getLength(value));
+	}
+	
+	/**
+	 * This method is like `_.isArrayLike` except that it also checks if `value`
+	 * is an object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @type Function
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an array-like object, else `false`.
+	 * @example
+	 *
+	 * _.isArrayLikeObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject('abc');
+	 * // => false
+	 *
+	 * _.isArrayLikeObject(_.noop);
+	 * // => false
+	 */
+	function isArrayLikeObject(value) {
+	  return isObjectLike(value) && isArrayLike(value);
+	}
+	
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in Safari 8 which returns 'object' for typed array constructors, and
+	  // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+	  var tag = isObject(value) ? objectToString.call(value) : '';
+	  return tag == funcTag || tag == genTag;
+	}
+	
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is loosely based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 * @example
+	 *
+	 * _.isLength(3);
+	 * // => true
+	 *
+	 * _.isLength(Number.MIN_VALUE);
+	 * // => false
+	 *
+	 * _.isLength(Infinity);
+	 * // => false
+	 *
+	 * _.isLength('3');
+	 * // => false
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+	
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(_.noop);
+	 * // => true
+	 *
+	 * _.isObject(null);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+	
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
 	}
 	
 	module.exports = isArguments;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 177 */
@@ -23733,7 +23870,6 @@
 	        level[levelArr[i]].forEach(loopFn);
 	      }
 	    }
-	    // console.log(childrenArr);
 	    return childrenArr;
 	  },
 	
@@ -23776,6 +23912,7 @@
 	    });
 	    // 为避免混乱，checkable 模式下，select 失效
 	    if (trProps.checkable) {
+	      trProps.selectable = false;
 	      trProps.checkedKeys = keys;
 	      trProps.onCheck = props.onSelect;
 	    } else {
@@ -25800,16 +25937,10 @@
 	        st.expandedKeys = expandedKeys;
 	      }
 	      this.setState(st);
-	      this.props.onTreeDragStart({
+	      this.props.onDragStart({
 	        event: e,
 	        node: treeNode
 	      });
-	      try {
-	        // ie throw error
-	        e.dataTransfer.setData('text/plain', 'firefox-need-it');
-	      } finally {
-	        // empty
-	      }
 	    }
 	  }, {
 	    key: 'onDragEnterGap',
@@ -25849,7 +25980,7 @@
 	        st.expandedKeys = expandedKeys;
 	      }
 	      this.setState(st);
-	      this.props.onTreeDragEnter({
+	      this.props.onDragEnter({
 	        event: e,
 	        node: treeNode,
 	        expandedKeys: expandedKeys && [].concat(_toConsumableArray(expandedKeys)) || [].concat(_toConsumableArray(this.state.expandedKeys))
@@ -25858,28 +25989,27 @@
 	  }, {
 	    key: 'onDragOver',
 	    value: function onDragOver(e, treeNode) {
-	      this.props.onTreeDragOver({ event: e, node: treeNode });
+	      this.props.onDragOver({ event: e, node: treeNode });
 	    }
 	  }, {
 	    key: 'onDragLeave',
 	    value: function onDragLeave(e, treeNode) {
-	      this.props.onTreeDragLeave({ event: e, node: treeNode });
+	      this.props.onDragLeave({ event: e, node: treeNode });
 	    }
 	  }, {
 	    key: 'onDrop',
 	    value: function onDrop(e, treeNode) {
 	      var key = treeNode.props.eventKey;
-	      if (this.dragNodesKeys.indexOf(key) > -1) {
-	        if (console.warn) {
-	          console.warn('can not drop to dragNode and its children');
-	        }
-	        return;
-	      }
-	      var st = {
+	      this.setState({
 	        dragOverNodeKey: '',
 	        dropNodeKey: key
-	      };
-	      this.setState(st);
+	      });
+	      if (this.dragNodesKeys.indexOf(key) > -1) {
+	        if (console.warn) {
+	          console.warn('can not drop to dragNode(include it\'s children node)');
+	        }
+	        return false;
+	      }
 	
 	      var posArr = treeNode.props.pos.split('-');
 	      var res = {
@@ -25895,7 +26025,7 @@
 	      if ('expandedKeys' in this.props) {
 	        res.originExpandedKeys = [].concat(_toConsumableArray(this._originExpandedKeys)) || [].concat(_toConsumableArray(this.state.expandedKeys));
 	      }
-	      this.props.onTreeDrop(res);
+	      this.props.onDrop(res);
 	    }
 	  }, {
 	    key: 'onExpand',
@@ -25934,8 +26064,6 @@
 	  }, {
 	    key: 'onCheck',
 	    value: function onCheck(treeNode) {
-	      var _this3 = this;
-	
 	      var checked = !treeNode.props.checked;
 	      if (treeNode.props.checkPart) {
 	        checked = true;
@@ -25946,31 +26074,19 @@
 	        checkedKeys.push(key);
 	      }
 	      var checkKeys = (0, _util.getTreeNodesStates)(this.props.children, checkedKeys, checked, key);
-	      // this.checkPartKeys = checkKeys.checkPartKeys;
 	      var newSt = {
 	        event: 'check',
 	        node: treeNode,
-	        allCheckedNodesKeys: checkKeys.checkedNodesKeys
+	        checked: checked,
+	        checkedNodes: checkKeys.checkedNodes
 	      };
+	      checkedKeys = checkKeys.checkedKeys;
 	      if (!('checkedKeys' in this.props)) {
 	        this.setState({
-	          checkedKeys: checkKeys.checkedKeys
-	        });
-	        newSt.checked = checked;
-	      } else {
-	        checkedKeys = [].concat(_toConsumableArray(this.state.checkedKeys));
-	        newSt.allCheckedNodesKeys = [];
-	        Object.keys(checkKeys.treeNodesStates).forEach(function (item) {
-	          var itemObj = checkKeys.treeNodesStates[item];
-	          // 此处用 this.checkedKeys，能包含上一次所有选中的节点，
-	          // 供用户判断点击节点，下次是否需要选中
-	          if (_this3.checkedKeys.indexOf(itemObj.key) !== -1) {
-	            newSt.allCheckedNodesKeys.push({ key: itemObj.key, node: itemObj.node, pos: item });
-	          }
+	          checkedKeys: checkedKeys
 	        });
 	      }
-	      newSt.checkedKeys = [].concat(_toConsumableArray(checkedKeys));
-	      this.props.onCheck(newSt);
+	      this.props.onCheck(checkedKeys, newSt);
 	    }
 	  }, {
 	    key: 'onSelect',
@@ -25990,20 +26106,26 @@
 	        }
 	        selectedKeys.push(eventKey);
 	      }
+	      var selectedNodes = [];
+	      if (selectedKeys.length) {
+	        (0, _util.loopAllChildren)(this.props.children, function (item) {
+	          if (selectedKeys.indexOf(item.key) !== -1) {
+	            selectedNodes.push(item);
+	          }
+	        });
+	      }
 	      var newSt = {
 	        event: 'select',
-	        node: treeNode
+	        node: treeNode,
+	        selected: selected,
+	        selectedNodes: selectedNodes
 	      };
 	      if (!('selectedKeys' in this.props)) {
 	        this.setState({
 	          selectedKeys: selectedKeys
 	        });
-	        newSt.selected = selected;
-	      } else {
-	        selectedKeys = [].concat(_toConsumableArray(this.state.selectedKeys));
 	      }
-	      newSt.selectedKeys = [].concat(_toConsumableArray(selectedKeys));
-	      props.onSelect(newSt);
+	      props.onSelect(selectedKeys, newSt);
 	    }
 	  }, {
 	    key: 'onMouseEnter',
@@ -26176,6 +26298,7 @@
 	        root: this,
 	        eventKey: key,
 	        pos: pos,
+	        selectable: props.selectable,
 	        loadData: props.loadData,
 	        onMouseEnter: props.onMouseEnter,
 	        onMouseLeave: props.onMouseLeave,
@@ -26252,11 +26375,11 @@
 	  onMouseEnter: _react.PropTypes.func,
 	  onMouseLeave: _react.PropTypes.func,
 	  onRightClick: _react.PropTypes.func,
-	  onTreeDragStart: _react.PropTypes.func,
-	  onTreeDragEnter: _react.PropTypes.func,
-	  onTreeDragOver: _react.PropTypes.func,
-	  onTreeDragLeave: _react.PropTypes.func,
-	  onTreeDrop: _react.PropTypes.func,
+	  onDragStart: _react.PropTypes.func,
+	  onDragEnter: _react.PropTypes.func,
+	  onDragOver: _react.PropTypes.func,
+	  onDragLeave: _react.PropTypes.func,
+	  onDrop: _react.PropTypes.func,
 	  filterTreeNode: _react.PropTypes.func,
 	  openTransitionName: _react.PropTypes.string,
 	  openAnimation: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.object])
@@ -26269,6 +26392,7 @@
 	  draggable: false,
 	  showLine: false,
 	  showIcon: true,
+	  selectable: true,
 	  autoExpandParent: true,
 	  defaultExpandAll: false,
 	  defaultExpandedKeys: [],
@@ -26277,11 +26401,11 @@
 	  onExpand: noop,
 	  onCheck: noop,
 	  onSelect: noop,
-	  onTreeDragStart: noop,
-	  onTreeDragEnter: noop,
-	  onTreeDragOver: noop,
-	  onTreeDragLeave: noop,
-	  onTreeDrop: noop
+	  onDragStart: noop,
+	  onDragEnter: noop,
+	  onDragOver: noop,
+	  onDragLeave: noop,
+	  onDrop: noop
 	};
 	
 	exports['default'] = Tree;
@@ -26428,6 +26552,7 @@
 	
 	// console.log(isInclude(['0', '1'], ['0', '10', '1']));
 	
+	// TODO 效率差, 需要缓存优化
 	function handleCheckState(obj, checkedPositionArr, checkIt) {
 	  var stripTail = function stripTail(str) {
 	    var arr = str.match(/(.+)(-[^-]+)$/);
@@ -26528,6 +26653,7 @@
 	      siblingPosition: siblingPosition
 	    };
 	  });
+	
 	  // debugger
 	  handleCheckState(treeNodesStates, filterMinPosition(checkedPosition.sort()), true);
 	
@@ -26652,6 +26778,12 @@
 	        dragNodeHighlight: true
 	      });
 	      this.props.root.onDragStart(e, this);
+	      try {
+	        // ie throw error
+	        e.dataTransfer.setData('text/plain', 'firefox-need-it');
+	      } finally {
+	        // empty
+	      }
 	    }
 	  }, {
 	    key: 'onDragEnter',
@@ -26773,9 +26905,12 @@
 	      }
 	      var children = props.children;
 	      var newChildren = children;
-	      var allTreeNode = Array.isArray(children) && children.every(function (item) {
-	        return item.type === TreeNode;
-	      });
+	      var allTreeNode = undefined;
+	      if (Array.isArray(children)) {
+	        allTreeNode = children.every(function (item) {
+	          return item.type === TreeNode;
+	        });
+	      }
 	      if (children && (children.type === TreeNode || allTreeNode)) {
 	        var _cls;
 	
@@ -26846,7 +26981,9 @@
 	          }
 	          domProps.onClick = function (e) {
 	            e.preventDefault();
-	            _this3.onSelect();
+	            if (props.selectable) {
+	              _this3.onSelect();
+	            }
 	            // not fire check event
 	            // if (props.checkable) {
 	            //   this.onCheck();

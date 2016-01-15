@@ -1,14 +1,14 @@
-webpackJsonp([2],{
+webpackJsonp([3],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(221);
+	module.exports = __webpack_require__(251);
 
 
 /***/ },
 
-/***/ 221:
+/***/ 251:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint no-console: 0 */
@@ -39,22 +39,11 @@ webpackJsonp([2],{
 	      value: 'leaf1'
 	    };
 	  },
-	  onChange: function onChange(e, label, preStateValue) {
-	    console.log(e, label, this.state.value, preStateValue);
-	    var value = undefined;
-	    if (e.target) {
-	      value = e.target.value;
-	    } else {
-	      value = e;
-	    }
+	  onChange: function onChange(value) {
+	    console.log('onChange', value);
 	    this.setState({ value: value });
 	  },
-	  onSearch: function onSearch(value) {
-	    console.log('onSearch', value);
-	  },
-	  onClick: function onClick(e) {
-	    console.log('onClick', 'do your self', e);
-	  },
+	
 	  render: function render() {
 	    return _react2['default'].createElement(
 	      'div',
@@ -68,10 +57,9 @@ webpackJsonp([2],{
 	        _rcTreeSelect2['default'],
 	        { style: { width: 300 },
 	          dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
-	          value: this.state.value, treeNodeLabelProp: 'title',
+	          value: this.state.value,
+	          treeNodeLabelProp: 'title',
 	          treeDefaultExpandAll: true,
-	          onClick: this.onClick,
-	          onSearch: this.onSearch,
 	          onChange: this.onChange },
 	        _react2['default'].createElement(
 	          _rcTreeSelect.TreeNode,
