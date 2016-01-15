@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		4:0
+/******/ 		3:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"dynamic","1":"enhance","2":"form","3":"single"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"dynamic","1":"form","2":"single"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -19861,7 +19861,7 @@
 	      value = (0, _util.toArray)(props.defaultValue);
 	    }
 	    if (this.props.treeCheckable) {
-	      value = (0, _util.getTreeNodesStates)(this.props.children, value).checkedKeys;
+	      value = (0, _util.getTreeNodesStates)(this.props.children, value).checkedValues;
 	    }
 	    var label = this.getLabelFromProps(props, value, 1);
 	    var inputValue = '';
@@ -19876,7 +19876,7 @@
 	    if ('value' in nextProps) {
 	      var value = (0, _util.toArray)(nextProps.value);
 	      if (nextProps.treeCheckable) {
-	        value = (0, _util.getTreeNodesStates)(nextProps.children, value).checkedKeys;
+	        value = (0, _util.getTreeNodesStates)(nextProps.children, value).checkedValues;
 	      }
 	      var label = this.getLabelFromProps(nextProps, value);
 	      this.setState({
@@ -19989,34 +19989,48 @@
 	    var _this = this;
 	
 	    var check = info.event === 'check';
-	    if (!check && typeof info.selected === 'boolean' && !info.selected) {
+	    if (info.selected === false) {
 	      this.onDeselect(info);
+	      return;
 	    }
 	    var item = info.node;
 	    var value = this.state.value;
 	    var label = this.state.label;
 	    var props = this.props;
 	    var selectedValue = (0, _util.getValuePropValue)(item);
-	    var selectedLabel = this.getLabelFromOption(item);
+	    var selectedLabel = this.getLabelFromNode(item);
 	    props.onSelect(selectedValue, item);
-	    var selectedNodes = info.checkedNodes || info.selectedNodes;
 	    if ((0, _util.isMultipleOrTags)(props)) {
+	      if (check) {
+	        // TODO treeCheckable does not support tags/dynamic
+	        var checkedNodes = info.checkedNodes;
+	
+	        checkedNodes = checkedNodes.filter(function (n) {
+	          return !n.props.children;
+	        });
+	        value = checkedNodes.map(function (n) {
+	          return (0, _util.getValuePropValue)(n);
+	        });
+	        label = checkedNodes.map(function (n) {
+	          return _this.getLabelFromNode(n);
+	        });
+	      } else {
+	        if (value.indexOf(selectedValue) !== -1) {
+	          return;
+	        }
+	        value = value.concat([selectedValue]);
+	        label = label.concat([selectedLabel]);
+	      }
 	      if (!check && value.indexOf(selectedValue) !== -1) {
 	        return;
 	      }
-	      value = !check ? value.concat([selectedValue]) : [].concat(_toConsumableArray(selectedKeys));
-	      label = !check ? label.concat([selectedLabel]) : selectedNodes.map(function (node) {
-	        return _this.getLabelFromOption(node);
-	      });
 	    } else {
 	      if (value[0] === selectedValue) {
 	        this.setOpenState(false);
 	        return;
 	      }
-	      value = !check ? [selectedValue] : [].concat(_toConsumableArray(selectedKeys));
-	      label = !check ? [selectedLabel] : selectedNodes.map(function (node) {
-	        return _this.getLabelFromOption(node);
-	      });
+	      value = [selectedValue];
+	      label = [selectedLabel];
 	      this.setOpenState(false);
 	    }
 	
@@ -20068,19 +20082,13 @@
 	      return null;
 	    }
 	    var label = null;
-	    // menu option 只有一层，treeNode 是多层嵌套
-	    // React.Children.forEach(children, (child) => {
-	    //   if (getValuePropValue(child) === value) {
-	    //     label = this.getLabelFromOption(child);
-	    //   }
-	    // });
 	    var loop = function loop(childs) {
 	      _react2['default'].Children.forEach(childs, function (item) {
 	        if (item.props.children) {
 	          loop(item.props.children);
 	        }
 	        if ((0, _util.getValuePropValue)(item) === value) {
-	          label = _this2.getLabelFromOption(item);
+	          label = _this2.getLabelFromNode(item);
 	        }
 	      });
 	    };
@@ -20088,7 +20096,7 @@
 	    return label;
 	  },
 	
-	  getLabelFromOption: function getLabelFromOption(child) {
+	  getLabelFromNode: function getLabelFromNode(child) {
 	    return (0, _util.getPropValue)(child, this.props.treeNodeLabelProp);
 	  },
 	
@@ -20191,10 +20199,13 @@
 	    });
 	  },
 	
-	  removeSelected: function removeSelected(selectedValue) {
+	  removeSelected: function removeSelected(selectedValue, e) {
 	    var props = this.props;
 	    if (props.disabled) {
 	      return;
+	    }
+	    if (e) {
+	      e.stopPropagation();
 	    }
 	    var label = this.state.label.concat();
 	    var index = this.state.value.indexOf(selectedValue);
@@ -23482,7 +23493,7 @@
 	}
 	
 	function isMultipleOrTags(props) {
-	  return props.multiple || props.tags;
+	  return props.multiple || props.tags || props.treeCheckable;
 	}
 	
 	function isMultipleOrTagsOrCombobox(props) {
@@ -23547,7 +23558,7 @@
 	      if (item.props.children) {
 	        loop(item.props.children, pos);
 	      }
-	      callback(item, index, pos, item.key || pos);
+	      callback(item, index, pos, getValuePropValue(item));
 	    });
 	  };
 	  loop(childs, 0);
@@ -23628,38 +23639,30 @@
 	  });
 	}
 	
-	function getCheckKeys(treeNodesStates) {
-	  var checkPartKeys = [];
-	  var checkedKeys = [];
-	  var checkedNodes = [];
-	  var checkedNodesKeys = [];
+	function getCheckValues(treeNodesStates) {
+	  var checkedValues = [];
 	  Object.keys(treeNodesStates).forEach(function (item) {
 	    var itemObj = treeNodesStates[item];
-	    if (itemObj.checked) {
-	      checkedKeys.push(itemObj.key);
-	      checkedNodes.push(itemObj.node);
-	      checkedNodesKeys.push({ key: itemObj.key, node: itemObj.node, pos: item });
-	    } else if (itemObj.checkPart) {
-	      checkPartKeys.push(itemObj.key);
+	    if (itemObj.checked && !itemObj.node.props.children) {
+	      checkedValues.push(getValuePropValue(itemObj.node));
 	    }
 	  });
 	  return {
-	    checkPartKeys: checkPartKeys, checkedKeys: checkedKeys, checkedNodes: checkedNodes, checkedNodesKeys: checkedNodesKeys, treeNodesStates: treeNodesStates
+	    checkedValues: checkedValues
 	  };
 	}
 	
-	function getTreeNodesStates(children, checkedKeys) {
+	function getTreeNodesStates(children, values) {
 	  var checkedPos = [];
 	  var treeNodesStates = {};
-	  loopAllChildren(children, function (item, index, pos, newKey) {
+	  loopAllChildren(children, function (item, index, pos, value) {
 	    var checked = false;
-	    if (checkedKeys.indexOf(newKey) !== -1) {
+	    if (values.indexOf(value) !== -1) {
 	      checked = true;
 	      checkedPos.push(pos);
 	    }
 	    treeNodesStates[pos] = {
 	      node: item,
-	      key: newKey,
 	      checked: checked,
 	      checkPart: false
 	    };
@@ -23667,7 +23670,7 @@
 	
 	  handleCheckState(treeNodesStates, filterMinPos(checkedPos.sort()), true);
 	
-	  return getCheckKeys(treeNodesStates);
+	  return getCheckValues(treeNodesStates);
 	}
 
 /***/ },
@@ -23906,7 +23909,7 @@
 	    var vals = props.value || props.defaultValue;
 	    var keys = [];
 	    (0, _util.loopAllChildren)(props.treeNodes, function (child) {
-	      if (vals.indexOf(child.props.value) > -1) {
+	      if (vals.indexOf((0, _util.getValuePropValue)(child)) > -1) {
 	        keys.push(child.key);
 	      }
 	    });

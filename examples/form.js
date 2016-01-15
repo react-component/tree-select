@@ -1,120 +1,14 @@
-webpackJsonp([2],{
+webpackJsonp([1],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(221);
+	module.exports = __webpack_require__(218);
 
 
 /***/ },
 
-/***/ 219:
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-
-/***/ 220:
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	var x = 3;
-	var y = 2;
-	var z = 1;
-	var gData = [];
-	
-	var generateData = function generateData(_level, _preKey, _tns) {
-	  var preKey = _preKey || '0';
-	  var tns = _tns || gData;
-	
-	  var children = [];
-	  for (var i = 0; i < x; i++) {
-	    var key = preKey + '-' + i;
-	    tns.push({ title: key, key: key, value: key });
-	    if (i < y) {
-	      children.push(key);
-	    }
-	  }
-	  if (_level < 0) {
-	    return tns;
-	  }
-	  var __level = _level - 1;
-	  children.forEach(function (key, index) {
-	    tns[index].children = [];
-	    return generateData(__level, key, tns[index].children);
-	  });
-	};
-	generateData(z);
-	
-	function loopData(data, callback) {
-	  var loop = function loop(d) {
-	    var level = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-	
-	    d.forEach(function (item, index) {
-	      var pos = level + '-' + index;
-	      if (item.children) {
-	        loop(item.children, pos);
-	      }
-	      callback(item, index, pos);
-	    });
-	  };
-	  loop(data);
-	}
-	
-	function isInclude(smallArray, bigArray) {
-	  return smallArray.every(function (ii, i) {
-	    return ii === bigArray[i];
-	  });
-	}
-	// console.log(isInclude(['0', '1'], ['0', '10', '1']));
-	
-	function getFilterValue(val, sVal, delVal) {
-	  var allPos = [];
-	  var delPos = [];
-	  loopData(gData, function (item, index, pos) {
-	    if (sVal.indexOf(item.value) > -1) {
-	      allPos.push(pos);
-	    }
-	    if (delVal.indexOf(item.value) > -1) {
-	      delPos.push(pos);
-	    }
-	  });
-	  var newPos = [];
-	  delPos.forEach(function (item) {
-	    var nArr = item.split('-');
-	    allPos.forEach(function (i) {
-	      var iArr = i.split('-');
-	      if (item === i || nArr.length > iArr.length && isInclude(iArr, nArr) || nArr.length < iArr.length && isInclude(nArr, iArr)) {
-	        // 过滤掉 父级节点 和 所有子节点。
-	        // 因为 node节点 不选时，其 父级节点 和 所有子节点 都不选。
-	        return;
-	      }
-	      newPos.push(i);
-	    });
-	  });
-	  var newVal = [];
-	  if (newPos.length) {
-	    loopData(gData, function (item, index, pos) {
-	      if (newPos.indexOf(pos) > -1) {
-	        newVal.push(item.value);
-	      }
-	    });
-	  }
-	  return newVal;
-	}
-	
-	exports.gData = gData;
-	exports.getFilterValue = getFilterValue;
-
-/***/ },
-
-/***/ 221:
+/***/ 218:
 /***/ function(module, exports, __webpack_require__) {
 
 	// use jsx to render html, do not modify simple.html
@@ -149,11 +43,11 @@ webpackJsonp([2],{
 	
 	var _rcTreeSelect2 = _interopRequireDefault(_rcTreeSelect);
 	
-	var _rcForm = __webpack_require__(222);
+	var _rcForm = __webpack_require__(220);
 	
-	var _styles = __webpack_require__(250);
+	var _styles = __webpack_require__(248);
 	
-	var _util = __webpack_require__(220);
+	var _util = __webpack_require__(249);
 	
 	var Form = (function (_Component) {
 	  _inherits(Form, _Component);
@@ -202,11 +96,11 @@ webpackJsonp([2],{
 	          if (item.children) {
 	            return _react2['default'].createElement(
 	              _rcTreeSelect.TreeNode,
-	              { key: item.key, value: item.key, title: item.key + ' label' },
+	              { key: item.key, value: item.value, title: item.key + ' label' },
 	              loop(item.children)
 	            );
 	          }
-	          return _react2['default'].createElement(_rcTreeSelect.TreeNode, { key: item.key, value: item.key, title: item.key + ' label' });
+	          return _react2['default'].createElement(_rcTreeSelect.TreeNode, { key: item.key, value: item.value, title: item.key + ' label' });
 	        });
 	      };
 	      return _react2['default'].createElement(
@@ -233,7 +127,7 @@ webpackJsonp([2],{
 	              ),
 	              _react2['default'].createElement(
 	                _rcTreeSelect2['default'],
-	                _extends({ style: { width: 200 } }, tProps, getFieldProps('tree-select', {
+	                _extends({ style: { width: 400 } }, tProps, getFieldProps('tree-select', {
 	                  initialValue: ['0-0-0'],
 	                  rules: [{ required: true, type: 'array', message: 'tree-select 需要必填' }]
 	                })),
@@ -278,7 +172,14 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 222:
+/***/ 219:
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+
+/***/ 220:
 /***/ function(module, exports, __webpack_require__) {
 
 	// export this package's api
@@ -290,13 +191,13 @@ webpackJsonp([2],{
 	
 	function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 	
-	var _createForm = __webpack_require__(223);
+	var _createForm = __webpack_require__(221);
 	
 	exports.createForm = _interopRequire(_createForm);
 
 /***/ },
 
-/***/ 223:
+/***/ 221:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -323,9 +224,9 @@ webpackJsonp([2],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(224);
+	var _utils = __webpack_require__(222);
 	
-	var _asyncValidator = __webpack_require__(226);
+	var _asyncValidator = __webpack_require__(224);
 	
 	var _asyncValidator2 = _interopRequireDefault(_asyncValidator);
 	
@@ -751,7 +652,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 224:
+/***/ 222:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -766,7 +667,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _hoistNonReactStatics = __webpack_require__(225);
+	var _hoistNonReactStatics = __webpack_require__(223);
 	
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 	
@@ -808,7 +709,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 225:
+/***/ 223:
 /***/ function(module, exports) {
 
 	/**
@@ -851,7 +752,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 226:
+/***/ 224:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -864,17 +765,17 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _util = __webpack_require__(227);
+	var _util = __webpack_require__(225);
 	
-	var _validator = __webpack_require__(228);
+	var _validator = __webpack_require__(226);
 	
 	var _validator2 = _interopRequireDefault(_validator);
 	
-	var _messages2 = __webpack_require__(249);
+	var _messages2 = __webpack_require__(247);
 	
 	var _messages3 = _interopRequireDefault(_messages2);
 	
-	var _rule = __webpack_require__(230);
+	var _rule = __webpack_require__(228);
 	
 	/**
 	 *  Encapsulates a validation schema.
@@ -1085,7 +986,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 227:
+/***/ 225:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1244,7 +1145,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 228:
+/***/ 226:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1253,27 +1154,27 @@ webpackJsonp([2],{
 	  value: true
 	});
 	exports['default'] = {
-	  string: __webpack_require__(229),
-	  method: __webpack_require__(237),
-	  number: __webpack_require__(238),
-	  boolean: __webpack_require__(239),
-	  regexp: __webpack_require__(240),
-	  integer: __webpack_require__(241),
-	  'float': __webpack_require__(242),
-	  array: __webpack_require__(243),
-	  object: __webpack_require__(244),
-	  'enum': __webpack_require__(245),
-	  pattern: __webpack_require__(246),
-	  email: __webpack_require__(247),
-	  url: __webpack_require__(247),
-	  date: __webpack_require__(248),
-	  hex: __webpack_require__(247)
+	  string: __webpack_require__(227),
+	  method: __webpack_require__(235),
+	  number: __webpack_require__(236),
+	  boolean: __webpack_require__(237),
+	  regexp: __webpack_require__(238),
+	  integer: __webpack_require__(239),
+	  'float': __webpack_require__(240),
+	  array: __webpack_require__(241),
+	  object: __webpack_require__(242),
+	  'enum': __webpack_require__(243),
+	  pattern: __webpack_require__(244),
+	  email: __webpack_require__(245),
+	  url: __webpack_require__(245),
+	  date: __webpack_require__(246),
+	  hex: __webpack_require__(245)
 	};
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 229:
+/***/ 227:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1284,11 +1185,11 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(230);
+	var _rule = __webpack_require__(228);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(227);
+	var _util = __webpack_require__(225);
 	
 	/**
 	 *  Performs validation for string types.
@@ -1325,7 +1226,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 230:
+/***/ 228:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1334,18 +1235,18 @@ webpackJsonp([2],{
 	  value: true
 	});
 	exports['default'] = {
-	  required: __webpack_require__(231),
-	  whitespace: __webpack_require__(232),
-	  type: __webpack_require__(233),
-	  range: __webpack_require__(234),
-	  'enum': __webpack_require__(235),
-	  pattern: __webpack_require__(236)
+	  required: __webpack_require__(229),
+	  whitespace: __webpack_require__(230),
+	  type: __webpack_require__(231),
+	  range: __webpack_require__(232),
+	  'enum': __webpack_require__(233),
+	  pattern: __webpack_require__(234)
 	};
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 231:
+/***/ 229:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1356,7 +1257,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(227);
+	var _util = __webpack_require__(225);
 	
 	var util = _interopRequireWildcard(_util);
 	
@@ -1382,7 +1283,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 232:
+/***/ 230:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1393,7 +1294,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(227);
+	var _util = __webpack_require__(225);
 	
 	var util = _interopRequireWildcard(_util);
 	
@@ -1419,7 +1320,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 233:
+/***/ 231:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1432,11 +1333,11 @@ webpackJsonp([2],{
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(227);
+	var _util = __webpack_require__(225);
 	
 	var util = _interopRequireWildcard(_util);
 	
-	var _required = __webpack_require__(231);
+	var _required = __webpack_require__(229);
 	
 	var _required2 = _interopRequireDefault(_required);
 	
@@ -1525,7 +1426,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 234:
+/***/ 232:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1536,7 +1437,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(227);
+	var _util = __webpack_require__(225);
 	
 	var util = _interopRequireWildcard(_util);
 	
@@ -1594,7 +1495,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 235:
+/***/ 233:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1605,7 +1506,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(227);
+	var _util = __webpack_require__(225);
 	
 	var util = _interopRequireWildcard(_util);
 	
@@ -1634,7 +1535,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 236:
+/***/ 234:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1645,7 +1546,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(227);
+	var _util = __webpack_require__(225);
 	
 	var util = _interopRequireWildcard(_util);
 	
@@ -1673,7 +1574,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 237:
+/***/ 235:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1684,7 +1585,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(230);
+	var _rule = __webpack_require__(228);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -1718,7 +1619,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 238:
+/***/ 236:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1729,7 +1630,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(230);
+	var _rule = __webpack_require__(228);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -1764,7 +1665,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 239:
+/***/ 237:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1775,7 +1676,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(230);
+	var _rule = __webpack_require__(228);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -1809,7 +1710,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 240:
+/***/ 238:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1820,11 +1721,11 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(230);
+	var _rule = __webpack_require__(228);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(227);
+	var _util = __webpack_require__(225);
 	
 	/**
 	 *  Validates the regular expression type.
@@ -1856,7 +1757,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 241:
+/***/ 239:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1867,7 +1768,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(230);
+	var _rule = __webpack_require__(228);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -1902,7 +1803,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 242:
+/***/ 240:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1913,7 +1814,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(230);
+	var _rule = __webpack_require__(228);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -1948,7 +1849,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 243:
+/***/ 241:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1959,11 +1860,11 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(230);
+	var _rule = __webpack_require__(228);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(227);
+	var _util = __webpack_require__(225);
 	
 	/**
 	 *  Validates an array.
@@ -1996,7 +1897,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 244:
+/***/ 242:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2007,7 +1908,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(230);
+	var _rule = __webpack_require__(228);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -2041,7 +1942,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 245:
+/***/ 243:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2052,7 +1953,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(230);
+	var _rule = __webpack_require__(228);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -2088,7 +1989,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 246:
+/***/ 244:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2099,11 +2000,11 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(230);
+	var _rule = __webpack_require__(228);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(227);
+	var _util = __webpack_require__(225);
 	
 	/**
 	 *  Validates a regular expression pattern.
@@ -2138,7 +2039,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 247:
+/***/ 245:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2149,7 +2050,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(230);
+	var _rule = __webpack_require__(228);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -2164,7 +2065,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 248:
+/***/ 246:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2175,11 +2076,11 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(230);
+	var _rule = __webpack_require__(228);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(227);
+	var _util = __webpack_require__(225);
 	
 	function date(rule, value, callback, source, options) {
 	  // console.log('integer rule called %j', rule);
@@ -2206,7 +2107,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 249:
+/***/ 247:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2271,7 +2172,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 250:
+/***/ 248:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2292,6 +2193,108 @@ webpackJsonp([2],{
 	  padding: 10
 	};
 	exports.errorStyle = errorStyle;
+
+/***/ },
+
+/***/ 249:
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var x = 3;
+	var y = 2;
+	var z = 1;
+	var gData = [];
+	
+	var generateData = function generateData(_level, _preKey, _tns) {
+	  var preKey = _preKey || '0';
+	  var tns = _tns || gData;
+	
+	  var children = [];
+	  for (var i = 0; i < x; i++) {
+	    var key = preKey + '-' + i;
+	    tns.push({
+	      title: key,
+	      key: key + '--key',
+	      value: key
+	    });
+	    if (i < y) {
+	      children.push(key);
+	    }
+	  }
+	  if (_level < 0) {
+	    return tns;
+	  }
+	  var __level = _level - 1;
+	  children.forEach(function (key, index) {
+	    tns[index].children = [];
+	    return generateData(__level, key, tns[index].children);
+	  });
+	};
+	generateData(z);
+	
+	function loopData(data, callback) {
+	  var loop = function loop(d) {
+	    var level = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+	
+	    d.forEach(function (item, index) {
+	      var pos = level + '-' + index;
+	      if (item.children) {
+	        loop(item.children, pos);
+	      }
+	      callback(item, index, pos);
+	    });
+	  };
+	  loop(data);
+	}
+	
+	function isInclude(smallArray, bigArray) {
+	  return smallArray.every(function (ii, i) {
+	    return ii === bigArray[i];
+	  });
+	}
+	// console.log(isInclude(['0', '1'], ['0', '10', '1']));
+	
+	function getFilterValue(val, sVal, delVal) {
+	  var allPos = [];
+	  var delPos = [];
+	  loopData(gData, function (item, index, pos) {
+	    if (sVal.indexOf(item.value) > -1) {
+	      allPos.push(pos);
+	    }
+	    if (delVal.indexOf(item.value) > -1) {
+	      delPos.push(pos);
+	    }
+	  });
+	  var newPos = [];
+	  delPos.forEach(function (item) {
+	    var nArr = item.split('-');
+	    allPos.forEach(function (i) {
+	      var iArr = i.split('-');
+	      if (item === i || nArr.length > iArr.length && isInclude(iArr, nArr) || nArr.length < iArr.length && isInclude(nArr, iArr)) {
+	        // 过滤掉 父级节点 和 所有子节点。
+	        // 因为 node节点 不选时，其 父级节点 和 所有子节点 都不选。
+	        return;
+	      }
+	      newPos.push(i);
+	    });
+	  });
+	  var newVal = [];
+	  if (newPos.length) {
+	    loopData(gData, function (item, index, pos) {
+	      if (newPos.indexOf(pos) > -1) {
+	        newVal.push(item.value);
+	      }
+	    });
+	  }
+	  return newVal;
+	}
+	
+	exports.gData = gData;
+	exports.getFilterValue = getFilterValue;
 
 /***/ }
 
