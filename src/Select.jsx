@@ -92,7 +92,7 @@ const Select = React.createClass({
       value = toArray(props.defaultValue);
     }
     if (this.props.treeCheckable) {
-      value = getTreeNodesStates(this.props.children, value).checkedKeys;
+      value = getTreeNodesStates(this.props.children, value).checkedValues;
     }
     const label = this.getLabelFromProps(props, value, 1);
     let inputValue = '';
@@ -107,7 +107,7 @@ const Select = React.createClass({
     if ('value' in nextProps) {
       let value = toArray(nextProps.value);
       if (nextProps.treeCheckable) {
-        value = getTreeNodesStates(nextProps.children, value).checkedKeys;
+        value = getTreeNodesStates(nextProps.children, value).checkedValues;
       }
       const label = this.getLabelFromProps(nextProps, value);
       this.setState({
@@ -218,34 +218,41 @@ const Select = React.createClass({
 
   onSelect(selectedKeys, info) {
     const check = info.event === 'check';
-    if (!check && typeof info.selected === 'boolean' && !info.selected) {
+    if (info.selected === false) {
       this.onDeselect(info);
+      return;
     }
     const item = info.node;
     let value = this.state.value;
     let label = this.state.label;
     const props = this.props;
     const selectedValue = getValuePropValue(item);
-    const selectedLabel = this.getLabelFromOption(item);
+    const selectedLabel = this.getLabelFromNode(item);
     props.onSelect(selectedValue, item);
-    const selectedNodes = info.checkedNodes || info.selectedNodes;
     if (isMultipleOrTags(props)) {
+      if (check) {
+        // TODO treeCheckable does not support tags/dynamic
+        let {checkedNodes} = info;
+        checkedNodes = checkedNodes.filter(n => !n.props.children);
+        value = checkedNodes.map(n => getValuePropValue(n));
+        label = checkedNodes.map(n => this.getLabelFromNode(n));
+      } else {
+        if (value.indexOf(selectedValue) !== -1) {
+          return;
+        }
+        value = value.concat([selectedValue]);
+        label = label.concat([selectedLabel]);
+      }
       if (!check && value.indexOf(selectedValue) !== -1) {
         return;
       }
-      value = !check ? value.concat([selectedValue]) : [...selectedKeys];
-      label = !check ? label.concat([selectedLabel]) : selectedNodes.map(node => {
-        return this.getLabelFromOption(node);
-      });
     } else {
       if (value[0] === selectedValue) {
         this.setOpenState(false);
         return;
       }
-      value = !check ? [selectedValue] : [...selectedKeys];
-      label = !check ? [selectedLabel] : selectedNodes.map(node => {
-        return this.getLabelFromOption(node);
-      });
+      value = [selectedValue];
+      label = [selectedLabel];
       this.setOpenState(false);
     }
 
@@ -295,19 +302,13 @@ const Select = React.createClass({
       return null;
     }
     let label = null;
-    // menu option 只有一层，treeNode 是多层嵌套
-    // React.Children.forEach(children, (child) => {
-    //   if (getValuePropValue(child) === value) {
-    //     label = this.getLabelFromOption(child);
-    //   }
-    // });
     const loop = (childs) => {
       React.Children.forEach(childs, (item) => {
         if (item.props.children) {
           loop(item.props.children);
         }
         if (getValuePropValue(item) === value) {
-          label = this.getLabelFromOption(item);
+          label = this.getLabelFromNode(item);
         }
       });
     };
@@ -315,7 +316,7 @@ const Select = React.createClass({
     return label;
   },
 
-  getLabelFromOption(child) {
+  getLabelFromNode(child) {
     return getPropValue(child, this.props.treeNodeLabelProp);
   },
 
@@ -408,10 +409,13 @@ const Select = React.createClass({
     });
   },
 
-  removeSelected(selectedValue) {
+  removeSelected(selectedValue, e) {
     const props = this.props;
     if (props.disabled) {
       return;
+    }
+    if (e) {
+      e.stopPropagation();
     }
     const label = this.state.label.concat();
     const index = this.state.value.indexOf(selectedValue);
@@ -436,7 +440,7 @@ const Select = React.createClass({
     if (typeof sv === 'string') {
       sv = [sv];
     }
-    if (value.length !== sv.length || !value.every((val, index) => {return sv[index] === val;})) {
+    if (value.length !== sv.length || !value.every((val, index) => sv[index] === val)) {
       return true;
     }
   },

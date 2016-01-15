@@ -23,7 +23,7 @@ export function isCombobox(props) {
 }
 
 export function isMultipleOrTags(props) {
-  return props.multiple || props.tags;
+  return props.multiple || props.tags || props.treeCheckable;
 }
 
 export function isMultipleOrTagsOrCombobox(props) {
@@ -88,7 +88,7 @@ export function loopAllChildren(childs, callback) {
       if (item.props.children) {
         loop(item.props.children, pos);
       }
-      callback(item, index, pos, item.key || pos);
+      callback(item, index, pos, getValuePropValue(item));
     });
   };
   loop(childs, 0);
@@ -167,38 +167,30 @@ function handleCheckState(obj, checkedPosArr, checkIt) {
   });
 }
 
-function getCheckKeys(treeNodesStates) {
-  const checkPartKeys = [];
-  const checkedKeys = [];
-  const checkedNodes = [];
-  const checkedNodesKeys = [];
+function getCheckValues(treeNodesStates) {
+  const checkedValues = [];
   Object.keys(treeNodesStates).forEach((item) => {
     const itemObj = treeNodesStates[item];
-    if (itemObj.checked) {
-      checkedKeys.push(itemObj.key);
-      checkedNodes.push(itemObj.node);
-      checkedNodesKeys.push({key: itemObj.key, node: itemObj.node, pos: item});
-    } else if (itemObj.checkPart) {
-      checkPartKeys.push(itemObj.key);
+    if (itemObj.checked && !itemObj.node.props.children) {
+      checkedValues.push(getValuePropValue(itemObj.node));
     }
   });
   return {
-    checkPartKeys, checkedKeys, checkedNodes, checkedNodesKeys, treeNodesStates,
+    checkedValues,
   };
 }
 
-export function getTreeNodesStates(children, checkedKeys) {
+export function getTreeNodesStates(children, values) {
   const checkedPos = [];
   const treeNodesStates = {};
-  loopAllChildren(children, (item, index, pos, newKey) => {
+  loopAllChildren(children, (item, index, pos, value) => {
     let checked = false;
-    if (checkedKeys.indexOf(newKey) !== -1) {
+    if (values.indexOf(value) !== -1) {
       checked = true;
       checkedPos.push(pos);
     }
     treeNodesStates[pos] = {
       node: item,
-      key: newKey,
       checked: checked,
       checkPart: false,
     };
@@ -206,5 +198,5 @@ export function getTreeNodesStates(children, checkedKeys) {
 
   handleCheckState(treeNodesStates, filterMinPos(checkedPos.sort()), true);
 
-  return getCheckKeys(treeNodesStates);
+  return getCheckValues(treeNodesStates);
 }

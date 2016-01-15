@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import assign from 'object-assign';
 import Trigger from 'rc-trigger';
 import Tree, { TreeNode } from 'rc-tree';
-import { filterMinPos, loopAllChildren } from './util';
+import { filterMinPos, loopAllChildren, getValuePropValue } from './util';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -190,7 +190,7 @@ const SelectTrigger = React.createClass({
     const vals = props.value || props.defaultValue;
     const keys = [];
     loopAllChildren(props.treeNodes, (child) => {
-      if (vals.indexOf(child.props.value) > -1) {
+      if (vals.indexOf(getValuePropValue(child)) > -1) {
         keys.push(child.key);
       }
     });

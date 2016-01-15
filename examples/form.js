@@ -46,9 +46,9 @@ class Form extends Component {
     const loop = data => {
       return data.map((item) => {
         if (item.children) {
-          return <TreeNode key={item.key} value={item.key} title={item.key + ' label'}>{loop(item.children)}</TreeNode>;
+          return <TreeNode key={item.key} value={item.value} title={item.key + ' label'}>{loop(item.children)}</TreeNode>;
         }
-        return <TreeNode key={item.key} value={item.key} title={item.key + ' label'}/>;
+        return <TreeNode key={item.key} value={item.value} title={item.key + ' label'}/>;
       });
     };
     return (<div style={{margin: 20}}>
@@ -57,7 +57,7 @@ class Form extends Component {
         <div style={regionStyle}>
           <div>
             <p style={{color: 'blue'}}>work rightly</p>
-            <TreeSelect style={{width: 200}} {...tProps}
+            <TreeSelect style={{width: 400}} {...tProps}
               {...getFieldProps('tree-select', {
                 initialValue: ['0-0-0'],
                 rules: [
