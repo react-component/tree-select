@@ -333,7 +333,7 @@ webpackJsonp([3],{
 	              ),
 	              _react2['default'].createElement(Demo, _extends({ form: form, value: this.state.value }, getFieldProps('treeselect1', {
 	                initialValue: this.state.value,
-	                rules: [{ required: true, type: 'array' }]
+	                rules: [{ required: true, type: 'array', message: 'treeselect1 需要必填' }]
 	              })))
 	            ),
 	            _react2['default'].createElement(
