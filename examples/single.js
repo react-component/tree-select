@@ -11,32 +11,20 @@ const Demo = React.createClass({
       value: 'leaf1',
     };
   },
-  onChange(e, label, preStateValue) {
-    console.log(e, label, this.state.value, preStateValue);
-    let value;
-    if (e.target) {
-      value = e.target.value;
-    } else {
-      value = e;
-    }
+  onChange(value) {
+    console.log('onChange', value);
     this.setState({value});
   },
-  onSearch(value) {
-    console.log('onSearch', value);
-  },
-  onClick(e) {
-    console.log('onClick', 'do your self', e);
-  },
+
   render() {
     return (
       <div style={{margin: 20}}>
         <h2>Single Select</h2>
         <TreeSelect style={{width: 300}}
                     dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
-                    value={this.state.value} treeNodeLabelProp="title"
+                    value={this.state.value}
+                    treeNodeLabelProp="title"
                     treeDefaultExpandAll
-                    onClick={this.onClick}
-                    onSearch={this.onSearch}
                     onChange={this.onChange}>
           <TreeNode value="parent 1" title="parent 1" key="0-1">
             <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">

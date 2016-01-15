@@ -6,7 +6,7 @@ import Animate from 'rc-animate';
 import {
   getPropValue, getValuePropValue, isCombobox,
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
-  isSingleMode, toArray, getCheckedKeys, getTreeNodesStates,
+  isSingleMode, toArray, getTreeNodesStates,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 
@@ -216,11 +216,10 @@ const Select = React.createClass({
     }
   },
 
-  onSelect(info) {
+  onSelect(selectedKeys, info) {
     const check = info.event === 'check';
     if (!check && typeof info.selected === 'boolean' && !info.selected) {
       this.onDeselect(info);
-      // return;
     }
     const item = info.node;
     let value = this.state.value;
@@ -228,28 +227,24 @@ const Select = React.createClass({
     const props = this.props;
     const selectedValue = getValuePropValue(item);
     const selectedLabel = this.getLabelFromOption(item);
-
-    if (check) {
-      info.filterAllCheckedKeys = getCheckedKeys(info.node, info.checkedKeys, info.allCheckedNodesKeys);
-    }
-    props.onSelect(selectedValue, info);
-
+    props.onSelect(selectedValue, item);
+    const selectedNodes = info.checkedNodes || info.selectedNodes;
     if (isMultipleOrTags(props)) {
       if (!check && value.indexOf(selectedValue) !== -1) {
         return;
       }
-      value = !check ? value.concat([selectedValue]) : [...info.checkedKeys];
-      label = !check ? label.concat([selectedLabel]) : info.allCheckedNodesKeys.map(i => {
-        return this.getLabelFromOption(i.node);
+      value = !check ? value.concat([selectedValue]) : [...selectedKeys];
+      label = !check ? label.concat([selectedLabel]) : selectedNodes.map(node => {
+        return this.getLabelFromOption(node);
       });
     } else {
       if (value[0] === selectedValue) {
         this.setOpenState(false);
         return;
       }
-      value = !check ? [selectedValue] : [...info.checkedKeys];
-      label = !check ? [selectedLabel] : info.allCheckedNodesKeys.map(i => {
-        return this.getLabelFromOption(i.node);
+      value = !check ? [selectedValue] : [...selectedKeys];
+      label = !check ? [selectedLabel] : selectedNodes.map(node => {
+        return this.getLabelFromOption(node);
       });
       this.setOpenState(false);
     }
@@ -558,8 +553,7 @@ const Select = React.createClass({
                 aria-autocomplete="list"
                 aria-haspopup="true"
                 aria-expanded={state.open}
-            {...extraSelectionProps}
-          >
+            {...extraSelectionProps}>
         {ctrlNode}
             {allowClear && !isMultipleOrTags(props) ? clear : null}
             {multiple || !props.showArrow ? null :

@@ -158,7 +158,6 @@ const SelectTrigger = React.createClass({
         level[levelArr[i]].forEach(loopFn);
       }
     }
-    // console.log(childrenArr);
     return childrenArr;
   },
 
@@ -197,6 +196,7 @@ const SelectTrigger = React.createClass({
     });
     // 为避免混乱，checkable 模式下，select 失效
     if (trProps.checkable) {
+      trProps.selectable = false;
       trProps.checkedKeys = keys;
       trProps.onCheck = props.onSelect;
     } else {

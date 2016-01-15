@@ -51,22 +51,19 @@ const Demo = React.createClass({
   propTypes: {},
   getInitialState() {
     return {
-      treeData: [],
+      treeData: [
+        {name: 'pNode 01', key: '0-0'},
+        {name: 'pNode 02', key: '0-1'},
+        {name: 'pNode 03', key: '0-2', isLeaf: true},
+      ],
+      value: undefined,
     };
   },
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        treeData: [
-          {name: 'pNode 01', key: '0-0'},
-          {name: 'pNode 02', key: '0-1'},
-          {name: 'pNode 03', key: '0-2', isLeaf: true},
-        ],
-      });
-    }, 100);
-  },
-  onSelect(info) {
-    console.log('selected', info);
+  onChange(value) {
+    console.log(value);
+    this.setState({
+      value,
+    });
   },
   onLoadData(treeNode) {
     return new Promise((resolve) => {
@@ -82,16 +79,24 @@ const Demo = React.createClass({
     const loop = (data) => {
       return data.map((item) => {
         if (item.children) {
-          return <TreeNode title={item.name + ' label'} value={item.name} key={item.key}>{loop(item.children)}</TreeNode>;
+          return (<TreeNode title={item.name + ' label'}
+                           value={item.name}
+                           key={item.key}>{loop(item.children)}</TreeNode>);
         }
-        return <TreeNode title={item.name + ' label'} value={item.name} key={item.key} isLeaf={item.isLeaf} />;
+        return (<TreeNode title={item.name + ' label'}
+                         value={item.name}
+                         key={item.key}
+                         isLeaf={item.isLeaf} />);
       });
     };
     const treeNodes = loop(this.state.treeData);
     return (
       <div style={{padding: '10px 30px'}}>
         <h2>dynamic render</h2>
-        <TreeSelect style={{width: 300}} onSelect={this.onSelect} loadData={this.onLoadData}>
+        <TreeSelect style={{width: 300}}
+                    value={this.state.value}
+                    onChange={this.onChange}
+                    loadData={this.onLoadData}>
           {treeNodes}
         </TreeSelect>
       </div>
