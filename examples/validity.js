@@ -149,7 +149,7 @@ class Form extends Component {
             <Demo form={form} value={this.state.value} {...getFieldProps('treeselect1', {
               initialValue: this.state.value,
               rules: [
-                {required: true, type: 'array'},
+                {required: true, type: 'array', message: 'treeselect1 需要必填'},
               ],
             })} />
           </div>
