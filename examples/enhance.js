@@ -73,7 +73,6 @@ webpackJsonp([1],{
 	
 	    if (info.event === 'select') {
 	      newVal = this.getSelectVal(newVal, info);
-	      this.event = 'select';
 	    } else if (info.event === 'check') {
 	      newVal = this.getCheckVal(newVal, info);
 	    }
@@ -83,7 +82,7 @@ webpackJsonp([1],{
 	  },
 	  onChange: function onChange(value, label, preStateValue) {
 	    console.log('onChange ', value, label, this.state.value, preStateValue);
-	    if (this.event === 'select') {
+	    if (!this.props.treeCheckable) {
 	      this.setState({
 	        value: value || []
 	      });

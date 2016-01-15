@@ -305,7 +305,6 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 
     <span class="hljs-keyword">if</span> (info.event === <span class="hljs-string">'select'</span>) {
       newVal = <span class="hljs-keyword">this</span>.getSelectVal(newVal, info);
-      <span class="hljs-keyword">this</span>.event = <span class="hljs-string">'select'</span>;
     } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (info.event === <span class="hljs-string">'check'</span>) {
       newVal = <span class="hljs-keyword">this</span>.getCheckVal(newVal, info);
     }
@@ -315,7 +314,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   },
   onChange(value, label, preStateValue) {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange '</span>, value, label, <span class="hljs-keyword">this</span>.state.value, preStateValue);
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.event === <span class="hljs-string">'select'</span>) {
+    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.props.treeCheckable) {
       <span class="hljs-keyword">this</span>.setState({
         value: value || [],
       });
