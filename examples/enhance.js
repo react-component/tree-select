@@ -39,7 +39,6 @@ const Demo = React.createClass({
 
     if (info.event === 'select') {
       newVal = this.getSelectVal(newVal, info);
-      this.event = 'select';
     } else if (info.event === 'check') {
       newVal = this.getCheckVal(newVal, info);
     }
@@ -49,7 +48,7 @@ const Demo = React.createClass({
   },
   onChange(value, label, preStateValue) {
     console.log('onChange ', value, label, this.state.value, preStateValue);
-    if (this.event === 'select') {
+    if (!this.props.treeCheckable) {
       this.setState({
         value: value || [],
       });
