@@ -161,7 +161,7 @@ const SelectTrigger = React.createClass({
     return childrenArr;
   },
 
-  renderTree(treeProps) {
+  renderTree(treeNodes, newTreeNodes, multiple) {
     const props = this.props;
 
     const loop = data => {
@@ -179,7 +179,7 @@ const SelectTrigger = React.createClass({
     };
 
     const trProps = {
-      multiple: treeProps.multiple,
+      multiple,
       prefixCls: props.prefixCls + '-tree',
       showIcon: props.treeIcon,
       showLine: props.treeLine,
@@ -189,7 +189,7 @@ const SelectTrigger = React.createClass({
     };
     const vals = props.value || props.defaultValue;
     const keys = [];
-    loopAllChildren(props.treeNodes, (child) => {
+    loopAllChildren(treeNodes, (child) => {
       if (vals.indexOf(getValuePropValue(child)) > -1) {
         keys.push(child.key);
       }
@@ -210,7 +210,7 @@ const SelectTrigger = React.createClass({
     }
 
     return (<Tree ref={this.savePopupElement} {...trProps}>
-        {loop(treeProps.treeNodes)}
+        {loop(newTreeNodes)}
     </Tree>);
   },
   render() {
@@ -225,7 +225,7 @@ const SelectTrigger = React.createClass({
     const search = multiple || props.combobox || !props.showSearch ? null : (
       <span className={`${dropdownPrefixCls}-search`}>{props.inputElement}</span>
     );
-    const treeNodes = this.renderFilterOptionsFromChildren(props.treeNodes);
+    const treeNodes = this.renderFilterOptionsFromChildren(props.treeData || props.treeNodes);
     let notFoundContent;
     if (!treeNodes.length) {
       if (props.notFoundContent) {
@@ -237,7 +237,7 @@ const SelectTrigger = React.createClass({
     }
     const popupElement = (<div>
       {search}
-      {notFoundContent ? notFoundContent : this.renderTree({treeNodes, multiple})}
+      {notFoundContent ? notFoundContent : this.renderTree(props.treeData || props.treeNodes, treeNodes, multiple)}
     </div>);
 
     return (<Trigger action={props.disabled ? [] : ['click']}

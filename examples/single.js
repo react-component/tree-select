@@ -4,6 +4,7 @@ import 'rc-tree-select/assets/index.less';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TreeSelect, { TreeNode } from 'rc-tree-select';
+import data from './data';
 
 const Demo = React.createClass({
   getInitialState() {
@@ -35,6 +36,14 @@ const Demo = React.createClass({
             </TreeNode>
           </TreeNode>
         </TreeSelect>
+
+        <h2>treeData demo</h2>
+        <TreeSelect style={{width: 300}}
+                    dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
+                    treeData={data}
+                    value={this.state.value}
+                    treeDefaultExpandAll
+                    onChange={this.onChange} />
       </div>
     );
   },

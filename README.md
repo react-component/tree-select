@@ -105,14 +105,16 @@ see examples
 |filterTreeNode | filter some treeNodes as you need. it should return true | function(treeNode) | - |
 |treeNodeFilterProp | which prop value of treeNode will be used for filter if filterTreeNode return true | String | 'value' |
 |treeNodeLabelProp | which prop value of treeNode will render as content of select | String | 'value' |
+|treeData | treeNodes Array, if set and you need not to construct children TreeNode. (if value is not unique of the whole array, you must provide `key` as unique id) | array<{value, label, children}> | [] |
 |loadData | load data asynchronously | function(node) | - |
 
 ### TreeNode props
+> note: if set `treeData`, you can omit TreeNode setting below.
 
 | name     | description    | type     | default      |
 |----------|----------------|----------|--------------|
 |disabled | disable treeNode | bool | false |
-|key | the unique key of treeNode, you must setting  | String | - |
+|key | the unique key of treeNode, you must set it  | String | - |
 |value | default as treeNodeFilterProp | String | '' |
 |title | tree/subTree's title | String | '---' |
 |isLeaf | whether it's leaf node | bool | false |

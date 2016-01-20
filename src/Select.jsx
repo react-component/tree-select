@@ -9,6 +9,7 @@ import {
   isSingleMode, toArray, getTreeNodesStates,
 } from './util';
 import SelectTrigger from './SelectTrigger';
+import _TreeNode from './TreeNode';
 
 function noop() {
 }
@@ -54,6 +55,7 @@ const Select = React.createClass({
     ]),
     treeNodeLabelProp: PropTypes.string,
     treeNodeFilterProp: PropTypes.string,
+    treeData: PropTypes.array,
     loadData: PropTypes.func,
   },
 
@@ -327,7 +329,7 @@ const Select = React.createClass({
     } else if (init && 'defaultLabel' in props) {
       label = toArray(props.defaultLabel);
     } else {
-      label = this.getLabelByValue(props.children, value);
+      label = this.getLabelByValue(this.renderTreeData() || props.children, value);
     }
     return label;
   },
@@ -508,7 +510,25 @@ const Select = React.createClass({
     }
     return (<ul className={className}>{selectedValueNodes}</ul>);
   },
-
+  renderTreeData() {
+    const loop = (data, level = 0) => {
+      return data.map((item, index) => {
+        const pos = `${level}-${index}`;
+        const props = {
+          title: item.label,
+          value: item.value,
+          key: item.key || item.value || pos,
+        };
+        if (item.children) {
+          return (<_TreeNode {...props}>{loop(item.children, pos)}</_TreeNode>);
+        }
+        return (<_TreeNode {...props} isLeaf={item.isLeaf} />);
+      });
+    };
+    if (this.props.treeData) {
+      return loop(this.props.treeData);
+    }
+  },
   render() {
     const props = this.props;
     const multiple = isMultipleOrTags(props);
@@ -537,6 +557,7 @@ const Select = React.createClass({
     return (
       <SelectTrigger {...props}
         treeNodes={props.children}
+        treeData={this.renderTreeData(props.treeData)}
         multiple={multiple}
         disabled={disabled}
         visible={state.open}
