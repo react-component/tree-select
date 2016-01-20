@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-tree-select@1.0.1 - tree-select ui component for react</title>
+  <title>rc-tree-select@1.1.0 - tree-select ui component for react</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,12 +737,14 @@
 
 <body>
 <div class="header">
-  <h1>rc-tree-select@1.0.1</h1>
+  <h1>rc-tree-select@1.1.0</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
   <div class="examples-body">
     <ul>
+      
+      <li><a href="examples/data.html">data</a></li>
       
       <li><a href="examples/dynamic.html">dynamic</a></li>
       
@@ -978,6 +980,12 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <td>&#39;value&#39;</td>
 </tr>
 <tr>
+<td>treeData</td>
+<td>treeNodes Array, if set and you need not to construct children TreeNode. (if value is not unique of the whole array, you must provide <code>key</code> as unique id)</td>
+<td>array&lt;{value, label, children}&gt;</td>
+<td>[]</td>
+</tr>
+<tr>
 <td>loadData</td>
 <td>load data asynchronously</td>
 <td>function(node)</td>
@@ -985,7 +993,10 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 </tr>
 </tbody>
 </table>
-<h3>TreeNode props<a id="user-content-treenode-props" name="treenode-props" class="anchor" aria-hidden="true" href="#treenode-props"><span class="octicon octicon-link"></span></a></h3><table>
+<h3>TreeNode props<a id="user-content-treenode-props" name="treenode-props" class="anchor" aria-hidden="true" href="#treenode-props"><span class="octicon octicon-link"></span></a></h3><blockquote>
+<p>note: if set <code>treeData</code>, you can omit TreeNode setting below.</p>
+</blockquote>
+<table>
 <thead>
 <tr>
 <th>name</th>
@@ -1003,7 +1014,7 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 </tr>
 <tr>
 <td>key</td>
-<td>the unique key of treeNode, you must setting</td>
+<td>the unique key of treeNode, you must set it</td>
 <td>String</td>
 <td>-</td>
 </tr>

@@ -19781,6 +19781,10 @@
 	
 	var _SelectTrigger2 = _interopRequireDefault(_SelectTrigger);
 	
+	var _TreeNode2 = __webpack_require__(217);
+	
+	var _TreeNode3 = _interopRequireDefault(_TreeNode2);
+	
 	function noop() {}
 	
 	function filterFn(input, child) {
@@ -19823,6 +19827,7 @@
 	    treeCheckable: _react.PropTypes.oneOfType([_react.PropTypes.bool, _react.PropTypes.node]),
 	    treeNodeLabelProp: _react.PropTypes.string,
 	    treeNodeFilterProp: _react.PropTypes.string,
+	    treeData: _react.PropTypes.array,
 	    loadData: _react.PropTypes.func
 	  },
 	
@@ -20107,7 +20112,7 @@
 	    } else if (init && 'defaultLabel' in props) {
 	      label = (0, _util.toArray)(props.defaultLabel);
 	    } else {
-	      label = this.getLabelByValue(props.children, value);
+	      label = this.getLabelByValue(this.renderTreeData() || props.children, value);
 	    }
 	    return label;
 	  },
@@ -20325,7 +20330,31 @@
 	      selectedValueNodes
 	    );
 	  },
+	  renderTreeData: function renderTreeData() {
+	    var loop = function loop(data) {
+	      var level = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 	
+	      return data.map(function (item, index) {
+	        var pos = level + '-' + index;
+	        var props = {
+	          title: item.label,
+	          value: item.value,
+	          key: item.key || item.value || pos
+	        };
+	        if (item.children) {
+	          return _react2['default'].createElement(
+	            _TreeNode3['default'],
+	            props,
+	            loop(item.children, pos)
+	          );
+	        }
+	        return _react2['default'].createElement(_TreeNode3['default'], _extends({}, props, { isLeaf: item.isLeaf }));
+	      });
+	    };
+	    if (this.props.treeData) {
+	      return loop(this.props.treeData);
+	    }
+	  },
 	  render: function render() {
 	    var _rootCls;
 	
@@ -20354,6 +20383,7 @@
 	      _SelectTrigger2['default'],
 	      _extends({}, props, {
 	        treeNodes: props.children,
+	        treeData: this.renderTreeData(props.treeData),
 	        multiple: multiple,
 	        disabled: disabled,
 	        visible: state.open,
@@ -23876,7 +23906,7 @@
 	    return childrenArr;
 	  },
 	
-	  renderTree: function renderTree(treeProps) {
+	  renderTree: function renderTree(treeNodes, newTreeNodes, multiple) {
 	    var props = this.props;
 	
 	    var loop = function loop(data) {
@@ -23898,7 +23928,7 @@
 	    };
 	
 	    var trProps = {
-	      multiple: treeProps.multiple,
+	      multiple: multiple,
 	      prefixCls: props.prefixCls + '-tree',
 	      showIcon: props.treeIcon,
 	      showLine: props.treeLine,
@@ -23908,7 +23938,7 @@
 	    };
 	    var vals = props.value || props.defaultValue;
 	    var keys = [];
-	    (0, _util.loopAllChildren)(props.treeNodes, function (child) {
+	    (0, _util.loopAllChildren)(treeNodes, function (child) {
 	      if (vals.indexOf((0, _util.getValuePropValue)(child)) > -1) {
 	        keys.push(child.key);
 	      }
@@ -23931,7 +23961,7 @@
 	    return _react2['default'].createElement(
 	      _rcTree2['default'],
 	      _extends({ ref: this.savePopupElement }, trProps),
-	      loop(treeProps.treeNodes)
+	      loop(newTreeNodes)
 	    );
 	  },
 	  render: function render() {
@@ -23947,7 +23977,7 @@
 	      { className: dropdownPrefixCls + '-search' },
 	      props.inputElement
 	    );
-	    var treeNodes = this.renderFilterOptionsFromChildren(props.treeNodes);
+	    var treeNodes = this.renderFilterOptionsFromChildren(props.treeData || props.treeNodes);
 	    var notFoundContent = undefined;
 	    if (!treeNodes.length) {
 	      if (props.notFoundContent) {
@@ -23965,7 +23995,7 @@
 	      'div',
 	      null,
 	      search,
-	      notFoundContent ? notFoundContent : this.renderTree({ treeNodes: treeNodes, multiple: multiple })
+	      notFoundContent ? notFoundContent : this.renderTree(props.treeData || props.treeNodes, treeNodes, multiple)
 	    );
 	
 	    return _react2['default'].createElement(
@@ -26436,10 +26466,6 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _TreeNode = __webpack_require__(216);
-	
-	var _TreeNode2 = _interopRequireDefault(_TreeNode);
-	
 	function browser(ua) {
 	  var tem = undefined;
 	  var M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
@@ -26523,7 +26549,7 @@
 	    var len = getChildrenlength(children);
 	    _react2['default'].Children.forEach(children, function (item, index) {
 	      var pos = level + '-' + index;
-	      if (item.props.children && item.type === _TreeNode2['default']) {
+	      if (item.props.children && item.type && item.type.isTreeNode) {
 	        loop(item.props.children, pos);
 	      }
 	      callback(item, index, pos, item.key || pos, getSiblingPosition(index, len, {}));
@@ -27068,6 +27094,8 @@
 	  return TreeNode;
 	})(_react2['default'].Component);
 	
+	TreeNode.isTreeNode = 1;
+	
 	TreeNode.propTypes = {
 	  prefixCls: _react.PropTypes.string,
 	  disabled: _react.PropTypes.bool,
@@ -27077,6 +27105,7 @@
 	  root: _react.PropTypes.object,
 	  onSelect: _react.PropTypes.func
 	};
+	
 	TreeNode.defaultProps = {
 	  title: defaultTitle
 	};

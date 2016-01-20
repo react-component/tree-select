@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>util.js - example - rc-tree-select@1.1.0</title>
+  <title>data.js - example - rc-tree-select@1.1.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,98 +263,89 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   </div>
   <div class="example" id="__react-content"></div>
   <script src="common.js?nowrap"></script>
-  <script src="util.js?nowrap"></script>
-  <div class="highlight"><pre><code language="js"><span class="hljs-keyword">const</span> x = <span class="hljs-number">3</span>;
-<span class="hljs-keyword">const</span> y = <span class="hljs-number">2</span>;
-<span class="hljs-keyword">const</span> z = <span class="hljs-number">1</span>;
-<span class="hljs-keyword">const</span> gData = [];
-
-<span class="hljs-keyword">const</span> generateData = (_level, _preKey, _tns) =&gt; {
-  <span class="hljs-keyword">const</span> preKey = _preKey || <span class="hljs-string">'0'</span>;
-  <span class="hljs-keyword">const</span> tns = _tns || gData;
-
-  <span class="hljs-keyword">const</span> children = [];
-  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; x; i++) {
-    <span class="hljs-keyword">const</span> key = `${preKey}-${i}`;
-    tns.push({
-      title: key,
-      key: key + <span class="hljs-string">'--key'</span>,
-      value: key,
-    });
-    <span class="hljs-keyword">if</span> (i &lt; y) {
-      children.push(key);
-    }
-  }
-  <span class="hljs-keyword">if</span> (_level &lt; <span class="hljs-number">0</span>) {
-    <span class="hljs-keyword">return</span> tns;
-  }
-  <span class="hljs-keyword">const</span> __level = _level - <span class="hljs-number">1</span>;
-  children.forEach((key, index) =&gt; {
-    tns[index].children = [];
-    <span class="hljs-keyword">return</span> generateData(__level, key, tns[index].children);
-  });
-};
-generateData(z);
-
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">loopData</span><span class="hljs-params">(data, callback)</span> </span>{
-  <span class="hljs-keyword">const</span> loop = (d, level = <span class="hljs-number">0</span>) =&gt; {
-    d.forEach((item, index) =&gt; {
-      <span class="hljs-keyword">const</span> pos = `${level}-${index}`;
-      <span class="hljs-keyword">if</span> (item.children) {
-        loop(item.children, pos);
-      }
-      callback(item, index, pos);
-    });
-  };
-  loop(data);
-}
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isInclude</span><span class="hljs-params">(smallArray, bigArray)</span> </span>{
-  <span class="hljs-keyword">return</span> smallArray.every((ii, i) =&gt; {
-    <span class="hljs-keyword">return</span> ii === bigArray[i];
-  });
-}
-<span class="hljs-comment">// console.log(isInclude(['0', '1'], ['0', '10', '1']));</span>
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getFilterValue</span><span class="hljs-params">(val, sVal, delVal)</span> </span>{
-  <span class="hljs-keyword">const</span> allPos = [];
-  <span class="hljs-keyword">const</span> delPos = [];
-  loopData(gData, (item, index, pos) =&gt; {
-    <span class="hljs-keyword">if</span> (sVal.indexOf(item.value) &gt; -<span class="hljs-number">1</span>) {
-      allPos.push(pos);
-    }
-    <span class="hljs-keyword">if</span> (delVal.indexOf(item.value) &gt; -<span class="hljs-number">1</span>) {
-      delPos.push(pos);
-    }
-  });
-  <span class="hljs-keyword">const</span> newPos = [];
-  delPos.forEach((item) =&gt; {
-    <span class="hljs-keyword">const</span> nArr = item.split(<span class="hljs-string">'-'</span>);
-    allPos.forEach((i) =&gt; {
-      <span class="hljs-keyword">const</span> iArr = i.split(<span class="hljs-string">'-'</span>);
-      <span class="hljs-keyword">if</span> (item === i ||
-        nArr.length &gt; iArr.length &amp;&amp; isInclude(iArr, nArr) ||
-        nArr.length &lt; iArr.length &amp;&amp; isInclude(nArr, iArr)) {
-        <span class="hljs-comment">// 过滤掉 父级节点 和 所有子节点。</span>
-        <span class="hljs-comment">// 因为 node节点 不选时，其 父级节点 和 所有子节点 都不选。</span>
-        <span class="hljs-keyword">return</span>;
-      }
-      newPos.push(i);
-    });
-  });
-  <span class="hljs-keyword">const</span> newVal = [];
-  <span class="hljs-keyword">if</span> (newPos.length) {
-    loopData(gData, (item, index, pos) =&gt; {
-      <span class="hljs-keyword">if</span> (newPos.indexOf(pos) &gt; -<span class="hljs-number">1</span>) {
-        newVal.push(item.value);
-      }
-    });
-  }
-  <span class="hljs-keyword">return</span> newVal;
-}
-
-export { gData, getFilterValue };
+  <script src="data.js?nowrap"></script>
+  <div class="highlight"><pre><code language="js">export <span class="hljs-keyword">default</span> [
+  {
+    label: <span class="hljs-string">'北京'</span>,
+    value: <span class="hljs-string">'01'</span>,
+    children: [
+      {
+        label: <span class="hljs-string">'东城区'</span>,
+        value: <span class="hljs-string">'01-1'</span>,
+      },
+      {
+        label: <span class="hljs-string">'西城区'</span>,
+        value: <span class="hljs-string">'01-2'</span>,
+      },
+      {
+        label: <span class="hljs-string">'崇文区'</span>,
+        value: <span class="hljs-string">'01-3'</span>,
+      },
+      {
+        label: <span class="hljs-string">'宣武区'</span>,
+        value: <span class="hljs-string">'01-4'</span>,
+      },
+    ],
+  },
+  {
+    label: <span class="hljs-string">'浙江'</span>,
+    value: <span class="hljs-string">'02'</span>,
+    children: [
+      {
+        label: <span class="hljs-string">'杭州'</span>,
+        value: <span class="hljs-string">'02-1'</span>,
+        children: [
+          {
+            label: <span class="hljs-string">'西湖区'</span>,
+            value: <span class="hljs-string">'02-1-1'</span>,
+          },
+          {
+            label: <span class="hljs-string">'上城区'</span>,
+            value: <span class="hljs-string">'02-1-2'</span>,
+          },
+          {
+            label: <span class="hljs-string">'江干区'</span>,
+            value: <span class="hljs-string">'02-1-3'</span>,
+          },
+          {
+            label: <span class="hljs-string">'下城区'</span>,
+            value: <span class="hljs-string">'02-1-4'</span>,
+          },
+        ],
+      },
+      {
+        label: <span class="hljs-string">'宁波'</span>,
+        value: <span class="hljs-string">'02-2'</span>,
+        children: [
+          {
+            label: <span class="hljs-string">'xx区'</span>,
+            value: <span class="hljs-string">'02-2-1'</span>,
+          },
+          {
+            label: <span class="hljs-string">'yy区'</span>,
+            value: <span class="hljs-string">'02-2-2'</span>,
+          },
+        ],
+      },
+      {
+        label: <span class="hljs-string">'温州'</span>,
+        value: <span class="hljs-string">'02-3'</span>,
+      },
+      {
+        label: <span class="hljs-string">'嘉兴'</span>,
+        value: <span class="hljs-string">'02-4'</span>,
+      },
+      {
+        label: <span class="hljs-string">'湖州'</span>,
+        value: <span class="hljs-string">'02-5'</span>,
+      },
+      {
+        label: <span class="hljs-string">'绍兴'</span>,
+        value: <span class="hljs-string">'02-6'</span>,
+      },
+    ],
+  },
+];
 </code></pre></div>
 </div>
 <a href="https://github.com/react-component/tree-select">
