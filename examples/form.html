@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>form.js - example - rc-tree-select@1.1.0</title>
+  <title>form.js - example - rc-tree-select@1.1.1</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-tree-select@1.1.0</h1>
+    <h1>rc-tree-select@1.1.1</h1>
 
     <p>tree-select ui component for react</p>
   </div>
@@ -270,7 +270,7 @@ import <span class="hljs-string">'rc-tree-select/assets/index.css'</span>;
 import <span class="hljs-string">'rc-tree-select/assets/demo.css'</span>;
 import React, {Component, PropTypes} from <span class="hljs-string">'react'</span>;
 import ReactDOM from <span class="hljs-string">'react-dom'</span>;
-import TreeSelect, { TreeNode } from <span class="hljs-string">'rc-tree-select'</span>;
+import TreeSelect from <span class="hljs-string">'rc-tree-select'</span>;
 import {createForm} from <span class="hljs-string">'rc-form'</span>;
 import {regionStyle, errorStyle} from <span class="hljs-string">'./styles'</span>;
 import { gData } from <span class="hljs-string">'./util'</span>;
@@ -281,7 +281,6 @@ import { gData } from <span class="hljs-string">'./util'</span>;
     form: PropTypes.object,
     value: PropTypes.array,
   };
-
   onSubmit = (e) =&gt; {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'submit'</span>);
     e.preventDefault();
@@ -293,29 +292,19 @@ import { gData } from <span class="hljs-string">'./util'</span>;
       }
     });
   };
-
   reset = (e) =&gt; {
     e.preventDefault();
     <span class="hljs-keyword">this</span>.props.form.resetFields();
   };
-
   render() {
     <span class="hljs-keyword">const</span> {form} = <span class="hljs-keyword">this</span>.props;
     <span class="hljs-keyword">const</span> {getFieldProps, getFieldError} = form;
     <span class="hljs-keyword">const</span> tProps = {
-      value: <span class="hljs-keyword">this</span>.props.value,
-      onSelect: <span class="hljs-keyword">this</span>.onSelect,
       multiple: <span class="hljs-literal">true</span>,
+      value: <span class="hljs-keyword">this</span>.props.value,
+      treeData: gData,
       treeCheckable: <span class="hljs-literal">true</span>,
       treeDefaultExpandAll: <span class="hljs-literal">true</span>,
-    };
-    <span class="hljs-keyword">const</span> loop = data =&gt; {
-      <span class="hljs-keyword">return</span> data.map((item) =&gt; {
-        <span class="hljs-keyword">if</span> (item.children) {
-          <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{item.value}</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">{item.key</span> + ' <span class="hljs-attribute">label</span>'}&gt;</span>{loop(item.children)}<span class="hljs-tag">&lt;/<span class="hljs-title">TreeNode</span>&gt;</span>;</span>
-        }
-        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{item.value}</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">{item.key</span> + ' <span class="hljs-attribute">label</span>'}/&gt;</span>;</span>
-      });
     };
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{margin:</span> <span class="hljs-attribute">20</span>}}&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>validity<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
@@ -323,15 +312,13 @@ import { gData } from <span class="hljs-string">'./util'</span>;
         <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{color:</span> '<span class="hljs-attribute">blue</span>'}}&gt;</span>work rightly<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">400</span>}} {<span class="hljs-attribute">...tProps</span>}
+            <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}} {<span class="hljs-attribute">...tProps</span>}
               {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">tree-select</span>', {
-                <span class="hljs-attribute">initialValue:</span> ['<span class="hljs-attribute">0-0-0</span>'],
+                <span class="hljs-attribute">initialValue:</span> ['<span class="hljs-attribute">0-0-0-value</span>'],
                 <span class="hljs-attribute">rules:</span> [
                   {<span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>, <span class="hljs-attribute">type:</span> '<span class="hljs-attribute">array</span>', <span class="hljs-attribute">message:</span> '<span class="hljs-attribute">tree-select</span> 需要必填'},
                 ],
-              })}&gt;</span>
-              {loop(gData)}
-            <span class="hljs-tag">&lt;/<span class="hljs-title">TreeSelect</span>&gt;</span>
+              })} /&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
             {(getFieldError('tree-select')) ? getFieldError('tree-select').join(',') : null}

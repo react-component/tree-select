@@ -19866,7 +19866,7 @@
 	      value = (0, _util.toArray)(props.defaultValue);
 	    }
 	    if (this.props.treeCheckable) {
-	      value = (0, _util.getTreeNodesStates)(this.props.children, value).checkedValues;
+	      value = (0, _util.getTreeNodesStates)(this.renderTreeData() || this.props.children, value).checkedValues;
 	    }
 	    var label = this.getLabelFromProps(props, value, 1);
 	    var inputValue = '';
@@ -19881,7 +19881,7 @@
 	    if ('value' in nextProps) {
 	      var value = (0, _util.toArray)(nextProps.value);
 	      if (nextProps.treeCheckable) {
-	        value = (0, _util.getTreeNodesStates)(nextProps.children, value).checkedValues;
+	        value = (0, _util.getTreeNodesStates)(this.renderTreeData() || nextProps.children, value).checkedValues;
 	      }
 	      var label = this.getLabelFromProps(nextProps, value);
 	      this.setState({
@@ -19982,11 +19982,11 @@
 	    }
 	
 	    if (state.open) {
-	      var menu = this.refs.trigger.getInnerMenu();
-	      if (menu && menu.onKeyDown(event)) {
-	        event.preventDefault();
-	        event.stopPropagation();
-	      }
+	      // const menu = this.refs.trigger.getPopupEleRefs();
+	      // if (menu && menu.onKeyDown(event)) {
+	      //   event.preventDefault();
+	      //   event.stopPropagation();
+	      // }
 	    }
 	  },
 	
@@ -20183,8 +20183,8 @@
 	    return this.refs.trigger.getPopupDOMNode();
 	  },
 	
-	  getPopupMenuComponent: function getPopupMenuComponent() {
-	    return this.refs.trigger.getInnerMenu();
+	  getPopupComponentRefs: function getPopupComponentRefs() {
+	    return this.refs.trigger.getPopupEleRefs();
 	  },
 	
 	  setOpenState: function setOpenState(open) {
@@ -23786,8 +23786,8 @@
 	    }
 	  },
 	
-	  getInnerMenu: function getInnerMenu() {
-	    return this.popupMenu && this.popupMenu.refs.menu;
+	  getPopupEleRefs: function getPopupEleRefs() {
+	    return this.popupEle && this.popupEle.refs;
 	  },
 	
 	  getPopupDOMNode: function getPopupDOMNode() {
@@ -23826,8 +23826,8 @@
 	    return filterTreeNode.call(this, input, child);
 	  },
 	
-	  savePopupElement: function savePopupElement(menu) {
-	    this.popupMenu = menu;
+	  savePopupElement: function savePopupElement(ele) {
+	    this.popupEle = ele;
 	  },
 	
 	  renderFilterOptionsFromChildren: function renderFilterOptionsFromChildren(children) {
@@ -27153,6 +27153,152 @@
 	  value: _react2['default'].PropTypes.string
 	};
 	module.exports = exports['default'];
+
+/***/ },
+/* 218 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var x = 3;
+	var y = 2;
+	var z = 1;
+	var gData = [];
+	
+	var generateData = function generateData(_level, _preKey, _tns) {
+	  var preKey = _preKey || '0';
+	  var tns = _tns || gData;
+	
+	  var children = [];
+	  for (var i = 0; i < x; i++) {
+	    var key = preKey + '-' + i;
+	    tns.push({
+	      label: key + '-label',
+	      value: key + '-value',
+	      key: key
+	    });
+	    if (i < y) {
+	      children.push(key);
+	    }
+	  }
+	  if (_level < 0) {
+	    return tns;
+	  }
+	  var __level = _level - 1;
+	  children.forEach(function (key, index) {
+	    tns[index].children = [];
+	    return generateData(__level, key, tns[index].children);
+	  });
+	};
+	generateData(z);
+	
+	function generateTreeNodes(treeNode) {
+	  var arr = [];
+	  var key = treeNode.props.eventKey;
+	  for (var i = 0; i < 3; i++) {
+	    arr.push({ label: key + '-' + i + '-label', value: key + '-' + i + '-value', key: key + '-' + i });
+	  }
+	  return arr;
+	}
+	
+	function setLeaf(treeData, curKey, level) {
+	  var loopLeaf = function loopLeaf(data, lev) {
+	    var l = lev - 1;
+	    data.forEach(function (item) {
+	      if (item.key.length > curKey.length ? item.key.indexOf(curKey) !== 0 : curKey.indexOf(item.key) !== 0) {
+	        return;
+	      }
+	      if (item.children) {
+	        loopLeaf(item.children, l);
+	      } else if (l < 1) {
+	        item.isLeaf = true;
+	      }
+	    });
+	  };
+	  loopLeaf(treeData, level + 1);
+	}
+	
+	function getNewTreeData(treeData, curKey, child, level) {
+	  var loop = function loop(data) {
+	    if (level < 1 || curKey.length - 3 > level * 2) return;
+	    data.forEach(function (item) {
+	      if (curKey.indexOf(item.key) === 0) {
+	        if (item.children) {
+	          loop(item.children);
+	        } else {
+	          item.children = child;
+	        }
+	      }
+	    });
+	  };
+	  loop(treeData);
+	  setLeaf(treeData, curKey, level);
+	}
+	
+	function loopData(data, callback) {
+	  var loop = function loop(d) {
+	    var level = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+	
+	    d.forEach(function (item, index) {
+	      var pos = level + '-' + index;
+	      if (item.children) {
+	        loop(item.children, pos);
+	      }
+	      callback(item, index, pos);
+	    });
+	  };
+	  loop(data);
+	}
+	
+	function isInclude(smallArray, bigArray) {
+	  return smallArray.every(function (ii, i) {
+	    return ii === bigArray[i];
+	  });
+	}
+	// console.log(isInclude(['0', '1'], ['0', '10', '1']));
+	
+	function getFilterValue(val, sVal, delVal) {
+	  var allPos = [];
+	  var delPos = [];
+	  loopData(gData, function (item, index, pos) {
+	    if (sVal.indexOf(item.value) > -1) {
+	      allPos.push(pos);
+	    }
+	    if (delVal.indexOf(item.value) > -1) {
+	      delPos.push(pos);
+	    }
+	  });
+	  var newPos = [];
+	  delPos.forEach(function (item) {
+	    var nArr = item.split('-');
+	    allPos.forEach(function (i) {
+	      var iArr = i.split('-');
+	      if (item === i || nArr.length > iArr.length && isInclude(iArr, nArr) || nArr.length < iArr.length && isInclude(nArr, iArr)) {
+	        // 过滤掉 父级节点 和 所有子节点。
+	        // 因为 node节点 不选时，其 父级节点 和 所有子节点 都不选。
+	        return;
+	      }
+	      newPos.push(i);
+	    });
+	  });
+	  var newVal = [];
+	  if (newPos.length) {
+	    loopData(gData, function (item, index, pos) {
+	      if (newPos.indexOf(pos) > -1) {
+	        newVal.push(item.value);
+	      }
+	    });
+	  }
+	  return newVal;
+	}
+	
+	exports.gData = gData;
+	exports.getNewTreeData = getNewTreeData;
+	exports.generateTreeNodes = generateTreeNodes;
+	exports.getFilterValue = getFilterValue;
 
 /***/ }
 /******/ ]);
