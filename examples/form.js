@@ -4,7 +4,7 @@ import 'rc-tree-select/assets/index.less';
 import 'rc-tree-select/assets/demo.less';
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
-import TreeSelect, { TreeNode } from 'rc-tree-select';
+import TreeSelect from 'rc-tree-select';
 import {createForm} from 'rc-form';
 import {regionStyle, errorStyle} from './styles';
 import { gData } from './util';
@@ -15,7 +15,6 @@ class Form extends Component {
     form: PropTypes.object,
     value: PropTypes.array,
   };
-
   onSubmit = (e) => {
     console.log('submit');
     e.preventDefault();
@@ -27,29 +26,19 @@ class Form extends Component {
       }
     });
   };
-
   reset = (e) => {
     e.preventDefault();
     this.props.form.resetFields();
   };
-
   render() {
     const {form} = this.props;
     const {getFieldProps, getFieldError} = form;
     const tProps = {
-      value: this.props.value,
-      onSelect: this.onSelect,
       multiple: true,
+      value: this.props.value,
+      treeData: gData,
       treeCheckable: true,
       treeDefaultExpandAll: true,
-    };
-    const loop = data => {
-      return data.map((item) => {
-        if (item.children) {
-          return <TreeNode key={item.key} value={item.value} title={item.key + ' label'}>{loop(item.children)}</TreeNode>;
-        }
-        return <TreeNode key={item.key} value={item.value} title={item.key + ' label'}/>;
-      });
     };
     return (<div style={{margin: 20}}>
       <h2>validity</h2>
@@ -57,15 +46,13 @@ class Form extends Component {
         <div style={regionStyle}>
           <div>
             <p style={{color: 'blue'}}>work rightly</p>
-            <TreeSelect style={{width: 400}} {...tProps}
+            <TreeSelect style={{width: 300}} {...tProps}
               {...getFieldProps('tree-select', {
-                initialValue: ['0-0-0'],
+                initialValue: ['0-0-0-value'],
                 rules: [
                   {required: true, type: 'array', message: 'tree-select 需要必填'},
                 ],
-              })}>
-              {loop(gData)}
-            </TreeSelect>
+              })} />
           </div>
           <p style={errorStyle}>
             {(getFieldError('tree-select')) ? getFieldError('tree-select').join(',') : null}

@@ -5,7 +5,7 @@ const ReactDOM = require('react-dom');
 // const Simulate = TestUtils.Simulate;
 const $ = require('jquery');
 import TreeSelect from '../';
-import data from '../examples/data';
+import { gData, getNewTreeData, generateTreeNodes } from '../examples/util';
 
 describe('simple', () => {
   let instance;
@@ -24,7 +24,7 @@ describe('simple', () => {
     instance = ReactDOM.render(
       <TreeSelect style={{width: 300}} className="forTest"
                   dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
-                  treeData={data}
+                  treeData={gData}
                   treeIcon treeLine treeDefaultExpandAll treeCheckable />,
     div);
     expect(ReactDOM.findDOMNode(instance).className.indexOf('forTest') !== -1).to.be(true);
@@ -34,7 +34,7 @@ describe('simple', () => {
     instance = ReactDOM.render(
       <TreeSelect style={{width: 300}}
                   dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
-                  treeData={data}
+                  treeData={gData}
                   treeDefaultExpandAll />,
       div);
     instance.setState({
@@ -50,8 +50,8 @@ describe('simple', () => {
     instance = ReactDOM.render(
       <TreeSelect style={{width: 300}}
                   dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
-                  treeData={data}
-                  value={['01-2', '01-3']}
+                  treeData={gData}
+                  value={['0-0-0-value', '0-0-0-0-value']}
                    />,
     div);
     instance.setState({
@@ -62,21 +62,67 @@ describe('simple', () => {
     });
   });
 
-  it('should can select multiple treeNodes', (done) => {
+  it('should select multiple treeNodes', (done) => {
     instance = ReactDOM.render(
       <TreeSelect style={{width: 300}}
                   dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
-                  treeData={data}
+                  treeData={gData}
                   multiple
-                  value={['01-2', '01-3']}
+                  value={['0-0-0-value', '0-0-0-0-value']}
                    />,
     div);
     instance.setState({
       open: true,
     }, () => {
-      console.log(instance.getPopupComponentRefs().tree);
       expect($(instance.getPopupComponentRefs().tree).find('.rc-tree-select-tree-node-selected').length).to.be(2);
       done();
+    });
+  });
+
+  it('should dynamic load treeNodes', (done) => {
+    const Demo = React.createClass({
+      propTypes: {},
+      getInitialState() {
+        return {
+          treeData: [
+            {label: 'pNode 01', value: '0-0', key: '0-0'},
+            {label: 'pNode 02', value: '0-1', key: '0-1'},
+            {label: 'pNode 03', value: '0-2', key: '0-2', isLeaf: true},
+          ],
+          value: undefined,
+        };
+      },
+      onLoadData(treeNode) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            const treeData = [...this.state.treeData];
+            getNewTreeData(treeData, treeNode.props.eventKey, generateTreeNodes(treeNode), 2);
+            this.setState({treeData}, () => {
+              done();
+            });
+            resolve();
+          }, 100);
+        });
+      },
+      getComponent() {
+        return this.refs.treeselect;
+      },
+      render() {
+        return (<TreeSelect style={{width: 300}} ref="treeselect"
+          treeData={this.state.treeData}
+          value={this.state.value}
+          loadData={this.onLoadData} />
+        );
+      },
+    });
+    instance = ReactDOM.render(<Demo />, div);
+    const ts = instance.getComponent();
+    // console.log(ts);
+    ts.setState({
+      open: true,
+    }, () => {
+      console.log(ts.getPopupComponentRefs()['treeNode-0-0'].onExpand());
+      // Simulate.click(ReactDOM.findDOMNode(ts.getPopupComponentRefs()['treeNode-0-0']));
     });
   });
 });

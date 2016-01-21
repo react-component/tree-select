@@ -94,7 +94,7 @@ const Select = React.createClass({
       value = toArray(props.defaultValue);
     }
     if (this.props.treeCheckable) {
-      value = getTreeNodesStates(this.props.children, value).checkedValues;
+      value = getTreeNodesStates(this.renderTreeData() || this.props.children, value).checkedValues;
     }
     const label = this.getLabelFromProps(props, value, 1);
     let inputValue = '';
@@ -109,7 +109,7 @@ const Select = React.createClass({
     if ('value' in nextProps) {
       let value = toArray(nextProps.value);
       if (nextProps.treeCheckable) {
-        value = getTreeNodesStates(nextProps.children, value).checkedValues;
+        value = getTreeNodesStates(this.renderTreeData() || nextProps.children, value).checkedValues;
       }
       const label = this.getLabelFromProps(nextProps, value);
       this.setState({
