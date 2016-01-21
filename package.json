@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "expect.js": "0.3.x",
+    "jquery": "^2.2.0",
     "pre-commit": "1.x",
     "rc-form": "^0.7.3",
     "rc-select": "^5.4.0",

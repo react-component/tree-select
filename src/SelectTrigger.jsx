@@ -45,8 +45,8 @@ const SelectTrigger = React.createClass({
     }
   },
 
-  getInnerMenu() {
-    return this.popupMenu && this.popupMenu.refs.menu;
+  getPopupEleRefs() {
+    return this.popupEle && this.popupEle.refs;
   },
 
   getPopupDOMNode() {
@@ -85,8 +85,8 @@ const SelectTrigger = React.createClass({
     return filterTreeNode.call(this, input, child);
   },
 
-  savePopupElement(menu) {
-    this.popupMenu = menu;
+  savePopupElement(ele) {
+    this.popupEle = ele;
   },
 
   renderFilterOptionsFromChildren(children) {

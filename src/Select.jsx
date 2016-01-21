@@ -210,11 +210,11 @@ const Select = React.createClass({
     }
 
     if (state.open) {
-      const menu = this.refs.trigger.getInnerMenu();
-      if (menu && menu.onKeyDown(event)) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
+      // const menu = this.refs.trigger.getPopupEleRefs();
+      // if (menu && menu.onKeyDown(event)) {
+      //   event.preventDefault();
+      //   event.stopPropagation();
+      // }
     }
   },
 
@@ -392,8 +392,8 @@ const Select = React.createClass({
     return this.refs.trigger.getPopupDOMNode();
   },
 
-  getPopupMenuComponent() {
-    return this.refs.trigger.getInnerMenu();
+  getPopupComponentRefs() {
+    return this.refs.trigger.getPopupEleRefs();
   },
 
   setOpenState(open) {

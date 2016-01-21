@@ -3,8 +3,9 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 // const TestUtils = require('react-addons-test-utils');
 // const Simulate = TestUtils.Simulate;
-// const $ = require('jquery');
-import TreeSelect, { TreeNode } from '../';
+const $ = require('jquery');
+import TreeSelect from '../';
+import data from '../examples/data';
 
 describe('simple', () => {
   let instance;
@@ -23,22 +24,59 @@ describe('simple', () => {
     instance = ReactDOM.render(
       <TreeSelect style={{width: 300}} className="forTest"
                   dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
-                  treeDefaultExpandAll>
-        <TreeNode value="parent 1" title="parent 1" key="0-1">
-          <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
-            <TreeNode value="leaf1" title="my leaf" key="random" />
-            <TreeNode value="leaf2" title="your leaf" key="random1" disabled />
-          </TreeNode>
-          <TreeNode value="parent 1-1" title="parent 1-1" key="random2">
-            <TreeNode value="sss" title={<span style={{color: 'red'}}>sss</span>} key="random3" />
-          </TreeNode>
-        </TreeNode>
-      </TreeSelect>,
+                  treeData={data}
+                  treeIcon treeLine treeDefaultExpandAll treeCheckable />,
     div);
     expect(ReactDOM.findDOMNode(instance).className.indexOf('forTest') !== -1).to.be(true);
   });
 
-  it('should filter specific item', () => {
+  it('render to body works', (done) => {
+    instance = ReactDOM.render(
+      <TreeSelect style={{width: 300}}
+                  dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
+                  treeData={data}
+                  treeDefaultExpandAll />,
+      div);
+    instance.setState({
+      open: true,
+    }, () => {
+      expect(instance.getPopupDOMNode().parentNode.parentNode.nodeName.toLowerCase()).to.be('body');
+      expect(instance.getPopupDOMNode().className).not.to.contain('hidden');
+      done();
+    });
+  });
 
+  it('should select the right treeNode', (done) => {
+    instance = ReactDOM.render(
+      <TreeSelect style={{width: 300}}
+                  dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
+                  treeData={data}
+                  value={['01-2', '01-3']}
+                   />,
+    div);
+    instance.setState({
+      open: true,
+    }, () => {
+      expect($(instance.getPopupComponentRefs().tree).find('.rc-tree-select-tree-node-selected').length).to.be(1);
+      done();
+    });
+  });
+
+  it('should can select multiple treeNodes', (done) => {
+    instance = ReactDOM.render(
+      <TreeSelect style={{width: 300}}
+                  dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
+                  treeData={data}
+                  multiple
+                  value={['01-2', '01-3']}
+                   />,
+    div);
+    instance.setState({
+      open: true,
+    }, () => {
+      console.log(instance.getPopupComponentRefs().tree);
+      expect($(instance.getPopupComponentRefs().tree).find('.rc-tree-select-tree-node-selected').length).to.be(2);
+      done();
+    });
   });
 });
