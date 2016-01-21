@@ -109,7 +109,7 @@ see examples
 |loadData | load data asynchronously | function(node) | - |
 
 ### TreeNode props
-> note: if set `treeData`, you can omit TreeNode setting below.
+> note: you'd better to use `treeData` instead of using TreeNode.
 
 | name     | description    | type     | default      |
 |----------|----------------|----------|--------------|
