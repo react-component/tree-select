@@ -121,7 +121,7 @@ describe('simple', () => {
     ts.setState({
       open: true,
     }, () => {
-      console.log(ts.getPopupComponentRefs()['treeNode-0-0'].onExpand());
+      ts.getPopupComponentRefs()['treeNode-0-0'].onExpand();
       // Simulate.click(ReactDOM.findDOMNode(ts.getPopupComponentRefs()['treeNode-0-0']));
     });
   });
