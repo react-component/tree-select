@@ -1,10 +1,10 @@
 const expect = require('expect.js');
 const React = require('react');
 const ReactDOM = require('react-dom');
-// const TestUtils = require('react-addons-test-utils');
-// const Simulate = TestUtils.Simulate;
+const TestUtils = require('react-addons-test-utils');
+const Simulate = TestUtils.Simulate;
 const $ = require('jquery');
-import TreeSelect from '../';
+import TreeSelect, { TreeNode } from '../';
 import { gData, getNewTreeData, generateTreeNodes } from '../examples/util';
 
 describe('simple', () => {
@@ -23,7 +23,7 @@ describe('simple', () => {
   it('should add css class of root dom node', () => {
     instance = ReactDOM.render(
       <TreeSelect style={{width: 300}} className="forTest"
-                  dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
+                  dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
                   treeData={gData}
                   treeIcon treeLine treeDefaultExpandAll treeCheckable />,
     div);
@@ -33,7 +33,8 @@ describe('simple', () => {
   it('render to body works', (done) => {
     instance = ReactDOM.render(
       <TreeSelect style={{width: 300}}
-                  dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
+                  dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+                  allowClear tags maxTagTextLength={10} combobox multiple
                   treeData={gData}
                   treeDefaultExpandAll />,
       div);
@@ -46,10 +47,33 @@ describe('simple', () => {
     });
   });
 
+  it('should be disabled', () => {
+    instance = ReactDOM.render(<TreeSelect disabled treeData={gData} />, div);
+  });
+
+  it('use custom treeNode(not recommend)', () => {
+    instance = ReactDOM.render(
+      <TreeSelect style={{width: 300}}
+                  dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+                  value={['leaf1']}
+                  treeDefaultExpandAll>
+        <TreeNode value="parent 1" title="parent 1" key="0-1">
+          <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
+            <TreeNode value="leaf1" title="my leaf" key="random" />
+            <TreeNode value="leaf2" title="your leaf" key="random1" disabled />
+          </TreeNode>
+          <TreeNode value="parent 1-1" title="parent 1-1" key="random2">
+            <TreeNode value="sss" title={<span style={{color: 'red'}}>sss</span>} key="random3" />
+          </TreeNode>
+        </TreeNode>
+      </TreeSelect>,
+    div);
+  });
+
   it('should select the right treeNode', (done) => {
     instance = ReactDOM.render(
       <TreeSelect style={{width: 300}}
-                  dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
+                  dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
                   treeData={gData}
                   value={['0-0-0-value', '0-0-0-0-value']}
                    />,
@@ -65,7 +89,7 @@ describe('simple', () => {
   it('should select multiple treeNodes', (done) => {
     instance = ReactDOM.render(
       <TreeSelect style={{width: 300}}
-                  dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
+                  dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
                   treeData={gData}
                   multiple
                   value={['0-0-0-value', '0-0-0-0-value']}
@@ -76,6 +100,62 @@ describe('simple', () => {
     }, () => {
       expect($(instance.getPopupComponentRefs().tree).find('.rc-tree-select-tree-node-selected').length).to.be(2);
       done();
+    });
+  });
+
+  it('fire onChange', (done) => {
+    function cb(value) {
+      expect(value).to.be('0-1-value');
+      done();
+    }
+    instance = ReactDOM.render(
+      <TreeSelect style={{width: 300}}
+                  dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+                  treeData={gData}
+                  onChange={cb} />,
+    div);
+    instance.setState({
+      open: true,
+    }, () => {
+      Simulate.click(instance.getPopupComponentRefs()['treeNode-0-1'].refs.selectHandle);
+    });
+  });
+
+  it('fire onSelect', (done) => {
+    function cb(value) {
+      expect(value).to.be('0-1-value');
+      done();
+    }
+    instance = ReactDOM.render(
+      <TreeSelect style={{width: 300}}
+                  dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+                  treeData={gData}
+                  onSelect={cb} />,
+    div);
+    instance.setState({
+      open: true,
+    }, () => {
+      Simulate.click(instance.getPopupComponentRefs()['treeNode-0-1'].refs.selectHandle);
+    });
+  });
+
+  it('fire onSearch', (done) => {
+    function cb(value) {
+      expect(value).to.be('-0-1');
+      done();
+    }
+    instance = ReactDOM.render(
+      <TreeSelect style={{width: 300}}
+                  dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+                  treeData={gData}
+                  onSearch={cb} />,
+    div);
+    instance.setState({
+      open: true,
+    }, () => {
+      const input = instance.getInputDOMNode();
+      input.value = '-0-1';
+      Simulate.change(input);
     });
   });
 

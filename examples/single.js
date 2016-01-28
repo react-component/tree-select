@@ -16,13 +16,12 @@ const Demo = React.createClass({
     console.log('onChange', value);
     this.setState({value});
   },
-
   render() {
     return (
       <div style={{margin: 20}}>
         <h2>Single Select</h2>
         <TreeSelect style={{width: 300}}
-                    dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
+                    dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
                     value={this.state.value}
                     treeDefaultExpandAll
                     onChange={this.onChange}>
@@ -39,7 +38,7 @@ const Demo = React.createClass({
 
         <h2>treeData demo</h2>
         <TreeSelect style={{width: 300}}
-                    dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
+                    dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
                     treeData={gData}
                     value={this.state.value}
                     treeDefaultExpandAll
