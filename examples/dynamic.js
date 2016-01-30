@@ -1,12 +1,14 @@
-webpackJsonp([0],[
-/* 0 */
+webpackJsonp([1],{
+
+/***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(1);
+	module.exports = __webpack_require__(219);
 
 
 /***/ },
-/* 1 */
+
+/***/ 219:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80,5 +82,6 @@ webpackJsonp([0],[
 	_reactDom2['default'].render(_react2['default'].createElement(Demo, null), document.getElementById('__react-content'));
 
 /***/ }
-]);
+
+});
 //# sourceMappingURL=dynamic.js.map
