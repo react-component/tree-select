@@ -20027,17 +20027,18 @@
 	        label = label.concat([selectedLabel]);
 	      }
 	      if (!check && value.indexOf(selectedValue) !== -1) {
-	        return;
+	        // 设置 multiple 时会有bug。（isValueChange 已有检查，此处注释掉）
+	        // return;
 	      }
 	    } else {
-	      if (value[0] === selectedValue) {
+	        if (value[0] === selectedValue) {
+	          this.setOpenState(false);
+	          return;
+	        }
+	        value = [selectedValue];
+	        label = [selectedLabel];
 	        this.setOpenState(false);
-	        return;
 	      }
-	      value = [selectedValue];
-	      label = [selectedLabel];
-	      this.setOpenState(false);
-	    }
 	
 	    this.fireChange(value, label);
 	    this.setState({

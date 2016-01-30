@@ -44,6 +44,10 @@ webpackJsonp([0],[
 	    console.log('onChange', value);
 	    this.setState({ value: value });
 	  },
+	  onMultipleChange: function onMultipleChange(value) {
+	    console.log('onMultipleChange', value);
+	    this.setState({ multipleValue: value });
+	  },
 	  render: function render() {
 	    return _react2['default'].createElement(
 	      'div',
@@ -84,7 +88,7 @@ webpackJsonp([0],[
 	        searchPlaceholder: 'please search',
 	        treeNodeFilterProp: 'title',
 	        multiple: true,
-	        onChange: this.onChange }),
+	        onChange: this.onMultipleChange }),
 	      _react2['default'].createElement(
 	        'h2',
 	        null,
