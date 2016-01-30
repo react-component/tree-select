@@ -24,6 +24,8 @@ describe('simple', () => {
     instance = ReactDOM.render(
       <TreeSelect style={{width: 300}} className="forTest"
                   dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+                  placeholder={<i>请下拉选择</i>}
+                  searchPlaceholder="please search"
                   treeData={gData}
                   treeIcon treeLine treeDefaultExpandAll treeCheckable />,
     div);
