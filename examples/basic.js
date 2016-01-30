@@ -17,6 +17,10 @@ const Demo = React.createClass({
     console.log('onChange', value);
     this.setState({value});
   },
+  onMultipleChange(value) {
+    console.log('onMultipleChange', value);
+    this.setState({multipleValue: value});
+  },
   render() {
     return (
       <div style={{margin: 20}}>
@@ -41,7 +45,7 @@ const Demo = React.createClass({
                     searchPlaceholder="please search"
                     treeNodeFilterProp="title"
                     multiple
-                    onChange={this.onChange} />
+                    onChange={this.onMultipleChange} />
 
         <h2>check select</h2>
         <TreeSelect style={{width: 300}}
