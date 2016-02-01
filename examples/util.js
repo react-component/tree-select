@@ -1,12 +1,11 @@
+
 const x = 3;
 const y = 2;
 const z = 1;
-const gData = [];
-
+const gData = []; // 手工构造数据
 const generateData = (_level, _preKey, _tns) => {
   const preKey = _preKey || '0';
   const tns = _tns || gData;
-
   const children = [];
   for (let i = 0; i < x; i++) {
     const key = `${preKey}-${i}`;

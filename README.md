@@ -114,7 +114,7 @@ see examples
 | name     | description    | type     | default      |
 |----------|----------------|----------|--------------|
 |disabled | disable treeNode | bool | false |
-|key | the unique key of treeNode, you must set it  | String | - |
+|key | it's value must be unique across the tree's all TreeNode, you must set it  | String | - |
 |value | default as treeNodeFilterProp | String | '' |
 |title | tree/subTree's title | String | '---' |
 |isLeaf | whether it's leaf node | bool | false |
