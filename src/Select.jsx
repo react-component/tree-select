@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import { KeyCode } from 'rc-util';
 import classnames from 'classnames';
+import assign from 'object-assign';
 import Animate from 'rc-animate';
 import {
   getPropValue, getValuePropValue, isCombobox,
@@ -259,7 +260,7 @@ const Select = React.createClass({
       this.setOpenState(false);
     }
 
-    this.fireChange(value, label);
+    this.fireChange(value, label, {triggerValue: selectedValue, triggerNode: item, checked: info.checked});
     this.setState({
       inputValue: '',
     });
@@ -428,7 +429,7 @@ const Select = React.createClass({
     if (index !== -1) {
       label.splice(index, 1);
     }
-    this.fireChange(value, label);
+    this.fireChange(value, label, {triggerValue: selectedValue, clear: true});
   },
 
   openIfHasChildren() {
@@ -448,7 +449,7 @@ const Select = React.createClass({
     }
   },
 
-  fireChange(value, label) {
+  fireChange(value, label, extraInfo) {
     const props = this.props;
     if (!('value' in props)) {
       this.setState({
@@ -456,7 +457,11 @@ const Select = React.createClass({
       });
     }
     if (this.isValueChange(value)) {
-      props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label), [...this.state.value]);
+      const ex = {preValue: [...this.state.value]};
+      if (extraInfo) {
+        assign(ex, extraInfo);
+      }
+      props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label), ex);
     }
   },
   renderTopControlNode() {
