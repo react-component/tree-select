@@ -19771,6 +19771,10 @@
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
+	var _objectAssign = __webpack_require__(183);
+	
+	var _objectAssign2 = _interopRequireDefault(_objectAssign);
+	
 	var _rcAnimate = __webpack_require__(187);
 	
 	var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
@@ -20040,7 +20044,7 @@
 	        this.setOpenState(false);
 	      }
 	
-	    this.fireChange(value, label);
+	    this.fireChange(value, label, { triggerValue: selectedValue, triggerNode: item, checked: info.checked });
 	    this.setState({
 	      inputValue: ''
 	    });
@@ -20221,7 +20225,7 @@
 	    if (index !== -1) {
 	      label.splice(index, 1);
 	    }
-	    this.fireChange(value, label);
+	    this.fireChange(value, label, { triggerValue: selectedValue, clear: true });
 	  },
 	
 	  openIfHasChildren: function openIfHasChildren() {
@@ -20243,7 +20247,7 @@
 	    }
 	  },
 	
-	  fireChange: function fireChange(value, label) {
+	  fireChange: function fireChange(value, label, extraInfo) {
 	    var props = this.props;
 	    if (!('value' in props)) {
 	      this.setState({
@@ -20251,7 +20255,11 @@
 	      });
 	    }
 	    if (this.isValueChange(value)) {
-	      props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label), [].concat(_toConsumableArray(this.state.value)));
+	      var ex = { preValue: [].concat(_toConsumableArray(this.state.value)) };
+	      if (extraInfo) {
+	        (0, _objectAssign2['default'])(ex, extraInfo);
+	      }
+	      props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label), ex);
 	    }
 	  },
 	  renderTopControlNode: function renderTopControlNode() {
