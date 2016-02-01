@@ -525,7 +525,7 @@ const Select = React.createClass({
           value: item.value,
           key: item.key || item.value || pos,
         };
-        if (item.children) {
+        if (item.children && item.children.length) {
           return (<_TreeNode {...props}>{loop(item.children, pos)}</_TreeNode>);
         }
         return (<_TreeNode {...props} isLeaf={item.isLeaf} />);
