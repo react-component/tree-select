@@ -20350,7 +20350,7 @@
 	          value: item.value,
 	          key: item.key || item.value || pos
 	        };
-	        if (item.children) {
+	        if (item.children && item.children.length) {
 	          return _react2['default'].createElement(
 	            _TreeNode3['default'],
 	            props,
