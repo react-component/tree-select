@@ -49,8 +49,36 @@ webpackJsonp([2],{
 	
 	var _util = __webpack_require__(218);
 	
-	var Form = (function (_Component) {
-	  _inherits(Form, _Component);
+	var TreeSelectInput = (function (_Component) {
+	  _inherits(TreeSelectInput, _Component);
+	
+	  function TreeSelectInput() {
+	    _classCallCheck(this, TreeSelectInput);
+	
+	    _get(Object.getPrototypeOf(TreeSelectInput.prototype), 'constructor', this).apply(this, arguments);
+	  }
+	
+	  _createClass(TreeSelectInput, [{
+	    key: 'onChange',
+	    value: function onChange(value) {
+	      console.log(value, arguments);
+	      var props = this.props;
+	      if (props.onChange) {
+	        props.onChange(value);
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2['default'].createElement(_rcTreeSelect2['default'], _extends({}, this.props, { onChange: this.onChange.bind(this) }));
+	    }
+	  }]);
+	
+	  return TreeSelectInput;
+	})(_react.Component);
+	
+	var Form = (function (_Component2) {
+	  _inherits(Form, _Component2);
 	
 	  function Form() {
 	    var _this = this;
@@ -111,7 +139,7 @@ webpackJsonp([2],{
 	              _react2['default'].createElement(
 	                'p',
 	                { style: { color: 'blue' } },
-	                'work rightly'
+	                'no onChange'
 	              ),
 	              _react2['default'].createElement(_rcTreeSelect2['default'], _extends({ style: { width: 300 } }, tProps, getFieldProps('tree-select', {
 	                initialValue: ['0-0-0-value'],
@@ -122,6 +150,28 @@ webpackJsonp([2],{
 	              'p',
 	              { style: _styles.errorStyle },
 	              getFieldError('tree-select') ? getFieldError('tree-select').join(',') : null
+	            )
+	          ),
+	          _react2['default'].createElement(
+	            'div',
+	            { style: _styles.regionStyle },
+	            _react2['default'].createElement(
+	              'div',
+	              null,
+	              _react2['default'].createElement(
+	                'p',
+	                { style: { color: 'blue' } },
+	                'custom onChange'
+	              ),
+	              _react2['default'].createElement(TreeSelectInput, _extends({ style: { width: 300 } }, tProps, getFieldProps('tree-select1', {
+	                initialValue: ['0-0-0-value'],
+	                rules: [{ required: true, type: 'array', message: 'tree-select1 需要必填' }]
+	              })))
+	            ),
+	            _react2['default'].createElement(
+	              'p',
+	              { style: _styles.errorStyle },
+	              getFieldError('tree-select1') ? getFieldError('tree-select1').join(',') : null
 	            )
 	          ),
 	          _react2['default'].createElement(

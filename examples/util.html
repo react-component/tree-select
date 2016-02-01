@@ -264,15 +264,14 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <div class="example" id="__react-content"></div>
   <script src="common.js?nowrap"></script>
   <script src="util.js?nowrap"></script>
-  <div class="highlight"><pre><code language="js"><span class="hljs-keyword">const</span> x = <span class="hljs-number">3</span>;
+  <div class="highlight"><pre><code language="js">
+<span class="hljs-keyword">const</span> x = <span class="hljs-number">3</span>;
 <span class="hljs-keyword">const</span> y = <span class="hljs-number">2</span>;
 <span class="hljs-keyword">const</span> z = <span class="hljs-number">1</span>;
-<span class="hljs-keyword">const</span> gData = [];
-
+<span class="hljs-keyword">const</span> gData = []; <span class="hljs-comment">// 手工构造数据</span>
 <span class="hljs-keyword">const</span> generateData = (_level, _preKey, _tns) =&gt; {
   <span class="hljs-keyword">const</span> preKey = _preKey || <span class="hljs-string">'0'</span>;
   <span class="hljs-keyword">const</span> tns = _tns || gData;
-
   <span class="hljs-keyword">const</span> children = [];
   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; x; i++) {
     <span class="hljs-keyword">const</span> key = `${preKey}-${i}`;

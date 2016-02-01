@@ -27172,15 +27172,14 @@
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
+	
 	var x = 3;
 	var y = 2;
 	var z = 1;
-	var gData = [];
-	
+	var gData = []; // 手工构造数据
 	var generateData = function generateData(_level, _preKey, _tns) {
 	  var preKey = _preKey || '0';
 	  var tns = _tns || gData;
-	
 	  var children = [];
 	  for (var i = 0; i < x; i++) {
 	    var key = preKey + '-' + i;
