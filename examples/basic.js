@@ -9,7 +9,7 @@ webpackJsonp([0],[
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* eslint no-console: 0 */
+	/* eslint react/no-multi-comp:0, no-console:0 */
 	
 	'use strict';
 	

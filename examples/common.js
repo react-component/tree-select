@@ -19799,6 +19799,30 @@
 	  this[name] = component;
 	}
 	
+	function loopTreeData(data) {
+	  var level = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+	
+	  return data.map(function (item, index) {
+	    var pos = level + '-' + index;
+	    var props = {
+	      title: item.label,
+	      value: item.value,
+	      key: item.key || item.value || pos
+	    };
+	    var ret = undefined;
+	    if (item.children && item.children.length) {
+	      ret = _react2['default'].createElement(
+	        _TreeNode3['default'],
+	        props,
+	        loopTreeData(item.children, pos)
+	      );
+	    } else {
+	      ret = _react2['default'].createElement(_TreeNode3['default'], _extends({}, props, { isLeaf: item.isLeaf }));
+	    }
+	    return ret;
+	  });
+	}
+	
 	var Select = _react2['default'].createClass({
 	  displayName: 'Select',
 	
@@ -19885,7 +19909,7 @@
 	    if ('value' in nextProps) {
 	      var value = (0, _util.toArray)(nextProps.value);
 	      if (nextProps.treeCheckable) {
-	        value = (0, _util.getTreeNodesStates)(this.renderTreeData() || nextProps.children, value).checkedValues;
+	        value = (0, _util.getTreeNodesStates)(this.renderTreeData(nextProps) || nextProps.children, value).checkedValues;
 	      }
 	      var label = this.getLabelFromProps(nextProps, value);
 	      this.setState({
@@ -20117,7 +20141,7 @@
 	    } else if (init && 'defaultLabel' in props) {
 	      label = (0, _util.toArray)(props.defaultLabel);
 	    } else {
-	      label = this.getLabelByValue(this.renderTreeData() || props.children, value);
+	      label = this.getLabelByValue(this.renderTreeData(props) || props.children, value);
 	    }
 	    return label;
 	  },
@@ -20339,29 +20363,10 @@
 	      selectedValueNodes
 	    );
 	  },
-	  renderTreeData: function renderTreeData() {
-	    var loop = function loop(data) {
-	      var level = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-	
-	      return data.map(function (item, index) {
-	        var pos = level + '-' + index;
-	        var props = {
-	          title: item.label,
-	          value: item.value,
-	          key: item.key || item.value || pos
-	        };
-	        if (item.children && item.children.length) {
-	          return _react2['default'].createElement(
-	            _TreeNode3['default'],
-	            props,
-	            loop(item.children, pos)
-	          );
-	        }
-	        return _react2['default'].createElement(_TreeNode3['default'], _extends({}, props, { isLeaf: item.isLeaf }));
-	      });
-	    };
-	    if (this.props.treeData) {
-	      return loop(this.props.treeData);
+	  renderTreeData: function renderTreeData(props) {
+	    var validProps = props || this.props;
+	    if (validProps.treeData) {
+	      return loopTreeData(validProps.treeData);
 	    }
 	  },
 	  render: function render() {
@@ -20392,7 +20397,7 @@
 	      _SelectTrigger2['default'],
 	      _extends({}, props, {
 	        treeNodes: props.children,
-	        treeData: this.renderTreeData(props.treeData),
+	        treeData: this.renderTreeData(),
 	        multiple: multiple,
 	        disabled: disabled,
 	        visible: state.open,
@@ -25975,7 +25980,7 @@
 	      var expandedKeys = this.getExpandedKeys(treeNode, false);
 	      if (expandedKeys) {
 	        // Controlled expand, save and then reset
-	        this.getOriginExpandedKeys();
+	        this.getRawExpandedKeys();
 	        st.expandedKeys = expandedKeys;
 	      }
 	      this.setState(st);
@@ -26018,7 +26023,7 @@
 	      };
 	      var expandedKeys = this.getExpandedKeys(treeNode, true);
 	      if (expandedKeys) {
-	        this.getOriginExpandedKeys();
+	        this.getRawExpandedKeys();
 	        st.expandedKeys = expandedKeys;
 	      }
 	      this.setState(st);
@@ -26065,7 +26070,7 @@
 	        res.dropToGap = true;
 	      }
 	      if ('expandedKeys' in this.props) {
-	        res.originExpandedKeys = [].concat(_toConsumableArray(this._originExpandedKeys)) || [].concat(_toConsumableArray(this.state.expandedKeys));
+	        res.rawExpandedKeys = [].concat(_toConsumableArray(this._rawExpandedKeys)) || [].concat(_toConsumableArray(this.state.expandedKeys));
 	      }
 	      this.props.onDrop(res);
 	    }
@@ -26271,10 +26276,10 @@
 	      return selectedKeys;
 	    }
 	  }, {
-	    key: 'getOriginExpandedKeys',
-	    value: function getOriginExpandedKeys() {
-	      if (!this._originExpandedKeys && 'expandedKeys' in this.props) {
-	        this._originExpandedKeys = [].concat(_toConsumableArray(this.state.expandedKeys));
+	    key: 'getRawExpandedKeys',
+	    value: function getRawExpandedKeys() {
+	      if (!this._rawExpandedKeys && 'expandedKeys' in this.props) {
+	        this._rawExpandedKeys = [].concat(_toConsumableArray(this.state.expandedKeys));
 	      }
 	    }
 	  }, {
@@ -26378,7 +26383,7 @@
 	        domProps.tabIndex = '0';
 	        domProps.onKeyDown = this.onKeyDown;
 	      }
-	      // console.log(this.state.expandedKeys, this._originExpandedKeys, props.children);
+	      // console.log(this.state.expandedKeys, this._rawExpandedKeys, props.children);
 	      var checkKeys = (0, _util.getTreeNodesStates)(props.children, this.state.checkedKeys, true);
 	      this.checkPartKeys = checkKeys.checkPartKeys;
 	      this.checkedKeys = checkKeys.checkedKeys;

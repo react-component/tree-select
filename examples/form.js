@@ -11,7 +11,7 @@ webpackJsonp([2],{
 /***/ 220:
 /***/ function(module, exports, __webpack_require__) {
 
-	// use jsx to render html, do not modify simple.html
+	/* eslint react/no-multi-comp:0, no-console:0 */
 	
 	'use strict';
 	
