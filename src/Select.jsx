@@ -110,7 +110,7 @@ const Select = React.createClass({
     if ('value' in nextProps) {
       let value = toArray(nextProps.value);
       if (nextProps.treeCheckable) {
-        value = getTreeNodesStates(this.renderTreeData() || nextProps.children, value).checkedValues;
+        value = getTreeNodesStates(this.renderTreeData(nextProps) || nextProps.children, value).checkedValues;
       }
       const label = this.getLabelFromProps(nextProps, value);
       this.setState({
@@ -331,7 +331,7 @@ const Select = React.createClass({
     } else if (init && 'defaultLabel' in props) {
       label = toArray(props.defaultLabel);
     } else {
-      label = this.getLabelByValue(this.renderTreeData() || props.children, value);
+      label = this.getLabelByValue(this.renderTreeData(props) || props.children, value);
     }
     return label;
   },
@@ -516,7 +516,7 @@ const Select = React.createClass({
     }
     return (<ul className={className}>{selectedValueNodes}</ul>);
   },
-  renderTreeData() {
+  renderTreeData(props_) {
     const loop = (data, level = 0) => {
       return data.map((item, index) => {
         const pos = `${level}-${index}`;
@@ -528,11 +528,12 @@ const Select = React.createClass({
         if (item.children && item.children.length) {
           return (<_TreeNode {...props}>{loop(item.children, pos)}</_TreeNode>);
         }
-        return (<_TreeNode {...props} isLeaf={item.isLeaf} />);
+        return (<_TreeNode {...props} isLeaf={item.isLeaf}/>);
       });
     };
-    if (this.props.treeData) {
-      return loop(this.props.treeData);
+    const validProps = props_ || this.props;
+    if (validProps.treeData) {
+      return loop(validProps.treeData);
     }
   },
   render() {
@@ -563,7 +564,7 @@ const Select = React.createClass({
     return (
       <SelectTrigger {...props}
         treeNodes={props.children}
-        treeData={this.renderTreeData(props.treeData)}
+        treeData={this.renderTreeData()}
         multiple={multiple}
         disabled={disabled}
         visible={state.open}
