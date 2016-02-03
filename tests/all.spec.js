@@ -6,6 +6,7 @@ const Simulate = TestUtils.Simulate;
 const $ = require('jquery');
 import TreeSelect, { TreeNode } from '../';
 import { gData, getNewTreeData, generateTreeNodes } from '../examples/util';
+import {Promise} from 'es6-promise';
 
 describe('simple', () => {
   let instance;

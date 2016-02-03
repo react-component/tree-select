@@ -23,6 +23,24 @@ function saveRef(name, component) {
   this[name] = component;
 }
 
+function loopTreeData(data, level = 0) {
+  return data.map((item, index) => {
+    const pos = `${level}-${index}`;
+    const props = {
+      title: item.label,
+      value: item.value,
+      key: item.key || item.value || pos,
+    };
+    let ret;
+    if (item.children && item.children.length) {
+      ret = (<_TreeNode {...props}>{loopTreeData(item.children, pos)}</_TreeNode>);
+    } else {
+      ret = (<_TreeNode {...props} isLeaf={item.isLeaf}/>);
+    }
+    return ret;
+  });
+}
+
 const Select = React.createClass({
   propTypes: {
     children: PropTypes.any,
@@ -516,24 +534,10 @@ const Select = React.createClass({
     }
     return (<ul className={className}>{selectedValueNodes}</ul>);
   },
-  renderTreeData(props_) {
-    const loop = (data, level = 0) => {
-      return data.map((item, index) => {
-        const pos = `${level}-${index}`;
-        const props = {
-          title: item.label,
-          value: item.value,
-          key: item.key || item.value || pos,
-        };
-        if (item.children && item.children.length) {
-          return (<_TreeNode {...props}>{loop(item.children, pos)}</_TreeNode>);
-        }
-        return (<_TreeNode {...props} isLeaf={item.isLeaf}/>);
-      });
-    };
-    const validProps = props_ || this.props;
+  renderTreeData(props) {
+    const validProps = props || this.props;
     if (validProps.treeData) {
-      return loop(validProps.treeData);
+      return loopTreeData(validProps.treeData);
     }
   },
   render() {
