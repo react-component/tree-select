@@ -1,7 +1,7 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import 'rc-tree-select/assets/index.less';
-import 'rc-tree-select/assets/demo.less';
+import './demo.less';
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import TreeSelect from 'rc-tree-select';
