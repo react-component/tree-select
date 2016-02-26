@@ -20022,7 +20022,7 @@
 	  onSelect: function onSelect(selectedKeys, info) {
 	    var _this = this;
 	
-	    var check = info.event === 'check';
+	    var checkEvt = info.event === 'check';
 	    if (info.selected === false) {
 	      this.onDeselect(info);
 	      return;
@@ -20035,7 +20035,7 @@
 	    var selectedLabel = this.getLabelFromNode(item);
 	    props.onSelect(selectedValue, item);
 	    if ((0, _util.isMultipleOrTags)(props)) {
-	      if (check) {
+	      if (checkEvt) {
 	        // TODO treeCheckable does not support tags/dynamic
 	        var checkedNodes = info.checkedNodes;
 	
@@ -20055,7 +20055,7 @@
 	        value = value.concat([selectedValue]);
 	        label = label.concat([selectedLabel]);
 	      }
-	      if (!check && value.indexOf(selectedValue) !== -1) {
+	      if (!checkEvt && value.indexOf(selectedValue) !== -1) {
 	        // 设置 multiple 时会有bug。（isValueChange 已有检查，此处注释掉）
 	        // return;
 	      }
@@ -20069,7 +20069,18 @@
 	        this.setOpenState(false);
 	      }
 	
-	    this.fireChange(value, label, { triggerValue: selectedValue, triggerNode: item, checked: info.checked });
+	    var extraInfo = {
+	      triggerValue: selectedValue,
+	      triggerNode: item
+	    };
+	    if (checkEvt) {
+	      extraInfo.checked = info.checked;
+	      extraInfo.allCheckedNodes = info.checkedNodes;
+	    } else {
+	      extraInfo.selected = info.selected;
+	    }
+	
+	    this.fireChange(value, label, extraInfo);
 	    this.setState({
 	      inputValue: ''
 	    });
