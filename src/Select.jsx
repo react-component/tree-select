@@ -238,7 +238,7 @@ const Select = React.createClass({
   },
 
   onSelect(selectedKeys, info) {
-    const check = info.event === 'check';
+    const checkEvt = info.event === 'check';
     if (info.selected === false) {
       this.onDeselect(info);
       return;
@@ -251,7 +251,7 @@ const Select = React.createClass({
     const selectedLabel = this.getLabelFromNode(item);
     props.onSelect(selectedValue, item);
     if (isMultipleOrTags(props)) {
-      if (check) {
+      if (checkEvt) {
         // TODO treeCheckable does not support tags/dynamic
         let {checkedNodes} = info;
         checkedNodes = checkedNodes.filter(n => !n.props.children);
@@ -264,7 +264,7 @@ const Select = React.createClass({
         value = value.concat([selectedValue]);
         label = label.concat([selectedLabel]);
       }
-      if (!check && value.indexOf(selectedValue) !== -1) {
+      if (!checkEvt && value.indexOf(selectedValue) !== -1) {
         // 设置 multiple 时会有bug。（isValueChange 已有检查，此处注释掉）
         // return;
       }
@@ -278,7 +278,18 @@ const Select = React.createClass({
       this.setOpenState(false);
     }
 
-    this.fireChange(value, label, {triggerValue: selectedValue, triggerNode: item, checked: info.checked});
+    const extraInfo = {
+      triggerValue: selectedValue,
+      triggerNode: item,
+    };
+    if (checkEvt) {
+      extraInfo.checked = info.checked;
+      extraInfo.allCheckedNodes = info.checkedNodes;
+    } else {
+      extraInfo.selected = info.selected;
+    }
+
+    this.fireChange(value, label, extraInfo);
     this.setState({
       inputValue: '',
     });
