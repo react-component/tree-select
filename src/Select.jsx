@@ -8,6 +8,7 @@ import {
   getPropValue, getValuePropValue, isCombobox,
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
   isSingleMode, toArray, getTreeNodesStates,
+  flatToHierarchy,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import _TreeNode from './TreeNode';
@@ -284,7 +285,8 @@ const Select = React.createClass({
     };
     if (checkEvt) {
       extraInfo.checked = info.checked;
-      extraInfo.allCheckedNodes = info.checkedNodes;
+      // extraInfo.allCheckedNodes = info.checkedNodes;
+      extraInfo.allCheckedNodes = flatToHierarchy(info.checkedNodesPositions);
     } else {
       extraInfo.selected = info.selected;
     }

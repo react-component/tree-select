@@ -94,7 +94,41 @@ export function loopAllChildren(childs, callback) {
   loop(childs, 0);
 }
 
-export function filterMinPos(arr) {
+export function flatToHierarchy(arr) {
+  const hierarchyNodes = [];
+  const levelObj = {};
+  arr.forEach((item) => {
+    const posLen = item.pos.split('-').length;
+    if (!levelObj[posLen]) {
+      levelObj[posLen] = [];
+    }
+    levelObj[posLen].push(item);
+  });
+  const levelArr = Object.keys(levelObj).sort((a, b) => b - a);
+  levelArr.reduce((pre, cur) => {
+    if (cur && cur !== pre) {
+      levelObj[pre].forEach((item) => {
+        let haveParent = false;
+        levelObj[cur].forEach((ii) => {
+          if (isInclude(ii.pos.split('-'), item.pos.split('-'))) {
+            haveParent = true;
+            if (!ii.children) {
+              ii.children = [];
+            }
+            ii.children.push(item);
+          }
+        });
+        if (!haveParent) {
+          hierarchyNodes.push(item);
+        }
+      });
+    }
+    return cur;
+  });
+  return levelObj[levelArr[levelArr.length - 1]].concat(hierarchyNodes);
+}
+
+export function filterMinPosition(arr) {
   const a = [];
   arr.forEach((item) => {
     const b = a.filter((i) => {
@@ -106,7 +140,7 @@ export function filterMinPos(arr) {
   });
   return a;
 }
-// console.log(filterMinPos(['0-0','0-1', '0-10', '0-0-1', '0-1-1', '0-10-0']));
+// console.log(filterMinPosition(['0-1', '0-10', '0-0-1', '0-1-1', '0-10-0']));
 
 function handleCheckState(obj, checkedPosArr, checkIt) {
   const stripTail = (str) => {
@@ -196,7 +230,7 @@ export function getTreeNodesStates(children, values) {
     };
   });
 
-  handleCheckState(treeNodesStates, filterMinPos(checkedPos.sort()), true);
+  handleCheckState(treeNodesStates, filterMinPosition(checkedPos.sort()), true);
 
   return getCheckValues(treeNodesStates);
 }
