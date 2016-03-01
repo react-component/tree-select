@@ -78,7 +78,7 @@ describe('simple', () => {
       <TreeSelect style={{width: 300}}
                   dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
                   treeData={gData}
-                  value={['0-0-0-value', '0-0-0-0-value']}
+                  value={['0-0-value', '0-1-value']}
                    />,
     div);
     instance.setState({
@@ -95,7 +95,7 @@ describe('simple', () => {
                   dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
                   treeData={gData}
                   multiple
-                  value={['0-0-0-value', '0-0-0-0-value']}
+                  value={['0-0-value', '0-1-value']}
                    />,
     div);
     instance.setState({

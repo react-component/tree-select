@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import assign from 'object-assign';
 import Trigger from 'rc-trigger';
 import Tree, { TreeNode } from 'rc-tree';
-import { filterMinPosition, loopAllChildren, getValuePropValue } from './util';
+import { flatToHierarchy, loopAllChildren, getValuePropValue } from './util';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -89,76 +89,18 @@ const SelectTrigger = React.createClass({
     this.popupEle = ele;
   },
 
-  renderFilterOptionsFromChildren(children) {
-    let posArr = [];
-    const filterPos = [];
+  renderFilterTreeNodes(children) {
     const props = this.props;
     const inputValue = props.inputValue;
+    const filterNodesPositions = [];
 
     loopAllChildren(children, (child, index, pos) => {
       if (this.filterTreeNode(inputValue, child)) {
-        posArr.push(pos);
+        filterNodesPositions.push({node: child, pos});
       }
     });
-    posArr = filterMinPosition(posArr);
 
-    const filterChildren = {};
-    loopAllChildren(children, (child, index, pos) => {
-      posArr.forEach(item => {
-        if (item.indexOf(pos) === 0 && filterPos.indexOf(pos) === -1) {
-          filterPos.push(pos);
-          filterChildren[pos] = child;
-        }
-      });
-    });
-
-    const level = {};
-    filterPos.forEach(pos => {
-      const arr = pos.split('-');
-      const key = String(arr.length - 1);
-      level[key] = level[key] || [];
-      level[key].push(pos);
-    });
-
-    const childrenArr = [];
-
-    function loop(arr, cur, callback) {
-      arr.forEach((c, index) => {
-        if (cur.indexOf(c.pos) === 0) {
-          if (c.children) {
-            if (cur.split('-').length === c.pos.split('-').length + 1) {
-              callback(arr, index);
-            } else {
-              loop(c.children, cur, callback);
-            }
-          } else {
-            callback(arr, index);
-          }
-        }
-      });
-    }
-    const levelArr = Object.keys(level).sort((a, b) => a - b);
-    if (levelArr.length > 0) {
-      level[levelArr[0]].forEach((pos, index) => {
-        childrenArr[index] = {
-          pos: pos,
-          node: filterChildren[pos],
-        };
-      });
-      const loopFn = cur => {
-        loop(childrenArr, cur, (arr, index) => {
-          arr[index].children = arr[index].children || [];
-          arr[index].children.push({
-            pos: cur,
-            node: filterChildren[cur],
-          });
-        });
-      };
-      for (let i = 1; i < levelArr.length; i++) {
-        level[levelArr[i]].forEach(loopFn);
-      }
-    }
-    return childrenArr;
+    return flatToHierarchy(filterNodesPositions);
   },
 
   renderTree(treeNodes, newTreeNodes, multiple) {
@@ -225,7 +167,7 @@ const SelectTrigger = React.createClass({
     const search = multiple || props.combobox || !props.showSearch ? null : (
       <span className={`${dropdownPrefixCls}-search`}>{props.inputElement}</span>
     );
-    const treeNodes = this.renderFilterOptionsFromChildren(props.treeData || props.treeNodes);
+    const treeNodes = this.renderFilterTreeNodes(props.treeData || props.treeNodes);
     let notFoundContent;
     if (!treeNodes.length) {
       if (props.notFoundContent) {
