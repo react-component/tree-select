@@ -23519,7 +23519,7 @@
 	exports.getCheckedKeys = getCheckedKeys;
 	exports.loopAllChildren = loopAllChildren;
 	exports.flatToHierarchy = flatToHierarchy;
-	exports.filterMinPosition = filterMinPosition;
+	exports.filterParentPosition = filterParentPosition;
 	exports.getTreeNodesStates = getTreeNodesStates;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -23625,6 +23625,9 @@
 	}
 	
 	function flatToHierarchy(arr) {
+	  if (!arr.length) {
+	    return arr;
+	  }
 	  var hierarchyNodes = [];
 	  var levelObj = {};
 	  arr.forEach(function (item) {
@@ -23660,20 +23663,35 @@
 	  return levelObj[levelArr[levelArr.length - 1]].concat(hierarchyNodes);
 	}
 	
-	function filterMinPosition(arr) {
-	  var a = [];
+	function uniqueArray(arr) {
+	  var obj = {};
 	  arr.forEach(function (item) {
-	    var b = a.filter(function (i) {
-	      return item.indexOf(i) === 0 && (item[i.length] === '-' || !item[i.length]);
-	    });
-	    if (!b.length) {
-	      a.push(item);
+	    if (!obj[item]) {
+	      obj[item] = true;
 	    }
 	  });
-	  return a;
+	  return Object.keys(obj);
+	}
+	// console.log(uniqueArray(['11', '2', '2']));
+	
+	function filterParentPosition(arr) {
+	  var a = [].concat(arr);
+	  arr.forEach(function (item) {
+	    var itemArr = item.split('-');
+	    a.forEach(function (ii, index) {
+	      var iiArr = ii.split('-');
+	      if (itemArr.length <= iiArr.length && isInclude(itemArr, iiArr)) {
+	        a[index] = item;
+	      }
+	      if (itemArr.length > iiArr.length && isInclude(iiArr, itemArr)) {
+	        a[index] = ii;
+	      }
+	    });
+	  });
+	  return uniqueArray(a);
 	}
 	
-	// console.log(filterMinPosition(['0-1', '0-10', '0-0-1', '0-1-1', '0-10-0']));
+	// console.log(filterParentPosition(['0-2', '0-10', '0-0-1', '0-1-1', '0-0','0-1', '0-10-0']));
 	
 	function handleCheckState(obj, checkedPosArr, checkIt) {
 	  var stripTail = function stripTail(str) {
@@ -23764,7 +23782,7 @@
 	    };
 	  });
 	
-	  handleCheckState(treeNodesStates, filterMinPosition(checkedPos.sort()), true);
+	  handleCheckState(treeNodesStates, filterParentPosition(checkedPos.sort()), true);
 	
 	  return getCheckValues(treeNodesStates);
 	}
@@ -23896,80 +23914,20 @@
 	    this.popupEle = ele;
 	  },
 	
-	  renderFilterOptionsFromChildren: function renderFilterOptionsFromChildren(children) {
+	  renderFilterTreeNodes: function renderFilterTreeNodes(children) {
 	    var _this = this;
 	
-	    var posArr = [];
-	    var filterPos = [];
 	    var props = this.props;
 	    var inputValue = props.inputValue;
+	    var filterNodesPositions = [];
 	
 	    (0, _util.loopAllChildren)(children, function (child, index, pos) {
 	      if (_this.filterTreeNode(inputValue, child)) {
-	        posArr.push(pos);
+	        filterNodesPositions.push({ node: child, pos: pos });
 	      }
 	    });
-	    posArr = (0, _util.filterMinPosition)(posArr);
 	
-	    var filterChildren = {};
-	    (0, _util.loopAllChildren)(children, function (child, index, pos) {
-	      posArr.forEach(function (item) {
-	        if (item.indexOf(pos) === 0 && filterPos.indexOf(pos) === -1) {
-	          filterPos.push(pos);
-	          filterChildren[pos] = child;
-	        }
-	      });
-	    });
-	
-	    var level = {};
-	    filterPos.forEach(function (pos) {
-	      var arr = pos.split('-');
-	      var key = String(arr.length - 1);
-	      level[key] = level[key] || [];
-	      level[key].push(pos);
-	    });
-	
-	    var childrenArr = [];
-	
-	    function loop(arr, cur, callback) {
-	      arr.forEach(function (c, index) {
-	        if (cur.indexOf(c.pos) === 0) {
-	          if (c.children) {
-	            if (cur.split('-').length === c.pos.split('-').length + 1) {
-	              callback(arr, index);
-	            } else {
-	              loop(c.children, cur, callback);
-	            }
-	          } else {
-	            callback(arr, index);
-	          }
-	        }
-	      });
-	    }
-	    var levelArr = Object.keys(level).sort(function (a, b) {
-	      return a - b;
-	    });
-	    if (levelArr.length > 0) {
-	      level[levelArr[0]].forEach(function (pos, index) {
-	        childrenArr[index] = {
-	          pos: pos,
-	          node: filterChildren[pos]
-	        };
-	      });
-	      var loopFn = function loopFn(cur) {
-	        loop(childrenArr, cur, function (arr, index) {
-	          arr[index].children = arr[index].children || [];
-	          arr[index].children.push({
-	            pos: cur,
-	            node: filterChildren[cur]
-	          });
-	        });
-	      };
-	      for (var i = 1; i < levelArr.length; i++) {
-	        level[levelArr[i]].forEach(loopFn);
-	      }
-	    }
-	    return childrenArr;
+	    return (0, _util.flatToHierarchy)(filterNodesPositions);
 	  },
 	
 	  renderTree: function renderTree(treeNodes, newTreeNodes, multiple) {
@@ -24043,7 +24001,7 @@
 	      { className: dropdownPrefixCls + '-search' },
 	      props.inputElement
 	    );
-	    var treeNodes = this.renderFilterOptionsFromChildren(props.treeData || props.treeNodes);
+	    var treeNodes = this.renderFilterTreeNodes(props.treeData || props.treeNodes);
 	    var notFoundContent = undefined;
 	    if (!treeNodes.length) {
 	      if (props.notFoundContent) {
