@@ -21652,7 +21652,7 @@
 /***/ function(module, exports) {
 
 	/**
-	 * lodash 3.0.7 (Custom Build) <https://lodash.com/>
+	 * lodash 3.0.8 (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modularize exports="npm" -o ./`
 	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -21755,8 +21755,7 @@
 	 * // => false
 	 */
 	function isArrayLike(value) {
-	  return value != null &&
-	    !(typeof value == 'function' && isFunction(value)) && isLength(getLength(value));
+	  return value != null && isLength(getLength(value)) && !isFunction(value);
 	}
 	
 	/**
@@ -21804,8 +21803,8 @@
 	 */
 	function isFunction(value) {
 	  // The use of `Object#toString` avoids issues with the `typeof` operator
-	  // in Safari 8 which returns 'object' for typed array constructors, and
-	  // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+	  // in Safari 8 which returns 'object' for typed array and weak map constructors,
+	  // and PhantomJS 1.9 which returns 'function' for `NodeList` instances.
 	  var tag = isObject(value) ? objectToString.call(value) : '';
 	  return tag == funcTag || tag == genTag;
 	}
@@ -24098,6 +24097,8 @@
 	
 	  propTypes: {
 	    action: _react.PropTypes.any,
+	    showAction: _react.PropTypes.any,
+	    hideAction: _react.PropTypes.any,
 	    getPopupClassNameFromAlign: _react.PropTypes.any,
 	    onPopupVisibleChange: _react.PropTypes.func,
 	    afterPopupVisibleChange: _react.PropTypes.func,
@@ -24110,6 +24111,8 @@
 	    popupAnimation: _react.PropTypes.any,
 	    mouseEnterDelay: _react.PropTypes.number,
 	    mouseLeaveDelay: _react.PropTypes.number,
+	    focusDelay: _react.PropTypes.number,
+	    blurDelay: _react.PropTypes.number,
 	    getPopupContainer: _react.PropTypes.func,
 	    destroyPopupOnHide: _react.PropTypes.bool,
 	    popupAlign: _react.PropTypes.object,
@@ -24125,11 +24128,15 @@
 	      popupClassName: '',
 	      mouseEnterDelay: 0,
 	      mouseLeaveDelay: 0.1,
+	      focusDelay: 0,
+	      blurDelay: 0.15,
 	      popupStyle: {},
 	      destroyPopupOnHide: false,
 	      popupAlign: {},
 	      defaultPopupVisible: false,
-	      action: []
+	      action: [],
+	      showAction: [],
+	      hideAction: []
 	    };
 	  },
 	
@@ -24211,10 +24218,7 @@
 	      }
 	      this.popupContainer = null;
 	    }
-	    if (this.delayTimer) {
-	      clearTimeout(this.delayTimer);
-	      this.delayTimer = null;
-	    }
+	    this.clearDelayTimer();
 	    if (this.clickOutsideHandler) {
 	      this.clickOutsideHandler.remove();
 	      this.touchOutsideHandler.remove();
@@ -24233,7 +24237,7 @@
 	
 	  onFocus: function onFocus() {
 	    this.focusTime = Date.now();
-	    this.setPopupVisible(true);
+	    this.delaySetPopupVisible(true, this.props.focusDelay);
 	  },
 	
 	  onMouseDown: function onMouseDown() {
@@ -24245,7 +24249,7 @@
 	  },
 	
 	  onBlur: function onBlur() {
-	    this.setPopupVisible(false);
+	    this.delaySetPopupVisible(false, this.props.blurDelay);
 	  },
 	
 	  onClick: function onClick(event) {
@@ -24267,7 +24271,10 @@
 	    this.preClickTime = 0;
 	    this.preTouchTime = 0;
 	    event.preventDefault();
-	    this.setPopupVisible(!this.state.popupVisible);
+	    var nextVisible = !this.state.popupVisible;
+	    if (this.isClickToHide() && !nextVisible || nextVisible && this.isClickToShow()) {
+	      this.setPopupVisible(!this.state.popupVisible);
+	    }
 	  },
 	
 	  onDocumentClick: function onDocumentClick(event) {
@@ -24352,6 +24359,7 @@
 	  },
 	
 	  setPopupVisible: function setPopupVisible(popupVisible) {
+	    this.clearDelayTimer();
 	    if (this.state.popupVisible !== popupVisible) {
 	      if (!('popupVisible' in this.props)) {
 	        this.setState({
@@ -24366,18 +24374,70 @@
 	    var _this2 = this;
 	
 	    var delay = delayS * 1000;
-	    if (this.delayTimer) {
-	      clearTimeout(this.delayTimer);
-	      this.delayTimer = null;
-	    }
+	    this.clearDelayTimer();
 	    if (delay) {
 	      this.delayTimer = setTimeout(function () {
 	        _this2.setPopupVisible(visible);
-	        _this2.delayTimer = null;
+	        _this2.clearDelayTimer();
 	      }, delay);
 	    } else {
 	      this.setPopupVisible(visible);
 	    }
+	  },
+	
+	  clearDelayTimer: function clearDelayTimer() {
+	    if (this.delayTimer) {
+	      clearTimeout(this.delayTimer);
+	      this.delayTimer = null;
+	    }
+	  },
+	
+	  isClickToShow: function isClickToShow() {
+	    var _props = this.props;
+	    var action = _props.action;
+	    var showAction = _props.showAction;
+	
+	    return action.indexOf('click') !== -1 || showAction.indexOf('click') !== -1;
+	  },
+	
+	  isClickToHide: function isClickToHide() {
+	    var _props2 = this.props;
+	    var action = _props2.action;
+	    var hideAction = _props2.hideAction;
+	
+	    return action.indexOf('click') !== -1 || hideAction.indexOf('click') !== -1;
+	  },
+	
+	  isMouseEnterToShow: function isMouseEnterToShow() {
+	    var _props3 = this.props;
+	    var action = _props3.action;
+	    var showAction = _props3.showAction;
+	
+	    return action.indexOf('hover') !== -1 || showAction.indexOf('mouseEnter') !== -1;
+	  },
+	
+	  isMouseLeaveToHide: function isMouseLeaveToHide() {
+	    var _props4 = this.props;
+	    var action = _props4.action;
+	    var hideAction = _props4.hideAction;
+	
+	    return action.indexOf('hover') !== -1 || hideAction.indexOf('mouseLeave') !== -1;
+	  },
+	
+	  isFocusToShow: function isFocusToShow() {
+	    var _props5 = this.props;
+	    var action = _props5.action;
+	    var showAction = _props5.showAction;
+	
+	    return action.indexOf('focus') !== -1 || showAction.indexOf('focus') !== -1;
+	  },
+	
+	  isBlurToHide: function isBlurToHide() {
+	    var _props6 = this.props;
+	    var action = _props6.action;
+	    var hideAction = _props6.hideAction;
+	
+	    return action.indexOf('focus') !== -1 || hideAction.indexOf('blur') !== -1;
 	  },
 	
 	  render: function render() {
@@ -24387,18 +24447,22 @@
 	    var child = _react2['default'].Children.only(children);
 	    var childProps = child.props || {};
 	    var newChildProps = {};
-	    var trigger = props.action;
-	    if (trigger.indexOf('click') !== -1) {
+	
+	    if (this.isClickToHide() || this.isClickToShow()) {
 	      newChildProps.onClick = (0, _rcUtil.createChainedFunction)(this.onClick, childProps.onClick);
 	      newChildProps.onMouseDown = (0, _rcUtil.createChainedFunction)(this.onMouseDown, childProps.onMouseDown);
 	      newChildProps.onTouchStart = (0, _rcUtil.createChainedFunction)(this.onTouchStart, childProps.onTouchStart);
 	    }
-	    if (trigger.indexOf('hover') !== -1) {
+	    if (this.isMouseEnterToShow()) {
 	      newChildProps.onMouseEnter = (0, _rcUtil.createChainedFunction)(this.onMouseEnter, childProps.onMouseEnter);
+	    }
+	    if (this.isMouseLeaveToHide()) {
 	      newChildProps.onMouseLeave = (0, _rcUtil.createChainedFunction)(this.onMouseLeave, childProps.onMouseLeave);
 	    }
-	    if (trigger.indexOf('focus') !== -1) {
+	    if (this.isFocusToShow()) {
 	      newChildProps.onFocus = (0, _rcUtil.createChainedFunction)(this.onFocus, childProps.onFocus);
+	    }
+	    if (this.isBlurToHide()) {
 	      newChildProps.onBlur = (0, _rcUtil.createChainedFunction)(this.onBlur, childProps.onBlur);
 	    }
 	
@@ -26496,8 +26560,8 @@
 	exports.browser = browser;
 	exports.getOffset = getOffset;
 	exports.loopAllChildren = loopAllChildren;
-	exports.filterMinPosition = filterMinPosition;
 	exports.isInclude = isInclude;
+	exports.filterParentPosition = filterParentPosition;
 	exports.getTreeNodesStates = getTreeNodesStates;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -26598,21 +26662,6 @@
 	  loop(childs, 0);
 	}
 	
-	function filterMinPosition(arr) {
-	  var a = [];
-	  arr.forEach(function (item) {
-	    var b = a.filter(function (i) {
-	      return item.indexOf(i) === 0 && (item[i.length] === '-' || !item[i.length]);
-	    });
-	    if (!b.length) {
-	      a.push(item);
-	    }
-	  });
-	  return a;
-	}
-	
-	// console.log(filterMinPosition(['0-0','0-1', '0-10', '0-0-1', '0-1-1', '0-10-0']));
-	
 	function isInclude(smallArray, bigArray) {
 	  return smallArray.every(function (ii, i) {
 	    return ii === bigArray[i];
@@ -26620,6 +26669,36 @@
 	}
 	
 	// console.log(isInclude(['0', '1'], ['0', '10', '1']));
+	
+	function uniqueArray(arr) {
+	  var obj = {};
+	  arr.forEach(function (item) {
+	    if (!obj[item]) {
+	      obj[item] = true;
+	    }
+	  });
+	  return Object.keys(obj);
+	}
+	// console.log(uniqueArray(['11', '2', '2']));
+	
+	function filterParentPosition(arr) {
+	  var a = [].concat(arr);
+	  arr.forEach(function (item) {
+	    var itemArr = item.split('-');
+	    a.forEach(function (ii, index) {
+	      var iiArr = ii.split('-');
+	      if (itemArr.length <= iiArr.length && isInclude(itemArr, iiArr)) {
+	        a[index] = item;
+	      }
+	      if (itemArr.length > iiArr.length && isInclude(iiArr, itemArr)) {
+	        a[index] = ii;
+	      }
+	    });
+	  });
+	  return uniqueArray(a);
+	}
+	
+	// console.log(filterParentPosition(['0-2', '0-10', '0-0-1', '0-1-1', '0-0','0-1', '0-10-0']));
 	
 	// TODO 效率差, 需要缓存优化
 	function handleCheckState(obj, checkedPositionArr, checkIt) {
@@ -26724,7 +26803,7 @@
 	  });
 	
 	  // debugger
-	  handleCheckState(treeNodesStates, filterMinPosition(checkedPosition.sort()), true);
+	  handleCheckState(treeNodesStates, filterParentPosition(checkedPosition.sort()), true);
 	
 	  if (!checkIt && unCheckKey) {
 	    var pos = undefined;
