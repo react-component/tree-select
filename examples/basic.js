@@ -10,7 +10,7 @@ import { gData } from './util';
 const Demo = React.createClass({
   getInitialState() {
     return {
-      value: '',
+      value: '0-0-0-0-value',
       multipleValue: [],
     };
   },
@@ -28,9 +28,9 @@ const Demo = React.createClass({
         <h2>single select</h2>
         <TreeSelect style={{width: 300}}
                     dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                    treeData={gData} showSearch
+                    treeData={gData} showSearch allowClear
                     value={this.state.value}
-                    treeDefaultExpandAll
+                    treeDefaultExpandAll={false}
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
                     treeNodeFilterProp="title"

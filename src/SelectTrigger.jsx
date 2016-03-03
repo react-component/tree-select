@@ -146,6 +146,9 @@ const SelectTrigger = React.createClass({
       trProps.onSelect = props.onSelect;
     }
 
+    // expand keys
+    trProps.defaultExpandedKeys = keys;
+
     // async loadData
     if (props.loadData) {
       trProps.loadData = props.loadData;

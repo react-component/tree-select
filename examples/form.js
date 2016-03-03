@@ -53,7 +53,7 @@ class Form extends Component {
       value: this.props.value,
       treeData: gData,
       treeCheckable: true,
-      treeDefaultExpandAll: true,
+      // treeDefaultExpandAll: true,
     };
     return (<div style={{margin: 20}}>
       <h2>validity</h2>
