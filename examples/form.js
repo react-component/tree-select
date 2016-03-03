@@ -123,9 +123,9 @@ webpackJsonp([2],{
 	        multiple: true,
 	        value: this.props.value,
 	        treeData: _util.gData,
-	        treeCheckable: true,
-	        treeDefaultExpandAll: true
+	        treeCheckable: true
 	      };
+	      // treeDefaultExpandAll: true,
 	      return _react2['default'].createElement(
 	        'div',
 	        { style: { margin: 20 } },

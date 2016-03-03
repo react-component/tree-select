@@ -38,7 +38,7 @@ webpackJsonp([0],[
 	
 	  getInitialState: function getInitialState() {
 	    return {
-	      value: '',
+	      value: '0-0-0-0-value',
 	      multipleValue: []
 	    };
 	  },
@@ -61,9 +61,9 @@ webpackJsonp([0],[
 	      ),
 	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 },
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-	        treeData: _util.gData, showSearch: true,
+	        treeData: _util.gData, showSearch: true, allowClear: true,
 	        value: this.state.value,
-	        treeDefaultExpandAll: true,
+	        treeDefaultExpandAll: false,
 	        placeholder: _react2['default'].createElement(
 	          'i',
 	          null,
