@@ -23690,25 +23690,38 @@
 	  return uniqueArray(a);
 	}
 	
-	// console.log(filterParentPosition(['0-2', '0-10', '0-0-1', '0-1-1', '0-0','0-1', '0-10-0']));
+	function containsPath(path1, path2) {
+	  if (path2.length > path1.length) {
+	    return false;
+	  }
+	  for (var i = 0; i < path2.length; i++) {
+	    if (path1[i] !== path2[i]) {
+	      return false;
+	    }
+	  }
+	  return true;
+	}
+	
+	var stripTail = function stripTail(str) {
+	  var arr = str.match(/(.+)(-[^-]+)$/);
+	  var st = '';
+	  if (arr && arr.length === 3) {
+	    st = arr[1];
+	  }
+	  return st;
+	};
 	
 	function handleCheckState(obj, checkedPosArr, checkIt) {
-	  var stripTail = function stripTail(str) {
-	    var arr = str.match(/(.+)(-[^-]+)$/);
-	    var st = '';
-	    if (arr && arr.length === 3) {
-	      st = arr[1];
-	    }
-	    return st;
-	  };
 	  // stripTail('x-xx-sss-xx')
 	  var splitPos = function splitPos(pos) {
 	    return pos.split('-');
 	  };
 	  checkedPosArr.forEach(function (_pos) {
+	    var posPath = splitPos(_pos);
 	    // 设置子节点，全选或全不选
 	    Object.keys(obj).forEach(function (i) {
-	      if (splitPos(i).length > splitPos(_pos).length && i.indexOf(_pos) === 0) {
+	      var iPath = splitPos(i);
+	      if (iPath.length > posPath.length && containsPath(iPath, posPath)) {
 	        obj[i].checkPart = false;
 	        obj[i].checked = checkIt;
 	      }
@@ -23723,8 +23736,10 @@
 	      var sibling = 0;
 	      var siblingChecked = 0;
 	      var parentPos = stripTail(__pos);
+	      var parentPosPath = splitPos(parentPos);
 	      Object.keys(obj).forEach(function (i) {
-	        if (splitPos(i).length === _posLen && i.indexOf(parentPos) === 0) {
+	        var iPath = splitPos(i);
+	        if (iPath.length === _posLen && containsPath(iPath, parentPosPath)) {
 	          sibling++;
 	          if (obj[i].checked) {
 	            siblingChecked++;
