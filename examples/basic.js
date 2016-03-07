@@ -61,7 +61,7 @@ webpackJsonp([0],[
 	      ),
 	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 },
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-	        treeData: _util.gData, showSearch: true, allowClear: true,
+	        treeData: _util.gData, showSearch: true, allowClear: true, treeLine: true,
 	        value: this.state.value,
 	        treeDefaultExpandAll: false,
 	        placeholder: _react2['default'].createElement(

@@ -23690,18 +23690,6 @@
 	  return uniqueArray(a);
 	}
 	
-	function containsPath(path1, path2) {
-	  if (path2.length > path1.length) {
-	    return false;
-	  }
-	  for (var i = 0; i < path2.length; i++) {
-	    if (path1[i] !== path2[i]) {
-	      return false;
-	    }
-	  }
-	  return true;
-	}
-	
 	var stripTail = function stripTail(str) {
 	  var arr = str.match(/(.+)(-[^-]+)$/);
 	  var st = '';
@@ -23721,7 +23709,7 @@
 	    // 设置子节点，全选或全不选
 	    Object.keys(obj).forEach(function (i) {
 	      var iPath = splitPos(i);
-	      if (iPath.length > posPath.length && containsPath(iPath, posPath)) {
+	      if (iPath.length > posPath.length && isInclude(posPath, iPath)) {
 	        obj[i].checkPart = false;
 	        obj[i].checked = checkIt;
 	      }
@@ -23739,7 +23727,7 @@
 	      var parentPosPath = splitPos(parentPos);
 	      Object.keys(obj).forEach(function (i) {
 	        var iPath = splitPos(i);
-	        if (iPath.length === _posLen && containsPath(iPath, parentPosPath)) {
+	        if (iPath.length === _posLen && isInclude(parentPosPath, iPath)) {
 	          sibling++;
 	          if (obj[i].checked) {
 	            siblingChecked++;
@@ -26878,7 +26866,7 @@
 	
 	var _util = __webpack_require__(215);
 	
-	var browserUa = (0, _util.browser)(window.navigator.userAgent || '');
+	var browserUa = (0, _util.browser)(typeof window !== 'undefined' ? window.navigator.userAgent : '');
 	var ieOrEdge = /.*(IE|Edge).+/.test(browserUa);
 	// const uaArray = browserUa.split(' ');
 	// const gtIE8 = uaArray.length !== 2 || uaArray[0].indexOf('IE') === -1 || Number(uaArray[1]) > 8;
