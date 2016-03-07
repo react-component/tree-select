@@ -28,7 +28,7 @@ const Demo = React.createClass({
         <h2>single select</h2>
         <TreeSelect style={{width: 300}}
                     dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                    treeData={gData} showSearch allowClear
+                    treeData={gData} showSearch allowClear treeLine
                     value={this.state.value}
                     treeDefaultExpandAll={false}
                     placeholder={<i>请下拉选择</i>}

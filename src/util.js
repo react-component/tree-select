@@ -159,18 +159,6 @@ export function filterParentPosition(arr) {
   return uniqueArray(a);
 }
 
-function containsPath(path1, path2) {
-  if (path2.length > path1.length) {
-    return false;
-  }
-  for (let i = 0; i < path2.length; i++) {
-    if (path1[i] !== path2[i]) {
-      return false;
-    }
-  }
-  return true;
-}
-
 const stripTail = (str) => {
   const arr = str.match(/(.+)(-[^-]+)$/);
   let st = '';
@@ -190,7 +178,7 @@ function handleCheckState(obj, checkedPosArr, checkIt) {
     // 设置子节点，全选或全不选
     Object.keys(obj).forEach((i) => {
       const iPath = splitPos(i);
-      if (iPath.length > posPath.length && containsPath(iPath, posPath)) {
+      if (iPath.length > posPath.length && isInclude(posPath, iPath)) {
         obj[i].checkPart = false;
         obj[i].checked = checkIt;
       }
@@ -207,7 +195,7 @@ function handleCheckState(obj, checkedPosArr, checkIt) {
       const parentPosPath = splitPos(parentPos);
       Object.keys(obj).forEach((i) => {
         const iPath = splitPos(i);
-        if (iPath.length === _posLen && containsPath(iPath, parentPosPath)) {
+        if (iPath.length === _posLen && isInclude(parentPosPath, iPath)) {
           sibling++;
           if (obj[i].checked) {
             siblingChecked++;
