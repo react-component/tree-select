@@ -8,7 +8,8 @@
     list-style: none;
     white-space: nowrap;
     outline: 0;
-    a[draggable], a[draggable=true] {
+    a[draggable],
+    a[draggable="true"] {
       color: #333;
       -moz-user-select: none;
       -khtml-user-select: none;
@@ -18,17 +19,11 @@
       -khtml-user-drag: element;
       -webkit-user-drag: element;
     }
-    &.filter-node {
-      > a {
-        color: #A60000!important;
-        font-weight: bold!important;
-      }
-    }
     &.drag-over {
       > a[draggable] {
-        background-color: #316AC5;
+        background-color: #316ac5;
         color: white;
-        border: 1px #316AC5 solid;
+        border: 1px #316ac5 solid;
         opacity: 0.8;
       }
     }
@@ -40,6 +35,12 @@
     &.drag-over-gap-bottom {
       > a[draggable] {
         border-bottom: 2px blue solid;
+      }
+    }
+    &.filter-node {
+      > a {
+        color: #a60000!important;
+        font-weight: bold!important;
       }
     }
     ul {
@@ -59,7 +60,6 @@
       vertical-align: top;
     }
     span {
-      &.@{treePrefixCls}-switcher-noop,
       &.@{treePrefixCls}-switcher,
       &.@{treePrefixCls}-checkbox,
       &.@{treePrefixCls}-iconEle {
@@ -82,21 +82,7 @@
         vertical-align: top;
         background: url(https://t.alipayobjects.com/images/rmsweb/T1YxhiXgJbXXXXXXXX.gif) no-repeat scroll 0 0 transparent;
       }
-      &.@{treePrefixCls}-switcher-noop {
-        background-image: none;
-      }
       &.@{treePrefixCls}-switcher {
-        &-disabled {
-          background: #fff;
-          position: relative;
-          &:after {
-            content: ' ';
-            position: absolute;
-            top: 8px;
-            left: 6px;
-            color: gray;
-          }
-        }
         &.@{treePrefixCls}-roots_open {
           background-position: -93px -56px;
         }
@@ -121,20 +107,50 @@
         &.@{treePrefixCls}-noline_close {
           background-position: -74px -72px;
         }
+        &.@{treePrefixCls}-center_docu {
+          background-position: -56px -18px;
+        }
+        &.@{treePrefixCls}-bottom_docu {
+          background-position: -56px -36px;
+        }
+        &.@{treePrefixCls}-noline_docu {
+          background: none;
+        }
       }
       &.@{treePrefixCls}-checkbox {
         width: 13px;
         height: 13px;
         margin: 0 3px;
         background-position: 0 0;
-        &.@{treePrefixCls}-checkbox-checked {
+        &-checked {
           background-position: -14px 0;
         }
-        &.@{treePrefixCls}-checkbox-indeterminate {
+        &-indeterminate {
           background-position: -14px -28px;
         }
         &-disabled {
-          background-position: 0 -28px!important;
+          background-position: 0 -56px;
+        }
+        &.@{treePrefixCls}-checkbox-checked.@{treePrefixCls}-checkbox-disabled {
+          background-position: -14px -56px;
+        }
+        &.@{treePrefixCls}-checkbox-indeterminate.@{treePrefixCls}-checkbox-disabled {
+          position: relative;
+          background: #ccc;
+          border-radius: 3px;
+          &::after {
+            content: ' ';
+            -webkit-transform: scale(1);
+            transform: scale(1);
+            position: absolute;
+            left: 3px;
+            top: 5px;
+            width: 5px;
+            height: 0;
+            border: 2px solid #fff;
+            border-top: 0;
+            border-left: 0;
+          }
         }
       }
     }
@@ -147,8 +163,10 @@
   }
   &-treenode-disabled {
     >span,
-    >a {
-      color: gray;
+    >a,
+    >a span {
+      color: #ccc;
+      cursor: not-allowed;
     }
   }
   &-node-selected {

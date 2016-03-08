@@ -51,7 +51,7 @@ const Demo = React.createClass({
         <h2>check select</h2>
         <TreeSelect style={{width: 300}}
                     dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                    treeData={gData}
+                    treeData={gData} treeLine
                     value={this.state.value}
                     treeDefaultExpandAll
                     placeholder={<i>请下拉选择</i>}
