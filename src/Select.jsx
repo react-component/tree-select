@@ -8,7 +8,7 @@ import {
   getPropValue, getValuePropValue, isCombobox,
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
   isSingleMode, toArray, getTreeNodesStates,
-  flatToHierarchy,
+  flatToHierarchy, filterParentPosition, isInclude,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import _TreeNode from './TreeNode';
@@ -66,6 +66,8 @@ const Select = React.createClass({
     defaultLabel: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
     dropdownStyle: PropTypes.object,
     maxTagTextLength: PropTypes.number,
+    showAllChecked: PropTypes.bool,
+    showParentChecked: PropTypes.bool,
     treeIcon: PropTypes.bool,
     treeLine: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
@@ -96,6 +98,8 @@ const Select = React.createClass({
       dropdownMatchSelectWidth: true,
       dropdownStyle: {},
       notFoundContent: 'Not Found',
+      showAllChecked: false,
+      showParentChecked: false,
       treeIcon: false,
       treeLine: false,
       treeDefaultExpandAll: false,
@@ -114,7 +118,7 @@ const Select = React.createClass({
       value = toArray(props.defaultValue);
     }
     if (this.props.treeCheckable) {
-      value = getTreeNodesStates(this.renderTreeData() || this.props.children, value).checkedValues;
+      value = this.getValue(getTreeNodesStates(this.renderTreeData() || this.props.children, value).checkedTreeNodes);
     }
     const label = this.getLabelFromProps(props, value, 1);
     let inputValue = '';
@@ -129,7 +133,7 @@ const Select = React.createClass({
     if ('value' in nextProps) {
       let value = toArray(nextProps.value);
       if (nextProps.treeCheckable) {
-        value = getTreeNodesStates(this.renderTreeData(nextProps) || nextProps.children, value).checkedValues;
+        value = this.getValue(getTreeNodesStates(this.renderTreeData(nextProps) || nextProps.children, value).checkedTreeNodes);
       }
       const label = this.getLabelFromProps(nextProps, value);
       this.setState({
@@ -254,8 +258,17 @@ const Select = React.createClass({
     if (isMultipleOrTags(props)) {
       if (checkEvt) {
         // TODO treeCheckable does not support tags/dynamic
-        let {checkedNodes} = info;
-        checkedNodes = checkedNodes.filter(n => !n.props.children);
+        let { checkedNodes } = info;
+        const checkedNodesPositions = info.checkedNodesPositions;
+        if (props.showAllChecked) {
+          checkedNodes = checkedNodes;
+        } else if (props.showParentChecked) {
+          const posArr = filterParentPosition(checkedNodesPositions.map(itemObj => itemObj.pos));
+          checkedNodes = checkedNodesPositions.filter(itemObj => posArr.indexOf(itemObj.pos) !== -1)
+            .map(itemObj => itemObj.node);
+        } else {
+          checkedNodes = checkedNodes.filter(n => !n.props.children);
+        }
         value = checkedNodes.map(n => getValuePropValue(n));
         label = checkedNodes.map(n => this.getLabelFromNode(n));
       } else {
@@ -429,6 +442,52 @@ const Select = React.createClass({
     return this.refs.trigger.getPopupEleRefs();
   },
 
+  getValue(checkedTreeNodes) {
+    this.checkedTreeNodes = checkedTreeNodes;
+    const mapVal = arr => arr.map(itemObj => getValuePropValue(itemObj.node));
+    const props = this.props;
+    let checkedValues = [];
+    if (props.showAllChecked) {
+      checkedValues = mapVal(checkedTreeNodes);
+    } else if (props.showParentChecked) {
+      const posArr = filterParentPosition(checkedTreeNodes.map(itemObj => itemObj.pos));
+      checkedValues = mapVal(checkedTreeNodes.filter(itemObj => posArr.indexOf(itemObj.pos) !== -1));
+    } else {
+      checkedValues = mapVal(checkedTreeNodes.filter(itemObj => !itemObj.node.props.children));
+    }
+    return checkedValues;
+  },
+
+  getDeselectedValue(selectedValue) {
+    const checkedTreeNodes = this.checkedTreeNodes;
+    let unCheckPos;
+    checkedTreeNodes.forEach(itemObj => {
+      if (itemObj.node.props.value === selectedValue) {
+        unCheckPos = itemObj.pos;
+      }
+    });
+    const nArr = unCheckPos.split('-');
+    const newVals = [];
+    checkedTreeNodes.forEach(itemObj => {
+      const iArr = itemObj.pos.split('-');
+      if (itemObj.pos === unCheckPos ||
+        nArr.length > iArr.length && isInclude(iArr, nArr) ||
+        nArr.length < iArr.length && isInclude(nArr, iArr)) {
+        // 过滤掉 父级节点 和 所有子节点。
+        // 因为 node节点 不选时，其 父级节点 和 所有子节点 都不选。
+        return;
+      }
+      newVals.push(itemObj.node.props.value);
+    });
+    const label = this.state.label.concat();
+    this.state.value.forEach((val, index) => {
+      if (newVals.indexOf(val) === -1) {
+        label.splice(index, 1);
+      }
+    });
+    this.fireChange(newVals, label, {triggerValue: selectedValue, clear: true});
+  },
+
   setOpenState(open) {
     const refs = this.refs;
     this.setState({
@@ -451,6 +510,10 @@ const Select = React.createClass({
     }
     if (e) {
       e.stopPropagation();
+    }
+    if (props.showAllChecked || props.showParentChecked) {
+      this.getDeselectedValue(selectedValue);
+      return;
     }
     const label = this.state.label.concat();
     const index = this.state.value.indexOf(selectedValue);

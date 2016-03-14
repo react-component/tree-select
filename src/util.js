@@ -45,7 +45,7 @@ export function toArray(value) {
 }
 
 
-function isInclude(smallArray, bigArray) {
+export function isInclude(smallArray, bigArray) {
   // attention: [0,0,1] [0,0,10]
   return smallArray.every((ii, i) => {
     return ii === bigArray[i];
@@ -223,16 +223,17 @@ function handleCheckState(obj, checkedPosArr, checkIt) {
   });
 }
 
-function getCheckValues(treeNodesStates) {
-  const checkedValues = [];
+function getCheck(treeNodesStates) {
+  const checkedTreeNodes = [];
   Object.keys(treeNodesStates).forEach((item) => {
     const itemObj = treeNodesStates[item];
-    if (itemObj.checked && !itemObj.node.props.children) {
-      checkedValues.push(getValuePropValue(itemObj.node));
+    if (itemObj.checked) {
+      // checkedTreeNodes.push(getValuePropValue(itemObj.node));
+      checkedTreeNodes.push({ ...itemObj, pos: item });
     }
   });
   return {
-    checkedValues,
+    checkedTreeNodes,
   };
 }
 
@@ -254,5 +255,5 @@ export function getTreeNodesStates(children, values) {
 
   handleCheckState(treeNodesStates, filterParentPosition(checkedPos.sort()), true);
 
-  return getCheckValues(treeNodesStates);
+  return getCheck(treeNodesStates);
 }

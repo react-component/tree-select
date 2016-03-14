@@ -10,12 +10,12 @@ import { gData } from './util';
 const Demo = React.createClass({
   getInitialState() {
     return {
-      value: '0-0-0-0-value',
+      value: '0-0-0-value',
       multipleValue: [],
     };
   },
   onChange(value) {
-    console.log('onChange', value);
+    console.log('onChange', value, arguments);
     this.setState({value});
   },
   onMultipleChange(value) {
@@ -57,7 +57,7 @@ const Demo = React.createClass({
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
                     treeNodeFilterProp="title"
-                    treeCheckable
+                    treeCheckable showParentChecked
                     onChange={this.onChange} />
 
         <h2>use TreeNode Component (not recommend)</h2>

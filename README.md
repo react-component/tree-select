@@ -73,6 +73,8 @@ online example: http://react-component.github.io/tree-select/
 |onChange | called when select treeNode or input value change(combobox) | function(value, label) | - |
 |onSelect | called when select treeNode | function(value, node) | - |
 |onSearch | called when input changed | function | - |
+|showAllChecked | show all checked treeNodes (Include parent treeNode) when set treeCheckable | bool | false |
+|showParentChecked | show checked treeNodes (Just show parent treeNode) when set treeCheckable | bool | false |
 |treeIcon | show tree icon | bool | false |
 |treeLine | show tree line | bool | false |
 |treeDefaultExpandAll | default expand all treeNode | bool | false |
