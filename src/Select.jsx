@@ -65,6 +65,7 @@ const Select = React.createClass({
     label: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
     defaultLabel: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
     dropdownStyle: PropTypes.object,
+    drodownPopupAlign: PropTypes.object,
     maxTagTextLength: PropTypes.number,
     treeIcon: PropTypes.bool,
     treeLine: PropTypes.bool,

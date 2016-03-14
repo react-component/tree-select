@@ -46,6 +46,7 @@ const Demo = React.createClass({
                     searchPlaceholder="please search"
                     treeNodeFilterProp="title"
                     multiple
+                    dropdownPopupAlign={{offset: [0, 0]}}
                     onChange={this.onMultipleChange} />
 
         <h2>check select</h2>

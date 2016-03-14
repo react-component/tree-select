@@ -28,6 +28,7 @@ const BUILT_IN_PLACEMENTS = {
 const SelectTrigger = React.createClass({
   propTypes: {
     dropdownMatchSelectWidth: PropTypes.bool,
+    dropdownPopupAlign: PropTypes.object,
     visible: PropTypes.bool,
     filterTreeNode: PropTypes.any,
     treeNodes: PropTypes.any,
@@ -189,6 +190,7 @@ const SelectTrigger = React.createClass({
                      ref="trigger"
                      popupPlacement="bottomLeft"
                      builtinPlacements={BUILT_IN_PLACEMENTS}
+                     popupAlign={this.props.dropdownPopupAlign}
                      prefixCls={dropdownPrefixCls}
                      popupTransitionName={this.getDropdownTransitionName()}
                      onPopupVisibleChange={props.onDropdownVisibleChange}
