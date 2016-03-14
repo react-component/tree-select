@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-tree-select@1.3.0 - tree-select ui component for react</title>
+  <title>rc-tree-select@1.4.0 - tree-select ui component for react</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-tree-select@1.3.0</h1>
+  <h1>rc-tree-select@1.4.0</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -915,16 +915,12 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <td>-</td>
 </tr>
 <tr>
-<td>showAllChecked</td>
-<td>show all checked treeNodes (Include parent treeNode) when set treeCheckable</td>
-<td>bool</td>
-<td>false</td>
-</tr>
-<tr>
-<td>showParentChecked</td>
-<td>show checked treeNodes (Just show parent treeNode) when set treeCheckable</td>
-<td>bool</td>
-<td>false</td>
+<td>showCheckedStrategy</td>
+<td><code>TreeSelect.SHOW_ALL</code>: show all checked treeNodes (Include parent treeNode). <code>TreeSelect.SHOW_PARENT</code>: show checked treeNodes (Just show parent treeNode). Default just show child.</td>
+<td>enum{TreeSelect.SHOW_ALL</td>
+<td>TreeSelect.SHOW_PARENT</td>
+<td>TreeSelect.SHOW_CHILD }</td>
+<td>TreeSelect.SHOW_CHILD</td>
 </tr>
 <tr>
 <td>treeIcon</td>

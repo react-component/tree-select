@@ -109,7 +109,8 @@ webpackJsonp([0],[
 	        ),
 	        searchPlaceholder: 'please search',
 	        treeNodeFilterProp: 'title',
-	        treeCheckable: true, showParentChecked: true,
+	        treeCheckable: true,
+	        showCheckedStrategy: _rcTreeSelect.SHOW_PARENT,
 	        onChange: this.onChange }),
 	      _react2['default'].createElement(
 	        'h2',

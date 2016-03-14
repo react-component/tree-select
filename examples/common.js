@@ -19830,6 +19830,10 @@
 	  });
 	}
 	
+	var SHOW_ALL = 'SHOW_ALL';
+	var SHOW_PARENT = 'SHOW_PARENT';
+	var SHOW_CHILD = 'SHOW_CHILD';
+	
 	var Select = _react2['default'].createClass({
 	  displayName: 'Select',
 	
@@ -19857,8 +19861,7 @@
 	    dropdownStyle: _react.PropTypes.object,
 	    drodownPopupAlign: _react.PropTypes.object,
 	    maxTagTextLength: _react.PropTypes.number,
-	    showAllChecked: _react.PropTypes.bool,
-	    showParentChecked: _react.PropTypes.bool,
+	    showCheckedStrategy: _react.PropTypes.oneOf([SHOW_ALL, SHOW_PARENT, SHOW_CHILD]),
 	    treeIcon: _react.PropTypes.bool,
 	    treeLine: _react.PropTypes.bool,
 	    treeDefaultExpandAll: _react.PropTypes.bool,
@@ -19886,8 +19889,7 @@
 	      dropdownMatchSelectWidth: true,
 	      dropdownStyle: {},
 	      notFoundContent: 'Not Found',
-	      showAllChecked: false,
-	      showParentChecked: false,
+	      showCheckedStrategy: SHOW_CHILD,
 	      treeIcon: false,
 	      treeLine: false,
 	      treeDefaultExpandAll: false,
@@ -20051,9 +20053,9 @@
 	        var checkedNodes = info.checkedNodes;
 	
 	        var checkedNodesPositions = info.checkedNodesPositions;
-	        if (props.showAllChecked) {
+	        if (props.showCheckedStrategy === SHOW_ALL) {
 	          checkedNodes = checkedNodes;
-	        } else if (props.showParentChecked) {
+	        } else if (props.showCheckedStrategy === SHOW_PARENT) {
 	          (function () {
 	            var posArr = (0, _util.filterParentPosition)(checkedNodesPositions.map(function (itemObj) {
 	              return itemObj.pos;
@@ -20265,9 +20267,9 @@
 	    };
 	    var props = this.props;
 	    var checkedValues = [];
-	    if (props.showAllChecked) {
+	    if (props.showCheckedStrategy === SHOW_ALL) {
 	      checkedValues = mapVal(checkedTreeNodes);
-	    } else if (props.showParentChecked) {
+	    } else if (props.showCheckedStrategy === SHOW_PARENT) {
 	      (function () {
 	        var posArr = (0, _util.filterParentPosition)(checkedTreeNodes.map(function (itemObj) {
 	          return itemObj.pos;
@@ -20337,7 +20339,7 @@
 	    if (e) {
 	      e.stopPropagation();
 	    }
-	    if (props.showAllChecked || props.showParentChecked) {
+	    if (props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT) {
 	      this.getDeselectedValue(selectedValue);
 	      return;
 	    }
@@ -20536,6 +20538,10 @@
 	    );
 	  }
 	});
+	
+	Select.SHOW_ALL = SHOW_ALL;
+	Select.SHOW_PARENT = SHOW_PARENT;
+	Select.SHOW_CHILD = SHOW_CHILD;
 	
 	exports['default'] = Select;
 	module.exports = exports['default'];
