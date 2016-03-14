@@ -38,12 +38,12 @@ webpackJsonp([0],[
 	
 	  getInitialState: function getInitialState() {
 	    return {
-	      value: '0-0-0-0-value',
+	      value: '0-0-0-value',
 	      multipleValue: []
 	    };
 	  },
 	  onChange: function onChange(value) {
-	    console.log('onChange', value);
+	    console.log('onChange', value, arguments);
 	    this.setState({ value: value });
 	  },
 	  onMultipleChange: function onMultipleChange(value) {
@@ -90,6 +90,7 @@ webpackJsonp([0],[
 	        searchPlaceholder: 'please search',
 	        treeNodeFilterProp: 'title',
 	        multiple: true,
+	        dropdownPopupAlign: { offset: [0, 0] },
 	        onChange: this.onMultipleChange }),
 	      _react2['default'].createElement(
 	        'h2',
@@ -108,7 +109,7 @@ webpackJsonp([0],[
 	        ),
 	        searchPlaceholder: 'please search',
 	        treeNodeFilterProp: 'title',
-	        treeCheckable: true,
+	        treeCheckable: true, showParentChecked: true,
 	        onChange: this.onChange }),
 	      _react2['default'].createElement(
 	        'h2',
