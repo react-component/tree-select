@@ -1,6 +1,9 @@
 # History
 ---
 
+## 1.4.0 / 2016-03-14
+- change `showAllChecked`/`showParentChecked` to `showCheckedStrategy`.
+
 ## 1.3.0 / 2016-03-14
 - add `showAllChecked`/`showParentChecked` API.
 

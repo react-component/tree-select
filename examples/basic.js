@@ -4,7 +4,7 @@ import 'rc-tree-select/assets/index.less';
 import './demo.less';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TreeSelect, { TreeNode } from 'rc-tree-select';
+import TreeSelect, { TreeNode, SHOW_PARENT } from 'rc-tree-select';
 import { gData } from './util';
 
 const Demo = React.createClass({
@@ -58,7 +58,8 @@ const Demo = React.createClass({
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
                     treeNodeFilterProp="title"
-                    treeCheckable showParentChecked
+                    treeCheckable
+                    showCheckedStrategy={SHOW_PARENT}
                     onChange={this.onChange} />
 
         <h2>use TreeNode Component (not recommend)</h2>

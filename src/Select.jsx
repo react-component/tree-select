@@ -42,6 +42,10 @@ function loopTreeData(data, level = 0) {
   });
 }
 
+const SHOW_ALL = 'SHOW_ALL';
+const SHOW_PARENT = 'SHOW_PARENT';
+const SHOW_CHILD = 'SHOW_CHILD';
+
 const Select = React.createClass({
   propTypes: {
     children: PropTypes.any,
@@ -67,8 +71,9 @@ const Select = React.createClass({
     dropdownStyle: PropTypes.object,
     drodownPopupAlign: PropTypes.object,
     maxTagTextLength: PropTypes.number,
-    showAllChecked: PropTypes.bool,
-    showParentChecked: PropTypes.bool,
+    showCheckedStrategy: PropTypes.oneOf([
+      SHOW_ALL, SHOW_PARENT, SHOW_CHILD,
+    ]),
     treeIcon: PropTypes.bool,
     treeLine: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
@@ -99,8 +104,7 @@ const Select = React.createClass({
       dropdownMatchSelectWidth: true,
       dropdownStyle: {},
       notFoundContent: 'Not Found',
-      showAllChecked: false,
-      showParentChecked: false,
+      showCheckedStrategy: SHOW_CHILD,
       treeIcon: false,
       treeLine: false,
       treeDefaultExpandAll: false,
@@ -261,9 +265,9 @@ const Select = React.createClass({
         // TODO treeCheckable does not support tags/dynamic
         let { checkedNodes } = info;
         const checkedNodesPositions = info.checkedNodesPositions;
-        if (props.showAllChecked) {
+        if (props.showCheckedStrategy === SHOW_ALL) {
           checkedNodes = checkedNodes;
-        } else if (props.showParentChecked) {
+        } else if (props.showCheckedStrategy === SHOW_PARENT) {
           const posArr = filterParentPosition(checkedNodesPositions.map(itemObj => itemObj.pos));
           checkedNodes = checkedNodesPositions.filter(itemObj => posArr.indexOf(itemObj.pos) !== -1)
             .map(itemObj => itemObj.node);
@@ -448,9 +452,9 @@ const Select = React.createClass({
     const mapVal = arr => arr.map(itemObj => getValuePropValue(itemObj.node));
     const props = this.props;
     let checkedValues = [];
-    if (props.showAllChecked) {
+    if (props.showCheckedStrategy === SHOW_ALL) {
       checkedValues = mapVal(checkedTreeNodes);
-    } else if (props.showParentChecked) {
+    } else if (props.showCheckedStrategy === SHOW_PARENT) {
       const posArr = filterParentPosition(checkedTreeNodes.map(itemObj => itemObj.pos));
       checkedValues = mapVal(checkedTreeNodes.filter(itemObj => posArr.indexOf(itemObj.pos) !== -1));
     } else {
@@ -512,7 +516,7 @@ const Select = React.createClass({
     if (e) {
       e.stopPropagation();
     }
-    if (props.showAllChecked || props.showParentChecked) {
+    if (props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT) {
       this.getDeselectedValue(selectedValue);
       return;
     }
@@ -680,5 +684,9 @@ const Select = React.createClass({
     );
   },
 });
+
+Select.SHOW_ALL = SHOW_ALL;
+Select.SHOW_PARENT = SHOW_PARENT;
+Select.SHOW_CHILD = SHOW_CHILD;
 
 export default Select;
