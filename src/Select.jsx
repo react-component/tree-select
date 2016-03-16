@@ -74,6 +74,7 @@ const Select = React.createClass({
     showCheckedStrategy: PropTypes.oneOf([
       SHOW_ALL, SHOW_PARENT, SHOW_CHILD,
     ]),
+    skipHandleInitValue: PropTypes.bool,
     treeIcon: PropTypes.bool,
     treeLine: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
@@ -105,6 +106,7 @@ const Select = React.createClass({
       dropdownStyle: {},
       notFoundContent: 'Not Found',
       showCheckedStrategy: SHOW_CHILD,
+      skipHandleInitValue: false,
       treeIcon: false,
       treeLine: false,
       treeDefaultExpandAll: false,
@@ -122,8 +124,8 @@ const Select = React.createClass({
     } else {
       value = toArray(props.defaultValue);
     }
-    if (this.props.treeCheckable) {
-      value = this.getValue(getTreeNodesStates(this.renderTreeData() || this.props.children, value).checkedTreeNodes);
+    if (props.treeCheckable && !props.skipHandleInitValue) {
+      value = this.getValue(getTreeNodesStates(this.renderTreeData() || props.children, value).checkedTreeNodes);
     }
     const label = this.getLabelFromProps(props, value, 1);
     let inputValue = '';
@@ -137,7 +139,7 @@ const Select = React.createClass({
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
       let value = toArray(nextProps.value);
-      if (nextProps.treeCheckable) {
+      if (nextProps.treeCheckable && !nextProps.skipHandleInitValue) {
         value = this.getValue(getTreeNodesStates(this.renderTreeData(nextProps) || nextProps.children, value).checkedTreeNodes);
       }
       const label = this.getLabelFromProps(nextProps, value);
@@ -516,7 +518,8 @@ const Select = React.createClass({
     if (e) {
       e.stopPropagation();
     }
-    if (props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT) {
+    if ((props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT)
+      && !props.skipHandleInitValue) {
       this.getDeselectedValue(selectedValue);
       return;
     }

@@ -2,6 +2,11 @@
 const x = 3;
 const y = 2;
 const z = 1;
+// x：每一级下的节点总数。y：每级节点里有y个节点、存在子节点。z：树的level层级数（0表示一级）
+/* eslint no-param-reassign:0*/
+const rec = (n) => n >= 0 ? x * Math.pow(y, n--) + rec(n) : 0;
+console.log('total number of treeNode(per TreeSelect)：', rec(z + 1));
+
 const gData = []; // 手工构造数据
 const generateData = (_level, _preKey, _tns) => {
   const preKey = _preKey || '0';

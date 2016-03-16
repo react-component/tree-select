@@ -11,6 +11,7 @@ const Demo = React.createClass({
   getInitialState() {
     return {
       value: '0-0-0-value',
+      // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
       multipleValue: [],
     };
   },
