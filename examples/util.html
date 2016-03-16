@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>util.js - example - rc-tree-select@1.4.1</title>
+  <title>util.js - example - rc-tree-select@1.4.2</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-tree-select@1.4.1</h1>
+    <h1>rc-tree-select@1.4.2</h1>
 
     <p>tree-select ui component for react</p>
   </div>
@@ -268,6 +268,11 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <span class="hljs-keyword">const</span> x = <span class="hljs-number">3</span>;
 <span class="hljs-keyword">const</span> y = <span class="hljs-number">2</span>;
 <span class="hljs-keyword">const</span> z = <span class="hljs-number">1</span>;
+<span class="hljs-comment">// x：每一级下的节点总数。y：每级节点里有y个节点、存在子节点。z：树的level层级数（0表示一级）</span>
+<span class="hljs-comment">/* eslint no-param-reassign:0*/</span>
+<span class="hljs-keyword">const</span> rec = (n) =&gt; n &gt;= <span class="hljs-number">0</span> ? x * <span class="hljs-built_in">Math</span>.pow(y, n--) + rec(n) : <span class="hljs-number">0</span>;
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'total number of treeNode(per TreeSelect)：'</span>, rec(z + <span class="hljs-number">1</span>));
+
 <span class="hljs-keyword">const</span> gData = []; <span class="hljs-comment">// 手工构造数据</span>
 <span class="hljs-keyword">const</span> generateData = (_level, _preKey, _tns) =&gt; {
   <span class="hljs-keyword">const</span> preKey = _preKey || <span class="hljs-string">'0'</span>;

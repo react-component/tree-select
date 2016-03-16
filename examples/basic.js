@@ -39,6 +39,7 @@ webpackJsonp([0],[
 	  getInitialState: function getInitialState() {
 	    return {
 	      value: '0-0-0-value',
+	      // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
 	      multipleValue: []
 	    };
 	  },

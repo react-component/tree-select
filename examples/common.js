@@ -19862,6 +19862,7 @@
 	    drodownPopupAlign: _react.PropTypes.object,
 	    maxTagTextLength: _react.PropTypes.number,
 	    showCheckedStrategy: _react.PropTypes.oneOf([SHOW_ALL, SHOW_PARENT, SHOW_CHILD]),
+	    skipHandleInitValue: _react.PropTypes.bool,
 	    treeIcon: _react.PropTypes.bool,
 	    treeLine: _react.PropTypes.bool,
 	    treeDefaultExpandAll: _react.PropTypes.bool,
@@ -19890,6 +19891,7 @@
 	      dropdownStyle: {},
 	      notFoundContent: 'Not Found',
 	      showCheckedStrategy: SHOW_CHILD,
+	      skipHandleInitValue: false,
 	      treeIcon: false,
 	      treeLine: false,
 	      treeDefaultExpandAll: false,
@@ -19907,8 +19909,8 @@
 	    } else {
 	      value = (0, _util.toArray)(props.defaultValue);
 	    }
-	    if (this.props.treeCheckable) {
-	      value = this.getValue((0, _util.getTreeNodesStates)(this.renderTreeData() || this.props.children, value).checkedTreeNodes);
+	    if (props.treeCheckable && !props.skipHandleInitValue) {
+	      value = this.getValue((0, _util.getTreeNodesStates)(this.renderTreeData() || props.children, value).checkedTreeNodes);
 	    }
 	    var label = this.getLabelFromProps(props, value, 1);
 	    var inputValue = '';
@@ -19922,7 +19924,7 @@
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    if ('value' in nextProps) {
 	      var value = (0, _util.toArray)(nextProps.value);
-	      if (nextProps.treeCheckable) {
+	      if (nextProps.treeCheckable && !nextProps.skipHandleInitValue) {
 	        value = this.getValue((0, _util.getTreeNodesStates)(this.renderTreeData(nextProps) || nextProps.children, value).checkedTreeNodes);
 	      }
 	      var label = this.getLabelFromProps(nextProps, value);
@@ -20339,7 +20341,7 @@
 	    if (e) {
 	      e.stopPropagation();
 	    }
-	    if (props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT) {
+	    if ((props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT) && !props.skipHandleInitValue) {
 	      this.getDeselectedValue(selectedValue);
 	      return;
 	    }
@@ -27387,6 +27389,13 @@
 	var x = 3;
 	var y = 2;
 	var z = 1;
+	// x：每一级下的节点总数。y：每级节点里有y个节点、存在子节点。z：树的level层级数（0表示一级）
+	/* eslint no-param-reassign:0*/
+	var rec = function rec(n) {
+	  return n >= 0 ? x * Math.pow(y, n--) + rec(n) : 0;
+	};
+	console.log('total number of treeNode(per TreeSelect)：', rec(z + 1));
+	
 	var gData = []; // 手工构造数据
 	var generateData = function generateData(_level, _preKey, _tns) {
 	  var preKey = _preKey || '0';
