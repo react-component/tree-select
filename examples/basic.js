@@ -71,7 +71,7 @@ webpackJsonp([0],[
 	          '请下拉选择'
 	        ),
 	        searchPlaceholder: 'please search',
-	        treeNodeFilterProp: 'title',
+	        treeNodeFilterProp: 'label',
 	        onChange: this.onChange }),
 	      _react2['default'].createElement(
 	        'h2',
