@@ -9,6 +9,7 @@ import {
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
   isSingleMode, toArray, getTreeNodesStates,
   flatToHierarchy, filterParentPosition, isInclude,
+  labelCompatible,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import _TreeNode from './TreeNode';
@@ -17,7 +18,7 @@ function noop() {
 }
 
 function filterFn(input, child) {
-  return String(getPropValue(child, this.props.treeNodeFilterProp)).indexOf(input) > -1;
+  return String(getPropValue(child, labelCompatible(this.props.treeNodeFilterProp))).indexOf(input) > -1;
 }
 
 function saveRef(name, component) {

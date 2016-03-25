@@ -44,6 +44,14 @@ export function toArray(value) {
   return ret;
 }
 
+export function labelCompatible(prop) {
+  let newProp = prop;
+  if (newProp === 'label') {
+    newProp = 'title';
+  }
+  return newProp;
+}
+
 
 export function isInclude(smallArray, bigArray) {
   // attention: [0,0,1] [0,0,10]

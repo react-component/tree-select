@@ -34,7 +34,7 @@ const Demo = React.createClass({
                     treeDefaultExpandAll={false}
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
-                    treeNodeFilterProp="title"
+                    treeNodeFilterProp="label"
                     onChange={this.onChange} />
 
         <h2>multiple select</h2>

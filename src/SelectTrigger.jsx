@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import assign from 'object-assign';
 import Trigger from 'rc-trigger';
 import Tree, { TreeNode } from 'rc-tree';
-import { flatToHierarchy, loopAllChildren, getValuePropValue } from './util';
+import { flatToHierarchy, loopAllChildren, getValuePropValue, labelCompatible } from './util';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -69,7 +69,7 @@ const SelectTrigger = React.createClass({
 
   filterTree(treeNode) {
     const props = this.props;
-    return props.inputValue && treeNode.props[props.treeNodeFilterProp].indexOf(props.inputValue) > -1;
+    return props.inputValue && treeNode.props[labelCompatible(props.treeNodeFilterProp)].indexOf(props.inputValue) > -1;
   },
 
   filterTreeNode(input, child) {
