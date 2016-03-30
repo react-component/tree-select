@@ -71,6 +71,7 @@ online example: http://react-component.github.io/tree-select/
 |disabled | whether disabled select | bool | false |
 |defaultValue | initial selected option(s) | String/Array<String> | - |
 |value | current selected option(s) | String/Array<String> | - |
+|labelInValue| whether to embed label in value, see above value type | Bool | false |
 |onChange | called when select treeNode or input value change(combobox) | function(value, label) | - |
 |onSelect | called when select treeNode | function(value, node) | - |
 |onSearch | called when input changed | function | - |

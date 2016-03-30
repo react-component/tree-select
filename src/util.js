@@ -44,6 +44,31 @@ export function toArray(value) {
   return ret;
 }
 
+export function preventDefaultEvent(e) {
+  e.preventDefault();
+}
+
+export function findIndexInValueByKey(value, key) {
+  let index = -1;
+  for (let i = 0; i < value.length; i++) {
+    if (value[i].value === key) {
+      index = i;
+      break;
+    }
+  }
+  return index;
+}
+
+export const UNSELECTABLE_STYLE = {
+  userSelect: 'none',
+  WebkitUserSelect: 'none',
+};
+
+export const UNSELECTABLE_ATTRIBUTE = {
+  unselectable: 'unselectable',
+};
+
+
 export function labelCompatible(prop) {
   let newProp = prop;
   if (newProp === 'label') {

@@ -7,9 +7,11 @@ import Animate from 'rc-animate';
 import {
   getPropValue, getValuePropValue, isCombobox,
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
-  isSingleMode, toArray, getTreeNodesStates,
-  flatToHierarchy, filterParentPosition, isInclude,
-  labelCompatible,
+  isSingleMode, toArray, findIndexInValueByKey,
+  UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
+  preventDefaultEvent,
+  getTreeNodesStates, flatToHierarchy, filterParentPosition,
+  isInclude, labelCompatible,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import _TreeNode from './TreeNode';
@@ -62,6 +64,7 @@ const Select = React.createClass({
     onClick: PropTypes.func,
     onChange: PropTypes.func,
     onSelect: PropTypes.func,
+    onDeselect: PropTypes.func,
     onSearch: PropTypes.func,
     searchPlaceholder: PropTypes.string,
     placeholder: PropTypes.any,
@@ -69,6 +72,7 @@ const Select = React.createClass({
     defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
     label: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
     defaultLabel: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
+    labelInValue: PropTypes.bool,
     dropdownStyle: PropTypes.object,
     drodownPopupAlign: PropTypes.object,
     maxTagTextLength: PropTypes.number,
@@ -97,10 +101,12 @@ const Select = React.createClass({
       allowClear: false,
       placeholder: '',
       searchPlaceholder: '',
+      labelInValue: false,
       defaultValue: [],
       onClick: noop,
       onChange: noop,
       onSelect: noop,
+      onDeselect: noop,
       onSearch: noop,
       showArrow: true,
       dropdownMatchSelectWidth: true,
@@ -125,32 +131,28 @@ const Select = React.createClass({
     } else {
       value = toArray(props.defaultValue);
     }
-    if (props.treeCheckable && !props.skipHandleInitValue) {
-      value = this.getValue(getTreeNodesStates(this.renderTreeData() || props.children, value).checkedTreeNodes);
-    }
-    const label = this.getLabelFromProps(props, value, 1);
+    value = this.addLabelToValue(props, value);
+    value = this.getValue(props, value);
+    // const label = this.getLabelFromProps(props, value, 1);
     let inputValue = '';
     if (props.combobox) {
-      inputValue = value[0] || '';
+      inputValue = value.length ? String(value[0].value) : '';
     }
     this.saveInputRef = saveRef.bind(this, 'inputInstance');
-    return {value, inputValue, label};
+    return {value, inputValue};
   },
 
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
       let value = toArray(nextProps.value);
-      if (nextProps.treeCheckable && !nextProps.skipHandleInitValue) {
-        value = this.getValue(getTreeNodesStates(this.renderTreeData(nextProps) || nextProps.children, value).checkedTreeNodes);
-      }
-      const label = this.getLabelFromProps(nextProps, value);
+      value = this.addLabelToValue(nextProps, value);
+      value = this.getValue(nextProps, value);
       this.setState({
         value,
-        label,
       });
       if (nextProps.combobox) {
         this.setState({
-          inputValue: value[0] || '',
+          inputValue: value.length ? String(value[0].key) : '',
         });
       }
     }
@@ -171,6 +173,7 @@ const Select = React.createClass({
   },
 
   componentWillUnmount() {
+    this.clearDelayTimer();
     if (this.dropdownContainer) {
       ReactDOM.unmountComponentAtNode(this.dropdownContainer);
       document.body.removeChild(this.dropdownContainer);
@@ -180,18 +183,24 @@ const Select = React.createClass({
 
   onInputChange(event) {
     const val = event.target.value;
-    const props = this.props;
+    const { props } = this;
     this.setState({
       inputValue: val,
       open: true,
     });
     if (isCombobox(props)) {
-      this.fireChange([val], [val]);
+      this.fireChange([{
+        value: val,
+      }]);
     }
     props.onSearch(val);
   },
 
   onDropdownVisibleChange(open) {
+    // selection inside combobox cause click
+    if (!open && document.activeElement === this.getInputDOMNode()) {
+      return;
+    }
     this.setOpenState(open);
   },
 
@@ -210,21 +219,32 @@ const Select = React.createClass({
     }
   },
 
+  onInputBlur() {
+    if (isMultipleOrTagsOrCombobox(this.props)) {
+      return;
+    }
+    this.clearDelayTimer();
+    this.delayTimer = setTimeout(() => {
+      this.setOpenState(false);
+    }, 150);
+  },
+
   onInputKeyDown(event) {
     const props = this.props;
+    if (props.disabled) {
+      return;
+    }
     const state = this.state;
     const keyCode = event.keyCode;
     if (isMultipleOrTags(props) && !event.target.value && keyCode === KeyCode.BACKSPACE) {
       const value = state.value.concat();
       if (value.length) {
-        const label = state.label.concat();
-        value.pop();
-        label.pop();
-        this.fireChange(value, label);
+        const popValue = value.pop();
+        props.onDeselect(props.labelInValue ? popValue : popValue.key);
+        this.fireChange(value);
       }
       return;
     }
-
     if (keyCode === KeyCode.DOWN) {
       if (!state.open) {
         this.openIfHasChildren();
@@ -251,53 +271,55 @@ const Select = React.createClass({
   },
 
   onSelect(selectedKeys, info) {
-    const checkEvt = info.event === 'check';
     if (info.selected === false) {
       this.onDeselect(info);
       return;
     }
     const item = info.node;
     let value = this.state.value;
-    let label = this.state.label;
     const props = this.props;
     const selectedValue = getValuePropValue(item);
     const selectedLabel = this.getLabelFromNode(item);
-    props.onSelect(selectedValue, item);
+    let event = selectedValue;
+    if (props.labelInValue) {
+      event = {
+        value: event,
+        label: selectedLabel,
+      };
+    }
+    props.onSelect(event, item);
+    const checkEvt = info.event === 'check';
     if (isMultipleOrTags(props)) {
       if (checkEvt) {
-        // TODO treeCheckable does not support tags/dynamic
-        let { checkedNodes } = info;
-        const checkedNodesPositions = info.checkedNodesPositions;
-        if (props.showCheckedStrategy === SHOW_ALL) {
-          checkedNodes = checkedNodes;
-        } else if (props.showCheckedStrategy === SHOW_PARENT) {
-          const posArr = filterParentPosition(checkedNodesPositions.map(itemObj => itemObj.pos));
-          checkedNodes = checkedNodesPositions.filter(itemObj => posArr.indexOf(itemObj.pos) !== -1)
-            .map(itemObj => itemObj.node);
-        } else {
-          checkedNodes = checkedNodes.filter(n => !n.props.children);
-        }
-        value = checkedNodes.map(n => getValuePropValue(n));
-        label = checkedNodes.map(n => this.getLabelFromNode(n));
+        value = this.getCheckedNodes(info, props).map(n => {
+          return {
+            value: getValuePropValue(n),
+            label: this.getLabelFromNode(n),
+          };
+        });
       } else {
-        if (value.indexOf(selectedValue) !== -1) {
+        if (findIndexInValueByKey(value, selectedValue) !== -1) {
           return;
         }
-        value = value.concat([selectedValue]);
-        label = label.concat([selectedLabel]);
+        value = value.concat([{
+          value: selectedValue,
+          label: selectedLabel,
+        }]);
       }
-      if (!checkEvt && value.indexOf(selectedValue) !== -1) {
+      // if (!checkEvt && value.indexOf(selectedValue) !== -1) {
         // 设置 multiple 时会有bug。（isValueChange 已有检查，此处注释掉）
         // return;
-      }
+      // }
     } else {
-      if (value[0] === selectedValue) {
-        this.setOpenState(false);
+      if (value.length && value[0].value === selectedValue) {
+        this.setOpenState(false, true);
         return;
       }
-      value = [selectedValue];
-      label = [selectedLabel];
-      this.setOpenState(false);
+      value = [{
+        value: selectedValue,
+        label: selectedLabel,
+      }];
+      this.setOpenState(false, true);
     }
 
     const extraInfo = {
@@ -306,13 +328,12 @@ const Select = React.createClass({
     };
     if (checkEvt) {
       extraInfo.checked = info.checked;
-      // extraInfo.allCheckedNodes = info.checkedNodes;
       extraInfo.allCheckedNodes = flatToHierarchy(info.checkedNodesPositions);
     } else {
       extraInfo.selected = info.selected;
     }
 
-    this.fireChange(value, label, extraInfo);
+    this.fireChange(value, extraInfo);
     this.setState({
       inputValue: '',
     });
@@ -345,7 +366,7 @@ const Select = React.createClass({
     }
     event.stopPropagation();
     if (state.inputValue || state.value.length) {
-      this.fireChange([], []);
+      this.fireChange([]);
       this.setOpenState(false);
       this.setState({
         inputValue: '',
@@ -383,13 +404,17 @@ const Select = React.createClass({
     } else if (init && 'defaultLabel' in props) {
       label = toArray(props.defaultLabel);
     } else {
-      label = this.getLabelByValue(this.renderTreeData(props) || props.children, value);
+      label = this.getLabelByValue(this.renderTreeData(props) || props.children, toArray(value))[0];
     }
     return label;
   },
 
-  getVLForOnChange(vls) {
+  getVLForOnChange(vls_) {
+    let vls = vls_;
     if (vls !== undefined) {
+      if (!this.props.labelInValue) {
+        vls = vls.map(v => v.value);
+      }
       return isMultipleOrTags(this.props) ? vls : vls[0];
     }
     return vls;
@@ -415,25 +440,36 @@ const Select = React.createClass({
 
   getSearchPlaceholderElement(hidden) {
     const props = this.props;
-    if (props.searchPlaceholder) {
+    let placeholder;
+    if (isMultipleOrTagsOrCombobox(props)) {
+      placeholder = props.placeholder || props.searchPlaceholder;
+    } else {
+      placeholder = props.searchPlaceholder;
+    }
+    if (placeholder) {
       return (<span
-        style={{display: hidden ? 'none' : 'block'}}
+        style={{ display: hidden ? 'none' : 'block' }}
         onClick={this.onPlaceholderClick}
-        className={props.prefixCls + '-search__field__placeholder'}>{props.searchPlaceholder}</span>);
+        className={`${props.prefixCls}-search__field__placeholder`}
+      >
+        {placeholder}
+      </span>);
     }
     return null;
   },
 
   getInputElement() {
     const props = this.props;
-    return (<span className={props.prefixCls + '-search__field__wrap'}>
-      <input ref={this.saveInputRef}
-             onChange={this.onInputChange}
-             onKeyDown={this.onInputKeyDown}
-             value={this.state.inputValue}
-             disabled={props.disabled}
-             className={props.prefixCls + '-search__field'}
-             role="textbox"/>
+    return (<span className={`${props.prefixCls}-search__field__wrap`}>
+      <input
+        ref={this.saveInputRef}
+        onBlur={this.onInputBlur}
+        onChange={this.onInputChange}
+        onKeyDown={this.onInputKeyDown}
+        value={this.state.inputValue}
+        disabled={props.disabled}
+        className={`${props.prefixCls}-search__field`}
+        role="textbox"/>
       {isMultipleOrTags(props) ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)}
     </span>);
   },
@@ -450,20 +486,48 @@ const Select = React.createClass({
     return this.refs.trigger.getPopupEleRefs();
   },
 
-  getValue(checkedTreeNodes) {
+  getValue(_props, value) {
+    if (!(_props.treeCheckable && !_props.skipHandleInitValue)) {
+      return value;
+    }
+    const checkedTreeNodes = getTreeNodesStates(
+      this.renderTreeData(_props) || _props.children,
+      value.map(item => item.value)
+    ).checkedTreeNodes;
     this.checkedTreeNodes = checkedTreeNodes;
-    const mapVal = arr => arr.map(itemObj => getValuePropValue(itemObj.node));
+    const mapLabVal = arr => arr.map(itemObj => {
+      return {
+        value: getValuePropValue(itemObj.node),
+        label: getPropValue(itemObj.node, _props.treeNodeLabelProp),
+      };
+    });
     const props = this.props;
     let checkedValues = [];
     if (props.showCheckedStrategy === SHOW_ALL) {
-      checkedValues = mapVal(checkedTreeNodes);
+      checkedValues = mapLabVal(checkedTreeNodes);
     } else if (props.showCheckedStrategy === SHOW_PARENT) {
       const posArr = filterParentPosition(checkedTreeNodes.map(itemObj => itemObj.pos));
-      checkedValues = mapVal(checkedTreeNodes.filter(itemObj => posArr.indexOf(itemObj.pos) !== -1));
+      checkedValues = mapLabVal(checkedTreeNodes.filter(itemObj => posArr.indexOf(itemObj.pos) !== -1));
     } else {
-      checkedValues = mapVal(checkedTreeNodes.filter(itemObj => !itemObj.node.props.children));
+      checkedValues = mapLabVal(checkedTreeNodes.filter(itemObj => !itemObj.node.props.children));
     }
     return checkedValues;
+  },
+
+  getCheckedNodes(info, props) {
+    // TODO treeCheckable does not support tags/dynamic
+    let { checkedNodes } = info;
+    const checkedNodesPositions = info.checkedNodesPositions;
+    if (props.showCheckedStrategy === SHOW_ALL) {
+      checkedNodes = checkedNodes;
+    } else if (props.showCheckedStrategy === SHOW_PARENT) {
+      const posArr = filterParentPosition(checkedNodesPositions.map(itemObj => itemObj.pos));
+      checkedNodes = checkedNodesPositions.filter(itemObj => posArr.indexOf(itemObj.pos) !== -1)
+        .map(itemObj => itemObj.node);
+    } else {
+      checkedNodes = checkedNodes.filter(n => !n.props.children);
+    }
+    return checkedNodes;
   },
 
   getDeselectedValue(selectedValue) {
@@ -487,52 +551,87 @@ const Select = React.createClass({
       }
       newVals.push(itemObj.node.props.value);
     });
-    const label = this.state.label.concat();
-    this.state.value.forEach((val, index) => {
-      if (newVals.indexOf(val) === -1) {
-        label.splice(index, 1);
-      }
-    });
-    this.fireChange(newVals, label, {triggerValue: selectedValue, clear: true});
+    this.fireChange(this.state.value.filter(val => newVals.indexOf(val.value) !== -1),
+      {triggerValue: selectedValue, clear: true});
   },
 
-  setOpenState(open) {
-    const refs = this.refs;
+  setOpenState(open, needFocus) {
+    this.clearDelayTimer();
+    const { props, refs } = this;
+    // can not optimize, if children is empty
+    // if (this.state.open === open) {
+    //   return;
+    // }
     this.setState({
       open,
     }, ()=> {
-      if (open || isMultipleOrTagsOrCombobox(this.props)) {
-        if (this.getInputDOMNode()) {
-          this.getInputDOMNode().focus();
+      if (needFocus || open) {
+        if (open || isMultipleOrTagsOrCombobox(props)) {
+          const input = this.getInputDOMNode();
+          if (input && document.activeElement !== input) {
+            input.focus();
+          }
+        } else if (refs.selection) {
+          refs.selection.focus();
         }
-      } else if (refs.selection) {
-        refs.selection.focus();
       }
     });
   },
 
-  removeSelected(selectedValue, e) {
+  addLabelToValue(props, value_) {
+    let value = value_;
+    if (props.labelInValue) {
+      value.forEach(v => {
+        v.label = v.label || this.getLabelFromProps(props, v.value);
+      });
+    } else {
+      value = value.map(v => {
+        return {
+          value: v,
+          label: this.getLabelFromProps(props, v),
+        };
+      });
+    }
+    return value;
+  },
+
+  clearDelayTimer() {
+    if (this.delayTimer) {
+      clearTimeout(this.delayTimer);
+      this.delayTimer = null;
+    }
+  },
+
+  removeSelected(selectedKey) {
     const props = this.props;
     if (props.disabled) {
       return;
     }
-    if (e) {
-      e.stopPropagation();
-    }
     if ((props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT)
       && !props.skipHandleInitValue) {
-      this.getDeselectedValue(selectedValue);
+      this.getDeselectedValue(selectedKey);
       return;
     }
-    const label = this.state.label.concat();
-    const index = this.state.value.indexOf(selectedValue);
+    let label;
     const value = this.state.value.filter((singleValue) => {
-      return (singleValue !== selectedValue);
+      if (singleValue.value === selectedKey) {
+        label = singleValue.label;
+      }
+      return (singleValue.value !== selectedKey);
     });
-    if (index !== -1) {
-      label.splice(index, 1);
+    const canMultiple = isMultipleOrTags(props);
+
+    if (canMultiple) {
+      let event = selectedKey;
+      if (props.labelInValue) {
+        event = {
+          value: selectedKey,
+          label,
+        };
+      }
+      props.onDeselect(event);
     }
-    this.fireChange(value, label, {triggerValue: selectedValue, clear: true});
+    this.fireChange(value, {triggerValue: selectedKey, clear: true});
   },
 
   openIfHasChildren() {
@@ -542,89 +641,96 @@ const Select = React.createClass({
     }
   },
 
-  isValueChange(value) {
-    let sv = this.state.value;
-    if (typeof sv === 'string') {
-      sv = [sv];
-    }
-    if (value.length !== sv.length || !value.every((val, index) => sv[index] === val)) {
-      return true;
-    }
-  },
-
-  fireChange(value, label, extraInfo) {
+  fireChange(value, extraInfo) {
     const props = this.props;
     if (!('value' in props)) {
       this.setState({
-        value, label,
+        value,
       });
     }
-    if (this.isValueChange(value)) {
+    const vals = value.map(i => i.value);
+    const sv = this.state.value.map(i => i.value);
+    if (vals.length !== sv.length || !vals.every((val, index) => sv[index] === val)) {
       const ex = {preValue: [...this.state.value]};
       if (extraInfo) {
         assign(ex, extraInfo);
       }
-      props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label), ex);
+      props.onChange(this.getVLForOnChange(value), ex);
     }
   },
+
   renderTopControlNode() {
-    const value = this.state.value;
-    const label = this.state.label;
+    const { value } = this.state;
     const props = this.props;
     const { choiceTransitionName, prefixCls, maxTagTextLength } = props;
     // single and not combobox, input is inside dropdown
     if (isSingleMode(props)) {
-      const placeholder = (<span key="placeholder"
-                                 className={prefixCls + '-selection__placeholder'}>
-                           {props.placeholder}
+      let innerNode = (<span
+        key="placeholder"
+        className={`${prefixCls}-selection__placeholder`}
+      >
+        {props.placeholder}
       </span>);
-      let innerNode = placeholder;
-      if (this.state.label[0]) {
-        innerNode = <span key="value">{this.state.label[0]}</span>;
+      if (value.length) {
+        innerNode = <span key="value">{value[0].label}</span>;
       }
-      return (<span className={prefixCls + '-selection__rendered'}>
+      return (<span className={`${prefixCls}-selection__rendered`}>
         {innerNode}
       </span>);
     }
 
     let selectedValueNodes = [];
     if (isMultipleOrTags(props)) {
-      selectedValueNodes = value.map((singleValue, index) => {
-        let content = label[index];
+      selectedValueNodes = value.map((singleValue) => {
+        let content = singleValue.label;
         const title = content;
         if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
-          content = content.slice(0, maxTagTextLength) + '...';
+          content = `${content.slice(0, maxTagTextLength)}...`;
         }
         return (
-          <li className={`${prefixCls}-selection__choice`}
-              key={singleValue}
-              title={title}>
-            <span className={prefixCls + '-selection__choice__content'}>{content}</span>
-            <span className={prefixCls + '-selection__choice__remove'}
-                  onClick={this.removeSelected.bind(this, singleValue)}/>
+          <li
+            style={UNSELECTABLE_STYLE}
+            {...UNSELECTABLE_ATTRIBUTE}
+            onMouseDown={preventDefaultEvent}
+            className={`${prefixCls}-selection__choice`}
+            key={singleValue.value}
+            title={title}
+          >
+            <span className={`${prefixCls}-selection__choice__content`}>{content}</span>
+            <span
+              className={`${prefixCls}-selection__choice__remove`}
+              onClick={this.removeSelected.bind(this, singleValue.value)}
+            />
           </li>
         );
       });
     }
-    selectedValueNodes.push(<li className={`${prefixCls}-search ${prefixCls}-search--inline`} key="__input">
+    selectedValueNodes.push(<li
+      className={`${prefixCls}-search ${prefixCls}-search--inline`}
+      key="__input"
+    >
       {this.getInputElement()}
     </li>);
-    const className = prefixCls + '-selection__rendered';
+    const className = `${prefixCls}-selection__rendered`;
     if (isMultipleOrTags(props) && choiceTransitionName) {
-      return (<Animate className={className}
-                       component="ul"
-                       transitionName={choiceTransitionName}>
+      return (<Animate
+        className={className}
+        component="ul"
+        transitionName={choiceTransitionName}
+      >
         {selectedValueNodes}
       </Animate>);
     }
     return (<ul className={className}>{selectedValueNodes}</ul>);
   },
+
   renderTreeData(props) {
     const validProps = props || this.props;
     if (validProps.treeData) {
       return loopTreeData(validProps.treeData);
     }
   },
+
   render() {
     const props = this.props;
     const multiple = isMultipleOrTags(props);
@@ -632,7 +738,7 @@ const Select = React.createClass({
     const {className, disabled, allowClear, prefixCls} = props;
     const ctrlNode = this.renderTopControlNode();
     let extraSelectionProps = {};
-    if (!isCombobox(props)) {
+    if (!isMultipleOrTagsOrCombobox(props)) {
       extraSelectionProps = {
         onKeyDown: this.onKeyDown,
         tabIndex: 0,
@@ -641,15 +747,17 @@ const Select = React.createClass({
     const rootCls = {
       [className]: !!className,
       [prefixCls]: 1,
-      [prefixCls + '-open']: state.open,
-      [prefixCls + '-combobox']: isCombobox(props),
-      [prefixCls + '-disabled']: disabled,
-      [prefixCls + '-enabled']: !disabled,
+      [`${prefixCls}-open`]: open,
+      [`${prefixCls}-combobox`]: isCombobox(props),
+      [`${prefixCls}-disabled`]: disabled,
+      [`${prefixCls}-enabled`]: !disabled,
     };
 
-    const clear = (<span key="clear"
-                         className={prefixCls + '-selection__clear'}
-                         onClick={this.onClearSelection}/>);
+    const clear = (<span
+      key="clear"
+      className={`${prefixCls}-selection__clear`}
+      onClick={this.onClearSelection}
+    />);
     return (
       <SelectTrigger {...props}
         treeNodes={props.children}
@@ -662,26 +770,37 @@ const Select = React.createClass({
         value={state.value}
         onDropdownVisibleChange={this.onDropdownVisibleChange}
         onSelect={this.onSelect}
-        ref="trigger">
+        ref="trigger"
+      >
         <span
           style={props.style}
           onClick={props.onClick}
-          className={classnames(rootCls)}>
-          <span ref="selection"
-                key="selection"
-                className={`${prefixCls}-selection ${prefixCls}-selection--${multiple ? 'multiple' : 'single'}`}
-                role="combobox"
-                aria-autocomplete="list"
-                aria-haspopup="true"
-                aria-expanded={state.open}
-            {...extraSelectionProps}>
+          className={classnames(rootCls)}
+        >
+          <span
+            ref="selection"
+            key="selection"
+            className={`${prefixCls}-selection
+            ${prefixCls}-selection--${multiple ? 'multiple' : 'single'}`}
+            role="combobox"
+            aria-autocomplete="list"
+            aria-haspopup="true"
+            aria-expanded={state.open}
+            {...extraSelectionProps}
+          >
         {ctrlNode}
-            {allowClear && !isMultipleOrTags(props) ? clear : null}
+            {allowClear && !multiple ? clear : null}
             {multiple || !props.showArrow ? null :
-              (<span key="arrow" className={prefixCls + '-arrow'} tabIndex="-1" style={{outline: 'none'}}>
+              (<span
+                key="arrow"
+                className={`${prefixCls}-arrow`}
+                style={{ outline: 'none' }}
+              >
               <b/>
             </span>)}
-            {multiple ? this.getSearchPlaceholderElement(!!this.state.inputValue || this.state.value.length) : null}
+            {multiple ?
+              this.getSearchPlaceholderElement(!!this.state.inputValue || this.state.value.length) :
+              null}
           </span>
         </span>
       </SelectTrigger>

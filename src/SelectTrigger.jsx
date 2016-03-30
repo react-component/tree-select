@@ -130,10 +130,9 @@ const SelectTrigger = React.createClass({
       checkable: props.treeCheckable,
       filterTreeNode: this.filterTree,
     };
-    const vals = props.value || props.defaultValue;
     const keys = [];
     loopAllChildren(treeNodes, (child) => {
-      if (vals.indexOf(getValuePropValue(child)) > -1) {
+      if (props.value.some(item => item.value === getValuePropValue(child))) {
         keys.push(child.key);
       }
     });
