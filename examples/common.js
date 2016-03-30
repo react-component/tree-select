@@ -19851,6 +19851,7 @@
 	    onClick: _react.PropTypes.func,
 	    onChange: _react.PropTypes.func,
 	    onSelect: _react.PropTypes.func,
+	    onDeselect: _react.PropTypes.func,
 	    onSearch: _react.PropTypes.func,
 	    searchPlaceholder: _react.PropTypes.string,
 	    placeholder: _react.PropTypes.any,
@@ -19858,6 +19859,7 @@
 	    defaultValue: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.string]),
 	    label: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.any]),
 	    defaultLabel: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.any]),
+	    labelInValue: _react.PropTypes.bool,
 	    dropdownStyle: _react.PropTypes.object,
 	    drodownPopupAlign: _react.PropTypes.object,
 	    maxTagTextLength: _react.PropTypes.number,
@@ -19881,10 +19883,12 @@
 	      allowClear: false,
 	      placeholder: '',
 	      searchPlaceholder: '',
+	      labelInValue: false,
 	      defaultValue: [],
 	      onClick: noop,
 	      onChange: noop,
 	      onSelect: noop,
+	      onDeselect: noop,
 	      onSearch: noop,
 	      showArrow: true,
 	      dropdownMatchSelectWidth: true,
@@ -19909,32 +19913,28 @@
 	    } else {
 	      value = (0, _util.toArray)(props.defaultValue);
 	    }
-	    if (props.treeCheckable && !props.skipHandleInitValue) {
-	      value = this.getValue((0, _util.getTreeNodesStates)(this.renderTreeData() || props.children, value).checkedTreeNodes);
-	    }
-	    var label = this.getLabelFromProps(props, value, 1);
+	    value = this.addLabelToValue(props, value);
+	    value = this.getValue(props, value);
+	    // const label = this.getLabelFromProps(props, value, 1);
 	    var inputValue = '';
 	    if (props.combobox) {
-	      inputValue = value[0] || '';
+	      inputValue = value.length ? String(value[0].value) : '';
 	    }
 	    this.saveInputRef = saveRef.bind(this, 'inputInstance');
-	    return { value: value, inputValue: inputValue, label: label };
+	    return { value: value, inputValue: inputValue };
 	  },
 	
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    if ('value' in nextProps) {
 	      var value = (0, _util.toArray)(nextProps.value);
-	      if (nextProps.treeCheckable && !nextProps.skipHandleInitValue) {
-	        value = this.getValue((0, _util.getTreeNodesStates)(this.renderTreeData(nextProps) || nextProps.children, value).checkedTreeNodes);
-	      }
-	      var label = this.getLabelFromProps(nextProps, value);
+	      value = this.addLabelToValue(nextProps, value);
+	      value = this.getValue(nextProps, value);
 	      this.setState({
-	        value: value,
-	        label: label
+	        value: value
 	      });
 	      if (nextProps.combobox) {
 	        this.setState({
-	          inputValue: value[0] || ''
+	          inputValue: value.length ? String(value[0].key) : ''
 	        });
 	      }
 	    }
@@ -19955,6 +19955,7 @@
 	  },
 	
 	  componentWillUnmount: function componentWillUnmount() {
+	    this.clearDelayTimer();
 	    if (this.dropdownContainer) {
 	      _reactDom2['default'].unmountComponentAtNode(this.dropdownContainer);
 	      document.body.removeChild(this.dropdownContainer);
@@ -19965,17 +19966,24 @@
 	  onInputChange: function onInputChange(event) {
 	    var val = event.target.value;
 	    var props = this.props;
+	
 	    this.setState({
 	      inputValue: val,
 	      open: true
 	    });
 	    if ((0, _util.isCombobox)(props)) {
-	      this.fireChange([val], [val]);
+	      this.fireChange([{
+	        value: val
+	      }]);
 	    }
 	    props.onSearch(val);
 	  },
 	
 	  onDropdownVisibleChange: function onDropdownVisibleChange(open) {
+	    // selection inside combobox cause click
+	    if (!open && document.activeElement === this.getInputDOMNode()) {
+	      return;
+	    }
 	    this.setOpenState(open);
 	  },
 	
@@ -19994,21 +20002,34 @@
 	    }
 	  },
 	
+	  onInputBlur: function onInputBlur() {
+	    var _this = this;
+	
+	    if ((0, _util.isMultipleOrTagsOrCombobox)(this.props)) {
+	      return;
+	    }
+	    this.clearDelayTimer();
+	    this.delayTimer = setTimeout(function () {
+	      _this.setOpenState(false);
+	    }, 150);
+	  },
+	
 	  onInputKeyDown: function onInputKeyDown(event) {
 	    var props = this.props;
+	    if (props.disabled) {
+	      return;
+	    }
 	    var state = this.state;
 	    var keyCode = event.keyCode;
 	    if ((0, _util.isMultipleOrTags)(props) && !event.target.value && keyCode === _rcUtil.KeyCode.BACKSPACE) {
 	      var value = state.value.concat();
 	      if (value.length) {
-	        var label = state.label.concat();
-	        value.pop();
-	        label.pop();
-	        this.fireChange(value, label);
+	        var popValue = value.pop();
+	        props.onDeselect(props.labelInValue ? popValue : popValue.key);
+	        this.fireChange(value);
 	      }
 	      return;
 	    }
-	
 	    if (keyCode === _rcUtil.KeyCode.DOWN) {
 	      if (!state.open) {
 	        this.openIfHasChildren();
@@ -20035,69 +20056,57 @@
 	  },
 	
 	  onSelect: function onSelect(selectedKeys, info) {
-	    var _this = this;
+	    var _this2 = this;
 	
-	    var checkEvt = info.event === 'check';
 	    if (info.selected === false) {
 	      this.onDeselect(info);
 	      return;
 	    }
 	    var item = info.node;
 	    var value = this.state.value;
-	    var label = this.state.label;
 	    var props = this.props;
 	    var selectedValue = (0, _util.getValuePropValue)(item);
 	    var selectedLabel = this.getLabelFromNode(item);
-	    props.onSelect(selectedValue, item);
+	    var event = selectedValue;
+	    if (props.labelInValue) {
+	      event = {
+	        value: event,
+	        label: selectedLabel
+	      };
+	    }
+	    props.onSelect(event, item);
+	    var checkEvt = info.event === 'check';
 	    if ((0, _util.isMultipleOrTags)(props)) {
 	      if (checkEvt) {
-	        // TODO treeCheckable does not support tags/dynamic
-	        var checkedNodes = info.checkedNodes;
-	
-	        var checkedNodesPositions = info.checkedNodesPositions;
-	        if (props.showCheckedStrategy === SHOW_ALL) {
-	          checkedNodes = checkedNodes;
-	        } else if (props.showCheckedStrategy === SHOW_PARENT) {
-	          (function () {
-	            var posArr = (0, _util.filterParentPosition)(checkedNodesPositions.map(function (itemObj) {
-	              return itemObj.pos;
-	            }));
-	            checkedNodes = checkedNodesPositions.filter(function (itemObj) {
-	              return posArr.indexOf(itemObj.pos) !== -1;
-	            }).map(function (itemObj) {
-	              return itemObj.node;
-	            });
-	          })();
-	        } else {
-	          checkedNodes = checkedNodes.filter(function (n) {
-	            return !n.props.children;
-	          });
-	        }
-	        value = checkedNodes.map(function (n) {
-	          return (0, _util.getValuePropValue)(n);
-	        });
-	        label = checkedNodes.map(function (n) {
-	          return _this.getLabelFromNode(n);
+	        value = this.getCheckedNodes(info, props).map(function (n) {
+	          return {
+	            value: (0, _util.getValuePropValue)(n),
+	            label: _this2.getLabelFromNode(n)
+	          };
 	        });
 	      } else {
-	        if (value.indexOf(selectedValue) !== -1) {
+	        if ((0, _util.findIndexInValueByKey)(value, selectedValue) !== -1) {
 	          return;
 	        }
-	        value = value.concat([selectedValue]);
-	        label = label.concat([selectedLabel]);
+	        value = value.concat([{
+	          value: selectedValue,
+	          label: selectedLabel
+	        }]);
 	      }
-	      if (!checkEvt && value.indexOf(selectedValue) !== -1) {
-	        // 设置 multiple 时会有bug。（isValueChange 已有检查，此处注释掉）
-	        // return;
-	      }
+	      // if (!checkEvt && value.indexOf(selectedValue) !== -1) {
+	      // 设置 multiple 时会有bug。（isValueChange 已有检查，此处注释掉）
+	      // return;
+	      // }
 	    } else {
-	        if (value[0] === selectedValue) {
-	          this.setOpenState(false);
+	        if (value.length && value[0].value === selectedValue) {
+	          this.setOpenState(false, true);
 	          return;
 	        }
-	        value = [selectedValue];
-	        label = [selectedLabel];
-	        this.setOpenState(false);
+	        value = [{
+	          value: selectedValue,
+	          label: selectedLabel
+	        }];
+	        this.setOpenState(false, true);
 	      }
 	
 	    var extraInfo = {
@@ -20106,13 +20115,12 @@
 	    };
 	    if (checkEvt) {
 	      extraInfo.checked = info.checked;
-	      // extraInfo.allCheckedNodes = info.checkedNodes;
 	      extraInfo.allCheckedNodes = (0, _util.flatToHierarchy)(info.checkedNodesPositions);
 	    } else {
 	      extraInfo.selected = info.selected;
 	    }
 	
-	    this.fireChange(value, label, extraInfo);
+	    this.fireChange(value, extraInfo);
 	    this.setState({
 	      inputValue: ''
 	    });
@@ -20145,7 +20153,7 @@
 	    }
 	    event.stopPropagation();
 	    if (state.inputValue || state.value.length) {
-	      this.fireChange([], []);
+	      this.fireChange([]);
 	      this.setOpenState(false);
 	      this.setState({
 	        inputValue: ''
@@ -20154,7 +20162,7 @@
 	  },
 	
 	  getLabelBySingleValue: function getLabelBySingleValue(children, value) {
-	    var _this2 = this;
+	    var _this3 = this;
 	
 	    if (value === undefined) {
 	      return null;
@@ -20166,7 +20174,7 @@
 	          loop(item.props.children);
 	        }
 	        if ((0, _util.getValuePropValue)(item) === value) {
-	          label = _this2.getLabelFromNode(item);
+	          label = _this3.getLabelFromNode(item);
 	        }
 	      });
 	    };
@@ -20185,23 +20193,29 @@
 	    } else if (init && 'defaultLabel' in props) {
 	      label = (0, _util.toArray)(props.defaultLabel);
 	    } else {
-	      label = this.getLabelByValue(this.renderTreeData(props) || props.children, value);
+	      label = this.getLabelByValue(this.renderTreeData(props) || props.children, (0, _util.toArray)(value))[0];
 	    }
 	    return label;
 	  },
 	
-	  getVLForOnChange: function getVLForOnChange(vls) {
+	  getVLForOnChange: function getVLForOnChange(vls_) {
+	    var vls = vls_;
 	    if (vls !== undefined) {
+	      if (!this.props.labelInValue) {
+	        vls = vls.map(function (v) {
+	          return v.value;
+	        });
+	      }
 	      return (0, _util.isMultipleOrTags)(this.props) ? vls : vls[0];
 	    }
 	    return vls;
 	  },
 	
 	  getLabelByValue: function getLabelByValue(children, values) {
-	    var _this3 = this;
+	    var _this4 = this;
 	
 	    return values.map(function (value) {
-	      var label = _this3.getLabelBySingleValue(children, value);
+	      var label = _this4.getLabelBySingleValue(children, value);
 	      if (label === null) {
 	        return value;
 	      }
@@ -20219,14 +20233,21 @@
 	
 	  getSearchPlaceholderElement: function getSearchPlaceholderElement(hidden) {
 	    var props = this.props;
-	    if (props.searchPlaceholder) {
+	    var placeholder = undefined;
+	    if ((0, _util.isMultipleOrTagsOrCombobox)(props)) {
+	      placeholder = props.placeholder || props.searchPlaceholder;
+	    } else {
+	      placeholder = props.searchPlaceholder;
+	    }
+	    if (placeholder) {
 	      return _react2['default'].createElement(
 	        'span',
 	        {
 	          style: { display: hidden ? 'none' : 'block' },
 	          onClick: this.onPlaceholderClick,
-	          className: props.prefixCls + '-search__field__placeholder' },
-	        props.searchPlaceholder
+	          className: props.prefixCls + '-search__field__placeholder'
+	        },
+	        placeholder
 	      );
 	    }
 	    return null;
@@ -20237,7 +20258,9 @@
 	    return _react2['default'].createElement(
 	      'span',
 	      { className: props.prefixCls + '-search__field__wrap' },
-	      _react2['default'].createElement('input', { ref: this.saveInputRef,
+	      _react2['default'].createElement('input', {
+	        ref: this.saveInputRef,
+	        onBlur: this.onInputBlur,
 	        onChange: this.onInputChange,
 	        onKeyDown: this.onInputKeyDown,
 	        value: this.state.inputValue,
@@ -20260,32 +20283,67 @@
 	    return this.refs.trigger.getPopupEleRefs();
 	  },
 	
-	  getValue: function getValue(checkedTreeNodes) {
+	  getValue: function getValue(_props, value) {
+	    if (!(_props.treeCheckable && !_props.skipHandleInitValue)) {
+	      return value;
+	    }
+	    var checkedTreeNodes = (0, _util.getTreeNodesStates)(this.renderTreeData(_props) || _props.children, value.map(function (item) {
+	      return item.value;
+	    })).checkedTreeNodes;
 	    this.checkedTreeNodes = checkedTreeNodes;
-	    var mapVal = function mapVal(arr) {
+	    var mapLabVal = function mapLabVal(arr) {
 	      return arr.map(function (itemObj) {
-	        return (0, _util.getValuePropValue)(itemObj.node);
+	        return {
+	          value: (0, _util.getValuePropValue)(itemObj.node),
+	          label: (0, _util.getPropValue)(itemObj.node, _props.treeNodeLabelProp)
+	        };
 	      });
 	    };
 	    var props = this.props;
 	    var checkedValues = [];
 	    if (props.showCheckedStrategy === SHOW_ALL) {
-	      checkedValues = mapVal(checkedTreeNodes);
+	      checkedValues = mapLabVal(checkedTreeNodes);
 	    } else if (props.showCheckedStrategy === SHOW_PARENT) {
 	      (function () {
 	        var posArr = (0, _util.filterParentPosition)(checkedTreeNodes.map(function (itemObj) {
 	          return itemObj.pos;
 	        }));
-	        checkedValues = mapVal(checkedTreeNodes.filter(function (itemObj) {
+	        checkedValues = mapLabVal(checkedTreeNodes.filter(function (itemObj) {
 	          return posArr.indexOf(itemObj.pos) !== -1;
 	        }));
 	      })();
 	    } else {
-	      checkedValues = mapVal(checkedTreeNodes.filter(function (itemObj) {
+	      checkedValues = mapLabVal(checkedTreeNodes.filter(function (itemObj) {
 	        return !itemObj.node.props.children;
 	      }));
 	    }
 	    return checkedValues;
+	  },
+	
+	  getCheckedNodes: function getCheckedNodes(info, props) {
+	    // TODO treeCheckable does not support tags/dynamic
+	    var checkedNodes = info.checkedNodes;
+	
+	    var checkedNodesPositions = info.checkedNodesPositions;
+	    if (props.showCheckedStrategy === SHOW_ALL) {
+	      checkedNodes = checkedNodes;
+	    } else if (props.showCheckedStrategy === SHOW_PARENT) {
+	      (function () {
+	        var posArr = (0, _util.filterParentPosition)(checkedNodesPositions.map(function (itemObj) {
+	          return itemObj.pos;
+	        }));
+	        checkedNodes = checkedNodesPositions.filter(function (itemObj) {
+	          return posArr.indexOf(itemObj.pos) !== -1;
+	        }).map(function (itemObj) {
+	          return itemObj.node;
+	        });
+	      })();
+	    } else {
+	      checkedNodes = checkedNodes.filter(function (n) {
+	        return !n.props.children;
+	      });
+	    }
+	    return checkedNodes;
 	  },
 	
 	  getDeselectedValue: function getDeselectedValue(selectedValue) {
@@ -20307,53 +20365,93 @@
 	      }
 	      newVals.push(itemObj.node.props.value);
 	    });
-	    var label = this.state.label.concat();
-	    this.state.value.forEach(function (val, index) {
-	      if (newVals.indexOf(val) === -1) {
-	        label.splice(index, 1);
-	      }
-	    });
-	    this.fireChange(newVals, label, { triggerValue: selectedValue, clear: true });
+	    this.fireChange(this.state.value.filter(function (val) {
+	      return newVals.indexOf(val.value) !== -1;
+	    }), { triggerValue: selectedValue, clear: true });
 	  },
 	
-	  setOpenState: function setOpenState(open) {
-	    var _this4 = this;
+	  setOpenState: function setOpenState(open, needFocus) {
+	    var _this5 = this;
 	
+	    this.clearDelayTimer();
+	    var props = this.props;
 	    var refs = this.refs;
+	
+	    // can not optimize, if children is empty
+	    // if (this.state.open === open) {
+	    //   return;
+	    // }
 	    this.setState({
 	      open: open
 	    }, function () {
-	      if (open || (0, _util.isMultipleOrTagsOrCombobox)(_this4.props)) {
-	        if (_this4.getInputDOMNode()) {
-	          _this4.getInputDOMNode().focus();
+	      if (needFocus || open) {
+	        if (open || (0, _util.isMultipleOrTagsOrCombobox)(props)) {
+	          var input = _this5.getInputDOMNode();
+	          if (input && document.activeElement !== input) {
+	            input.focus();
+	          }
+	        } else if (refs.selection) {
+	          refs.selection.focus();
 	        }
-	      } else if (refs.selection) {
-	        refs.selection.focus();
 	      }
 	    });
 	  },
 	
-	  removeSelected: function removeSelected(selectedValue, e) {
+	  addLabelToValue: function addLabelToValue(props, value_) {
+	    var _this6 = this;
+	
+	    var value = value_;
+	    if (props.labelInValue) {
+	      value.forEach(function (v) {
+	        v.label = v.label || _this6.getLabelFromProps(props, v.value);
+	      });
+	    } else {
+	      value = value.map(function (v) {
+	        return {
+	          value: v,
+	          label: _this6.getLabelFromProps(props, v)
+	        };
+	      });
+	    }
+	    return value;
+	  },
+	
+	  clearDelayTimer: function clearDelayTimer() {
+	    if (this.delayTimer) {
+	      clearTimeout(this.delayTimer);
+	      this.delayTimer = null;
+	    }
+	  },
+	
+	  removeSelected: function removeSelected(selectedKey) {
 	    var props = this.props;
 	    if (props.disabled) {
 	      return;
 	    }
-	    if (e) {
-	      e.stopPropagation();
-	    }
 	    if ((props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT) && !props.skipHandleInitValue) {
-	      this.getDeselectedValue(selectedValue);
+	      this.getDeselectedValue(selectedKey);
 	      return;
 	    }
-	    var label = this.state.label.concat();
-	    var index = this.state.value.indexOf(selectedValue);
+	    var label = undefined;
 	    var value = this.state.value.filter(function (singleValue) {
-	      return singleValue !== selectedValue;
+	      if (singleValue.value === selectedKey) {
+	        label = singleValue.label;
+	      }
+	      return singleValue.value !== selectedKey;
 	    });
-	    if (index !== -1) {
-	      label.splice(index, 1);
+	    var canMultiple = (0, _util.isMultipleOrTags)(props);
+	
+	    if (canMultiple) {
+	      var _event = selectedKey;
+	      if (props.labelInValue) {
+	        _event = {
+	          value: selectedKey,
+	          label: label
+	        };
+	      }
+	      props.onDeselect(_event);
 	    }
-	    this.fireChange(value, label, { triggerValue: selectedValue, clear: true });
+	    this.fireChange(value, { triggerValue: selectedKey, clear: true });
 	  },
 	
 	  openIfHasChildren: function openIfHasChildren() {
@@ -20363,38 +20461,35 @@
 	    }
 	  },
 	
-	  isValueChange: function isValueChange(value) {
-	    var sv = this.state.value;
-	    if (typeof sv === 'string') {
-	      sv = [sv];
-	    }
-	    if (value.length !== sv.length || !value.every(function (val, index) {
-	      return sv[index] === val;
-	    })) {
-	      return true;
-	    }
-	  },
-	
-	  fireChange: function fireChange(value, label, extraInfo) {
+	  fireChange: function fireChange(value, extraInfo) {
 	    var props = this.props;
 	    if (!('value' in props)) {
 	      this.setState({
-	        value: value, label: label
+	        value: value
 	      });
 	    }
-	    if (this.isValueChange(value)) {
+	    var vals = value.map(function (i) {
+	      return i.value;
+	    });
+	    var sv = this.state.value.map(function (i) {
+	      return i.value;
+	    });
+	    if (vals.length !== sv.length || !vals.every(function (val, index) {
+	      return sv[index] === val;
+	    })) {
 	      var ex = { preValue: [].concat(_toConsumableArray(this.state.value)) };
 	      if (extraInfo) {
 	        (0, _objectAssign2['default'])(ex, extraInfo);
 	      }
-	      props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label), ex);
+	      props.onChange(this.getVLForOnChange(value), ex);
 	    }
 	  },
+	
 	  renderTopControlNode: function renderTopControlNode() {
-	    var _this5 = this;
+	    var _this7 = this;
 	
 	    var value = this.state.value;
-	    var label = this.state.label;
+	
 	    var props = this.props;
 	    var choiceTransitionName = props.choiceTransitionName;
 	    var prefixCls = props.prefixCls;
@@ -20402,18 +20497,19 @@
 	
 	    // single and not combobox, input is inside dropdown
 	    if ((0, _util.isSingleMode)(props)) {
-	      var placeholder = _react2['default'].createElement(
+	      var innerNode = _react2['default'].createElement(
 	        'span',
-	        { key: 'placeholder',
-	          className: prefixCls + '-selection__placeholder' },
+	        {
+	          key: 'placeholder',
+	          className: prefixCls + '-selection__placeholder'
+	        },
 	        props.placeholder
 	      );
-	      var innerNode = placeholder;
-	      if (this.state.label[0]) {
+	      if (value.length) {
 	        innerNode = _react2['default'].createElement(
 	          'span',
 	          { key: 'value' },
-	          this.state.label[0]
+	          value[0].label
 	        );
 	      }
 	      return _react2['default'].createElement(
@@ -20425,39 +20521,51 @@
 	
 	    var selectedValueNodes = [];
 	    if ((0, _util.isMultipleOrTags)(props)) {
-	      selectedValueNodes = value.map(function (singleValue, index) {
-	        var content = label[index];
+	      selectedValueNodes = value.map(function (singleValue) {
+	        var content = singleValue.label;
 	        var title = content;
 	        if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
 	          content = content.slice(0, maxTagTextLength) + '...';
 	        }
 	        return _react2['default'].createElement(
 	          'li',
-	          { className: prefixCls + '-selection__choice',
-	            key: singleValue,
-	            title: title },
+	          _extends({
+	            style: _util.UNSELECTABLE_STYLE
+	          }, _util.UNSELECTABLE_ATTRIBUTE, {
+	            onMouseDown: _util.preventDefaultEvent,
+	            className: prefixCls + '-selection__choice',
+	            key: singleValue.value,
+	            title: title
+	          }),
 	          _react2['default'].createElement(
 	            'span',
 	            { className: prefixCls + '-selection__choice__content' },
 	            content
 	          ),
-	          _react2['default'].createElement('span', { className: prefixCls + '-selection__choice__remove',
-	            onClick: _this5.removeSelected.bind(_this5, singleValue) })
+	          _react2['default'].createElement('span', {
+	            className: prefixCls + '-selection__choice__remove',
+	            onClick: _this7.removeSelected.bind(_this7, singleValue.value)
+	          })
 	        );
 	      });
 	    }
 	    selectedValueNodes.push(_react2['default'].createElement(
 	      'li',
-	      { className: prefixCls + '-search ' + prefixCls + '-search--inline', key: '__input' },
+	      {
+	        className: prefixCls + '-search ' + prefixCls + '-search--inline',
+	        key: '__input'
+	      },
 	      this.getInputElement()
 	    ));
 	    var className = prefixCls + '-selection__rendered';
 	    if ((0, _util.isMultipleOrTags)(props) && choiceTransitionName) {
 	      return _react2['default'].createElement(
 	        _rcAnimate2['default'],
-	        { className: className,
+	        {
+	          className: className,
 	          component: 'ul',
-	          transitionName: choiceTransitionName },
+	          transitionName: choiceTransitionName
+	        },
 	        selectedValueNodes
 	      );
 	    }
@@ -20467,12 +20575,14 @@
 	      selectedValueNodes
 	    );
 	  },
+	
 	  renderTreeData: function renderTreeData(props) {
 	    var validProps = props || this.props;
 	    if (validProps.treeData) {
 	      return loopTreeData(validProps.treeData);
 	    }
 	  },
+	
 	  render: function render() {
 	    var _rootCls;
 	
@@ -20486,17 +20596,19 @@
 	
 	    var ctrlNode = this.renderTopControlNode();
 	    var extraSelectionProps = {};
-	    if (!(0, _util.isCombobox)(props)) {
+	    if (!(0, _util.isMultipleOrTagsOrCombobox)(props)) {
 	      extraSelectionProps = {
 	        onKeyDown: this.onKeyDown,
 	        tabIndex: 0
 	      };
 	    }
-	    var rootCls = (_rootCls = {}, _defineProperty(_rootCls, className, !!className), _defineProperty(_rootCls, prefixCls, 1), _defineProperty(_rootCls, prefixCls + '-open', state.open), _defineProperty(_rootCls, prefixCls + '-combobox', (0, _util.isCombobox)(props)), _defineProperty(_rootCls, prefixCls + '-disabled', disabled), _defineProperty(_rootCls, prefixCls + '-enabled', !disabled), _rootCls);
+	    var rootCls = (_rootCls = {}, _defineProperty(_rootCls, className, !!className), _defineProperty(_rootCls, prefixCls, 1), _defineProperty(_rootCls, prefixCls + '-open', open), _defineProperty(_rootCls, prefixCls + '-combobox', (0, _util.isCombobox)(props)), _defineProperty(_rootCls, prefixCls + '-disabled', disabled), _defineProperty(_rootCls, prefixCls + '-enabled', !disabled), _rootCls);
 	
-	    var clear = _react2['default'].createElement('span', { key: 'clear',
+	    var clear = _react2['default'].createElement('span', {
+	      key: 'clear',
 	      className: prefixCls + '-selection__clear',
-	      onClick: this.onClearSelection });
+	      onClick: this.onClearSelection
+	    });
 	    return _react2['default'].createElement(
 	      _SelectTrigger2['default'],
 	      _extends({}, props, {
@@ -20510,28 +20622,35 @@
 	        value: state.value,
 	        onDropdownVisibleChange: this.onDropdownVisibleChange,
 	        onSelect: this.onSelect,
-	        ref: 'trigger' }),
+	        ref: 'trigger'
+	      }),
 	      _react2['default'].createElement(
 	        'span',
 	        {
 	          style: props.style,
 	          onClick: props.onClick,
-	          className: (0, _classnames2['default'])(rootCls) },
+	          className: (0, _classnames2['default'])(rootCls)
+	        },
 	        _react2['default'].createElement(
 	          'span',
-	          _extends({ ref: 'selection',
+	          _extends({
+	            ref: 'selection',
 	            key: 'selection',
-	            className: prefixCls + '-selection ' + prefixCls + '-selection--' + (multiple ? 'multiple' : 'single'),
+	            className: prefixCls + '-selection\n            ' + prefixCls + '-selection--' + (multiple ? 'multiple' : 'single'),
 	            role: 'combobox',
 	            'aria-autocomplete': 'list',
 	            'aria-haspopup': 'true',
 	            'aria-expanded': state.open
 	          }, extraSelectionProps),
 	          ctrlNode,
-	          allowClear && !(0, _util.isMultipleOrTags)(props) ? clear : null,
+	          allowClear && !multiple ? clear : null,
 	          multiple || !props.showArrow ? null : _react2['default'].createElement(
 	            'span',
-	            { key: 'arrow', className: prefixCls + '-arrow', tabIndex: '-1', style: { outline: 'none' } },
+	            {
+	              key: 'arrow',
+	              className: prefixCls + '-arrow',
+	              style: { outline: 'none' }
+	            },
 	            _react2['default'].createElement('b', null)
 	          ),
 	          multiple ? this.getSearchPlaceholderElement(!!this.state.inputValue || this.state.value.length) : null
@@ -23607,6 +23726,8 @@
 	exports.isMultipleOrTagsOrCombobox = isMultipleOrTagsOrCombobox;
 	exports.isSingleMode = isSingleMode;
 	exports.toArray = toArray;
+	exports.preventDefaultEvent = preventDefaultEvent;
+	exports.findIndexInValueByKey = findIndexInValueByKey;
 	exports.labelCompatible = labelCompatible;
 	exports.isInclude = isInclude;
 	exports.getCheckedKeys = getCheckedKeys;
@@ -23666,6 +23787,33 @@
 	  }
 	  return ret;
 	}
+	
+	function preventDefaultEvent(e) {
+	  e.preventDefault();
+	}
+	
+	function findIndexInValueByKey(value, key) {
+	  var index = -1;
+	  for (var i = 0; i < value.length; i++) {
+	    if (value[i].value === key) {
+	      index = i;
+	      break;
+	    }
+	  }
+	  return index;
+	}
+	
+	var UNSELECTABLE_STYLE = {
+	  userSelect: 'none',
+	  WebkitUserSelect: 'none'
+	};
+	
+	exports.UNSELECTABLE_STYLE = UNSELECTABLE_STYLE;
+	var UNSELECTABLE_ATTRIBUTE = {
+	  unselectable: 'unselectable'
+	};
+	
+	exports.UNSELECTABLE_ATTRIBUTE = UNSELECTABLE_ATTRIBUTE;
 	
 	function labelCompatible(prop) {
 	  var newProp = prop;
@@ -24066,10 +24214,11 @@
 	      checkable: props.treeCheckable,
 	      filterTreeNode: this.filterTree
 	    };
-	    var vals = props.value || props.defaultValue;
 	    var keys = [];
 	    (0, _util.loopAllChildren)(treeNodes, function (child) {
-	      if (vals.indexOf((0, _util.getValuePropValue)(child)) > -1) {
+	      if (props.value.some(function (item) {
+	        return item.value === (0, _util.getValuePropValue)(child);
+	      })) {
 	        keys.push(child.key);
 	      }
 	    });
