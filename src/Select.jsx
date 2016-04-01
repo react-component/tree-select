@@ -655,7 +655,8 @@ const Select = React.createClass({
       if (extraInfo) {
         assign(ex, extraInfo);
       }
-      props.onChange(this.getVLForOnChange(value), ex);
+      const labs = props.labelInValue ? null : value.map(i => i.label);
+      props.onChange(this.getVLForOnChange(value), labs, ex);
     }
   },
 

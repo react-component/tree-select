@@ -42,7 +42,7 @@ const Demo = React.createClass({
                     dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
                     treeData={gData}
                     value={this.state.multipleValue}
-                    treeDefaultExpandAll
+                    treeDefaultExpandAll={false}
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
                     treeNodeFilterProp="title"
@@ -55,7 +55,7 @@ const Demo = React.createClass({
                     dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
                     treeData={gData} treeLine
                     value={this.state.value}
-                    treeDefaultExpandAll
+                    treeDefaultExpandAll={false}
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
                     treeNodeFilterProp="title"
