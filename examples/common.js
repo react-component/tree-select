@@ -20481,7 +20481,10 @@
 	      if (extraInfo) {
 	        (0, _objectAssign2['default'])(ex, extraInfo);
 	      }
-	      props.onChange(this.getVLForOnChange(value), ex);
+	      var labs = props.labelInValue ? null : value.map(function (i) {
+	        return i.label;
+	      });
+	      props.onChange(this.getVLForOnChange(value), labs, ex);
 	    }
 	  },
 	

@@ -82,7 +82,7 @@ webpackJsonp([0],[
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
 	        treeData: _util.gData,
 	        value: this.state.multipleValue,
-	        treeDefaultExpandAll: true,
+	        treeDefaultExpandAll: false,
 	        placeholder: _react2['default'].createElement(
 	          'i',
 	          null,
@@ -102,7 +102,7 @@ webpackJsonp([0],[
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
 	        treeData: _util.gData, treeLine: true,
 	        value: this.state.value,
-	        treeDefaultExpandAll: true,
+	        treeDefaultExpandAll: false,
 	        placeholder: _react2['default'].createElement(
 	          'i',
 	          null,
