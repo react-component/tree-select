@@ -44,7 +44,7 @@ webpackJsonp([0],[
 	    };
 	  },
 	  onChange: function onChange(value) {
-	    console.log('onChange', value, arguments);
+	    console.log('onChange', arguments);
 	    this.setState({ value: value });
 	  },
 	  onMultipleChange: function onMultipleChange(value) {
@@ -111,6 +111,7 @@ webpackJsonp([0],[
 	        searchPlaceholder: 'please search',
 	        treeNodeFilterProp: 'title',
 	        treeCheckable: true,
+	        treeCheckStrictly: true,
 	        showCheckedStrategy: _rcTreeSelect.SHOW_PARENT,
 	        onChange: this.onChange }),
 	      _react2['default'].createElement(
