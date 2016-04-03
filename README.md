@@ -81,7 +81,6 @@ online example: http://react-component.github.io/tree-select/
 |treeDefaultExpandAll | default expand all treeNode | bool | false |
 |treeCheckable | whether tree show checkbox (select callback will not fire) | bool | false |
 |treeCheckStrictly | check node precisely, parent and children nodes are not associated| bool | false |
-|skipHandleInitValue | skip handle init value when enable treeCheckable | bool | false |
 |filterTreeNode | filter some treeNodes as you need. it should return true | function(treeNode) | - |
 |treeNodeFilterProp | which prop value of treeNode will be used for filter if filterTreeNode return true | String | 'value' |
 |treeNodeLabelProp | which prop value of treeNode will render as content of select | String | 'title' |
