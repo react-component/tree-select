@@ -1,3 +1,4 @@
+/* eslint no-loop-func: 0*/
 import React from 'react';
 
 export function getValuePropValue(child) {
@@ -118,10 +119,12 @@ export function loopAllChildren(childs, callback) {
   const loop = (children, level) => {
     React.Children.forEach(children, (item, index) => {
       const pos = `${level}-${index}`;
-      if (item.props.children) {
+      if (item && item.props.children) {
         loop(item.props.children, pos);
       }
-      callback(item, index, pos, getValuePropValue(item));
+      if (item) {
+        callback(item, index, pos, getValuePropValue(item));
+      }
     });
   };
   loop(childs, 0);
@@ -141,6 +144,8 @@ export function flatToHierarchy(arr) {
     levelObj[posLen].push(item);
   });
   const levelArr = Object.keys(levelObj).sort((a, b) => b - a);
+  // const s = Date.now();
+  // todo: 数据量大时，下边函数性能差，能否是o1时间复杂度？
   levelArr.reduce((pre, cur) => {
     if (cur && cur !== pre) {
       levelObj[pre].forEach((item) => {
@@ -161,36 +166,44 @@ export function flatToHierarchy(arr) {
     }
     return cur;
   });
+  // console.log(Date.now() - s);
   return levelObj[levelArr[levelArr.length - 1]].concat(hierarchyNodes);
 }
 
-function uniqueArray(arr) {
-  const obj = {};
-  arr.forEach(item => {
-    if (!obj[item]) {
-      obj[item] = true;
-    }
-  });
-  return Object.keys(obj);
-}
-// console.log(uniqueArray(['11', '2', '2']));
 
+// arr.length === 628, use time: ~20ms
 export function filterParentPosition(arr) {
-  const a = [].concat(arr);
+  const levelObj = {};
   arr.forEach((item) => {
-    const itemArr = item.split('-');
-    a.forEach((ii, index) => {
-      const iiArr = ii.split('-');
-      if (itemArr.length <= iiArr.length && isInclude(itemArr, iiArr)) {
-        a[index] = item;
-      }
-      if (itemArr.length > iiArr.length && isInclude(iiArr, itemArr)) {
-        a[index] = ii;
-      }
-    });
+    const posLen = item.split('-').length;
+    if (!levelObj[posLen]) {
+      levelObj[posLen] = [];
+    }
+    levelObj[posLen].push(item);
   });
-  return uniqueArray(a);
+  const levelArr = Object.keys(levelObj).sort();
+  for (let i = 0; i < levelArr.length; i++) {
+    if (levelArr[i + 1]) {
+      levelObj[levelArr[i]].forEach(ii => {
+        for (let j = i + 1; j < levelArr.length; j++) {
+          levelObj[levelArr[j]].forEach((_i, index) => {
+            if (isInclude(ii.split('-'), _i.split('-'))) {
+              levelObj[levelArr[j]][index] = null;
+            }
+          });
+          levelObj[levelArr[j]] = levelObj[levelArr[j]].filter(p => p);
+        }
+      });
+    }
+  }
+  let nArr = [];
+  levelArr.forEach(i => {
+    nArr = nArr.concat(levelObj[i]);
+  });
+  return nArr;
 }
+// console.log(filterParentPosition(['0-2', '0-3-3', '0-10', '0-10-0', '0-0-1', '0-0', '0-1-1', '0-1']));
+
 
 const stripTail = (str) => {
   const arr = str.match(/(.+)(-[^-]+)$/);
@@ -200,44 +213,69 @@ const stripTail = (str) => {
   }
   return st;
 };
+const splitPosition = (pos) => {
+  return pos.split('-');
+};
 
-function handleCheckState(obj, checkedPosArr, checkIt) {
-  // stripTail('x-xx-sss-xx')
-  const splitPos = (pos) => {
-    return pos.split('-');
-  };
-  checkedPosArr.forEach((_pos) => {
-    const posPath = splitPos(_pos);
-    // 设置子节点，全选或全不选
-    Object.keys(obj).forEach((i) => {
-      const iPath = splitPos(i);
-      if (iPath.length > posPath.length && isInclude(posPath, iPath)) {
+// TODO 再优化
+export function handleCheckState(obj, checkedPositionArr, checkIt) {
+  // console.log(stripTail('0-101-000'));
+  // let s = Date.now();
+  let objKeys = Object.keys(obj);
+
+  objKeys.forEach((i, index) => {
+    const iArr = splitPosition(i);
+    let saved = false;
+    checkedPositionArr.forEach((_pos) => {
+      // 设置子节点，全选或全不选
+      const _posArr = splitPosition(_pos);
+      if (iArr.length > _posArr.length && isInclude(_posArr, iArr)) {
         obj[i].checkPart = false;
         obj[i].checked = checkIt;
+        objKeys[index] = null;
+      }
+      if (iArr[0] === _posArr[0] && iArr[1] === _posArr[1]) {
+        // 如果
+        saved = true;
       }
     });
+    if (!saved) {
+      objKeys[index] = null;
+    }
+  });
+  objKeys = objKeys.filter(i => i); // filter non null;
+
+  for (let pIndex = 0; pIndex < checkedPositionArr.length; pIndex++) {
     // 循环设置父节点的 选中 或 半选状态
     const loop = (__pos) => {
-      const _posLen = splitPos(__pos).length;
+      const _posLen = splitPosition(__pos).length;
       if (_posLen <= 2) { // e.g. '0-0', '0-1'
         return;
       }
       let sibling = 0;
       let siblingChecked = 0;
-      const parentPos = stripTail(__pos);
-      const parentPosPath = splitPos(parentPos);
-      Object.keys(obj).forEach((i) => {
-        const iPath = splitPos(i);
-        if (iPath.length === _posLen && isInclude(parentPosPath, iPath)) {
+      const parentPosition = stripTail(__pos);
+      objKeys.forEach((i /* , index*/) => {
+        const iArr = splitPosition(i);
+        if (iArr.length === _posLen && isInclude(splitPosition(parentPosition), iArr)) {
           sibling++;
           if (obj[i].checked) {
             siblingChecked++;
+            const _i = checkedPositionArr.indexOf(i);
+            if (_i > -1) {
+              checkedPositionArr.splice(_i, 1);
+              if (_i <= pIndex) {
+                pIndex--;
+              }
+            }
           } else if (obj[i].checkPart) {
             siblingChecked += 0.5;
           }
+          // objKeys[index] = null;
         }
       });
-      const parent = obj[parentPos];
+      // objKeys = objKeys.filter(i => i); // filter non null;
+      const parent = obj[parentPosition];
       // sibling 不会等于0
       // 全不选 - 全选 - 半选
       if (siblingChecked === 0) {
@@ -250,10 +288,11 @@ function handleCheckState(obj, checkedPosArr, checkIt) {
         parent.checkPart = true;
         parent.checked = false;
       }
-      loop(parentPos);
+      loop(parentPosition);
     };
-    loop(_pos);
-  });
+    loop(checkedPositionArr[pIndex], pIndex);
+  }
+  // console.log(Date.now()-s, objKeys.length, checkIt);
 }
 
 function getCheck(treeNodesStates) {

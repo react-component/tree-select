@@ -1,6 +1,9 @@
 # History
 ---
 
+## 1.5.2 / 2016-04-02
+- `skipHandleInitValue` is deprecated, use `treeCheckStrictly` instead.
+
 ## 1.4.0 / 2016-03-14
 - change `showAllChecked`/`showParentChecked` to `showCheckedStrategy`.
 

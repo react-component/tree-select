@@ -16,7 +16,7 @@ const Demo = React.createClass({
     };
   },
   onChange(value) {
-    console.log('onChange', value, arguments);
+    console.log('onChange', arguments);
     this.setState({value});
   },
   onMultipleChange(value) {
@@ -60,6 +60,7 @@ const Demo = React.createClass({
                     searchPlaceholder="please search"
                     treeNodeFilterProp="title"
                     treeCheckable
+                    treeCheckStrictly
                     showCheckedStrategy={SHOW_PARENT}
                     onChange={this.onChange} />
 

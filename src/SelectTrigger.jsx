@@ -1,10 +1,10 @@
 import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
-import assign from 'object-assign';
 import Trigger from 'rc-trigger';
 import Tree, { TreeNode } from 'rc-tree';
-import { flatToHierarchy, loopAllChildren, getValuePropValue, labelCompatible } from './util';
+import { loopAllChildren, getValuePropValue, labelCompatible } from './util';
+import rcUtil from 'rc-util';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -90,36 +90,8 @@ const SelectTrigger = React.createClass({
     this.popupEle = ele;
   },
 
-  renderFilterTreeNodes(children) {
+  renderTree(keys, newTreeNodes, multiple) {
     const props = this.props;
-    const inputValue = props.inputValue;
-    const filterNodesPositions = [];
-
-    loopAllChildren(children, (child, index, pos) => {
-      if (this.filterTreeNode(inputValue, child)) {
-        filterNodesPositions.push({node: child, pos});
-      }
-    });
-
-    return flatToHierarchy(filterNodesPositions);
-  },
-
-  renderTree(treeNodes, newTreeNodes, multiple) {
-    const props = this.props;
-
-    const loop = data => {
-      return data.map((item) => {
-        const tProps = {key: item.node.key};
-        assign(tProps, item.node.props);
-        if (tProps.children) {
-          delete tProps.children;
-        }
-        if (item.children) {
-          return <TreeNode {...tProps}>{loop(item.children)}</TreeNode>;
-        }
-        return <TreeNode {...tProps} />;
-      });
-    };
 
     const trProps = {
       multiple,
@@ -128,14 +100,10 @@ const SelectTrigger = React.createClass({
       showLine: props.treeLine,
       defaultExpandAll: props.treeDefaultExpandAll,
       checkable: props.treeCheckable,
+      checkStrictly: props.treeCheckStrictly,
       filterTreeNode: this.filterTree,
     };
-    const keys = [];
-    loopAllChildren(treeNodes, (child) => {
-      if (props.value.some(item => item.value === getValuePropValue(child))) {
-        keys.push(child.key);
-      }
-    });
+
     // 为避免混乱，checkable 模式下，select 失效
     if (trProps.checkable) {
       trProps.selectable = false;
@@ -155,7 +123,7 @@ const SelectTrigger = React.createClass({
     }
 
     return (<Tree ref={this.savePopupElement} {...trProps}>
-        {loop(newTreeNodes)}
+        {newTreeNodes}
     </Tree>);
   },
   render() {
@@ -170,7 +138,50 @@ const SelectTrigger = React.createClass({
     const search = multiple || props.combobox || !props.showSearch ? null : (
       <span className={`${dropdownPrefixCls}-search`}>{props.inputElement}</span>
     );
-    const treeNodes = this.renderFilterTreeNodes(props.treeData || props.treeNodes);
+
+    const recursive = children => {
+      // 注意: 如果用 React.Children.map 遍历，key 会被修改掉。
+      return rcUtil.Children.toArray(children).map(child => {
+        if (child && child.props.children) {
+          // null or String has no Prop
+          return <TreeNode {...child.props} key={child.key}>{recursive(child.props.children)}</TreeNode>;
+        }
+        return <TreeNode {...child.props} key={child.key} />;
+      });
+    };
+    let treeNodes = recursive(props.treeData || props.treeNodes);
+
+    const recursive1 = (children, cb = ch => ch, cb1 = childs => childs) => {
+      return children.map(child => {
+        if (child && child.props.children) {
+          return React.cloneElement(child, {}, recursive1(cb1(child.props.children), cb, cb1));
+        }
+        return cb(child);
+      });
+    };
+
+    if (props.inputValue) {
+      treeNodes = recursive1(treeNodes, (child) => {
+        if (this.filterTreeNode(props.inputValue, child)) {
+          return child;
+        }
+        return null;
+      });
+      treeNodes = recursive1(treeNodes, undefined, childs => {
+        // 过滤掉 children array 里的 null
+        // ref: https://github.com/facebook/react/issues/4867
+        // 可以用 React.Children.toArray(childs)，但会把 key 修改掉
+        return Array.from(childs).filter(i => i);
+      }).filter(i => i);
+    }
+
+    const keys = [];
+    loopAllChildren(treeNodes, (child) => {
+      if (props.value.some(item => item.value === getValuePropValue(child))) {
+        keys.push(child.key);
+      }
+    });
+
     let notFoundContent;
     if (!treeNodes.length) {
       if (props.notFoundContent) {
@@ -182,7 +193,7 @@ const SelectTrigger = React.createClass({
     }
     const popupElement = (<div>
       {search}
-      {notFoundContent ? notFoundContent : this.renderTree(props.treeData || props.treeNodes, treeNodes, multiple)}
+      {notFoundContent ? notFoundContent : this.renderTree(keys, treeNodes, multiple)}
     </div>);
 
     return (<Trigger action={props.disabled ? [] : ['click']}

@@ -69,8 +69,8 @@ online example: http://react-component.github.io/tree-select/
 |combobox | enable combobox mode(can not set multiple at the same time) | bool | false |
 |multiple | whether multiple select | bool | false |
 |disabled | whether disabled select | bool | false |
-|defaultValue | initial selected option(s) | String/Array<String> | - |
-|value | current selected option(s) | String/Array<String> | - |
+|defaultValue | initial selected treeNode(s) | String/Array<String> | - |
+|value | current selected treeNode(s) | String/Array<String> | - |
 |labelInValue| whether to embed label in value, see above value type | Bool | false |
 |onChange | called when select treeNode or input value change(combobox) | function(value, label) | - |
 |onSelect | called when select treeNode | function(value, node) | - |
@@ -80,6 +80,8 @@ online example: http://react-component.github.io/tree-select/
 |treeLine | show tree line | bool | false |
 |treeDefaultExpandAll | default expand all treeNode | bool | false |
 |treeCheckable | whether tree show checkbox (select callback will not fire) | bool | false |
+|treeCheckStrictly | check node precisely, parent and children nodes are not associated| bool | false |
+|skipHandleInitValue | skip handle init value when enable treeCheckable | bool | false |
 |filterTreeNode | filter some treeNodes as you need. it should return true | function(treeNode) | - |
 |treeNodeFilterProp | which prop value of treeNode will be used for filter if filterTreeNode return true | String | 'value' |
 |treeNodeLabelProp | which prop value of treeNode will render as content of select | String | 'title' |
