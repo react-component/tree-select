@@ -85,6 +85,8 @@ export function isInclude(smallArray, bigArray) {
     return ii === bigArray[i];
   });
 }
+
+/*
 export function getCheckedKeys(node, checkedKeys, allCheckedNodesKeys) {
   const nodeKey = node.props.eventKey;
   let newCks = [...checkedKeys];
@@ -114,21 +116,55 @@ export function getCheckedKeys(node, checkedKeys, allCheckedNodesKeys) {
   }
   return newCks;
 }
+*/
 
-export function loopAllChildren(childs, callback) {
-  const loop = (children, level) => {
+function getChildrenlength(children) {
+  let len = 1;
+  if (Array.isArray(children)) {
+    len = children.length;
+  }
+  return len;
+}
+
+function getSiblingPosition(index, len, siblingPosition) {
+  if (len === 1) {
+    siblingPosition.first = true;
+    siblingPosition.last = true;
+  } else {
+    siblingPosition.first = index === 0;
+    siblingPosition.last = index === len - 1;
+  }
+  return siblingPosition;
+}
+
+export function loopAllChildren(childs, callback, parent) {
+  const loop = (children, level, _parent) => {
+    const len = getChildrenlength(children);
     React.Children.forEach(children, (item, index) => {
       const pos = `${level}-${index}`;
-      if (item && item.props.children) {
-        loop(item.props.children, pos);
+      if (item.props.children && item.type) {
+        loop(item.props.children, pos, { node: item, pos });
       }
-      if (item) {
-        callback(item, index, pos, getValuePropValue(item));
-      }
+      callback(item, index, pos, item.key || pos, getSiblingPosition(index, len, {}), _parent);
     });
   };
-  loop(childs, 0);
+  loop(childs, 0, parent);
 }
+
+// export function loopAllChildren(childs, callback) {
+//   const loop = (children, level) => {
+//     React.Children.forEach(children, (item, index) => {
+//       const pos = `${level}-${index}`;
+//       if (item && item.props.children) {
+//         loop(item.props.children, pos);
+//       }
+//       if (item) {
+//         callback(item, index, pos, getValuePropValue(item));
+//       }
+//     });
+//   };
+//   loop(childs, 0);
+// }
 
 export function flatToHierarchy(arr) {
   if (!arr.length) {
@@ -205,17 +241,17 @@ export function filterParentPosition(arr) {
 // console.log(filterParentPosition(['0-2', '0-3-3', '0-10', '0-10-0', '0-0-1', '0-0', '0-1-1', '0-1']));
 
 
-const stripTail = (str) => {
+function stripTail(str) {
   const arr = str.match(/(.+)(-[^-]+)$/);
   let st = '';
   if (arr && arr.length === 3) {
     st = arr[1];
   }
   return st;
-};
-const splitPosition = (pos) => {
+}
+function splitPosition(pos) {
   return pos.split('-');
-};
+}
 
 // TODO 再优化
 export function handleCheckState(obj, checkedPositionArr, checkIt) {
@@ -295,37 +331,43 @@ export function handleCheckState(obj, checkedPositionArr, checkIt) {
   // console.log(Date.now()-s, objKeys.length, checkIt);
 }
 
-function getCheck(treeNodesStates) {
-  const checkedTreeNodes = [];
+function getCheck(treeNodesStates, checkedPositions) {
+  const checkPartKeys = [];
+  const checkedKeys = [];
+  const checkedNodes = [];
   Object.keys(treeNodesStates).forEach((item) => {
     const itemObj = treeNodesStates[item];
     if (itemObj.checked) {
-      // checkedTreeNodes.push(getValuePropValue(itemObj.node));
-      checkedTreeNodes.push({ ...itemObj, pos: item });
+      checkedKeys.push(itemObj.key);
+      // checkedNodes.push(getValuePropValue(itemObj.node));
+      checkedNodes.push({ ...itemObj, pos: item });
+    } else if (itemObj.checkPart) {
+      checkPartKeys.push(itemObj.key);
     }
   });
   return {
-    checkedTreeNodes,
+    checkPartKeys, checkedKeys, checkedNodes, treeNodesStates, checkedPositions,
   };
 }
 
 export function getTreeNodesStates(children, values) {
-  const checkedPos = [];
+  const checkedPositions = [];
   const treeNodesStates = {};
-  loopAllChildren(children, (item, index, pos, value) => {
-    let checked = false;
-    if (values.indexOf(value) !== -1) {
-      checked = true;
-      checkedPos.push(pos);
-    }
+  loopAllChildren(children, (item, index, pos, keyOrPos, siblingPosition) => {
     treeNodesStates[pos] = {
       node: item,
-      checked: checked,
+      key: keyOrPos,
+      checked: false,
       checkPart: false,
+      siblingPosition,
     };
+    if (values.indexOf(getValuePropValue(item)) !== -1) {
+      treeNodesStates[pos].checked = true;
+      checkedPositions.push(pos);
+    }
   });
 
-  handleCheckState(treeNodesStates, filterParentPosition(checkedPos.sort()), true);
+  handleCheckState(treeNodesStates, filterParentPosition(checkedPositions.sort()), true);
 
-  return getCheck(treeNodesStates);
+  return getCheck(treeNodesStates, checkedPositions);
 }

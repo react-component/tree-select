@@ -1,40 +1,40 @@
 /* eslint no-loop-func: 0*/
-const x = 3;
-const y = 2;
-const z = 1;
-// x：每一级下的节点总数。y：每级节点里有y个节点、存在子节点。z：树的level层级数（0表示一级）
-/* eslint no-param-reassign:0*/
-const rec = (n) => n >= 0 ? x * Math.pow(y, n--) + rec(n) : 0;
-console.log('total number of treeNode(per TreeSelect)：', rec(z + 1));
 
-const gData = []; // 手工构造数据
-const generateData = (_level, _preKey, _tns) => {
-  const preKey = _preKey || '0';
-  const tns = _tns || gData;
-  const children = [];
-  for (let i = 0; i < x; i++) {
-    const key = `${preKey}-${i}`;
-    tns.push({
-      label: key + '-label',
-      value: key + '-value',
-      key: key,
-    });
-    if (i < y) {
-      children.push(key);
+export function generateData(x = 3, y = 2, z = 1, gData = []) {
+  // x：每一级下的节点总数。y：每级节点里有y个节点、存在子节点。z：树的level层级数（0表示一级）
+  function _loop(_level, _preKey, _tns) {
+    const preKey = _preKey || '0';
+    const tns = _tns || gData;
+
+    const children = [];
+    for (let i = 0; i < x; i++) {
+      const key = `${preKey}-${i}`;
+      tns.push({label: `${key}-label`, value: `${key}-value`, key});
+      if (i < y) {
+        children.push(key);
+      }
     }
+    if (_level < 0) {
+      return tns;
+    }
+    const __level = _level - 1;
+    children.forEach((key, index) => {
+      tns[index].children = [];
+      return _loop(__level, key, tns[index].children);
+    });
   }
-  if (_level < 0) {
-    return tns;
-  }
-  const __level = _level - 1;
-  children.forEach((key, index) => {
-    tns[index].children = [];
-    return generateData(__level, key, tns[index].children);
-  });
-};
-generateData(z);
+  _loop(z);
+  return gData;
+}
+export function calcTotal(x = 3, y = 2, z = 1) {
+  /* eslint no-param-reassign:0*/
+  const rec = (n) => n >= 0 ? x * Math.pow(y, n--) + rec(n) : 0;
+  return rec(z + 1);
+}
+console.log('总节点数（单个tree）：', calcTotal());
+export const gData = generateData();
 
-function generateTreeNodes(treeNode) {
+export function generateTreeNodes(treeNode) {
   const arr = [];
   const key = treeNode.props.eventKey;
   for (let i = 0; i < 3; i++) {
@@ -61,7 +61,7 @@ function setLeaf(treeData, curKey, level) {
   loopLeaf(treeData, level + 1);
 }
 
-function getNewTreeData(treeData, curKey, child, level) {
+export function getNewTreeData(treeData, curKey, child, level) {
   const loop = (data) => {
     if (level < 1 || curKey.length - 3 > level * 2) return;
     data.forEach((item) => {
@@ -99,7 +99,7 @@ function isInclude(smallArray, bigArray) {
 }
 // console.log(isInclude(['0', '1'], ['0', '10', '1']));
 
-function getFilterValue(val, sVal, delVal) {
+export function getFilterValue(val, sVal, delVal) {
   const allPos = [];
   const delPos = [];
   loopData(gData, (item, index, pos) => {
@@ -135,5 +135,3 @@ function getFilterValue(val, sVal, delVal) {
   }
   return newVal;
 }
-
-export { gData, getNewTreeData, generateTreeNodes, getFilterValue };

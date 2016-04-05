@@ -134,7 +134,7 @@ const Select = React.createClass({
       value = toArray(props.defaultValue);
     }
     // save parsed treeData, for performance (treeData may be very big)
-    this.renderedTreeData = this.renderTreeData(props);
+    this.renderedTreeData = this.renderTreeData();
     value = this.addLabelToValue(props, value);
     value = this.getValue(props, value);
     let inputValue = '';
@@ -147,6 +147,14 @@ const Select = React.createClass({
 
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
+      if (this._cacheTreeNodesStates !== 'force' &&
+        this._savedValue && nextProps.value === this._savedValue) {
+        // 只处理用户直接 在 onChange 里 this.setState({value}); 并且是同一个对象引用。
+        // 后续可以对比对象里边的值。
+        this._cacheTreeNodesStates = true;
+      } else {
+        this._cacheTreeNodesStates = false;
+      }
       let value = toArray(nextProps.value);
       // save parsed treeData, for performance (treeData may be very big)
       this.renderedTreeData = this.renderTreeData(nextProps);
@@ -335,6 +343,9 @@ const Select = React.createClass({
       extraInfo.checked = info.checked;
       extraInfo.allCheckedNodes = props.treeCheckStrictly ?
         info.checkedNodes : flatToHierarchy(info.checkedNodesPositions);
+      this._checkedNodes = info.checkedNodesPositions;
+      const _tree = this.refs.trigger.popupEle;
+      this._treeNodesStates = _tree.checkKeys;
     } else {
       extraInfo.selected = info.selected;
     }
@@ -486,11 +497,18 @@ const Select = React.createClass({
     if (!(_props.treeCheckable && !_props.treeCheckStrictly)) {
       return value;
     }
-    const checkedTreeNodes = getTreeNodesStates(
-      this.renderedTreeData || _props.children,
-      value.map(item => item.value)
-    ).checkedTreeNodes;
-    this.checkedTreeNodes = checkedTreeNodes;
+    let checkedTreeNodes;
+    if (this._cachetreeData && this._cacheTreeNodesStates && this.checkedTreeNodes) {
+      checkedTreeNodes = this._checkedNodes;
+    } else {
+      // getTreeNodesStates 耗时，做缓存处理。
+      this._treeNodesStates = getTreeNodesStates(
+        this.renderedTreeData || _props.children,
+        value.map(item => item.value)
+      );
+      checkedTreeNodes = this._treeNodesStates.checkedNodes;
+      this.checkedTreeNodes = checkedTreeNodes;
+    }
     const mapLabVal = arr => arr.map(itemObj => {
       return {
         value: getValuePropValue(itemObj.node),
@@ -550,8 +568,9 @@ const Select = React.createClass({
       }
       newVals.push(itemObj.node.props.value);
     });
-    this.fireChange(this.state.value.filter(val => newVals.indexOf(val.value) !== -1),
-      {triggerValue: selectedValue, clear: true});
+    const nv = this.state.value.filter(val => newVals.indexOf(val.value) !== -1);
+    this._cacheTreeNodesStates = 'force';
+    this.fireChange(nv, {triggerValue: selectedValue, clear: true});
   },
 
   setOpenState(open, needFocus) {
@@ -655,7 +674,8 @@ const Select = React.createClass({
         assign(ex, extraInfo);
       }
       const labs = props.labelInValue ? null : value.map(i => i.label);
-      props.onChange(this.getVLForOnChange(value), labs, ex);
+      this._savedValue = this.getVLForOnChange(value);
+      props.onChange(this._savedValue, labs, ex);
     }
   },
 
@@ -727,6 +747,13 @@ const Select = React.createClass({
   renderTreeData(props) {
     const validProps = props || this.props;
     if (validProps.treeData) {
+      if (props && props.treeData === this.props.treeData &&
+        this.renderedTreeData) {
+        // cache and use pre data.
+        this._cachetreeData = true;
+        return this.renderedTreeData;
+      }
+      this._cachetreeData = false;
       return loopTreeData(validProps.treeData);
     }
   },
@@ -762,6 +789,8 @@ const Select = React.createClass({
       <SelectTrigger {...props}
         treeNodes={props.children}
         treeData={this.renderedTreeData}
+        _cachetreeData={this._cachetreeData}
+        _treeNodesStates={this._treeNodesStates}
         multiple={multiple}
         disabled={disabled}
         visible={state.open}

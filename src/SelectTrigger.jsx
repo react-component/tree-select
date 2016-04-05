@@ -102,6 +102,7 @@ const SelectTrigger = React.createClass({
       checkable: props.treeCheckable,
       checkStrictly: props.treeCheckStrictly,
       filterTreeNode: this.filterTree,
+      _treeNodesStates: props._treeNodesStates,
     };
 
     // 为避免混乱，checkable 模式下，select 失效
@@ -149,8 +150,16 @@ const SelectTrigger = React.createClass({
         return <TreeNode {...child.props} key={child.key} />;
       });
     };
-    let treeNodes = recursive(props.treeData || props.treeNodes);
-
+    // const s = Date.now();
+    // let treeNodes = recursive(props.treeData || props.treeNodes);
+    let treeNodes;
+    if (props._cachetreeData && this.treeNodes) {
+      treeNodes = this.treeNodes;
+    } else {
+      treeNodes = recursive(props.treeData || props.treeNodes);
+      this.treeNodes = treeNodes;
+    }
+    // console.log(Date.now()-s);
     const recursive1 = (children, cb = ch => ch, cb1 = childs => childs) => {
       return children.map(child => {
         if (child && child.props.children) {
