@@ -20015,15 +20015,13 @@
 	  },
 	
 	  onInputBlur: function onInputBlur() {
-	    var _this = this;
-	
-	    if ((0, _util.isMultipleOrTagsOrCombobox)(this.props)) {
-	      return;
-	    }
-	    this.clearDelayTimer();
-	    this.delayTimer = setTimeout(function () {
-	      _this.setOpenState(false);
-	    }, 150);
+	    // if (isMultipleOrTagsOrCombobox(this.props)) {
+	    return;
+	    // }
+	    // this.clearDelayTimer();
+	    // this.delayTimer = setTimeout(() => {
+	    //   this.setOpenState(false);
+	    // }, 150);
 	  },
 	
 	  onInputKeyDown: function onInputKeyDown(event) {
@@ -20068,7 +20066,7 @@
 	  },
 	
 	  onSelect: function onSelect(selectedKeys, info) {
-	    var _this2 = this;
+	    var _this = this;
 	
 	    if (info.selected === false) {
 	      this.onDeselect(info);
@@ -20093,7 +20091,7 @@
 	        value = this.getCheckedNodes(info, props).map(function (n) {
 	          return {
 	            value: (0, _util.getValuePropValue)(n),
-	            label: _this2.getLabelFromNode(n)
+	            label: _this.getLabelFromNode(n)
 	          };
 	        });
 	      } else {
@@ -20177,7 +20175,7 @@
 	  },
 	
 	  getLabelBySingleValue: function getLabelBySingleValue(children, value) {
-	    var _this3 = this;
+	    var _this2 = this;
 	
 	    if (value === undefined) {
 	      return null;
@@ -20189,7 +20187,7 @@
 	          loop(item.props.children);
 	        }
 	        if ((0, _util.getValuePropValue)(item) === value) {
-	          label = _this3.getLabelFromNode(item);
+	          label = _this2.getLabelFromNode(item);
 	        }
 	      });
 	    };
@@ -20386,7 +20384,7 @@
 	  },
 	
 	  setOpenState: function setOpenState(open, needFocus) {
-	    var _this4 = this;
+	    var _this3 = this;
 	
 	    this.clearDelayTimer();
 	    var props = this.props;
@@ -20401,7 +20399,7 @@
 	    }, function () {
 	      if (needFocus || open) {
 	        if (open || (0, _util.isMultipleOrTagsOrCombobox)(props)) {
-	          var input = _this4.getInputDOMNode();
+	          var input = _this3.getInputDOMNode();
 	          if (input && document.activeElement !== input) {
 	            input.focus();
 	          }
@@ -20413,18 +20411,18 @@
 	  },
 	
 	  addLabelToValue: function addLabelToValue(props, value_) {
-	    var _this5 = this;
+	    var _this4 = this;
 	
 	    var value = value_;
 	    if (props.labelInValue) {
 	      value.forEach(function (v) {
-	        v.label = v.label || _this5.getLabelFromProps(props, v.value);
+	        v.label = v.label || _this4.getLabelFromProps(props, v.value);
 	      });
 	    } else {
 	      value = value.map(function (v) {
 	        return {
 	          value: v,
-	          label: _this5.getLabelFromProps(props, v)
+	          label: _this4.getLabelFromProps(props, v)
 	        };
 	      });
 	    }
@@ -20505,7 +20503,7 @@
 	  },
 	
 	  renderTopControlNode: function renderTopControlNode() {
-	    var _this6 = this;
+	    var _this5 = this;
 	
 	    var value = this.state.value;
 	
@@ -20563,7 +20561,7 @@
 	          ),
 	          _react2['default'].createElement('span', {
 	            className: prefixCls + '-selection__choice__remove',
-	            onClick: _this6.removeSelected.bind(_this6, singleValue.value)
+	            onClick: _this5.removeSelected.bind(_this5, singleValue.value)
 	          })
 	        );
 	      });
