@@ -233,13 +233,13 @@ const Select = React.createClass({
   },
 
   onInputBlur() {
-    if (isMultipleOrTagsOrCombobox(this.props)) {
-      return;
-    }
-    this.clearDelayTimer();
-    this.delayTimer = setTimeout(() => {
-      this.setOpenState(false);
-    }, 150);
+    // if (isMultipleOrTagsOrCombobox(this.props)) {
+    return;
+    // }
+    // this.clearDelayTimer();
+    // this.delayTimer = setTimeout(() => {
+    //   this.setOpenState(false);
+    // }, 150);
   },
 
   onInputKeyDown(event) {
