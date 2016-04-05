@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		3:0
+/******/ 		4:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"basic","1":"dynamic","2":"form"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"basic","1":"big-data","2":"dynamic","3":"form"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -19916,7 +19916,7 @@
 	      value = (0, _util.toArray)(props.defaultValue);
 	    }
 	    // save parsed treeData, for performance (treeData may be very big)
-	    this.renderedTreeData = this.renderTreeData(props);
+	    this.renderedTreeData = this.renderTreeData();
 	    value = this.addLabelToValue(props, value);
 	    value = this.getValue(props, value);
 	    var inputValue = '';
@@ -19929,6 +19929,13 @@
 	
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    if ('value' in nextProps) {
+	      if (this._cacheTreeNodesStates !== 'force' && this._savedValue && nextProps.value === this._savedValue) {
+	        // 只处理用户直接 在 onChange 里 this.setState({value}); 并且是同一个对象引用。
+	        // 后续可以对比对象里边的值。
+	        this._cacheTreeNodesStates = true;
+	      } else {
+	        this._cacheTreeNodesStates = false;
+	      }
 	      var value = (0, _util.toArray)(nextProps.value);
 	      // save parsed treeData, for performance (treeData may be very big)
 	      this.renderedTreeData = this.renderTreeData(nextProps);
@@ -20121,6 +20128,9 @@
 	    if (checkEvt) {
 	      extraInfo.checked = info.checked;
 	      extraInfo.allCheckedNodes = props.treeCheckStrictly ? info.checkedNodes : (0, _util.flatToHierarchy)(info.checkedNodesPositions);
+	      this._checkedNodes = info.checkedNodesPositions;
+	      var _tree = this.refs.trigger.popupEle;
+	      this._treeNodesStates = _tree.checkKeys;
 	    } else {
 	      extraInfo.selected = info.selected;
 	    }
@@ -20280,10 +20290,17 @@
 	    if (!(_props.treeCheckable && !_props.treeCheckStrictly)) {
 	      return value;
 	    }
-	    var checkedTreeNodes = (0, _util.getTreeNodesStates)(this.renderedTreeData || _props.children, value.map(function (item) {
-	      return item.value;
-	    })).checkedTreeNodes;
-	    this.checkedTreeNodes = checkedTreeNodes;
+	    var checkedTreeNodes = undefined;
+	    if (this._cachetreeData && this._cacheTreeNodesStates && this.checkedTreeNodes) {
+	      checkedTreeNodes = this._checkedNodes;
+	    } else {
+	      // getTreeNodesStates 耗时，做缓存处理。
+	      this._treeNodesStates = (0, _util.getTreeNodesStates)(this.renderedTreeData || _props.children, value.map(function (item) {
+	        return item.value;
+	      }));
+	      checkedTreeNodes = this._treeNodesStates.checkedNodes;
+	      this.checkedTreeNodes = checkedTreeNodes;
+	    }
 	    var mapLabVal = function mapLabVal(arr) {
 	      return arr.map(function (itemObj) {
 	        return {
@@ -20361,9 +20378,11 @@
 	      }
 	      newVals.push(itemObj.node.props.value);
 	    });
-	    this.fireChange(this.state.value.filter(function (val) {
+	    var nv = this.state.value.filter(function (val) {
 	      return newVals.indexOf(val.value) !== -1;
-	    }), { triggerValue: selectedValue, clear: true });
+	    });
+	    this._cacheTreeNodesStates = 'force';
+	    this.fireChange(nv, { triggerValue: selectedValue, clear: true });
 	  },
 	
 	  setOpenState: function setOpenState(open, needFocus) {
@@ -20480,7 +20499,8 @@
 	      var labs = props.labelInValue ? null : value.map(function (i) {
 	        return i.label;
 	      });
-	      props.onChange(this.getVLForOnChange(value), labs, ex);
+	      this._savedValue = this.getVLForOnChange(value);
+	      props.onChange(this._savedValue, labs, ex);
 	    }
 	  },
 	
@@ -20578,6 +20598,12 @@
 	  renderTreeData: function renderTreeData(props) {
 	    var validProps = props || this.props;
 	    if (validProps.treeData) {
+	      if (props && props.treeData === this.props.treeData && this.renderedTreeData) {
+	        // cache and use pre data.
+	        this._cachetreeData = true;
+	        return this.renderedTreeData;
+	      }
+	      this._cachetreeData = false;
 	      return loopTreeData(validProps.treeData);
 	    }
 	  },
@@ -20613,6 +20639,8 @@
 	      _extends({}, props, {
 	        treeNodes: props.children,
 	        treeData: this.renderedTreeData,
+	        _cachetreeData: this._cachetreeData,
+	        _treeNodesStates: this._treeNodesStates,
 	        multiple: multiple,
 	        disabled: disabled,
 	        visible: state.open,
@@ -23730,7 +23758,6 @@
 	exports.findIndexInValueByKey = findIndexInValueByKey;
 	exports.labelCompatible = labelCompatible;
 	exports.isInclude = isInclude;
-	exports.getCheckedKeys = getCheckedKeys;
 	exports.loopAllChildren = loopAllChildren;
 	exports.flatToHierarchy = flatToHierarchy;
 	exports.filterParentPosition = filterParentPosition;
@@ -23738,8 +23765,6 @@
 	exports.getTreeNodesStates = getTreeNodesStates;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 	
 	var _react = __webpack_require__(4);
 	
@@ -23831,50 +23856,85 @@
 	  });
 	}
 	
-	function getCheckedKeys(node, checkedKeys, allCheckedNodesKeys) {
-	  var nodeKey = node.props.eventKey;
-	  var newCks = [].concat(_toConsumableArray(checkedKeys));
-	  var nodePos = undefined;
-	  var unCheck = allCheckedNodesKeys.some(function (item) {
+	/*
+	export function getCheckedKeys(node, checkedKeys, allCheckedNodesKeys) {
+	  const nodeKey = node.props.eventKey;
+	  let newCks = [...checkedKeys];
+	  let nodePos;
+	  const unCheck = allCheckedNodesKeys.some(item => {
 	    if (item.key === nodeKey) {
 	      nodePos = item.pos;
 	      return true;
 	    }
 	  });
 	  if (unCheck) {
-	    (function () {
-	      var nArr = nodePos.split('-');
-	      newCks = [];
-	      allCheckedNodesKeys.forEach(function (item) {
-	        var iArr = item.pos.split('-');
-	        if (item.pos === nodePos || nArr.length > iArr.length && isInclude(iArr, nArr) || nArr.length < iArr.length && isInclude(nArr, iArr)) {
-	          // 过滤掉 父级节点 和 所有子节点。
-	          // 因为 node节点 不选时，其 父级节点 和 所有子节点 都不选。
-	          return;
-	        }
-	        newCks.push(item.key);
-	      });
-	    })();
+	    const nArr = nodePos.split('-');
+	    newCks = [];
+	    allCheckedNodesKeys.forEach(item => {
+	      const iArr = item.pos.split('-');
+	      if (item.pos === nodePos ||
+	        nArr.length > iArr.length && isInclude(iArr, nArr) ||
+	        nArr.length < iArr.length && isInclude(nArr, iArr)) {
+	        // 过滤掉 父级节点 和 所有子节点。
+	        // 因为 node节点 不选时，其 父级节点 和 所有子节点 都不选。
+	        return;
+	      }
+	      newCks.push(item.key);
+	    });
 	  } else {
 	    newCks.push(nodeKey);
 	  }
 	  return newCks;
 	}
+	*/
 	
-	function loopAllChildren(childs, callback) {
-	  var loop = function loop(children, level) {
+	function getChildrenlength(children) {
+	  var len = 1;
+	  if (Array.isArray(children)) {
+	    len = children.length;
+	  }
+	  return len;
+	}
+	
+	function getSiblingPosition(index, len, siblingPosition) {
+	  if (len === 1) {
+	    siblingPosition.first = true;
+	    siblingPosition.last = true;
+	  } else {
+	    siblingPosition.first = index === 0;
+	    siblingPosition.last = index === len - 1;
+	  }
+	  return siblingPosition;
+	}
+	
+	function loopAllChildren(childs, callback, parent) {
+	  var loop = function loop(children, level, _parent) {
+	    var len = getChildrenlength(children);
 	    _react2['default'].Children.forEach(children, function (item, index) {
 	      var pos = level + '-' + index;
-	      if (item && item.props.children) {
-	        loop(item.props.children, pos);
+	      if (item.props.children && item.type) {
+	        loop(item.props.children, pos, { node: item, pos: pos });
 	      }
-	      if (item) {
-	        callback(item, index, pos, getValuePropValue(item));
-	      }
+	      callback(item, index, pos, item.key || pos, getSiblingPosition(index, len, {}), _parent);
 	    });
 	  };
-	  loop(childs, 0);
+	  loop(childs, 0, parent);
 	}
+	
+	// export function loopAllChildren(childs, callback) {
+	//   const loop = (children, level) => {
+	//     React.Children.forEach(children, (item, index) => {
+	//       const pos = `${level}-${index}`;
+	//       if (item && item.props.children) {
+	//         loop(item.props.children, pos);
+	//       }
+	//       if (item) {
+	//         callback(item, index, pos, getValuePropValue(item));
+	//       }
+	//     });
+	//   };
+	//   loop(childs, 0);
+	// }
 	
 	function flatToHierarchy(arr) {
 	  if (!arr.length) {
@@ -23964,17 +24024,17 @@
 	
 	// console.log(filterParentPosition(['0-2', '0-3-3', '0-10', '0-10-0', '0-0-1', '0-0', '0-1-1', '0-1']));
 	
-	var stripTail = function stripTail(str) {
+	function stripTail(str) {
 	  var arr = str.match(/(.+)(-[^-]+)$/);
 	  var st = '';
 	  if (arr && arr.length === 3) {
 	    st = arr[1];
 	  }
 	  return st;
-	};
-	var splitPosition = function splitPosition(pos) {
+	}
+	function splitPosition(pos) {
 	  return pos.split('-');
-	};
+	}
 	
 	// TODO 再优化
 	
@@ -24063,39 +24123,45 @@
 	  // console.log(Date.now()-s, objKeys.length, checkIt);
 	}
 	
-	function getCheck(treeNodesStates) {
-	  var checkedTreeNodes = [];
+	function getCheck(treeNodesStates, checkedPositions) {
+	  var checkPartKeys = [];
+	  var checkedKeys = [];
+	  var checkedNodes = [];
 	  Object.keys(treeNodesStates).forEach(function (item) {
 	    var itemObj = treeNodesStates[item];
 	    if (itemObj.checked) {
-	      // checkedTreeNodes.push(getValuePropValue(itemObj.node));
-	      checkedTreeNodes.push(_extends({}, itemObj, { pos: item }));
+	      checkedKeys.push(itemObj.key);
+	      // checkedNodes.push(getValuePropValue(itemObj.node));
+	      checkedNodes.push(_extends({}, itemObj, { pos: item }));
+	    } else if (itemObj.checkPart) {
+	      checkPartKeys.push(itemObj.key);
 	    }
 	  });
 	  return {
-	    checkedTreeNodes: checkedTreeNodes
+	    checkPartKeys: checkPartKeys, checkedKeys: checkedKeys, checkedNodes: checkedNodes, treeNodesStates: treeNodesStates, checkedPositions: checkedPositions
 	  };
 	}
 	
 	function getTreeNodesStates(children, values) {
-	  var checkedPos = [];
+	  var checkedPositions = [];
 	  var treeNodesStates = {};
-	  loopAllChildren(children, function (item, index, pos, value) {
-	    var checked = false;
-	    if (values.indexOf(value) !== -1) {
-	      checked = true;
-	      checkedPos.push(pos);
-	    }
+	  loopAllChildren(children, function (item, index, pos, keyOrPos, siblingPosition) {
 	    treeNodesStates[pos] = {
 	      node: item,
-	      checked: checked,
-	      checkPart: false
+	      key: keyOrPos,
+	      checked: false,
+	      checkPart: false,
+	      siblingPosition: siblingPosition
 	    };
+	    if (values.indexOf(getValuePropValue(item)) !== -1) {
+	      treeNodesStates[pos].checked = true;
+	      checkedPositions.push(pos);
+	    }
 	  });
 	
-	  handleCheckState(treeNodesStates, filterParentPosition(checkedPos.sort()), true);
+	  handleCheckState(treeNodesStates, filterParentPosition(checkedPositions.sort()), true);
 	
-	  return getCheck(treeNodesStates);
+	  return getCheck(treeNodesStates, checkedPositions);
 	}
 
 /***/ },
@@ -24237,7 +24303,8 @@
 	      defaultExpandAll: props.treeDefaultExpandAll,
 	      checkable: props.treeCheckable,
 	      checkStrictly: props.treeCheckStrictly,
-	      filterTreeNode: this.filterTree
+	      filterTreeNode: this.filterTree,
+	      _treeNodesStates: props._treeNodesStates
 	    };
 	
 	    // 为避免混乱，checkable 模式下，select 失效
@@ -24293,8 +24360,16 @@
 	        return _react2['default'].createElement(_rcTree.TreeNode, _extends({}, child.props, { key: child.key }));
 	      });
 	    };
-	    var treeNodes = recursive(props.treeData || props.treeNodes);
-	
+	    // const s = Date.now();
+	    // let treeNodes = recursive(props.treeData || props.treeNodes);
+	    var treeNodes = undefined;
+	    if (props._cachetreeData && this.treeNodes) {
+	      treeNodes = this.treeNodes;
+	    } else {
+	      treeNodes = recursive(props.treeData || props.treeNodes);
+	      this.treeNodes = treeNodes;
+	    }
+	    // console.log(Date.now()-s);
 	    var recursive1 = function recursive1(children) {
 	      var cb = arguments.length <= 1 || arguments[1] === undefined ? function (ch) {
 	        return ch;
@@ -26385,7 +26460,7 @@
 	      if (expandedKeys) {
 	        st.expandedKeys = expandedKeys;
 	      }
-	      if (checkedKeys) {console.log('will', checkedKeys === this.props.checkedKeys);
+	      if (checkedKeys) {
 	        if (checkedKeys === this.props.checkedKeys) {
 	          this.checkedKeysChange = false;
 	        } else {
@@ -26588,7 +26663,7 @@
 	          this.treeNodesStates[treeNode.props.pos].checkPart = false;
 	          (0, _util.handleCheckState)(this.treeNodesStates, [treeNode.props.pos], false);
 	        }
-	        var checkKeys = (0, _util.getCheckKeys)(this.treeNodesStates);
+	        var checkKeys = (0, _util.getCheck)(this.treeNodesStates);
 	        newSt.checkedNodes = checkKeys.checkedNodes;
 	        newSt.checkedNodesPositions = checkKeys.checkedNodesPositions;
 	        this.checkKeys = checkKeys;
@@ -26853,7 +26928,7 @@
 	      if (props.focusable) {
 	        domProps.tabIndex = '0';
 	        domProps.onKeyDown = this.onKeyDown;
-	      }console.log('bbb');
+	      }
 	      // console.log(this.state.expandedKeys, this._rawExpandedKeys, props.children);
 	      if (props.checkable && this.checkedKeysChange) {
 	        if (props.checkStrictly) {
@@ -26863,6 +26938,10 @@
 	              siblingPosition: siblingPosition
 	            };
 	          });
+	        } else if (props._treeNodesStates) {
+	          this.treeNodesStates = props._treeNodesStates.treeNodesStates;
+	          this.checkPartKeys = props._treeNodesStates.checkPartKeys;
+	          this.checkedKeys = props._treeNodesStates.checkedKeys;
 	        } else {
 	          (function () {
 	            var checkedKeys = _this4.state.checkedKeys;
@@ -26891,7 +26970,7 @@
 	                });
 	                // if the parent node's key exists, it all children node will be checked
 	                (0, _util.handleCheckState)(_this4.treeNodesStates, (0, _util.filterParentPosition)(checkedPositions), true);
-	                checkKeys = (0, _util.getCheckKeys)(_this4.treeNodesStates);
+	                checkKeys = (0, _util.getCheck)(_this4.treeNodesStates);
 	              })();
 	            }
 	            _this4.checkPartKeys = checkKeys.checkPartKeys;
@@ -26899,7 +26978,7 @@
 	          })();
 	        }
 	      }
-	console.log('xxd');
+	
 	      return _react2['default'].createElement(
 	        'ul',
 	        _extends({}, domProps, { unselectable: true, ref: 'tree' }),
@@ -26919,6 +26998,7 @@
 	  selectable: _react.PropTypes.bool,
 	  multiple: _react.PropTypes.bool,
 	  checkable: _react.PropTypes.oneOfType([_react.PropTypes.bool, _react.PropTypes.node]),
+	  _treeNodesStates: _react.PropTypes.object,
 	  checkStrictly: _react.PropTypes.bool,
 	  draggable: _react.PropTypes.bool,
 	  autoExpandParent: _react.PropTypes.bool,
@@ -26973,7 +27053,6 @@
 	exports['default'] = Tree;
 	module.exports = exports['default'];
 
-
 /***/ },
 /* 215 */
 /***/ function(module, exports, __webpack_require__) {
@@ -26991,7 +27070,7 @@
 	exports.isInclude = isInclude;
 	exports.filterParentPosition = filterParentPosition;
 	exports.handleCheckState = handleCheckState;
-	exports.getCheckKeys = getCheckKeys;
+	exports.getCheck = getCheck;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
@@ -27078,18 +27157,18 @@
 	  return siblingPosition;
 	}
 	
-	function loopAllChildren(childs, callback) {
-	  var loop = function loop(children, level) {
+	function loopAllChildren(childs, callback, parent) {
+	  var loop = function loop(children, level, _parent) {
 	    var len = getChildrenlength(children);
 	    _react2['default'].Children.forEach(children, function (item, index) {
 	      var pos = level + '-' + index;
 	      if (item.props.children && item.type && item.type.isTreeNode) {
-	        loop(item.props.children, pos);
+	        loop(item.props.children, pos, { node: item, pos: pos });
 	      }
-	      callback(item, index, pos, item.key || pos, getSiblingPosition(index, len, {}));
+	      callback(item, index, pos, item.key || pos, getSiblingPosition(index, len, {}), _parent);
 	    });
 	  };
-	  loop(childs, 0);
+	  loop(childs, 0, parent);
 	}
 	
 	function isInclude(smallArray, bigArray) {
@@ -27146,25 +27225,22 @@
 	
 	// console.log(filterParentPosition(['0-2', '0-3-3', '0-10', '0-10-0', '0-0-1', '0-0', '0-1-1', '0-1']));
 	
-	var stripTail = function stripTail(str) {
+	function stripTail(str) {
 	  var arr = str.match(/(.+)(-[^-]+)$/);
 	  var st = '';
 	  if (arr && arr.length === 3) {
 	    st = arr[1];
 	  }
 	  return st;
-	};
-	var splitPosition = function splitPosition(pos) {
+	}
+	function splitPosition(pos) {
 	  return pos.split('-');
-	};
-	
-	// TODO 再优化
+	}
 	
 	function handleCheckState(obj, checkedPositionArr, checkIt) {
 	  // console.log(stripTail('0-101-000'));
-	  // let s = Date.now();
 	  var objKeys = Object.keys(obj);
-	
+	  // let s = Date.now();
 	  objKeys.forEach(function (i, index) {
 	    var iArr = splitPosition(i);
 	    var saved = false;
@@ -27185,6 +27261,8 @@
 	      objKeys[index] = null;
 	    }
 	  });
+	  // TODO: 循环 2470000 次耗时约 1400 ms。 性能瓶颈！
+	  // console.log(Date.now()-s, checkedPositionArr.length * objKeys.length);
 	  objKeys = objKeys.filter(function (i) {
 	    return i;
 	  }); // filter non null;
@@ -27245,7 +27323,7 @@
 	  // console.log(Date.now()-s, objKeys.length, checkIt);
 	}
 	
-	function getCheckKeys(treeNodesStates) {
+	function getCheck(treeNodesStates) {
 	  var checkPartKeys = [];
 	  var checkedKeys = [];
 	  var checkedNodes = [];
@@ -27726,47 +27804,66 @@
 /***/ function(module, exports) {
 
 	/* eslint no-loop-func: 0*/
+	
 	'use strict';
 	
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
-	var x = 3;
-	var y = 2;
-	var z = 1;
-	// x：每一级下的节点总数。y：每级节点里有y个节点、存在子节点。z：树的level层级数（0表示一级）
-	/* eslint no-param-reassign:0*/
-	var rec = function rec(n) {
-	  return n >= 0 ? x * Math.pow(y, n--) + rec(n) : 0;
-	};
-	console.log('total number of treeNode(per TreeSelect)：', rec(z + 1));
+	exports.generateData = generateData;
+	exports.calcTotal = calcTotal;
+	exports.generateTreeNodes = generateTreeNodes;
+	exports.getNewTreeData = getNewTreeData;
+	exports.getFilterValue = getFilterValue;
 	
-	var gData = []; // 手工构造数据
-	var generateData = function generateData(_level, _preKey, _tns) {
-	  var preKey = _preKey || '0';
-	  var tns = _tns || gData;
-	  var children = [];
-	  for (var i = 0; i < x; i++) {
-	    var key = preKey + '-' + i;
-	    tns.push({
-	      label: key + '-label',
-	      value: key + '-value',
-	      key: key
-	    });
-	    if (i < y) {
-	      children.push(key);
+	function generateData() {
+	  var x = arguments.length <= 0 || arguments[0] === undefined ? 3 : arguments[0];
+	  var y = arguments.length <= 1 || arguments[1] === undefined ? 2 : arguments[1];
+	  var z = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
+	  var gData = arguments.length <= 3 || arguments[3] === undefined ? [] : arguments[3];
+	
+	  // x：每一级下的节点总数。y：每级节点里有y个节点、存在子节点。z：树的level层级数（0表示一级）
+	  function _loop(_level, _preKey, _tns) {
+	    var preKey = _preKey || '0';
+	    var tns = _tns || gData;
+	
+	    var children = [];
+	    for (var i = 0; i < x; i++) {
+	      var key = preKey + '-' + i;
+	      tns.push({ label: key + '-label', value: key + '-value', key: key });
+	      if (i < y) {
+	        children.push(key);
+	      }
 	    }
+	    if (_level < 0) {
+	      return tns;
+	    }
+	    var __level = _level - 1;
+	    children.forEach(function (key, index) {
+	      tns[index].children = [];
+	      return _loop(__level, key, tns[index].children);
+	    });
 	  }
-	  if (_level < 0) {
-	    return tns;
-	  }
-	  var __level = _level - 1;
-	  children.forEach(function (key, index) {
-	    tns[index].children = [];
-	    return generateData(__level, key, tns[index].children);
-	  });
-	};
-	generateData(z);
+	  _loop(z);
+	  return gData;
+	}
+	
+	function calcTotal() {
+	  var x = arguments.length <= 0 || arguments[0] === undefined ? 3 : arguments[0];
+	  var y = arguments.length <= 1 || arguments[1] === undefined ? 2 : arguments[1];
+	  var z = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
+	
+	  /* eslint no-param-reassign:0*/
+	  var rec = function rec(n) {
+	    return n >= 0 ? x * Math.pow(y, n--) + rec(n) : 0;
+	  };
+	  return rec(z + 1);
+	}
+	
+	console.log('总节点数（单个tree）：', calcTotal());
+	var gData = generateData();
+	
+	exports.gData = gData;
 	
 	function generateTreeNodes(treeNode) {
 	  var arr = [];
@@ -27867,11 +27964,6 @@
 	  }
 	  return newVal;
 	}
-	
-	exports.gData = gData;
-	exports.getNewTreeData = getNewTreeData;
-	exports.generateTreeNodes = generateTreeNodes;
-	exports.getFilterValue = getFilterValue;
 
 /***/ }
 /******/ ]);
