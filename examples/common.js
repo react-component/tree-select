@@ -19929,7 +19929,7 @@
 	
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    if ('value' in nextProps) {
-	      if (this._cacheTreeNodesStates !== 'force' && this._savedValue && nextProps.value === this._savedValue) {
+	      if (this._cacheTreeNodesStates !== 'no' && this._savedValue && nextProps.value === this._savedValue) {
 	        // 只处理用户直接 在 onChange 里 this.setState({value}); 并且是同一个对象引用。
 	        // 后续可以对比对象里边的值。
 	        this._cacheTreeNodesStates = true;
@@ -20289,15 +20289,14 @@
 	      return value;
 	    }
 	    var checkedTreeNodes = undefined;
-	    if (this._cachetreeData && this._cacheTreeNodesStates && this.checkedTreeNodes) {
-	      checkedTreeNodes = this._checkedNodes;
+	    if (this._cachetreeData && this._cacheTreeNodesStates && this._checkedNodes) {
+	      this.checkedTreeNodes = checkedTreeNodes = this._checkedNodes;
 	    } else {
 	      // getTreeNodesStates 耗时，做缓存处理。
 	      this._treeNodesStates = (0, _util.getTreeNodesStates)(this.renderedTreeData || _props.children, value.map(function (item) {
 	        return item.value;
 	      }));
-	      checkedTreeNodes = this._treeNodesStates.checkedNodes;
-	      this.checkedTreeNodes = checkedTreeNodes;
+	      this.checkedTreeNodes = checkedTreeNodes = this._treeNodesStates.checkedNodes;
 	    }
 	    var mapLabVal = function mapLabVal(arr) {
 	      return arr.map(function (itemObj) {
@@ -20379,7 +20378,6 @@
 	    var nv = this.state.value.filter(function (val) {
 	      return newVals.indexOf(val.value) !== -1;
 	    });
-	    this._cacheTreeNodesStates = 'force';
 	    this.fireChange(nv, { triggerValue: selectedValue, clear: true });
 	  },
 	
@@ -20441,6 +20439,7 @@
 	    if (props.disabled) {
 	      return;
 	    }
+	    this._cacheTreeNodesStates = 'no';
 	    if ((props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT) && !props.treeCheckStrictly) {
 	      this.getDeselectedValue(selectedKey);
 	      return;
@@ -26906,7 +26905,16 @@
 	      if (props.checkable) {
 	        cloneProps.checkable = props.checkable;
 	        cloneProps.checked = (props.checkStrictly ? state.checkedKeys : this.checkedKeys).indexOf(key) !== -1;
-	        cloneProps.checkPart = props.checkStrictly ? false : this.checkPartKeys.indexOf(key) !== -1;
+	        if (props.checkStrictly) {
+	          if (props.halfCheckedKeys) {
+	            cloneProps.checkPart = props.halfCheckedKeys.indexOf(key) !== -1 || false;
+	          } else {
+	            cloneProps.checkPart = false;
+	          }
+	        } else {
+	          cloneProps.checkPart = this.checkPartKeys.indexOf(key) !== -1;
+	        }
+	
 	        if (this.treeNodesStates[pos]) {
 	          (0, _objectAssign2['default'])(cloneProps, this.treeNodesStates[pos].siblingPosition);
 	        }
@@ -27001,12 +27009,13 @@
 	  draggable: _react.PropTypes.bool,
 	  autoExpandParent: _react.PropTypes.bool,
 	  defaultExpandAll: _react.PropTypes.bool,
-	  expandedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
 	  defaultExpandedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
-	  checkedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	  expandedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
 	  defaultCheckedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
-	  selectedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	  checkedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	  halfCheckedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
 	  defaultSelectedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	  selectedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
 	  onExpand: _react.PropTypes.func,
 	  onCheck: _react.PropTypes.func,
 	  onSelect: _react.PropTypes.func,

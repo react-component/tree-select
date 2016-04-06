@@ -171,7 +171,7 @@ webpackJsonp([3],{
 	                'custom onChange'
 	              ),
 	              _react2['default'].createElement(TreeSelectInput, _extends({ style: { width: 300 } }, tProps, {
-	                treeData: [{ label: 'xx', value: 'xx', children: [{ label: 'y', value: 'yy', children: [] }] }]
+	                treeData: _util.gData
 	              }, getFieldProps('tree-select1', {
 	                initialValue: ['0-0-0-value'],
 	                rules: [{ required: true, type: 'array', message: 'tree-select1 需要必填' }]
