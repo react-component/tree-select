@@ -147,7 +147,7 @@ const Select = React.createClass({
 
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
-      if (this._cacheTreeNodesStates !== 'force' &&
+      if (this._cacheTreeNodesStates !== 'no' &&
         this._savedValue && nextProps.value === this._savedValue) {
         // 只处理用户直接 在 onChange 里 this.setState({value}); 并且是同一个对象引用。
         // 后续可以对比对象里边的值。
@@ -498,16 +498,15 @@ const Select = React.createClass({
       return value;
     }
     let checkedTreeNodes;
-    if (this._cachetreeData && this._cacheTreeNodesStates && this.checkedTreeNodes) {
-      checkedTreeNodes = this._checkedNodes;
+    if (this._cachetreeData && this._cacheTreeNodesStates && this._checkedNodes) {
+      this.checkedTreeNodes = checkedTreeNodes = this._checkedNodes;
     } else {
       // getTreeNodesStates 耗时，做缓存处理。
       this._treeNodesStates = getTreeNodesStates(
         this.renderedTreeData || _props.children,
         value.map(item => item.value)
       );
-      checkedTreeNodes = this._treeNodesStates.checkedNodes;
-      this.checkedTreeNodes = checkedTreeNodes;
+      this.checkedTreeNodes = checkedTreeNodes = this._treeNodesStates.checkedNodes;
     }
     const mapLabVal = arr => arr.map(itemObj => {
       return {
@@ -569,7 +568,6 @@ const Select = React.createClass({
       newVals.push(itemObj.node.props.value);
     });
     const nv = this.state.value.filter(val => newVals.indexOf(val.value) !== -1);
-    this._cacheTreeNodesStates = 'force';
     this.fireChange(nv, {triggerValue: selectedValue, clear: true});
   },
 
@@ -625,6 +623,7 @@ const Select = React.createClass({
     if (props.disabled) {
       return;
     }
+    this._cacheTreeNodesStates = 'no';
     if ((props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT)
       && !props.treeCheckStrictly) {
       this.getDeselectedValue(selectedKey);

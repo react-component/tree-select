@@ -78,7 +78,7 @@ class Form extends Component {
           <div>
             <p style={{color: 'blue'}}>custom onChange</p>
             <TreeSelectInput style={{width: 300}} {...tProps}
-              treeData={[{label: 'xx', value: 'xx', children: [{label: 'y', value: 'yy', children: []}]}]}
+              treeData={gData}
               {...getFieldProps('tree-select1', {
                 initialValue: ['0-0-0-value'],
                 rules: [
