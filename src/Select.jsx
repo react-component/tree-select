@@ -81,6 +81,7 @@ const Select = React.createClass({
     ]),
     // skipHandleInitValue: PropTypes.bool, // Deprecated (use treeCheckStrictly)
     treeCheckStrictly: PropTypes.bool,
+    treeHalfCheckedValues: PropTypes.array,
     treeIcon: PropTypes.bool,
     treeLine: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
@@ -300,7 +301,7 @@ const Select = React.createClass({
         label: selectedLabel,
       };
     }
-    props.onSelect(event, item);
+    props.onSelect(event, item, info);
     const checkEvt = info.event === 'check';
     if (isMultipleOrTags(props)) {
       if (checkEvt) {

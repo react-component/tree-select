@@ -20,8 +20,12 @@ const Demo = React.createClass({
     this.setState({value});
   },
   onMultipleChange(value) {
-    console.log('onMultipleChange', value);
+    console.log('onMultipleChange', arguments);
     this.setState({multipleValue: value});
+  },
+  onSelect() {
+    // use onChange instead
+    console.log(arguments);
   },
   render() {
     return (
@@ -35,7 +39,8 @@ const Demo = React.createClass({
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
                     treeNodeFilterProp="label"
-                    onChange={this.onChange} />
+                    onChange={this.onChange}
+                    onSelect={this.onSelect} />
 
         <h2>multiple select</h2>
         <TreeSelect style={{width: 300}}
@@ -48,7 +53,8 @@ const Demo = React.createClass({
                     treeNodeFilterProp="title"
                     multiple
                     dropdownPopupAlign={{offset: [0, 0]}}
-                    onChange={this.onMultipleChange} />
+                    onChange={this.onMultipleChange}
+                    onSelect={this.onSelect} />
 
         <h2>check select</h2>
         <TreeSelect style={{width: 300}}
@@ -60,9 +66,9 @@ const Demo = React.createClass({
                     searchPlaceholder="please search"
                     treeNodeFilterProp="title"
                     treeCheckable
-                    treeCheckStrictly
                     showCheckedStrategy={SHOW_PARENT}
-                    onChange={this.onChange} />
+                    onChange={this.onChange}
+                    onSelect={this.onSelect} />
 
         <h2>use TreeNode Component (not recommend)</h2>
         <TreeSelect style={{width: 200}}

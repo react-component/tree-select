@@ -72,8 +72,8 @@ online example: http://react-component.github.io/tree-select/
 |defaultValue | initial selected treeNode(s) | String/Array<String> | - |
 |value | current selected treeNode(s) | String/Array<String> | - |
 |labelInValue| whether to embed label in value, see above value type | Bool | false |
-|onChange | called when select treeNode or input value change(combobox) | function(value, label) | - |
-|onSelect | called when select treeNode | function(value, node) | - |
+|onChange | called when select treeNode or input value change(combobox) | function(value, label(null), extra) | - |
+|onSelect | called when select treeNode | function(value, node, extra) | - |
 |onSearch | called when input changed | function | - |
 |showCheckedStrategy | `TreeSelect.SHOW_ALL`: show all checked treeNodes (Include parent treeNode). `TreeSelect.SHOW_PARENT`: show checked treeNodes (Just show parent treeNode). Default just show child. | enum{TreeSelect.SHOW_ALL, TreeSelect.SHOW_PARENT, TreeSelect.SHOW_CHILD } | TreeSelect.SHOW_CHILD |
 |treeIcon | show tree icon | bool | false |
@@ -81,6 +81,7 @@ online example: http://react-component.github.io/tree-select/
 |treeDefaultExpandAll | default expand all treeNode | bool | false |
 |treeCheckable | whether tree show checkbox (select callback will not fire) | bool | false |
 |treeCheckStrictly | check node precisely, parent and children nodes are not associated| bool | false |
+|treeHalfCheckedValues | half checked treeNode values, when set checkStrictly, it works. | array | - |
 |filterTreeNode | filter some treeNodes as you need. it should return true | function(treeNode) | - |
 |treeNodeFilterProp | which prop value of treeNode will be used for filter if filterTreeNode return true | String | 'value' |
 |treeNodeLabelProp | which prop value of treeNode will render as content of select | String | 'title' |

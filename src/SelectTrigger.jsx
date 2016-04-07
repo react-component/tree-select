@@ -90,7 +90,7 @@ const SelectTrigger = React.createClass({
     this.popupEle = ele;
   },
 
-  renderTree(keys, newTreeNodes, multiple) {
+  renderTree(keys, halfCheckedKeys, newTreeNodes, multiple) {
     const props = this.props;
 
     const trProps = {
@@ -104,6 +104,9 @@ const SelectTrigger = React.createClass({
       filterTreeNode: this.filterTree,
       _treeNodesStates: props._treeNodesStates,
     };
+    if (props.treeCheckStrictly && halfCheckedKeys.length) {
+      trProps.halfCheckedKeys = halfCheckedKeys;
+    }
 
     // 为避免混乱，checkable 模式下，select 失效
     if (trProps.checkable) {
@@ -185,9 +188,14 @@ const SelectTrigger = React.createClass({
     }
 
     const keys = [];
+    const halfCheckedKeys = [];
     loopAllChildren(treeNodes, (child) => {
       if (props.value.some(item => item.value === getValuePropValue(child))) {
         keys.push(child.key);
+      }
+      if (props.treeHalfCheckedValues &&
+        props.treeHalfCheckedValues.some(item => item === getValuePropValue(child))) {
+        halfCheckedKeys.push(child.key);
       }
     });
 
@@ -202,7 +210,7 @@ const SelectTrigger = React.createClass({
     }
     const popupElement = (<div>
       {search}
-      {notFoundContent ? notFoundContent : this.renderTree(keys, treeNodes, multiple)}
+      {notFoundContent ? notFoundContent : this.renderTree(keys, halfCheckedKeys, treeNodes, multiple)}
     </div>);
 
     return (<Trigger action={props.disabled ? [] : ['click']}
