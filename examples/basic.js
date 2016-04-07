@@ -48,8 +48,12 @@ webpackJsonp([0],[
 	    this.setState({ value: value });
 	  },
 	  onMultipleChange: function onMultipleChange(value) {
-	    console.log('onMultipleChange', value);
+	    console.log('onMultipleChange', arguments);
 	    this.setState({ multipleValue: value });
+	  },
+	  onSelect: function onSelect() {
+	    // use onChange instead
+	    console.log(arguments);
 	  },
 	  render: function render() {
 	    return _react2['default'].createElement(
@@ -72,7 +76,8 @@ webpackJsonp([0],[
 	        ),
 	        searchPlaceholder: 'please search',
 	        treeNodeFilterProp: 'label',
-	        onChange: this.onChange }),
+	        onChange: this.onChange,
+	        onSelect: this.onSelect }),
 	      _react2['default'].createElement(
 	        'h2',
 	        null,
@@ -92,7 +97,8 @@ webpackJsonp([0],[
 	        treeNodeFilterProp: 'title',
 	        multiple: true,
 	        dropdownPopupAlign: { offset: [0, 0] },
-	        onChange: this.onMultipleChange }),
+	        onChange: this.onMultipleChange,
+	        onSelect: this.onSelect }),
 	      _react2['default'].createElement(
 	        'h2',
 	        null,
@@ -111,9 +117,9 @@ webpackJsonp([0],[
 	        searchPlaceholder: 'please search',
 	        treeNodeFilterProp: 'title',
 	        treeCheckable: true,
-	        treeCheckStrictly: true,
 	        showCheckedStrategy: _rcTreeSelect.SHOW_PARENT,
-	        onChange: this.onChange }),
+	        onChange: this.onChange,
+	        onSelect: this.onSelect }),
 	      _react2['default'].createElement(
 	        'h2',
 	        null,

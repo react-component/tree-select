@@ -24,6 +24,8 @@ webpackJsonp([1],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+	
 	__webpack_require__(2);
 	
 	__webpack_require__(3);
@@ -50,8 +52,10 @@ webpackJsonp([1],{
 	  getInitialState: function getInitialState() {
 	    return {
 	      gData: [],
+	      gData1: [],
 	      value: '',
-	      value1: ''
+	      value1: '',
+	      treeHalfCheckedValues: []
 	    };
 	  },
 	  onChange: function onChange(value) {
@@ -60,11 +64,15 @@ webpackJsonp([1],{
 	  },
 	  onChangeStrictly: function onChangeStrictly(value1) {
 	    console.log('onChangeStrictly', arguments);
-	    this.setState({ value1: value1 });
+	    this.setState({
+	      value1: value1,
+	      treeHalfCheckedValues: ['0-0-value', '0-0-0-' + parseInt(Math.random() * 5, 10) + '-value']
+	    });
 	  },
 	  onGen: function onGen(data) {
 	    this.setState({
 	      gData: data,
+	      gData1: [].concat(_toConsumableArray(data)),
 	      value: '0-0-0-value',
 	      value1: '0-0-0-value'
 	    });
@@ -112,7 +120,7 @@ webpackJsonp([1],{
 	          _react2['default'].createElement(_rcTreeSelect2['default'], {
 	            style: { width: 300 },
 	            dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-	            treeData: this.state.gData, treeLine: true,
+	            treeData: this.state.gData1, treeLine: true,
 	            value: this.state.value1,
 	            placeholder: _react2['default'].createElement(
 	              'i',
@@ -121,6 +129,7 @@ webpackJsonp([1],{
 	            ),
 	            treeCheckable: true,
 	            treeCheckStrictly: true,
+	            treeHalfCheckedValues: this.state.treeHalfCheckedValues,
 	            showCheckedStrategy: _rcTreeSelect.SHOW_PARENT,
 	            onChange: this.onChangeStrictly
 	          })

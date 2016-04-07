@@ -19866,6 +19866,7 @@
 	    showCheckedStrategy: _react.PropTypes.oneOf([SHOW_ALL, SHOW_PARENT, SHOW_CHILD]),
 	    // skipHandleInitValue: PropTypes.bool, // Deprecated (use treeCheckStrictly)
 	    treeCheckStrictly: _react.PropTypes.bool,
+	    treeHalfCheckedValues: _react.PropTypes.array,
 	    treeIcon: _react.PropTypes.bool,
 	    treeLine: _react.PropTypes.bool,
 	    treeDefaultExpandAll: _react.PropTypes.bool,
@@ -20084,7 +20085,7 @@
 	        label: selectedLabel
 	      };
 	    }
-	    props.onSelect(event, item);
+	    props.onSelect(event, item, info);
 	    var checkEvt = info.event === 'check';
 	    if ((0, _util.isMultipleOrTags)(props)) {
 	      if (checkEvt) {
@@ -24289,7 +24290,7 @@
 	    this.popupEle = ele;
 	  },
 	
-	  renderTree: function renderTree(keys, newTreeNodes, multiple) {
+	  renderTree: function renderTree(keys, halfCheckedKeys, newTreeNodes, multiple) {
 	    var props = this.props;
 	
 	    var trProps = {
@@ -24303,6 +24304,9 @@
 	      filterTreeNode: this.filterTree,
 	      _treeNodesStates: props._treeNodesStates
 	    };
+	    if (props.treeCheckStrictly && halfCheckedKeys.length) {
+	      trProps.halfCheckedKeys = halfCheckedKeys;
+	    }
 	
 	    // 为避免混乱，checkable 模式下，select 失效
 	    if (trProps.checkable) {
@@ -24403,11 +24407,17 @@
 	    }
 	
 	    var keys = [];
+	    var halfCheckedKeys = [];
 	    (0, _util.loopAllChildren)(treeNodes, function (child) {
 	      if (props.value.some(function (item) {
 	        return item.value === (0, _util.getValuePropValue)(child);
 	      })) {
 	        keys.push(child.key);
+	      }
+	      if (props.treeHalfCheckedValues && props.treeHalfCheckedValues.some(function (item) {
+	        return item === (0, _util.getValuePropValue)(child);
+	      })) {
+	        halfCheckedKeys.push(child.key);
 	      }
 	    });
 	
@@ -24428,7 +24438,7 @@
 	      'div',
 	      null,
 	      search,
-	      notFoundContent ? notFoundContent : this.renderTree(keys, treeNodes, multiple)
+	      notFoundContent ? notFoundContent : this.renderTree(keys, halfCheckedKeys, treeNodes, multiple)
 	    );
 	
 	    return _react2['default'].createElement(

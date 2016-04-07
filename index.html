@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-tree-select@1.5.2 - tree-select ui component for react</title>
+  <title>rc-tree-select@1.5.3 - tree-select ui component for react</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-tree-select@1.5.2</h1>
+  <h1>rc-tree-select@1.5.3</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -909,13 +909,13 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <tr>
 <td>onChange</td>
 <td>called when select treeNode or input value change(combobox)</td>
-<td>function(value, label)</td>
+<td>function(value, label(null), extra)</td>
 <td>-</td>
 </tr>
 <tr>
 <td>onSelect</td>
 <td>called when select treeNode</td>
-<td>function(value, node)</td>
+<td>function(value, node, extra)</td>
 <td>-</td>
 </tr>
 <tr>
@@ -959,6 +959,12 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <td>check node precisely, parent and children nodes are not associated</td>
 <td>bool</td>
 <td>false</td>
+</tr>
+<tr>
+<td>treeHalfCheckedValues</td>
+<td>half checked treeNode values, when set checkStrictly, it works.</td>
+<td>array</td>
+<td>-</td>
 </tr>
 <tr>
 <td>filterTreeNode</td>
