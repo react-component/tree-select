@@ -266,7 +266,7 @@ export function handleCheckState(obj, checkedPositionArr, checkIt) {
       // 设置子节点，全选或全不选
       const _posArr = splitPosition(_pos);
       if (iArr.length > _posArr.length && isInclude(_posArr, iArr)) {
-        obj[i].checkPart = false;
+        obj[i].halfChecked = false;
         obj[i].checked = checkIt;
         objKeys[index] = null;
       }
@@ -304,7 +304,7 @@ export function handleCheckState(obj, checkedPositionArr, checkIt) {
                 pIndex--;
               }
             }
-          } else if (obj[i].checkPart) {
+          } else if (obj[i].halfChecked) {
             siblingChecked += 0.5;
           }
           // objKeys[index] = null;
@@ -316,12 +316,12 @@ export function handleCheckState(obj, checkedPositionArr, checkIt) {
       // 全不选 - 全选 - 半选
       if (siblingChecked === 0) {
         parent.checked = false;
-        parent.checkPart = false;
+        parent.halfChecked = false;
       } else if (siblingChecked === sibling) {
         parent.checked = true;
-        parent.checkPart = false;
+        parent.halfChecked = false;
       } else {
-        parent.checkPart = true;
+        parent.halfChecked = true;
         parent.checked = false;
       }
       loop(parentPosition);
@@ -332,7 +332,7 @@ export function handleCheckState(obj, checkedPositionArr, checkIt) {
 }
 
 function getCheck(treeNodesStates, checkedPositions) {
-  const checkPartKeys = [];
+  const halfCheckedKeys = [];
   const checkedKeys = [];
   const checkedNodes = [];
   Object.keys(treeNodesStates).forEach((item) => {
@@ -341,12 +341,12 @@ function getCheck(treeNodesStates, checkedPositions) {
       checkedKeys.push(itemObj.key);
       // checkedNodes.push(getValuePropValue(itemObj.node));
       checkedNodes.push({ ...itemObj, pos: item });
-    } else if (itemObj.checkPart) {
-      checkPartKeys.push(itemObj.key);
+    } else if (itemObj.halfChecked) {
+      halfCheckedKeys.push(itemObj.key);
     }
   });
   return {
-    checkPartKeys, checkedKeys, checkedNodes, treeNodesStates, checkedPositions,
+    halfCheckedKeys, checkedKeys, checkedNodes, treeNodesStates, checkedPositions,
   };
 }
 
@@ -358,7 +358,7 @@ export function getTreeNodesStates(children, values) {
       node: item,
       key: keyOrPos,
       checked: false,
-      checkPart: false,
+      halfChecked: false,
       siblingPosition,
     };
     if (values.indexOf(getValuePropValue(item)) !== -1) {

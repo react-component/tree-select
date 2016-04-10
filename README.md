@@ -70,7 +70,7 @@ online example: http://react-component.github.io/tree-select/
 |multiple | whether multiple select | bool | false |
 |disabled | whether disabled select | bool | false |
 |defaultValue | initial selected treeNode(s) | String/Array<String> | - |
-|value | current selected treeNode(s) | String/Array<String> | - |
+|value | current selected treeNode(s). | normal: String/Array<String>. labelInValue: {value:String,label:React.Node}/Array<{value,label}>. treeCheckStrictly(halfChecked default false): {value:String,label:React.Node, halfChecked}/Array<{value,label,halfChecked}>. | - |
 |labelInValue| whether to embed label in value, see above value type | Bool | false |
 |onChange | called when select treeNode or input value change(combobox) | function(value, label(null), extra) | - |
 |onSelect | called when select treeNode | function(value, node, extra) | - |
@@ -81,7 +81,6 @@ online example: http://react-component.github.io/tree-select/
 |treeDefaultExpandAll | default expand all treeNode | bool | false |
 |treeCheckable | whether tree show checkbox (select callback will not fire) | bool | false |
 |treeCheckStrictly | check node precisely, parent and children nodes are not associated| bool | false |
-|treeHalfCheckedValues | half checked treeNode values, when set checkStrictly, it works. | array | - |
 |filterTreeNode | filter some treeNodes as you need. it should return true | function(treeNode) | - |
 |treeNodeFilterProp | which prop value of treeNode will be used for filter if filterTreeNode return true | String | 'value' |
 |treeNodeLabelProp | which prop value of treeNode will render as content of select | String | 'title' |
@@ -96,7 +95,7 @@ online example: http://react-component.github.io/tree-select/
 |disabled | disable treeNode | bool | false |
 |key | it's value must be unique across the tree's all TreeNode, you must set it  | String | - |
 |value | default as treeNodeFilterProp | String | '' |
-|title | tree/subTree's title | String | '---' |
+|title | tree/subTree's title | String/element | '---' |
 |isLeaf | whether it's leaf node | bool | false |
 
 

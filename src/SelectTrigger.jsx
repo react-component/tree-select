@@ -99,20 +99,20 @@ const SelectTrigger = React.createClass({
       showIcon: props.treeIcon,
       showLine: props.treeLine,
       defaultExpandAll: props.treeDefaultExpandAll,
-      checkable: props.treeCheckable,
-      checkStrictly: props.treeCheckStrictly,
       filterTreeNode: this.filterTree,
       _treeNodesStates: props._treeNodesStates,
     };
-    if (props.treeCheckStrictly && halfCheckedKeys.length) {
-      trProps.halfCheckedKeys = halfCheckedKeys;
-    }
 
-    // 为避免混乱，checkable 模式下，select 失效
-    if (trProps.checkable) {
+    if (props.treeCheckable) {
       trProps.selectable = false;
-      trProps.checkedKeys = keys;
+      trProps.checkable = props.treeCheckable;
+      trProps.checkStrictly = props.treeCheckStrictly;
       trProps.onCheck = props.onSelect;
+      if (props.treeCheckStrictly && halfCheckedKeys.length) {
+        trProps.checkedKeys = { checked: keys, halfChecked: halfCheckedKeys };
+      } else {
+        trProps.checkedKeys = keys;
+      }
     } else {
       trProps.selectedKeys = keys;
       trProps.onSelect = props.onSelect;
@@ -193,8 +193,8 @@ const SelectTrigger = React.createClass({
       if (props.value.some(item => item.value === getValuePropValue(child))) {
         keys.push(child.key);
       }
-      if (props.treeHalfCheckedValues &&
-        props.treeHalfCheckedValues.some(item => item === getValuePropValue(child))) {
+      if (props.halfCheckedValues &&
+        props.halfCheckedValues.some(item => item.value === getValuePropValue(child))) {
         halfCheckedKeys.push(child.key);
       }
     });

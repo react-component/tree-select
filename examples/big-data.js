@@ -14,7 +14,6 @@ const Demo = React.createClass({
       gData1: [],
       value: '',
       value1: '',
-      treeHalfCheckedValues: [],
     };
   },
   onChange(value) {
@@ -23,9 +22,10 @@ const Demo = React.createClass({
   },
   onChangeStrictly(value1) {
     console.log('onChangeStrictly', arguments);
+    const ind = parseInt(Math.random() * 3, 10);
+    value1.push({value: `0-0-0-${ind}-value`, label: `0-0-0-${ind}-label`, halfChecked: true});
     this.setState({
       value1,
-      treeHalfCheckedValues: ['0-0-value', `0-0-0-${parseInt(Math.random() * 5, 10)}-value`],
     });
   },
   onGen(data) {
@@ -33,7 +33,10 @@ const Demo = React.createClass({
       gData: data,
       gData1: [...data],
       value: '0-0-0-value',
-      value1: '0-0-0-value',
+      value1: [
+        {value: '0-0-value', label: '0-0-label', halfChecked: true},
+        {value: '0-0-0-value', label: '0-0-0-label'},
+      ],
       // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
     });
   },
@@ -64,7 +67,6 @@ const Demo = React.createClass({
             placeholder={<i>请下拉选择</i>}
             treeCheckable
             treeCheckStrictly
-            treeHalfCheckedValues={this.state.treeHalfCheckedValues}
             showCheckedStrategy={SHOW_PARENT}
             onChange={this.onChangeStrictly}
           />

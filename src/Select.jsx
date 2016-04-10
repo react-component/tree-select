@@ -11,7 +11,7 @@ import {
   UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
   preventDefaultEvent,
   getTreeNodesStates, flatToHierarchy, filterParentPosition,
-  isInclude, labelCompatible,
+  isInclude, labelCompatible, loopAllChildren,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import _TreeNode from './TreeNode';
@@ -68,10 +68,10 @@ const Select = React.createClass({
     onSearch: PropTypes.func,
     searchPlaceholder: PropTypes.string,
     placeholder: PropTypes.any,
-    value: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
-    defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
-    label: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
-    defaultLabel: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
+    value: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.object]),
+    defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.object]),
+    label: PropTypes.any,
+    defaultLabel: PropTypes.any,
     labelInValue: PropTypes.bool,
     dropdownStyle: PropTypes.object,
     drodownPopupAlign: PropTypes.object,
@@ -81,7 +81,6 @@ const Select = React.createClass({
     ]),
     // skipHandleInitValue: PropTypes.bool, // Deprecated (use treeCheckStrictly)
     treeCheckStrictly: PropTypes.bool,
-    treeHalfCheckedValues: PropTypes.array,
     treeIcon: PropTypes.bool,
     treeLine: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
@@ -254,7 +253,7 @@ const Select = React.createClass({
       const value = state.value.concat();
       if (value.length) {
         const popValue = value.pop();
-        props.onDeselect(props.labelInValue ? popValue : popValue.key);
+        props.onDeselect(this.isLabelInValue() ? popValue : popValue.key);
         this.fireChange(value);
       }
       return;
@@ -295,7 +294,7 @@ const Select = React.createClass({
     const selectedValue = getValuePropValue(item);
     const selectedLabel = this.getLabelFromNode(item);
     let event = selectedValue;
-    if (props.labelInValue) {
+    if (this.isLabelInValue()) {
       event = {
         value: event,
         label: selectedLabel,
@@ -392,46 +391,20 @@ const Select = React.createClass({
     }
   },
 
-  getLabelBySingleValue(children, value) {
-    if (value === undefined) {
-      return null;
-    }
-    let label = null;
-    const loop = (childs) => {
-      React.Children.forEach(childs, (item) => {
-        if (item.props.children) {
-          loop(item.props.children);
-        }
-        if (getValuePropValue(item) === value) {
-          label = this.getLabelFromNode(item);
-        }
-      });
-    };
-    loop(children, 0);
-    return label;
-  },
-
   getLabelFromNode(child) {
     return getPropValue(child, this.props.treeNodeLabelProp);
   },
 
   getLabelFromProps(props, value) {
-    return this.getLabelByValue(this.renderedTreeData || props.children, value);
-  },
-
-  getVLForOnChange(vls_) {
-    let vls = vls_;
-    if (vls !== undefined) {
-      if (!this.props.labelInValue) {
-        vls = vls.map(v => v.value);
-      }
-      return isMultipleOrTags(this.props) ? vls : vls[0];
+    if (value === undefined) {
+      return null;
     }
-    return vls;
-  },
-
-  getLabelByValue(children, value) {
-    const label = this.getLabelBySingleValue(children, value);
+    let label = null;
+    loopAllChildren(this.renderedTreeData || props.children, item => {
+      if (getValuePropValue(item) === value) {
+        label = this.getLabelFromNode(item);
+      }
+    });
     if (label === null) {
       return value;
     }
@@ -494,7 +467,19 @@ const Select = React.createClass({
     return this.refs.trigger.getPopupEleRefs();
   },
 
-  getValue(_props, value) {
+  getValue(_props, val) {
+    let value = val;
+    if (_props.treeCheckable && _props.treeCheckStrictly) {
+      this.halfCheckedValues = [];
+      value = [];
+      val.forEach(i => {
+        if (!i.halfChecked) {
+          value.push(i);
+        } else {
+          this.halfCheckedValues.push(i);
+        }
+      });
+    }
     if (!(_props.treeCheckable && !_props.treeCheckStrictly)) {
       return value;
     }
@@ -597,8 +582,15 @@ const Select = React.createClass({
 
   addLabelToValue(props, value_) {
     let value = value_;
-    if (props.labelInValue) {
-      value.forEach(v => {
+    if (this.isLabelInValue()) {
+      value.forEach((v, i) => {
+        if (Object.prototype.toString.call(value[i]) !== '[object Object]') {
+          value[i] = {
+            value: '',
+            label: '',
+          };
+          return;
+        }
         v.label = v.label || this.getLabelFromProps(props, v.value);
       });
     } else {
@@ -641,7 +633,7 @@ const Select = React.createClass({
 
     if (canMultiple) {
       let event = selectedKey;
-      if (props.labelInValue) {
+      if (this.isLabelInValue()) {
         event = {
           value: selectedKey,
           label,
@@ -673,10 +665,29 @@ const Select = React.createClass({
       if (extraInfo) {
         assign(ex, extraInfo);
       }
-      const labs = props.labelInValue ? null : value.map(i => i.label);
-      this._savedValue = this.getVLForOnChange(value);
+      let labs = null;
+      let vls = value;
+      if (!this.isLabelInValue()) {
+        labs = value.map(i => i.label);
+        vls = vls.map(v => v.value);
+      } else if (this.halfCheckedValues.length) {
+        this.halfCheckedValues.forEach(i => {
+          if (!vls.some(v => v.value === i.value)) {
+            vls.push(i);
+          }
+        });
+      }
+      this._savedValue = isMultipleOrTags(props) ? vls : vls[0];
       props.onChange(this._savedValue, labs, ex);
     }
+  },
+
+  isLabelInValue() {
+    const { treeCheckable, treeCheckStrictly, labelInValue } = this.props;
+    if (treeCheckable && treeCheckStrictly) {
+      return true;
+    }
+    return labelInValue || false;
   },
 
   renderTopControlNode() {
@@ -791,6 +802,7 @@ const Select = React.createClass({
         treeData={this.renderedTreeData}
         _cachetreeData={this._cachetreeData}
         _treeNodesStates={this._treeNodesStates}
+        halfCheckedValues={this.halfCheckedValues}
         multiple={multiple}
         disabled={disabled}
         visible={state.open}
