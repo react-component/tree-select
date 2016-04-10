@@ -896,8 +896,8 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 </tr>
 <tr>
 <td>value</td>
-<td>current selected treeNode(s)</td>
-<td>String/Array<String></td>
+<td>current selected treeNode(s).</td>
+<td>normal: String/Array<String>. labelInValue: {value:String,label:React.Node}/Array&lt;{value,label}&gt;. treeCheckStrictly(halfChecked default false): {value:String,label:React.Node, halfChecked}/Array&lt;{value,label,halfChecked}&gt;.</td>
 <td>-</td>
 </tr>
 <tr>
@@ -959,12 +959,6 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <td>check node precisely, parent and children nodes are not associated</td>
 <td>bool</td>
 <td>false</td>
-</tr>
-<tr>
-<td>treeHalfCheckedValues</td>
-<td>half checked treeNode values, when set checkStrictly, it works.</td>
-<td>array</td>
-<td>-</td>
 </tr>
 <tr>
 <td>filterTreeNode</td>
@@ -1032,7 +1026,7 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <tr>
 <td>title</td>
 <td>tree/subTree&#39;s title</td>
-<td>String</td>
+<td>String/element</td>
 <td>&#39;---&#39;</td>
 </tr>
 <tr>

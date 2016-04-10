@@ -280,7 +280,6 @@ import Gen from <span class="hljs-string">'./big-data-generator'</span>;
       gData1: [],
       value: <span class="hljs-string">''</span>,
       value1: <span class="hljs-string">''</span>,
-      treeHalfCheckedValues: [],
     };
   },
   onChange(value) {
@@ -289,9 +288,10 @@ import Gen from <span class="hljs-string">'./big-data-generator'</span>;
   },
   onChangeStrictly(value1) {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChangeStrictly'</span>, <span class="hljs-built_in">arguments</span>);
+    <span class="hljs-keyword">const</span> ind = <span class="hljs-built_in">parseInt</span>(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">3</span>, <span class="hljs-number">10</span>);
+    value1.push({value: `<span class="hljs-number">0</span>-<span class="hljs-number">0</span>-<span class="hljs-number">0</span>-${ind}-value`, label: `<span class="hljs-number">0</span>-<span class="hljs-number">0</span>-<span class="hljs-number">0</span>-${ind}-label`, halfChecked: <span class="hljs-literal">true</span>});
     <span class="hljs-keyword">this</span>.setState({
       value1,
-      treeHalfCheckedValues: [<span class="hljs-string">'0-0-value'</span>, `<span class="hljs-number">0</span>-<span class="hljs-number">0</span>-<span class="hljs-number">0</span>-${<span class="hljs-built_in">parseInt</span>(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">5</span>, <span class="hljs-number">10</span>)}-value`],
     });
   },
   onGen(data) {
@@ -299,7 +299,10 @@ import Gen from <span class="hljs-string">'./big-data-generator'</span>;
       gData: data,
       gData1: [...data],
       value: <span class="hljs-string">'0-0-0-value'</span>,
-      value1: <span class="hljs-string">'0-0-0-value'</span>,
+      value1: [
+        {value: <span class="hljs-string">'0-0-value'</span>, label: <span class="hljs-string">'0-0-label'</span>, halfChecked: <span class="hljs-literal">true</span>},
+        {value: <span class="hljs-string">'0-0-0-value'</span>, label: <span class="hljs-string">'0-0-0-label'</span>},
+      ],
       <span class="hljs-comment">// value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],</span>
     });
   },
@@ -330,7 +333,6 @@ import Gen from <span class="hljs-string">'./big-data-generator'</span>;
             <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
             treeCheckable
             treeCheckStrictly
-            treeHalfCheckedValues={this.state.treeHalfCheckedValues}
             showCheckedStrategy={SHOW_PARENT}
             onChange={this.onChangeStrictly}
           /&gt;
