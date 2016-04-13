@@ -785,7 +785,7 @@ const Select = React.createClass({
     const rootCls = {
       [className]: !!className,
       [prefixCls]: 1,
-      [`${prefixCls}-open`]: open,
+      [`${prefixCls}-open`]: state.open,
       [`${prefixCls}-combobox`]: isCombobox(props),
       [`${prefixCls}-disabled`]: disabled,
       [`${prefixCls}-enabled`]: !disabled,
