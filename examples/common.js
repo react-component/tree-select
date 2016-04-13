@@ -23781,6 +23781,7 @@
 	exports.labelCompatible = labelCompatible;
 	exports.isInclude = isInclude;
 	exports.loopAllChildren = loopAllChildren;
+	exports.recursiveCloneChildren = recursiveCloneChildren;
 	exports.flatToHierarchy = flatToHierarchy;
 	exports.filterParentPosition = filterParentPosition;
 	exports.handleCheckState = handleCheckState;
@@ -23934,10 +23935,12 @@
 	    var len = getChildrenlength(children);
 	    _react2['default'].Children.forEach(children, function (item, index) {
 	      var pos = level + '-' + index;
-	      if (item.props.children && item.type) {
+	      if (item && item.props.children && item.type) {
 	        loop(item.props.children, pos, { node: item, pos: pos });
 	      }
-	      callback(item, index, pos, item.key || pos, getSiblingPosition(index, len, {}), _parent);
+	      if (item) {
+	        callback(item, index, pos, item.key || pos, getSiblingPosition(index, len, {}), _parent);
+	      }
 	    });
 	  };
 	  loop(childs, 0, parent);
@@ -23957,6 +23960,29 @@
 	//   };
 	//   loop(childs, 0);
 	// }
+	
+	// 给每一个 children 节点，增加 prop
+	
+	function recursiveCloneChildren(children) {
+	  var cb = arguments.length <= 1 || arguments[1] === undefined ? function (ch) {
+	    return ch;
+	  } : arguments[1];
+	
+	  return Array.from(children).map(function (child) {
+	    var newChild = cb(child);
+	    if (newChild && newChild.props.children) {
+	      return _react2['default'].cloneElement(newChild, {}, recursiveCloneChildren(newChild.props.children, cb));
+	    }
+	    return newChild;
+	  });
+	}
+	
+	// const newChildren = recursiveCloneChildren(children, child => {
+	//   const extraProps = {
+	//     _prop: true,
+	//   };
+	//   return React.cloneElement(child, extraProps);
+	// });
 	
 	function flatToHierarchy(arr) {
 	  if (!arr.length) {
@@ -24256,6 +24282,7 @@
 	    visible: _react.PropTypes.bool,
 	    filterTreeNode: _react.PropTypes.any,
 	    treeNodes: _react.PropTypes.any,
+	    inputValue: _react.PropTypes.string,
 	    prefixCls: _react.PropTypes.string,
 	    popupClassName: _react.PropTypes.string,
 	    children: _react.PropTypes.any
@@ -24291,9 +24318,13 @@
 	    return this.props.prefixCls + '-dropdown';
 	  },
 	
-	  filterTree: function filterTree(treeNode) {
+	  highlightTreeNode: function highlightTreeNode(treeNode) {
 	    var props = this.props;
-	    return props.inputValue && treeNode.props[(0, _util.labelCompatible)(props.treeNodeFilterProp)].indexOf(props.inputValue) > -1;
+	    var filterVal = treeNode.props[(0, _util.labelCompatible)(props.treeNodeFilterProp)];
+	    if (typeof filterVal === 'string') {
+	      return props.inputValue && filterVal.indexOf(props.inputValue) > -1;
+	    }
+	    return false;
 	  },
 	
 	  filterTreeNode: function filterTreeNode(input, child) {
@@ -24314,6 +24345,47 @@
 	    this.popupEle = ele;
 	  },
 	
+	  processTreeNode: function processTreeNode(treeNodes) {
+	    var _this = this;
+	
+	    var filterPoss = [];
+	    (0, _util.loopAllChildren)(treeNodes, function (child, index, pos) {
+	      if (_this.filterTreeNode(_this.props.inputValue, child)) {
+	        filterPoss.push(pos);
+	      }
+	    });
+	    // 把筛选节点的父节点（如果未筛选到）包含进来
+	    var processedPoss = [];
+	    filterPoss.forEach(function (pos) {
+	      var arr = pos.split('-');
+	      arr.reduce(function (pre, cur) {
+	        var res = pre + '-' + cur;
+	        if (processedPoss.indexOf(res) < 0) {
+	          processedPoss.push(res);
+	        }
+	        return res;
+	      });
+	    });
+	    var filterNodesPositions = [];
+	    (0, _util.loopAllChildren)(treeNodes, function (child, index, pos) {
+	      if (processedPoss.indexOf(pos) > -1) {
+	        filterNodesPositions.push({ node: child, pos: pos });
+	      }
+	    });
+	
+	    var hierarchyNodes = (0, _util.flatToHierarchy)(filterNodesPositions);
+	
+	    var recursive = function recursive(children) {
+	      return children.map(function (child) {
+	        if (child.children) {
+	          return _react2['default'].cloneElement(child.node, {}, recursive(child.children));
+	        }
+	        return child.node;
+	      });
+	    };
+	    return recursive(hierarchyNodes);
+	  },
+	
 	  renderTree: function renderTree(keys, halfCheckedKeys, newTreeNodes, multiple) {
 	    var props = this.props;
 	
@@ -24323,7 +24395,7 @@
 	      showIcon: props.treeIcon,
 	      showLine: props.treeLine,
 	      defaultExpandAll: props.treeDefaultExpandAll,
-	      filterTreeNode: this.filterTree,
+	      filterTreeNode: this.highlightTreeNode,
 	      _treeNodesStates: props._treeNodesStates
 	    };
 	
@@ -24357,8 +24429,7 @@
 	    );
 	  },
 	  render: function render() {
-	    var _popupClassName,
-	        _this = this;
+	    var _popupClassName;
 	
 	    var props = this.props;
 	    var multiple = props.multiple;
@@ -24386,7 +24457,6 @@
 	      });
 	    };
 	    // const s = Date.now();
-	    // let treeNodes = recursive(props.treeData || props.treeNodes);
 	    var treeNodes = undefined;
 	    if (props._cachetreeData && this.treeNodes) {
 	      treeNodes = this.treeNodes;
@@ -24395,39 +24465,9 @@
 	      this.treeNodes = treeNodes;
 	    }
 	    // console.log(Date.now()-s);
-	    var recursive1 = function recursive1(children) {
-	      var cb = arguments.length <= 1 || arguments[1] === undefined ? function (ch) {
-	        return ch;
-	      } : arguments[1];
-	      var cb1 = arguments.length <= 2 || arguments[2] === undefined ? function (childs) {
-	        return childs;
-	      } : arguments[2];
-	
-	      return children.map(function (child) {
-	        if (child && child.props.children) {
-	          return _react2['default'].cloneElement(child, {}, recursive1(cb1(child.props.children), cb, cb1));
-	        }
-	        return cb(child);
-	      });
-	    };
 	
 	    if (props.inputValue) {
-	      treeNodes = recursive1(treeNodes, function (child) {
-	        if (_this.filterTreeNode(props.inputValue, child)) {
-	          return child;
-	        }
-	        return null;
-	      });
-	      treeNodes = recursive1(treeNodes, undefined, function (childs) {
-	        // 过滤掉 children array 里的 null
-	        // ref: https://github.com/facebook/react/issues/4867
-	        // 可以用 React.Children.toArray(childs)，但会把 key 修改掉
-	        return Array.from(childs).filter(function (i) {
-	          return i;
-	        });
-	      }).filter(function (i) {
-	        return i;
-	      });
+	      treeNodes = this.processTreeNode(treeNodes);
 	    }
 	
 	    var keys = [];

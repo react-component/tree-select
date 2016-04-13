@@ -55,6 +55,9 @@ webpackJsonp([0],[
 	    // use onChange instead
 	    console.log(arguments);
 	  },
+	  filterTreeNode: function filterTreeNode(input, child) {
+	    return String(child.props.title).indexOf(input) > -1;
+	  },
 	  render: function render() {
 	    return _react2['default'].createElement(
 	      'div',
@@ -131,26 +134,41 @@ webpackJsonp([0],[
 	          dropdownStyle: { maxHeight: 200, overflow: 'auto' },
 	          value: this.state.value || 'leaf1',
 	          treeDefaultExpandAll: true,
+	          treeNodeFilterProp: 'title',
+	          filterTreeNode: this.filterTreeNode,
 	          onChange: this.onChange },
 	        _react2['default'].createElement(
 	          _rcTreeSelect.TreeNode,
 	          { value: 'parent 1', title: 'parent 1', key: '0-1' },
 	          _react2['default'].createElement(
 	            _rcTreeSelect.TreeNode,
-	            { value: 'parent 1-0', title: 'parent 1-0', key: '0-1-1' },
-	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf1', title: 'my leaf my leaf my leaf', key: 'random' }),
+	            { value: 'parent 1-0', title: 'parent 1-0', key: '0-1-0' },
+	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf1', title: 'my leaf', key: 'random' }),
 	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf2', title: 'your leaf', key: 'random1', disabled: true })
 	          ),
 	          _react2['default'].createElement(
 	            _rcTreeSelect.TreeNode,
-	            { value: 'parent 1-1', title: 'parent 1-1', key: 'random2' },
+	            { value: 'parent 1-1', title: 'parent 1-1', key: '0-1-1' },
 	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'sss', title: _react2['default'].createElement(
 	                'span',
 	                { style: { color: 'red' } },
 	                'sss'
-	              ), key: 'random3' })
+	              ), key: 'random3' }),
+	            _react2['default'].createElement(
+	              _rcTreeSelect.TreeNode,
+	              { value: 'same value', title: 'same txtle', key: '0-1-1-1' },
+	              _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same titlexd', key: '0-1-1-1-0' })
+	            )
 	          )
-	        )
+	        ),
+	        _react2['default'].createElement(
+	          _rcTreeSelect.TreeNode,
+	          { value: 'same value', title: 'same title', key: '0-2' },
+	          _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: '2same value', title: '2same title', key: '0-2-0' })
+	        ),
+	        _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-3' }),
+	        _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-4' }),
+	        _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-5' })
 	      )
 	    );
 	  }
