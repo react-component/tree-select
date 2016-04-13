@@ -294,7 +294,7 @@ import { gData } from <span class="hljs-string">'./util'</span>;
     <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">arguments</span>);
   },
   filterTreeNode(input, child) {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">String</span>(child.props.title).indexOf(input) &gt; -<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">String</span>(child.props.title).indexOf(input) === <span class="hljs-number">0</span>;
   },
   render() {
     <span class="hljs-keyword">return</span> (

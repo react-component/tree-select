@@ -56,7 +56,7 @@ webpackJsonp([0],[
 	    console.log(arguments);
 	  },
 	  filterTreeNode: function filterTreeNode(input, child) {
-	    return String(child.props.title).indexOf(input) > -1;
+	    return String(child.props.title).indexOf(input) === 0;
 	  },
 	  render: function render() {
 	    return _react2['default'].createElement(
