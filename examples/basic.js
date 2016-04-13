@@ -28,7 +28,7 @@ const Demo = React.createClass({
     console.log(arguments);
   },
   filterTreeNode(input, child) {
-    return String(child.props.title).indexOf(input) > -1;
+    return String(child.props.title).indexOf(input) === 0;
   },
   render() {
     return (
