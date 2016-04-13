@@ -81,7 +81,7 @@ online example: http://react-component.github.io/tree-select/
 |treeDefaultExpandAll | default expand all treeNode | bool | false |
 |treeCheckable | whether tree show checkbox (select callback will not fire) | bool | false |
 |treeCheckStrictly | check node precisely, parent and children nodes are not associated| bool | false |
-|filterTreeNode | filter some treeNodes as you need. it should return true | function(treeNode) | - |
+|filterTreeNode | whether filter treeNodes by input value. default filter by treeNode's treeNodeFilterProp prop's value | bool | true/Function(inputValue:string, treeNode:TreeNode) |
 |treeNodeFilterProp | which prop value of treeNode will be used for filter if filterTreeNode return true | String | 'value' |
 |treeNodeLabelProp | which prop value of treeNode will render as content of select | String | 'title' |
 |treeData | treeNodes data Array, if set it then you need not to construct children TreeNode. (if value is not unique of the whole array, you must provide `key` as unique id) | array<{value, label, children}> | [] |

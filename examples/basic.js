@@ -27,6 +27,9 @@ const Demo = React.createClass({
     // use onChange instead
     console.log(arguments);
   },
+  filterTreeNode(input, child) {
+    return String(child.props.title).indexOf(input) > -1;
+  },
   render() {
     return (
       <div style={{margin: 20}}>
@@ -75,16 +78,27 @@ const Demo = React.createClass({
                     dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
                     value={this.state.value || 'leaf1'}
                     treeDefaultExpandAll
+                    treeNodeFilterProp="title"
+                    filterTreeNode={this.filterTreeNode}
                     onChange={this.onChange}>
           <TreeNode value="parent 1" title="parent 1" key="0-1">
-            <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
-              <TreeNode value="leaf1" title="my leaf my leaf my leaf" key="random" />
+            <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-0">
+              <TreeNode value="leaf1" title="my leaf" key="random" />
               <TreeNode value="leaf2" title="your leaf" key="random1" disabled />
             </TreeNode>
-            <TreeNode value="parent 1-1" title="parent 1-1" key="random2">
+            <TreeNode value="parent 1-1" title="parent 1-1" key="0-1-1">
               <TreeNode value="sss" title={<span style={{color: 'red'}}>sss</span>} key="random3" />
+              <TreeNode value="same value" title="same txtle" key="0-1-1-1">
+                <TreeNode value="same value" title="same titlexd" key="0-1-1-1-0" />
+              </TreeNode>
             </TreeNode>
           </TreeNode>
+          <TreeNode value="same value" title="same title" key="0-2">
+            <TreeNode value="2same value" title="2same title" key="0-2-0" />
+          </TreeNode>
+          <TreeNode value="same value" title="same title" key="0-3" />
+          <TreeNode value="same value" title="same title" key="0-4" />
+          <TreeNode value="same value" title="same title" key="0-5" />
         </TreeSelect>
       </div>
     );

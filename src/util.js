@@ -142,10 +142,12 @@ export function loopAllChildren(childs, callback, parent) {
     const len = getChildrenlength(children);
     React.Children.forEach(children, (item, index) => {
       const pos = `${level}-${index}`;
-      if (item.props.children && item.type) {
+      if (item && item.props.children && item.type) {
         loop(item.props.children, pos, { node: item, pos });
       }
-      callback(item, index, pos, item.key || pos, getSiblingPosition(index, len, {}), _parent);
+      if (item) {
+        callback(item, index, pos, item.key || pos, getSiblingPosition(index, len, {}), _parent);
+      }
     });
   };
   loop(childs, 0, parent);
@@ -165,6 +167,23 @@ export function loopAllChildren(childs, callback, parent) {
 //   };
 //   loop(childs, 0);
 // }
+
+// 给每一个 children 节点，增加 prop
+export function recursiveCloneChildren(children, cb = ch => ch) {
+  return Array.from(children).map(child => {
+    const newChild = cb(child);
+    if (newChild && newChild.props.children) {
+      return React.cloneElement(newChild, {}, recursiveCloneChildren(newChild.props.children, cb));
+    }
+    return newChild;
+  });
+}
+// const newChildren = recursiveCloneChildren(children, child => {
+//   const extraProps = {
+//     _prop: true,
+//   };
+//   return React.cloneElement(child, extraProps);
+// });
 
 export function flatToHierarchy(arr) {
   if (!arr.length) {
