@@ -20427,36 +20427,40 @@
 	    }
 	  },
 	
-	  removeSelected: function removeSelected(selectedKey) {
+	  removeSelected: function removeSelected(selectedVal) {
 	    var props = this.props;
 	    if (props.disabled) {
 	      return;
 	    }
 	    this._cacheTreeNodesStates = 'no';
 	    if ((props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT) && !props.treeCheckStrictly) {
-	      this.getDeselectedValue(selectedKey);
+	      this.getDeselectedValue(selectedVal);
 	      return;
 	    }
+	    // if (props.treeCheckable) {
+	    //   // 在 treeCheckable 时，相当于触发节点的 check(uncheck) 事件，
+	    //   // 但假如 dropdown 没展开过，tree 也就没渲染好，触发不了tree内部方法。
+	    // }
 	    var label = undefined;
 	    var value = this.state.value.filter(function (singleValue) {
-	      if (singleValue.value === selectedKey) {
+	      if (singleValue.value === selectedVal) {
 	        label = singleValue.label;
 	      }
-	      return singleValue.value !== selectedKey;
+	      return singleValue.value !== selectedVal;
 	    });
 	    var canMultiple = (0, _util.isMultipleOrTags)(props);
 	
 	    if (canMultiple) {
-	      var _event = selectedKey;
+	      var _event = selectedVal;
 	      if (this.isLabelInValue()) {
 	        _event = {
-	          value: selectedKey,
+	          value: selectedVal,
 	          label: label
 	        };
 	      }
 	      props.onDeselect(_event);
 	    }
-	    this.fireChange(value, { triggerValue: selectedKey, clear: true });
+	    this.fireChange(value, { triggerValue: selectedVal, clear: true });
 	  },
 	
 	  openIfHasChildren: function openIfHasChildren() {
@@ -20577,15 +20581,15 @@
 	            key: singleValue.value,
 	            title: title
 	          }),
+	          _react2['default'].createElement('span', {
+	            className: prefixCls + '-selection__choice__remove',
+	            onClick: _this7.removeSelected.bind(_this7, singleValue.value)
+	          }),
 	          _react2['default'].createElement(
 	            'span',
 	            { className: prefixCls + '-selection__choice__content' },
 	            content
-	          ),
-	          _react2['default'].createElement('span', {
-	            className: prefixCls + '-selection__choice__remove',
-	            onClick: _this7.removeSelected.bind(_this7, singleValue.value)
-	          })
+	          )
 	        );
 	      });
 	    }
@@ -26692,7 +26696,7 @@
 	      if (treeNode.props.halfChecked) {
 	        checked = true;
 	      }
-	      var key = treeNode.key || treeNode.props.eventKey;
+	      var key = treeNode.props.eventKey;
 	      var checkedKeys = [].concat(_toConsumableArray(this.state.checkedKeys));
 	      var index = checkedKeys.indexOf(key);
 	
@@ -27610,6 +27614,14 @@
 	  }
 	
 	  _createClass(TreeNode, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      if (!this.props.root._treeNodeInstances) {
+	        this.props.root._treeNodeInstances = [];
+	      }
+	      this.props.root._treeNodeInstances.push(this);
+	    }
+	  }, {
 	    key: 'onCheck',
 	    value: function onCheck() {
 	      this.props.root.onCheck(this);

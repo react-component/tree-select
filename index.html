@@ -859,12 +859,6 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <td>false</td>
 </tr>
 <tr>
-<td>tags</td>
-<td>when tagging is enabled the user can select from pre-existing options or create a new tag by picking the first choice, which is what the user has typed into the search box so far.</td>
-<td>bool</td>
-<td>false</td>
-</tr>
-<tr>
 <td>maxTagTextLength</td>
 <td>max tag text length to show</td>
 <td>number</td>
@@ -878,7 +872,7 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 </tr>
 <tr>
 <td>multiple</td>
-<td>whether multiple select</td>
+<td>whether multiple select (true when enable treeCheckable)</td>
 <td>bool</td>
 <td>false</td>
 </tr>
@@ -1037,6 +1031,10 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 </tr>
 </tbody>
 </table>
+<h2>note<a id="user-content-note" name="note" class="anchor" aria-hidden="true" href="#note"><span class="octicon octicon-link"></span></a></h2><ol>
+<li>大数据量下（5000个节点以上）优化建议：不要展开所有节点；一个页面不要同时存在许多个组件；不使用<code>treeCheckable</code>或使用<code>treeCheckStrictly</code>。</li>
+<li>在<code>treeCheckable</code>模式下，已选择节点上的<code>x</code>删除操作、和相应 treeNode 节点上 checkbox 的 uncheck 操作，最终效果相同，但本质不一样。前者跟弹出的 tree 组件可以“毫无关系”（例如 dropdown 没展开过，tree 也就没渲染好），而后者是 tree 组件上的节点 uncheck 事件。所以、即便两者都会触发<code>onChange</code>方法、但它们的参数（第三个参数）是不同的。</li>
+</ol>
 <h2>Test Case<a id="user-content-test-case" name="test-case" class="anchor" aria-hidden="true" href="#test-case"><span class="octicon octicon-link"></span></a></h2><p><a href="http://localhost:8000/tests/runner.html?coverage" title="null">http://localhost:8000/tests/runner.html?coverage</a></p>
 <h2>Coverage<a id="user-content-coverage" name="coverage" class="anchor" aria-hidden="true" href="#coverage"><span class="octicon octicon-link"></span></a></h2><p><a href="http://localhost:8000/node_modules/rc-server/node_modules/node-jscover/lib/front-end/jscoverage.html?w=http://localhost:8000/tests/runner.html?coverage" title="null">http://localhost:8000/node_modules/rc-server/node_modules/node-jscover/lib/front-end/jscoverage.html?w=http://localhost:8000/tests/runner.html?coverage</a></p>
 <h2>License<a id="user-content-license" name="license" class="anchor" aria-hidden="true" href="#license"><span class="octicon octicon-link"></span></a></h2><p>rc-tree-select is released under the MIT license.</p>
