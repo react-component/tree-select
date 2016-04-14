@@ -36,40 +36,37 @@ const Demo = React.createClass({
         <h2>single select</h2>
         <TreeSelect style={{width: 300}}
                     dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                    treeData={gData} showSearch allowClear treeLine
-                    value={this.state.value}
-                    treeDefaultExpandAll={false}
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
+                    showSearch allowClear treeLine
+                    value={this.state.value}
+                    treeData={gData}
                     treeNodeFilterProp="label"
                     onChange={this.onChange}
                     onSelect={this.onSelect} />
 
         <h2>multiple select</h2>
-        <TreeSelect style={{width: 300}}
+        <TreeSelect style={{width: 300}} dropdownPopupAlign={{offset: [0, 0]}}
                     dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                    treeData={gData}
-                    value={this.state.multipleValue}
-                    treeDefaultExpandAll={false}
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
-                    treeNodeFilterProp="title"
                     multiple
-                    dropdownPopupAlign={{offset: [0, 0]}}
+                    value={this.state.multipleValue}
+                    treeData={gData}
+                    treeNodeFilterProp="title"
                     onChange={this.onMultipleChange}
                     onSelect={this.onSelect} />
 
         <h2>check select</h2>
         <TreeSelect style={{width: 300}}
                     dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                    treeData={gData} treeLine
-                    value={this.state.value}
-                    treeDefaultExpandAll={false}
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
+                    treeLine maxTagTextLength={10}
+                    value={this.state.value}
+                    treeData={gData}
                     treeNodeFilterProp="title"
-                    treeCheckable
-                    showCheckedStrategy={SHOW_PARENT}
+                    treeCheckable showCheckedStrategy={SHOW_PARENT}
                     onChange={this.onChange}
                     onSelect={this.onSelect} />
 

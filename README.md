@@ -64,10 +64,9 @@ online example: http://react-component.github.io/tree-select/
 |notFoundContent | specify content to show when no result matches. | String | 'Not Found' |
 |showSearch | whether show search input in single mode | bool | true |
 |allowClear | whether allowClear | bool | false |
-|tags | when tagging is enabled the user can select from pre-existing options or create a new tag by picking the first choice, which is what the user has typed into the search box so far. | bool | false |
 |maxTagTextLength | max tag text length to show | number | - |
 |combobox | enable combobox mode(can not set multiple at the same time) | bool | false |
-|multiple | whether multiple select | bool | false |
+|multiple | whether multiple select (true when enable treeCheckable) | bool | false |
 |disabled | whether disabled select | bool | false |
 |defaultValue | initial selected treeNode(s) | String/Array<String> | - |
 |value | current selected treeNode(s). | normal: String/Array<String>. labelInValue: {value:String,label:React.Node}/Array<{value,label}>. treeCheckStrictly(halfChecked default false): {value:String,label:React.Node, halfChecked}/Array<{value,label,halfChecked}>. | - |
@@ -97,6 +96,11 @@ online example: http://react-component.github.io/tree-select/
 |value | default as treeNodeFilterProp | String | '' |
 |title | tree/subTree's title | String/element | '---' |
 |isLeaf | whether it's leaf node | bool | false |
+
+
+## note
+1. 大数据量下（5000个节点以上）优化建议：不要展开所有节点；一个页面不要同时存在许多个组件；不使用`treeCheckable`或使用`treeCheckStrictly`。
+2. 在`treeCheckable`模式下，已选择节点上的`x`删除操作、和相应 treeNode 节点上 checkbox 的 uncheck 操作，最终效果相同，但本质不一样。前者跟弹出的 tree 组件可以“毫无关系”（例如 dropdown 没展开过，tree 也就没渲染好），而后者是 tree 组件上的节点 uncheck 事件。所以、即便两者都会触发`onChange`方法、但它们的参数（第三个参数）是不同的。
 
 
 ## Test Case

@@ -611,7 +611,7 @@ const Select = React.createClass({
     }
   },
 
-  removeSelected(selectedKey) {
+  removeSelected(selectedVal) {
     const props = this.props;
     if (props.disabled) {
       return;
@@ -619,29 +619,33 @@ const Select = React.createClass({
     this._cacheTreeNodesStates = 'no';
     if ((props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT)
       && !props.treeCheckStrictly) {
-      this.getDeselectedValue(selectedKey);
+      this.getDeselectedValue(selectedVal);
       return;
     }
+    // if (props.treeCheckable) {
+    //   // 在 treeCheckable 时，相当于触发节点的 check(uncheck) 事件，
+    //   // 但假如 dropdown 没展开过，tree 也就没渲染好，触发不了tree内部方法。
+    // }
     let label;
     const value = this.state.value.filter((singleValue) => {
-      if (singleValue.value === selectedKey) {
+      if (singleValue.value === selectedVal) {
         label = singleValue.label;
       }
-      return (singleValue.value !== selectedKey);
+      return (singleValue.value !== selectedVal);
     });
     const canMultiple = isMultipleOrTags(props);
 
     if (canMultiple) {
-      let event = selectedKey;
+      let event = selectedVal;
       if (this.isLabelInValue()) {
         event = {
-          value: selectedKey,
+          value: selectedVal,
           label,
         };
       }
       props.onDeselect(event);
     }
-    this.fireChange(value, {triggerValue: selectedKey, clear: true});
+    this.fireChange(value, {triggerValue: selectedVal, clear: true});
   },
 
   openIfHasChildren() {
@@ -727,11 +731,11 @@ const Select = React.createClass({
             key={singleValue.value}
             title={title}
           >
-            <span className={`${prefixCls}-selection__choice__content`}>{content}</span>
             <span
               className={`${prefixCls}-selection__choice__remove`}
               onClick={this.removeSelected.bind(this, singleValue.value)}
             />
+            <span className={`${prefixCls}-selection__choice__content`}>{content}</span>
           </li>
         );
       });
