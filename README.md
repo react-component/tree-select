@@ -65,13 +65,12 @@ online example: http://react-component.github.io/tree-select/
 |showSearch | whether show search input in single mode | bool | true |
 |allowClear | whether allowClear | bool | false |
 |maxTagTextLength | max tag text length to show | number | - |
-|combobox | enable combobox mode(can not set multiple at the same time) | bool | false |
 |multiple | whether multiple select (true when enable treeCheckable) | bool | false |
 |disabled | whether disabled select | bool | false |
 |defaultValue | initial selected treeNode(s) | String/Array<String> | - |
 |value | current selected treeNode(s). | normal: String/Array<String>. labelInValue: {value:String,label:React.Node}/Array<{value,label}>. treeCheckStrictly(halfChecked default false): {value:String,label:React.Node, halfChecked}/Array<{value,label,halfChecked}>. | - |
 |labelInValue| whether to embed label in value, see above value type | Bool | false |
-|onChange | called when select treeNode or input value change(combobox) | function(value, label(null), extra) | - |
+|onChange | called when select treeNode or input value change | function(value, label(null), extra) | - |
 |onSelect | called when select treeNode | function(value, node, extra) | - |
 |onSearch | called when input changed | function | - |
 |showCheckedStrategy | `TreeSelect.SHOW_ALL`: show all checked treeNodes (Include parent treeNode). `TreeSelect.SHOW_PARENT`: show checked treeNodes (Just show parent treeNode). Default just show child. | enum{TreeSelect.SHOW_ALL, TreeSelect.SHOW_PARENT, TreeSelect.SHOW_CHILD } | TreeSelect.SHOW_CHILD |

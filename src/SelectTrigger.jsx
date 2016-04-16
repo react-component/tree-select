@@ -38,6 +38,23 @@ const SelectTrigger = React.createClass({
     children: PropTypes.any,
   },
 
+  getInitialState() {
+    return {
+      _expandedKeys: [],
+      fireOnExpand: false,
+    };
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.inputValue && nextProps.inputValue !== this.props.inputValue) {
+      // set autoExpandParent to true
+      this.setState({
+        _expandedKeys: [],
+        fireOnExpand: false,
+      });
+    }
+  },
+
   componentDidUpdate() {
     if (this.props.dropdownMatchSelectWidth && this.props.visible) {
       const dropdownDOMNode = this.getPopupDOMNode();
@@ -45,6 +62,14 @@ const SelectTrigger = React.createClass({
         dropdownDOMNode.style.width = ReactDOM.findDOMNode(this).offsetWidth + 'px';
       }
     }
+  },
+
+  onExpand(expandedKeys) {
+    // rerender
+    this.setState({
+      _expandedKeys: expandedKeys,
+      fireOnExpand: true,
+    });
   },
 
   getPopupEleRefs() {
@@ -97,11 +122,14 @@ const SelectTrigger = React.createClass({
 
   processTreeNode(treeNodes) {
     const filterPoss = [];
+    this._expandedKeys = [];
     loopAllChildren(treeNodes, (child, index, pos) => {
       if (this.filterTreeNode(this.props.inputValue, child)) {
         filterPoss.push(pos);
+        this._expandedKeys.push(child.key);
       }
     });
+
     // 把筛选节点的父节点（如果未筛选到）包含进来
     const processedPoss = [];
     filterPoss.forEach(pos => {
@@ -163,7 +191,18 @@ const SelectTrigger = React.createClass({
     }
 
     // expand keys
-    trProps.defaultExpandedKeys = keys;
+    if (!trProps.defaultExpandAll) {
+      trProps.expandedKeys = keys;
+    }
+    trProps.autoExpandParent = true;
+    trProps.onExpand = this.onExpand;
+    if (this._expandedKeys && this._expandedKeys.length) {
+      trProps.expandedKeys = this._expandedKeys;
+    }
+    if (this.state.fireOnExpand) {
+      trProps.expandedKeys = this.state._expandedKeys;
+      trProps.autoExpandParent = false;
+    }
 
     // async loadData
     if (props.loadData) {
