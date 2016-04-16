@@ -276,18 +276,19 @@ const SelectTrigger = React.createClass({
       {notFoundContent ? notFoundContent : this.renderTree(keys, halfCheckedKeys, treeNodes, multiple)}
     </div>);
 
-    return (<Trigger action={props.disabled ? [] : ['click']}
-                     ref="trigger"
-                     popupPlacement="bottomLeft"
-                     builtinPlacements={BUILT_IN_PLACEMENTS}
-                     popupAlign={this.props.dropdownPopupAlign}
-                     prefixCls={dropdownPrefixCls}
-                     popupTransitionName={this.getDropdownTransitionName()}
-                     onPopupVisibleChange={props.onDropdownVisibleChange}
-                     popup={popupElement}
-                     popupVisible={visible}
-                     popupClassName={classnames(popupClassName)}
-                     popupStyle={props.dropdownStyle}
+    return (<Trigger
+      action={props.disabled ? [] : ['click']}
+      ref="trigger"
+      popupPlacement="bottomLeft"
+      builtinPlacements={BUILT_IN_PLACEMENTS}
+      popupAlign={this.props.dropdownPopupAlign}
+      prefixCls={dropdownPrefixCls}
+      popupTransitionName={this.getDropdownTransitionName()}
+      onPopupVisibleChange={props.onDropdownVisibleChange}
+      popup={popupElement}
+      popupVisible={visible}
+      popupClassName={classnames(popupClassName)}
+      popupStyle={props.dropdownStyle}
     >{this.props.children}</Trigger>);
   },
 });

@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import assign from 'object-assign';
 import Animate from 'rc-animate';
 import {
-  getPropValue, getValuePropValue, isCombobox,
+  getPropValue, getValuePropValue, /* isCombobox,*/
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
   isSingleMode, toArray, findIndexInValueByKey,
   UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
@@ -137,12 +137,21 @@ const Select = React.createClass({
     this.renderedTreeData = this.renderTreeData();
     value = this.addLabelToValue(props, value);
     value = this.getValue(props, value);
-    let inputValue = '';
-    if (props.combobox) {
-      inputValue = value.length ? String(value[0].value) : '';
-    }
+    const inputValue = '';
+    // if (props.combobox) {
+    //   inputValue = value.length ? String(value[0].value) : '';
+    // }
     this.saveInputRef = saveRef.bind(this, 'inputInstance');
-    return {value, inputValue};
+    let open = props.open;
+    if (open === undefined) {
+      open = props.defaultOpen;
+    }
+    return {
+      value,
+      inputValue,
+      open,
+      focused: false,
+    };
   },
 
   componentWillReceiveProps(nextProps) {
@@ -163,11 +172,11 @@ const Select = React.createClass({
       this.setState({
         value,
       });
-      if (nextProps.combobox) {
-        this.setState({
-          inputValue: value.length ? String(value[0].key) : '',
-        });
-      }
+      // if (nextProps.combobox) {
+      //   this.setState({
+      //     inputValue: value.length ? String(value[0].key) : '',
+      //   });
+      // }
     }
   },
 
@@ -178,7 +187,7 @@ const Select = React.createClass({
       const inputNode = this.getInputDOMNode();
       if (inputNode.value) {
         inputNode.style.width = '';
-        inputNode.style.width = inputNode.scrollWidth + 'px';
+        inputNode.style.width = `${inputNode.scrollWidth}px`;
       } else {
         inputNode.style.width = '';
       }
@@ -201,18 +210,18 @@ const Select = React.createClass({
       inputValue: val,
       open: true,
     });
-    if (isCombobox(props)) {
-      this.fireChange([{
-        value: val,
-      }]);
-    }
+    // if (isCombobox(props)) {
+    //   this.fireChange([{
+    //     value: val,
+    //   }]);
+    // }
     props.onSearch(val);
   },
 
   onDropdownVisibleChange(open) {
     // selection inside combobox cause click
     if (!open && document.activeElement === this.getInputDOMNode()) {
-      return;
+      // return;
     }
     this.setOpenState(open);
   },
@@ -234,7 +243,7 @@ const Select = React.createClass({
 
   onInputBlur() {
     // if (isMultipleOrTagsOrCombobox(this.props)) {
-    return;
+    //   return;
     // }
     // this.clearDelayTimer();
     // this.delayTimer = setTimeout(() => {
@@ -354,11 +363,11 @@ const Select = React.createClass({
     this.setState({
       inputValue: '',
     });
-    if (isCombobox(props)) {
-      this.setState({
-        inputValue: getPropValue(item, props.treeNodeLabelProp),
-      });
-    }
+    // if (isCombobox(props)) {
+    //   this.setState({
+    //     inputValue: getPropValue(item, props.treeNodeLabelProp),
+    //   });
+    // }
   },
 
   onDeselect(info) {
@@ -373,6 +382,18 @@ const Select = React.createClass({
 
   onPlaceholderClick() {
     this.getInputDOMNode().focus();
+  },
+
+  onOuterFocus() {
+    this.setState({
+      focused: true,
+    });
+  },
+
+  onOuterBlur() {
+    this.setState({
+      focused: false,
+    });
   },
 
   onClearSelection(event) {
@@ -450,7 +471,8 @@ const Select = React.createClass({
         value={this.state.inputValue}
         disabled={props.disabled}
         className={`${props.prefixCls}-search__field`}
-        role="textbox"/>
+        role="textbox"
+      />
       {isMultipleOrTags(props) ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)}
     </span>);
   },
@@ -790,7 +812,8 @@ const Select = React.createClass({
       [className]: !!className,
       [prefixCls]: 1,
       [`${prefixCls}-open`]: state.open,
-      [`${prefixCls}-combobox`]: isCombobox(props),
+      [`${prefixCls}-focused`]: state.open || state.focused,
+      // [`${prefixCls}-combobox`]: isCombobox(props),
       [`${prefixCls}-disabled`]: disabled,
       [`${prefixCls}-enabled`]: !disabled,
     };
@@ -820,6 +843,8 @@ const Select = React.createClass({
         <span
           style={props.style}
           onClick={props.onClick}
+          onBlur={this.onOuterBlur}
+          onFocus={this.onOuterFocus}
           className={classnames(rootCls)}
         >
           <span
