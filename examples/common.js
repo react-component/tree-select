@@ -24292,6 +24292,23 @@
 	    children: _react.PropTypes.any
 	  },
 	
+	  getInitialState: function getInitialState() {
+	    return {
+	      _expandedKeys: [],
+	      fireOnExpand: false
+	    };
+	  },
+	
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    if (nextProps.inputValue && nextProps.inputValue !== this.props.inputValue) {
+	      // set autoExpandParent to true
+	      this.setState({
+	        _expandedKeys: [],
+	        fireOnExpand: false
+	      });
+	    }
+	  },
+	
 	  componentDidUpdate: function componentDidUpdate() {
 	    if (this.props.dropdownMatchSelectWidth && this.props.visible) {
 	      var dropdownDOMNode = this.getPopupDOMNode();
@@ -24299,6 +24316,14 @@
 	        dropdownDOMNode.style.width = _reactDom2['default'].findDOMNode(this).offsetWidth + 'px';
 	      }
 	    }
+	  },
+	
+	  onExpand: function onExpand(expandedKeys) {
+	    // rerender
+	    this.setState({
+	      _expandedKeys: expandedKeys,
+	      fireOnExpand: true
+	    });
 	  },
 	
 	  getPopupEleRefs: function getPopupEleRefs() {
@@ -24353,11 +24378,14 @@
 	    var _this = this;
 	
 	    var filterPoss = [];
+	    this._expandedKeys = [];
 	    (0, _util.loopAllChildren)(treeNodes, function (child, index, pos) {
 	      if (_this.filterTreeNode(_this.props.inputValue, child)) {
 	        filterPoss.push(pos);
+	        _this._expandedKeys.push(child.key);
 	      }
 	    });
+	
 	    // 把筛选节点的父节点（如果未筛选到）包含进来
 	    var processedPoss = [];
 	    filterPoss.forEach(function (pos) {
@@ -24419,7 +24447,18 @@
 	    }
 	
 	    // expand keys
-	    trProps.defaultExpandedKeys = keys;
+	    if (!trProps.defaultExpandAll) {
+	      trProps.expandedKeys = keys;
+	    }
+	    trProps.autoExpandParent = true;
+	    trProps.onExpand = this.onExpand;
+	    if (this._expandedKeys && this._expandedKeys.length) {
+	      trProps.expandedKeys = this._expandedKeys;
+	    }
+	    if (this.state.fireOnExpand) {
+	      trProps.expandedKeys = this.state._expandedKeys;
+	      trProps.autoExpandParent = false;
+	    }
 	
 	    // async loadData
 	    if (props.loadData) {
@@ -26658,28 +26697,22 @@
 	    value: function onExpand(treeNode) {
 	      var _this2 = this;
 	
-	      var expand = !treeNode.props.expanded;
+	      var expanded = !treeNode.props.expanded;
 	      var controlled = ('expandedKeys' in this.props);
 	      var expandedKeys = [].concat(_toConsumableArray(this.state.expandedKeys));
 	      var index = expandedKeys.indexOf(treeNode.props.eventKey);
-	      if (!controlled) {
-	        if (expand) {
-	          if (index === -1) {
-	            expandedKeys.push(treeNode.props.eventKey);
-	          }
-	        } else {
-	          expandedKeys.splice(index, 1);
-	        }
-	        this.setState({ expandedKeys: expandedKeys });
-	        // remember the return object, such as expandedKeys, must clone!!
-	        // so you can avoid outer code change it.
-	        this.props.onExpand(treeNode, expand, [].concat(_toConsumableArray(expandedKeys)));
-	      } else {
-	        this.props.onExpand(treeNode, !expand, [].concat(_toConsumableArray(expandedKeys)));
+	      if (expanded && index === -1) {
+	        expandedKeys.push(treeNode.props.eventKey);
+	      } else if (!expanded && index > -1) {
+	        expandedKeys.splice(index, 1);
 	      }
+	      if (!controlled) {
+	        this.setState({ expandedKeys: expandedKeys });
+	      }
+	      this.props.onExpand(expandedKeys, { node: treeNode, expanded: expanded });
 	
 	      // after data loaded, need set new expandedKeys
-	      if (expand && this.props.loadData) {
+	      if (expanded && this.props.loadData) {
 	        return this.props.loadData(treeNode).then(function () {
 	          if (!controlled) {
 	            _this2.setState({ expandedKeys: expandedKeys });
@@ -26832,19 +26865,19 @@
 	    }
 	  }, {
 	    key: 'getFilterExpandedKeys',
-	    value: function getFilterExpandedKeys(props) {
-	      var defaultExpandedKeys = props.defaultExpandedKeys;
+	    value: function getFilterExpandedKeys(props, expandKeyProp, expandAll) {
+	      var keys = props[expandKeyProp];
 	      var expandedPositionArr = [];
 	      if (props.autoExpandParent) {
 	        (0, _util.loopAllChildren)(props.children, function (item, index, pos, newKey) {
-	          if (defaultExpandedKeys.indexOf(newKey) > -1) {
+	          if (keys.indexOf(newKey) > -1) {
 	            expandedPositionArr.push(pos);
 	          }
 	        });
 	      }
 	      var filterExpandedKeys = [];
 	      (0, _util.loopAllChildren)(props.children, function (item, index, pos, newKey) {
-	        if (props.defaultExpandAll) {
+	        if (expandAll) {
 	          filterExpandedKeys.push(newKey);
 	        } else if (props.autoExpandParent) {
 	          expandedPositionArr.forEach(function (p) {
@@ -26854,14 +26887,14 @@
 	          });
 	        }
 	      });
-	      return filterExpandedKeys.length ? filterExpandedKeys : defaultExpandedKeys;
+	      return filterExpandedKeys.length ? filterExpandedKeys : keys;
 	    }
 	  }, {
 	    key: 'getDefaultExpandedKeys',
 	    value: function getDefaultExpandedKeys(props, willReceiveProps) {
-	      var expandedKeys = willReceiveProps ? undefined : this.getFilterExpandedKeys(props);
+	      var expandedKeys = willReceiveProps ? undefined : this.getFilterExpandedKeys(props, 'defaultExpandedKeys', props.defaultExpandAll);
 	      if ('expandedKeys' in props) {
-	        expandedKeys = props.expandedKeys || [];
+	        expandedKeys = (props.autoExpandParent ? this.getFilterExpandedKeys(props, 'expandedKeys', false) : props.expandedKeys) || [];
 	      }
 	      return expandedKeys;
 	    }
