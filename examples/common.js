@@ -20533,6 +20533,10 @@
 	            }
 	          });
 	        }
+	        if (ex.clear) {
+	          var treeData = _this6.renderedTreeData || props.chilren;
+	          ex.allCheckedNodes = (0, _util.flatToHierarchy)((0, _util.filterAllCheckedData)(vals, treeData));
+	        }
 	        _this6._savedValue = (0, _util.isMultipleOrTags)(props) ? vls : vls[0];
 	        props.onChange(_this6._savedValue, labs, ex);
 	      })();
@@ -23812,13 +23816,16 @@
 	exports.labelCompatible = labelCompatible;
 	exports.isInclude = isInclude;
 	exports.loopAllChildren = loopAllChildren;
-	exports.recursiveCloneChildren = recursiveCloneChildren;
 	exports.flatToHierarchy = flatToHierarchy;
 	exports.filterParentPosition = filterParentPosition;
 	exports.handleCheckState = handleCheckState;
 	exports.getTreeNodesStates = getTreeNodesStates;
+	exports.recursiveCloneChildren = recursiveCloneChildren;
+	exports.filterAllCheckedData = filterAllCheckedData;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 	
 	var _react = __webpack_require__(4);
 	
@@ -23991,29 +23998,6 @@
 	//   };
 	//   loop(childs, 0);
 	// }
-	
-	// 给每一个 children 节点，增加 prop
-	
-	function recursiveCloneChildren(children) {
-	  var cb = arguments.length <= 1 || arguments[1] === undefined ? function (ch) {
-	    return ch;
-	  } : arguments[1];
-	
-	  return Array.from(children).map(function (child) {
-	    var newChild = cb(child);
-	    if (newChild && newChild.props.children) {
-	      return _react2['default'].cloneElement(newChild, {}, recursiveCloneChildren(newChild.props.children, cb));
-	    }
-	    return newChild;
-	  });
-	}
-	
-	// const newChildren = recursiveCloneChildren(children, child => {
-	//   const extraProps = {
-	//     _prop: true,
-	//   };
-	//   return React.cloneElement(child, extraProps);
-	// });
 	
 	function flatToHierarchy(arr) {
 	  if (!arr.length) {
@@ -24241,6 +24225,136 @@
 	  handleCheckState(treeNodesStates, filterParentPosition(checkedPositions.sort()), true);
 	
 	  return getCheck(treeNodesStates, checkedPositions);
+	}
+	
+	// 给每一个 children 节点，增加 prop
+	
+	function recursiveCloneChildren(children) {
+	  var cb = arguments.length <= 1 || arguments[1] === undefined ? function (ch) {
+	    return ch;
+	  } : arguments[1];
+	
+	  return Array.from(children).map(function (child) {
+	    var newChild = cb(child);
+	    if (newChild && newChild.props.children) {
+	      return _react2['default'].cloneElement(newChild, {}, recursiveCloneChildren(newChild.props.children, cb));
+	    }
+	    return newChild;
+	  });
+	}
+	
+	// const newChildren = recursiveCloneChildren(children, child => {
+	//   const extraProps = {
+	//     _prop: true,
+	//   };
+	//   return React.cloneElement(child, extraProps);
+	// });
+	
+	function recursiveGen(children) {
+	  var level = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+	
+	  return _react2['default'].Children.map(children, function (child, index) {
+	    var pos = level + '-' + index;
+	    var o = {
+	      title: child.props.title,
+	      label: child.props.label || child.props.title,
+	      value: child.props.value,
+	      key: child.key,
+	      _pos: pos
+	    };
+	    if (child.props.children) {
+	      o.children = recursiveGen(child.props.children, pos);
+	    }
+	    return o;
+	  });
+	}
+	
+	function recursive(children, cb) {
+	  children.forEach(function (item) {
+	    cb(item);
+	    if (item.children) {
+	      recursive(item.children, cb);
+	    }
+	  });
+	}
+	
+	// 用于根据选择框里的 value 筛选初始的 tree 数据里全部选中项。
+	// 规则是：某一项选中，则子项全选中；相邻节点全选中，则父节点选中。
+	// 与 handleCheckState 部分功能重合，TODO：优化合并起来。
+	
+	function filterAllCheckedData(vs, treeNodes) {
+	  var vals = [].concat(_toConsumableArray(vs));
+	  if (!vals.length) {
+	    return vals;
+	  }
+	
+	  var data = recursiveGen(treeNodes);
+	  var checkedNodesPositions = [];
+	
+	  function checkChildren(children) {
+	    children.forEach(function (item) {
+	      if (item.__checked) {
+	        return;
+	      }
+	      var ci = vals.indexOf(item.value);
+	      var childs = item.children;
+	      if (ci > -1) {
+	        item.__checked = true;
+	        checkedNodesPositions.push({ node: item, pos: item._pos });
+	        vals.splice(ci, 1);
+	        if (childs) {
+	          recursive(childs, function (child) {
+	            child.__checked = true;
+	            checkedNodesPositions.push({ node: child, pos: child._pos });
+	          });
+	        }
+	      } else {
+	        if (childs) {
+	          checkChildren(childs);
+	        }
+	      }
+	    });
+	  }
+	
+	  function checkParent(children) {
+	    var parent = arguments.length <= 1 || arguments[1] === undefined ? { root: true } : arguments[1];
+	
+	    var siblingChecked = 0;
+	    children.forEach(function (item) {
+	      var childs = item.children;
+	      if (childs && !item.__checked && !item.__halfChecked) {
+	        var p = checkParent(childs, item);
+	        if (p.__checked) {
+	          siblingChecked++;
+	        } else if (p.__halfChecked) {
+	          siblingChecked += 0.5;
+	        }
+	      } else if (item.__checked) {
+	        siblingChecked++;
+	      } else if (item.__halfChecked) {
+	        siblingChecked += 0.5;
+	      }
+	    });
+	    var len = children.length;
+	    if (siblingChecked === len) {
+	      parent.__checked = true;
+	      checkedNodesPositions.push({ node: parent, pos: parent._pos });
+	    } else if (siblingChecked < len && siblingChecked > 0) {
+	      parent.__halfChecked = true;
+	    }
+	    if (parent.root) {
+	      return children;
+	    }
+	    return parent;
+	  }
+	  checkChildren(data);
+	  checkParent(data);
+	  // 清理掉私有数据
+	  checkedNodesPositions.forEach(function (i, index) {
+	    delete checkedNodesPositions[index].node.__checked;
+	    delete checkedNodesPositions[index].node._pos;
+	  });
+	  return checkedNodesPositions;
 	}
 
 /***/ },
