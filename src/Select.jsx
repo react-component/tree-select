@@ -11,7 +11,7 @@ import {
   UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
   preventDefaultEvent,
   getTreeNodesStates, flatToHierarchy, filterParentPosition,
-  isInclude, labelCompatible, loopAllChildren,
+  isInclude, labelCompatible, loopAllChildren, filterAllCheckedData,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import _TreeNode from './TreeNode';
@@ -702,6 +702,10 @@ const Select = React.createClass({
             vls.push(i);
           }
         });
+      }
+      if (ex.clear) {
+        const treeData = this.renderedTreeData || props.chilren;
+        ex.allCheckedNodes = flatToHierarchy(filterAllCheckedData(vals, treeData));
       }
       this._savedValue = isMultipleOrTags(props) ? vls : vls[0];
       props.onChange(this._savedValue, labs, ex);

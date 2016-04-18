@@ -168,23 +168,6 @@ export function loopAllChildren(childs, callback, parent) {
 //   loop(childs, 0);
 // }
 
-// 给每一个 children 节点，增加 prop
-export function recursiveCloneChildren(children, cb = ch => ch) {
-  return Array.from(children).map(child => {
-    const newChild = cb(child);
-    if (newChild && newChild.props.children) {
-      return React.cloneElement(newChild, {}, recursiveCloneChildren(newChild.props.children, cb));
-    }
-    return newChild;
-  });
-}
-// const newChildren = recursiveCloneChildren(children, child => {
-//   const extraProps = {
-//     _prop: true,
-//   };
-//   return React.cloneElement(child, extraProps);
-// });
-
 export function flatToHierarchy(arr) {
   if (!arr.length) {
     return arr;
@@ -389,4 +372,124 @@ export function getTreeNodesStates(children, values) {
   handleCheckState(treeNodesStates, filterParentPosition(checkedPositions.sort()), true);
 
   return getCheck(treeNodesStates, checkedPositions);
+}
+
+// 给每一个 children 节点，增加 prop
+export function recursiveCloneChildren(children, cb = ch => ch) {
+  return Array.from(children).map(child => {
+    const newChild = cb(child);
+    if (newChild && newChild.props.children) {
+      return React.cloneElement(newChild, {}, recursiveCloneChildren(newChild.props.children, cb));
+    }
+    return newChild;
+  });
+}
+// const newChildren = recursiveCloneChildren(children, child => {
+//   const extraProps = {
+//     _prop: true,
+//   };
+//   return React.cloneElement(child, extraProps);
+// });
+
+
+function recursiveGen(children, level = 0) {
+  return React.Children.map(children, (child, index) => {
+    const pos = `${level}-${index}`;
+    const o = {
+      title: child.props.title,
+      label: child.props.label || child.props.title,
+      value: child.props.value,
+      key: child.key,
+      _pos: pos,
+    };
+    if (child.props.children) {
+      o.children = recursiveGen(child.props.children, pos);
+    }
+    return o;
+  });
+}
+
+function recursive(children, cb) {
+  children.forEach(item => {
+    cb(item);
+    if (item.children) {
+      recursive(item.children, cb);
+    }
+  });
+}
+
+// 用于根据选择框里的 value 筛选初始的 tree 数据里全部选中项。
+// 规则是：某一项选中，则子项全选中；相邻节点全选中，则父节点选中。
+// 与 handleCheckState 部分功能重合，TODO：优化合并起来。
+export function filterAllCheckedData(vs, treeNodes) {
+  const vals = [...vs];
+  if (!vals.length) {
+    return vals;
+  }
+
+  const data = recursiveGen(treeNodes);
+  const checkedNodesPositions = [];
+
+  function checkChildren(children) {
+    children.forEach(item => {
+      if (item.__checked) {
+        return;
+      }
+      const ci = vals.indexOf(item.value);
+      const childs = item.children;
+      if (ci > -1) {
+        item.__checked = true;
+        checkedNodesPositions.push({ node: item, pos: item._pos });
+        vals.splice(ci, 1);
+        if (childs) {
+          recursive(childs, child => {
+            child.__checked = true;
+            checkedNodesPositions.push({ node: child, pos: child._pos });
+          });
+        }
+      } else {
+        if (childs) {
+          checkChildren(childs);
+        }
+      }
+    });
+  }
+
+  function checkParent(children, parent = { root: true }) {
+    let siblingChecked = 0;
+    children.forEach(item => {
+      const childs = item.children;
+      if (childs && !item.__checked && !item.__halfChecked) {
+        const p = checkParent(childs, item);
+        if (p.__checked) {
+          siblingChecked++;
+        } else if (p.__halfChecked) {
+          siblingChecked += 0.5;
+        }
+      } else if (item.__checked) {
+        siblingChecked++;
+      } else if (item.__halfChecked) {
+        siblingChecked += 0.5;
+      }
+    });
+    const len = children.length;
+    if (siblingChecked === len) {
+      parent.__checked = true;
+      checkedNodesPositions.push({ node: parent, pos: parent._pos });
+    } else if (siblingChecked < len && siblingChecked > 0) {
+      parent.__halfChecked = true;
+    }
+    if (parent.root) {
+      return children;
+    }
+    return parent;
+  }
+  checkChildren(data);
+  checkParent(data);
+  // 清理掉私有数据
+  checkedNodesPositions.forEach((i, index) => {
+    delete checkedNodesPositions[index].node.__checked;
+    delete checkedNodesPositions[index].node._pos;
+  });
+  return checkedNodesPositions;
 }
