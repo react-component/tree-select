@@ -486,10 +486,24 @@ export function filterAllCheckedData(vs, treeNodes) {
   }
   checkChildren(data);
   checkParent(data);
-  // 清理掉私有数据
+
   checkedNodesPositions.forEach((i, index) => {
+    // 清理掉私有数据
     delete checkedNodesPositions[index].node.__checked;
     delete checkedNodesPositions[index].node._pos;
+    // 封装出 props 和 onCheck 返回值一致
+    checkedNodesPositions[index].node.props = {
+      title: checkedNodesPositions[index].node.title,
+      label: checkedNodesPositions[index].node.label || checkedNodesPositions[index].node.title,
+      value: checkedNodesPositions[index].node.value,
+    };
+    if (checkedNodesPositions[index].node.children) {
+      checkedNodesPositions[index].node.props.children = checkedNodesPositions[index].node.children;
+    }
+    delete checkedNodesPositions[index].node.title;
+    delete checkedNodesPositions[index].node.label;
+    delete checkedNodesPositions[index].node.value;
+    delete checkedNodesPositions[index].node.children;
   });
   return checkedNodesPositions;
 }
