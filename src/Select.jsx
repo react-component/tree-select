@@ -9,7 +9,7 @@ import {
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
   isSingleMode, toArray, getTreeNodesStates,
   flatToHierarchy, filterParentPosition, isInclude,
-  labelCompatible,
+  labelCompatible, filterAllCheckedData,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import _TreeNode from './TreeNode';
@@ -563,6 +563,10 @@ const Select = React.createClass({
       const ex = {preValue: [...this.state.value]};
       if (extraInfo) {
         assign(ex, extraInfo);
+      }
+      if (ex.clear) {
+        const treeData = this.renderTreeData() || props.chilren;
+        ex.allCheckedNodes = flatToHierarchy(filterAllCheckedData(value, treeData));
       }
       props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label), ex);
     }
