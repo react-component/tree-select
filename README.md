@@ -98,9 +98,11 @@ online example: http://react-component.github.io/tree-select/
 
 
 ## note
-1. 大数据量下（5000个节点以上）优化建议：不要展开所有节点；一个页面不要同时存在许多个组件；不使用`treeCheckable`或使用`treeCheckStrictly`。
-2. 在`treeCheckable`模式下，已选择节点上的`x`删除操作、和相应 treeNode 节点上 checkbox 的 uncheck 操作，最终效果相同，但本质不一样。前者跟弹出的 tree 组件可以“毫无关系”（例如 dropdown 没展开过，tree 也就没渲染好），而后者是 tree 组件上的节点 uncheck 事件。所以、即便两者都会触发`onChange`方法、但它们的参数（第三个参数）是不同的。
-
+1. Optimization tips(when there are large amounts of data, like more than 5000 nodes)
+    - Do not Expand all nodes.
+    - Recommend not exist many `TreeSelect` components in a page at the same time.
+    - Recommend not use `treeCheckable` mode, or use `treeCheckStrictly`.
+2. In `treeCheckable` mode, It has the same effect when click `x`(node in Selection box) or uncheck in the treeNode(in dropdown panel), but the essence is not the same. So, even if both of them trigger `onChange` method, but the parameters (the third parameter) are different. （中文：在`treeCheckable`模式下，已选择节点上的`x`删除操作、和相应 treeNode 节点上 checkbox 的 uncheck 操作，最终效果相同，但本质不一样。前者跟弹出的 tree 组件可以“毫无关系”（例如 dropdown 没展开过，tree 也就没渲染好），而后者是 tree 组件上的节点 uncheck 事件。所以、即便两者都会触发`onChange`方法、但它们的参数（第三个参数）是不同的。）
 
 ## Test Case
 
