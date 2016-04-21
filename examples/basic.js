@@ -42,6 +42,7 @@ const Demo = React.createClass({
                     value={this.state.value}
                     treeData={gData}
                     treeNodeFilterProp="label"
+                    filterTreeNode={false}
                     onChange={this.onChange}
                     onSelect={this.onSelect} />
 
