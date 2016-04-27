@@ -20534,7 +20534,7 @@
 	          });
 	        }
 	        if (ex.clear) {
-	          var treeData = _this6.renderedTreeData || props.chilren;
+	          var treeData = _this6.renderedTreeData || props.children;
 	          ex.allCheckedNodes = (0, _util.flatToHierarchy)((0, _util.filterAllCheckedData)(vals, treeData));
 	        }
 	        _this6._savedValue = (0, _util.isMultipleOrTags)(props) ? vls : vls[0];
