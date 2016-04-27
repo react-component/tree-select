@@ -565,7 +565,7 @@ const Select = React.createClass({
         assign(ex, extraInfo);
       }
       if (ex.clear) {
-        const treeData = this.renderTreeData() || props.chilren;
+        const treeData = this.renderTreeData() || props.children;
         ex.allCheckedNodes = flatToHierarchy(filterAllCheckedData(value, treeData));
       }
       props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label), ex);
