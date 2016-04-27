@@ -704,7 +704,7 @@ const Select = React.createClass({
         });
       }
       if (ex.clear) {
-        const treeData = this.renderedTreeData || props.chilren;
+        const treeData = this.renderedTreeData || props.children;
         ex.allCheckedNodes = flatToHierarchy(filterAllCheckedData(vals, treeData));
       }
       this._savedValue = isMultipleOrTags(props) ? vls : vls[0];
