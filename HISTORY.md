@@ -1,6 +1,9 @@
 # History
 ---
 
+## 1.6.0-beta / 2016-05-03
+- add `treeDataSimpleMode` api.
+
 ## 1.5.2 / 2016-04-02
 - `skipHandleInitValue` is deprecated, use `treeCheckStrictly` instead.
 

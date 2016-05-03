@@ -13,6 +13,17 @@ const Demo = React.createClass({
       value: '0-0-0-value',
       // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
       multipleValue: [],
+      simpleTreeData: [
+        {'key': 1, 'pId': 0, 'label': 'test1'},
+        {'key': '1-1', 'pId': 0, 'label': 'test1'},
+        {'key': 11, 'pId': 1, 'label': 'test11'},
+        {'key': 12, 'pId': 1, 'label': 'test12'},
+        {'key': 111, 'pId': 11, 'label': 'test111'},
+      ],
+      treeDataSimpleMode: {
+        id: 'key',
+        rootPId: 0,
+      },
     };
   },
   onChange(value) {
@@ -67,6 +78,19 @@ const Demo = React.createClass({
                     value={this.state.value}
                     treeData={gData}
                     treeNodeFilterProp="title"
+                    treeCheckable showCheckedStrategy={SHOW_PARENT}
+                    onChange={this.onChange}
+                    onSelect={this.onSelect} />
+
+        <h2>use treeDataSimpleMode</h2>
+        <TreeSelect style={{width: 300}}
+                    dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+                    placeholder={<i>请下拉选择</i>}
+                    searchPlaceholder="please search"
+                    treeLine maxTagTextLength={10}
+                    value={this.state.value}
+                    treeData={this.state.simpleTreeData}
+                    treeDataSimpleMode={this.state.treeDataSimpleMode}
                     treeCheckable showCheckedStrategy={SHOW_PARENT}
                     onChange={this.onChange}
                     onSelect={this.onSelect} />

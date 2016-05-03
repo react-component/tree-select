@@ -507,3 +507,24 @@ export function filterAllCheckedData(vs, treeNodes) {
   });
   return checkedNodesPositions;
 }
+
+export function processSimpleTreeData(treeData, format) {
+  function unflatten2(array, parent = { [format.id]: format.rootPId }) {
+    const children = [];
+    for (let i = 0; i < array.length; i++) {
+      if (array[i][format.pId] === parent[format.id]) {
+        array[i].key = array[i][format.id];
+        children.push(array[i]);
+        array.splice(i--, 1);
+      }
+    }
+    if (children.length) {
+      parent.children = children;
+      children.forEach(child => unflatten2(array, child));
+    }
+    if (parent[format.id] === format.rootPId) {
+      return children;
+    }
+  }
+  return unflatten2(treeData);
+}

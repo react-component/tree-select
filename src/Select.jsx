@@ -12,6 +12,7 @@ import {
   preventDefaultEvent,
   getTreeNodesStates, flatToHierarchy, filterParentPosition,
   isInclude, labelCompatible, loopAllChildren, filterAllCheckedData,
+  processSimpleTreeData,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import _TreeNode from './TreeNode';
@@ -32,7 +33,7 @@ function loopTreeData(data, level = 0) {
     const pos = `${level}-${index}`;
     const props = {
       title: item.label,
-      value: item.value,
+      value: item.value || String(item.key || item.label),
       key: item.key || item.value || pos,
     };
     let ret;
@@ -91,6 +92,10 @@ const Select = React.createClass({
     treeNodeLabelProp: PropTypes.string,
     treeNodeFilterProp: PropTypes.string,
     treeData: PropTypes.array,
+    treeDataSimpleMode: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.object,
+    ]),
     loadData: PropTypes.func,
   },
 
@@ -118,6 +123,7 @@ const Select = React.createClass({
       treeCheckStrictly: false,
       treeIcon: false,
       treeLine: false,
+      treeDataSimpleMode: false,
       treeDefaultExpandAll: false,
       treeCheckable: false,
       treeNodeFilterProp: 'value',
@@ -795,7 +801,20 @@ const Select = React.createClass({
         return this.renderedTreeData;
       }
       this._cachetreeData = false;
-      return loopTreeData(validProps.treeData);
+      let treeData = validProps.treeData;
+      // process treeDataSimpleMode
+      if (validProps.treeDataSimpleMode) {
+        const simpleFormat = {
+          id: 'id',
+          pId: 'pId',
+          rootPId: null,
+        };
+        if (Object.prototype.toString.call(validProps.treeDataSimpleMode) === '[object Object]') {
+          assign(simpleFormat, validProps.treeDataSimpleMode);
+        }
+        treeData = processSimpleTreeData(validProps.treeData, simpleFormat);
+      }
+      return loopTreeData(treeData);
     }
   },
 
