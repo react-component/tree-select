@@ -83,7 +83,7 @@ online example: http://react-component.github.io/tree-select/
 |treeNodeFilterProp | which prop value of treeNode will be used for filter if filterTreeNode return true | String | 'value' |
 |treeNodeLabelProp | which prop value of treeNode will render as content of select | String | 'title' |
 |treeData | treeNodes data Array, if set it then you need not to construct children TreeNode. (if value is not unique of the whole array, you must provide `key` as unique id) | array<{value, label, children}> | [] |
-|treeDataSimpleMode | simple format of treeData. like: [{"id":1, "pId":0, "label":"test1"},...] | bool/object{id:'id', pId:'pId', rootPId:null} | false |
+|treeDataSimpleMode | enable simple mode of treeData.(treeData should be like this: [{"id":1, "pId":0, "label":"test1"},...], `pId` is parent node's id) | bool/object{id:'id', pId:'pId', rootPId:null} | false |
 |loadData | load data asynchronously | function(node) | - |
 
 ### TreeNode props
