@@ -459,7 +459,8 @@ const Select = React.createClass({
       checkedValues = mapVal(checkedTreeNodes);
     } else if (props.showCheckedStrategy === SHOW_PARENT) {
       const posArr = filterParentPosition(checkedTreeNodes.map(itemObj => itemObj.pos));
-      checkedValues = mapVal(checkedTreeNodes.filter(itemObj => posArr.indexOf(itemObj.pos) !== -1));
+      this.checkedTreeNodes = checkedTreeNodes.filter(itemObj => posArr.indexOf(itemObj.pos) !== -1);
+      checkedValues = mapVal(this.checkedTreeNodes);
     } else {
       checkedValues = mapVal(checkedTreeNodes.filter(itemObj => !itemObj.node.props.children));
     }
@@ -487,10 +488,10 @@ const Select = React.createClass({
       }
       newVals.push(itemObj.node.props.value);
     });
-    const label = this.state.label.concat();
+    const label = [];
     this.state.value.forEach((val, index) => {
-      if (newVals.indexOf(val) === -1) {
-        label.splice(index, 1);
+      if (newVals.indexOf(val) > -1) {
+        label.push(this.state.label[index]);
       }
     });
     this.fireChange(newVals, label, {triggerValue: selectedValue, clear: true});
@@ -565,7 +566,7 @@ const Select = React.createClass({
       if (extraInfo) {
         assign(ex, extraInfo);
       }
-      if (ex.clear) {
+      if (ex.clear && props.treeCheckable) {
         const treeData = this.renderTreeData() || props.children;
         ex.allCheckedNodes = flatToHierarchy(filterAllCheckedData(value, treeData));
       }
