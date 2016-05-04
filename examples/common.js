@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		4:0
+/******/ 		3:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"basic","1":"big-data","2":"dynamic","3":"form"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"basic","1":"dynamic","2":"form"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -19817,7 +19817,7 @@
 	    var pos = level + '-' + index;
 	    var props = {
 	      title: item.label,
-	      value: item.value || String(item.key || item.label),
+	      value: item.value,
 	      key: item.key || item.value || pos
 	    };
 	    var ret = undefined;
@@ -19855,21 +19855,18 @@
 	    onClick: _react.PropTypes.func,
 	    onChange: _react.PropTypes.func,
 	    onSelect: _react.PropTypes.func,
-	    onDeselect: _react.PropTypes.func,
 	    onSearch: _react.PropTypes.func,
 	    searchPlaceholder: _react.PropTypes.string,
 	    placeholder: _react.PropTypes.any,
-	    value: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.string, _react.PropTypes.object]),
-	    defaultValue: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.string, _react.PropTypes.object]),
-	    label: _react.PropTypes.any,
-	    defaultLabel: _react.PropTypes.any,
-	    labelInValue: _react.PropTypes.bool,
+	    value: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.string]),
+	    defaultValue: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.string]),
+	    label: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.any]),
+	    defaultLabel: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.any]),
 	    dropdownStyle: _react.PropTypes.object,
 	    drodownPopupAlign: _react.PropTypes.object,
 	    maxTagTextLength: _react.PropTypes.number,
 	    showCheckedStrategy: _react.PropTypes.oneOf([SHOW_ALL, SHOW_PARENT, SHOW_CHILD]),
-	    // skipHandleInitValue: PropTypes.bool, // Deprecated (use treeCheckStrictly)
-	    treeCheckStrictly: _react.PropTypes.bool,
+	    skipHandleInitValue: _react.PropTypes.bool,
 	    treeIcon: _react.PropTypes.bool,
 	    treeLine: _react.PropTypes.bool,
 	    treeDefaultExpandAll: _react.PropTypes.bool,
@@ -19877,7 +19874,6 @@
 	    treeNodeLabelProp: _react.PropTypes.string,
 	    treeNodeFilterProp: _react.PropTypes.string,
 	    treeData: _react.PropTypes.array,
-	    treeDataSimpleMode: _react.PropTypes.oneOfType([_react.PropTypes.bool, _react.PropTypes.object]),
 	    loadData: _react.PropTypes.func
 	  },
 	
@@ -19889,23 +19885,19 @@
 	      allowClear: false,
 	      placeholder: '',
 	      searchPlaceholder: '',
-	      labelInValue: false,
 	      defaultValue: [],
 	      onClick: noop,
 	      onChange: noop,
 	      onSelect: noop,
-	      onDeselect: noop,
 	      onSearch: noop,
 	      showArrow: true,
 	      dropdownMatchSelectWidth: true,
 	      dropdownStyle: {},
 	      notFoundContent: 'Not Found',
 	      showCheckedStrategy: SHOW_CHILD,
-	      // skipHandleInitValue: false, // Deprecated (use treeCheckStrictly)
-	      treeCheckStrictly: false,
+	      skipHandleInitValue: false,
 	      treeIcon: false,
 	      treeLine: false,
-	      treeDataSimpleMode: false,
 	      treeDefaultExpandAll: false,
 	      treeCheckable: false,
 	      treeNodeFilterProp: 'value',
@@ -19921,49 +19913,34 @@
 	    } else {
 	      value = (0, _util.toArray)(props.defaultValue);
 	    }
-	    // save parsed treeData, for performance (treeData may be very big)
-	    this.renderedTreeData = this.renderTreeData();
-	    value = this.addLabelToValue(props, value);
-	    value = this.getValue(props, value);
-	    var inputValue = '';
-	    // if (props.combobox) {
-	    //   inputValue = value.length ? String(value[0].value) : '';
-	    // }
-	    this.saveInputRef = saveRef.bind(this, 'inputInstance');
-	    var open = props.open;
-	    if (open === undefined) {
-	      open = props.defaultOpen;
+	    if (props.treeCheckable && !props.skipHandleInitValue) {
+	      value = this.getValue((0, _util.getTreeNodesStates)(this.renderTreeData() || props.children, value).checkedTreeNodes);
 	    }
-	    return {
-	      value: value,
-	      inputValue: inputValue,
-	      open: open,
-	      focused: false
-	    };
+	    var label = this.getLabelFromProps(props, value, 1);
+	    var inputValue = '';
+	    if (props.combobox) {
+	      inputValue = value[0] || '';
+	    }
+	    this.saveInputRef = saveRef.bind(this, 'inputInstance');
+	    return { value: value, inputValue: inputValue, label: label };
 	  },
 	
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    if ('value' in nextProps) {
-	      if (this._cacheTreeNodesStates !== 'no' && this._savedValue && nextProps.value === this._savedValue) {
-	        // 只处理用户直接 在 onChange 里 this.setState({value}); 并且是同一个对象引用。
-	        // 后续可以对比对象里边的值。
-	        this._cacheTreeNodesStates = true;
-	      } else {
-	        this._cacheTreeNodesStates = false;
-	      }
 	      var value = (0, _util.toArray)(nextProps.value);
-	      // save parsed treeData, for performance (treeData may be very big)
-	      this.renderedTreeData = this.renderTreeData(nextProps);
-	      value = this.addLabelToValue(nextProps, value);
-	      value = this.getValue(nextProps, value);
+	      if (nextProps.treeCheckable && !nextProps.skipHandleInitValue) {
+	        value = this.getValue((0, _util.getTreeNodesStates)(this.renderTreeData(nextProps) || nextProps.children, value).checkedTreeNodes);
+	      }
+	      var label = this.getLabelFromProps(nextProps, value);
 	      this.setState({
-	        value: value
+	        value: value,
+	        label: label
 	      });
-	      // if (nextProps.combobox) {
-	      //   this.setState({
-	      //     inputValue: value.length ? String(value[0].key) : '',
-	      //   });
-	      // }
+	      if (nextProps.combobox) {
+	        this.setState({
+	          inputValue: value[0] || ''
+	        });
+	      }
 	    }
 	  },
 	
@@ -19982,7 +19959,6 @@
 	  },
 	
 	  componentWillUnmount: function componentWillUnmount() {
-	    this.clearDelayTimer();
 	    if (this.dropdownContainer) {
 	      _reactDom2['default'].unmountComponentAtNode(this.dropdownContainer);
 	      document.body.removeChild(this.dropdownContainer);
@@ -19993,24 +19969,17 @@
 	  onInputChange: function onInputChange(event) {
 	    var val = event.target.value;
 	    var props = this.props;
-	
 	    this.setState({
 	      inputValue: val,
 	      open: true
 	    });
-	    // if (isCombobox(props)) {
-	    //   this.fireChange([{
-	    //     value: val,
-	    //   }]);
-	    // }
+	    if ((0, _util.isCombobox)(props)) {
+	      this.fireChange([val], [val]);
+	    }
 	    props.onSearch(val);
 	  },
 	
 	  onDropdownVisibleChange: function onDropdownVisibleChange(open) {
-	    // selection inside combobox cause click
-	    if (!open && document.activeElement === this.getInputDOMNode()) {
-	      // return;
-	    }
 	    this.setOpenState(open);
 	  },
 	
@@ -20029,32 +19998,21 @@
 	    }
 	  },
 	
-	  onInputBlur: function onInputBlur() {
-	    // if (isMultipleOrTagsOrCombobox(this.props)) {
-	    //   return;
-	    // }
-	    // this.clearDelayTimer();
-	    // this.delayTimer = setTimeout(() => {
-	    //   this.setOpenState(false);
-	    // }, 150);
-	  },
-	
 	  onInputKeyDown: function onInputKeyDown(event) {
 	    var props = this.props;
-	    if (props.disabled) {
-	      return;
-	    }
 	    var state = this.state;
 	    var keyCode = event.keyCode;
 	    if ((0, _util.isMultipleOrTags)(props) && !event.target.value && keyCode === _rcUtil.KeyCode.BACKSPACE) {
 	      var value = state.value.concat();
 	      if (value.length) {
-	        var popValue = value.pop();
-	        props.onDeselect(this.isLabelInValue() ? popValue : popValue.key);
-	        this.fireChange(value);
+	        var label = state.label.concat();
+	        value.pop();
+	        label.pop();
+	        this.fireChange(value, label);
 	      }
 	      return;
 	    }
+	
 	    if (keyCode === _rcUtil.KeyCode.DOWN) {
 	      if (!state.open) {
 	        this.openIfHasChildren();
@@ -20083,55 +20041,67 @@
 	  onSelect: function onSelect(selectedKeys, info) {
 	    var _this = this;
 	
+	    var checkEvt = info.event === 'check';
 	    if (info.selected === false) {
 	      this.onDeselect(info);
 	      return;
 	    }
 	    var item = info.node;
 	    var value = this.state.value;
+	    var label = this.state.label;
 	    var props = this.props;
 	    var selectedValue = (0, _util.getValuePropValue)(item);
 	    var selectedLabel = this.getLabelFromNode(item);
-	    var event = selectedValue;
-	    if (this.isLabelInValue()) {
-	      event = {
-	        value: event,
-	        label: selectedLabel
-	      };
-	    }
-	    props.onSelect(event, item, info);
-	    var checkEvt = info.event === 'check';
+	    props.onSelect(selectedValue, item);
 	    if ((0, _util.isMultipleOrTags)(props)) {
 	      if (checkEvt) {
-	        value = this.getCheckedNodes(info, props).map(function (n) {
-	          return {
-	            value: (0, _util.getValuePropValue)(n),
-	            label: _this.getLabelFromNode(n)
-	          };
+	        // TODO treeCheckable does not support tags/dynamic
+	        var checkedNodes = info.checkedNodes;
+	
+	        var checkedNodesPositions = info.checkedNodesPositions;
+	        if (props.showCheckedStrategy === SHOW_ALL) {
+	          checkedNodes = checkedNodes;
+	        } else if (props.showCheckedStrategy === SHOW_PARENT) {
+	          (function () {
+	            var posArr = (0, _util.filterParentPosition)(checkedNodesPositions.map(function (itemObj) {
+	              return itemObj.pos;
+	            }));
+	            checkedNodes = checkedNodesPositions.filter(function (itemObj) {
+	              return posArr.indexOf(itemObj.pos) !== -1;
+	            }).map(function (itemObj) {
+	              return itemObj.node;
+	            });
+	          })();
+	        } else {
+	          checkedNodes = checkedNodes.filter(function (n) {
+	            return !n.props.children;
+	          });
+	        }
+	        value = checkedNodes.map(function (n) {
+	          return (0, _util.getValuePropValue)(n);
+	        });
+	        label = checkedNodes.map(function (n) {
+	          return _this.getLabelFromNode(n);
 	        });
 	      } else {
-	        if ((0, _util.findIndexInValueByKey)(value, selectedValue) !== -1) {
+	        if (value.indexOf(selectedValue) !== -1) {
 	          return;
 	        }
-	        value = value.concat([{
-	          value: selectedValue,
-	          label: selectedLabel
-	        }]);
+	        value = value.concat([selectedValue]);
+	        label = label.concat([selectedLabel]);
 	      }
-	      // if (!checkEvt && value.indexOf(selectedValue) !== -1) {
-	      // 设置 multiple 时会有bug。（isValueChange 已有检查，此处注释掉）
-	      // return;
-	      // }
+	      if (!checkEvt && value.indexOf(selectedValue) !== -1) {
+	        // 设置 multiple 时会有bug。（isValueChange 已有检查，此处注释掉）
+	        // return;
+	      }
 	    } else {
-	        if (value.length && value[0].value === selectedValue) {
-	          this.setOpenState(false, true);
+	        if (value[0] === selectedValue) {
+	          this.setOpenState(false);
 	          return;
 	        }
-	        value = [{
-	          value: selectedValue,
-	          label: selectedLabel
-	        }];
-	        this.setOpenState(false, true);
+	        value = [selectedValue];
+	        label = [selectedLabel];
+	        this.setOpenState(false);
 	      }
 	
 	    var extraInfo = {
@@ -20140,23 +20110,21 @@
 	    };
 	    if (checkEvt) {
 	      extraInfo.checked = info.checked;
-	      extraInfo.allCheckedNodes = props.treeCheckStrictly ? info.checkedNodes : (0, _util.flatToHierarchy)(info.checkedNodesPositions);
-	      this._checkedNodes = info.checkedNodesPositions;
-	      var _tree = this.refs.trigger.popupEle;
-	      this._treeNodesStates = _tree.checkKeys;
+	      // extraInfo.allCheckedNodes = info.checkedNodes;
+	      extraInfo.allCheckedNodes = (0, _util.flatToHierarchy)(info.checkedNodesPositions);
 	    } else {
 	      extraInfo.selected = info.selected;
 	    }
 	
-	    this.fireChange(value, extraInfo);
+	    this.fireChange(value, label, extraInfo);
 	    this.setState({
 	      inputValue: ''
 	    });
-	    // if (isCombobox(props)) {
-	    //   this.setState({
-	    //     inputValue: getPropValue(item, props.treeNodeLabelProp),
-	    //   });
-	    // }
+	    if ((0, _util.isCombobox)(props)) {
+	      this.setState({
+	        inputValue: (0, _util.getPropValue)(item, props.treeNodeLabelProp)
+	      });
+	    }
 	  },
 	
 	  onDeselect: function onDeselect(info) {
@@ -20173,18 +20141,6 @@
 	    this.getInputDOMNode().focus();
 	  },
 	
-	  onOuterFocus: function onOuterFocus() {
-	    this.setState({
-	      focused: true
-	    });
-	  },
-	
-	  onOuterBlur: function onOuterBlur() {
-	    this.setState({
-	      focused: false
-	    });
-	  },
-	
 	  onClearSelection: function onClearSelection(event) {
 	    var props = this.props;
 	    var state = this.state;
@@ -20193,7 +20149,7 @@
 	    }
 	    event.stopPropagation();
 	    if (state.inputValue || state.value.length) {
-	      this.fireChange([]);
+	      this.fireChange([], []);
 	      this.setOpenState(false);
 	      this.setState({
 	        inputValue: ''
@@ -20201,26 +20157,60 @@
 	    }
 	  },
 	
-	  getLabelFromNode: function getLabelFromNode(child) {
-	    return (0, _util.getPropValue)(child, this.props.treeNodeLabelProp);
-	  },
-	
-	  getLabelFromProps: function getLabelFromProps(props, value) {
+	  getLabelBySingleValue: function getLabelBySingleValue(children, value) {
 	    var _this2 = this;
 	
 	    if (value === undefined) {
 	      return null;
 	    }
 	    var label = null;
-	    (0, _util.loopAllChildren)(this.renderedTreeData || props.children, function (item) {
-	      if ((0, _util.getValuePropValue)(item) === value) {
-	        label = _this2.getLabelFromNode(item);
-	      }
-	    });
-	    if (label === null) {
-	      return value;
+	    var loop = function loop(childs) {
+	      _react2['default'].Children.forEach(childs, function (item) {
+	        if (item.props.children) {
+	          loop(item.props.children);
+	        }
+	        if ((0, _util.getValuePropValue)(item) === value) {
+	          label = _this2.getLabelFromNode(item);
+	        }
+	      });
+	    };
+	    loop(children, 0);
+	    return label;
+	  },
+	
+	  getLabelFromNode: function getLabelFromNode(child) {
+	    return (0, _util.getPropValue)(child, this.props.treeNodeLabelProp);
+	  },
+	
+	  getLabelFromProps: function getLabelFromProps(props, value, init) {
+	    var label = [];
+	    if ('label' in props) {
+	      label = (0, _util.toArray)(props.label);
+	    } else if (init && 'defaultLabel' in props) {
+	      label = (0, _util.toArray)(props.defaultLabel);
+	    } else {
+	      label = this.getLabelByValue(this.renderTreeData(props) || props.children, value);
 	    }
 	    return label;
+	  },
+	
+	  getVLForOnChange: function getVLForOnChange(vls) {
+	    if (vls !== undefined) {
+	      return (0, _util.isMultipleOrTags)(this.props) ? vls : vls[0];
+	    }
+	    return vls;
+	  },
+	
+	  getLabelByValue: function getLabelByValue(children, values) {
+	    var _this3 = this;
+	
+	    return values.map(function (value) {
+	      var label = _this3.getLabelBySingleValue(children, value);
+	      if (label === null) {
+	        return value;
+	      }
+	      return label;
+	    });
 	  },
 	
 	  getDropdownContainer: function getDropdownContainer() {
@@ -20233,21 +20223,14 @@
 	
 	  getSearchPlaceholderElement: function getSearchPlaceholderElement(hidden) {
 	    var props = this.props;
-	    var placeholder = undefined;
-	    if ((0, _util.isMultipleOrTagsOrCombobox)(props)) {
-	      placeholder = props.placeholder || props.searchPlaceholder;
-	    } else {
-	      placeholder = props.searchPlaceholder;
-	    }
-	    if (placeholder) {
+	    if (props.searchPlaceholder) {
 	      return _react2['default'].createElement(
 	        'span',
 	        {
 	          style: { display: hidden ? 'none' : 'block' },
 	          onClick: this.onPlaceholderClick,
-	          className: props.prefixCls + '-search__field__placeholder'
-	        },
-	        placeholder
+	          className: props.prefixCls + '-search__field__placeholder' },
+	        props.searchPlaceholder
 	      );
 	    }
 	    return null;
@@ -20258,16 +20241,13 @@
 	    return _react2['default'].createElement(
 	      'span',
 	      { className: props.prefixCls + '-search__field__wrap' },
-	      _react2['default'].createElement('input', {
-	        ref: this.saveInputRef,
-	        onBlur: this.onInputBlur,
+	      _react2['default'].createElement('input', { ref: this.saveInputRef,
 	        onChange: this.onInputChange,
 	        onKeyDown: this.onInputKeyDown,
 	        value: this.state.inputValue,
 	        disabled: props.disabled,
 	        className: props.prefixCls + '-search__field',
-	        role: 'textbox'
-	      }),
+	        role: 'textbox' }),
 	      (0, _util.isMultipleOrTags)(props) ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)
 	    );
 	  },
@@ -20284,93 +20264,40 @@
 	    return this.refs.trigger.getPopupEleRefs();
 	  },
 	
-	  getValue: function getValue(_props, val) {
-	    var _this3 = this;
+	  getValue: function getValue(checkedTreeNodes) {
+	    var _this4 = this;
 	
-	    var value = val;
-	    if (_props.treeCheckable && _props.treeCheckStrictly) {
-	      this.halfCheckedValues = [];
-	      value = [];
-	      val.forEach(function (i) {
-	        if (!i.halfChecked) {
-	          value.push(i);
-	        } else {
-	          _this3.halfCheckedValues.push(i);
-	        }
-	      });
-	    }
-	    if (!(_props.treeCheckable && !_props.treeCheckStrictly)) {
-	      return value;
-	    }
-	    var checkedTreeNodes = undefined;
-	    if (this._cachetreeData && this._cacheTreeNodesStates && this._checkedNodes) {
-	      this.checkedTreeNodes = checkedTreeNodes = this._checkedNodes;
-	    } else {
-	      // getTreeNodesStates 耗时，做缓存处理。
-	      this._treeNodesStates = (0, _util.getTreeNodesStates)(this.renderedTreeData || _props.children, value.map(function (item) {
-	        return item.value;
-	      }));
-	      this.checkedTreeNodes = checkedTreeNodes = this._treeNodesStates.checkedNodes;
-	    }
-	    var mapLabVal = function mapLabVal(arr) {
+	    this.checkedTreeNodes = checkedTreeNodes;
+	    var mapVal = function mapVal(arr) {
 	      return arr.map(function (itemObj) {
-	        return {
-	          value: (0, _util.getValuePropValue)(itemObj.node),
-	          label: (0, _util.getPropValue)(itemObj.node, _props.treeNodeLabelProp)
-	        };
+	        return (0, _util.getValuePropValue)(itemObj.node);
 	      });
 	    };
 	    var props = this.props;
 	    var checkedValues = [];
 	    if (props.showCheckedStrategy === SHOW_ALL) {
-	      checkedValues = mapLabVal(checkedTreeNodes);
+	      checkedValues = mapVal(checkedTreeNodes);
 	    } else if (props.showCheckedStrategy === SHOW_PARENT) {
 	      (function () {
 	        var posArr = (0, _util.filterParentPosition)(checkedTreeNodes.map(function (itemObj) {
 	          return itemObj.pos;
 	        }));
-	        checkedValues = mapLabVal(checkedTreeNodes.filter(function (itemObj) {
+	        _this4.checkedTreeNodes = checkedTreeNodes.filter(function (itemObj) {
 	          return posArr.indexOf(itemObj.pos) !== -1;
-	        }));
+	        });
+	        checkedValues = mapVal(_this4.checkedTreeNodes);
 	      })();
 	    } else {
-	      checkedValues = mapLabVal(checkedTreeNodes.filter(function (itemObj) {
+	      checkedValues = mapVal(checkedTreeNodes.filter(function (itemObj) {
 	        return !itemObj.node.props.children;
 	      }));
 	    }
 	    return checkedValues;
 	  },
 	
-	  getCheckedNodes: function getCheckedNodes(info, props) {
-	    // TODO treeCheckable does not support tags/dynamic
-	    var checkedNodes = info.checkedNodes;
-	
-	    if (props.treeCheckStrictly) {
-	      return checkedNodes;
-	    }
-	    var checkedNodesPositions = info.checkedNodesPositions;
-	    if (props.showCheckedStrategy === SHOW_ALL) {
-	      checkedNodes = checkedNodes;
-	    } else if (props.showCheckedStrategy === SHOW_PARENT) {
-	      (function () {
-	        var posArr = (0, _util.filterParentPosition)(checkedNodesPositions.map(function (itemObj) {
-	          return itemObj.pos;
-	        }));
-	        checkedNodes = checkedNodesPositions.filter(function (itemObj) {
-	          return posArr.indexOf(itemObj.pos) !== -1;
-	        }).map(function (itemObj) {
-	          return itemObj.node;
-	        });
-	      })();
-	    } else {
-	      checkedNodes = checkedNodes.filter(function (n) {
-	        return !n.props.children;
-	      });
-	    }
-	    return checkedNodes;
-	  },
-	
 	  getDeselectedValue: function getDeselectedValue(selectedValue) {
+	    var _this5 = this;
+	
 	    var checkedTreeNodes = this.checkedTreeNodes;
 	    var unCheckPos = undefined;
 	    checkedTreeNodes.forEach(function (itemObj) {
@@ -20389,106 +20316,53 @@
 	      }
 	      newVals.push(itemObj.node.props.value);
 	    });
-	    var nv = this.state.value.filter(function (val) {
-	      return newVals.indexOf(val.value) !== -1;
+	    var label = [];
+	    this.state.value.forEach(function (val, index) {
+	      if (newVals.indexOf(val) > -1) {
+	        label.push(_this5.state.label[index]);
+	      }
 	    });
-	    this.fireChange(nv, { triggerValue: selectedValue, clear: true });
+	    this.fireChange(newVals, label, { triggerValue: selectedValue, clear: true });
 	  },
 	
-	  setOpenState: function setOpenState(open, needFocus) {
-	    var _this4 = this;
+	  setOpenState: function setOpenState(open) {
+	    var _this6 = this;
 	
-	    this.clearDelayTimer();
-	    var props = this.props;
 	    var refs = this.refs;
-	
-	    // can not optimize, if children is empty
-	    // if (this.state.open === open) {
-	    //   return;
-	    // }
 	    this.setState({
 	      open: open
 	    }, function () {
-	      if (needFocus || open) {
-	        if (open || (0, _util.isMultipleOrTagsOrCombobox)(props)) {
-	          var input = _this4.getInputDOMNode();
-	          if (input && document.activeElement !== input) {
-	            input.focus();
-	          }
-	        } else if (refs.selection) {
-	          refs.selection.focus();
+	      if (open || (0, _util.isMultipleOrTagsOrCombobox)(_this6.props)) {
+	        if (_this6.getInputDOMNode()) {
+	          _this6.getInputDOMNode().focus();
 	        }
+	      } else if (refs.selection) {
+	        refs.selection.focus();
 	      }
 	    });
 	  },
 	
-	  addLabelToValue: function addLabelToValue(props, value_) {
-	    var _this5 = this;
-	
-	    var value = value_;
-	    if (this.isLabelInValue()) {
-	      value.forEach(function (v, i) {
-	        if (Object.prototype.toString.call(value[i]) !== '[object Object]') {
-	          value[i] = {
-	            value: '',
-	            label: ''
-	          };
-	          return;
-	        }
-	        v.label = v.label || _this5.getLabelFromProps(props, v.value);
-	      });
-	    } else {
-	      value = value.map(function (v) {
-	        return {
-	          value: v,
-	          label: _this5.getLabelFromProps(props, v)
-	        };
-	      });
-	    }
-	    return value;
-	  },
-	
-	  clearDelayTimer: function clearDelayTimer() {
-	    if (this.delayTimer) {
-	      clearTimeout(this.delayTimer);
-	      this.delayTimer = null;
-	    }
-	  },
-	
-	  removeSelected: function removeSelected(selectedVal) {
+	  removeSelected: function removeSelected(selectedValue, e) {
 	    var props = this.props;
 	    if (props.disabled) {
 	      return;
 	    }
-	    this._cacheTreeNodesStates = 'no';
-	    if (props.treeCheckable && (props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT) && !props.treeCheckStrictly) {
-	      this.getDeselectedValue(selectedVal);
+	    if (e) {
+	      e.stopPropagation();
+	    }
+	    if (props.treeCheckable && (props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT) && !props.skipHandleInitValue) {
+	      this.getDeselectedValue(selectedValue);
 	      return;
 	    }
-	    // if (props.treeCheckable) {
-	    //   // 在 treeCheckable 时，相当于触发节点的 check(uncheck) 事件，
-	    //   // 但假如 dropdown 没展开过，tree 也就没渲染好，触发不了tree内部方法。
-	    // }
-	    var label = undefined;
+	    var label = this.state.label.concat();
+	    var index = this.state.value.indexOf(selectedValue);
 	    var value = this.state.value.filter(function (singleValue) {
-	      if (singleValue.value === selectedVal) {
-	        label = singleValue.label;
-	      }
-	      return singleValue.value !== selectedVal;
+	      return singleValue !== selectedValue;
 	    });
-	    var canMultiple = (0, _util.isMultipleOrTags)(props);
-	
-	    if (canMultiple) {
-	      var _event = selectedVal;
-	      if (this.isLabelInValue()) {
-	        _event = {
-	          value: selectedVal,
-	          label: label
-	        };
-	      }
-	      props.onDeselect(_event);
+	    if (index !== -1) {
+	      label.splice(index, 1);
 	    }
-	    this.fireChange(value, { triggerValue: selectedVal, clear: true });
+	    this.fireChange(value, label, { triggerValue: selectedValue, clear: true });
 	  },
 	
 	  openIfHasChildren: function openIfHasChildren() {
@@ -20498,74 +20372,42 @@
 	    }
 	  },
 	
-	  fireChange: function fireChange(value, extraInfo) {
-	    var _this6 = this;
+	  isValueChange: function isValueChange(value) {
+	    var sv = this.state.value;
+	    if (typeof sv === 'string') {
+	      sv = [sv];
+	    }
+	    if (value.length !== sv.length || !value.every(function (val, index) {
+	      return sv[index] === val;
+	    })) {
+	      return true;
+	    }
+	  },
 	
+	  fireChange: function fireChange(value, label, extraInfo) {
 	    var props = this.props;
 	    if (!('value' in props)) {
 	      this.setState({
-	        value: value
+	        value: value, label: label
 	      });
 	    }
-	    var vals = value.map(function (i) {
-	      return i.value;
-	    });
-	    var sv = this.state.value.map(function (i) {
-	      return i.value;
-	    });
-	    if (vals.length !== sv.length || !vals.every(function (val, index) {
-	      return sv[index] === val;
-	    })) {
-	      (function () {
-	        var ex = { preValue: [].concat(_toConsumableArray(_this6.state.value)) };
-	        if (extraInfo) {
-	          (0, _objectAssign2['default'])(ex, extraInfo);
-	        }
-	        var labs = null;
-	        var vls = value;
-	        if (!_this6.isLabelInValue()) {
-	          labs = value.map(function (i) {
-	            return i.label;
-	          });
-	          vls = vls.map(function (v) {
-	            return v.value;
-	          });
-	        } else if (_this6.halfCheckedValues.length) {
-	          _this6.halfCheckedValues.forEach(function (i) {
-	            if (!vls.some(function (v) {
-	              return v.value === i.value;
-	            })) {
-	              vls.push(i);
-	            }
-	          });
-	        }
-	        if (ex.clear && props.treeCheckable) {
-	          var treeData = _this6.renderedTreeData || props.children;
-	          ex.allCheckedNodes = (0, _util.flatToHierarchy)((0, _util.filterAllCheckedData)(vals, treeData));
-	        }
-	        _this6._savedValue = (0, _util.isMultipleOrTags)(props) ? vls : vls[0];
-	        props.onChange(_this6._savedValue, labs, ex);
-	      })();
+	    if (this.isValueChange(value)) {
+	      var ex = { preValue: [].concat(_toConsumableArray(this.state.value)) };
+	      if (extraInfo) {
+	        (0, _objectAssign2['default'])(ex, extraInfo);
+	      }
+	      if (ex.clear && props.treeCheckable) {
+	        var treeData = this.renderTreeData() || props.children;
+	        ex.allCheckedNodes = (0, _util.flatToHierarchy)((0, _util.filterAllCheckedData)(value, treeData));
+	      }
+	      props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label), ex);
 	    }
 	  },
-	
-	  isLabelInValue: function isLabelInValue() {
-	    var _props2 = this.props;
-	    var treeCheckable = _props2.treeCheckable;
-	    var treeCheckStrictly = _props2.treeCheckStrictly;
-	    var labelInValue = _props2.labelInValue;
-	
-	    if (treeCheckable && treeCheckStrictly) {
-	      return true;
-	    }
-	    return labelInValue || false;
-	  },
-	
 	  renderTopControlNode: function renderTopControlNode() {
 	    var _this7 = this;
 	
 	    var value = this.state.value;
-	
+	    var label = this.state.label;
 	    var props = this.props;
 	    var choiceTransitionName = props.choiceTransitionName;
 	    var prefixCls = props.prefixCls;
@@ -20573,19 +20415,18 @@
 	
 	    // single and not combobox, input is inside dropdown
 	    if ((0, _util.isSingleMode)(props)) {
-	      var innerNode = _react2['default'].createElement(
+	      var placeholder = _react2['default'].createElement(
 	        'span',
-	        {
-	          key: 'placeholder',
-	          className: prefixCls + '-selection__placeholder'
-	        },
+	        { key: 'placeholder',
+	          className: prefixCls + '-selection__placeholder' },
 	        props.placeholder
 	      );
-	      if (value.length) {
+	      var innerNode = placeholder;
+	      if (this.state.label[0]) {
 	        innerNode = _react2['default'].createElement(
 	          'span',
 	          { key: 'value' },
-	          value[0].label
+	          this.state.label[0]
 	        );
 	      }
 	      return _react2['default'].createElement(
@@ -20597,51 +20438,39 @@
 	
 	    var selectedValueNodes = [];
 	    if ((0, _util.isMultipleOrTags)(props)) {
-	      selectedValueNodes = value.map(function (singleValue) {
-	        var content = singleValue.label;
+	      selectedValueNodes = value.map(function (singleValue, index) {
+	        var content = label[index];
 	        var title = content;
 	        if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
 	          content = content.slice(0, maxTagTextLength) + '...';
 	        }
 	        return _react2['default'].createElement(
 	          'li',
-	          _extends({
-	            style: _util.UNSELECTABLE_STYLE
-	          }, _util.UNSELECTABLE_ATTRIBUTE, {
-	            onMouseDown: _util.preventDefaultEvent,
-	            className: prefixCls + '-selection__choice',
-	            key: singleValue.value,
-	            title: title
-	          }),
-	          _react2['default'].createElement('span', {
-	            className: prefixCls + '-selection__choice__remove',
-	            onClick: _this7.removeSelected.bind(_this7, singleValue.value)
-	          }),
+	          { className: prefixCls + '-selection__choice',
+	            key: singleValue,
+	            title: title },
 	          _react2['default'].createElement(
 	            'span',
 	            { className: prefixCls + '-selection__choice__content' },
 	            content
-	          )
+	          ),
+	          _react2['default'].createElement('span', { className: prefixCls + '-selection__choice__remove',
+	            onClick: _this7.removeSelected.bind(_this7, singleValue) })
 	        );
 	      });
 	    }
 	    selectedValueNodes.push(_react2['default'].createElement(
 	      'li',
-	      {
-	        className: prefixCls + '-search ' + prefixCls + '-search--inline',
-	        key: '__input'
-	      },
+	      { className: prefixCls + '-search ' + prefixCls + '-search--inline', key: '__input' },
 	      this.getInputElement()
 	    ));
 	    var className = prefixCls + '-selection__rendered';
 	    if ((0, _util.isMultipleOrTags)(props) && choiceTransitionName) {
 	      return _react2['default'].createElement(
 	        _rcAnimate2['default'],
-	        {
-	          className: className,
+	        { className: className,
 	          component: 'ul',
-	          transitionName: choiceTransitionName
-	        },
+	          transitionName: choiceTransitionName },
 	        selectedValueNodes
 	      );
 	    }
@@ -20651,33 +20480,12 @@
 	      selectedValueNodes
 	    );
 	  },
-	
 	  renderTreeData: function renderTreeData(props) {
 	    var validProps = props || this.props;
 	    if (validProps.treeData) {
-	      if (props && props.treeData === this.props.treeData && this.renderedTreeData) {
-	        // cache and use pre data.
-	        this._cachetreeData = true;
-	        return this.renderedTreeData;
-	      }
-	      this._cachetreeData = false;
-	      var treeData = validProps.treeData;
-	      // process treeDataSimpleMode
-	      if (validProps.treeDataSimpleMode) {
-	        var simpleFormat = {
-	          id: 'id',
-	          pId: 'pId',
-	          rootPId: null
-	        };
-	        if (Object.prototype.toString.call(validProps.treeDataSimpleMode) === '[object Object]') {
-	          (0, _objectAssign2['default'])(simpleFormat, validProps.treeDataSimpleMode);
-	        }
-	        treeData = (0, _util.processSimpleTreeData)(validProps.treeData, simpleFormat);
-	      }
-	      return loopTreeData(treeData);
+	      return loopTreeData(validProps.treeData);
 	    }
 	  },
-	
 	  render: function render() {
 	    var _rootCls;
 	
@@ -20691,27 +20499,22 @@
 	
 	    var ctrlNode = this.renderTopControlNode();
 	    var extraSelectionProps = {};
-	    if (!(0, _util.isMultipleOrTagsOrCombobox)(props)) {
+	    if (!(0, _util.isCombobox)(props)) {
 	      extraSelectionProps = {
 	        onKeyDown: this.onKeyDown,
 	        tabIndex: 0
 	      };
 	    }
-	    var rootCls = (_rootCls = {}, _defineProperty(_rootCls, className, !!className), _defineProperty(_rootCls, prefixCls, 1), _defineProperty(_rootCls, prefixCls + '-open', state.open), _defineProperty(_rootCls, prefixCls + '-focused', state.open || state.focused), _defineProperty(_rootCls, prefixCls + '-disabled', disabled), _defineProperty(_rootCls, prefixCls + '-enabled', !disabled), _rootCls);
+	    var rootCls = (_rootCls = {}, _defineProperty(_rootCls, className, !!className), _defineProperty(_rootCls, prefixCls, 1), _defineProperty(_rootCls, prefixCls + '-open', state.open), _defineProperty(_rootCls, prefixCls + '-combobox', (0, _util.isCombobox)(props)), _defineProperty(_rootCls, prefixCls + '-disabled', disabled), _defineProperty(_rootCls, prefixCls + '-enabled', !disabled), _rootCls);
 	
-	    var clear = _react2['default'].createElement('span', {
-	      key: 'clear',
+	    var clear = _react2['default'].createElement('span', { key: 'clear',
 	      className: prefixCls + '-selection__clear',
-	      onClick: this.onClearSelection
-	    });
+	      onClick: this.onClearSelection });
 	    return _react2['default'].createElement(
 	      _SelectTrigger2['default'],
 	      _extends({}, props, {
 	        treeNodes: props.children,
-	        treeData: this.renderedTreeData,
-	        _cachetreeData: this._cachetreeData,
-	        _treeNodesStates: this._treeNodesStates,
-	        halfCheckedValues: this.halfCheckedValues,
+	        treeData: this.renderTreeData(),
 	        multiple: multiple,
 	        disabled: disabled,
 	        visible: state.open,
@@ -20720,37 +20523,28 @@
 	        value: state.value,
 	        onDropdownVisibleChange: this.onDropdownVisibleChange,
 	        onSelect: this.onSelect,
-	        ref: 'trigger'
-	      }),
+	        ref: 'trigger' }),
 	      _react2['default'].createElement(
 	        'span',
 	        {
 	          style: props.style,
 	          onClick: props.onClick,
-	          onBlur: this.onOuterBlur,
-	          onFocus: this.onOuterFocus,
-	          className: (0, _classnames2['default'])(rootCls)
-	        },
+	          className: (0, _classnames2['default'])(rootCls) },
 	        _react2['default'].createElement(
 	          'span',
-	          _extends({
-	            ref: 'selection',
+	          _extends({ ref: 'selection',
 	            key: 'selection',
-	            className: prefixCls + '-selection\n            ' + prefixCls + '-selection--' + (multiple ? 'multiple' : 'single'),
+	            className: prefixCls + '-selection ' + prefixCls + '-selection--' + (multiple ? 'multiple' : 'single'),
 	            role: 'combobox',
 	            'aria-autocomplete': 'list',
 	            'aria-haspopup': 'true',
 	            'aria-expanded': state.open
 	          }, extraSelectionProps),
 	          ctrlNode,
-	          allowClear && !multiple ? clear : null,
+	          allowClear && !(0, _util.isMultipleOrTags)(props) ? clear : null,
 	          multiple || !props.showArrow ? null : _react2['default'].createElement(
 	            'span',
-	            {
-	              key: 'arrow',
-	              className: prefixCls + '-arrow',
-	              style: { outline: 'none' }
-	            },
+	            { key: 'arrow', className: prefixCls + '-arrow', tabIndex: '-1', style: { outline: 'none' } },
 	            _react2['default'].createElement('b', null)
 	          ),
 	          multiple ? this.getSearchPlaceholderElement(!!this.state.inputValue || this.state.value.length) : null
@@ -20766,9 +20560,6 @@
 	
 	exports['default'] = Select;
 	module.exports = exports['default'];
-	/* isCombobox,*/
-
-	// [`${prefixCls}-combobox`]: isCombobox(props),
 
 /***/ },
 /* 165 */
@@ -24073,7 +23864,6 @@
 /* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* eslint no-loop-func: 0*/
 	'use strict';
 	
 	Object.defineProperty(exports, '__esModule', {
@@ -24089,24 +23879,18 @@
 	exports.isMultipleOrTagsOrCombobox = isMultipleOrTagsOrCombobox;
 	exports.isSingleMode = isSingleMode;
 	exports.toArray = toArray;
-	exports.preventDefaultEvent = preventDefaultEvent;
-	exports.findIndexInValueByKey = findIndexInValueByKey;
 	exports.labelCompatible = labelCompatible;
 	exports.isInclude = isInclude;
+	exports.getCheckedKeys = getCheckedKeys;
 	exports.loopAllChildren = loopAllChildren;
 	exports.flatToHierarchy = flatToHierarchy;
 	exports.filterParentPosition = filterParentPosition;
-	exports.handleCheckState = handleCheckState;
 	exports.getTreeNodesStates = getTreeNodesStates;
-	exports.recursiveCloneChildren = recursiveCloneChildren;
 	exports.filterAllCheckedData = filterAllCheckedData;
-	exports.processSimpleTreeData = processSimpleTreeData;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	var _react = __webpack_require__(4);
 	
@@ -24156,33 +23940,6 @@
 	  return ret;
 	}
 	
-	function preventDefaultEvent(e) {
-	  e.preventDefault();
-	}
-	
-	function findIndexInValueByKey(value, key) {
-	  var index = -1;
-	  for (var i = 0; i < value.length; i++) {
-	    if (value[i].value === key) {
-	      index = i;
-	      break;
-	    }
-	  }
-	  return index;
-	}
-	
-	var UNSELECTABLE_STYLE = {
-	  userSelect: 'none',
-	  WebkitUserSelect: 'none'
-	};
-	
-	exports.UNSELECTABLE_STYLE = UNSELECTABLE_STYLE;
-	var UNSELECTABLE_ATTRIBUTE = {
-	  unselectable: 'unselectable'
-	};
-	
-	exports.UNSELECTABLE_ATTRIBUTE = UNSELECTABLE_ATTRIBUTE;
-	
 	function labelCompatible(prop) {
 	  var newProp = prop;
 	  if (newProp === 'label') {
@@ -24198,87 +23955,48 @@
 	  });
 	}
 	
-	/*
-	export function getCheckedKeys(node, checkedKeys, allCheckedNodesKeys) {
-	  const nodeKey = node.props.eventKey;
-	  let newCks = [...checkedKeys];
-	  let nodePos;
-	  const unCheck = allCheckedNodesKeys.some(item => {
+	function getCheckedKeys(node, checkedKeys, allCheckedNodesKeys) {
+	  var nodeKey = node.props.eventKey;
+	  var newCks = [].concat(_toConsumableArray(checkedKeys));
+	  var nodePos = undefined;
+	  var unCheck = allCheckedNodesKeys.some(function (item) {
 	    if (item.key === nodeKey) {
 	      nodePos = item.pos;
 	      return true;
 	    }
 	  });
 	  if (unCheck) {
-	    const nArr = nodePos.split('-');
-	    newCks = [];
-	    allCheckedNodesKeys.forEach(item => {
-	      const iArr = item.pos.split('-');
-	      if (item.pos === nodePos ||
-	        nArr.length > iArr.length && isInclude(iArr, nArr) ||
-	        nArr.length < iArr.length && isInclude(nArr, iArr)) {
-	        // 过滤掉 父级节点 和 所有子节点。
-	        // 因为 node节点 不选时，其 父级节点 和 所有子节点 都不选。
-	        return;
-	      }
-	      newCks.push(item.key);
-	    });
+	    (function () {
+	      var nArr = nodePos.split('-');
+	      newCks = [];
+	      allCheckedNodesKeys.forEach(function (item) {
+	        var iArr = item.pos.split('-');
+	        if (item.pos === nodePos || nArr.length > iArr.length && isInclude(iArr, nArr) || nArr.length < iArr.length && isInclude(nArr, iArr)) {
+	          // 过滤掉 父级节点 和 所有子节点。
+	          // 因为 node节点 不选时，其 父级节点 和 所有子节点 都不选。
+	          return;
+	        }
+	        newCks.push(item.key);
+	      });
+	    })();
 	  } else {
 	    newCks.push(nodeKey);
 	  }
 	  return newCks;
 	}
-	*/
 	
-	function getChildrenlength(children) {
-	  var len = 1;
-	  if (Array.isArray(children)) {
-	    len = children.length;
-	  }
-	  return len;
-	}
-	
-	function getSiblingPosition(index, len, siblingPosition) {
-	  if (len === 1) {
-	    siblingPosition.first = true;
-	    siblingPosition.last = true;
-	  } else {
-	    siblingPosition.first = index === 0;
-	    siblingPosition.last = index === len - 1;
-	  }
-	  return siblingPosition;
-	}
-	
-	function loopAllChildren(childs, callback, parent) {
-	  var loop = function loop(children, level, _parent) {
-	    var len = getChildrenlength(children);
+	function loopAllChildren(childs, callback) {
+	  var loop = function loop(children, level) {
 	    _react2['default'].Children.forEach(children, function (item, index) {
 	      var pos = level + '-' + index;
-	      if (item && item.props.children && item.type) {
-	        loop(item.props.children, pos, { node: item, pos: pos });
+	      if (item.props.children) {
+	        loop(item.props.children, pos);
 	      }
-	      if (item) {
-	        callback(item, index, pos, item.key || pos, getSiblingPosition(index, len, {}), _parent);
-	      }
+	      callback(item, index, pos, getValuePropValue(item));
 	    });
 	  };
-	  loop(childs, 0, parent);
+	  loop(childs, 0);
 	}
-	
-	// export function loopAllChildren(childs, callback) {
-	//   const loop = (children, level) => {
-	//     React.Children.forEach(children, (item, index) => {
-	//       const pos = `${level}-${index}`;
-	//       if (item && item.props.children) {
-	//         loop(item.props.children, pos);
-	//       }
-	//       if (item) {
-	//         callback(item, index, pos, getValuePropValue(item));
-	//       }
-	//     });
-	//   };
-	//   loop(childs, 0);
-	// }
 	
 	function flatToHierarchy(arr) {
 	  if (!arr.length) {
@@ -24296,8 +24014,6 @@
 	  var levelArr = Object.keys(levelObj).sort(function (a, b) {
 	    return b - a;
 	  });
-	  // const s = Date.now();
-	  // todo: 数据量大时，下边函数性能差，能否是o1时间复杂度？
 	  levelArr.reduce(function (pre, cur) {
 	    if (cur && cur !== pre) {
 	      levelObj[pre].forEach(function (item) {
@@ -24318,218 +24034,136 @@
 	    }
 	    return cur;
 	  });
-	  // console.log(Date.now() - s);
 	  return levelObj[levelArr[levelArr.length - 1]].concat(hierarchyNodes);
 	}
 	
-	// arr.length === 628, use time: ~20ms
+	function uniqueArray(arr) {
+	  var obj = {};
+	  arr.forEach(function (item) {
+	    if (!obj[item]) {
+	      obj[item] = true;
+	    }
+	  });
+	  return Object.keys(obj);
+	}
+	// console.log(uniqueArray(['11', '2', '2']));
 	
 	function filterParentPosition(arr) {
-	  var levelObj = {};
+	  var a = [].concat(arr);
 	  arr.forEach(function (item) {
-	    var posLen = item.split('-').length;
-	    if (!levelObj[posLen]) {
-	      levelObj[posLen] = [];
-	    }
-	    levelObj[posLen].push(item);
+	    var itemArr = item.split('-');
+	    a.forEach(function (ii, index) {
+	      var iiArr = ii.split('-');
+	      if (itemArr.length <= iiArr.length && isInclude(itemArr, iiArr)) {
+	        a[index] = item;
+	      }
+	      if (itemArr.length > iiArr.length && isInclude(iiArr, itemArr)) {
+	        a[index] = ii;
+	      }
+	    });
 	  });
-	  var levelArr = Object.keys(levelObj).sort();
-	
-	  var _loop = function (i) {
-	    if (levelArr[i + 1]) {
-	      levelObj[levelArr[i]].forEach(function (ii) {
-	        var _loop2 = function (j) {
-	          levelObj[levelArr[j]].forEach(function (_i, index) {
-	            if (isInclude(ii.split('-'), _i.split('-'))) {
-	              levelObj[levelArr[j]][index] = null;
-	            }
-	          });
-	          levelObj[levelArr[j]] = levelObj[levelArr[j]].filter(function (p) {
-	            return p;
-	          });
-	        };
-	
-	        for (var j = i + 1; j < levelArr.length; j++) {
-	          _loop2(j);
-	        }
-	      });
-	    }
-	  };
-	
-	  for (var i = 0; i < levelArr.length; i++) {
-	    _loop(i);
-	  }
-	  var nArr = [];
-	  levelArr.forEach(function (i) {
-	    nArr = nArr.concat(levelObj[i]);
-	  });
-	  return nArr;
+	  return uniqueArray(a);
 	}
 	
-	// console.log(filterParentPosition(['0-2', '0-3-3', '0-10', '0-10-0', '0-0-1', '0-0', '0-1-1', '0-1']));
-	
-	function stripTail(str) {
+	var stripTail = function stripTail(str) {
 	  var arr = str.match(/(.+)(-[^-]+)$/);
 	  var st = '';
 	  if (arr && arr.length === 3) {
 	    st = arr[1];
 	  }
 	  return st;
-	}
-	function splitPosition(pos) {
-	  return pos.split('-');
-	}
+	};
 	
-	// TODO 再优化
-	
-	function handleCheckState(obj, checkedPositionArr, checkIt) {
-	  // console.log(stripTail('0-101-000'));
-	  // let s = Date.now();
-	  var objKeys = Object.keys(obj);
-	
-	  objKeys.forEach(function (i, index) {
-	    var iArr = splitPosition(i);
-	    var saved = false;
-	    checkedPositionArr.forEach(function (_pos) {
-	      // 设置子节点，全选或全不选
-	      var _posArr = splitPosition(_pos);
-	      if (iArr.length > _posArr.length && isInclude(_posArr, iArr)) {
-	        obj[i].halfChecked = false;
+	function handleCheckState(obj, checkedPosArr, checkIt) {
+	  // stripTail('x-xx-sss-xx')
+	  var splitPos = function splitPos(pos) {
+	    return pos.split('-');
+	  };
+	  checkedPosArr.forEach(function (_pos) {
+	    var posPath = splitPos(_pos);
+	    // 设置子节点，全选或全不选
+	    Object.keys(obj).forEach(function (i) {
+	      var iPath = splitPos(i);
+	      if (iPath.length > posPath.length && isInclude(posPath, iPath)) {
+	        obj[i].checkPart = false;
 	        obj[i].checked = checkIt;
-	        objKeys[index] = null;
-	      }
-	      if (iArr[0] === _posArr[0] && iArr[1] === _posArr[1]) {
-	        // 如果
-	        saved = true;
 	      }
 	    });
-	    if (!saved) {
-	      objKeys[index] = null;
-	    }
-	  });
-	  objKeys = objKeys.filter(function (i) {
-	    return i;
-	  }); // filter non null;
-	
-	  var _loop3 = function (_pIndex) {
 	    // 循环设置父节点的 选中 或 半选状态
 	    var loop = function loop(__pos) {
-	      var _posLen = splitPosition(__pos).length;
+	      var _posLen = splitPos(__pos).length;
 	      if (_posLen <= 2) {
 	        // e.g. '0-0', '0-1'
 	        return;
 	      }
 	      var sibling = 0;
 	      var siblingChecked = 0;
-	      var parentPosition = stripTail(__pos);
-	      objKeys.forEach(function (i /* , index*/) {
-	        var iArr = splitPosition(i);
-	        if (iArr.length === _posLen && isInclude(splitPosition(parentPosition), iArr)) {
+	      var parentPos = stripTail(__pos);
+	      var parentPosPath = splitPos(parentPos);
+	      Object.keys(obj).forEach(function (i) {
+	        var iPath = splitPos(i);
+	        if (iPath.length === _posLen && isInclude(parentPosPath, iPath)) {
 	          sibling++;
 	          if (obj[i].checked) {
 	            siblingChecked++;
-	            var _i = checkedPositionArr.indexOf(i);
-	            if (_i > -1) {
-	              checkedPositionArr.splice(_i, 1);
-	              if (_i <= _pIndex) {
-	                _pIndex--;
-	              }
-	            }
-	          } else if (obj[i].halfChecked) {
+	          } else if (obj[i].checkPart) {
 	            siblingChecked += 0.5;
 	          }
-	          // objKeys[index] = null;
 	        }
 	      });
-	      // objKeys = objKeys.filter(i => i); // filter non null;
-	      var parent = obj[parentPosition];
+	      var parent = obj[parentPos];
 	      // sibling 不会等于0
 	      // 全不选 - 全选 - 半选
 	      if (siblingChecked === 0) {
 	        parent.checked = false;
-	        parent.halfChecked = false;
+	        parent.checkPart = false;
 	      } else if (siblingChecked === sibling) {
 	        parent.checked = true;
-	        parent.halfChecked = false;
+	        parent.checkPart = false;
 	      } else {
-	        parent.halfChecked = true;
+	        parent.checkPart = true;
 	        parent.checked = false;
 	      }
-	      loop(parentPosition);
+	      loop(parentPos);
 	    };
-	    loop(checkedPositionArr[_pIndex], _pIndex);
-	    pIndex = _pIndex;
-	  };
-	
-	  for (var pIndex = 0; pIndex < checkedPositionArr.length; pIndex++) {
-	    _loop3(pIndex);
-	  }
-	  // console.log(Date.now()-s, objKeys.length, checkIt);
+	    loop(_pos);
+	  });
 	}
 	
-	function getCheck(treeNodesStates, checkedPositions) {
-	  var halfCheckedKeys = [];
-	  var checkedKeys = [];
-	  var checkedNodes = [];
+	function getCheck(treeNodesStates) {
+	  var checkedTreeNodes = [];
 	  Object.keys(treeNodesStates).forEach(function (item) {
 	    var itemObj = treeNodesStates[item];
 	    if (itemObj.checked) {
-	      checkedKeys.push(itemObj.key);
-	      // checkedNodes.push(getValuePropValue(itemObj.node));
-	      checkedNodes.push(_extends({}, itemObj, { pos: item }));
-	    } else if (itemObj.halfChecked) {
-	      halfCheckedKeys.push(itemObj.key);
+	      // checkedTreeNodes.push(getValuePropValue(itemObj.node));
+	      checkedTreeNodes.push(_extends({}, itemObj, { pos: item }));
 	    }
 	  });
 	  return {
-	    halfCheckedKeys: halfCheckedKeys, checkedKeys: checkedKeys, checkedNodes: checkedNodes, treeNodesStates: treeNodesStates, checkedPositions: checkedPositions
+	    checkedTreeNodes: checkedTreeNodes
 	  };
 	}
 	
 	function getTreeNodesStates(children, values) {
-	  var checkedPositions = [];
+	  var checkedPos = [];
 	  var treeNodesStates = {};
-	  loopAllChildren(children, function (item, index, pos, keyOrPos, siblingPosition) {
+	  loopAllChildren(children, function (item, index, pos, value) {
+	    var checked = false;
+	    if (values.indexOf(value) !== -1) {
+	      checked = true;
+	      checkedPos.push(pos);
+	    }
 	    treeNodesStates[pos] = {
 	      node: item,
-	      key: keyOrPos,
-	      checked: false,
-	      halfChecked: false,
-	      siblingPosition: siblingPosition
+	      checked: checked,
+	      checkPart: false
 	    };
-	    if (values.indexOf(getValuePropValue(item)) !== -1) {
-	      treeNodesStates[pos].checked = true;
-	      checkedPositions.push(pos);
-	    }
 	  });
 	
-	  handleCheckState(treeNodesStates, filterParentPosition(checkedPositions.sort()), true);
+	  handleCheckState(treeNodesStates, filterParentPosition(checkedPos.sort()), true);
 	
-	  return getCheck(treeNodesStates, checkedPositions);
+	  return getCheck(treeNodesStates);
 	}
-	
-	// 给每一个 children 节点，增加 prop
-	
-	function recursiveCloneChildren(children) {
-	  var cb = arguments.length <= 1 || arguments[1] === undefined ? function (ch) {
-	    return ch;
-	  } : arguments[1];
-	
-	  return Array.from(children).map(function (child) {
-	    var newChild = cb(child);
-	    if (newChild && newChild.props.children) {
-	      return _react2['default'].cloneElement(newChild, {}, recursiveCloneChildren(newChild.props.children, cb));
-	    }
-	    return newChild;
-	  });
-	}
-	
-	// const newChildren = recursiveCloneChildren(children, child => {
-	//   const extraProps = {
-	//     _prop: true,
-	//   };
-	//   return React.cloneElement(child, extraProps);
-	// });
 	
 	function recursiveGen(children) {
 	  var level = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
@@ -24651,31 +24285,6 @@
 	  });
 	  return checkedNodesPositions;
 	}
-	
-	function processSimpleTreeData(treeData, format) {
-	  function unflatten2(array) {
-	    var parent = arguments.length <= 1 || arguments[1] === undefined ? _defineProperty({}, format.id, format.rootPId) : arguments[1];
-	
-	    var children = [];
-	    for (var i = 0; i < array.length; i++) {
-	      if (array[i][format.pId] === parent[format.id]) {
-	        array[i].key = array[i][format.id];
-	        children.push(array[i]);
-	        array.splice(i--, 1);
-	      }
-	    }
-	    if (children.length) {
-	      parent.children = children;
-	      children.forEach(function (child) {
-	        return unflatten2(array, child);
-	      });
-	    }
-	    if (parent[format.id] === format.rootPId) {
-	      return children;
-	    }
-	  }
-	  return unflatten2(treeData);
-	}
 
 /***/ },
 /* 197 */
@@ -24705,6 +24314,10 @@
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
+	var _objectAssign = __webpack_require__(183);
+	
+	var _objectAssign2 = _interopRequireDefault(_objectAssign);
+	
 	var _rcTrigger = __webpack_require__(198);
 	
 	var _rcTrigger2 = _interopRequireDefault(_rcTrigger);
@@ -24714,10 +24327,6 @@
 	var _rcTree2 = _interopRequireDefault(_rcTree);
 	
 	var _util = __webpack_require__(196);
-	
-	var _rcUtil = __webpack_require__(165);
-	
-	var _rcUtil2 = _interopRequireDefault(_rcUtil);
 	
 	var BUILT_IN_PLACEMENTS = {
 	  bottomLeft: {
@@ -24747,27 +24356,9 @@
 	    visible: _react.PropTypes.bool,
 	    filterTreeNode: _react.PropTypes.any,
 	    treeNodes: _react.PropTypes.any,
-	    inputValue: _react.PropTypes.string,
 	    prefixCls: _react.PropTypes.string,
 	    popupClassName: _react.PropTypes.string,
 	    children: _react.PropTypes.any
-	  },
-	
-	  getInitialState: function getInitialState() {
-	    return {
-	      _expandedKeys: [],
-	      fireOnExpand: false
-	    };
-	  },
-	
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    if (nextProps.inputValue && nextProps.inputValue !== this.props.inputValue) {
-	      // set autoExpandParent to true
-	      this.setState({
-	        _expandedKeys: [],
-	        fireOnExpand: false
-	      });
-	    }
 	  },
 	
 	  componentDidUpdate: function componentDidUpdate() {
@@ -24777,14 +24368,6 @@
 	        dropdownDOMNode.style.width = _reactDom2['default'].findDOMNode(this).offsetWidth + 'px';
 	      }
 	    }
-	  },
-	
-	  onExpand: function onExpand(expandedKeys) {
-	    // rerender
-	    this.setState({
-	      _expandedKeys: expandedKeys,
-	      fireOnExpand: true
-	    });
 	  },
 	
 	  getPopupEleRefs: function getPopupEleRefs() {
@@ -24808,13 +24391,9 @@
 	    return this.props.prefixCls + '-dropdown';
 	  },
 	
-	  highlightTreeNode: function highlightTreeNode(treeNode) {
+	  filterTree: function filterTree(treeNode) {
 	    var props = this.props;
-	    var filterVal = treeNode.props[(0, _util.labelCompatible)(props.treeNodeFilterProp)];
-	    if (typeof filterVal === 'string') {
-	      return props.inputValue && filterVal.indexOf(props.inputValue) > -1;
-	    }
-	    return false;
+	    return props.inputValue && treeNode.props[(0, _util.labelCompatible)(props.treeNodeFilterProp)].indexOf(props.inputValue) > -1;
 	  },
 	
 	  filterTreeNode: function filterTreeNode(input, child) {
@@ -24835,52 +24414,42 @@
 	    this.popupEle = ele;
 	  },
 	
-	  processTreeNode: function processTreeNode(treeNodes) {
+	  renderFilterTreeNodes: function renderFilterTreeNodes(children) {
 	    var _this = this;
 	
-	    var filterPoss = [];
-	    this._expandedKeys = [];
-	    (0, _util.loopAllChildren)(treeNodes, function (child, index, pos) {
-	      if (_this.filterTreeNode(_this.props.inputValue, child)) {
-	        filterPoss.push(pos);
-	        _this._expandedKeys.push(child.key);
-	      }
-	    });
-	
-	    // 把筛选节点的父节点（如果未筛选到）包含进来
-	    var processedPoss = [];
-	    filterPoss.forEach(function (pos) {
-	      var arr = pos.split('-');
-	      arr.reduce(function (pre, cur) {
-	        var res = pre + '-' + cur;
-	        if (processedPoss.indexOf(res) < 0) {
-	          processedPoss.push(res);
-	        }
-	        return res;
-	      });
-	    });
+	    var props = this.props;
+	    var inputValue = props.inputValue;
 	    var filterNodesPositions = [];
-	    (0, _util.loopAllChildren)(treeNodes, function (child, index, pos) {
-	      if (processedPoss.indexOf(pos) > -1) {
+	
+	    (0, _util.loopAllChildren)(children, function (child, index, pos) {
+	      if (_this.filterTreeNode(inputValue, child)) {
 	        filterNodesPositions.push({ node: child, pos: pos });
 	      }
 	    });
 	
-	    var hierarchyNodes = (0, _util.flatToHierarchy)(filterNodesPositions);
-	
-	    var recursive = function recursive(children) {
-	      return children.map(function (child) {
-	        if (child.children) {
-	          return _react2['default'].cloneElement(child.node, {}, recursive(child.children));
-	        }
-	        return child.node;
-	      });
-	    };
-	    return recursive(hierarchyNodes);
+	    return (0, _util.flatToHierarchy)(filterNodesPositions);
 	  },
 	
-	  renderTree: function renderTree(keys, halfCheckedKeys, newTreeNodes, multiple) {
+	  renderTree: function renderTree(treeNodes, newTreeNodes, multiple) {
 	    var props = this.props;
+	
+	    var loop = function loop(data) {
+	      return data.map(function (item) {
+	        var tProps = { key: item.node.key };
+	        (0, _objectAssign2['default'])(tProps, item.node.props);
+	        if (tProps.children) {
+	          delete tProps.children;
+	        }
+	        if (item.children) {
+	          return _react2['default'].createElement(
+	            _rcTree.TreeNode,
+	            tProps,
+	            loop(item.children)
+	          );
+	        }
+	        return _react2['default'].createElement(_rcTree.TreeNode, tProps);
+	      });
+	    };
 	
 	    var trProps = {
 	      multiple: multiple,
@@ -24888,38 +24457,28 @@
 	      showIcon: props.treeIcon,
 	      showLine: props.treeLine,
 	      defaultExpandAll: props.treeDefaultExpandAll,
-	      filterTreeNode: this.highlightTreeNode,
-	      _treeNodesStates: props._treeNodesStates
+	      checkable: props.treeCheckable,
+	      filterTreeNode: this.filterTree
 	    };
-	
-	    if (props.treeCheckable) {
-	      trProps.selectable = false;
-	      trProps.checkable = props.treeCheckable;
-	      trProps.checkStrictly = props.treeCheckStrictly;
-	      trProps.onCheck = props.onSelect;
-	      if (props.treeCheckStrictly && halfCheckedKeys.length) {
-	        trProps.checkedKeys = { checked: keys, halfChecked: halfCheckedKeys };
-	      } else {
-	        trProps.checkedKeys = keys;
+	    var vals = props.value || props.defaultValue;
+	    var keys = [];
+	    (0, _util.loopAllChildren)(treeNodes, function (child) {
+	      if (vals.indexOf((0, _util.getValuePropValue)(child)) > -1) {
+	        keys.push(child.key);
 	      }
+	    });
+	    // 为避免混乱，checkable 模式下，select 失效
+	    if (trProps.checkable) {
+	      trProps.selectable = false;
+	      trProps.checkedKeys = keys;
+	      trProps.onCheck = props.onSelect;
 	    } else {
 	      trProps.selectedKeys = keys;
 	      trProps.onSelect = props.onSelect;
 	    }
 	
 	    // expand keys
-	    if (!trProps.defaultExpandAll) {
-	      trProps.expandedKeys = keys;
-	    }
-	    trProps.autoExpandParent = true;
-	    trProps.onExpand = this.onExpand;
-	    if (this._expandedKeys && this._expandedKeys.length) {
-	      trProps.expandedKeys = this._expandedKeys;
-	    }
-	    if (this.state.fireOnExpand) {
-	      trProps.expandedKeys = this.state._expandedKeys;
-	      trProps.autoExpandParent = false;
-	    }
+	    trProps.defaultExpandedKeys = keys;
 	
 	    // async loadData
 	    if (props.loadData) {
@@ -24929,7 +24488,7 @@
 	    return _react2['default'].createElement(
 	      _rcTree2['default'],
 	      _extends({ ref: this.savePopupElement }, trProps),
-	      newTreeNodes
+	      loop(newTreeNodes)
 	    );
 	  },
 	  render: function render() {
@@ -24945,50 +24504,7 @@
 	      { className: dropdownPrefixCls + '-search' },
 	      props.inputElement
 	    );
-	
-	    var recursive = function recursive(children) {
-	      // 注意: 如果用 React.Children.map 遍历，key 会被修改掉。
-	      return _rcUtil2['default'].Children.toArray(children).map(function (child) {
-	        if (child && child.props.children) {
-	          // null or String has no Prop
-	          return _react2['default'].createElement(
-	            _rcTree.TreeNode,
-	            _extends({}, child.props, { key: child.key }),
-	            recursive(child.props.children)
-	          );
-	        }
-	        return _react2['default'].createElement(_rcTree.TreeNode, _extends({}, child.props, { key: child.key }));
-	      });
-	    };
-	    // const s = Date.now();
-	    var treeNodes = undefined;
-	    if (props._cachetreeData && this.treeNodes) {
-	      treeNodes = this.treeNodes;
-	    } else {
-	      treeNodes = recursive(props.treeData || props.treeNodes);
-	      this.treeNodes = treeNodes;
-	    }
-	    // console.log(Date.now()-s);
-	
-	    if (props.inputValue) {
-	      treeNodes = this.processTreeNode(treeNodes);
-	    }
-	
-	    var keys = [];
-	    var halfCheckedKeys = [];
-	    (0, _util.loopAllChildren)(treeNodes, function (child) {
-	      if (props.value.some(function (item) {
-	        return item.value === (0, _util.getValuePropValue)(child);
-	      })) {
-	        keys.push(child.key);
-	      }
-	      if (props.halfCheckedValues && props.halfCheckedValues.some(function (item) {
-	        return item.value === (0, _util.getValuePropValue)(child);
-	      })) {
-	        halfCheckedKeys.push(child.key);
-	      }
-	    });
-	
+	    var treeNodes = this.renderFilterTreeNodes(props.treeData || props.treeNodes);
 	    var notFoundContent = undefined;
 	    if (!treeNodes.length) {
 	      if (props.notFoundContent) {
@@ -25006,13 +24522,12 @@
 	      'div',
 	      null,
 	      search,
-	      notFoundContent ? notFoundContent : this.renderTree(keys, halfCheckedKeys, treeNodes, multiple)
+	      notFoundContent ? notFoundContent : this.renderTree(props.treeData || props.treeNodes, treeNodes, multiple)
 	    );
 	
 	    return _react2['default'].createElement(
 	      _rcTrigger2['default'],
-	      {
-	        action: props.disabled ? [] : ['click'],
+	      { action: props.disabled ? [] : ['click'],
 	        ref: 'trigger',
 	        popupPlacement: 'bottomLeft',
 	        builtinPlacements: BUILT_IN_PLACEMENTS,
@@ -28544,67 +28059,48 @@
 /* 220 */
 /***/ function(module, exports) {
 
-	/* eslint no-loop-func: 0*/
-	
 	'use strict';
 	
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
-	exports.generateData = generateData;
-	exports.calcTotal = calcTotal;
-	exports.generateTreeNodes = generateTreeNodes;
-	exports.getNewTreeData = getNewTreeData;
-	exports.getFilterValue = getFilterValue;
 	
-	function generateData() {
-	  var x = arguments.length <= 0 || arguments[0] === undefined ? 3 : arguments[0];
-	  var y = arguments.length <= 1 || arguments[1] === undefined ? 2 : arguments[1];
-	  var z = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
-	  var gData = arguments.length <= 3 || arguments[3] === undefined ? [] : arguments[3];
+	var x = 3;
+	var y = 2;
+	var z = 1;
+	// x：每一级下的节点总数。y：每级节点里有y个节点、存在子节点。z：树的level层级数（0表示一级）
+	/* eslint no-param-reassign:0*/
+	var rec = function rec(n) {
+	  return n >= 0 ? x * Math.pow(y, n--) + rec(n) : 0;
+	};
+	console.log('total number of treeNode(per TreeSelect)：', rec(z + 1));
 	
-	  // x：每一级下的节点总数。y：每级节点里有y个节点、存在子节点。z：树的level层级数（0表示一级）
-	  function _loop(_level, _preKey, _tns) {
-	    var preKey = _preKey || '0';
-	    var tns = _tns || gData;
-	
-	    var children = [];
-	    for (var i = 0; i < x; i++) {
-	      var key = preKey + '-' + i;
-	      tns.push({ label: key + '-label', value: key + '-value', key: key });
-	      if (i < y) {
-	        children.push(key);
-	      }
-	    }
-	    if (_level < 0) {
-	      return tns;
-	    }
-	    var __level = _level - 1;
-	    children.forEach(function (key, index) {
-	      tns[index].children = [];
-	      return _loop(__level, key, tns[index].children);
+	var gData = []; // 手工构造数据
+	var generateData = function generateData(_level, _preKey, _tns) {
+	  var preKey = _preKey || '0';
+	  var tns = _tns || gData;
+	  var children = [];
+	  for (var i = 0; i < x; i++) {
+	    var key = preKey + '-' + i;
+	    tns.push({
+	      label: key + '-label',
+	      value: key + '-value',
+	      key: key
 	    });
+	    if (i < y) {
+	      children.push(key);
+	    }
 	  }
-	  _loop(z);
-	  return gData;
-	}
-	
-	function calcTotal() {
-	  var x = arguments.length <= 0 || arguments[0] === undefined ? 3 : arguments[0];
-	  var y = arguments.length <= 1 || arguments[1] === undefined ? 2 : arguments[1];
-	  var z = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
-	
-	  /* eslint no-param-reassign:0*/
-	  var rec = function rec(n) {
-	    return n >= 0 ? x * Math.pow(y, n--) + rec(n) : 0;
-	  };
-	  return rec(z + 1);
-	}
-	
-	console.log('总节点数（单个tree）：', calcTotal());
-	var gData = generateData();
-	
-	exports.gData = gData;
+	  if (_level < 0) {
+	    return tns;
+	  }
+	  var __level = _level - 1;
+	  children.forEach(function (key, index) {
+	    tns[index].children = [];
+	    return generateData(__level, key, tns[index].children);
+	  });
+	};
+	generateData(z);
 	
 	function generateTreeNodes(treeNode) {
 	  var arr = [];
@@ -28705,6 +28201,11 @@
 	  }
 	  return newVal;
 	}
+	
+	exports.gData = gData;
+	exports.getNewTreeData = getNewTreeData;
+	exports.generateTreeNodes = generateTreeNodes;
+	exports.getFilterValue = getFilterValue;
 
 /***/ }
 /******/ ]);

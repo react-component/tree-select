@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-tree-select@1.6.0-beta.2 - tree-select ui component for react</title>
+  <title>rc-tree-select@1.4.7 - tree-select ui component for react</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-tree-select@1.6.0-beta.2</h1>
+  <h1>rc-tree-select@1.4.7</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -745,10 +745,6 @@
     <ul>
       
       <li><a href="examples/basic.html">basic</a></li>
-      
-      <li><a href="examples/big-data-generator.html">big-data-generator</a></li>
-      
-      <li><a href="examples/big-data.html">big-data</a></li>
       
       <li><a href="examples/dynamic.html">dynamic</a></li>
       
@@ -859,14 +855,26 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <td>false</td>
 </tr>
 <tr>
+<td>tags</td>
+<td>when tagging is enabled the user can select from pre-existing options or create a new tag by picking the first choice, which is what the user has typed into the search box so far.</td>
+<td>bool</td>
+<td>false</td>
+</tr>
+<tr>
 <td>maxTagTextLength</td>
 <td>max tag text length to show</td>
 <td>number</td>
 <td>-</td>
 </tr>
 <tr>
+<td>combobox</td>
+<td>enable combobox mode(can not set multiple at the same time)</td>
+<td>bool</td>
+<td>false</td>
+</tr>
+<tr>
 <td>multiple</td>
-<td>whether multiple select (true when enable treeCheckable)</td>
+<td>whether multiple select</td>
 <td>bool</td>
 <td>false</td>
 </tr>
@@ -878,32 +886,26 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 </tr>
 <tr>
 <td>defaultValue</td>
-<td>initial selected treeNode(s)</td>
-<td>same as value type</td>
+<td>initial selected option(s)</td>
+<td>String/Array<String></td>
 <td>-</td>
 </tr>
 <tr>
 <td>value</td>
-<td>current selected treeNode(s).</td>
-<td>normal: String/Array<String>. labelInValue: {value:String,label:React.Node}/Array&lt;{value,label}&gt;. treeCheckStrictly(halfChecked default false): {value:String,label:React.Node, halfChecked}/Array&lt;{value,label,halfChecked}&gt;.</td>
+<td>current selected option(s)</td>
+<td>String/Array<String></td>
 <td>-</td>
 </tr>
 <tr>
-<td>labelInValue</td>
-<td>whether to embed label in value, see above value type</td>
-<td>Bool</td>
-<td>false</td>
-</tr>
-<tr>
 <td>onChange</td>
-<td>called when select treeNode or input value change</td>
-<td>function(value, label(null), extra)</td>
+<td>called when select treeNode or input value change(combobox)</td>
+<td>function(value, label)</td>
 <td>-</td>
 </tr>
 <tr>
 <td>onSelect</td>
 <td>called when select treeNode</td>
-<td>function(value, node, extra)</td>
+<td>function(value, node)</td>
 <td>-</td>
 </tr>
 <tr>
@@ -943,16 +945,10 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <td>false</td>
 </tr>
 <tr>
-<td>treeCheckStrictly</td>
-<td>check node precisely, parent and children nodes are not associated</td>
-<td>bool</td>
-<td>false</td>
-</tr>
-<tr>
 <td>filterTreeNode</td>
-<td>whether filter treeNodes by input value. default filter by treeNode&#39;s treeNodeFilterProp prop&#39;s value</td>
-<td>bool/Function(inputValue:string, treeNode:TreeNode)</td>
-<td>Function</td>
+<td>filter some treeNodes as you need. it should return true</td>
+<td>function(treeNode)</td>
+<td>-</td>
 </tr>
 <tr>
 <td>treeNodeFilterProp</td>
@@ -971,12 +967,6 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <td>treeNodes data Array, if set it then you need not to construct children TreeNode. (if value is not unique of the whole array, you must provide <code>key</code> as unique id)</td>
 <td>array&lt;{value, label, children}&gt;</td>
 <td>[]</td>
-</tr>
-<tr>
-<td>treeDataSimpleMode</td>
-<td>enable simple mode of treeData.(treeData should be like this: [{&quot;id&quot;:1, &quot;pId&quot;:0, &quot;label&quot;:&quot;test1&quot;},...], <code>pId</code> is parent node&#39;s id)</td>
-<td>bool/object{id:&#39;id&#39;, pId:&#39;pId&#39;, rootPId:null}</td>
-<td>false</td>
 </tr>
 <tr>
 <td>loadData</td>
@@ -1020,7 +1010,7 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <tr>
 <td>title</td>
 <td>tree/subTree&#39;s title</td>
-<td>String/element</td>
+<td>String</td>
 <td>&#39;---&#39;</td>
 </tr>
 <tr>
@@ -1031,15 +1021,6 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 </tr>
 </tbody>
 </table>
-<h2>note<a id="user-content-note" name="note" class="anchor" aria-hidden="true" href="#note"><span class="octicon octicon-link"></span></a></h2><ol>
-<li>Optimization tips(when there are large amounts of data, like more than 5000 nodes)<ul>
-<li>Do not Expand all nodes.</li>
-<li>Recommend not exist many <code>TreeSelect</code> components in a page at the same time.</li>
-<li>Recommend not use <code>treeCheckable</code> mode, or use <code>treeCheckStrictly</code>.</li>
-</ul>
-</li>
-<li>In <code>treeCheckable</code> mode, It has the same effect when click <code>x</code>(node in Selection box) or uncheck in the treeNode(in dropdown panel), but the essence is not the same. So, even if both of them trigger <code>onChange</code> method, but the parameters (the third parameter) are different. （中文：在<code>treeCheckable</code>模式下，已选择节点上的<code>x</code>删除操作、和相应 treeNode 节点上 checkbox 的 uncheck 操作，最终效果相同，但本质不一样。前者跟弹出的 tree 组件可以“毫无关系”（例如 dropdown 没展开过，tree 也就没渲染好），而后者是 tree 组件上的节点 uncheck 事件。所以、即便两者都会触发<code>onChange</code>方法、但它们的参数（第三个参数）是不同的。）</li>
-</ol>
 <h2>Test Case<a id="user-content-test-case" name="test-case" class="anchor" aria-hidden="true" href="#test-case"><span class="octicon octicon-link"></span></a></h2><p><a href="http://localhost:8000/tests/runner.html?coverage" title="null">http://localhost:8000/tests/runner.html?coverage</a></p>
 <h2>Coverage<a id="user-content-coverage" name="coverage" class="anchor" aria-hidden="true" href="#coverage"><span class="octicon octicon-link"></span></a></h2><p><a href="http://localhost:8000/node_modules/rc-server/node_modules/node-jscover/lib/front-end/jscoverage.html?w=http://localhost:8000/tests/runner.html?coverage" title="null">http://localhost:8000/node_modules/rc-server/node_modules/node-jscover/lib/front-end/jscoverage.html?w=http://localhost:8000/tests/runner.html?coverage</a></p>
 <h2>License<a id="user-content-license" name="license" class="anchor" aria-hidden="true" href="#license"><span class="octicon octicon-link"></span></a></h2><p>rc-tree-select is released under the MIT license.</p>
