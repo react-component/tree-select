@@ -645,7 +645,8 @@ const Select = React.createClass({
       return;
     }
     this._cacheTreeNodesStates = 'no';
-    if ((props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT)
+    if (props.treeCheckable &&
+      (props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT)
       && !props.treeCheckStrictly) {
       this.getDeselectedValue(selectedVal);
       return;
