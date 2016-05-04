@@ -31,7 +31,7 @@ webpackJsonp([0],[
 	
 	var _rcTreeSelect2 = _interopRequireDefault(_rcTreeSelect);
 	
-	var _util = __webpack_require__(230);
+	var _util = __webpack_require__(220);
 	
 	var Demo = _react2['default'].createClass({
 	  displayName: 'Demo',

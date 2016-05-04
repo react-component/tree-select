@@ -3,7 +3,7 @@ webpackJsonp([3],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(234);
+	module.exports = __webpack_require__(224);
 
 
 /***/ },
@@ -15,7 +15,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 234:
+/***/ 224:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint react/no-multi-comp:0, no-console:0 */
@@ -50,11 +50,11 @@ webpackJsonp([3],{
 	
 	var _rcTreeSelect2 = _interopRequireDefault(_rcTreeSelect);
 	
-	var _rcForm = __webpack_require__(235);
+	var _rcForm = __webpack_require__(225);
 	
-	var _styles = __webpack_require__(270);
+	var _styles = __webpack_require__(260);
 	
-	var _util = __webpack_require__(230);
+	var _util = __webpack_require__(220);
 	
 	var TreeSelectInput = (function (_Component) {
 	  _inherits(TreeSelectInput, _Component);
@@ -215,7 +215,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 235:
+/***/ 225:
 /***/ function(module, exports, __webpack_require__) {
 
 	// export this package's api
@@ -227,13 +227,13 @@ webpackJsonp([3],{
 	
 	function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 	
-	var _createForm = __webpack_require__(236);
+	var _createForm = __webpack_require__(226);
 	
 	exports.createForm = _interopRequire(_createForm);
 
 /***/ },
 
-/***/ 236:
+/***/ 226:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -260,9 +260,9 @@ webpackJsonp([3],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(237);
+	var _utils = __webpack_require__(227);
 	
-	var _asyncValidator = __webpack_require__(239);
+	var _asyncValidator = __webpack_require__(229);
 	
 	var _asyncValidator2 = _interopRequireDefault(_asyncValidator);
 	
@@ -688,7 +688,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 237:
+/***/ 227:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -703,7 +703,7 @@ webpackJsonp([3],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _hoistNonReactStatics = __webpack_require__(238);
+	var _hoistNonReactStatics = __webpack_require__(228);
 	
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 	
@@ -745,7 +745,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 238:
+/***/ 228:
 /***/ function(module, exports) {
 
 	/**
@@ -792,35 +792,37 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 239:
+/***/ 229:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
 	
-	var _validator = __webpack_require__(241);
+	var _validator = __webpack_require__(231);
 	
 	var _validator2 = _interopRequireDefault(_validator);
 	
-	var _messages2 = __webpack_require__(262);
+	var _messages2 = __webpack_require__(252);
 	
-	var _rule = __webpack_require__(243);
+	var _rule = __webpack_require__(233);
 	
-	var _lodashMergewith = __webpack_require__(263);
+	var _lodash = __webpack_require__(253);
 	
-	var _lodashMergewith2 = _interopRequireDefault(_lodashMergewith);
+	var _lodash2 = _interopRequireDefault(_lodash);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	function mergeCustomizer(objValue, srcValue) {
-	  if (typeof objValue !== 'object') {
+	  if ((typeof objValue === 'undefined' ? 'undefined' : _typeof(objValue)) !== 'object') {
 	    return srcValue;
 	  }
 	}
@@ -840,7 +842,7 @@ webpackJsonp([3],{
 	Schema.prototype = {
 	  messages: function messages(_messages) {
 	    if (_messages) {
-	      this._messages = (0, _lodashMergewith2['default'])((0, _messages2.newMessages)(), _messages, mergeCustomizer);
+	      this._messages = (0, _lodash2["default"])((0, _messages2.newMessages)(), _messages, mergeCustomizer);
 	    }
 	    return this._messages;
 	  },
@@ -848,12 +850,12 @@ webpackJsonp([3],{
 	    if (!rules) {
 	      throw new Error('Cannot configure a schema with no rules');
 	    }
-	    if (typeof rules !== 'object' || Array.isArray(rules)) {
+	    if ((typeof rules === 'undefined' ? 'undefined' : _typeof(rules)) !== 'object' || Array.isArray(rules)) {
 	      throw new Error('Rules must be an object');
 	    }
 	    this.rules = {};
-	    var z = undefined;
-	    var item = undefined;
+	    var z = void 0;
+	    var item = void 0;
 	    for (z in rules) {
 	      if (rules.hasOwnProperty(z)) {
 	        item = rules[z];
@@ -861,10 +863,11 @@ webpackJsonp([3],{
 	      }
 	    }
 	  },
-	  validate: function validate(source_, o, oc) {
+	  validate: function validate(source_) {
 	    var _this = this;
 	
-	    if (o === undefined) o = {};
+	    var o = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	    var oc = arguments[2];
 	
 	    var source = source_;
 	    var options = o;
@@ -877,8 +880,8 @@ webpackJsonp([3],{
 	      options = {};
 	    }
 	    function complete(results) {
-	      var i = undefined;
-	      var field = undefined;
+	      var i = void 0;
+	      var field = void 0;
 	      var errors = [];
 	      var fields = {};
 	
@@ -911,15 +914,15 @@ webpackJsonp([3],{
 	      if (messages === _messages2.messages) {
 	        messages = (0, _messages2.newMessages)();
 	      }
-	      (0, _lodashMergewith2['default'])(messages, options.messages, mergeCustomizer);
+	      (0, _lodash2["default"])(messages, options.messages, mergeCustomizer);
 	      options.messages = messages;
 	    } else {
 	      options.messages = this.messages();
 	    }
 	
 	    options.error = _rule.error;
-	    var arr = undefined;
-	    var value = undefined;
+	    var arr = void 0;
+	    var value = void 0;
 	    var series = {};
 	    var keys = options.keys || Object.keys(this.rules);
 	    keys.forEach(function (z) {
@@ -959,15 +962,24 @@ webpackJsonp([3],{
 	    var errorFields = {};
 	    (0, _util.asyncMap)(series, options, function (data, doIt) {
 	      var rule = data.rule;
-	      var deep = (rule.type === 'object' || rule.type === 'array') && typeof rule.fields === 'object';
+	      var deep = (rule.type === 'object' || rule.type === 'array') && (_typeof(rule.fields) === 'object' || _typeof(rule.defaultField) === 'object');
 	      deep = deep && (rule.required || !rule.required && data.value);
 	      rule.field = data.field;
+	      function addFullfield(key, schema) {
+	        return _extends({}, schema, {
+	          fullField: rule.fullField + '.' + key
+	        });
+	      }
+	
 	      function cb() {
 	        var e = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 	
 	        var errors = e;
 	        if (!Array.isArray(errors)) {
 	          errors = [errors];
+	        }
+	        if (errors.length) {
+	          (0, _util.warning)('async-validator:', errors);
 	        }
 	        if (errors.length && rule.message) {
 	          errors = [].concat(rule.message);
@@ -993,11 +1005,20 @@ webpackJsonp([3],{
 	            }
 	            return doIt(errors);
 	          }
-	          var fieldsSchema = data.rule.fields;
+	
+	          var fieldsSchema = {};
+	          if (rule.defaultField) {
+	            for (var k in data.value) {
+	              if (data.value.hasOwnProperty(k)) {
+	                fieldsSchema[k] = rule.defaultField;
+	              }
+	            }
+	          }
+	          fieldsSchema = _extends({}, fieldsSchema, data.rule.fields);
 	          for (var f in fieldsSchema) {
 	            if (fieldsSchema.hasOwnProperty(f)) {
-	              var fieldSchema = fieldsSchema[f];
-	              fieldSchema.fullField = rule.fullField + '.' + f;
+	              var fieldSchema = Array.isArray(fieldsSchema[f]) ? fieldsSchema[f] : [fieldsSchema[f]];
+	              fieldsSchema[f] = fieldSchema.map(addFullfield.bind(null, f));
 	            }
 	          }
 	          var schema = new Schema(fieldsSchema);
@@ -1021,7 +1042,7 @@ webpackJsonp([3],{
 	    if (rule.type === undefined && rule.pattern instanceof RegExp) {
 	      rule.type = 'pattern';
 	    }
-	    if (typeof rule.validator !== 'function' && rule.type && !_validator2['default'].hasOwnProperty(rule.type)) {
+	    if (typeof rule.validator !== 'function' && rule.type && !_validator2["default"].hasOwnProperty(rule.type)) {
 	      throw new Error((0, _util.format)('Unknown rule type %s', rule.type));
 	    }
 	    return rule.type || 'string';
@@ -1030,7 +1051,7 @@ webpackJsonp([3],{
 	    if (typeof rule.validator === 'function') {
 	      return rule.validator;
 	    }
-	    return _validator2['default'][rule.type] || false;
+	    return _validator2["default"][rule.type] || false;
 	  }
 	};
 	
@@ -1038,30 +1059,50 @@ webpackJsonp([3],{
 	  if (typeof validator !== 'function') {
 	    throw new Error('Cannot register a validator by type, validator is not a function');
 	  }
-	  _validator2['default'][type] = validator;
+	  _validator2["default"][type] = validator;
 	};
 	
 	Schema.messages = _messages2.messages;
 	
-	exports['default'] = Schema;
+	exports["default"] = Schema;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 240:
-/***/ function(module, exports) {
+/***/ 230:
+/***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.warning = warning;
 	exports.format = format;
 	exports.isEmptyValue = isEmptyValue;
 	exports.isEmptyObject = isEmptyObject;
 	exports.asyncMap = asyncMap;
 	exports.complementError = complementError;
 	var formatRegExp = /%[sdj%]/g;
+	
+	var warning2 = function warning2() {};
+	
+	if (process.env.NODE_ENV !== 'production') {
+	  warning2 = function warning2(type, message) {
+	    if (typeof console !== 'undefined' && console.warn) {
+	      console.warn(type, message);
+	    }
+	  };
+	}
+	
+	function warning(type, errors) {
+	  // only warn native warning, default type is string, confuses many people...
+	  if (errors.every(function (e) {
+	    return typeof e === 'string';
+	  })) {
+	    warning2(type, errors);
+	  }
+	}
 	
 	function format() {
 	  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
@@ -1216,54 +1257,55 @@ webpackJsonp([3],{
 	    };
 	  };
 	}
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ },
 
-/***/ 241:
+/***/ 231:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports['default'] = {
-	  string: __webpack_require__(242),
-	  method: __webpack_require__(250),
-	  number: __webpack_require__(251),
-	  boolean: __webpack_require__(252),
-	  regexp: __webpack_require__(253),
-	  integer: __webpack_require__(254),
-	  'float': __webpack_require__(255),
-	  array: __webpack_require__(256),
-	  object: __webpack_require__(257),
-	  'enum': __webpack_require__(258),
-	  pattern: __webpack_require__(259),
-	  email: __webpack_require__(260),
-	  url: __webpack_require__(260),
-	  date: __webpack_require__(261),
-	  hex: __webpack_require__(260)
+	exports["default"] = {
+	  string: __webpack_require__(232),
+	  method: __webpack_require__(240),
+	  number: __webpack_require__(241),
+	  "boolean": __webpack_require__(242),
+	  regexp: __webpack_require__(243),
+	  integer: __webpack_require__(244),
+	  "float": __webpack_require__(245),
+	  array: __webpack_require__(246),
+	  object: __webpack_require__(247),
+	  "enum": __webpack_require__(248),
+	  pattern: __webpack_require__(249),
+	  email: __webpack_require__(250),
+	  url: __webpack_require__(250),
+	  date: __webpack_require__(251),
+	  hex: __webpack_require__(250)
 	};
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 242:
+/***/ 232:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _rule = __webpack_require__(243);
+	var _rule = __webpack_require__(233);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	/**
 	 *  Performs validation for string types.
@@ -1282,58 +1324,58 @@ webpackJsonp([3],{
 	    if ((0, _util.isEmptyValue)(value, 'string') && !rule.required) {
 	      return callback();
 	    }
-	    _rule2['default'].required(rule, value, source, errors, options, 'string');
+	    _rule2["default"].required(rule, value, source, errors, options, 'string');
 	    if (!(0, _util.isEmptyValue)(value, 'string')) {
-	      _rule2['default'].type(rule, value, source, errors, options);
-	      _rule2['default'].range(rule, value, source, errors, options);
-	      _rule2['default'].pattern(rule, value, source, errors, options);
+	      _rule2["default"].type(rule, value, source, errors, options);
+	      _rule2["default"].range(rule, value, source, errors, options);
+	      _rule2["default"].pattern(rule, value, source, errors, options);
 	      if (rule.whitespace === true) {
-	        _rule2['default'].whitespace(rule, value, source, errors, options);
+	        _rule2["default"].whitespace(rule, value, source, errors, options);
 	      }
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports['default'] = string;
+	exports["default"] = string;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 243:
+/***/ 233:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports['default'] = {
-	  required: __webpack_require__(244),
-	  whitespace: __webpack_require__(245),
-	  type: __webpack_require__(246),
-	  range: __webpack_require__(247),
-	  'enum': __webpack_require__(248),
-	  pattern: __webpack_require__(249)
+	exports["default"] = {
+	  required: __webpack_require__(234),
+	  whitespace: __webpack_require__(235),
+	  type: __webpack_require__(236),
+	  range: __webpack_require__(237),
+	  "enum": __webpack_require__(238),
+	  pattern: __webpack_require__(239)
 	};
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 244:
+/***/ 234:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
 	
 	var util = _interopRequireWildcard(_util);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 	
 	/**
 	 *  Rule for validating required fields.
@@ -1352,25 +1394,25 @@ webpackJsonp([3],{
 	  }
 	}
 	
-	exports['default'] = required;
+	exports["default"] = required;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 245:
+/***/ 235:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
 	
 	var util = _interopRequireWildcard(_util);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 	
 	/**
 	 *  Rule for validating whitespace.
@@ -1389,35 +1431,39 @@ webpackJsonp([3],{
 	  }
 	}
 	
-	exports['default'] = whitespace;
+	exports["default"] = whitespace;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 246:
+/***/ 236:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
 	
 	var util = _interopRequireWildcard(_util);
 	
-	var _required = __webpack_require__(244);
+	var _required = __webpack_require__(234);
 	
 	var _required2 = _interopRequireDefault(_required);
 	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+	
+	/* eslint max-len:0 */
+	
 	var pattern = {
 	  email: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
-	  url: /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})(([\/\w\.-]*)?)(\?[-_+=~\.;&%\w]*)?(\#[-_\/\!\w]*)?( *)?$/i,
+	  url: new RegExp('^(?!mailto:)(?:(?:http|https|ftp)://)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))|localhost)(?::\\d{2,5})?(?:(/|\\?|#)[^\\s]*)?$', 'i'),
 	  hex: /^#?([a-f0-9]{6}|[a-f0-9]{3})$/i
 	};
 	
@@ -1425,7 +1471,7 @@ webpackJsonp([3],{
 	  integer: function integer(value) {
 	    return types.number(value) && parseInt(value, 10) === value;
 	  },
-	  float: function float(value) {
+	  "float": function float(value) {
 	    return types.number(value) && !types.integer(value);
 	  },
 	  array: function array(value) {
@@ -1451,7 +1497,7 @@ webpackJsonp([3],{
 	    return typeof value === 'number';
 	  },
 	  object: function object(value) {
-	    return typeof value === 'object' && !types.array(value);
+	    return (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && !types.array(value);
 	  },
 	  method: function method(value) {
 	    return typeof value === 'function';
@@ -1480,7 +1526,7 @@ webpackJsonp([3],{
 	 */
 	function type(rule, value, source, errors, options) {
 	  if (rule.required && value === undefined) {
-	    (0, _required2['default'])(rule, value, source, errors, options);
+	    (0, _required2["default"])(rule, value, source, errors, options);
 	    return;
 	  }
 	  var custom = ['integer', 'float', 'array', 'regexp', 'object', 'method', 'email', 'number', 'date', 'url', 'hex'];
@@ -1490,30 +1536,30 @@ webpackJsonp([3],{
 	      errors.push(util.format(options.messages.types[ruleType], rule.fullField, rule.type));
 	    }
 	    // straight typeof check
-	  } else if (ruleType && typeof value !== rule.type) {
+	  } else if (ruleType && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) !== rule.type) {
 	      errors.push(util.format(options.messages.types[ruleType], rule.fullField, rule.type));
 	    }
 	}
 	
-	exports['default'] = type;
+	exports["default"] = type;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 247:
+/***/ 237:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
 	
 	var util = _interopRequireWildcard(_util);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 	
 	/**
 	 *  Rule for validating minimum and maximum allowed values.
@@ -1564,25 +1610,25 @@ webpackJsonp([3],{
 	  }
 	}
 	
-	exports['default'] = range;
+	exports["default"] = range;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 248:
+/***/ 238:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
 	
 	var util = _interopRequireWildcard(_util);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 	
 	var ENUM = 'enum';
 	
@@ -1604,25 +1650,25 @@ webpackJsonp([3],{
 	  }
 	}
 	
-	exports['default'] = enumerable;
+	exports["default"] = enumerable;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 249:
+/***/ 239:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
 	
 	var util = _interopRequireWildcard(_util);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 	
 	/**
 	 *  Rule for validating a regular expression pattern.
@@ -1643,27 +1689,27 @@ webpackJsonp([3],{
 	  }
 	}
 	
-	exports['default'] = pattern;
+	exports["default"] = pattern;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 250:
+/***/ 240:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _rule = __webpack_require__(243);
+	var _rule = __webpack_require__(233);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	/**
 	 *  Validates a function.
@@ -1682,35 +1728,35 @@ webpackJsonp([3],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2['default'].required(rule, value, source, errors, options);
+	    _rule2["default"].required(rule, value, source, errors, options);
 	    if (value !== undefined) {
-	      _rule2['default'].type(rule, value, source, errors, options);
+	      _rule2["default"].type(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports['default'] = method;
+	exports["default"] = method;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 251:
+/***/ 241:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _rule = __webpack_require__(243);
+	var _rule = __webpack_require__(233);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	/**
 	 *  Validates a number.
@@ -1729,36 +1775,36 @@ webpackJsonp([3],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2['default'].required(rule, value, source, errors, options);
+	    _rule2["default"].required(rule, value, source, errors, options);
 	    if (value !== undefined) {
-	      _rule2['default'].type(rule, value, source, errors, options);
-	      _rule2['default'].range(rule, value, source, errors, options);
+	      _rule2["default"].type(rule, value, source, errors, options);
+	      _rule2["default"].range(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports['default'] = number;
+	exports["default"] = number;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 252:
+/***/ 242:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _util = __webpack_require__(230);
 	
-	var _util = __webpack_require__(240);
-	
-	var _rule = __webpack_require__(243);
+	var _rule = __webpack_require__(233);
 	
 	var _rule2 = _interopRequireDefault(_rule);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	/**
 	 *  Validates a boolean.
@@ -1777,35 +1823,35 @@ webpackJsonp([3],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2['default'].required(rule, value, source, errors, options);
+	    _rule2["default"].required(rule, value, source, errors, options);
 	    if (value !== undefined) {
-	      _rule2['default'].type(rule, value, source, errors, options);
+	      _rule2["default"].type(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports['default'] = boolean;
+	exports["default"] = boolean;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 253:
+/***/ 243:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _rule = __webpack_require__(243);
+	var _rule = __webpack_require__(233);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	/**
 	 *  Validates the regular expression type.
@@ -1824,35 +1870,35 @@ webpackJsonp([3],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2['default'].required(rule, value, source, errors, options);
+	    _rule2["default"].required(rule, value, source, errors, options);
 	    if (!(0, _util.isEmptyValue)(value)) {
-	      _rule2['default'].type(rule, value, source, errors, options);
+	      _rule2["default"].type(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports['default'] = regexp;
+	exports["default"] = regexp;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 254:
+/***/ 244:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _rule = __webpack_require__(243);
+	var _rule = __webpack_require__(233);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	/**
 	 *  Validates a number is an integer.
@@ -1871,36 +1917,36 @@ webpackJsonp([3],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2['default'].required(rule, value, source, errors, options);
+	    _rule2["default"].required(rule, value, source, errors, options);
 	    if (value !== undefined) {
-	      _rule2['default'].type(rule, value, source, errors, options);
-	      _rule2['default'].range(rule, value, source, errors, options);
+	      _rule2["default"].type(rule, value, source, errors, options);
+	      _rule2["default"].range(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports['default'] = integer;
+	exports["default"] = integer;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 255:
+/***/ 245:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _rule = __webpack_require__(243);
+	var _rule = __webpack_require__(233);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	/**
 	 *  Validates a number is a floating point number.
@@ -1919,36 +1965,36 @@ webpackJsonp([3],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2['default'].required(rule, value, source, errors, options);
+	    _rule2["default"].required(rule, value, source, errors, options);
 	    if (value !== undefined) {
-	      _rule2['default'].type(rule, value, source, errors, options);
-	      _rule2['default'].range(rule, value, source, errors, options);
+	      _rule2["default"].type(rule, value, source, errors, options);
+	      _rule2["default"].range(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports['default'] = floatFn;
+	exports["default"] = floatFn;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 256:
+/***/ 246:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _rule = __webpack_require__(243);
+	var _rule = __webpack_require__(233);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	/**
 	 *  Validates an array.
@@ -1967,36 +2013,36 @@ webpackJsonp([3],{
 	    if ((0, _util.isEmptyValue)(value, 'array') && !rule.required) {
 	      return callback();
 	    }
-	    _rule2['default'].required(rule, value, source, errors, options, 'array');
+	    _rule2["default"].required(rule, value, source, errors, options, 'array');
 	    if (!(0, _util.isEmptyValue)(value, 'array')) {
-	      _rule2['default'].type(rule, value, source, errors, options);
-	      _rule2['default'].range(rule, value, source, errors, options);
+	      _rule2["default"].type(rule, value, source, errors, options);
+	      _rule2["default"].range(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports['default'] = array;
+	exports["default"] = array;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 257:
+/***/ 247:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _rule = __webpack_require__(243);
+	var _rule = __webpack_require__(233);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	/**
 	 *  Validates an object.
@@ -2015,35 +2061,35 @@ webpackJsonp([3],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2['default'].required(rule, value, source, errors, options);
+	    _rule2["default"].required(rule, value, source, errors, options);
 	    if (value !== undefined) {
-	      _rule2['default'].type(rule, value, source, errors, options);
+	      _rule2["default"].type(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports['default'] = object;
+	exports["default"] = object;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 258:
+/***/ 248:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _rule = __webpack_require__(243);
+	var _rule = __webpack_require__(233);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	var ENUM = 'enum';
 	
@@ -2064,35 +2110,35 @@ webpackJsonp([3],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2['default'].required(rule, value, source, errors, options);
+	    _rule2["default"].required(rule, value, source, errors, options);
 	    if (value) {
-	      _rule2['default'][ENUM](rule, value, source, errors, options);
+	      _rule2["default"][ENUM](rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports['default'] = enumerable;
+	exports["default"] = enumerable;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 259:
+/***/ 249:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _rule = __webpack_require__(243);
+	var _rule = __webpack_require__(233);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	/**
 	 *  Validates a regular expression pattern.
@@ -2114,35 +2160,35 @@ webpackJsonp([3],{
 	    if ((0, _util.isEmptyValue)(value, 'string') && !rule.required) {
 	      return callback();
 	    }
-	    _rule2['default'].required(rule, value, source, errors, options);
+	    _rule2["default"].required(rule, value, source, errors, options);
 	    if (!(0, _util.isEmptyValue)(value, 'string')) {
-	      _rule2['default'].pattern(rule, value, source, errors, options);
+	      _rule2["default"].pattern(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports['default'] = pattern;
+	exports["default"] = pattern;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 260:
+/***/ 250:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _rule = __webpack_require__(243);
+	var _rule = __webpack_require__(233);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	function type(rule, value, callback, source, options) {
 	  var ruleType = rule.type;
@@ -2152,35 +2198,35 @@ webpackJsonp([3],{
 	    if ((0, _util.isEmptyValue)(value, ruleType) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2['default'].required(rule, value, source, errors, options, ruleType);
+	    _rule2["default"].required(rule, value, source, errors, options, ruleType);
 	    if (!(0, _util.isEmptyValue)(value, ruleType)) {
-	      _rule2['default'].type(rule, value, source, errors, options);
+	      _rule2["default"].type(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports['default'] = type;
+	exports["default"] = type;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 261:
+/***/ 251:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _rule = __webpack_require__(243);
+	var _rule = __webpack_require__(233);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(240);
+	var _util = __webpack_require__(230);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	function date(rule, value, callback, source, options) {
 	  // console.log('integer rule called %j', rule);
@@ -2191,37 +2237,36 @@ webpackJsonp([3],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2['default'].required(rule, value, source, errors, options);
+	    _rule2["default"].required(rule, value, source, errors, options);
 	    if (!(0, _util.isEmptyValue)(value)) {
-	      _rule2['default'].type(rule, value, source, errors, options);
+	      _rule2["default"].type(rule, value, source, errors, options);
 	      if (value) {
-	        _rule2['default'].range(rule, value.getTime(), source, errors, options);
+	        _rule2["default"].range(rule, value.getTime(), source, errors, options);
 	      }
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports['default'] = date;
+	exports["default"] = date;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 262:
+/***/ 252:
 /***/ function(module, exports) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.newMessages = newMessages;
-	
 	function newMessages() {
 	  return {
-	    'default': 'Validation error on field %s',
+	    "default": 'Validation error on field %s',
 	    required: '%s is required',
-	    'enum': '%s must be one of %s',
+	    "enum": '%s must be one of %s',
 	    whitespace: '%s cannot be empty',
 	    date: {
 	      format: '%s date %s is invalid for format %s',
@@ -2235,9 +2280,9 @@ webpackJsonp([3],{
 	      object: '%s is not an %s',
 	      number: '%s is not a %s',
 	      date: '%s is not a %s',
-	      boolean: '%s is not a %s',
+	      "boolean": '%s is not a %s',
 	      integer: '%s is not an %s',
-	      float: '%s is not a %s',
+	      "float": '%s is not a %s',
 	      regexp: '%s is not a valid %s',
 	      email: '%s is not a valid %s',
 	      url: '%s is not a valid %s',
@@ -2272,27 +2317,26 @@ webpackJsonp([3],{
 	  };
 	}
 	
-	var messages = newMessages();
-	exports.messages = messages;
+	var messages = exports.messages = newMessages();
 
 /***/ },
 
-/***/ 263:
+/***/ 253:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * lodash 4.3.2 (Custom Build) <https://lodash.com/>
+	 * lodash 4.3.5 (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modularize exports="npm" -o ./`
-	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+	 * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+	 * Released under MIT license <https://lodash.com/license>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
+	 * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 */
-	var Stack = __webpack_require__(264),
-	    baseClone = __webpack_require__(266),
-	    isPlainObject = __webpack_require__(267),
-	    keysIn = __webpack_require__(268),
-	    rest = __webpack_require__(269);
+	var Stack = __webpack_require__(254),
+	    baseClone = __webpack_require__(256),
+	    isPlainObject = __webpack_require__(257),
+	    keysIn = __webpack_require__(258),
+	    rest = __webpack_require__(259);
 	
 	/** Used as references for various `Number` constants. */
 	var MAX_SAFE_INTEGER = 9007199254740991;
@@ -2314,6 +2358,7 @@ webpackJsonp([3],{
 	    weakMapTag = '[object WeakMap]';
 	
 	var arrayBufferTag = '[object ArrayBuffer]',
+	    dataViewTag = '[object DataView]',
 	    float32Tag = '[object Float32Array]',
 	    float64Tag = '[object Float64Array]',
 	    int8Tag = '[object Int8Array]',
@@ -2336,11 +2381,12 @@ webpackJsonp([3],{
 	typedArrayTags[uint32Tag] = true;
 	typedArrayTags[argsTag] = typedArrayTags[arrayTag] =
 	typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] =
-	typedArrayTags[dateTag] = typedArrayTags[errorTag] =
-	typedArrayTags[funcTag] = typedArrayTags[mapTag] =
-	typedArrayTags[numberTag] = typedArrayTags[objectTag] =
-	typedArrayTags[regexpTag] = typedArrayTags[setTag] =
-	typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
+	typedArrayTags[dataViewTag] = typedArrayTags[dateTag] =
+	typedArrayTags[errorTag] = typedArrayTags[funcTag] =
+	typedArrayTags[mapTag] = typedArrayTags[numberTag] =
+	typedArrayTags[objectTag] = typedArrayTags[regexpTag] =
+	typedArrayTags[setTag] = typedArrayTags[stringTag] =
+	typedArrayTags[weakMapTag] = false;
 	
 	/**
 	 * A specialized version of `_.forEach` for arrays without support for
@@ -2384,7 +2430,8 @@ webpackJsonp([3],{
 	var hasOwnProperty = objectProto.hasOwnProperty;
 	
 	/**
-	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
 	 * of values.
 	 */
 	var objectToString = objectProto.toString;
@@ -2434,16 +2481,16 @@ webpackJsonp([3],{
 	 * @param {Object} source The source object.
 	 * @param {number} srcIndex The index of `source`.
 	 * @param {Function} [customizer] The function to customize merged values.
-	 * @param {Object} [stack] Tracks traversed source values and their merged counterparts.
+	 * @param {Object} [stack] Tracks traversed source values and their merged
+	 *  counterparts.
 	 */
 	function baseMerge(object, source, srcIndex, customizer, stack) {
 	  if (object === source) {
 	    return;
 	  }
-	  var props = (isArray(source) || isTypedArray(source))
-	    ? undefined
-	    : keysIn(source);
-	
+	  if (!(isArray(source) || isTypedArray(source))) {
+	    var props = keysIn(source);
+	  }
 	  arrayEach(props || source, function(srcValue, key) {
 	    if (props) {
 	      key = srcValue;
@@ -2478,7 +2525,8 @@ webpackJsonp([3],{
 	 * @param {number} srcIndex The index of `source`.
 	 * @param {Function} mergeFunc The function to merge values.
 	 * @param {Function} [customizer] The function to customize assigned values.
-	 * @param {Object} [stack] Tracks traversed source values and their merged counterparts.
+	 * @param {Object} [stack] Tracks traversed source values and their merged
+	 *  counterparts.
 	 */
 	function baseMergeDeep(object, source, key, srcIndex, mergeFunc, customizer, stack) {
 	  var objValue = object[key],
@@ -2506,7 +2554,7 @@ webpackJsonp([3],{
 	      }
 	      else {
 	        isCommon = false;
-	        newValue = baseClone(srcValue, !customizer);
+	        newValue = baseClone(srcValue, true);
 	      }
 	    }
 	    else if (isPlainObject(srcValue) || isArguments(srcValue)) {
@@ -2515,7 +2563,7 @@ webpackJsonp([3],{
 	      }
 	      else if (!isObject(objValue) || (srcIndex && isFunction(objValue))) {
 	        isCommon = false;
-	        newValue = baseClone(srcValue, !customizer);
+	        newValue = baseClone(srcValue, true);
 	      }
 	      else {
 	        newValue = objValue;
@@ -2572,26 +2620,12 @@ webpackJsonp([3],{
 	 *
 	 * @private
 	 * @param {Object} source The object to copy properties from.
-	 * @param {Array} props The property names to copy.
-	 * @param {Object} [object={}] The object to copy properties to.
-	 * @returns {Object} Returns `object`.
-	 */
-	function copyObject(source, props, object) {
-	  return copyObjectWith(source, props, object);
-	}
-	
-	/**
-	 * This function is like `copyObject` except that it accepts a function to
-	 * customize copied values.
-	 *
-	 * @private
-	 * @param {Object} source The object to copy properties from.
-	 * @param {Array} props The property names to copy.
+	 * @param {Array} props The property identifiers to copy.
 	 * @param {Object} [object={}] The object to copy properties to.
 	 * @param {Function} [customizer] The function to customize copied values.
 	 * @returns {Object} Returns `object`.
 	 */
-	function copyObjectWith(source, props, object, customizer) {
+	function copyObject(source, props, object, customizer) {
 	  object || (object = {});
 	
 	  var index = -1,
@@ -2645,8 +2679,9 @@ webpackJsonp([3],{
 	/**
 	 * Gets the "length" property value of `object`.
 	 *
-	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
-	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 * **Note:** This function is used to avoid a
+	 * [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792) that affects
+	 * Safari on at least iOS 8.1-8.3 ARM64.
 	 *
 	 * @private
 	 * @param {Object} object The object to query.
@@ -2661,7 +2696,8 @@ webpackJsonp([3],{
 	 * @param {*} value The potential iteratee value argument.
 	 * @param {*} index The potential iteratee index or key argument.
 	 * @param {*} object The potential iteratee object argument.
-	 * @returns {boolean} Returns `true` if the arguments are from an iteratee call, else `false`.
+	 * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+	 *  else `false`.
 	 */
 	function isIterateeCall(value, index, object) {
 	  if (!isObject(object)) {
@@ -2669,19 +2705,22 @@ webpackJsonp([3],{
 	  }
 	  var type = typeof index;
 	  if (type == 'number'
-	      ? (isArrayLike(object) && isIndex(index, object.length))
-	      : (type == 'string' && index in object)) {
+	        ? (isArrayLike(object) && isIndex(index, object.length))
+	        : (type == 'string' && index in object)
+	      ) {
 	    return eq(object[index], value);
 	  }
 	  return false;
 	}
 	
 	/**
-	 * Performs a [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+	 * Performs a
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
 	 * comparison between two values to determine if they are equivalent.
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 4.0.0
 	 * @category Lang
 	 * @param {*} value The value to compare.
 	 * @param {*} other The other value to compare.
@@ -2715,9 +2754,11 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 0.1.0
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
 	 * @example
 	 *
 	 * _.isArguments(function() { return arguments; }());
@@ -2737,10 +2778,12 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 0.1.0
 	 * @type {Function}
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
 	 * @example
 	 *
 	 * _.isArray([1, 2, 3]);
@@ -2764,6 +2807,7 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 4.0.0
 	 * @category Lang
 	 * @param {*} value The value to check.
 	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
@@ -2791,9 +2835,11 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 4.0.0
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an array-like object, else `false`.
+	 * @returns {boolean} Returns `true` if `value` is an array-like object,
+	 *  else `false`.
 	 * @example
 	 *
 	 * _.isArrayLikeObject([1, 2, 3]);
@@ -2817,9 +2863,11 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 0.1.0
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
 	 * @example
 	 *
 	 * _.isFunction(_);
@@ -2839,13 +2887,16 @@ webpackJsonp([3],{
 	/**
 	 * Checks if `value` is a valid array-like length.
 	 *
-	 * **Note:** This function is loosely based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 * **Note:** This function is loosely based on
+	 * [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 4.0.0
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 * @returns {boolean} Returns `true` if `value` is a valid length,
+	 *  else `false`.
 	 * @example
 	 *
 	 * _.isLength(3);
@@ -2866,11 +2917,13 @@ webpackJsonp([3],{
 	}
 	
 	/**
-	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 * Checks if `value` is the
+	 * [language type](http://www.ecma-international.org/ecma-262/6.0/#sec-ecmascript-language-types)
+	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 0.1.0
 	 * @category Lang
 	 * @param {*} value The value to check.
 	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
@@ -2899,6 +2952,7 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 4.0.0
 	 * @category Lang
 	 * @param {*} value The value to check.
 	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
@@ -2925,9 +2979,11 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 3.0.0
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
 	 * @example
 	 *
 	 * _.isTypedArray(new Uint8Array);
@@ -2942,11 +2998,12 @@ webpackJsonp([3],{
 	}
 	
 	/**
-	 * Converts `value` to a plain object flattening inherited enumerable
-	 * properties of `value` to own properties of the plain object.
+	 * Converts `value` to a plain object flattening inherited enumerable string
+	 * keyed properties of `value` to own properties of the plain object.
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 3.0.0
 	 * @category Lang
 	 * @param {*} value The value to convert.
 	 * @returns {Object} Returns the converted plain object.
@@ -2971,7 +3028,7 @@ webpackJsonp([3],{
 	/**
 	 * This method is like `_.merge` except that it accepts `customizer` which
 	 * is invoked to produce the merged values of the destination and source
-	 * properties. If `customizer` returns `undefined` merging is handled by the
+	 * properties. If `customizer` returns `undefined`, merging is handled by the
 	 * method instead. The `customizer` is invoked with seven arguments:
 	 * (objValue, srcValue, key, object, source, stack).
 	 *
@@ -2979,6 +3036,7 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 4.0.0
 	 * @category Object
 	 * @param {Object} object The destination object.
 	 * @param {...Object} sources The source objects.
@@ -3014,16 +3072,16 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 264:
+/***/ 254:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module, global) {/**
-	 * lodash 4.1.1 (Custom Build) <https://lodash.com/>
+	 * lodash 4.1.3 (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modularize exports="npm" -o ./`
-	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+	 * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+	 * Released under MIT license <https://lodash.com/license>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
+	 * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 */
 	
 	/** Used as the size to enable large array optimizations. */
@@ -3036,10 +3094,13 @@ webpackJsonp([3],{
 	var funcTag = '[object Function]',
 	    genTag = '[object GeneratorFunction]';
 	
-	/** Used to match `RegExp` [syntax characters](http://ecma-international.org/ecma-262/6.0/#sec-patterns). */
+	/**
+	 * Used to match `RegExp`
+	 * [syntax characters](http://ecma-international.org/ecma-262/6.0/#sec-patterns).
+	 */
 	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
 	
-	/** Used to detect host constructors (Safari > 5). */
+	/** Used to detect host constructors (Safari). */
 	var reIsHostCtor = /^\[object .+?Constructor\]$/;
 	
 	/** Used to determine if values are of the language type `Object`. */
@@ -3121,7 +3182,8 @@ webpackJsonp([3],{
 	var hasOwnProperty = objectProto.hasOwnProperty;
 	
 	/**
-	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
 	 * of values.
 	 */
 	var objectToString = objectProto.toString;
@@ -3140,7 +3202,7 @@ webpackJsonp([3],{
 	    nativeCreate = getNative(Object, 'create');
 	
 	/**
-	 * Creates an hash object.
+	 * Creates a hash object.
 	 *
 	 * @private
 	 * @constructor
@@ -3199,6 +3261,9 @@ webpackJsonp([3],{
 	function hashSet(hash, key, value) {
 	  hash[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
 	}
+	
+	// Avoid inheriting from `Object.prototype` when possible.
+	Hash.prototype = nativeCreate ? nativeCreate(null) : objectProto;
 	
 	/**
 	 * Creates a map cache object to store key-value pairs.
@@ -3292,7 +3357,7 @@ webpackJsonp([3],{
 	 * @memberOf MapCache
 	 * @param {string} key The key of the value to set.
 	 * @param {*} value The value to set.
-	 * @returns {Object} Returns the map cache object.
+	 * @returns {Object} Returns the map cache instance.
 	 */
 	function mapSet(key, value) {
 	  var data = this.__data__;
@@ -3305,6 +3370,13 @@ webpackJsonp([3],{
 	  }
 	  return this;
 	}
+	
+	// Add methods to `MapCache`.
+	MapCache.prototype.clear = mapClear;
+	MapCache.prototype['delete'] = mapDelete;
+	MapCache.prototype.get = mapGet;
+	MapCache.prototype.has = mapHas;
+	MapCache.prototype.set = mapSet;
 	
 	/**
 	 * Creates a stack cache object to store key-value pairs.
@@ -3391,7 +3463,7 @@ webpackJsonp([3],{
 	 * @memberOf Stack
 	 * @param {string} key The key of the value to set.
 	 * @param {*} value The value to set.
-	 * @returns {Object} Returns the stack cache object.
+	 * @returns {Object} Returns the stack cache instance.
 	 */
 	function stackSet(key, value) {
 	  var data = this.__data__,
@@ -3412,11 +3484,18 @@ webpackJsonp([3],{
 	  return this;
 	}
 	
+	// Add methods to `Stack`.
+	Stack.prototype.clear = stackClear;
+	Stack.prototype['delete'] = stackDelete;
+	Stack.prototype.get = stackGet;
+	Stack.prototype.has = stackHas;
+	Stack.prototype.set = stackSet;
+	
 	/**
 	 * Removes `key` and its value from the associative array.
 	 *
 	 * @private
-	 * @param {Array} array The array to query.
+	 * @param {Array} array The array to modify.
 	 * @param {string} key The key of the value to remove.
 	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
 	 */
@@ -3460,8 +3539,7 @@ webpackJsonp([3],{
 	}
 	
 	/**
-	 * Gets the index at which the first occurrence of `key` is found in `array`
-	 * of key-value pairs.
+	 * Gets the index at which the `key` is found in `array` of key-value pairs.
 	 *
 	 * @private
 	 * @param {Array} array The array to search.
@@ -3522,11 +3600,32 @@ webpackJsonp([3],{
 	}
 	
 	/**
-	 * Performs a [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+	 * Converts `func` to its source code.
+	 *
+	 * @private
+	 * @param {Function} func The function to process.
+	 * @returns {string} Returns the source code.
+	 */
+	function toSource(func) {
+	  if (func != null) {
+	    try {
+	      return funcToString.call(func);
+	    } catch (e) {}
+	    try {
+	      return (func + '');
+	    } catch (e) {}
+	  }
+	  return '';
+	}
+	
+	/**
+	 * Performs a
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
 	 * comparison between two values to determine if they are equivalent.
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 4.0.0
 	 * @category Lang
 	 * @param {*} value The value to compare.
 	 * @param {*} other The other value to compare.
@@ -3560,9 +3659,11 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 0.1.0
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
 	 * @example
 	 *
 	 * _.isFunction(_);
@@ -3580,11 +3681,13 @@ webpackJsonp([3],{
 	}
 	
 	/**
-	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 * Checks if `value` is the
+	 * [language type](http://www.ecma-international.org/ecma-262/6.0/#sec-ecmascript-language-types)
+	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 0.1.0
 	 * @category Lang
 	 * @param {*} value The value to check.
 	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
@@ -3608,40 +3711,15 @@ webpackJsonp([3],{
 	}
 	
 	/**
-	 * Checks if `value` is object-like. A value is object-like if it's not `null`
-	 * and has a `typeof` result of "object".
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 * @example
-	 *
-	 * _.isObjectLike({});
-	 * // => true
-	 *
-	 * _.isObjectLike([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObjectLike(_.noop);
-	 * // => false
-	 *
-	 * _.isObjectLike(null);
-	 * // => false
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
-	
-	/**
 	 * Checks if `value` is a native function.
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 3.0.0
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+	 * @returns {boolean} Returns `true` if `value` is a native function,
+	 *  else `false`.
 	 * @example
 	 *
 	 * _.isNative(Array.prototype.push);
@@ -3651,40 +3729,20 @@ webpackJsonp([3],{
 	 * // => false
 	 */
 	function isNative(value) {
-	  if (value == null) {
+	  if (!isObject(value)) {
 	    return false;
 	  }
-	  if (isFunction(value)) {
-	    return reIsNative.test(funcToString.call(value));
-	  }
-	  return isObjectLike(value) &&
-	    (isHostObject(value) ? reIsNative : reIsHostCtor).test(value);
+	  var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
+	  return pattern.test(toSource(value));
 	}
-	
-	// Avoid inheriting from `Object.prototype` when possible.
-	Hash.prototype = nativeCreate ? nativeCreate(null) : objectProto;
-	
-	// Add functions to the `MapCache`.
-	MapCache.prototype.clear = mapClear;
-	MapCache.prototype['delete'] = mapDelete;
-	MapCache.prototype.get = mapGet;
-	MapCache.prototype.has = mapHas;
-	MapCache.prototype.set = mapSet;
-	
-	// Add functions to the `Stack` cache.
-	Stack.prototype.clear = stackClear;
-	Stack.prototype['delete'] = stackDelete;
-	Stack.prototype.get = stackGet;
-	Stack.prototype.has = stackHas;
-	Stack.prototype.set = stackSet;
 	
 	module.exports = Stack;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(265)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(255)(module), (function() { return this; }())))
 
 /***/ },
 
-/***/ 265:
+/***/ 255:
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -3701,16 +3759,16 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 266:
+/***/ 256:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module, global) {/**
-	 * lodash 4.5.3 (Custom Build) <https://lodash.com/>
+	 * lodash 4.5.6 (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modularize exports="npm" -o ./`
-	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+	 * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+	 * Released under MIT license <https://lodash.com/license>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
+	 * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 */
 	
 	/** Used as the size to enable large array optimizations. */
@@ -3733,6 +3791,7 @@ webpackJsonp([3],{
 	    mapTag = '[object Map]',
 	    numberTag = '[object Number]',
 	    objectTag = '[object Object]',
+	    promiseTag = '[object Promise]',
 	    regexpTag = '[object RegExp]',
 	    setTag = '[object Set]',
 	    stringTag = '[object String]',
@@ -3740,6 +3799,7 @@ webpackJsonp([3],{
 	    weakMapTag = '[object WeakMap]';
 	
 	var arrayBufferTag = '[object ArrayBuffer]',
+	    dataViewTag = '[object DataView]',
 	    float32Tag = '[object Float32Array]',
 	    float64Tag = '[object Float64Array]',
 	    int8Tag = '[object Int8Array]',
@@ -3750,13 +3810,16 @@ webpackJsonp([3],{
 	    uint16Tag = '[object Uint16Array]',
 	    uint32Tag = '[object Uint32Array]';
 	
-	/** Used to match `RegExp` [syntax characters](http://ecma-international.org/ecma-262/6.0/#sec-patterns). */
+	/**
+	 * Used to match `RegExp`
+	 * [syntax characters](http://ecma-international.org/ecma-262/6.0/#sec-patterns).
+	 */
 	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
 	
 	/** Used to match `RegExp` flags from their coerced string values. */
 	var reFlags = /\w*$/;
 	
-	/** Used to detect host constructors (Safari > 5). */
+	/** Used to detect host constructors (Safari). */
 	var reIsHostCtor = /^\[object .+?Constructor\]$/;
 	
 	/** Used to detect unsigned integer values. */
@@ -3765,16 +3828,16 @@ webpackJsonp([3],{
 	/** Used to identify `toStringTag` values supported by `_.clone`. */
 	var cloneableTags = {};
 	cloneableTags[argsTag] = cloneableTags[arrayTag] =
-	cloneableTags[arrayBufferTag] = cloneableTags[boolTag] =
-	cloneableTags[dateTag] = cloneableTags[float32Tag] =
-	cloneableTags[float64Tag] = cloneableTags[int8Tag] =
-	cloneableTags[int16Tag] = cloneableTags[int32Tag] =
-	cloneableTags[mapTag] = cloneableTags[numberTag] =
-	cloneableTags[objectTag] = cloneableTags[regexpTag] =
-	cloneableTags[setTag] = cloneableTags[stringTag] =
-	cloneableTags[symbolTag] = cloneableTags[uint8Tag] =
-	cloneableTags[uint8ClampedTag] = cloneableTags[uint16Tag] =
-	cloneableTags[uint32Tag] = true;
+	cloneableTags[arrayBufferTag] = cloneableTags[dataViewTag] =
+	cloneableTags[boolTag] = cloneableTags[dateTag] =
+	cloneableTags[float32Tag] = cloneableTags[float64Tag] =
+	cloneableTags[int8Tag] = cloneableTags[int16Tag] =
+	cloneableTags[int32Tag] = cloneableTags[mapTag] =
+	cloneableTags[numberTag] = cloneableTags[objectTag] =
+	cloneableTags[regexpTag] = cloneableTags[setTag] =
+	cloneableTags[stringTag] = cloneableTags[symbolTag] =
+	cloneableTags[uint8Tag] = cloneableTags[uint8ClampedTag] =
+	cloneableTags[uint16Tag] = cloneableTags[uint32Tag] = true;
 	cloneableTags[errorTag] = cloneableTags[funcTag] =
 	cloneableTags[weakMapTag] = false;
 	
@@ -3870,6 +3933,25 @@ webpackJsonp([3],{
 	}
 	
 	/**
+	 * Appends the elements of `values` to `array`.
+	 *
+	 * @private
+	 * @param {Array} array The array to modify.
+	 * @param {Array} values The values to append.
+	 * @returns {Array} Returns `array`.
+	 */
+	function arrayPush(array, values) {
+	  var index = -1,
+	      length = values.length,
+	      offset = array.length;
+	
+	  while (++index < length) {
+	    array[offset + index] = values[index];
+	  }
+	  return array;
+	}
+	
+	/**
 	 * A specialized version of `_.reduce` for arrays without support for
 	 * iteratee shorthands.
 	 *
@@ -3877,7 +3959,8 @@ webpackJsonp([3],{
 	 * @param {Array} array The array to iterate over.
 	 * @param {Function} iteratee The function invoked per iteration.
 	 * @param {*} [accumulator] The initial value.
-	 * @param {boolean} [initAccum] Specify using the first element of `array` as the initial value.
+	 * @param {boolean} [initAccum] Specify using the first element of `array` as
+	 *  the initial value.
 	 * @returns {*} Returns the accumulated value.
 	 */
 	function arrayReduce(array, iteratee, accumulator, initAccum) {
@@ -4001,7 +4084,8 @@ webpackJsonp([3],{
 	var hasOwnProperty = objectProto.hasOwnProperty;
 	
 	/**
-	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
 	 * of values.
 	 */
 	var objectToString = objectProto.toString;
@@ -4016,32 +4100,36 @@ webpackJsonp([3],{
 	var Buffer = moduleExports ? root.Buffer : undefined,
 	    Symbol = root.Symbol,
 	    Uint8Array = root.Uint8Array,
-	    getPrototypeOf = Object.getPrototypeOf,
 	    getOwnPropertySymbols = Object.getOwnPropertySymbols,
 	    objectCreate = Object.create,
 	    propertyIsEnumerable = objectProto.propertyIsEnumerable,
 	    splice = arrayProto.splice;
 	
 	/* Built-in method references for those with the same name as other `lodash` methods. */
-	var nativeKeys = Object.keys;
+	var nativeGetPrototype = Object.getPrototypeOf,
+	    nativeKeys = Object.keys;
 	
 	/* Built-in method references that are verified to be native. */
-	var Map = getNative(root, 'Map'),
+	var DataView = getNative(root, 'DataView'),
+	    Map = getNative(root, 'Map'),
+	    Promise = getNative(root, 'Promise'),
 	    Set = getNative(root, 'Set'),
 	    WeakMap = getNative(root, 'WeakMap'),
 	    nativeCreate = getNative(Object, 'create');
 	
 	/** Used to detect maps, sets, and weakmaps. */
-	var mapCtorString = Map ? funcToString.call(Map) : '',
-	    setCtorString = Set ? funcToString.call(Set) : '',
-	    weakMapCtorString = WeakMap ? funcToString.call(WeakMap) : '';
+	var dataViewCtorString = toSource(DataView),
+	    mapCtorString = toSource(Map),
+	    promiseCtorString = toSource(Promise),
+	    setCtorString = toSource(Set),
+	    weakMapCtorString = toSource(WeakMap);
 	
 	/** Used to convert symbols to primitives and strings. */
 	var symbolProto = Symbol ? Symbol.prototype : undefined,
 	    symbolValueOf = symbolProto ? symbolProto.valueOf : undefined;
 	
 	/**
-	 * Creates an hash object.
+	 * Creates a hash object.
 	 *
 	 * @private
 	 * @constructor
@@ -4100,6 +4188,9 @@ webpackJsonp([3],{
 	function hashSet(hash, key, value) {
 	  hash[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
 	}
+	
+	// Avoid inheriting from `Object.prototype` when possible.
+	Hash.prototype = nativeCreate ? nativeCreate(null) : objectProto;
 	
 	/**
 	 * Creates a map cache object to store key-value pairs.
@@ -4193,7 +4284,7 @@ webpackJsonp([3],{
 	 * @memberOf MapCache
 	 * @param {string} key The key of the value to set.
 	 * @param {*} value The value to set.
-	 * @returns {Object} Returns the map cache object.
+	 * @returns {Object} Returns the map cache instance.
 	 */
 	function mapSet(key, value) {
 	  var data = this.__data__;
@@ -4206,6 +4297,13 @@ webpackJsonp([3],{
 	  }
 	  return this;
 	}
+	
+	// Add methods to `MapCache`.
+	MapCache.prototype.clear = mapClear;
+	MapCache.prototype['delete'] = mapDelete;
+	MapCache.prototype.get = mapGet;
+	MapCache.prototype.has = mapHas;
+	MapCache.prototype.set = mapSet;
 	
 	/**
 	 * Creates a stack cache object to store key-value pairs.
@@ -4292,7 +4390,7 @@ webpackJsonp([3],{
 	 * @memberOf Stack
 	 * @param {string} key The key of the value to set.
 	 * @param {*} value The value to set.
-	 * @returns {Object} Returns the stack cache object.
+	 * @returns {Object} Returns the stack cache instance.
 	 */
 	function stackSet(key, value) {
 	  var data = this.__data__,
@@ -4313,11 +4411,18 @@ webpackJsonp([3],{
 	  return this;
 	}
 	
+	// Add methods to `Stack`.
+	Stack.prototype.clear = stackClear;
+	Stack.prototype['delete'] = stackDelete;
+	Stack.prototype.get = stackGet;
+	Stack.prototype.has = stackHas;
+	Stack.prototype.set = stackSet;
+	
 	/**
 	 * Removes `key` and its value from the associative array.
 	 *
 	 * @private
-	 * @param {Array} array The array to query.
+	 * @param {Array} array The array to modify.
 	 * @param {string} key The key of the value to remove.
 	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
 	 */
@@ -4361,8 +4466,7 @@ webpackJsonp([3],{
 	}
 	
 	/**
-	 * Gets the index at which the first occurrence of `key` is found in `array`
-	 * of key-value pairs.
+	 * Gets the index at which the `key` is found in `array` of key-value pairs.
 	 *
 	 * @private
 	 * @param {Array} array The array to search.
@@ -4471,14 +4575,13 @@ webpackJsonp([3],{
 	      }
 	      result = initCloneObject(isFunc ? {} : value);
 	      if (!isDeep) {
-	        result = baseAssign(result, value);
-	        return isFull ? copySymbols(value, result) : result;
+	        return copySymbols(value, baseAssign(result, value));
 	      }
 	    } else {
 	      if (!cloneableTags[tag]) {
 	        return object ? value : {};
 	      }
-	      result = initCloneByTag(value, tag, isDeep);
+	      result = initCloneByTag(value, tag, baseClone, isDeep);
 	    }
 	  }
 	  // Check for circular references and return its corresponding clone.
@@ -4489,11 +4592,18 @@ webpackJsonp([3],{
 	  }
 	  stack.set(value, result);
 	
+	  if (!isArr) {
+	    var props = isFull ? getAllKeys(value) : keys(value);
+	  }
 	  // Recursively populate clone (susceptible to call stack limits).
-	  (isArr ? arrayEach : baseForOwn)(value, function(subValue, key) {
+	  arrayEach(props || value, function(subValue, key) {
+	    if (props) {
+	      key = subValue;
+	      subValue = value[key];
+	    }
 	    assignValue(result, key, baseClone(subValue, isDeep, isFull, customizer, key, value, stack));
 	  });
-	  return (isFull && !isArr) ? copySymbols(value, result) : result;
+	  return result;
 	}
 	
 	/**
@@ -4509,29 +4619,21 @@ webpackJsonp([3],{
 	}
 	
 	/**
-	 * The base implementation of `baseForIn` and `baseForOwn` which iterates
-	 * over `object` properties returned by `keysFunc` invoking `iteratee` for
-	 * each property. Iteratee functions may exit iteration early by explicitly
-	 * returning `false`.
+	 * The base implementation of `getAllKeys` and `getAllKeysIn` which uses
+	 * `keysFunc` and `symbolsFunc` to get the enumerable property names and
+	 * symbols of `object`.
 	 *
 	 * @private
-	 * @param {Object} object The object to iterate over.
-	 * @param {Function} iteratee The function invoked per iteration.
+	 * @param {Object} object The object to query.
 	 * @param {Function} keysFunc The function to get the keys of `object`.
-	 * @returns {Object} Returns `object`.
+	 * @param {Function} symbolsFunc The function to get the symbols of `object`.
+	 * @returns {Array} Returns the array of property names and symbols.
 	 */
-	var baseFor = createBaseFor();
-	
-	/**
-	 * The base implementation of `_.forOwn` without support for iteratee shorthands.
-	 *
-	 * @private
-	 * @param {Object} object The object to iterate over.
-	 * @param {Function} iteratee The function invoked per iteration.
-	 * @returns {Object} Returns `object`.
-	 */
-	function baseForOwn(object, iteratee) {
-	  return object && baseFor(object, iteratee, keys);
+	function baseGetAllKeys(object, keysFunc, symbolsFunc) {
+	  var result = keysFunc(object);
+	  return isArray(object)
+	    ? result
+	    : arrayPush(result, symbolsFunc(object));
 	}
 	
 	/**
@@ -4547,7 +4649,7 @@ webpackJsonp([3],{
 	  // that are composed entirely of index properties, return `false` for
 	  // `hasOwnProperty` checks of them.
 	  return hasOwnProperty.call(object, key) ||
-	    (typeof object == 'object' && key in object && getPrototypeOf(object) === null);
+	    (typeof object == 'object' && key in object && getPrototype(object) === null);
 	}
 	
 	/**
@@ -4606,14 +4708,30 @@ webpackJsonp([3],{
 	}
 	
 	/**
+	 * Creates a clone of `dataView`.
+	 *
+	 * @private
+	 * @param {Object} dataView The data view to clone.
+	 * @param {boolean} [isDeep] Specify a deep clone.
+	 * @returns {Object} Returns the cloned data view.
+	 */
+	function cloneDataView(dataView, isDeep) {
+	  var buffer = isDeep ? cloneArrayBuffer(dataView.buffer) : dataView.buffer;
+	  return new dataView.constructor(buffer, dataView.byteOffset, dataView.byteLength);
+	}
+	
+	/**
 	 * Creates a clone of `map`.
 	 *
 	 * @private
 	 * @param {Object} map The map to clone.
+	 * @param {Function} cloneFunc The function to clone values.
+	 * @param {boolean} [isDeep] Specify a deep clone.
 	 * @returns {Object} Returns the cloned map.
 	 */
-	function cloneMap(map) {
-	  return arrayReduce(mapToArray(map), addMapEntry, new map.constructor);
+	function cloneMap(map, isDeep, cloneFunc) {
+	  var array = isDeep ? cloneFunc(mapToArray(map), true) : mapToArray(map);
+	  return arrayReduce(array, addMapEntry, new map.constructor);
 	}
 	
 	/**
@@ -4634,10 +4752,13 @@ webpackJsonp([3],{
 	 *
 	 * @private
 	 * @param {Object} set The set to clone.
+	 * @param {Function} cloneFunc The function to clone values.
+	 * @param {boolean} [isDeep] Specify a deep clone.
 	 * @returns {Object} Returns the cloned set.
 	 */
-	function cloneSet(set) {
-	  return arrayReduce(setToArray(set), addSetEntry, new set.constructor);
+	function cloneSet(set, isDeep, cloneFunc) {
+	  var array = isDeep ? cloneFunc(setToArray(set), true) : setToArray(set);
+	  return arrayReduce(array, addSetEntry, new set.constructor);
 	}
 	
 	/**
@@ -4688,26 +4809,12 @@ webpackJsonp([3],{
 	 *
 	 * @private
 	 * @param {Object} source The object to copy properties from.
-	 * @param {Array} props The property names to copy.
-	 * @param {Object} [object={}] The object to copy properties to.
-	 * @returns {Object} Returns `object`.
-	 */
-	function copyObject(source, props, object) {
-	  return copyObjectWith(source, props, object);
-	}
-	
-	/**
-	 * This function is like `copyObject` except that it accepts a function to
-	 * customize copied values.
-	 *
-	 * @private
-	 * @param {Object} source The object to copy properties from.
-	 * @param {Array} props The property names to copy.
+	 * @param {Array} props The property identifiers to copy.
 	 * @param {Object} [object={}] The object to copy properties to.
 	 * @param {Function} [customizer] The function to customize copied values.
 	 * @returns {Object} Returns `object`.
 	 */
-	function copyObjectWith(source, props, object, customizer) {
+	function copyObject(source, props, object, customizer) {
 	  object || (object = {});
 	
 	  var index = -1,
@@ -4738,34 +4845,22 @@ webpackJsonp([3],{
 	}
 	
 	/**
-	 * Creates a base function for methods like `_.forIn`.
+	 * Creates an array of own enumerable property names and symbols of `object`.
 	 *
 	 * @private
-	 * @param {boolean} [fromRight] Specify iterating from right to left.
-	 * @returns {Function} Returns the new base function.
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names and symbols.
 	 */
-	function createBaseFor(fromRight) {
-	  return function(object, iteratee, keysFunc) {
-	    var index = -1,
-	        iterable = Object(object),
-	        props = keysFunc(object),
-	        length = props.length;
-	
-	    while (length--) {
-	      var key = props[fromRight ? length : ++index];
-	      if (iteratee(iterable[key], key, iterable) === false) {
-	        break;
-	      }
-	    }
-	    return object;
-	  };
+	function getAllKeys(object) {
+	  return baseGetAllKeys(object, keys, getSymbols);
 	}
 	
 	/**
 	 * Gets the "length" property value of `object`.
 	 *
-	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
-	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 * **Note:** This function is used to avoid a
+	 * [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792) that affects
+	 * Safari on at least iOS 8.1-8.3 ARM64.
 	 *
 	 * @private
 	 * @param {Object} object The object to query.
@@ -4787,15 +4882,35 @@ webpackJsonp([3],{
 	}
 	
 	/**
-	 * Creates an array of the own symbol properties of `object`.
+	 * Gets the `[[Prototype]]` of `value`.
+	 *
+	 * @private
+	 * @param {*} value The value to query.
+	 * @returns {null|Object} Returns the `[[Prototype]]`.
+	 */
+	function getPrototype(value) {
+	  return nativeGetPrototype(Object(value));
+	}
+	
+	/**
+	 * Creates an array of the own enumerable symbol properties of `object`.
 	 *
 	 * @private
 	 * @param {Object} object The object to query.
 	 * @returns {Array} Returns the array of symbols.
 	 */
-	var getSymbols = getOwnPropertySymbols || function() {
-	  return [];
-	};
+	function getSymbols(object) {
+	  // Coerce `object` to an object to avoid non-object errors in V8.
+	  // See https://bugs.chromium.org/p/v8/issues/detail?id=3443 for more details.
+	  return getOwnPropertySymbols(Object(object));
+	}
+	
+	// Fallback for IE < 11.
+	if (!getOwnPropertySymbols) {
+	  getSymbols = function() {
+	    return [];
+	  };
+	}
 	
 	/**
 	 * Gets the `toStringTag` of `value`.
@@ -4808,18 +4923,23 @@ webpackJsonp([3],{
 	  return objectToString.call(value);
 	}
 	
-	// Fallback for IE 11 providing `toStringTag` values for maps, sets, and weakmaps.
-	if ((Map && getTag(new Map) != mapTag) ||
+	// Fallback for data views, maps, sets, and weak maps in IE 11,
+	// for data views in Edge, and promises in Node.js.
+	if ((DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag) ||
+	    (Map && getTag(new Map) != mapTag) ||
+	    (Promise && getTag(Promise.resolve()) != promiseTag) ||
 	    (Set && getTag(new Set) != setTag) ||
 	    (WeakMap && getTag(new WeakMap) != weakMapTag)) {
 	  getTag = function(value) {
 	    var result = objectToString.call(value),
-	        Ctor = result == objectTag ? value.constructor : null,
-	        ctorString = typeof Ctor == 'function' ? funcToString.call(Ctor) : '';
+	        Ctor = result == objectTag ? value.constructor : undefined,
+	        ctorString = Ctor ? toSource(Ctor) : undefined;
 	
 	    if (ctorString) {
 	      switch (ctorString) {
+	        case dataViewCtorString: return dataViewTag;
 	        case mapCtorString: return mapTag;
+	        case promiseCtorString: return promiseTag;
 	        case setCtorString: return setTag;
 	        case weakMapCtorString: return weakMapTag;
 	      }
@@ -4856,7 +4976,7 @@ webpackJsonp([3],{
 	 */
 	function initCloneObject(object) {
 	  return (typeof object.constructor == 'function' && !isPrototype(object))
-	    ? baseCreate(getPrototypeOf(object))
+	    ? baseCreate(getPrototype(object))
 	    : {};
 	}
 	
@@ -4869,10 +4989,11 @@ webpackJsonp([3],{
 	 * @private
 	 * @param {Object} object The object to clone.
 	 * @param {string} tag The `toStringTag` of the object to clone.
+	 * @param {Function} cloneFunc The function to clone values.
 	 * @param {boolean} [isDeep] Specify a deep clone.
 	 * @returns {Object} Returns the initialized clone.
 	 */
-	function initCloneByTag(object, tag, isDeep) {
+	function initCloneByTag(object, tag, cloneFunc, isDeep) {
 	  var Ctor = object.constructor;
 	  switch (tag) {
 	    case arrayBufferTag:
@@ -4882,13 +5003,16 @@ webpackJsonp([3],{
 	    case dateTag:
 	      return new Ctor(+object);
 	
+	    case dataViewTag:
+	      return cloneDataView(object, isDeep);
+	
 	    case float32Tag: case float64Tag:
 	    case int8Tag: case int16Tag: case int32Tag:
 	    case uint8Tag: case uint8ClampedTag: case uint16Tag: case uint32Tag:
 	      return cloneTypedArray(object, isDeep);
 	
 	    case mapTag:
-	      return cloneMap(object);
+	      return cloneMap(object, isDeep, cloneFunc);
 	
 	    case numberTag:
 	    case stringTag:
@@ -4898,7 +5022,7 @@ webpackJsonp([3],{
 	      return cloneRegExp(object);
 	
 	    case setTag:
-	      return cloneSet(object);
+	      return cloneSet(object, isDeep, cloneFunc);
 	
 	    case symbolTag:
 	      return cloneSymbol(object);
@@ -4950,11 +5074,32 @@ webpackJsonp([3],{
 	}
 	
 	/**
-	 * Performs a [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+	 * Converts `func` to its source code.
+	 *
+	 * @private
+	 * @param {Function} func The function to process.
+	 * @returns {string} Returns the source code.
+	 */
+	function toSource(func) {
+	  if (func != null) {
+	    try {
+	      return funcToString.call(func);
+	    } catch (e) {}
+	    try {
+	      return (func + '');
+	    } catch (e) {}
+	  }
+	  return '';
+	}
+	
+	/**
+	 * Performs a
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
 	 * comparison between two values to determine if they are equivalent.
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 4.0.0
 	 * @category Lang
 	 * @param {*} value The value to compare.
 	 * @param {*} other The other value to compare.
@@ -4988,9 +5133,11 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 0.1.0
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
 	 * @example
 	 *
 	 * _.isArguments(function() { return arguments; }());
@@ -5010,10 +5157,12 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 0.1.0
 	 * @type {Function}
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
 	 * @example
 	 *
 	 * _.isArray([1, 2, 3]);
@@ -5037,6 +5186,7 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 4.0.0
 	 * @category Lang
 	 * @param {*} value The value to check.
 	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
@@ -5064,9 +5214,11 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 4.0.0
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an array-like object, else `false`.
+	 * @returns {boolean} Returns `true` if `value` is an array-like object,
+	 *  else `false`.
 	 * @example
 	 *
 	 * _.isArrayLikeObject([1, 2, 3]);
@@ -5090,6 +5242,7 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 4.3.0
 	 * @category Lang
 	 * @param {*} value The value to check.
 	 * @returns {boolean} Returns `true` if `value` is a buffer, else `false`.
@@ -5110,9 +5263,11 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 0.1.0
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
 	 * @example
 	 *
 	 * _.isFunction(_);
@@ -5132,13 +5287,16 @@ webpackJsonp([3],{
 	/**
 	 * Checks if `value` is a valid array-like length.
 	 *
-	 * **Note:** This function is loosely based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 * **Note:** This function is loosely based on
+	 * [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 4.0.0
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 * @returns {boolean} Returns `true` if `value` is a valid length,
+	 *  else `false`.
 	 * @example
 	 *
 	 * _.isLength(3);
@@ -5159,11 +5317,13 @@ webpackJsonp([3],{
 	}
 	
 	/**
-	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 * Checks if `value` is the
+	 * [language type](http://www.ecma-international.org/ecma-262/6.0/#sec-ecmascript-language-types)
+	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 0.1.0
 	 * @category Lang
 	 * @param {*} value The value to check.
 	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
@@ -5192,6 +5352,7 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 4.0.0
 	 * @category Lang
 	 * @param {*} value The value to check.
 	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
@@ -5218,9 +5379,11 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 3.0.0
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+	 * @returns {boolean} Returns `true` if `value` is a native function,
+	 *  else `false`.
 	 * @example
 	 *
 	 * _.isNative(Array.prototype.push);
@@ -5230,24 +5393,23 @@ webpackJsonp([3],{
 	 * // => false
 	 */
 	function isNative(value) {
-	  if (value == null) {
+	  if (!isObject(value)) {
 	    return false;
 	  }
-	  if (isFunction(value)) {
-	    return reIsNative.test(funcToString.call(value));
-	  }
-	  return isObjectLike(value) &&
-	    (isHostObject(value) ? reIsNative : reIsHostCtor).test(value);
+	  var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
+	  return pattern.test(toSource(value));
 	}
 	
 	/**
 	 * Checks if `value` is classified as a `String` primitive or object.
 	 *
 	 * @static
+	 * @since 0.1.0
 	 * @memberOf _
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
 	 * @example
 	 *
 	 * _.isString('abc');
@@ -5269,6 +5431,7 @@ webpackJsonp([3],{
 	 * for more details.
 	 *
 	 * @static
+	 * @since 0.1.0
 	 * @memberOf _
 	 * @category Object
 	 * @param {Object} object The object to query.
@@ -5313,6 +5476,7 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 2.4.0
 	 * @category Util
 	 * @param {*} value The value to return from the new function.
 	 * @returns {Function} Returns the new function.
@@ -5330,39 +5494,22 @@ webpackJsonp([3],{
 	  };
 	}
 	
-	// Avoid inheriting from `Object.prototype` when possible.
-	Hash.prototype = nativeCreate ? nativeCreate(null) : objectProto;
-	
-	// Add functions to the `MapCache`.
-	MapCache.prototype.clear = mapClear;
-	MapCache.prototype['delete'] = mapDelete;
-	MapCache.prototype.get = mapGet;
-	MapCache.prototype.has = mapHas;
-	MapCache.prototype.set = mapSet;
-	
-	// Add functions to the `Stack` cache.
-	Stack.prototype.clear = stackClear;
-	Stack.prototype['delete'] = stackDelete;
-	Stack.prototype.get = stackGet;
-	Stack.prototype.has = stackHas;
-	Stack.prototype.set = stackSet;
-	
 	module.exports = baseClone;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(265)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(255)(module), (function() { return this; }())))
 
 /***/ },
 
-/***/ 267:
+/***/ 257:
 /***/ function(module, exports) {
 
 	/**
-	 * lodash 4.0.3 (Custom Build) <https://lodash.com/>
+	 * lodash 4.0.4 (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modularize exports="npm" -o ./`
-	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+	 * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+	 * Released under MIT license <https://lodash.com/license>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
+	 * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 */
 	
 	/** `Object#toString` result references. */
@@ -5393,6 +5540,9 @@ webpackJsonp([3],{
 	/** Used to resolve the decompiled source of functions. */
 	var funcToString = Function.prototype.toString;
 	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
 	/** Used to infer the `Object` constructor. */
 	var objectCtorString = funcToString.call(Object);
 	
@@ -5402,8 +5552,19 @@ webpackJsonp([3],{
 	 */
 	var objectToString = objectProto.toString;
 	
-	/** Built-in value references. */
-	var getPrototypeOf = Object.getPrototypeOf;
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+	var nativeGetPrototype = Object.getPrototypeOf;
+	
+	/**
+	 * Gets the `[[Prototype]]` of `value`.
+	 *
+	 * @private
+	 * @param {*} value The value to query.
+	 * @returns {null|Object} Returns the `[[Prototype]]`.
+	 */
+	function getPrototype(value) {
+	  return nativeGetPrototype(Object(value));
+	}
 	
 	/**
 	 * Checks if `value` is object-like. A value is object-like if it's not `null`
@@ -5411,6 +5572,7 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 4.0.0
 	 * @category Lang
 	 * @param {*} value The value to check.
 	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
@@ -5438,9 +5600,11 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 0.8.0
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+	 * @returns {boolean} Returns `true` if `value` is a plain object,
+	 *  else `false`.
 	 * @example
 	 *
 	 * function Foo() {
@@ -5464,11 +5628,11 @@ webpackJsonp([3],{
 	      objectToString.call(value) != objectTag || isHostObject(value)) {
 	    return false;
 	  }
-	  var proto = getPrototypeOf(value);
+	  var proto = getPrototype(value);
 	  if (proto === null) {
 	    return true;
 	  }
-	  var Ctor = proto.constructor;
+	  var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
 	  return (typeof Ctor == 'function' &&
 	    Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString);
 	}
@@ -5478,7 +5642,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 268:
+/***/ 258:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -5974,20 +6138,20 @@ webpackJsonp([3],{
 	
 	module.exports = keysIn;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(265)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(255)(module), (function() { return this; }())))
 
 /***/ },
 
-/***/ 269:
+/***/ 259:
 /***/ function(module, exports) {
 
 	/**
-	 * lodash 4.0.1 (Custom Build) <https://lodash.com/>
+	 * lodash 4.0.2 (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modularize exports="npm" -o ./`
-	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+	 * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+	 * Released under MIT license <https://lodash.com/license>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
+	 * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 */
 	
 	/** Used as the `TypeError` message for "Functions" methods. */
@@ -6000,7 +6164,8 @@ webpackJsonp([3],{
 	
 	/** `Object#toString` result references. */
 	var funcTag = '[object Function]',
-	    genTag = '[object GeneratorFunction]';
+	    genTag = '[object GeneratorFunction]',
+	    symbolTag = '[object Symbol]';
 	
 	/** Used to match leading and trailing whitespace. */
 	var reTrim = /^\s+|\s+$/g;
@@ -6052,12 +6217,15 @@ webpackJsonp([3],{
 	
 	/**
 	 * Creates a function that invokes `func` with the `this` binding of the
-	 * created function and arguments from `start` and beyond provided as an array.
+	 * created function and arguments from `start` and beyond provided as
+	 * an array.
 	 *
-	 * **Note:** This method is based on the [rest parameter](https://mdn.io/rest_parameters).
+	 * **Note:** This method is based on the
+	 * [rest parameter](https://mdn.io/rest_parameters).
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 4.0.0
 	 * @category Function
 	 * @param {Function} func The function to apply a rest parameter to.
 	 * @param {number} [start=func.length-1] The start position of the rest parameter.
@@ -6106,9 +6274,11 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 0.1.0
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
 	 * @example
 	 *
 	 * _.isFunction(_);
@@ -6119,8 +6289,8 @@ webpackJsonp([3],{
 	 */
 	function isFunction(value) {
 	  // The use of `Object#toString` avoids issues with the `typeof` operator
-	  // in Safari 8 which returns 'object' for typed array constructors, and
-	  // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+	  // in Safari 8 which returns 'object' for typed array and weak map constructors,
+	  // and PhantomJS 1.9 which returns 'function' for `NodeList` instances.
 	  var tag = isObject(value) ? objectToString.call(value) : '';
 	  return tag == funcTag || tag == genTag;
 	}
@@ -6131,6 +6301,7 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 0.1.0
 	 * @category Lang
 	 * @param {*} value The value to check.
 	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
@@ -6154,12 +6325,65 @@ webpackJsonp([3],{
 	}
 	
 	/**
-	 * Converts `value` to an integer.
-	 *
-	 * **Note:** This function is loosely based on [`ToInteger`](http://www.ecma-international.org/ecma-262/6.0/#sec-tointeger).
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+	
+	/**
+	 * Checks if `value` is classified as a `Symbol` primitive or object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isSymbol(Symbol.iterator);
+	 * // => true
+	 *
+	 * _.isSymbol('abc');
+	 * // => false
+	 */
+	function isSymbol(value) {
+	  return typeof value == 'symbol' ||
+	    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+	}
+	
+	/**
+	 * Converts `value` to an integer.
+	 *
+	 * **Note:** This function is loosely based on
+	 * [`ToInteger`](http://www.ecma-international.org/ecma-262/6.0/#sec-tointeger).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
 	 * @category Lang
 	 * @param {*} value The value to convert.
 	 * @returns {number} Returns the converted integer.
@@ -6195,6 +6419,7 @@ webpackJsonp([3],{
 	 *
 	 * @static
 	 * @memberOf _
+	 * @since 4.0.0
 	 * @category Lang
 	 * @param {*} value The value to process.
 	 * @returns {number} Returns the number.
@@ -6213,6 +6438,12 @@ webpackJsonp([3],{
 	 * // => 3
 	 */
 	function toNumber(value) {
+	  if (typeof value == 'number') {
+	    return value;
+	  }
+	  if (isSymbol(value)) {
+	    return NAN;
+	  }
 	  if (isObject(value)) {
 	    var other = isFunction(value.valueOf) ? value.valueOf() : value;
 	    value = isObject(other) ? (other + '') : other;
@@ -6232,7 +6463,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 270:
+/***/ 260:
 /***/ function(module, exports) {
 
 	'use strict';
