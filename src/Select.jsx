@@ -710,7 +710,7 @@ const Select = React.createClass({
           }
         });
       }
-      if (ex.clear) {
+      if (ex.clear && props.treeCheckable) {
         const treeData = this.renderedTreeData || props.children;
         ex.allCheckedNodes = flatToHierarchy(filterAllCheckedData(vals, treeData));
       }
