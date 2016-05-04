@@ -1,0 +1,10 @@
+.rc-tree-select-selection--multiple {
+  max-height: 50px;
+  overflow-y: scroll;
+}
+.rc-tree-select-dropdown {
+  max-height: 350px;
+  overflow-y: scroll;
+}
+
+/*# sourceMappingURL=big-data.css.map*/
