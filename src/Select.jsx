@@ -519,7 +519,8 @@ const Select = React.createClass({
     if (e) {
       e.stopPropagation();
     }
-    if ((props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT)
+    if (props.treeCheckable &&
+      (props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT)
       && !props.skipHandleInitValue) {
       this.getDeselectedValue(selectedValue);
       return;
