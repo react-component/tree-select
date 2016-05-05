@@ -376,19 +376,22 @@ export function getTreeNodesStates(children, values) {
 
 // 给每一个 children 节点，增加 prop
 export function recursiveCloneChildren(children, cb = ch => ch) {
+  // return React.Children.map(children, child => {
   return Array.from(children).map(child => {
     const newChild = cb(child);
-    if (newChild && newChild.props.children) {
+    if (newChild && newChild.props && newChild.props.children) {
       return React.cloneElement(newChild, {}, recursiveCloneChildren(newChild.props.children, cb));
     }
     return newChild;
   });
 }
 // const newChildren = recursiveCloneChildren(children, child => {
-//   const extraProps = {
-//     _prop: true,
-//   };
-//   return React.cloneElement(child, extraProps);
+//   const extraProps = {};
+//   if (child && child.type && child.type.xxx) {
+//     extraProps._prop = true;
+//     return React.cloneElement(child, extraProps);
+//   }
+//   return child;
 // });
 
 
