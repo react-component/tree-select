@@ -229,7 +229,11 @@ const Select = React.createClass({
     if (!open && document.activeElement === this.getInputDOMNode()) {
       // return;
     }
-    this.setOpenState(open);
+    // this.setOpenState(open);
+    // 加延时，才能产生动画，什么情况？？
+    setTimeout(() => {
+      this.setOpenState(open);
+    }, 10);
   },
 
   // combobox ignore
@@ -393,15 +397,17 @@ const Select = React.createClass({
   },
 
   onOuterFocus() {
-    this.setState({
-      focused: true,
-    });
+    // 此处会影响展开收起动画，类似问题在 onDropdownVisibleChange 里的 setTimeout 。
+    // this.setState({
+    //   focused: true,
+    // });
   },
 
   onOuterBlur() {
-    this.setState({
-      focused: false,
-    });
+    // 此处会影响展开收起动画，类似问题在 onDropdownVisibleChange 里的 setTimeout 。
+    // this.setState({
+    //   focused: false,
+    // });
   },
 
   onClearSelection(event) {
