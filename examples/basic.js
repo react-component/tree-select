@@ -40,16 +40,28 @@ webpackJsonp([0],[
 	    return {
 	      value: '0-0-0-value',
 	      // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
-	      multipleValue: []
+	      multipleValue: [],
+	      simpleTreeData: [{ 'key': 1, 'pId': 0, 'label': 'test1' }, { 'key': '1-1', 'pId': 0, 'label': 'test1' }, { 'key': 11, 'pId': 1, 'label': 'test11' }, { 'key': 12, 'pId': 1, 'label': 'test12' }, { 'key': 111, 'pId': 11, 'label': 'test111' }],
+	      treeDataSimpleMode: {
+	        id: 'key',
+	        rootPId: 0
+	      }
 	    };
 	  },
 	  onChange: function onChange(value) {
-	    console.log('onChange', value, arguments);
+	    console.log('onChange', arguments);
 	    this.setState({ value: value });
 	  },
 	  onMultipleChange: function onMultipleChange(value) {
-	    console.log('onMultipleChange', value);
+	    console.log('onMultipleChange', arguments);
 	    this.setState({ multipleValue: value });
+	  },
+	  onSelect: function onSelect() {
+	    // use onChange instead
+	    console.log(arguments);
+	  },
+	  filterTreeNode: function filterTreeNode(input, child) {
+	    return String(child.props.title).indexOf(input) === 0;
 	  },
 	  render: function render() {
 	    return _react2['default'].createElement(
@@ -62,37 +74,38 @@ webpackJsonp([0],[
 	      ),
 	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 },
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-	        treeData: _util.gData, showSearch: true, allowClear: true, treeLine: true,
-	        value: this.state.value,
-	        treeDefaultExpandAll: false,
 	        placeholder: _react2['default'].createElement(
 	          'i',
 	          null,
 	          '请下拉选择'
 	        ),
 	        searchPlaceholder: 'please search',
+	        showSearch: true, allowClear: true, treeLine: true,
+	        value: this.state.value,
+	        treeData: _util.gData,
 	        treeNodeFilterProp: 'label',
-	        onChange: this.onChange }),
+	        filterTreeNode: false,
+	        onChange: this.onChange,
+	        onSelect: this.onSelect }),
 	      _react2['default'].createElement(
 	        'h2',
 	        null,
 	        'multiple select'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 },
+	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 }, dropdownPopupAlign: { offset: [0, 0] },
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-	        treeData: _util.gData,
-	        value: this.state.multipleValue,
-	        treeDefaultExpandAll: true,
 	        placeholder: _react2['default'].createElement(
 	          'i',
 	          null,
 	          '请下拉选择'
 	        ),
 	        searchPlaceholder: 'please search',
-	        treeNodeFilterProp: 'title',
 	        multiple: true,
-	        dropdownPopupAlign: { offset: [0, 0] },
-	        onChange: this.onMultipleChange }),
+	        value: this.state.multipleValue,
+	        treeData: _util.gData,
+	        treeNodeFilterProp: 'title',
+	        onChange: this.onMultipleChange,
+	        onSelect: this.onSelect }),
 	      _react2['default'].createElement(
 	        'h2',
 	        null,
@@ -100,19 +113,39 @@ webpackJsonp([0],[
 	      ),
 	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 },
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-	        treeData: _util.gData, treeLine: true,
-	        value: this.state.value,
-	        treeDefaultExpandAll: true,
 	        placeholder: _react2['default'].createElement(
 	          'i',
 	          null,
 	          '请下拉选择'
 	        ),
 	        searchPlaceholder: 'please search',
+	        treeLine: true, maxTagTextLength: 10,
+	        value: this.state.value,
+	        treeData: _util.gData,
 	        treeNodeFilterProp: 'title',
-	        treeCheckable: true,
-	        showCheckedStrategy: _rcTreeSelect.SHOW_PARENT,
-	        onChange: this.onChange }),
+	        treeCheckable: true, showCheckedStrategy: _rcTreeSelect.SHOW_PARENT,
+	        onChange: this.onChange,
+	        onSelect: this.onSelect }),
+	      _react2['default'].createElement(
+	        'h2',
+	        null,
+	        'use treeDataSimpleMode'
+	      ),
+	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 },
+	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
+	        placeholder: _react2['default'].createElement(
+	          'i',
+	          null,
+	          '请下拉选择'
+	        ),
+	        searchPlaceholder: 'please search',
+	        treeLine: true, maxTagTextLength: 10,
+	        value: this.state.value,
+	        treeData: this.state.simpleTreeData,
+	        treeDataSimpleMode: this.state.treeDataSimpleMode,
+	        treeCheckable: true, showCheckedStrategy: _rcTreeSelect.SHOW_PARENT,
+	        onChange: this.onChange,
+	        onSelect: this.onSelect }),
 	      _react2['default'].createElement(
 	        'h2',
 	        null,
@@ -124,26 +157,41 @@ webpackJsonp([0],[
 	          dropdownStyle: { maxHeight: 200, overflow: 'auto' },
 	          value: this.state.value || 'leaf1',
 	          treeDefaultExpandAll: true,
+	          treeNodeFilterProp: 'title',
+	          filterTreeNode: this.filterTreeNode,
 	          onChange: this.onChange },
 	        _react2['default'].createElement(
 	          _rcTreeSelect.TreeNode,
 	          { value: 'parent 1', title: 'parent 1', key: '0-1' },
 	          _react2['default'].createElement(
 	            _rcTreeSelect.TreeNode,
-	            { value: 'parent 1-0', title: 'parent 1-0', key: '0-1-1' },
-	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf1', title: 'my leaf my leaf my leaf', key: 'random' }),
+	            { value: 'parent 1-0', title: 'parent 1-0', key: '0-1-0' },
+	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf1', title: 'my leaf', key: 'random' }),
 	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf2', title: 'your leaf', key: 'random1', disabled: true })
 	          ),
 	          _react2['default'].createElement(
 	            _rcTreeSelect.TreeNode,
-	            { value: 'parent 1-1', title: 'parent 1-1', key: 'random2' },
+	            { value: 'parent 1-1', title: 'parent 1-1', key: '0-1-1' },
 	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'sss', title: _react2['default'].createElement(
 	                'span',
 	                { style: { color: 'red' } },
 	                'sss'
-	              ), key: 'random3' })
+	              ), key: 'random3' }),
+	            _react2['default'].createElement(
+	              _rcTreeSelect.TreeNode,
+	              { value: 'same value', title: 'same txtle', key: '0-1-1-1' },
+	              _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same titlexd', key: '0-1-1-1-0' })
+	            )
 	          )
-	        )
+	        ),
+	        _react2['default'].createElement(
+	          _rcTreeSelect.TreeNode,
+	          { value: 'same value', title: 'same title', key: '0-2' },
+	          _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: '2same value', title: '2same title', key: '0-2-0' })
+	        ),
+	        _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-3' }),
+	        _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-4' }),
+	        _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-5' })
 	      )
 	    );
 	  }
