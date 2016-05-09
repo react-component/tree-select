@@ -265,6 +265,9 @@
 	var queueIndex = -1;
 	
 	function cleanUpNextTick() {
+	    if (!draining || !currentQueue) {
+	        return;
+	    }
 	    draining = false;
 	    if (currentQueue.length) {
 	        queue = currentQueue.concat(queue);
@@ -20007,11 +20010,17 @@
 	  },
 	
 	  onDropdownVisibleChange: function onDropdownVisibleChange(open) {
+	    var _this = this;
+	
 	    // selection inside combobox cause click
-	    if (!open && document.activeElement === this.getInputDOMNode()) {
-	      // return;
-	    }
-	    this.setOpenState(open);
+	    if (!open && document.activeElement === this.getInputDOMNode()) {}
+	    // return;
+	
+	    // this.setOpenState(open);
+	    // 加延时，才能产生动画，什么情况？？
+	    setTimeout(function () {
+	      _this.setOpenState(open);
+	    }, 10);
 	  },
 	
 	  // combobox ignore
@@ -20081,7 +20090,7 @@
 	  },
 	
 	  onSelect: function onSelect(selectedKeys, info) {
-	    var _this = this;
+	    var _this2 = this;
 	
 	    if (info.selected === false) {
 	      this.onDeselect(info);
@@ -20106,7 +20115,7 @@
 	        value = this.getCheckedNodes(info, props).map(function (n) {
 	          return {
 	            value: (0, _util.getValuePropValue)(n),
-	            label: _this.getLabelFromNode(n)
+	            label: _this2.getLabelFromNode(n)
 	          };
 	        });
 	      } else {
@@ -20176,15 +20185,17 @@
 	  },
 	
 	  onOuterFocus: function onOuterFocus() {
-	    this.setState({
-	      focused: true
-	    });
+	    // 此处会影响展开收起动画，类似问题在 onDropdownVisibleChange 里的 setTimeout 。
+	    // this.setState({
+	    //   focused: true,
+	    // });
 	  },
 	
 	  onOuterBlur: function onOuterBlur() {
-	    this.setState({
-	      focused: false
-	    });
+	    // 此处会影响展开收起动画，类似问题在 onDropdownVisibleChange 里的 setTimeout 。
+	    // this.setState({
+	    //   focused: false,
+	    // });
 	  },
 	
 	  onClearSelection: function onClearSelection(event) {
@@ -20208,7 +20219,7 @@
 	  },
 	
 	  getLabelFromProps: function getLabelFromProps(props, value) {
-	    var _this2 = this;
+	    var _this3 = this;
 	
 	    if (value === undefined) {
 	      return null;
@@ -20216,7 +20227,7 @@
 	    var label = null;
 	    (0, _util.loopAllChildren)(this.renderedTreeData || props.children, function (item) {
 	      if ((0, _util.getValuePropValue)(item) === value) {
-	        label = _this2.getLabelFromNode(item);
+	        label = _this3.getLabelFromNode(item);
 	      }
 	    });
 	    if (label === null) {
@@ -20287,7 +20298,7 @@
 	  },
 	
 	  getValue: function getValue(_props, val) {
-	    var _this3 = this;
+	    var _this4 = this;
 	
 	    var value = val;
 	    if (_props.treeCheckable && _props.treeCheckStrictly) {
@@ -20297,7 +20308,7 @@
 	        if (!i.halfChecked) {
 	          value.push(i);
 	        } else {
-	          _this3.halfCheckedValues.push(i);
+	          _this4.halfCheckedValues.push(i);
 	        }
 	      });
 	    }
@@ -20398,7 +20409,7 @@
 	  },
 	
 	  setOpenState: function setOpenState(open, needFocus) {
-	    var _this4 = this;
+	    var _this5 = this;
 	
 	    this.clearDelayTimer();
 	    var props = this.props;
@@ -20413,7 +20424,7 @@
 	    }, function () {
 	      if (needFocus || open) {
 	        if (open || (0, _util.isMultipleOrTagsOrCombobox)(props)) {
-	          var input = _this4.getInputDOMNode();
+	          var input = _this5.getInputDOMNode();
 	          if (input && document.activeElement !== input) {
 	            input.focus();
 	          }
@@ -20425,7 +20436,7 @@
 	  },
 	
 	  addLabelToValue: function addLabelToValue(props, value_) {
-	    var _this5 = this;
+	    var _this6 = this;
 	
 	    var value = value_;
 	    if (this.isLabelInValue()) {
@@ -20437,13 +20448,13 @@
 	          };
 	          return;
 	        }
-	        v.label = v.label || _this5.getLabelFromProps(props, v.value);
+	        v.label = v.label || _this6.getLabelFromProps(props, v.value);
 	      });
 	    } else {
 	      value = value.map(function (v) {
 	        return {
 	          value: v,
-	          label: _this5.getLabelFromProps(props, v)
+	          label: _this6.getLabelFromProps(props, v)
 	        };
 	      });
 	    }
@@ -20501,7 +20512,7 @@
 	  },
 	
 	  fireChange: function fireChange(value, extraInfo) {
-	    var _this6 = this;
+	    var _this7 = this;
 	
 	    var props = this.props;
 	    if (!('value' in props)) {
@@ -20519,21 +20530,21 @@
 	      return sv[index] === val;
 	    })) {
 	      (function () {
-	        var ex = { preValue: [].concat(_toConsumableArray(_this6.state.value)) };
+	        var ex = { preValue: [].concat(_toConsumableArray(_this7.state.value)) };
 	        if (extraInfo) {
 	          (0, _objectAssign2['default'])(ex, extraInfo);
 	        }
 	        var labs = null;
 	        var vls = value;
-	        if (!_this6.isLabelInValue()) {
+	        if (!_this7.isLabelInValue()) {
 	          labs = value.map(function (i) {
 	            return i.label;
 	          });
 	          vls = vls.map(function (v) {
 	            return v.value;
 	          });
-	        } else if (_this6.halfCheckedValues.length) {
-	          _this6.halfCheckedValues.forEach(function (i) {
+	        } else if (_this7.halfCheckedValues.length) {
+	          _this7.halfCheckedValues.forEach(function (i) {
 	            if (!vls.some(function (v) {
 	              return v.value === i.value;
 	            })) {
@@ -20542,11 +20553,11 @@
 	          });
 	        }
 	        if (ex.clear && props.treeCheckable) {
-	          var treeData = _this6.renderedTreeData || props.children;
+	          var treeData = _this7.renderedTreeData || props.children;
 	          ex.allCheckedNodes = (0, _util.flatToHierarchy)((0, _util.filterAllCheckedData)(vals, treeData));
 	        }
-	        _this6._savedValue = (0, _util.isMultipleOrTags)(props) ? vls : vls[0];
-	        props.onChange(_this6._savedValue, labs, ex);
+	        _this7._savedValue = (0, _util.isMultipleOrTags)(props) ? vls : vls[0];
+	        props.onChange(_this7._savedValue, labs, ex);
 	      })();
 	    }
 	  },
@@ -20564,7 +20575,7 @@
 	  },
 	
 	  renderTopControlNode: function renderTopControlNode() {
-	    var _this7 = this;
+	    var _this8 = this;
 	
 	    var value = this.state.value;
 	
@@ -20617,7 +20628,7 @@
 	          }),
 	          _react2['default'].createElement('span', {
 	            className: prefixCls + '-selection__choice__remove',
-	            onClick: _this7.removeSelected.bind(_this7, singleValue.value)
+	            onClick: _this8.removeSelected.bind(_this8, singleValue.value)
 	          }),
 	          _react2['default'].createElement(
 	            'span',
@@ -25224,7 +25235,12 @@
 	  onMouseEnter: function onMouseEnter() {
 	    this.delaySetPopupVisible(true, this.props.mouseEnterDelay);
 	  },
-	  onMouseLeave: function onMouseLeave() {
+	  onMouseLeave: function onMouseLeave(e) {
+	    // https://github.com/react-component/trigger/pull/13
+	    // react bug?
+	    if (e.relatedTarget && !e.relatedTarget.setTimeout && _rcUtil.Dom.contains(this.popupContainer, e.relatedTarget)) {
+	      return;
+	    }
 	    this.delaySetPopupVisible(false, this.props.mouseLeaveDelay);
 	  },
 	  onFocus: function onFocus() {
@@ -25323,9 +25339,12 @@
 	  getPopupElement: function getPopupElement() {
 	    var props = this.props;
 	    var state = this.state;
+	
 	    var mouseProps = {};
-	    if (props.action.indexOf('hover') !== -1) {
+	    if (this.isMouseEnterToShow()) {
 	      mouseProps.onMouseEnter = this.onMouseEnter;
+	    }
+	    if (this.isMouseLeaveToHide()) {
 	      mouseProps.onMouseLeave = this.onMouseLeave;
 	    }
 	    return _react2["default"].createElement(
