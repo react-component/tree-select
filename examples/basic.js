@@ -45,7 +45,8 @@ const Demo = React.createClass({
     return (
       <div style={{margin: 20}}>
         <h2>single select</h2>
-        <TreeSelect style={{width: 300}}
+        <TreeSelect style={{width: 300}} transitionName="rc-tree-select-dropdown-slide-up"
+                    choiceTransitionName="rc-tree-select-selection__choice-zoom"
                     dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
@@ -58,7 +59,8 @@ const Demo = React.createClass({
                     onSelect={this.onSelect} />
 
         <h2>multiple select</h2>
-        <TreeSelect style={{width: 300}} dropdownPopupAlign={{offset: [0, 0]}}
+        <TreeSelect style={{width: 300}} transitionName="rc-tree-select-dropdown-slide-up"
+                    choiceTransitionName="rc-tree-select-selection__choice-zoom"
                     dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
@@ -70,8 +72,10 @@ const Demo = React.createClass({
                     onSelect={this.onSelect} />
 
         <h2>check select</h2>
-        <TreeSelect style={{width: 300}}
+        <TreeSelect style={{width: 300}} transitionName="rc-tree-select-dropdown-slide-up"
+                    choiceTransitionName="rc-tree-select-selection__choice-zoom"
                     dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+                    dropdownPopupAlign={{ overflow: { adjustY: 0, adjustX: 0 } }}
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
                     treeLine maxTagTextLength={10}
