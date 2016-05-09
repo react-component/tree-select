@@ -72,7 +72,8 @@ webpackJsonp([0],[
 	        null,
 	        'single select'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 },
+	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 }, transitionName: 'rc-tree-select-dropdown-slide-up',
+	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
 	        placeholder: _react2['default'].createElement(
 	          'i',
@@ -92,7 +93,8 @@ webpackJsonp([0],[
 	        null,
 	        'multiple select'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 }, dropdownPopupAlign: { offset: [0, 0] },
+	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 }, transitionName: 'rc-tree-select-dropdown-slide-up',
+	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
 	        placeholder: _react2['default'].createElement(
 	          'i',
@@ -111,8 +113,10 @@ webpackJsonp([0],[
 	        null,
 	        'check select'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 },
+	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 }, transitionName: 'rc-tree-select-dropdown-slide-up',
+	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
+	        dropdownPopupAlign: { overflow: { adjustY: 0, adjustX: 0 } },
 	        placeholder: _react2['default'].createElement(
 	          'i',
 	          null,

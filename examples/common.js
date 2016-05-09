@@ -20124,14 +20124,16 @@
 	      // }
 	    } else {
 	        if (value.length && value[0].value === selectedValue) {
-	          this.setOpenState(false, true);
+	          // this.setOpenState(false, true);
+	          this.setOpenState(false);
 	          return;
 	        }
 	        value = [{
 	          value: selectedValue,
 	          label: selectedLabel
 	        }];
-	        this.setOpenState(false, true);
+	        // this.setOpenState(false, true);
+	        this.setOpenState(false);
 	      }
 	
 	    var extraInfo = {
