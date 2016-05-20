@@ -251,7 +251,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <!--[if lt IE 9]>
   <script src="https://a.alipayobjects.com/??es5-shim/4.0.5/es5-shim.js,es5-shim/4.0.5/es5-sham.js,html5shiv/3.7.2/src/html5shiv.js"></script>
   <![endif]-->
-  <link rel="stylesheet" href="common.css" /><link rel="stylesheet" href="basic.css" />
+  <link rel="stylesheet" href="basic.css" />
 </head>
 
 <body>
@@ -329,7 +329,7 @@ import { gData } from <span class="hljs-string">'./util'</span>;
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{margin:</span> <span class="hljs-attribute">20</span>}}&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>tree-select in dialog<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">className</span>=<span class="hljs-value">"btn btn-primary"</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.onClick}</span>&gt;</span>show dialog<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Dialog</span>
+        {this.state.visible ? <span class="hljs-tag">&lt;<span class="hljs-title">Dialog</span>
           <span class="hljs-attribute">visible</span>=<span class="hljs-value">{this.state.visible}</span>
           <span class="hljs-attribute">animation</span>=<span class="hljs-value">"zoom"</span>
           <span class="hljs-attribute">maskAnimation</span>=<span class="hljs-value">"fade"</span>
@@ -350,7 +350,7 @@ import { gData } from <span class="hljs-string">'./util'</span>;
                       onSearch={this.onSearch}
                       onChange={this.onChange}
                       onSelect={this.onSelect} /&gt;
-        <span class="hljs-tag">&lt;/<span class="hljs-title">Dialog</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">Dialog</span>&gt;</span> : null}
         <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>single select<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}} <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
                     <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
