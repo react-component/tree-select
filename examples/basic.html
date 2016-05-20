@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>basic.js - example - rc-tree-select@1.6.2</title>
+  <title>basic.js - example - rc-tree-select@1.7.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-tree-select@1.6.2</h1>
+    <h1>rc-tree-select@1.7.0</h1>
 
     <p>tree-select ui component for react</p>
   </div>
@@ -276,6 +276,7 @@ import { gData } from <span class="hljs-string">'./util'</span>;
 <span class="hljs-keyword">const</span> Demo = React.createClass({
   getInitialState() {
     <span class="hljs-keyword">return</span> {
+      inputValue: <span class="hljs-string">'0-0-0-label'</span>,
       value: <span class="hljs-string">'0-0-0-value'</span>,
       <span class="hljs-comment">// value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],</span>
       multipleValue: [],
@@ -291,6 +292,9 @@ import { gData } from <span class="hljs-string">'./util'</span>;
         rootPId: <span class="hljs-number">0</span>,
       },
     };
+  },
+  onSearch(value) {
+    <span class="hljs-built_in">console</span>.log(value, <span class="hljs-built_in">arguments</span>);
   },
   onChange(value) {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, <span class="hljs-built_in">arguments</span>);
@@ -317,10 +321,12 @@ import { gData } from <span class="hljs-string">'./util'</span>;
                     <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
                     searchPlaceholder="please search"
                     showSearch allowClear treeLine
+                    inputValue={this.state.inputValue}
                     value={this.state.value}
                     treeData={gData}
                     treeNodeFilterProp="label"
                     filterTreeNode={false}
+                    onSearch={this.onSearch}
                     onChange={this.onChange}
                     onSelect={this.onSelect} /&gt;
 
@@ -331,6 +337,7 @@ import { gData } from <span class="hljs-string">'./util'</span>;
                     <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
                     searchPlaceholder="please search"
                     multiple
+                    inputValue={this.state.inputValue}
                     value={this.state.multipleValue}
                     treeData={gData}
                     treeNodeFilterProp="title"
@@ -345,6 +352,7 @@ import { gData } from <span class="hljs-string">'./util'</span>;
                     <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
                     searchPlaceholder="please search"
                     treeLine maxTagTextLength={10}
+                    inputValue={'0-2'}
                     value={this.state.value}
                     treeData={gData}
                     treeNodeFilterProp="title"
@@ -358,8 +366,10 @@ import { gData } from <span class="hljs-string">'./util'</span>;
                     <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
                     searchPlaceholder="please search"
                     treeLine maxTagTextLength={10}
+                    inputValue={'test111'}
                     value={this.state.value}
                     treeData={this.state.simpleTreeData}
+                    treeNodeFilterProp="title"
                     treeDataSimpleMode={this.state.treeDataSimpleMode}
                     treeCheckable showCheckedStrategy={SHOW_PARENT}
                     onChange={this.onChange}

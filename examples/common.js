@@ -19862,6 +19862,7 @@
 	    onSearch: _react.PropTypes.func,
 	    searchPlaceholder: _react.PropTypes.string,
 	    placeholder: _react.PropTypes.any,
+	    inputValue: _react.PropTypes.string,
 	    value: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.string, _react.PropTypes.object]),
 	    defaultValue: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.string, _react.PropTypes.object]),
 	    label: _react.PropTypes.any,
@@ -19894,6 +19895,7 @@
 	      searchPlaceholder: '',
 	      labelInValue: false,
 	      defaultValue: [],
+	      inputValue: '',
 	      onClick: noop,
 	      onChange: noop,
 	      onSelect: noop,
@@ -19928,7 +19930,7 @@
 	    this.renderedTreeData = this.renderTreeData();
 	    value = this.addLabelToValue(props, value);
 	    value = this.getValue(props, value);
-	    var inputValue = '';
+	    var inputValue = props.inputValue;
 	    // if (props.combobox) {
 	    //   inputValue = value.length ? String(value[0].value) : '';
 	    // }
@@ -19943,6 +19945,16 @@
 	      open: open,
 	      focused: false
 	    };
+	  },
+	
+	  componentDidMount: function componentDidMount() {
+	    if (this.state.inputValue) {
+	      var inputNode = this.getInputDOMNode();
+	      if (inputNode && inputNode.value) {
+	        inputNode.style.width = '';
+	        inputNode.style.width = inputNode.scrollWidth + 'px';
+	      }
+	    }
 	  },
 	
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
@@ -20160,9 +20172,9 @@
 	    }
 	
 	    this.fireChange(value, extraInfo);
-	    this.setState({
-	      inputValue: ''
-	    });
+	    // this.setState({
+	    //   inputValue: '',
+	    // });
 	    // if (isCombobox(props)) {
 	    //   this.setState({
 	    //     inputValue: getPropValue(item, props.treeNodeLabelProp),
@@ -20175,9 +20187,9 @@
 	    if (!(0, _util.isMultipleOrTags)(this.props)) {
 	      this.setOpenState(false);
 	    }
-	    this.setState({
-	      inputValue: ''
-	    });
+	    // this.setState({
+	    //   inputValue: '',
+	    // });
 	  },
 	
 	  onPlaceholderClick: function onPlaceholderClick() {
@@ -20208,9 +20220,9 @@
 	    if (state.inputValue || state.value.length) {
 	      this.fireChange([]);
 	      this.setOpenState(false);
-	      this.setState({
-	        inputValue: ''
-	      });
+	      // this.setState({
+	      //   inputValue: '',
+	      // });
 	    }
 	  },
 	
@@ -24904,11 +24916,13 @@
 	      showIcon: props.treeIcon,
 	      showLine: props.treeLine,
 	      defaultExpandAll: props.treeDefaultExpandAll,
-	      filterTreeNode: this.highlightTreeNode,
-	      _treeNodesStates: props._treeNodesStates
+	      filterTreeNode: this.highlightTreeNode
 	    };
 	
 	    if (props.treeCheckable) {
+	      if (!props.inputValue) {
+	        trProps._treeNodesStates = props._treeNodesStates;
+	      }
 	      trProps.selectable = false;
 	      trProps.checkable = props.treeCheckable;
 	      trProps.checkStrictly = props.treeCheckStrictly;

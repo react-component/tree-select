@@ -38,6 +38,7 @@ webpackJsonp([0],[
 	
 	  getInitialState: function getInitialState() {
 	    return {
+	      inputValue: '0-0-0-label',
 	      value: '0-0-0-value',
 	      // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
 	      multipleValue: [],
@@ -47,6 +48,9 @@ webpackJsonp([0],[
 	        rootPId: 0
 	      }
 	    };
+	  },
+	  onSearch: function onSearch(value) {
+	    console.log(value, arguments);
 	  },
 	  onChange: function onChange(value) {
 	    console.log('onChange', arguments);
@@ -82,10 +86,12 @@ webpackJsonp([0],[
 	        ),
 	        searchPlaceholder: 'please search',
 	        showSearch: true, allowClear: true, treeLine: true,
+	        inputValue: this.state.inputValue,
 	        value: this.state.value,
 	        treeData: _util.gData,
 	        treeNodeFilterProp: 'label',
 	        filterTreeNode: false,
+	        onSearch: this.onSearch,
 	        onChange: this.onChange,
 	        onSelect: this.onSelect }),
 	      _react2['default'].createElement(
@@ -103,6 +109,7 @@ webpackJsonp([0],[
 	        ),
 	        searchPlaceholder: 'please search',
 	        multiple: true,
+	        inputValue: this.state.inputValue,
 	        value: this.state.multipleValue,
 	        treeData: _util.gData,
 	        treeNodeFilterProp: 'title',
@@ -124,6 +131,7 @@ webpackJsonp([0],[
 	        ),
 	        searchPlaceholder: 'please search',
 	        treeLine: true, maxTagTextLength: 10,
+	        inputValue: '0-2',
 	        value: this.state.value,
 	        treeData: _util.gData,
 	        treeNodeFilterProp: 'title',
@@ -144,8 +152,10 @@ webpackJsonp([0],[
 	        ),
 	        searchPlaceholder: 'please search',
 	        treeLine: true, maxTagTextLength: 10,
+	        inputValue: 'test111',
 	        value: this.state.value,
 	        treeData: this.state.simpleTreeData,
+	        treeNodeFilterProp: 'title',
 	        treeDataSimpleMode: this.state.treeDataSimpleMode,
 	        treeCheckable: true, showCheckedStrategy: _rcTreeSelect.SHOW_PARENT,
 	        onChange: this.onChange,
