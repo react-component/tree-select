@@ -1,6 +1,6 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import 'rc-tree-select/assets/index.less';
+import 'rc-tree-select/assets/index.css';
 import './demo.less';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -63,7 +63,7 @@ const Demo = React.createClass({
       <div style={{margin: 20}}>
         <h2>tree-select in dialog</h2>
         <button className="btn btn-primary" onClick={this.onClick}>show dialog</button>
-        <Dialog
+        {this.state.visible ? <Dialog
           visible={this.state.visible}
           animation="zoom"
           maskAnimation="fade"
@@ -84,7 +84,7 @@ const Demo = React.createClass({
                       onSearch={this.onSearch}
                       onChange={this.onChange}
                       onSelect={this.onSelect} />
-        </Dialog>
+        </Dialog> : null}
         <h2>single select</h2>
         <TreeSelect style={{width: 300}} transitionName="rc-tree-select-dropdown-slide-up"
                     choiceTransitionName="rc-tree-select-selection__choice-zoom"
