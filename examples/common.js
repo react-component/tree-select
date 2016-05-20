@@ -19862,7 +19862,7 @@
 	    onSearch: _react.PropTypes.func,
 	    searchPlaceholder: _react.PropTypes.string,
 	    placeholder: _react.PropTypes.any,
-	    inputValue: _react.PropTypes.string,
+	    inputValue: _react.PropTypes.any,
 	    value: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.string, _react.PropTypes.object]),
 	    defaultValue: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.string, _react.PropTypes.object]),
 	    label: _react.PropTypes.any,
@@ -19930,7 +19930,7 @@
 	    this.renderedTreeData = this.renderTreeData();
 	    value = this.addLabelToValue(props, value);
 	    value = this.getValue(props, value);
-	    var inputValue = props.inputValue;
+	    var inputValue = props.inputValue || '';
 	    // if (props.combobox) {
 	    //   inputValue = value.length ? String(value[0].value) : '';
 	    // }
@@ -20172,9 +20172,11 @@
 	    }
 	
 	    this.fireChange(value, extraInfo);
-	    // this.setState({
-	    //   inputValue: '',
-	    // });
+	    if (props.inputValue === null) {
+	      this.setState({
+	        inputValue: ''
+	      });
+	    }
 	    // if (isCombobox(props)) {
 	    //   this.setState({
 	    //     inputValue: getPropValue(item, props.treeNodeLabelProp),
@@ -20187,9 +20189,11 @@
 	    if (!(0, _util.isMultipleOrTags)(this.props)) {
 	      this.setOpenState(false);
 	    }
-	    // this.setState({
-	    //   inputValue: '',
-	    // });
+	    if (this.props.inputValue === null) {
+	      this.setState({
+	        inputValue: ''
+	      });
+	    }
 	  },
 	
 	  onPlaceholderClick: function onPlaceholderClick() {
@@ -20220,9 +20224,11 @@
 	    if (state.inputValue || state.value.length) {
 	      this.fireChange([]);
 	      this.setOpenState(false);
-	      // this.setState({
-	      //   inputValue: '',
-	      // });
+	      if (props.inputValue === null) {
+	        this.setState({
+	          inputValue: ''
+	        });
+	      }
 	    }
 	  },
 	
@@ -20741,6 +20747,7 @@
 	        disabled: disabled,
 	        visible: state.open,
 	        inputValue: state.inputValue,
+	        _inputValue: props.inputValue === null,
 	        inputElement: this.getInputElement(),
 	        value: state.value,
 	        onDropdownVisibleChange: this.onDropdownVisibleChange,
@@ -24776,6 +24783,7 @@
 	    filterTreeNode: _react.PropTypes.any,
 	    treeNodes: _react.PropTypes.any,
 	    inputValue: _react.PropTypes.string,
+	    _inputValue: _react.PropTypes.bool,
 	    prefixCls: _react.PropTypes.string,
 	    popupClassName: _react.PropTypes.string,
 	    children: _react.PropTypes.any
@@ -24920,7 +24928,7 @@
 	    };
 	
 	    if (props.treeCheckable) {
-	      if (!props.inputValue) {
+	      if (!props.inputValue || props._inputValue) {
 	        trProps._treeNodesStates = props._treeNodesStates;
 	      }
 	      trProps.selectable = false;

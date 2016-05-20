@@ -131,7 +131,7 @@ webpackJsonp([0],[
 	        ),
 	        searchPlaceholder: 'please search',
 	        treeLine: true, maxTagTextLength: 10,
-	        inputValue: '0-2',
+	        inputValue: null,
 	        value: this.state.value,
 	        treeData: _util.gData,
 	        treeNodeFilterProp: 'title',
