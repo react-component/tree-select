@@ -4,12 +4,15 @@ import 'rc-tree-select/assets/index.less';
 import './demo.less';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'rc-dialog/assets/index.less';
+import Dialog from 'rc-dialog';
 import TreeSelect, { TreeNode, SHOW_PARENT } from 'rc-tree-select';
 import { gData } from './util';
 
 const Demo = React.createClass({
   getInitialState() {
     return {
+      visible: false,
       inputValue: '0-0-0-label',
       value: '0-0-0-value',
       // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
@@ -26,6 +29,16 @@ const Demo = React.createClass({
         rootPId: 0,
       },
     };
+  },
+  onClick() {
+    this.setState({
+      visible: true,
+    });
+  },
+  onClose() {
+    this.setState({
+      visible: false,
+    });
   },
   onSearch(value) {
     console.log(value, arguments);
@@ -48,6 +61,30 @@ const Demo = React.createClass({
   render() {
     return (
       <div style={{margin: 20}}>
+        <h2>tree-select in dialog</h2>
+        <button className="btn btn-primary" onClick={this.onClick}>show dialog</button>
+        <Dialog
+          visible={this.state.visible}
+          animation="zoom"
+          maskAnimation="fade"
+          onClose={this.onClose}
+          style={{ width: 600, height: 400 }}
+          >
+          <TreeSelect style={{width: 300}} transitionName="rc-tree-select-dropdown-slide-up"
+                      choiceTransitionName="rc-tree-select-selection__choice-zoom"
+                      dropdownStyle={{maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
+                      placeholder={<i>请下拉选择</i>}
+                      searchPlaceholder="please search"
+                      showSearch allowClear treeLine
+                      inputValue={this.state.inputValue}
+                      value={this.state.value}
+                      treeData={gData}
+                      treeNodeFilterProp="label"
+                      filterTreeNode={false}
+                      onSearch={this.onSearch}
+                      onChange={this.onChange}
+                      onSelect={this.onSelect} />
+        </Dialog>
         <h2>single select</h2>
         <TreeSelect style={{width: 300}} transitionName="rc-tree-select-dropdown-slide-up"
                     choiceTransitionName="rc-tree-select-selection__choice-zoom"

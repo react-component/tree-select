@@ -42,6 +42,7 @@
     "expect.js": "0.3.x",
     "jquery": "^2.2.0",
     "pre-commit": "1.x",
+    "rc-dialog": "^6.0.3",
     "rc-form": "^0.7.3",
     "rc-select": "^5.4.0",
     "rc-server": "3.x",
