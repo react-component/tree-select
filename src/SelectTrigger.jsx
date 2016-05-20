@@ -33,6 +33,7 @@ const SelectTrigger = React.createClass({
     filterTreeNode: PropTypes.any,
     treeNodes: PropTypes.any,
     inputValue: PropTypes.string,
+    _inputValue: PropTypes.bool,
     prefixCls: PropTypes.string,
     popupClassName: PropTypes.string,
     children: PropTypes.any,
@@ -175,7 +176,7 @@ const SelectTrigger = React.createClass({
     };
 
     if (props.treeCheckable) {
-      if (!props.inputValue) {
+      if (!props.inputValue || props._inputValue) {
         trProps._treeNodesStates = props._treeNodesStates;
       }
       trProps.selectable = false;

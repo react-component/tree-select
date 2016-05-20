@@ -69,7 +69,7 @@ const Select = React.createClass({
     onSearch: PropTypes.func,
     searchPlaceholder: PropTypes.string,
     placeholder: PropTypes.any,
-    inputValue: PropTypes.string,
+    inputValue: PropTypes.any,
     value: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.object]),
     defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.object]),
     label: PropTypes.any,
@@ -145,7 +145,7 @@ const Select = React.createClass({
     this.renderedTreeData = this.renderTreeData();
     value = this.addLabelToValue(props, value);
     value = this.getValue(props, value);
-    const inputValue = props.inputValue;
+    const inputValue = props.inputValue || '';
     // if (props.combobox) {
     //   inputValue = value.length ? String(value[0].value) : '';
     // }
@@ -384,9 +384,11 @@ const Select = React.createClass({
     }
 
     this.fireChange(value, extraInfo);
-    // this.setState({
-    //   inputValue: '',
-    // });
+    if (props.inputValue === null) {
+      this.setState({
+        inputValue: '',
+      });
+    }
     // if (isCombobox(props)) {
     //   this.setState({
     //     inputValue: getPropValue(item, props.treeNodeLabelProp),
@@ -399,9 +401,11 @@ const Select = React.createClass({
     if (!isMultipleOrTags(this.props)) {
       this.setOpenState(false);
     }
-    // this.setState({
-    //   inputValue: '',
-    // });
+    if (this.props.inputValue === null) {
+      this.setState({
+        inputValue: '',
+      });
+    }
   },
 
   onPlaceholderClick() {
@@ -432,9 +436,11 @@ const Select = React.createClass({
     if (state.inputValue || state.value.length) {
       this.fireChange([]);
       this.setOpenState(false);
-      // this.setState({
-      //   inputValue: '',
-      // });
+      if (props.inputValue === null) {
+        this.setState({
+          inputValue: '',
+        });
+      }
     }
   },
 
@@ -878,6 +884,7 @@ const Select = React.createClass({
         disabled={disabled}
         visible={state.open}
         inputValue={state.inputValue}
+        _inputValue={props.inputValue === null}
         inputElement={this.getInputElement()}
         value={state.value}
         onDropdownVisibleChange={this.onDropdownVisibleChange}
