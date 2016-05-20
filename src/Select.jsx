@@ -69,6 +69,7 @@ const Select = React.createClass({
     onSearch: PropTypes.func,
     searchPlaceholder: PropTypes.string,
     placeholder: PropTypes.any,
+    inputValue: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.object]),
     defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.object]),
     label: PropTypes.any,
@@ -109,6 +110,7 @@ const Select = React.createClass({
       searchPlaceholder: '',
       labelInValue: false,
       defaultValue: [],
+      inputValue: '',
       onClick: noop,
       onChange: noop,
       onSelect: noop,
@@ -143,7 +145,7 @@ const Select = React.createClass({
     this.renderedTreeData = this.renderTreeData();
     value = this.addLabelToValue(props, value);
     value = this.getValue(props, value);
-    const inputValue = '';
+    const inputValue = props.inputValue;
     // if (props.combobox) {
     //   inputValue = value.length ? String(value[0].value) : '';
     // }
@@ -158,6 +160,16 @@ const Select = React.createClass({
       open,
       focused: false,
     };
+  },
+
+  componentDidMount() {
+    if (this.state.inputValue) {
+      const inputNode = this.getInputDOMNode();
+      if (inputNode && inputNode.value) {
+        inputNode.style.width = '';
+        inputNode.style.width = `${inputNode.scrollWidth}px`;
+      }
+    }
   },
 
   componentWillReceiveProps(nextProps) {
@@ -372,9 +384,9 @@ const Select = React.createClass({
     }
 
     this.fireChange(value, extraInfo);
-    this.setState({
-      inputValue: '',
-    });
+    // this.setState({
+    //   inputValue: '',
+    // });
     // if (isCombobox(props)) {
     //   this.setState({
     //     inputValue: getPropValue(item, props.treeNodeLabelProp),
@@ -387,9 +399,9 @@ const Select = React.createClass({
     if (!isMultipleOrTags(this.props)) {
       this.setOpenState(false);
     }
-    this.setState({
-      inputValue: '',
-    });
+    // this.setState({
+    //   inputValue: '',
+    // });
   },
 
   onPlaceholderClick() {
@@ -420,9 +432,9 @@ const Select = React.createClass({
     if (state.inputValue || state.value.length) {
       this.fireChange([]);
       this.setOpenState(false);
-      this.setState({
-        inputValue: '',
-      });
+      // this.setState({
+      //   inputValue: '',
+      // });
     }
   },
 

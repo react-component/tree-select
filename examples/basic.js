@@ -10,6 +10,7 @@ import { gData } from './util';
 const Demo = React.createClass({
   getInitialState() {
     return {
+      inputValue: '0-0-0-label',
       value: '0-0-0-value',
       // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
       multipleValue: [],
@@ -25,6 +26,9 @@ const Demo = React.createClass({
         rootPId: 0,
       },
     };
+  },
+  onSearch(value) {
+    console.log(value, arguments);
   },
   onChange(value) {
     console.log('onChange', arguments);
@@ -51,10 +55,12 @@ const Demo = React.createClass({
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
                     showSearch allowClear treeLine
+                    inputValue={this.state.inputValue}
                     value={this.state.value}
                     treeData={gData}
                     treeNodeFilterProp="label"
                     filterTreeNode={false}
+                    onSearch={this.onSearch}
                     onChange={this.onChange}
                     onSelect={this.onSelect} />
 
@@ -65,6 +71,7 @@ const Demo = React.createClass({
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
                     multiple
+                    inputValue={this.state.inputValue}
                     value={this.state.multipleValue}
                     treeData={gData}
                     treeNodeFilterProp="title"
@@ -79,6 +86,7 @@ const Demo = React.createClass({
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
                     treeLine maxTagTextLength={10}
+                    inputValue={'0-2'}
                     value={this.state.value}
                     treeData={gData}
                     treeNodeFilterProp="title"
@@ -92,8 +100,10 @@ const Demo = React.createClass({
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
                     treeLine maxTagTextLength={10}
+                    inputValue={'test111'}
                     value={this.state.value}
                     treeData={this.state.simpleTreeData}
+                    treeNodeFilterProp="title"
                     treeDataSimpleMode={this.state.treeDataSimpleMode}
                     treeCheckable showCheckedStrategy={SHOW_PARENT}
                     onChange={this.onChange}

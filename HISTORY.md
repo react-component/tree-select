@@ -1,6 +1,12 @@
 # History
 ---
 
+## 1.7.0 / 2016-05-20
+- add `inputValue` api.
+
+### break change
+- search item and select it, will save search text and result.
+
 ## 1.6.0-beta / 2016-05-03
 - add `treeDataSimpleMode` api.
 

@@ -172,10 +172,12 @@ const SelectTrigger = React.createClass({
       showLine: props.treeLine,
       defaultExpandAll: props.treeDefaultExpandAll,
       filterTreeNode: this.highlightTreeNode,
-      _treeNodesStates: props._treeNodesStates,
     };
 
     if (props.treeCheckable) {
+      if (!props.inputValue) {
+        trProps._treeNodesStates = props._treeNodesStates;
+      }
       trProps.selectable = false;
       trProps.checkable = props.treeCheckable;
       trProps.checkStrictly = props.treeCheckStrictly;
