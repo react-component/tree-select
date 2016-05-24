@@ -35,6 +35,7 @@ function loopTreeData(data, level = 0) {
       title: item.label,
       value: item.value || String(item.key || item.label),
       key: item.key || item.value || pos,
+      disabled: item.disabled || false,
     };
     let ret;
     if (item.children && item.children.length) {

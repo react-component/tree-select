@@ -9,7 +9,7 @@ export function generateData(x = 3, y = 2, z = 1, gData = []) {
     const children = [];
     for (let i = 0; i < x; i++) {
       const key = `${preKey}-${i}`;
-      tns.push({label: `${key}-label`, value: `${key}-value`, key});
+      tns.push({label: `${key}-label`, value: `${key}-value`, key, disabled: key === '0-0-0-1' ? true : false});
       if (i < y) {
         children.push(key);
       }
