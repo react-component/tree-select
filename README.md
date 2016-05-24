@@ -83,7 +83,7 @@ online example: http://react-component.github.io/tree-select/
 |filterTreeNode | whether filter treeNodes by input value. default filter by treeNode's treeNodeFilterProp prop's value | bool/Function(inputValue:string, treeNode:TreeNode) | Function |
 |treeNodeFilterProp | which prop value of treeNode will be used for filter if filterTreeNode return true | String | 'value' |
 |treeNodeLabelProp | which prop value of treeNode will render as content of select | String | 'title' |
-|treeData | treeNodes data Array, if set it then you need not to construct children TreeNode. (if value is not unique of the whole array, you must provide `key` as unique id) | array<{value,label,children, [disabled]}> | [] |
+|treeData | treeNodes data Array, if set it then you need not to construct children TreeNode. (value should be unique across the whole array) | array<{value,label,children, [disabled]}> | [] |
 |treeDataSimpleMode | enable simple mode of treeData.(treeData should be like this: [{"id":1, "pId":0, "label":"test1"},...], `pId` is parent node's id) | bool/object{id:'id', pId:'pId', rootPId:null} | false |
 |loadData | load data asynchronously | function(node) | - |
 
@@ -94,7 +94,7 @@ online example: http://react-component.github.io/tree-select/
 |----------|----------------|----------|--------------|
 |disabled | disable treeNode | bool | false |
 |key | it's value must be unique across the tree's all TreeNode, you must set it  | String | - |
-|value | default as treeNodeFilterProp | String | '' |
+|value | default as treeNodeFilterProp (be unique across the tree's all TreeNode) | String | '' |
 |title | tree/subTree's title | String/element | '---' |
 |isLeaf | whether it's leaf node | bool | false |
 
