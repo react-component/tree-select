@@ -7,7 +7,7 @@ import Animate from 'rc-animate';
 import {
   getPropValue, getValuePropValue, /* isCombobox,*/
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
-  isSingleMode, toArray, findIndexInValueByKey,
+  isSingleMode, toArray,
   UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
   preventDefaultEvent,
   getTreeNodesStates, flatToHierarchy, filterParentPosition,
@@ -35,6 +35,7 @@ function loopTreeData(data, level = 0) {
       title: item.label,
       value: item.value || String(item.key || item.label),
       key: item.key || item.value || pos,
+      disabled: item.disabled || false,
     };
     let ret;
     if (item.children && item.children.length) {
@@ -342,7 +343,7 @@ const Select = React.createClass({
           };
         });
       } else {
-        if (findIndexInValueByKey(value, selectedValue) !== -1) {
+        if (value.some(i => i.value === selectedValue)) {
           return;
         }
         value = value.concat([{

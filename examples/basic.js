@@ -150,7 +150,7 @@ const Demo = React.createClass({
         <TreeSelect style={{width: 200}}
                     dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
                     value={this.state.value || 'leaf1'}
-                    treeDefaultExpandAll
+                    treeDefaultExpandAll treeCheckable
                     treeNodeFilterProp="title"
                     filterTreeNode={this.filterTreeNode}
                     onChange={this.onChange}>
