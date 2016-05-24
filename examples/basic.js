@@ -227,7 +227,7 @@ webpackJsonp([0],{
 	        { style: { width: 200 },
 	          dropdownStyle: { maxHeight: 200, overflow: 'auto' },
 	          value: this.state.value || 'leaf1',
-	          treeDefaultExpandAll: true,
+	          treeDefaultExpandAll: true, treeCheckable: true,
 	          treeNodeFilterProp: 'title',
 	          filterTreeNode: this.filterTreeNode,
 	          onChange: this.onChange },
@@ -516,6 +516,15 @@ webpackJsonp([0],{
 	var uuid = 0;
 	var openCount = 0;
 	
+	// Measure scrollbar width for padding body during modal show/hide
+	var scrollbarMeasure = {
+	  position: 'absolute',
+	  top: '-9999px',
+	  width: '50px',
+	  height: '50px',
+	  overflow: 'scroll'
+	};
+	
 	/* eslint react/no-is-mounted:0 */
 	
 	function noop() {}
@@ -565,6 +574,7 @@ webpackJsonp([0],{
 	    visible: _react.PropTypes.bool,
 	    mousePosition: _react.PropTypes.object,
 	    wrapStyle: _react.PropTypes.object,
+	    prefixCls: _react.PropTypes.string,
 	    wrapClassName: _react.PropTypes.string
 	  },
 	
@@ -587,7 +597,7 @@ webpackJsonp([0],{
 	      // first show
 	      if (!prevProps.visible) {
 	        this.lastOutSideFocusNode = document.activeElement;
-	        this.addScrollingClass();
+	        this.addScrollingEffect();
 	        this.refs.wrap.focus();
 	        var dialogNode = _reactDom2["default"].findDOMNode(this.refs.dialog);
 	        if (mousePosition) {
@@ -605,15 +615,15 @@ webpackJsonp([0],{
 	          this.lastOutSideFocusNode = null;
 	        }
 	        this.lastOutSideFocusNode = null;
-	        this.removeScrollingClass();
 	      }
 	    }
 	  },
 	  onAnimateLeave: function onAnimateLeave() {
 	    // need demo?
 	    // https://github.com/react-component/dialog/pull/28
-	    if (this.isMounted()) {
+	    if (this.refs.wrap) {
 	      this.refs.wrap.style.display = 'none';
+	      this.removeScrollingEffect();
 	    }
 	    this.props.onAfterClose();
 	  },
@@ -794,27 +804,72 @@ webpackJsonp([0],{
 	  getElement: function getElement(part) {
 	    return this.refs[part];
 	  },
-	  addScrollingClass: function addScrollingClass() {
+	  setScrollbar: function setScrollbar() {
+	    if (this.bodyIsOverflowing) {
+	      document.body.style.paddingRight = this.scrollbarWidth + 'px';
+	    }
+	  },
+	  addScrollingEffect: function addScrollingEffect() {
 	    openCount++;
 	    if (openCount !== 1) {
 	      return;
 	    }
-	    var props = this.props;
-	    var scrollingClassName = props.prefixCls + '-open';
+	    // this.checkScrollbar();
+	    // this.setScrollbar();
+	    var scrollingClassName = this.props.prefixCls + '-open';
 	    document.body.className += ' ' + scrollingClassName;
+	    // this.adjustDialog();
 	  },
-	  removeScrollingClass: function removeScrollingClass() {
+	  removeScrollingEffect: function removeScrollingEffect() {
 	    openCount--;
 	    if (openCount !== 0) {
 	      return;
 	    }
-	    var props = this.props;
-	    var scrollingClassName = props.prefixCls + '-open';
+	    var scrollingClassName = this.props.prefixCls + '-open';
 	    var body = document.body;
 	    body.className = body.className.replace(scrollingClassName, '');
+	    // this.resetScrollbar();
+	    // this.resetAdjustments();
 	  },
 	  close: function close(e) {
 	    this.props.onClose(e);
+	  },
+	  checkScrollbar: function checkScrollbar() {
+	    var fullWindowWidth = window.innerWidth;
+	    if (!fullWindowWidth) {
+	      // workaround for missing window.innerWidth in IE8
+	      var documentElementRect = document.documentElement.getBoundingClientRect();
+	      fullWindowWidth = documentElementRect.right - Math.abs(documentElementRect.left);
+	    }
+	    this.bodyIsOverflowing = document.body.clientWidth < fullWindowWidth;
+	    if (this.bodyIsOverflowing) {
+	      this.scrollbarWidth = this.measureScrollbar();
+	    }
+	  },
+	  resetScrollbar: function resetScrollbar() {
+	    document.body.style.paddingRight = '';
+	  },
+	  measureScrollbar: function measureScrollbar() {
+	    var scrollDiv = document.createElement('div');
+	    for (var scrollProp in scrollbarMeasure) {
+	      if (scrollbarMeasure.hasOwnProperty(scrollProp)) {
+	        scrollDiv.style[scrollProp] = scrollbarMeasure[scrollProp];
+	      }
+	    }
+	    document.body.appendChild(scrollDiv);
+	    var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+	    document.body.removeChild(scrollDiv);
+	    return scrollbarWidth;
+	  },
+	  adjustDialog: function adjustDialog() {
+	    var modalIsOverflowing = this.refs.wrap.scrollHeight > document.documentElement.clientHeight;
+	    this.refs.wrap.style.paddingLeft = (!this.bodyIsOverflowing && modalIsOverflowing ? this.scrollbarWidth : '') + 'px';
+	    this.refs.wrap.style.paddingRight = (this.bodyIsOverflowing && !modalIsOverflowing ? this.scrollbarWidth : '') + 'px';
+	  },
+	  resetAdjustments: function resetAdjustments() {
+	    if (this.refs.wrap) {
+	      this.refs.wrap.style.paddingLeft = this.refs.wrap.style.paddingLeft = '';
+	    }
 	  },
 	  render: function render() {
 	    var props = this.props;

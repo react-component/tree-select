@@ -21436,7 +21436,8 @@
 	    var props = {
 	      title: item.label,
 	      value: item.value || String(item.key || item.label),
-	      key: item.key || item.value || pos
+	      key: item.key || item.value || pos,
+	      disabled: item.disabled || false
 	    };
 	    var ret = undefined;
 	    if (item.children && item.children.length) {
@@ -21746,7 +21747,9 @@
 	          };
 	        });
 	      } else {
-	        if ((0, _util.findIndexInValueByKey)(value, selectedValue) !== -1) {
+	        if (value.some(function (i) {
+	          return i.value === selectedValue;
+	        })) {
 	          return;
 	        }
 	        value = value.concat([{
@@ -24127,7 +24130,6 @@
 	exports.isSingleMode = isSingleMode;
 	exports.toArray = toArray;
 	exports.preventDefaultEvent = preventDefaultEvent;
-	exports.findIndexInValueByKey = findIndexInValueByKey;
 	exports.labelCompatible = labelCompatible;
 	exports.isInclude = isInclude;
 	exports.loopAllChildren = loopAllChildren;
@@ -24195,17 +24197,6 @@
 	
 	function preventDefaultEvent(e) {
 	  e.preventDefault();
-	}
-	
-	function findIndexInValueByKey(value, key) {
-	  var index = -1;
-	  for (var i = 0; i < value.length; i++) {
-	    if (value[i].value === key) {
-	      index = i;
-	      break;
-	    }
-	  }
-	  return index;
 	}
 	
 	var UNSELECTABLE_STYLE = {
@@ -27706,7 +27697,7 @@
 	        domProps.onKeyDown = this.onKeyDown;
 	      }
 	      // console.log(this.state.expandedKeys, this._rawExpandedKeys, props.children);
-	      if (props.checkable && this.checkedKeysChange) {
+	      if (props.checkable && (this.checkedKeysChange || props.loadData)) {
 	        if (props.checkStrictly) {
 	          this.treeNodesStates = {};
 	          (0, _util.loopAllChildren)(props.children, function (item, index, pos, keyOrPos, siblingPosition) {
@@ -27722,7 +27713,7 @@
 	          (function () {
 	            var checkedKeys = _this4.state.checkedKeys;
 	            var checkKeys = undefined;
-	            if (_this4.checkKeys && _this4._checkedKeys && _this4._checkedKeys.every(function (i, index) {
+	            if (!props.loadData && _this4.checkKeys && _this4._checkedKeys && _this4._checkedKeys.every(function (i, index) {
 	              return checkedKeys[index] === i;
 	            })) {
 	              // if checkedKeys the same as _checkedKeys from onCheck, use _checkedKeys.
@@ -28622,7 +28613,7 @@
 	    var children = [];
 	    for (var i = 0; i < x; i++) {
 	      var key = preKey + '-' + i;
-	      tns.push({ label: key + '-label', value: key + '-value', key: key });
+	      tns.push({ label: key + '-label', value: key + '-value', key: key, disabled: key === '0-0-0-1' ? true : false });
 	      if (i < y) {
 	        children.push(key);
 	      }
