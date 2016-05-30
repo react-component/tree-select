@@ -360,11 +360,11 @@ class Form extends Component {
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
 
         <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">Select</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">200</span> }} <span class="hljs-attribute">allowClear</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">Select</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">200</span> }} <span class="hljs-attribute">allowClear</span> <span class="hljs-attribute">multiple</span>
             {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">select</span>', {
               <span class="hljs-attribute">initialValue:</span> '<span class="hljs-attribute">jack</span>',
               <span class="hljs-attribute">rules:</span> [
-                {<span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>, <span class="hljs-attribute">type:</span> '<span class="hljs-attribute">string</span>', <span class="hljs-attribute">message:</span> '<span class="hljs-attribute">select</span> 需要必填'},
+                {<span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>, <span class="hljs-attribute">type:</span> '<span class="hljs-attribute">array</span>', <span class="hljs-attribute">message:</span> '<span class="hljs-attribute">select</span> 需要必填'},
               ],
             })}&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"jack"</span>&gt;</span>jack<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>

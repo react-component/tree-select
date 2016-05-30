@@ -418,10 +418,10 @@ webpackJsonp([3],[
 	            { style: _styles.regionStyle },
 	            _react2['default'].createElement(
 	              _rcSelect2['default'],
-	              _extends({ style: { width: 200 }, allowClear: true
+	              _extends({ style: { width: 200 }, allowClear: true, multiple: true
 	              }, getFieldProps('select', {
 	                initialValue: 'jack',
-	                rules: [{ required: true, type: 'string', message: 'select 需要必填' }]
+	                rules: [{ required: true, type: 'array', message: 'select 需要必填' }]
 	              })),
 	              _react2['default'].createElement(
 	                Option,
