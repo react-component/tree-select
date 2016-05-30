@@ -20394,6 +20394,7 @@
 	    });
 	    var nArr = unCheckPos.split('-');
 	    var newVals = [];
+	    var newCkTns = [];
 	    checkedTreeNodes.forEach(function (itemObj) {
 	      var iArr = itemObj.pos.split('-');
 	      if (itemObj.pos === unCheckPos || nArr.length > iArr.length && (0, _util.isInclude)(iArr, nArr) || nArr.length < iArr.length && (0, _util.isInclude)(nArr, iArr)) {
@@ -20402,7 +20403,9 @@
 	        return;
 	      }
 	      newVals.push(itemObj.node.props.value);
+	      newCkTns.push(itemObj);
 	    });
+	    this.checkedTreeNodes = this._checkedNodes = newCkTns;
 	    var nv = this.state.value.filter(function (val) {
 	      return newVals.indexOf(val.value) !== -1;
 	    });
@@ -20483,13 +20486,6 @@
 	    //   // 在 treeCheckable 时，相当于触发节点的 check(uncheck) 事件，
 	    //   // 但假如 dropdown 没展开过，tree 也就没渲染好，触发不了tree内部方法。
 	    // }
-	    if (this.checkedTreeNodes && this.checkedTreeNodes.length) {
-	      for (var i = 0; i < this.checkedTreeNodes.length; i++) {
-	        if (this.checkedTreeNodes[i].node.props.value === selectedVal) {
-	          this.checkedTreeNodes.splice(i--, 1);
-	        }
-	      }
-	    }
 	    var label = undefined;
 	    var value = this.state.value.filter(function (singleValue) {
 	      if (singleValue.value === selectedVal) {
@@ -20508,6 +20504,15 @@
 	        };
 	      }
 	      props.onDeselect(_event);
+	    }
+	    if (props.treeCheckable) {
+	      if (this.checkedTreeNodes && this.checkedTreeNodes.length) {
+	        this.checkedTreeNodes = this._checkedNodes = this.checkedTreeNodes.filter(function (item) {
+	          return value.some(function (i) {
+	            return i.value === item.node.props.value;
+	          });
+	        });
+	      }
 	    }
 	    this.fireChange(value, { triggerValue: selectedVal, clear: true });
 	  },
