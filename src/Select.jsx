@@ -597,6 +597,7 @@ const Select = React.createClass({
     });
     const nArr = unCheckPos.split('-');
     const newVals = [];
+    const newCkTns = [];
     checkedTreeNodes.forEach(itemObj => {
       const iArr = itemObj.pos.split('-');
       if (itemObj.pos === unCheckPos ||
@@ -606,8 +607,10 @@ const Select = React.createClass({
         // 因为 node节点 不选时，其 父级节点 和 所有子节点 都不选。
         return;
       }
+      newCkTns.push(itemObj);
       newVals.push(itemObj.node.props.value);
     });
+    this.checkedTreeNodes = this._checkedNodes = newCkTns;
     const nv = this.state.value.filter(val => newVals.indexOf(val.value) !== -1);
     this.fireChange(nv, {triggerValue: selectedValue, clear: true});
   },
@@ -700,6 +703,13 @@ const Select = React.createClass({
         };
       }
       props.onDeselect(event);
+    }
+    if (props.treeCheckable) {
+      if (this.checkedTreeNodes && this.checkedTreeNodes.length) {
+        this.checkedTreeNodes = this._checkedNodes = this.checkedTreeNodes.filter(item => {
+          return value.some(i => i.value === item.node.props.value);
+        });
+      }
     }
     this.fireChange(value, {triggerValue: selectedVal, clear: true});
   },
