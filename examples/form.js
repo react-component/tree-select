@@ -94,11 +94,11 @@ class Form extends Component {
         </div>
 
         <div style={regionStyle}>
-          <Select style={{ width: 200 }} allowClear
+          <Select style={{ width: 200 }} allowClear multiple
             {...getFieldProps('select', {
               initialValue: 'jack',
               rules: [
-                {required: true, type: 'string', message: 'select 需要必填'},
+                {required: true, type: 'array', message: 'select 需要必填'},
               ],
             })}>
             <Option value="jack">jack</Option>
