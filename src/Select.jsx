@@ -579,6 +579,7 @@ const Select = React.createClass({
     });
     const nArr = unCheckPos.split('-');
     const newVals = [];
+    const newCkTns = [];
     checkedTreeNodes.forEach(itemObj => {
       const iArr = itemObj.pos.split('-');
       if (itemObj.pos === unCheckPos ||
@@ -589,7 +590,9 @@ const Select = React.createClass({
         return;
       }
       newVals.push(itemObj.node.props.value);
+      newCkTns.push(itemObj);
     });
+    this.checkedTreeNodes = this._checkedNodes = newCkTns;
     const nv = this.state.value.filter(val => newVals.indexOf(val.value) !== -1);
     this.fireChange(nv, {triggerValue: selectedValue, clear: true});
   },
@@ -664,13 +667,6 @@ const Select = React.createClass({
     //   // 在 treeCheckable 时，相当于触发节点的 check(uncheck) 事件，
     //   // 但假如 dropdown 没展开过，tree 也就没渲染好，触发不了tree内部方法。
     // }
-    if (this.checkedTreeNodes && this.checkedTreeNodes.length) {
-      for (let i = 0; i < this.checkedTreeNodes.length; i++) {
-        if (this.checkedTreeNodes[i].node.props.value === selectedVal) {
-          this.checkedTreeNodes.splice(i--, 1);
-        }
-      }
-    }
     let label;
     const value = this.state.value.filter((singleValue) => {
       if (singleValue.value === selectedVal) {
@@ -689,6 +685,13 @@ const Select = React.createClass({
         };
       }
       props.onDeselect(event);
+    }
+    if (props.treeCheckable) {
+      if (this.checkedTreeNodes && this.checkedTreeNodes.length) {
+        this.checkedTreeNodes = this._checkedNodes = this.checkedTreeNodes.filter(item => {
+          return value.some(i => i.value === item.node.props.value);
+        });
+      }
     }
     this.fireChange(value, {triggerValue: selectedVal, clear: true});
   },
