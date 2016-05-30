@@ -8,6 +8,8 @@ import TreeSelect from 'rc-tree-select';
 import {createForm} from 'rc-form';
 import {regionStyle, errorStyle} from './styles';
 import { gData } from './util';
+import Select from 'rc-select';
+import 'rc-select/assets/index.css';
 
 class TreeSelectInput extends Component {
   onChange(value) {
@@ -88,6 +90,24 @@ class Form extends Component {
           </div>
           <p style={errorStyle}>
             {(getFieldError('tree-select1')) ? getFieldError('tree-select1').join(',') : null}
+          </p>
+        </div>
+
+        <div style={regionStyle}>
+          <Select style={{ width: 200 }} allowClear
+            {...getFieldProps('select', {
+              initialValue: 'jack',
+              rules: [
+                {required: true, type: 'string', message: 'select 需要必填'},
+              ],
+            })}>
+            <Option value="jack">jack</Option>
+            <Option value="lucy">lucy</Option>
+            <Option value="disabled" disabled>disabled</Option>
+            <Option value="yiminghe">yiminghe</Option>
+          </Select>
+          <p style={errorStyle}>
+            {(getFieldError('select')) ? getFieldError('select').join(',') : null}
           </p>
         </div>
 
