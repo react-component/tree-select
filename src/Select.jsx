@@ -36,6 +36,7 @@ function loopTreeData(data, level = 0) {
       value: item.value || String(item.key || item.label),
       key: item.key || item.value || pos,
       disabled: item.disabled || false,
+      selectable: item.hasOwnProperty('selectable') ? item.selectable : true,
     };
     let ret;
     if (item.children && item.children.length) {
