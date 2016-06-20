@@ -6,9 +6,6 @@
   max-height: 350px;
   overflow-y: scroll;
 }
-.rc-dialog-open {
-  overflow: hidden;
-}
 .rc-dialog {
   position: relative;
   width: auto;

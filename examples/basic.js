@@ -623,8 +623,8 @@ webpackJsonp([0],{
 	    // https://github.com/react-component/dialog/pull/28
 	    if (this.refs.wrap) {
 	      this.refs.wrap.style.display = 'none';
-	      this.removeScrollingEffect();
 	    }
+	    this.removeScrollingEffect();
 	    this.props.onAfterClose();
 	  },
 	  onMaskClick: function onMaskClick(e) {
@@ -805,7 +805,7 @@ webpackJsonp([0],{
 	    return this.refs[part];
 	  },
 	  setScrollbar: function setScrollbar() {
-	    if (this.bodyIsOverflowing) {
+	    if (this.bodyIsOverflowing && this.scrollbarWidth) {
 	      document.body.style.paddingRight = this.scrollbarWidth + 'px';
 	    }
 	  },
@@ -814,10 +814,9 @@ webpackJsonp([0],{
 	    if (openCount !== 1) {
 	      return;
 	    }
-	    // this.checkScrollbar();
-	    // this.setScrollbar();
-	    var scrollingClassName = this.props.prefixCls + '-open';
-	    document.body.className += ' ' + scrollingClassName;
+	    this.checkScrollbar();
+	    this.setScrollbar();
+	    document.body.style.overflow = 'hidden';
 	    // this.adjustDialog();
 	  },
 	  removeScrollingEffect: function removeScrollingEffect() {
@@ -825,10 +824,8 @@ webpackJsonp([0],{
 	    if (openCount !== 0) {
 	      return;
 	    }
-	    var scrollingClassName = this.props.prefixCls + '-open';
-	    var body = document.body;
-	    body.className = body.className.replace(scrollingClassName, '');
-	    // this.resetScrollbar();
+	    document.body.style.overflow = '';
+	    this.resetScrollbar();
 	    // this.resetAdjustments();
 	  },
 	  close: function close(e) {
@@ -850,6 +847,9 @@ webpackJsonp([0],{
 	    document.body.style.paddingRight = '';
 	  },
 	  measureScrollbar: function measureScrollbar() {
+	    if (this.scrollbarWidth !== undefined) {
+	      return this.scrollbarWidth;
+	    }
 	    var scrollDiv = document.createElement('div');
 	    for (var scrollProp in scrollbarMeasure) {
 	      if (scrollbarMeasure.hasOwnProperty(scrollProp)) {
@@ -859,12 +859,15 @@ webpackJsonp([0],{
 	    document.body.appendChild(scrollDiv);
 	    var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
 	    document.body.removeChild(scrollDiv);
+	    this.scrollbarWidth = scrollbarWidth;
 	    return scrollbarWidth;
 	  },
 	  adjustDialog: function adjustDialog() {
-	    var modalIsOverflowing = this.refs.wrap.scrollHeight > document.documentElement.clientHeight;
-	    this.refs.wrap.style.paddingLeft = (!this.bodyIsOverflowing && modalIsOverflowing ? this.scrollbarWidth : '') + 'px';
-	    this.refs.wrap.style.paddingRight = (this.bodyIsOverflowing && !modalIsOverflowing ? this.scrollbarWidth : '') + 'px';
+	    if (this.refs.wrap && this.scrollbarWidth) {
+	      var modalIsOverflowing = this.refs.wrap.scrollHeight > document.documentElement.clientHeight;
+	      this.refs.wrap.style.paddingLeft = (!this.bodyIsOverflowing && modalIsOverflowing ? this.scrollbarWidth : '') + 'px';
+	      this.refs.wrap.style.paddingRight = (this.bodyIsOverflowing && !modalIsOverflowing ? this.scrollbarWidth : '') + 'px';
+	    }
 	  },
 	  resetAdjustments: function resetAdjustments() {
 	    if (this.refs.wrap) {
