@@ -17,6 +17,8 @@ webpackJsonp([0],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+	
 	__webpack_require__(2);
 	
 	__webpack_require__(3);
@@ -40,6 +42,27 @@ webpackJsonp([0],{
 	var _rcTreeSelect2 = _interopRequireDefault(_rcTreeSelect);
 	
 	var _util = __webpack_require__(225);
+	
+	function isLeaf(value) {
+	  if (!value) {
+	    return false;
+	  }
+	  var queues = [].concat(_toConsumableArray(_util.gData));
+	  while (queues.length) {
+	    // BFS
+	    var item = queues.shift();
+	    if (item.value === value) {
+	      if (!item.children) {
+	        return true;
+	      }
+	      return false;
+	    }
+	    if (item.children) {
+	      queues = queues.concat(item.children);
+	    }
+	  }
+	  return false;
+	}
 	
 	var Demo = _react2['default'].createClass({
 	  displayName: 'Demo',
@@ -74,6 +97,10 @@ webpackJsonp([0],{
 	  onChange: function onChange(value) {
 	    console.log('onChange', arguments);
 	    this.setState({ value: value });
+	  },
+	  onChangeChildren: function onChangeChildren(value) {
+	    console.log('onChangeChildren', arguments);
+	    this.setState({ value: isLeaf(value) ? value : undefined });
 	  },
 	  onMultipleChange: function onMultipleChange(value) {
 	    console.log('onMultipleChange', arguments);
@@ -151,6 +178,27 @@ webpackJsonp([0],{
 	        onSearch: this.onSearch,
 	        onChange: this.onChange,
 	        onSelect: this.onSelect }),
+	      _react2['default'].createElement(
+	        'h2',
+	        null,
+	        'single select (just select children)'
+	      ),
+	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 }, transitionName: 'rc-tree-select-dropdown-slide-up',
+	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
+	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
+	        placeholder: _react2['default'].createElement(
+	          'i',
+	          null,
+	          '请下拉选择'
+	        ),
+	        searchPlaceholder: 'please search',
+	        showSearch: true, allowClear: true, treeLine: true,
+	        inputValue: this.state.inputValue,
+	        value: this.state.value,
+	        treeData: _util.gData,
+	        treeNodeFilterProp: 'label',
+	        filterTreeNode: false,
+	        onChange: this.onChangeChildren }),
 	      _react2['default'].createElement(
 	        'h2',
 	        null,

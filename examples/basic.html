@@ -275,6 +275,26 @@ import Dialog from <span class="hljs-string">'rc-dialog'</span>;
 import TreeSelect, { TreeNode, SHOW_PARENT } from <span class="hljs-string">'rc-tree-select'</span>;
 import { gData } from <span class="hljs-string">'./util'</span>;
 
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isLeaf</span><span class="hljs-params">(value)</span> </span>{
+  <span class="hljs-keyword">if</span> (!value) {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  }
+  <span class="hljs-keyword">let</span> queues = [...gData];
+  <span class="hljs-keyword">while</span> (queues.length) { <span class="hljs-comment">// BFS</span>
+    <span class="hljs-keyword">const</span> item = queues.shift();
+    <span class="hljs-keyword">if</span> (item.value === value) {
+      <span class="hljs-keyword">if</span> (!item.children) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+    <span class="hljs-keyword">if</span> (item.children) {
+      queues = queues.concat(item.children);
+    }
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+
 <span class="hljs-keyword">const</span> Demo = React.createClass({
   getInitialState() {
     <span class="hljs-keyword">return</span> {
@@ -312,6 +332,10 @@ import { gData } from <span class="hljs-string">'./util'</span>;
   onChange(value) {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, <span class="hljs-built_in">arguments</span>);
     <span class="hljs-keyword">this</span>.setState({value});
+  },
+  onChangeChildren(value) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChangeChildren'</span>, <span class="hljs-built_in">arguments</span>);
+    <span class="hljs-keyword">this</span>.setState({ value: isLeaf(value) ? value : <span class="hljs-literal">undefined</span> });
   },
   onMultipleChange(value) {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onMultipleChange'</span>, <span class="hljs-built_in">arguments</span>);
@@ -366,6 +390,20 @@ import { gData } from <span class="hljs-string">'./util'</span>;
                     onSearch={this.onSearch}
                     onChange={this.onChange}
                     onSelect={this.onSelect} /&gt;
+
+        <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>single select (just select children)<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}} <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
+                    <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
+                    <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
+                    <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
+                    searchPlaceholder="please search"
+                    showSearch allowClear treeLine
+                    inputValue={this.state.inputValue}
+                    value={this.state.value}
+                    treeData={gData}
+                    treeNodeFilterProp="label"
+                    filterTreeNode={false}
+                    onChange={this.onChangeChildren} /&gt;
 
         <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>multiple select<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}} <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
