@@ -9,6 +9,26 @@ import Dialog from 'rc-dialog';
 import TreeSelect, { TreeNode, SHOW_PARENT } from 'rc-tree-select';
 import { gData } from './util';
 
+function isLeaf(value) {
+  if (!value) {
+    return false;
+  }
+  let queues = [...gData];
+  while (queues.length) { // BFS
+    const item = queues.shift();
+    if (item.value === value) {
+      if (!item.children) {
+        return true;
+      }
+      return false;
+    }
+    if (item.children) {
+      queues = queues.concat(item.children);
+    }
+  }
+  return false;
+}
+
 const Demo = React.createClass({
   getInitialState() {
     return {
@@ -46,6 +66,10 @@ const Demo = React.createClass({
   onChange(value) {
     console.log('onChange', arguments);
     this.setState({value});
+  },
+  onChangeChildren(value) {
+    console.log('onChangeChildren', arguments);
+    this.setState({ value: isLeaf(value) ? value : undefined });
   },
   onMultipleChange(value) {
     console.log('onMultipleChange', arguments);
@@ -100,6 +124,20 @@ const Demo = React.createClass({
                     onSearch={this.onSearch}
                     onChange={this.onChange}
                     onSelect={this.onSelect} />
+
+        <h2>single select (just select children)</h2>
+        <TreeSelect style={{width: 300}} transitionName="rc-tree-select-dropdown-slide-up"
+                    choiceTransitionName="rc-tree-select-selection__choice-zoom"
+                    dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+                    placeholder={<i>请下拉选择</i>}
+                    searchPlaceholder="please search"
+                    showSearch allowClear treeLine
+                    inputValue={this.state.inputValue}
+                    value={this.state.value}
+                    treeData={gData}
+                    treeNodeFilterProp="label"
+                    filterTreeNode={false}
+                    onChange={this.onChangeChildren} />
 
         <h2>multiple select</h2>
         <TreeSelect style={{width: 300}} transitionName="rc-tree-select-dropdown-slide-up"
