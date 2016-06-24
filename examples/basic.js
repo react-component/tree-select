@@ -67,9 +67,9 @@ const Demo = React.createClass({
     console.log('onChange', arguments);
     this.setState({value});
   },
-  onChangeChildren(value, label, extra) {
+  onChangeChildren(value) {
     console.log('onChangeChildren', arguments);
-    const pre = extra.preValue[0] && value ? extra.preValue[0].value : undefined;
+    const pre = value ? this.state.value : undefined;
     this.setState({ value: isLeaf(value) ? value : pre });
   },
   onMultipleChange(value) {
