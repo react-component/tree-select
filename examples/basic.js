@@ -98,9 +98,9 @@ webpackJsonp([0],{
 	    console.log('onChange', arguments);
 	    this.setState({ value: value });
 	  },
-	  onChangeChildren: function onChangeChildren(value, label, extra) {
+	  onChangeChildren: function onChangeChildren(value) {
 	    console.log('onChangeChildren', arguments);
-	    var pre = extra.preValue[0] && value ? extra.preValue[0].value : undefined;
+	    var pre = value ? this.state.value : undefined;
 	    this.setState({ value: isLeaf(value) ? value : pre });
 	  },
 	  onMultipleChange: function onMultipleChange(value) {
