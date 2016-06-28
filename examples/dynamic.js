@@ -15,7 +15,8 @@ const Demo = React.createClass({
         {label: 'pNode 02', value: '0-1', key: '0-1'},
         {label: 'pNode 03', value: '0-2', key: '0-2', isLeaf: true},
       ],
-      value: undefined,
+      // value: '0-0',
+      value: { value: '0-0-0-value', label: '0-0-0-label' },
     };
   },
   onChange(value) {
@@ -25,6 +26,7 @@ const Demo = React.createClass({
     });
   },
   onLoadData(treeNode) {
+    console.log(treeNode);
     return new Promise((resolve) => {
       setTimeout(() => {
         const treeData = [...this.state.treeData];
@@ -40,6 +42,7 @@ const Demo = React.createClass({
         <h2>dynamic render</h2>
         <TreeSelect style={{width: 300}}
           treeData={this.state.treeData}
+          labelInValue
           value={this.state.value}
           onChange={this.onChange}
           loadData={this.onLoadData} />

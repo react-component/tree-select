@@ -741,7 +741,7 @@ const Select = React.createClass({
       if (!this.isLabelInValue()) {
         labs = value.map(i => i.label);
         vls = vls.map(v => v.value);
-      } else if (this.halfCheckedValues.length) {
+      } else if (this.halfCheckedValues && this.halfCheckedValues.length) {
         this.halfCheckedValues.forEach(i => {
           if (!vls.some(v => v.value === i.value)) {
             vls.push(i);

@@ -194,7 +194,7 @@ const SelectTrigger = React.createClass({
     }
 
     // expand keys
-    if (!trProps.defaultExpandAll) {
+    if (!trProps.defaultExpandAll && !props.loadData) {
       trProps.expandedKeys = keys;
     }
     trProps.autoExpandParent = true;
