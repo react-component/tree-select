@@ -22192,7 +22192,7 @@
 	          vls = vls.map(function (v) {
 	            return v.value;
 	          });
-	        } else if (_this7.halfCheckedValues.length) {
+	        } else if (_this7.halfCheckedValues && _this7.halfCheckedValues.length) {
 	          _this7.halfCheckedValues.forEach(function (i) {
 	            if (!vls.some(function (v) {
 	              return v.value === i.value;
@@ -24955,7 +24955,7 @@
 	    }
 	
 	    // expand keys
-	    if (!trProps.defaultExpandAll) {
+	    if (!trProps.defaultExpandAll && !props.loadData) {
 	      trProps.expandedKeys = keys;
 	    }
 	    trProps.autoExpandParent = true;

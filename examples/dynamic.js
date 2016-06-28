@@ -42,7 +42,8 @@ webpackJsonp([2],{
 	  getInitialState: function getInitialState() {
 	    return {
 	      treeData: [{ label: 'pNode 01', value: '0-0', key: '0-0' }, { label: 'pNode 02', value: '0-1', key: '0-1' }, { label: 'pNode 03', value: '0-2', key: '0-2', isLeaf: true }],
-	      value: undefined
+	      // value: '0-0',
+	      value: { value: '0-0-0-value', label: '0-0-0-label' }
 	    };
 	  },
 	  onChange: function onChange(value) {
@@ -54,6 +55,7 @@ webpackJsonp([2],{
 	  onLoadData: function onLoadData(treeNode) {
 	    var _this = this;
 	
+	    console.log(treeNode);
 	    return new Promise(function (resolve) {
 	      setTimeout(function () {
 	        var treeData = [].concat(_toConsumableArray(_this.state.treeData));
@@ -74,6 +76,7 @@ webpackJsonp([2],{
 	      ),
 	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 },
 	        treeData: this.state.treeData,
+	        labelInValue: true,
 	        value: this.state.value,
 	        onChange: this.onChange,
 	        loadData: this.onLoadData })
