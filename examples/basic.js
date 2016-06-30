@@ -29,6 +29,28 @@ function isLeaf(value) {
   return false;
 }
 
+function findPath(value, data) {
+  const sel = [];
+  function loop(selected, children) {
+    for (let i = 0; i < children.length; i++) {
+      const item = children[i];
+      if (selected === item.value) {
+        sel.push(item);
+        return;
+      }
+      if (item.children) {
+        loop(selected, item.children, item);
+        if (sel.length) {
+          sel.push(item);
+          return;
+        }
+      }
+    }
+  }
+  loop(value, data);
+  return sel;
+}
+
 const Demo = React.createClass({
   getInitialState() {
     return {
@@ -36,6 +58,7 @@ const Demo = React.createClass({
       inputValue: '0-0-0-label',
       value: '0-0-0-value',
       // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
+      lv: {value: '0-0-0-value', label: 'spe label'},
       multipleValue: [],
       simpleTreeData: [
         {'key': 1, 'pId': 0, 'label': 'test1'},
@@ -71,6 +94,15 @@ const Demo = React.createClass({
     console.log('onChangeChildren', arguments);
     const pre = value ? this.state.value : undefined;
     this.setState({ value: isLeaf(value) ? value : pre });
+  },
+  onChangeLV(value) {
+    console.log('labelInValue', arguments);
+    if (!value) {
+      this.setState({ lv: undefined });
+      return;
+    }
+    const path = findPath(value.value, gData).map(i => i.label).reverse().join(' > ');
+    this.setState({ lv: { value: value.value, label: path } });
   },
   onMultipleChange(value) {
     console.log('onMultipleChange', arguments);
@@ -169,6 +201,19 @@ const Demo = React.createClass({
                     treeCheckable showCheckedStrategy={SHOW_PARENT}
                     onChange={this.onChange}
                     onSelect={this.onSelect} />
+
+        <h2>labelInValue & show path</h2>
+        <TreeSelect style={{width: 500}} transitionName="rc-tree-select-dropdown-slide-up"
+                    choiceTransitionName="rc-tree-select-selection__choice-zoom"
+                    dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+                    placeholder={<i>请下拉选择</i>}
+                    searchPlaceholder="please search"
+                    showSearch allowClear treeLine
+                    value={this.state.lv} labelInValue
+                    treeData={gData}
+                    treeNodeFilterProp="label"
+                    filterTreeNode={false}
+                    onChange={this.onChangeLV} />
 
         <h2>use treeDataSimpleMode</h2>
         <TreeSelect style={{width: 300}}
