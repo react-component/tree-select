@@ -295,6 +295,28 @@ import { gData } from <span class="hljs-string">'./util'</span>;
   <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
 
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findPath</span><span class="hljs-params">(value, data)</span> </span>{
+  <span class="hljs-keyword">const</span> sel = [];
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">loop</span><span class="hljs-params">(selected, children)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; children.length; i++) {
+      <span class="hljs-keyword">const</span> item = children[i];
+      <span class="hljs-keyword">if</span> (selected === item.value) {
+        sel.push(item);
+        <span class="hljs-keyword">return</span>;
+      }
+      <span class="hljs-keyword">if</span> (item.children) {
+        loop(selected, item.children, item);
+        <span class="hljs-keyword">if</span> (sel.length) {
+          sel.push(item);
+          <span class="hljs-keyword">return</span>;
+        }
+      }
+    }
+  }
+  loop(value, data);
+  <span class="hljs-keyword">return</span> sel;
+}
+
 <span class="hljs-keyword">const</span> Demo = React.createClass({
   getInitialState() {
     <span class="hljs-keyword">return</span> {
@@ -302,6 +324,7 @@ import { gData } from <span class="hljs-string">'./util'</span>;
       inputValue: <span class="hljs-string">'0-0-0-label'</span>,
       value: <span class="hljs-string">'0-0-0-value'</span>,
       <span class="hljs-comment">// value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],</span>
+      lv: {value: <span class="hljs-string">'0-0-0-value'</span>, label: <span class="hljs-string">'spe label'</span>},
       multipleValue: [],
       simpleTreeData: [
         {<span class="hljs-string">'key'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'pId'</span>: <span class="hljs-number">0</span>, <span class="hljs-string">'label'</span>: <span class="hljs-string">'test1'</span>},
@@ -337,6 +360,15 @@ import { gData } from <span class="hljs-string">'./util'</span>;
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChangeChildren'</span>, <span class="hljs-built_in">arguments</span>);
     <span class="hljs-keyword">const</span> pre = value ? <span class="hljs-keyword">this</span>.state.value : <span class="hljs-literal">undefined</span>;
     <span class="hljs-keyword">this</span>.setState({ value: isLeaf(value) ? value : pre });
+  },
+  onChangeLV(value) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'labelInValue'</span>, <span class="hljs-built_in">arguments</span>);
+    <span class="hljs-keyword">if</span> (!value) {
+      <span class="hljs-keyword">this</span>.setState({ lv: <span class="hljs-literal">undefined</span> });
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">const</span> path = findPath(value.value, gData).map(i =&gt; i.label).reverse().join(<span class="hljs-string">' &gt; '</span>);
+    <span class="hljs-keyword">this</span>.setState({ lv: { value: value.value, label: path } });
   },
   onMultipleChange(value) {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onMultipleChange'</span>, <span class="hljs-built_in">arguments</span>);
@@ -435,6 +467,19 @@ import { gData } from <span class="hljs-string">'./util'</span>;
                     treeCheckable showCheckedStrategy={SHOW_PARENT}
                     onChange={this.onChange}
                     onSelect={this.onSelect} /&gt;
+
+        <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>labelInValue &amp; show path<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">500</span>}} <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
+                    <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
+                    <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
+                    <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
+                    searchPlaceholder="please search"
+                    showSearch allowClear treeLine
+                    value={this.state.lv} labelInValue
+                    treeData={gData}
+                    treeNodeFilterProp="label"
+                    filterTreeNode={false}
+                    onChange={this.onChangeLV} /&gt;
 
         <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>use treeDataSimpleMode<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}}

@@ -64,6 +64,28 @@ webpackJsonp([0],{
 	  return false;
 	}
 	
+	function findPath(value, data) {
+	  var sel = [];
+	  function loop(selected, children) {
+	    for (var i = 0; i < children.length; i++) {
+	      var item = children[i];
+	      if (selected === item.value) {
+	        sel.push(item);
+	        return;
+	      }
+	      if (item.children) {
+	        loop(selected, item.children, item);
+	        if (sel.length) {
+	          sel.push(item);
+	          return;
+	        }
+	      }
+	    }
+	  }
+	  loop(value, data);
+	  return sel;
+	}
+	
 	var Demo = _react2['default'].createClass({
 	  displayName: 'Demo',
 	
@@ -73,6 +95,7 @@ webpackJsonp([0],{
 	      inputValue: '0-0-0-label',
 	      value: '0-0-0-value',
 	      // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
+	      lv: { value: '0-0-0-value', label: 'spe label' },
 	      multipleValue: [],
 	      simpleTreeData: [{ 'key': 1, 'pId': 0, 'label': 'test1' }, { 'key': '1-1', 'pId': 0, 'label': 'test1' }, { 'key': 11, 'pId': 1, 'label': 'test11' }, { 'key': 12, 'pId': 1, 'label': 'test12' }, { 'key': 111, 'pId': 11, 'label': 'test111' }],
 	      treeDataSimpleMode: {
@@ -102,6 +125,17 @@ webpackJsonp([0],{
 	    console.log('onChangeChildren', arguments);
 	    var pre = value ? this.state.value : undefined;
 	    this.setState({ value: isLeaf(value) ? value : pre });
+	  },
+	  onChangeLV: function onChangeLV(value) {
+	    console.log('labelInValue', arguments);
+	    if (!value) {
+	      this.setState({ lv: undefined });
+	      return;
+	    }
+	    var path = findPath(value.value, _util.gData).map(function (i) {
+	      return i.label;
+	    }).reverse().join(' > ');
+	    this.setState({ lv: { value: value.value, label: path } });
 	  },
 	  onMultipleChange: function onMultipleChange(value) {
 	    console.log('onMultipleChange', arguments);
@@ -244,6 +278,26 @@ webpackJsonp([0],{
 	        treeCheckable: true, showCheckedStrategy: _rcTreeSelect.SHOW_PARENT,
 	        onChange: this.onChange,
 	        onSelect: this.onSelect }),
+	      _react2['default'].createElement(
+	        'h2',
+	        null,
+	        'labelInValue & show path'
+	      ),
+	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 500 }, transitionName: 'rc-tree-select-dropdown-slide-up',
+	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
+	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
+	        placeholder: _react2['default'].createElement(
+	          'i',
+	          null,
+	          '请下拉选择'
+	        ),
+	        searchPlaceholder: 'please search',
+	        showSearch: true, allowClear: true, treeLine: true,
+	        value: this.state.lv, labelInValue: true,
+	        treeData: _util.gData,
+	        treeNodeFilterProp: 'label',
+	        filterTreeNode: false,
+	        onChange: this.onChangeLV }),
 	      _react2['default'].createElement(
 	        'h2',
 	        null,
