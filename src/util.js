@@ -164,6 +164,9 @@ export function flatToHierarchy(arr) {
   const hierarchyNodes = [];
   const levelObj = {};
   arr.forEach((item) => {
+    if (!item.pos) {
+      return;
+    }
     const posLen = item.pos.split('-').length;
     if (!levelObj[posLen]) {
       levelObj[posLen] = [];
