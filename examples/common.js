@@ -24328,6 +24328,9 @@
 	  var hierarchyNodes = [];
 	  var levelObj = {};
 	  arr.forEach(function (item) {
+	    if (!item.pos) {
+	      return;
+	    }
 	    var posLen = item.pos.split('-').length;
 	    if (!levelObj[posLen]) {
 	      levelObj[posLen] = [];
