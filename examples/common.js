@@ -21487,6 +21487,7 @@
 	    labelInValue: _react.PropTypes.bool,
 	    dropdownStyle: _react.PropTypes.object,
 	    drodownPopupAlign: _react.PropTypes.object,
+	    onDropdownVisibleChange: _react.PropTypes.func,
 	    maxTagTextLength: _react.PropTypes.number,
 	    showCheckedStrategy: _react.PropTypes.oneOf([SHOW_ALL, SHOW_PARENT, SHOW_CHILD]),
 	    // skipHandleInitValue: PropTypes.bool, // Deprecated (use treeCheckStrictly)
@@ -21521,6 +21522,9 @@
 	      showArrow: true,
 	      dropdownMatchSelectWidth: true,
 	      dropdownStyle: {},
+	      onDropdownVisibleChange: function onDropdownVisibleChange() {
+	        return true;
+	      },
 	      notFoundContent: 'Not Found',
 	      showCheckedStrategy: SHOW_CHILD,
 	      // skipHandleInitValue: false, // Deprecated (use treeCheckStrictly)
@@ -21648,7 +21652,9 @@
 	    // this.setOpenState(open);
 	    // 加延时，才能产生动画，什么情况？？
 	    setTimeout(function () {
-	      _this.setOpenState(open);
+	      if (_this.props.onDropdownVisibleChange(open)) {
+	        _this.setOpenState(open);
+	      }
 	    }, 10);
 	  },
 	

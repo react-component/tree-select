@@ -6,6 +6,12 @@
   max-height: 350px;
   overflow-y: scroll;
 }
+.check-select {
+  width: 300px;
+}
+.check-select .rc-tree-select-selection--multiple {
+  min-height: 50px;
+}
 .rc-select {
   box-sizing: border-box;
   display: inline-block;

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>basic.js - example - rc-tree-select@1.7.7</title>
+  <title>basic.js - example - rc-tree-select@1.7.8</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-tree-select@1.7.7</h1>
+    <h1>rc-tree-select@1.7.8</h1>
 
     <p>tree-select ui component for react</p>
   </div>
@@ -378,6 +378,14 @@ import { gData } from <span class="hljs-string">'./util'</span>;
     <span class="hljs-comment">// use onChange instead</span>
     <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">arguments</span>);
   },
+  onDropdownVisibleChange(visible) {
+    <span class="hljs-built_in">console</span>.log(visible, <span class="hljs-keyword">this</span>.state.value);
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Array</span>.isArray(<span class="hljs-keyword">this</span>.state.value) &amp;&amp; <span class="hljs-keyword">this</span>.state.value.length &gt; <span class="hljs-number">1</span> &amp;&amp; <span class="hljs-keyword">this</span>.state.value.length &lt; <span class="hljs-number">3</span>) {
+      alert(<span class="hljs-string">'please select more than two item or less than one item.'</span>);
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  },
   filterTreeNode(input, child) {
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">String</span>(child.props.title).indexOf(input) === <span class="hljs-number">0</span>;
   },
@@ -453,10 +461,12 @@ import { gData } from <span class="hljs-string">'./util'</span>;
                     onSelect={this.onSelect} /&gt;
 
         <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>check select<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}} <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">className</span>=<span class="hljs-value">"check-select"</span>
+                    <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
                     <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
-                    <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
+                    <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{height:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
                     <span class="hljs-attribute">dropdownPopupAlign</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">overflow:</span> { <span class="hljs-attribute">adjustY:</span> <span class="hljs-attribute">0</span>, <span class="hljs-attribute">adjustX:</span> <span class="hljs-attribute">0</span> }, <span class="hljs-attribute">offset:</span> [<span class="hljs-attribute">0</span>, <span class="hljs-attribute">2</span>] }}
+                    <span class="hljs-attribute">onDropdownVisibleChange</span>=<span class="hljs-value">{this.onDropdownVisibleChange}</span>
                     <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
                     searchPlaceholder="please search"
                     treeLine maxTagTextLength={10}
