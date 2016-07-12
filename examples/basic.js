@@ -263,7 +263,7 @@ webpackJsonp([0],{
 	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 }, transitionName: 'rc-tree-select-dropdown-slide-up',
 	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-	        dropdownPopupAlign: { overflow: { adjustY: 0, adjustX: 0 } },
+	        dropdownPopupAlign: { overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 2] },
 	        placeholder: _react2['default'].createElement(
 	          'i',
 	          null,
