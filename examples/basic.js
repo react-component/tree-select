@@ -190,7 +190,7 @@ const Demo = React.createClass({
         <TreeSelect style={{width: 300}} transitionName="rc-tree-select-dropdown-slide-up"
                     choiceTransitionName="rc-tree-select-selection__choice-zoom"
                     dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                    dropdownPopupAlign={{ overflow: { adjustY: 0, adjustX: 0 } }}
+                    dropdownPopupAlign={{ overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 2] }}
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
                     treeLine maxTagTextLength={10}
