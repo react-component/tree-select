@@ -537,6 +537,10 @@ li.rc-tree-select-dropdown-menu-item-divider {
   border-color: transparent transparent #888 transparent;
   border-width: 0 4px 5px 4px;
 }
+.rc-tree-select-not-found {
+  display: inline-block;
+  padding: 8px;
+}
 .rc-tree-select-tree {
   margin: 0;
   padding: 5px;

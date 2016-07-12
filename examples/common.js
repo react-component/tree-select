@@ -25044,11 +25044,10 @@
 	      if (props.notFoundContent) {
 	        notFoundContent = _react2['default'].createElement(
 	          'span',
-	          null,
+	          { className: props.prefixCls + '-not-found' },
 	          props.notFoundContent
 	        );
-	      }
-	      if (!search) {
+	      } else if (!search) {
 	        visible = false;
 	      }
 	    }
