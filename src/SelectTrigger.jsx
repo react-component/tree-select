@@ -268,9 +268,8 @@ const SelectTrigger = React.createClass({
     let notFoundContent;
     if (!treeNodes.length) {
       if (props.notFoundContent) {
-        notFoundContent = <span>{props.notFoundContent}</span>;
-      }
-      if (!search) {
+        notFoundContent = <span className={`${props.prefixCls}-not-found`}>{props.notFoundContent}</span>;
+      } else if (!search) {
         visible = false;
       }
     }

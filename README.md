@@ -60,7 +60,7 @@ online example: http://react-component.github.io/tree-select/
 |dropdownMatchSelectWidth | whether dropdown's with is same with select | bool | true |
 |dropdownClassName | additional className applied to dropdown | String | - |
 |dropdownStyle | additional style applied to dropdown | Object | {} |
-|dropdownPopupAlign | specify alignment for dropdown | Object | - |
+|dropdownPopupAlign | specify alignment for dropdown (alignConfig of [dom-align](https://github.com/yiminghe/dom-align)) | Object | - |
 |notFoundContent | specify content to show when no result matches. | String | 'Not Found' |
 |showSearch | whether show search input in single mode | bool | true |
 |allowClear | whether allowClear | bool | false |

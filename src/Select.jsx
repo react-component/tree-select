@@ -79,6 +79,7 @@ const Select = React.createClass({
     labelInValue: PropTypes.bool,
     dropdownStyle: PropTypes.object,
     drodownPopupAlign: PropTypes.object,
+    onDropdownVisibleChange: PropTypes.func,
     maxTagTextLength: PropTypes.number,
     showCheckedStrategy: PropTypes.oneOf([
       SHOW_ALL, SHOW_PARENT, SHOW_CHILD,
@@ -121,6 +122,7 @@ const Select = React.createClass({
       showArrow: true,
       dropdownMatchSelectWidth: true,
       dropdownStyle: {},
+      onDropdownVisibleChange: () => { return true; },
       notFoundContent: 'Not Found',
       showCheckedStrategy: SHOW_CHILD,
       // skipHandleInitValue: false, // Deprecated (use treeCheckStrictly)
@@ -246,7 +248,9 @@ const Select = React.createClass({
     // this.setOpenState(open);
     // 加延时，才能产生动画，什么情况？？
     setTimeout(() => {
-      this.setOpenState(open);
+      if (this.props.onDropdownVisibleChange(open)) {
+        this.setOpenState(open);
+      }
     }, 10);
   },
 

@@ -112,6 +112,14 @@ const Demo = React.createClass({
     // use onChange instead
     console.log(arguments);
   },
+  onDropdownVisibleChange(visible) {
+    console.log(visible, this.state.value);
+    if (Array.isArray(this.state.value) && this.state.value.length > 1 && this.state.value.length < 3) {
+      alert('please select more than two item or less than one item.');
+      return false;
+    }
+    return true;
+  },
   filterTreeNode(input, child) {
     return String(child.props.title).indexOf(input) === 0;
   },
@@ -187,10 +195,12 @@ const Demo = React.createClass({
                     onSelect={this.onSelect} />
 
         <h2>check select</h2>
-        <TreeSelect style={{width: 300}} transitionName="rc-tree-select-dropdown-slide-up"
+        <TreeSelect className="check-select"
+                    transitionName="rc-tree-select-dropdown-slide-up"
                     choiceTransitionName="rc-tree-select-selection__choice-zoom"
-                    dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                    dropdownPopupAlign={{ overflow: { adjustY: 0, adjustX: 0 } }}
+                    dropdownStyle={{height: 200, overflow: 'auto'}}
+                    dropdownPopupAlign={{ overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 2] }}
+                    onDropdownVisibleChange={this.onDropdownVisibleChange}
                     placeholder={<i>请下拉选择</i>}
                     searchPlaceholder="please search"
                     treeLine maxTagTextLength={10}
