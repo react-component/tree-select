@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import Trigger from 'rc-trigger';
 import Tree, { TreeNode } from 'rc-tree';
 import { loopAllChildren, flatToHierarchy, getValuePropValue, labelCompatible } from './util';
-import rcUtil from 'rc-util';
+import toArray from 'rc-util/lib/Children/toArray';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -231,7 +231,7 @@ const SelectTrigger = React.createClass({
 
     const recursive = children => {
       // 注意: 如果用 React.Children.map 遍历，key 会被修改掉。
-      return rcUtil.Children.toArray(children).map(child => {
+      return toArray(children).map(child => {
         if (child && child.props.children) {
           // null or String has no Prop
           return <TreeNode {...child.props} key={child.key}>{recursive(child.props.children)}</TreeNode>;
