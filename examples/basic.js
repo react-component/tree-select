@@ -134,120 +134,140 @@ const Demo = React.createClass({
           maskAnimation="fade"
           onClose={this.onClose}
           style={{ width: 600, height: 400 }}
-          >
-          <TreeSelect style={{width: 300}} transitionName="rc-tree-select-dropdown-slide-up"
-                      choiceTransitionName="rc-tree-select-selection__choice-zoom"
-                      dropdownStyle={{maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
-                      placeholder={<i>请下拉选择</i>}
-                      searchPlaceholder="please search"
-                      showSearch allowClear treeLine
-                      inputValue={this.state.inputValue}
-                      value={this.state.value}
-                      treeData={gData}
-                      treeNodeFilterProp="label"
-                      filterTreeNode={false}
-                      onSearch={this.onSearch}
-                      onChange={this.onChange}
-                      onSelect={this.onSelect} />
+        >
+          <TreeSelect
+            style={{ width: 300 }}
+            transitionName="rc-tree-select-dropdown-slide-up"
+            choiceTransitionName="rc-tree-select-selection__choice-zoom"
+            dropdownStyle={{maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
+            placeholder={<i>请下拉选择</i>}
+            searchPlaceholder="please search"
+            showSearch allowClear treeLine
+            inputValue={this.state.inputValue}
+            value={this.state.value}
+            treeData={gData}
+            treeNodeFilterProp="label"
+            filterTreeNode={false}
+            onSearch={this.onSearch}
+            onChange={this.onChange}
+            onSelect={this.onSelect}
+          />
         </Dialog> : null}
         <h2>single select</h2>
-        <TreeSelect style={{width: 300}} transitionName="rc-tree-select-dropdown-slide-up"
-                    choiceTransitionName="rc-tree-select-selection__choice-zoom"
-                    dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                    placeholder={<i>请下拉选择</i>}
-                    searchPlaceholder="please search"
-                    showSearch allowClear treeLine
-                    inputValue={this.state.inputValue}
-                    value={this.state.value}
-                    treeData={gData}
-                    treeNodeFilterProp="label"
-                    filterTreeNode={false}
-                    onSearch={this.onSearch}
-                    onChange={this.onChange}
-                    onSelect={this.onSelect} />
+        <TreeSelect
+          style={{ width: 300 }}
+          transitionName="rc-tree-select-dropdown-slide-up"
+          choiceTransitionName="rc-tree-select-selection__choice-zoom"
+          dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+          placeholder={<i>请下拉选择</i>}
+          searchPlaceholder="please search"
+          showSearch allowClear treeLine
+          inputValue={this.state.inputValue}
+          value={this.state.value}
+          treeData={gData}
+          treeNodeFilterProp="label"
+          filterTreeNode={false}
+          onSearch={this.onSearch}
+          onChange={this.onChange}
+          onSelect={this.onSelect}
+        />
 
         <h2>single select (just select children)</h2>
-        <TreeSelect style={{width: 300}} transitionName="rc-tree-select-dropdown-slide-up"
-                    choiceTransitionName="rc-tree-select-selection__choice-zoom"
-                    dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                    placeholder={<i>请下拉选择</i>}
-                    searchPlaceholder="please search"
-                    showSearch allowClear treeLine
-                    inputValue={this.state.inputValue}
-                    value={this.state.value}
-                    treeData={gData}
-                    treeNodeFilterProp="label"
-                    filterTreeNode={false}
-                    onChange={this.onChangeChildren} />
+        <TreeSelect
+          style={{ width: 300 }}
+          transitionName="rc-tree-select-dropdown-slide-up"
+          choiceTransitionName="rc-tree-select-selection__choice-zoom"
+          dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+          placeholder={<i>请下拉选择</i>}
+          searchPlaceholder="please search"
+          showSearch allowClear treeLine
+          inputValue={this.state.inputValue}
+          value={this.state.value}
+          treeData={gData}
+          treeNodeFilterProp="label"
+          filterTreeNode={false}
+          onChange={this.onChangeChildren}
+        />
 
         <h2>multiple select</h2>
-        <TreeSelect style={{width: 300}} transitionName="rc-tree-select-dropdown-slide-up"
-                    choiceTransitionName="rc-tree-select-selection__choice-zoom"
-                    dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                    placeholder={<i>请下拉选择</i>}
-                    searchPlaceholder="please search"
-                    multiple
-                    inputValue={this.state.inputValue}
-                    value={this.state.multipleValue}
-                    treeData={gData}
-                    treeNodeFilterProp="title"
-                    onChange={this.onMultipleChange}
-                    onSelect={this.onSelect} />
+        <TreeSelect
+          style={{ width: 300 }}
+          transitionName="rc-tree-select-dropdown-slide-up"
+          choiceTransitionName="rc-tree-select-selection__choice-zoom"
+          dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+          placeholder={<i>请下拉选择</i>}
+          searchPlaceholder="please search"
+          multiple
+          inputValue={this.state.inputValue}
+          value={this.state.multipleValue}
+          treeData={gData}
+          treeNodeFilterProp="title"
+          onChange={this.onMultipleChange}
+          onSelect={this.onSelect}
+        />
 
         <h2>check select</h2>
-        <TreeSelect className="check-select"
-                    transitionName="rc-tree-select-dropdown-slide-up"
-                    choiceTransitionName="rc-tree-select-selection__choice-zoom"
-                    dropdownStyle={{height: 200, overflow: 'auto'}}
-                    dropdownPopupAlign={{ overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 2] }}
-                    onDropdownVisibleChange={this.onDropdownVisibleChange}
-                    placeholder={<i>请下拉选择</i>}
-                    searchPlaceholder="please search"
-                    treeLine maxTagTextLength={10}
-                    inputValue={null}
-                    value={this.state.value}
-                    treeData={gData}
-                    treeNodeFilterProp="title"
-                    treeCheckable showCheckedStrategy={SHOW_PARENT}
-                    onChange={this.onChange}
-                    onSelect={this.onSelect} />
+        <TreeSelect
+          className="check-select"
+          transitionName="rc-tree-select-dropdown-slide-up"
+          choiceTransitionName="rc-tree-select-selection__choice-zoom"
+          dropdownStyle={{height: 200, overflow: 'auto'}}
+          dropdownPopupAlign={{ overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 2] }}
+          onDropdownVisibleChange={this.onDropdownVisibleChange}
+          placeholder={<i>请下拉选择</i>}
+          searchPlaceholder="please search"
+          treeLine maxTagTextLength={10}
+          value={this.state.value}
+          treeData={gData}
+          treeNodeFilterProp="title"
+          treeCheckable showCheckedStrategy={SHOW_PARENT}
+          onChange={this.onChange}
+          onSelect={this.onSelect}
+        />
 
         <h2>labelInValue & show path</h2>
-        <TreeSelect style={{width: 500}} transitionName="rc-tree-select-dropdown-slide-up"
-                    choiceTransitionName="rc-tree-select-selection__choice-zoom"
-                    dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                    placeholder={<i>请下拉选择</i>}
-                    searchPlaceholder="please search"
-                    showSearch allowClear treeLine
-                    value={this.state.lv} labelInValue
-                    treeData={gData}
-                    treeNodeFilterProp="label"
-                    filterTreeNode={false}
-                    onChange={this.onChangeLV} />
+        <TreeSelect
+          style={{ width: 500 }}
+          transitionName="rc-tree-select-dropdown-slide-up"
+          choiceTransitionName="rc-tree-select-selection__choice-zoom"
+          dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+          placeholder={<i>请下拉选择</i>}
+          searchPlaceholder="please search"
+          showSearch allowClear treeLine
+          value={this.state.lv} labelInValue
+          treeData={gData}
+          treeNodeFilterProp="label"
+          filterTreeNode={false}
+          onChange={this.onChangeLV}
+        />
 
         <h2>use treeDataSimpleMode</h2>
-        <TreeSelect style={{width: 300}}
-                    dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                    placeholder={<i>请下拉选择</i>}
-                    searchPlaceholder="please search"
-                    treeLine maxTagTextLength={10}
-                    inputValue={'test111'}
-                    value={this.state.value}
-                    treeData={this.state.simpleTreeData}
-                    treeNodeFilterProp="title"
-                    treeDataSimpleMode={this.state.treeDataSimpleMode}
-                    treeCheckable showCheckedStrategy={SHOW_PARENT}
-                    onChange={this.onChange}
-                    onSelect={this.onSelect} />
+        <TreeSelect
+          style={{ width: 300 }}
+          dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+          placeholder={<i>请下拉选择</i>}
+          searchPlaceholder="please search"
+          treeLine maxTagTextLength={10}
+          inputValue={'test111'}
+          value={this.state.value}
+          treeData={this.state.simpleTreeData}
+          treeNodeFilterProp="title"
+          treeDataSimpleMode={this.state.treeDataSimpleMode}
+          treeCheckable showCheckedStrategy={SHOW_PARENT}
+          onChange={this.onChange}
+          onSelect={this.onSelect}
+        />
 
         <h2>use TreeNode Component (not recommend)</h2>
-        <TreeSelect style={{width: 200}}
-                    dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                    value={this.state.value || 'leaf1'}
-                    treeDefaultExpandAll treeCheckable
-                    treeNodeFilterProp="title"
-                    filterTreeNode={this.filterTreeNode}
-                    onChange={this.onChange}>
+        <TreeSelect
+          style={{ width: 200 }}
+          dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+          value={this.state.value || 'leaf1'}
+          treeDefaultExpandAll treeCheckable
+          treeNodeFilterProp="title"
+          filterTreeNode={this.filterTreeNode}
+          onChange={this.onChange}
+        >
           <TreeNode value="parent 1" title="parent 1" key="0-1">
             <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-0">
               <TreeNode value="leaf1" title="my leaf" key="random" />

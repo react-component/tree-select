@@ -33,7 +33,6 @@ const SelectTrigger = React.createClass({
     filterTreeNode: PropTypes.any,
     treeNodes: PropTypes.any,
     inputValue: PropTypes.string,
-    _inputValue: PropTypes.bool,
     prefixCls: PropTypes.string,
     popupClassName: PropTypes.string,
     children: PropTypes.any,
@@ -131,7 +130,7 @@ const SelectTrigger = React.createClass({
       }
     });
 
-    // 把筛选节点的父节点（如果未筛选到）包含进来
+    // Include the filtered nodes's ancestral nodes.
     const processedPoss = [];
     filterPoss.forEach(pos => {
       const arr = pos.split('-');
@@ -176,14 +175,17 @@ const SelectTrigger = React.createClass({
     };
 
     if (props.treeCheckable) {
-      if (!props.inputValue || props._inputValue) {
-        trProps._treeNodesStates = props._treeNodesStates;
-      }
       trProps.selectable = false;
       trProps.checkable = props.treeCheckable;
-      trProps.checkStrictly = props.treeCheckStrictly;
       trProps.onCheck = props.onSelect;
-      if (props.treeCheckStrictly && halfCheckedKeys.length) {
+      trProps.checkStrictly = props.treeCheckStrictly;
+      if (!props.inputValue) {
+        trProps._treeNodesStates = props._treeNodesStates;
+      } else {
+        // enable checkStrictly when search tree.
+        trProps.checkStrictly = true;
+      }
+      if (trProps.treeCheckStrictly && halfCheckedKeys.length) {
         trProps.checkedKeys = { checked: keys, halfChecked: halfCheckedKeys };
       } else {
         trProps.checkedKeys = keys;
@@ -230,7 +232,7 @@ const SelectTrigger = React.createClass({
     );
 
     const recursive = children => {
-      // 注意: 如果用 React.Children.map 遍历，key 会被修改掉。
+      // Note: if use `React.Children.map`, the node's key will be modified.
       return toArray(children).map(child => {
         if (child && child.props.children) {
           // null or String has no Prop

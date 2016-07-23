@@ -40,12 +40,14 @@ const Demo = React.createClass({
     return (
       <div style={{padding: '10px 30px'}}>
         <h2>dynamic render</h2>
-        <TreeSelect style={{width: 300}}
+        <TreeSelect
+          style={{ width: 300 }}
           treeData={this.state.treeData}
           labelInValue
           value={this.state.value}
           onChange={this.onChange}
-          loadData={this.onLoadData} />
+          loadData={this.onLoadData}
+        />
       </div>
     );
   },

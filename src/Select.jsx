@@ -148,7 +148,7 @@ const Select = React.createClass({
     // save parsed treeData, for performance (treeData may be very big)
     this.renderedTreeData = this.renderTreeData();
     value = this.addLabelToValue(props, value);
-    value = this.getValue(props, value);
+    value = this.getValue(props, value, props.inputValue ? '__strict' : true);
     const inputValue = props.inputValue || '';
     // if (props.combobox) {
     //   inputValue = value.length ? String(value[0].value) : '';
@@ -180,8 +180,8 @@ const Select = React.createClass({
     if ('value' in nextProps) {
       if (this._cacheTreeNodesStates !== 'no' &&
         this._savedValue && nextProps.value === this._savedValue) {
-        // 只处理用户直接 在 onChange 里 this.setState({value}); 并且是同一个对象引用。
-        // 后续可以对比对象里边的值。
+        // Detecting whether the object of `onChange`'s argument  is old ref.
+        // Better to do a deep equal later.
         this._cacheTreeNodesStates = true;
       } else {
         this._cacheTreeNodesStates = false;
@@ -199,6 +199,11 @@ const Select = React.createClass({
       //     inputValue: value.length ? String(value[0].key) : '',
       //   });
       // }
+    }
+    if (nextProps.inputValue !== this.props.inputValue) {
+      this.setState({
+        inputValue: nextProps.inputValue,
+      });
     }
   },
 
@@ -232,6 +237,11 @@ const Select = React.createClass({
       inputValue: val,
       open: true,
     });
+    if (props.treeCheckable && !val) {
+      this.setState({
+        value: this.getValue(props, [...this.state.value], false),
+      });
+    }
     // if (isCombobox(props)) {
     //   this.fireChange([{
     //     value: val,
@@ -246,7 +256,7 @@ const Select = React.createClass({
       // return;
     }
     // this.setOpenState(open);
-    // 加延时，才能产生动画，什么情况？？
+    // setTimeout, then have animation. why?
     setTimeout(() => {
       if (this.props.onDropdownVisibleChange(open)) {
         this.setOpenState(open);
@@ -357,7 +367,7 @@ const Select = React.createClass({
         }]);
       }
       // if (!checkEvt && value.indexOf(selectedValue) !== -1) {
-        // 设置 multiple 时会有bug。（isValueChange 已有检查，此处注释掉）
+        // it has issues on set `multiple`
         // return;
       // }
     } else {
@@ -380,7 +390,8 @@ const Select = React.createClass({
     };
     if (checkEvt) {
       extraInfo.checked = info.checked;
-      extraInfo.allCheckedNodes = props.treeCheckStrictly ?
+      // if inputValue existing, tree is checkStrictly
+      extraInfo.allCheckedNodes = props.treeCheckStrictly || this.state.inputValue ?
         info.checkedNodes : flatToHierarchy(info.checkedNodesPositions);
       this._checkedNodes = info.checkedNodesPositions;
       const _tree = this.refs.trigger.popupEle;
@@ -419,14 +430,14 @@ const Select = React.createClass({
   },
 
   onOuterFocus() {
-    // 此处会影响展开收起动画，类似问题在 onDropdownVisibleChange 里的 setTimeout 。
+    // It stops open/close animation, and note `onDropdownVisibleChange`'s `setTimeout`
     // this.setState({
     //   focused: true,
     // });
   },
 
   onOuterBlur() {
-    // 此处会影响展开收起动画，类似问题在 onDropdownVisibleChange 里的 setTimeout 。
+    // It stops open/close animation, and note `onDropdownVisibleChange`'s `setTimeout`
     // this.setState({
     //   focused: false,
     // });
@@ -527,9 +538,14 @@ const Select = React.createClass({
     return this.refs.trigger.getPopupEleRefs();
   },
 
-  getValue(_props, val) {
+  getValue(_props, val, init = true) {
     let value = val;
-    if (_props.treeCheckable && _props.treeCheckStrictly) {
+    // if inputValue existing, tree is checkStrictly
+    const _strict = init === '__strict' ||
+      init && (this.state && this.state.inputValue ||
+      this.props.inputValue !== _props.inputValue);
+    if (_props.treeCheckable &&
+      (_props.treeCheckStrictly || _strict)) {
       this.halfCheckedValues = [];
       value = [];
       val.forEach(i => {
@@ -540,14 +556,25 @@ const Select = React.createClass({
         }
       });
     }
-    if (!(_props.treeCheckable && !_props.treeCheckStrictly)) {
+    // if (!(_props.treeCheckable && !_props.treeCheckStrictly)) {
+    if (!!!_props.treeCheckable || _props.treeCheckable &&
+      (_props.treeCheckStrictly || _strict)) {
       return value;
     }
     let checkedTreeNodes;
-    if (this._cachetreeData && this._cacheTreeNodesStates && this._checkedNodes) {
+    if (this._cachetreeData && this._cacheTreeNodesStates && this._checkedNodes &&
+      this.state && !this.state.inputValue) {
       this.checkedTreeNodes = checkedTreeNodes = this._checkedNodes;
     } else {
-      // getTreeNodesStates 耗时，做缓存处理。
+      /**
+       * Note: `this._treeNodesStates`'s treeNodesStates must correspond to nodes of the
+       * final tree (`processTreeNode` function from SelectTrigger.jsx produce the final tree).
+       *
+       * And, `this._treeNodesStates` from `onSelect` is previous value,
+       * so it perhaps only have a few nodes, but the newly filtered tree can have many nodes,
+       * thus, you cannot use previous _treeNodesStates.
+       */
+      // getTreeNodesStates is not effective.
       this._treeNodesStates = getTreeNodesStates(
         this.renderedTreeData || _props.children,
         value.map(item => item.value)
@@ -576,7 +603,8 @@ const Select = React.createClass({
   getCheckedNodes(info, props) {
     // TODO treeCheckable does not support tags/dynamic
     let { checkedNodes } = info;
-    if (props.treeCheckStrictly) {
+    // if inputValue existing, tree is checkStrictly
+    if (props.treeCheckStrictly || this.state.inputValue) {
       return checkedNodes;
     }
     const checkedNodesPositions = info.checkedNodesPositions;
@@ -608,8 +636,7 @@ const Select = React.createClass({
       if (itemObj.pos === unCheckPos ||
         nArr.length > iArr.length && isInclude(iArr, nArr) ||
         nArr.length < iArr.length && isInclude(nArr, iArr)) {
-        // 过滤掉 父级节点 和 所有子节点。
-        // 因为 node节点 不选时，其 父级节点 和 所有子节点 都不选。
+        // Filter ancestral and children nodes when uncheck a node.
         return;
       }
       newCkTns.push(itemObj);
@@ -682,14 +709,13 @@ const Select = React.createClass({
     this._cacheTreeNodesStates = 'no';
     if (props.treeCheckable &&
       (props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT)
-      && !props.treeCheckStrictly) {
+      && !(props.treeCheckStrictly || this.state.inputValue)) {
       this.getDeselectedValue(selectedVal);
       return;
     }
-    // if (props.treeCheckable) {
-    //   // 在 treeCheckable 时，相当于触发节点的 check(uncheck) 事件，
-    //   // 但假如 dropdown 没展开过，tree 也就没渲染好，触发不了tree内部方法。
-    // }
+    // click the node's `x`(in select box), likely trigger the TreeNode's `unCheck` event,
+    // cautiously, they are completely different, think about it, the tree may not render at first,
+    // but the nodes in select box are ready.
     let label;
     const value = this.state.value.filter((singleValue) => {
       if (singleValue.value === selectedVal) {
@@ -755,6 +781,32 @@ const Select = React.createClass({
       if (ex.clear && props.treeCheckable) {
         const treeData = this.renderedTreeData || props.children;
         ex.allCheckedNodes = flatToHierarchy(filterAllCheckedData(vals, treeData));
+      }
+      if (props.treeCheckable && this.state.inputValue) {
+        const _vls = [...this.state.value];
+        if (ex.checked) {
+          value.forEach(i => {
+            if (_vls.every(ii => ii.value !== i.value)) {
+              _vls.push({ ...i });
+            }
+          });
+        } else {
+          let index;
+          const includeVal = _vls.some((i, ind) => {
+            if (i.value === ex.triggerValue) {
+              index = ind;
+              return true;
+            }
+          });
+          if (includeVal) {
+            _vls.splice(index, 1);
+          }
+        }
+        vls = _vls;
+        if (!this.isLabelInValue()) {
+          labs = _vls.map(v => v.label);
+          vls = _vls.map(v => v.value);
+        }
       }
       this._savedValue = isMultipleOrTags(props) ? vls : vls[0];
       props.onChange(this._savedValue, labs, ex);
@@ -837,14 +889,13 @@ const Select = React.createClass({
   renderTreeData(props) {
     const validProps = props || this.props;
     if (validProps.treeData) {
-      if (props && props.treeData === this.props.treeData &&
-        this.renderedTreeData) {
+      if (props && props.treeData === this.props.treeData && this.renderedTreeData) {
         // cache and use pre data.
         this._cachetreeData = true;
         return this.renderedTreeData;
       }
       this._cachetreeData = false;
-      let treeData = validProps.treeData;
+      let treeData = [...validProps.treeData];
       // process treeDataSimpleMode
       if (validProps.treeDataSimpleMode) {
         const simpleFormat = {
@@ -855,7 +906,7 @@ const Select = React.createClass({
         if (Object.prototype.toString.call(validProps.treeDataSimpleMode) === '[object Object]') {
           assign(simpleFormat, validProps.treeDataSimpleMode);
         }
-        treeData = processSimpleTreeData(validProps.treeData, simpleFormat);
+        treeData = processSimpleTreeData(treeData, simpleFormat);
       }
       return loopTreeData(treeData);
     }
@@ -900,7 +951,6 @@ const Select = React.createClass({
         disabled={disabled}
         visible={state.open}
         inputValue={state.inputValue}
-        _inputValue={props.inputValue === null}
         inputElement={this.getInputElement()}
         value={state.value}
         onDropdownVisibleChange={this.onDropdownVisibleChange}

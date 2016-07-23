@@ -94,8 +94,6 @@ export function getCheckedKeys(node, checkedKeys, allCheckedNodesKeys) {
       if (item.pos === nodePos ||
         nArr.length > iArr.length && isInclude(iArr, nArr) ||
         nArr.length < iArr.length && isInclude(nArr, iArr)) {
-        // 过滤掉 父级节点 和 所有子节点。
-        // 因为 node节点 不选时，其 父级节点 和 所有子节点 都不选。
         return;
       }
       newCks.push(item.key);
@@ -175,7 +173,7 @@ export function flatToHierarchy(arr) {
   });
   const levelArr = Object.keys(levelObj).sort((a, b) => b - a);
   // const s = Date.now();
-  // todo: 数据量大时，下边函数性能差，能否是o1时间复杂度？
+  // todo: there are performance issues!
   levelArr.reduce((pre, cur) => {
     if (cur && cur !== pre) {
       levelObj[pre].forEach((item) => {
@@ -247,7 +245,7 @@ function splitPosition(pos) {
   return pos.split('-');
 }
 
-// TODO 再优化
+// todo: do optimization.
 export function handleCheckState(obj, checkedPositionArr, checkIt) {
   // console.log(stripTail('0-101-000'));
   // let s = Date.now();
@@ -257,7 +255,6 @@ export function handleCheckState(obj, checkedPositionArr, checkIt) {
     const iArr = splitPosition(i);
     let saved = false;
     checkedPositionArr.forEach((_pos) => {
-      // 设置子节点，全选或全不选
       const _posArr = splitPosition(_pos);
       if (iArr.length > _posArr.length && isInclude(_posArr, iArr)) {
         obj[i].halfChecked = false;
@@ -265,7 +262,6 @@ export function handleCheckState(obj, checkedPositionArr, checkIt) {
         objKeys[index] = null;
       }
       if (iArr[0] === _posArr[0] && iArr[1] === _posArr[1]) {
-        // 如果
         saved = true;
       }
     });
@@ -276,7 +272,7 @@ export function handleCheckState(obj, checkedPositionArr, checkIt) {
   objKeys = objKeys.filter(i => i); // filter non null;
 
   for (let pIndex = 0; pIndex < checkedPositionArr.length; pIndex++) {
-    // 循环设置父节点的 选中 或 半选状态
+    // loop to set ancestral nodes's `checked` or `halfChecked`
     const loop = (__pos) => {
       const _posLen = splitPosition(__pos).length;
       if (_posLen <= 2) { // e.g. '0-0', '0-1'
@@ -306,8 +302,7 @@ export function handleCheckState(obj, checkedPositionArr, checkIt) {
       });
       // objKeys = objKeys.filter(i => i); // filter non null;
       const parent = obj[parentPosition];
-      // sibling 不会等于0
-      // 全不选 - 全选 - 半选
+      // not check, checked, halfChecked
       if (siblingChecked === 0) {
         parent.checked = false;
         parent.halfChecked = false;
@@ -366,7 +361,7 @@ export function getTreeNodesStates(children, values) {
   return getCheck(treeNodesStates, checkedPositions);
 }
 
-// 给每一个 children 节点，增加 prop
+// can add extra prop to every node.
 export function recursiveCloneChildren(children, cb = ch => ch) {
   // return React.Children.map(children, child => {
   return Array.from(children).map(child => {
@@ -413,9 +408,9 @@ function recursive(children, cb) {
   });
 }
 
-// 用于根据选择框里的 value 筛选初始的 tree 数据里全部选中项。
-// 规则是：某一项选中，则子项全选中；相邻节点全选中，则父节点选中。
-// 与 handleCheckState 部分功能重合，TODO：优化合并起来。
+// Get the tree's checkedNodes (todo: can merge to the `handleCheckState` function)
+// If one node checked, it's all children nodes checked.
+// If sibling nodes all checked, the parent checked.
 export function filterAllCheckedData(vs, treeNodes) {
   const vals = [...vs];
   if (!vals.length) {
@@ -483,10 +478,10 @@ export function filterAllCheckedData(vs, treeNodes) {
   checkParent(data);
 
   checkedNodesPositions.forEach((i, index) => {
-    // 清理掉私有数据
+    // clear private metadata
     delete checkedNodesPositions[index].node.__checked;
     delete checkedNodesPositions[index].node._pos;
-    // 封装出 props 和 onCheck 返回值一致
+    // create the same structure of `onCheck`'s return.
     checkedNodesPositions[index].node.props = {
       title: checkedNodesPositions[index].node.title,
       label: checkedNodesPositions[index].node.label || checkedNodesPositions[index].node.title,
@@ -507,6 +502,7 @@ export function processSimpleTreeData(treeData, format) {
   function unflatten2(array, parent = { [format.id]: format.rootPId }) {
     const children = [];
     for (let i = 0; i < array.length; i++) {
+      array[i] = { ...array[i] }; // copy, can not corrupts original data
       if (array[i][format.pId] === parent[format.id]) {
         array[i].key = array[i][format.id];
         children.push(array[i]);
