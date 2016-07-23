@@ -74,12 +74,14 @@ webpackJsonp([2],{
 	        null,
 	        'dynamic render'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 },
+	      _react2['default'].createElement(_rcTreeSelect2['default'], {
+	        style: { width: 300 },
 	        treeData: this.state.treeData,
 	        labelInValue: true,
 	        value: this.state.value,
 	        onChange: this.onChange,
-	        loadData: this.onLoadData })
+	        loadData: this.onLoadData
+	      })
 	    );
 	  }
 	});

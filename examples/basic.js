@@ -179,7 +179,9 @@ webpackJsonp([0],{
 	          onClose: this.onClose,
 	          style: { width: 600, height: 400 }
 	        },
-	        _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 }, transitionName: 'rc-tree-select-dropdown-slide-up',
+	        _react2['default'].createElement(_rcTreeSelect2['default'], {
+	          style: { width: 300 },
+	          transitionName: 'rc-tree-select-dropdown-slide-up',
 	          choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
 	          dropdownStyle: { maxHeight: 200, overflow: 'auto', zIndex: 1500 },
 	          placeholder: _react2['default'].createElement(
@@ -196,14 +198,17 @@ webpackJsonp([0],{
 	          filterTreeNode: false,
 	          onSearch: this.onSearch,
 	          onChange: this.onChange,
-	          onSelect: this.onSelect })
+	          onSelect: this.onSelect
+	        })
 	      ) : null,
 	      _react2['default'].createElement(
 	        'h2',
 	        null,
 	        'single select'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 }, transitionName: 'rc-tree-select-dropdown-slide-up',
+	      _react2['default'].createElement(_rcTreeSelect2['default'], {
+	        style: { width: 300 },
+	        transitionName: 'rc-tree-select-dropdown-slide-up',
 	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
 	        placeholder: _react2['default'].createElement(
@@ -220,13 +225,16 @@ webpackJsonp([0],{
 	        filterTreeNode: false,
 	        onSearch: this.onSearch,
 	        onChange: this.onChange,
-	        onSelect: this.onSelect }),
+	        onSelect: this.onSelect
+	      }),
 	      _react2['default'].createElement(
 	        'h2',
 	        null,
 	        'single select (just select children)'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 }, transitionName: 'rc-tree-select-dropdown-slide-up',
+	      _react2['default'].createElement(_rcTreeSelect2['default'], {
+	        style: { width: 300 },
+	        transitionName: 'rc-tree-select-dropdown-slide-up',
 	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
 	        placeholder: _react2['default'].createElement(
@@ -241,13 +249,16 @@ webpackJsonp([0],{
 	        treeData: _util.gData,
 	        treeNodeFilterProp: 'label',
 	        filterTreeNode: false,
-	        onChange: this.onChangeChildren }),
+	        onChange: this.onChangeChildren
+	      }),
 	      _react2['default'].createElement(
 	        'h2',
 	        null,
 	        'multiple select'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 }, transitionName: 'rc-tree-select-dropdown-slide-up',
+	      _react2['default'].createElement(_rcTreeSelect2['default'], {
+	        style: { width: 300 },
+	        transitionName: 'rc-tree-select-dropdown-slide-up',
 	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
 	        placeholder: _react2['default'].createElement(
@@ -262,13 +273,15 @@ webpackJsonp([0],{
 	        treeData: _util.gData,
 	        treeNodeFilterProp: 'title',
 	        onChange: this.onMultipleChange,
-	        onSelect: this.onSelect }),
+	        onSelect: this.onSelect
+	      }),
 	      _react2['default'].createElement(
 	        'h2',
 	        null,
 	        'check select'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], { className: 'check-select',
+	      _react2['default'].createElement(_rcTreeSelect2['default'], {
+	        className: 'check-select',
 	        transitionName: 'rc-tree-select-dropdown-slide-up',
 	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
 	        dropdownStyle: { height: 200, overflow: 'auto' },
@@ -281,19 +294,21 @@ webpackJsonp([0],{
 	        ),
 	        searchPlaceholder: 'please search',
 	        treeLine: true, maxTagTextLength: 10,
-	        inputValue: null,
 	        value: this.state.value,
 	        treeData: _util.gData,
 	        treeNodeFilterProp: 'title',
 	        treeCheckable: true, showCheckedStrategy: _rcTreeSelect.SHOW_PARENT,
 	        onChange: this.onChange,
-	        onSelect: this.onSelect }),
+	        onSelect: this.onSelect
+	      }),
 	      _react2['default'].createElement(
 	        'h2',
 	        null,
 	        'labelInValue & show path'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 500 }, transitionName: 'rc-tree-select-dropdown-slide-up',
+	      _react2['default'].createElement(_rcTreeSelect2['default'], {
+	        style: { width: 500 },
+	        transitionName: 'rc-tree-select-dropdown-slide-up',
 	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
 	        placeholder: _react2['default'].createElement(
@@ -307,13 +322,15 @@ webpackJsonp([0],{
 	        treeData: _util.gData,
 	        treeNodeFilterProp: 'label',
 	        filterTreeNode: false,
-	        onChange: this.onChangeLV }),
+	        onChange: this.onChangeLV
+	      }),
 	      _react2['default'].createElement(
 	        'h2',
 	        null,
 	        'use treeDataSimpleMode'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], { style: { width: 300 },
+	      _react2['default'].createElement(_rcTreeSelect2['default'], {
+	        style: { width: 300 },
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
 	        placeholder: _react2['default'].createElement(
 	          'i',
@@ -329,7 +346,8 @@ webpackJsonp([0],{
 	        treeDataSimpleMode: this.state.treeDataSimpleMode,
 	        treeCheckable: true, showCheckedStrategy: _rcTreeSelect.SHOW_PARENT,
 	        onChange: this.onChange,
-	        onSelect: this.onSelect }),
+	        onSelect: this.onSelect
+	      }),
 	      _react2['default'].createElement(
 	        'h2',
 	        null,
@@ -337,13 +355,15 @@ webpackJsonp([0],{
 	      ),
 	      _react2['default'].createElement(
 	        _rcTreeSelect2['default'],
-	        { style: { width: 200 },
+	        {
+	          style: { width: 200 },
 	          dropdownStyle: { maxHeight: 200, overflow: 'auto' },
 	          value: this.state.value || 'leaf1',
 	          treeDefaultExpandAll: true, treeCheckable: true,
 	          treeNodeFilterProp: 'title',
 	          filterTreeNode: this.filterTreeNode,
-	          onChange: this.onChange },
+	          onChange: this.onChange
+	        },
 	        _react2['default'].createElement(
 	          _rcTreeSelect.TreeNode,
 	          { value: 'parent 1', title: 'parent 1', key: '0-1' },

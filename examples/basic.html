@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>basic.js - example - rc-tree-select@1.7.8</title>
+  <title>basic.js - example - rc-tree-select@1.7.9</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-tree-select@1.7.8</h1>
+    <h1>rc-tree-select@1.7.9</h1>
 
     <p>tree-select ui component for react</p>
   </div>
@@ -400,120 +400,140 @@ import { gData } from <span class="hljs-string">'./util'</span>;
           <span class="hljs-attribute">maskAnimation</span>=<span class="hljs-value">"fade"</span>
           <span class="hljs-attribute">onClose</span>=<span class="hljs-value">{this.onClose}</span>
           <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">600</span>, <span class="hljs-attribute">height:</span> <span class="hljs-attribute">400</span> }}
-          &gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}} <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
-                      <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
-                      <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>', <span class="hljs-attribute">zIndex:</span> <span class="hljs-attribute">1500</span> }}
-                      <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
-                      searchPlaceholder="please search"
-                      showSearch allowClear treeLine
-                      inputValue={this.state.inputValue}
-                      value={this.state.value}
-                      treeData={gData}
-                      treeNodeFilterProp="label"
-                      filterTreeNode={false}
-                      onSearch={this.onSearch}
-                      onChange={this.onChange}
-                      onSelect={this.onSelect} /&gt;
+        &gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
+            <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}
+            <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
+            <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
+            <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>', <span class="hljs-attribute">zIndex:</span> <span class="hljs-attribute">1500</span> }}
+            <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
+            searchPlaceholder="please search"
+            showSearch allowClear treeLine
+            inputValue={this.state.inputValue}
+            value={this.state.value}
+            treeData={gData}
+            treeNodeFilterProp="label"
+            filterTreeNode={false}
+            onSearch={this.onSearch}
+            onChange={this.onChange}
+            onSelect={this.onSelect}
+          /&gt;
         <span class="hljs-tag">&lt;/<span class="hljs-title">Dialog</span>&gt;</span> : null}
         <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>single select<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}} <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
-                    <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
-                    <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
-                    <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
-                    searchPlaceholder="please search"
-                    showSearch allowClear treeLine
-                    inputValue={this.state.inputValue}
-                    value={this.state.value}
-                    treeData={gData}
-                    treeNodeFilterProp="label"
-                    filterTreeNode={false}
-                    onSearch={this.onSearch}
-                    onChange={this.onChange}
-                    onSelect={this.onSelect} /&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
+          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}
+          <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
+          <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
+          <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
+          <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
+          searchPlaceholder="please search"
+          showSearch allowClear treeLine
+          inputValue={this.state.inputValue}
+          value={this.state.value}
+          treeData={gData}
+          treeNodeFilterProp="label"
+          filterTreeNode={false}
+          onSearch={this.onSearch}
+          onChange={this.onChange}
+          onSelect={this.onSelect}
+        /&gt;
 
         <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>single select (just select children)<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}} <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
-                    <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
-                    <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
-                    <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
-                    searchPlaceholder="please search"
-                    showSearch allowClear treeLine
-                    inputValue={this.state.inputValue}
-                    value={this.state.value}
-                    treeData={gData}
-                    treeNodeFilterProp="label"
-                    filterTreeNode={false}
-                    onChange={this.onChangeChildren} /&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
+          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}
+          <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
+          <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
+          <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
+          <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
+          searchPlaceholder="please search"
+          showSearch allowClear treeLine
+          inputValue={this.state.inputValue}
+          value={this.state.value}
+          treeData={gData}
+          treeNodeFilterProp="label"
+          filterTreeNode={false}
+          onChange={this.onChangeChildren}
+        /&gt;
 
         <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>multiple select<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}} <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
-                    <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
-                    <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
-                    <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
-                    searchPlaceholder="please search"
-                    multiple
-                    inputValue={this.state.inputValue}
-                    value={this.state.multipleValue}
-                    treeData={gData}
-                    treeNodeFilterProp="title"
-                    onChange={this.onMultipleChange}
-                    onSelect={this.onSelect} /&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
+          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}
+          <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
+          <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
+          <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
+          <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
+          searchPlaceholder="please search"
+          multiple
+          inputValue={this.state.inputValue}
+          value={this.state.multipleValue}
+          treeData={gData}
+          treeNodeFilterProp="title"
+          onChange={this.onMultipleChange}
+          onSelect={this.onSelect}
+        /&gt;
 
         <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>check select<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">className</span>=<span class="hljs-value">"check-select"</span>
-                    <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
-                    <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
-                    <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{height:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
-                    <span class="hljs-attribute">dropdownPopupAlign</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">overflow:</span> { <span class="hljs-attribute">adjustY:</span> <span class="hljs-attribute">0</span>, <span class="hljs-attribute">adjustX:</span> <span class="hljs-attribute">0</span> }, <span class="hljs-attribute">offset:</span> [<span class="hljs-attribute">0</span>, <span class="hljs-attribute">2</span>] }}
-                    <span class="hljs-attribute">onDropdownVisibleChange</span>=<span class="hljs-value">{this.onDropdownVisibleChange}</span>
-                    <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
-                    searchPlaceholder="please search"
-                    treeLine maxTagTextLength={10}
-                    inputValue={null}
-                    value={this.state.value}
-                    treeData={gData}
-                    treeNodeFilterProp="title"
-                    treeCheckable showCheckedStrategy={SHOW_PARENT}
-                    onChange={this.onChange}
-                    onSelect={this.onSelect} /&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
+          <span class="hljs-attribute">className</span>=<span class="hljs-value">"check-select"</span>
+          <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
+          <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
+          <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{height:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
+          <span class="hljs-attribute">dropdownPopupAlign</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">overflow:</span> { <span class="hljs-attribute">adjustY:</span> <span class="hljs-attribute">0</span>, <span class="hljs-attribute">adjustX:</span> <span class="hljs-attribute">0</span> }, <span class="hljs-attribute">offset:</span> [<span class="hljs-attribute">0</span>, <span class="hljs-attribute">2</span>] }}
+          <span class="hljs-attribute">onDropdownVisibleChange</span>=<span class="hljs-value">{this.onDropdownVisibleChange}</span>
+          <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
+          searchPlaceholder="please search"
+          treeLine maxTagTextLength={10}
+          value={this.state.value}
+          treeData={gData}
+          treeNodeFilterProp="title"
+          treeCheckable showCheckedStrategy={SHOW_PARENT}
+          onChange={this.onChange}
+          onSelect={this.onSelect}
+        /&gt;
 
         <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>labelInValue &amp; show path<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">500</span>}} <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
-                    <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
-                    <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
-                    <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
-                    searchPlaceholder="please search"
-                    showSearch allowClear treeLine
-                    value={this.state.lv} labelInValue
-                    treeData={gData}
-                    treeNodeFilterProp="label"
-                    filterTreeNode={false}
-                    onChange={this.onChangeLV} /&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
+          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">500</span> }}
+          <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
+          <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
+          <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
+          <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
+          searchPlaceholder="please search"
+          showSearch allowClear treeLine
+          value={this.state.lv} labelInValue
+          treeData={gData}
+          treeNodeFilterProp="label"
+          filterTreeNode={false}
+          onChange={this.onChangeLV}
+        /&gt;
 
         <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>use treeDataSimpleMode<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}}
-                    <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
-                    <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
-                    searchPlaceholder="please search"
-                    treeLine maxTagTextLength={10}
-                    inputValue={'test111'}
-                    value={this.state.value}
-                    treeData={this.state.simpleTreeData}
-                    treeNodeFilterProp="title"
-                    treeDataSimpleMode={this.state.treeDataSimpleMode}
-                    treeCheckable showCheckedStrategy={SHOW_PARENT}
-                    onChange={this.onChange}
-                    onSelect={this.onSelect} /&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
+          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}
+          <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
+          <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
+          searchPlaceholder="please search"
+          treeLine maxTagTextLength={10}
+          inputValue={'test111'}
+          value={this.state.value}
+          treeData={this.state.simpleTreeData}
+          treeNodeFilterProp="title"
+          treeDataSimpleMode={this.state.treeDataSimpleMode}
+          treeCheckable showCheckedStrategy={SHOW_PARENT}
+          onChange={this.onChange}
+          onSelect={this.onSelect}
+        /&gt;
 
         <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>use TreeNode Component (not recommend)<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">200</span>}}
-                    <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
-                    <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value</span> || '<span class="hljs-attribute">leaf1</span>'}
-                    <span class="hljs-attribute">treeDefaultExpandAll</span> <span class="hljs-attribute">treeCheckable</span>
-                    <span class="hljs-attribute">treeNodeFilterProp</span>=<span class="hljs-value">"title"</span>
-                    <span class="hljs-attribute">filterTreeNode</span>=<span class="hljs-value">{this.filterTreeNode}</span>
-                    <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
+          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">200</span> }}
+          <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
+          <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value</span> || '<span class="hljs-attribute">leaf1</span>'}
+          <span class="hljs-attribute">treeDefaultExpandAll</span> <span class="hljs-attribute">treeCheckable</span>
+          <span class="hljs-attribute">treeNodeFilterProp</span>=<span class="hljs-value">"title"</span>
+          <span class="hljs-attribute">filterTreeNode</span>=<span class="hljs-value">{this.filterTreeNode}</span>
+          <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
+        &gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"parent 1"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"parent 1"</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"0-1"</span>&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"parent 1-0"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"parent 1-0"</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"0-1-0"</span>&gt;</span>
               <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"leaf1"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"my leaf"</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"random"</span> /&gt;</span>

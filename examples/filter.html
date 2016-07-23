@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>dynamic.js - example - rc-tree-select@1.7.9</title>
+  <title>filter.js - example - rc-tree-select@1.7.9</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,57 +263,85 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   </div>
   <div class="example" id="__react-content"></div>
   <script src="common.js?nowrap"></script>
-  <script src="dynamic.js?nowrap"></script>
+  <script src="filter.js?nowrap"></script>
   <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
 
 import <span class="hljs-string">'rc-tree-select/assets/index.css'</span>;
 import React from <span class="hljs-string">'react'</span>;
 import ReactDOM from <span class="hljs-string">'react-dom'</span>;
-import TreeSelect from <span class="hljs-string">'rc-tree-select'</span>;
-import { getNewTreeData, generateTreeNodes } from <span class="hljs-string">'./util'</span>;
+import TreeSelect, { SHOW_PARENT } from <span class="hljs-string">'rc-tree-select'</span>;
+import { gData } from <span class="hljs-string">'./util'</span>;
 
 <span class="hljs-keyword">const</span> Demo = React.createClass({
-  propTypes: {},
   getInitialState() {
     <span class="hljs-keyword">return</span> {
-      treeData: [
-        {label: <span class="hljs-string">'pNode 01'</span>, value: <span class="hljs-string">'0-0'</span>, key: <span class="hljs-string">'0-0'</span>},
-        {label: <span class="hljs-string">'pNode 02'</span>, value: <span class="hljs-string">'0-1'</span>, key: <span class="hljs-string">'0-1'</span>},
-        {label: <span class="hljs-string">'pNode 03'</span>, value: <span class="hljs-string">'0-2'</span>, key: <span class="hljs-string">'0-2'</span>, isLeaf: <span class="hljs-literal">true</span>},
+      value: <span class="hljs-string">'11'</span>,
+      <span class="hljs-comment">// value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],</span>
+      simpleTreeData: [
+        {<span class="hljs-string">'key'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'pId'</span>: <span class="hljs-number">0</span>, <span class="hljs-string">'label'</span>: <span class="hljs-string">'a'</span>, <span class="hljs-string">'value'</span>: <span class="hljs-string">'a'</span>},
+        {<span class="hljs-string">'key'</span>: <span class="hljs-number">11</span>, <span class="hljs-string">'pId'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'label'</span>: <span class="hljs-string">'a12'</span>, <span class="hljs-string">'value'</span>: <span class="hljs-string">'a12'</span>},
+        {<span class="hljs-string">'key'</span>: <span class="hljs-number">111</span>, <span class="hljs-string">'pId'</span>: <span class="hljs-number">11</span>, <span class="hljs-string">'label'</span>: <span class="hljs-string">'a00'</span>, <span class="hljs-string">'value'</span>: <span class="hljs-string">'a00'</span>, selectable: <span class="hljs-literal">false</span>},
+        {<span class="hljs-string">'key'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'pId'</span>: <span class="hljs-number">0</span>, <span class="hljs-string">'label'</span>: <span class="hljs-string">'b'</span>, <span class="hljs-string">'value'</span>: <span class="hljs-string">'b'</span>},
+        {<span class="hljs-string">'key'</span>: <span class="hljs-number">20</span>, <span class="hljs-string">'pId'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'label'</span>: <span class="hljs-string">'b10'</span>, <span class="hljs-string">'value'</span>: <span class="hljs-string">'b10'</span>},
+        {<span class="hljs-string">'key'</span>: <span class="hljs-number">21</span>, <span class="hljs-string">'pId'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'label'</span>: <span class="hljs-string">'b1'</span>, <span class="hljs-string">'value'</span>: <span class="hljs-string">'b1'</span>},
+        {<span class="hljs-string">'key'</span>: <span class="hljs-number">22</span>, <span class="hljs-string">'pId'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'label'</span>: <span class="hljs-string">'b12'</span>, <span class="hljs-string">'value'</span>: <span class="hljs-string">'b12'</span>},
       ],
-      <span class="hljs-comment">// value: '0-0',</span>
-      value: { value: <span class="hljs-string">'0-0-0-value'</span>, label: <span class="hljs-string">'0-0-0-label'</span> },
+      treeDataSimpleMode: {
+        id: <span class="hljs-string">'key'</span>,
+        rootPId: <span class="hljs-number">0</span>,
+      },
     };
   },
   onChange(value) {
-    <span class="hljs-built_in">console</span>.log(value);
-    <span class="hljs-keyword">this</span>.setState({
-      value,
-    });
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, <span class="hljs-built_in">arguments</span>, <span class="hljs-keyword">this</span>.state.simpleTreeData);
+    <span class="hljs-keyword">this</span>.setState({value});
   },
-  onLoadData(treeNode) {
-    <span class="hljs-built_in">console</span>.log(treeNode);
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Promise((resolve) =&gt; {
-      setTimeout(() =&gt; {
-        <span class="hljs-keyword">const</span> treeData = [...this.state.treeData];
-        getNewTreeData(treeData, treeNode.props.eventKey, generateTreeNodes(treeNode), <span class="hljs-number">2</span>);
-        <span class="hljs-keyword">this</span>.setState({treeData});
-        resolve();
-      }, <span class="hljs-number">500</span>);
-    });
+  onSelect() {
+    <span class="hljs-comment">// use onChange instead</span>
+    <span class="hljs-comment">// console.log(arguments);</span>
+  },
+  onDataChange() {
+    <span class="hljs-keyword">const</span> data = [...this.state.simpleTreeData];
+    <span class="hljs-keyword">this</span>.setState({ simpleTreeData: data });
   },
   render() {
     <span class="hljs-keyword">return</span> (
-      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{padding:</span> '<span class="hljs-attribute">10px</span> <span class="hljs-attribute">30px</span>'}}&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>dynamic render<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">margin:</span> <span class="hljs-attribute">20</span> }}&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>check select<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
           <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}
-          <span class="hljs-attribute">treeData</span>=<span class="hljs-value">{this.state.treeData}</span>
-          <span class="hljs-attribute">labelInValue</span>
-          <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span>
-          <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
-          <span class="hljs-attribute">loadData</span>=<span class="hljs-value">{this.onLoadData}</span>
-        /&gt;</span>
+          <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
+          <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
+          <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{height:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
+          <span class="hljs-attribute">dropdownPopupAlign</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">overflow:</span> { <span class="hljs-attribute">adjustY:</span> <span class="hljs-attribute">0</span>, <span class="hljs-attribute">adjustX:</span> <span class="hljs-attribute">0</span> }, <span class="hljs-attribute">offset:</span> [<span class="hljs-attribute">0</span>, <span class="hljs-attribute">2</span>] }}
+          <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
+          searchPlaceholder="please search"
+          treeLine maxTagTextLength={10}
+          value={this.state.value}
+          treeData={gData}
+          treeNodeFilterProp="title"
+          treeCheckable
+          onChange={this.onChange}
+          onSelect={this.onSelect}
+        /&gt;
+
+        <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>use treeDataSimpleMode<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
+          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}
+          <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
+          <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
+          searchPlaceholder="please search"
+          treeLine maxTagTextLength={10}
+          inputValue={'a'}
+          value={this.state.value}
+          treeData={this.state.simpleTreeData}
+          treeNodeFilterProp="title"
+          treeDataSimpleMode={this.state.treeDataSimpleMode}
+          treeCheckable showCheckedStrategy={SHOW_PARENT}
+          onChange={this.onChange}
+          onSelect={this.onSelect}
+        /&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.onDataChange}</span>&gt;</span>change data<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     );
   },
