@@ -23995,6 +23995,7 @@
 	        inputElement: this.getInputElement(),
 	        value: state.value,
 	        onDropdownVisibleChange: this.onDropdownVisibleChange,
+	        getPopupContainer: props.getPopupContainer,
 	        onSelect: this.onSelect,
 	        ref: 'trigger'
 	      }),
@@ -25021,12 +25022,13 @@
 	        ref: 'trigger',
 	        popupPlacement: 'bottomLeft',
 	        builtinPlacements: BUILT_IN_PLACEMENTS,
-	        popupAlign: this.props.dropdownPopupAlign,
+	        popupAlign: props.dropdownPopupAlign,
 	        prefixCls: dropdownPrefixCls,
 	        popupTransitionName: this.getDropdownTransitionName(),
 	        onPopupVisibleChange: props.onDropdownVisibleChange,
 	        popup: popupElement,
 	        popupVisible: visible,
+	        getPopupContainer: props.getPopupContainer,
 	        popupClassName: (0, _classnames2.default)(popupClassName),
 	        popupStyle: props.dropdownStyle
 	      },

@@ -174,12 +174,16 @@ webpackJsonp([0],{
 	          animation: 'zoom',
 	          maskAnimation: 'fade',
 	          onClose: this.onClose,
-	          style: { width: 600, height: 400, overflow: 'auto' }
+	          style: { width: 600, height: 400, overflow: 'auto' },
+	          id: 'area'
 	        },
 	        _react2.default.createElement(
 	          'div',
 	          { style: { height: 600, paddingTop: 100 } },
 	          _react2.default.createElement(_rcTreeSelect2.default, {
+	            getPopupContainer: function getPopupContainer(triggerNode) {
+	              return triggerNode.parentNode;
+	            },
 	            style: { width: 300 },
 	            transitionName: 'rc-tree-select-dropdown-slide-up',
 	            choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
