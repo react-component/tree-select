@@ -9,7 +9,12 @@ export function generateData(x = 3, y = 2, z = 1, gData = []) {
     const children = [];
     for (let i = 0; i < x; i++) {
       const key = `${preKey}-${i}`;
-      tns.push({label: `${key}-label`, value: `${key}-value`, key, disabled: key === '0-0-0-1' ? true : false});
+      tns.push({
+        label: `${key}-label`,
+        value: `${key}-value`,
+        key,
+        disabled: key === '0-0-0-1' || false,
+      });
       if (i < y) {
         children.push(key);
       }
@@ -38,7 +43,7 @@ export function generateTreeNodes(treeNode) {
   const arr = [];
   const key = treeNode.props.eventKey;
   for (let i = 0; i < 3; i++) {
-    arr.push({label: `${key}-${i}-label`, value: `${key}-${i}-value`, key: `${key}-${i}`});
+    arr.push({ label: `${key}-${i}-label`, value: `${key}-${i}-value`, key: `${key}-${i}` });
   }
   return arr;
 }

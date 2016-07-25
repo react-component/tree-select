@@ -18,12 +18,12 @@ const Demo = React.createClass({
   },
   onChange(value) {
     console.log('onChange', arguments);
-    this.setState({value});
+    this.setState({ value });
   },
   onChangeStrictly(value1) {
     console.log('onChangeStrictly', arguments);
     const ind = parseInt(Math.random() * 3, 10);
-    value1.push({value: `0-0-0-${ind}-value`, label: `0-0-0-${ind}-label`, halfChecked: true});
+    value1.push({ value: `0-0-0-${ind}-value`, label: `0-0-0-${ind}-label`, halfChecked: true });
     this.setState({
       value1,
     });
@@ -34,21 +34,21 @@ const Demo = React.createClass({
       gData1: [...data],
       value: '0-0-0-value',
       value1: [
-        {value: '0-0-value', label: '0-0-label', halfChecked: true},
-        {value: '0-0-0-value', label: '0-0-0-label'},
+        { value: '0-0-value', label: '0-0-label', halfChecked: true },
+        { value: '0-0-0-value', label: '0-0-0-label' },
       ],
       // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
     });
   },
   render() {
-    return (<div style={{padding: '0 20px'}}>
+    return (<div style={{ padding: '0 20px' }}>
       <Gen onGen={this.onGen} />
       <div style={{ display: 'flex' }}>
         <div style={{ marginRight: 20 }}>
           <h3>normal check</h3>
           <TreeSelect
-            style={{width: 300}}
-            dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+            style={{ width: 300 }}
+            dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
             treeData={this.state.gData} treeLine
             value={this.state.value}
             placeholder={<i>请下拉选择</i>}
@@ -60,8 +60,8 @@ const Demo = React.createClass({
         <div>
           <h3>checkStrictly</h3>
           <TreeSelect
-            style={{width: 300}}
-            dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+            style={{ width: 300 }}
+            dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
             treeData={this.state.gData1} treeLine
             value={this.state.value1}
             placeholder={<i>请下拉选择</i>}

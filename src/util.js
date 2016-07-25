@@ -9,7 +9,7 @@ export function getValuePropValue(child) {
   if (child.key) {
     return child.key;
   }
-  throw new Error('no key or value for ' + child);
+  throw new Error(`no key or value for ${child}`);
 }
 
 export function getPropValue(child, prop) {
@@ -230,8 +230,9 @@ export function filterParentPosition(arr) {
   });
   return nArr;
 }
-// console.log(filterParentPosition(['0-2', '0-3-3', '0-10', '0-10-0', '0-0-1', '0-0', '0-1-1', '0-1']));
-
+// console.log(filterParentPosition(
+// ['0-2', '0-3-3', '0-10', '0-10-0', '0-0-1', '0-0', '0-1-1', '0-1']
+// ));
 
 function stripTail(str) {
   const arr = str.match(/(.+)(-[^-]+)$/);

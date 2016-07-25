@@ -58,14 +58,14 @@ const Demo = React.createClass({
       inputValue: '0-0-0-label',
       value: '0-0-0-value',
       // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
-      lv: {value: '0-0-0-value', label: 'spe label'},
+      lv: { value: '0-0-0-value', label: 'spe label' },
       multipleValue: [],
       simpleTreeData: [
-        {'key': 1, 'pId': 0, 'label': 'test1'},
-        {'key': '1-1', 'pId': 0, 'label': 'test1'},
-        {'key': 11, 'pId': 1, 'label': 'test11'},
-        {'key': 12, 'pId': 1, 'label': 'test12'},
-        {'key': 111, 'pId': 11, 'label': 'test111'},
+        { key: 1, pId: 0, label: 'test1' },
+        { key: '1-1', pId: 0, label: 'test1' },
+        { key: 11, pId: 1, label: 'test11' },
+        { key: 12, pId: 1, label: 'test12' },
+        { key: 111, pId: 11, label: 'test111' },
       ],
       treeDataSimpleMode: {
         id: 'key',
@@ -88,7 +88,7 @@ const Demo = React.createClass({
   },
   onChange(value) {
     console.log('onChange', arguments);
-    this.setState({value});
+    this.setState({ value });
   },
   onChangeChildren(value) {
     console.log('onChangeChildren', arguments);
@@ -106,7 +106,7 @@ const Demo = React.createClass({
   },
   onMultipleChange(value) {
     console.log('onMultipleChange', arguments);
-    this.setState({multipleValue: value});
+    this.setState({ multipleValue: value });
   },
   onSelect() {
     // use onChange instead
@@ -114,7 +114,8 @@ const Demo = React.createClass({
   },
   onDropdownVisibleChange(visible) {
     console.log(visible, this.state.value);
-    if (Array.isArray(this.state.value) && this.state.value.length > 1 && this.state.value.length < 3) {
+    if (Array.isArray(this.state.value) && this.state.value.length > 1
+      && this.state.value.length < 3) {
       alert('please select more than two item or less than one item.');
       return false;
     }
@@ -125,7 +126,7 @@ const Demo = React.createClass({
   },
   render() {
     return (
-      <div style={{margin: 20}}>
+      <div style={{ margin: 20 }}>
         <h2>tree-select in dialog</h2>
         <button className="btn btn-primary" onClick={this.onClick}>show dialog</button>
         {this.state.visible ? <Dialog
@@ -139,7 +140,7 @@ const Demo = React.createClass({
             style={{ width: 300 }}
             transitionName="rc-tree-select-dropdown-slide-up"
             choiceTransitionName="rc-tree-select-selection__choice-zoom"
-            dropdownStyle={{maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
+            dropdownStyle={{ maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
             placeholder={<i>请下拉选择</i>}
             searchPlaceholder="please search"
             showSearch allowClear treeLine
@@ -158,7 +159,7 @@ const Demo = React.createClass({
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
-          dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           showSearch allowClear treeLine
@@ -177,7 +178,7 @@ const Demo = React.createClass({
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
-          dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           showSearch allowClear treeLine
@@ -194,7 +195,7 @@ const Demo = React.createClass({
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
-          dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           multiple
@@ -211,7 +212,7 @@ const Demo = React.createClass({
           className="check-select"
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
-          dropdownStyle={{height: 200, overflow: 'auto'}}
+          dropdownStyle={{ height: 200, overflow: 'auto' }}
           dropdownPopupAlign={{ overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 2] }}
           onDropdownVisibleChange={this.onDropdownVisibleChange}
           placeholder={<i>请下拉选择</i>}
@@ -230,7 +231,7 @@ const Demo = React.createClass({
           style={{ width: 500 }}
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
-          dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           showSearch allowClear treeLine
@@ -244,7 +245,7 @@ const Demo = React.createClass({
         <h2>use treeDataSimpleMode</h2>
         <TreeSelect
           style={{ width: 300 }}
-          dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           treeLine maxTagTextLength={10}
@@ -261,7 +262,7 @@ const Demo = React.createClass({
         <h2>use TreeNode Component (not recommend)</h2>
         <TreeSelect
           style={{ width: 200 }}
-          dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           value={this.state.value || 'leaf1'}
           treeDefaultExpandAll treeCheckable
           treeNodeFilterProp="title"
@@ -274,7 +275,9 @@ const Demo = React.createClass({
               <TreeNode value="leaf2" title="your leaf" key="random1" disabled />
             </TreeNode>
             <TreeNode value="parent 1-1" title="parent 1-1" key="0-1-1">
-              <TreeNode value="sss" title={<span style={{color: 'red'}}>sss</span>} key="random3" />
+              <TreeNode value="sss"
+                title={<span style={{ color: 'red' }}>sss</span>} key="random3"
+              />
               <TreeNode value="same value" title="same txtle" key="0-1-1-1">
                 <TreeNode value="same value" title="same titlexd" key="0-1-1-1-0" />
               </TreeNode>

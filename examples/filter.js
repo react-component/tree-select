@@ -12,13 +12,13 @@ const Demo = React.createClass({
       value: '11',
       // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
       simpleTreeData: [
-        {'key': 1, 'pId': 0, 'label': 'a', 'value': 'a'},
-        {'key': 11, 'pId': 1, 'label': 'a12', 'value': 'a12'},
-        {'key': 111, 'pId': 11, 'label': 'a00', 'value': 'a00', selectable: false},
-        {'key': 2, 'pId': 0, 'label': 'b', 'value': 'b'},
-        {'key': 20, 'pId': 2, 'label': 'b10', 'value': 'b10'},
-        {'key': 21, 'pId': 2, 'label': 'b1', 'value': 'b1'},
-        {'key': 22, 'pId': 2, 'label': 'b12', 'value': 'b12'},
+        { key: 1, pId: 0, label: 'a', value: 'a' },
+        { key: 11, pId: 1, label: 'a12', value: 'a12' },
+        { key: 111, pId: 11, label: 'a00', value: 'a00', selectable: false },
+        { key: 2, pId: 0, label: 'b', value: 'b' },
+        { key: 20, pId: 2, label: 'b10', value: 'b10' },
+        { key: 21, pId: 2, label: 'b1', value: 'b1' },
+        { key: 22, pId: 2, label: 'b12', value: 'b12' },
       ],
       treeDataSimpleMode: {
         id: 'key',
@@ -28,7 +28,7 @@ const Demo = React.createClass({
   },
   onChange(value) {
     console.log('onChange', arguments, this.state.simpleTreeData);
-    this.setState({value});
+    this.setState({ value });
   },
   onSelect() {
     // use onChange instead
@@ -46,7 +46,7 @@ const Demo = React.createClass({
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
-          dropdownStyle={{height: 200, overflow: 'auto'}}
+          dropdownStyle={{ height: 200, overflow: 'auto' }}
           dropdownPopupAlign={{ overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 2] }}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
@@ -62,7 +62,7 @@ const Demo = React.createClass({
         <h2>use treeDataSimpleMode</h2>
         <TreeSelect
           style={{ width: 300 }}
-          dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
+          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           treeLine maxTagTextLength={10}

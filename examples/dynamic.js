@@ -11,9 +11,9 @@ const Demo = React.createClass({
   getInitialState() {
     return {
       treeData: [
-        {label: 'pNode 01', value: '0-0', key: '0-0'},
-        {label: 'pNode 02', value: '0-1', key: '0-1'},
-        {label: 'pNode 03', value: '0-2', key: '0-2', isLeaf: true},
+        { label: 'pNode 01', value: '0-0', key: '0-0' },
+        { label: 'pNode 02', value: '0-1', key: '0-1' },
+        { label: 'pNode 03', value: '0-2', key: '0-2', isLeaf: true },
       ],
       // value: '0-0',
       value: { value: '0-0-0-value', label: '0-0-0-label' },
@@ -31,14 +31,14 @@ const Demo = React.createClass({
       setTimeout(() => {
         const treeData = [...this.state.treeData];
         getNewTreeData(treeData, treeNode.props.eventKey, generateTreeNodes(treeNode), 2);
-        this.setState({treeData});
+        this.setState({ treeData });
         resolve();
       }, 500);
     });
   },
   render() {
     return (
-      <div style={{padding: '10px 30px'}}>
+      <div style={{ padding: '10px 30px' }}>
         <h2>dynamic render</h2>
         <TreeSelect
           style={{ width: 300 }}

@@ -6,7 +6,7 @@ const Simulate = TestUtils.Simulate;
 const $ = require('jquery');
 import TreeSelect, { TreeNode } from '../';
 import { gData, getNewTreeData, generateTreeNodes } from '../examples/util';
-import {Promise} from 'es6-promise';
+import { Promise } from 'es6-promise';
 
 describe('simple', () => {
   let instance;
@@ -23,23 +23,27 @@ describe('simple', () => {
 
   it('should add css class of root dom node', () => {
     instance = ReactDOM.render(
-      <TreeSelect style={{width: 300}} className="forTest"
-                  dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                  placeholder={<i>请下拉选择</i>}
-                  searchPlaceholder="please search"
-                  treeData={gData}
-                  treeIcon treeLine treeDefaultExpandAll treeCheckable />,
+      <TreeSelect
+        style={{ width: 300 }} className="forTest"
+        dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+        placeholder={<i>请下拉选择</i>}
+        searchPlaceholder="please search"
+        treeData={gData}
+        treeIcon treeLine treeDefaultExpandAll treeCheckable
+      />,
     div);
     expect(ReactDOM.findDOMNode(instance).className.indexOf('forTest') !== -1).to.be(true);
   });
 
   it('render to body works', (done) => {
     instance = ReactDOM.render(
-      <TreeSelect style={{width: 300}}
-                  dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                  allowClear tags maxTagTextLength={10} combobox multiple
-                  treeData={gData}
-                  treeDefaultExpandAll />,
+      <TreeSelect
+        style={{ width: 300 }}
+        dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+        allowClear tags maxTagTextLength={10} combobox multiple
+        treeData={gData}
+        treeDefaultExpandAll
+      />,
       div);
     instance.setState({
       open: true,
@@ -56,17 +60,19 @@ describe('simple', () => {
 
   it('use custom treeNode(not recommend)', () => {
     instance = ReactDOM.render(
-      <TreeSelect style={{width: 300}}
-                  dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                  value={['leaf1']}
-                  treeDefaultExpandAll>
+      <TreeSelect
+        style={{ width: 300 }}
+        dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+        value={['leaf1']}
+        treeDefaultExpandAll
+      >
         <TreeNode value="parent 1" title="parent 1" key="0-1">
           <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
             <TreeNode value="leaf1" title="my leaf" key="random" />
             <TreeNode value="leaf2" title="your leaf" key="random1" disabled />
           </TreeNode>
           <TreeNode value="parent 1-1" title="parent 1-1" key="random2">
-            <TreeNode value="sss" title={<span style={{color: 'red'}}>sss</span>} key="random3" />
+            <TreeNode value="sss" title={<span style={{ color: 'red' }}>sss</span>} key="random3" />
           </TreeNode>
         </TreeNode>
       </TreeSelect>,
@@ -75,33 +81,37 @@ describe('simple', () => {
 
   it('should select the right treeNode', (done) => {
     instance = ReactDOM.render(
-      <TreeSelect style={{width: 300}}
-                  dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                  treeData={gData}
-                  value={['0-0-value', '0-1-value']}
-                   />,
+      <TreeSelect
+        style={{ width: 300 }}
+        dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+        treeData={gData}
+        value={['0-0-value', '0-1-value']}
+      />,
     div);
     instance.setState({
       open: true,
     }, () => {
-      expect($(instance.getPopupComponentRefs().tree).find('.rc-tree-select-tree-node-selected').length).to.be(1);
+      expect($(instance.getPopupComponentRefs().tree)
+        .find('.rc-tree-select-tree-node-selected').length).to.be(1);
       done();
     });
   });
 
   it('should select multiple treeNodes', (done) => {
     instance = ReactDOM.render(
-      <TreeSelect style={{width: 300}}
-                  dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                  treeData={gData}
-                  multiple
-                  value={['0-0-value', '0-1-value']}
-                   />,
+      <TreeSelect
+        style={{ width: 300 }}
+        dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+        treeData={gData}
+        multiple
+        value={['0-0-value', '0-1-value']}
+      />,
     div);
     instance.setState({
       open: true,
     }, () => {
-      expect($(instance.getPopupComponentRefs().tree).find('.rc-tree-select-tree-node-selected').length).to.be(2);
+      expect($(instance.getPopupComponentRefs().tree)
+        .find('.rc-tree-select-tree-node-selected').length).to.be(2);
       done();
     });
   });
@@ -112,10 +122,12 @@ describe('simple', () => {
       done();
     }
     instance = ReactDOM.render(
-      <TreeSelect style={{width: 300}}
-                  dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                  treeData={gData}
-                  onChange={cb} />,
+      <TreeSelect
+        style={{ width: 300 }}
+        dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+        treeData={gData}
+        onChange={cb}
+      />,
     div);
     instance.setState({
       open: true,
@@ -130,10 +142,12 @@ describe('simple', () => {
       done();
     }
     instance = ReactDOM.render(
-      <TreeSelect style={{width: 300}}
-                  dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                  treeData={gData}
-                  onSelect={cb} />,
+      <TreeSelect
+        style={{ width: 300 }}
+        dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+        treeData={gData}
+        onSelect={cb}
+      />,
     div);
     instance.setState({
       open: true,
@@ -148,10 +162,12 @@ describe('simple', () => {
       done();
     }
     instance = ReactDOM.render(
-      <TreeSelect style={{width: 300}}
-                  dropdownStyle={{maxHeight: 200, overflow: 'auto'}}
-                  treeData={gData}
-                  onSearch={cb} />,
+      <TreeSelect
+        style={{ width: 300 }}
+        dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+        treeData={gData}
+        onSearch={cb}
+      />,
     div);
     instance.setState({
       open: true,
@@ -168,9 +184,9 @@ describe('simple', () => {
       getInitialState() {
         return {
           treeData: [
-            {label: 'pNode 01', value: '0-0', key: '0-0'},
-            {label: 'pNode 02', value: '0-1', key: '0-1'},
-            {label: 'pNode 03', value: '0-2', key: '0-2', isLeaf: true},
+            { label: 'pNode 01', value: '0-0', key: '0-0' },
+            { label: 'pNode 02', value: '0-1', key: '0-1' },
+            { label: 'pNode 03', value: '0-2', key: '0-2', isLeaf: true },
           ],
           value: undefined,
         };
@@ -180,7 +196,7 @@ describe('simple', () => {
           setTimeout(() => {
             const treeData = [...this.state.treeData];
             getNewTreeData(treeData, treeNode.props.eventKey, generateTreeNodes(treeNode), 2);
-            this.setState({treeData}, () => {
+            this.setState({ treeData }, () => {
               done();
             });
             resolve();
@@ -191,10 +207,13 @@ describe('simple', () => {
         return this.refs.treeselect;
       },
       render() {
-        return (<TreeSelect style={{width: 300}} ref="treeselect"
-          treeData={this.state.treeData}
-          value={this.state.value}
-          loadData={this.onLoadData} />
+        return (
+          <TreeSelect
+            style={{ width: 300 }} ref="treeselect"
+            treeData={this.state.treeData}
+            value={this.state.value}
+            loadData={this.onLoadData}
+          />
         );
       },
     });

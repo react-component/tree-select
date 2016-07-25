@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import Trigger from 'rc-trigger';
@@ -59,7 +59,7 @@ const SelectTrigger = React.createClass({
     if (this.props.dropdownMatchSelectWidth && this.props.visible) {
       const dropdownDOMNode = this.getPopupDOMNode();
       if (dropdownDOMNode) {
-        dropdownDOMNode.style.width = ReactDOM.findDOMNode(this).offsetWidth + 'px';
+        dropdownDOMNode.style.width = `${ReactDOM.findDOMNode(this).offsetWidth}px`;
       }
     }
   },
@@ -145,7 +145,7 @@ const SelectTrigger = React.createClass({
     const filterNodesPositions = [];
     loopAllChildren(treeNodes, (child, index, pos) => {
       if (processedPoss.indexOf(pos) > -1) {
-        filterNodesPositions.push({node: child, pos});
+        filterNodesPositions.push({ node: child, pos });
       }
     });
 
@@ -167,7 +167,7 @@ const SelectTrigger = React.createClass({
 
     const trProps = {
       multiple,
-      prefixCls: props.prefixCls + '-tree',
+      prefixCls: `${props.prefixCls}-tree`,
       showIcon: props.treeIcon,
       showLine: props.treeLine,
       defaultExpandAll: props.treeDefaultExpandAll,
@@ -236,7 +236,9 @@ const SelectTrigger = React.createClass({
       return toArray(children).map(child => {
         if (child && child.props.children) {
           // null or String has no Prop
-          return <TreeNode {...child.props} key={child.key}>{recursive(child.props.children)}</TreeNode>;
+          return (<TreeNode {...child.props} key={child.key}>
+            {recursive(child.props.children) }
+          </TreeNode>);
         }
         return <TreeNode {...child.props} key={child.key} />;
       });
@@ -270,14 +272,15 @@ const SelectTrigger = React.createClass({
     let notFoundContent;
     if (!treeNodes.length) {
       if (props.notFoundContent) {
-        notFoundContent = <span className={`${props.prefixCls}-not-found`}>{props.notFoundContent}</span>;
+        notFoundContent = (<span className={`${props.prefixCls}-not-found`}>
+          {props.notFoundContent}</span>);
       } else if (!search) {
         visible = false;
       }
     }
     const popupElement = (<div>
       {search}
-      {notFoundContent ? notFoundContent : this.renderTree(keys, halfCheckedKeys, treeNodes, multiple)}
+      {notFoundContent || this.renderTree(keys, halfCheckedKeys, treeNodes, multiple)}
     </div>);
 
     return (<Trigger

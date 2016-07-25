@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classnames from 'classnames';
@@ -21,7 +21,8 @@ function noop() {
 }
 
 function filterFn(input, child) {
-  return String(getPropValue(child, labelCompatible(this.props.treeNodeFilterProp))).indexOf(input) > -1;
+  return String(getPropValue(child, labelCompatible(this.props.treeNodeFilterProp)))
+    .indexOf(input) > -1;
 }
 
 function saveRef(name, component) {
@@ -55,11 +56,14 @@ const SHOW_CHILD = 'SHOW_CHILD';
 const Select = React.createClass({
   propTypes: {
     children: PropTypes.any,
+    className: PropTypes.string,
+    prefixCls: PropTypes.string,
     multiple: PropTypes.bool,
     filterTreeNode: PropTypes.any,
     showSearch: PropTypes.bool,
     disabled: PropTypes.bool,
     showArrow: PropTypes.bool,
+    allowClear: PropTypes.bool,
     tags: PropTypes.bool,
     transitionName: PropTypes.string,
     animation: PropTypes.string,
@@ -593,7 +597,9 @@ const Select = React.createClass({
       checkedValues = mapLabVal(checkedTreeNodes);
     } else if (props.showCheckedStrategy === SHOW_PARENT) {
       const posArr = filterParentPosition(checkedTreeNodes.map(itemObj => itemObj.pos));
-      checkedValues = mapLabVal(checkedTreeNodes.filter(itemObj => posArr.indexOf(itemObj.pos) !== -1));
+      checkedValues = mapLabVal(checkedTreeNodes.filter(
+        itemObj => posArr.indexOf(itemObj.pos) !== -1
+      ));
     } else {
       checkedValues = mapLabVal(checkedTreeNodes.filter(itemObj => !itemObj.node.props.children));
     }
@@ -644,7 +650,7 @@ const Select = React.createClass({
     });
     this.checkedTreeNodes = this._checkedNodes = newCkTns;
     const nv = this.state.value.filter(val => newVals.indexOf(val.value) !== -1);
-    this.fireChange(nv, {triggerValue: selectedValue, clear: true});
+    this.fireChange(nv, { triggerValue: selectedValue, clear: true });
   },
 
   setOpenState(open, needFocus) {
@@ -656,7 +662,7 @@ const Select = React.createClass({
     // }
     this.setState({
       open,
-    }, ()=> {
+    }, () => {
       if (needFocus || open) {
         if (open || isMultipleOrTagsOrCombobox(props)) {
           const input = this.getInputDOMNode();
@@ -742,7 +748,7 @@ const Select = React.createClass({
         });
       }
     }
-    this.fireChange(value, {triggerValue: selectedVal, clear: true});
+    this.fireChange(value, { triggerValue: selectedVal, clear: true });
   },
 
   openIfHasChildren() {
@@ -762,7 +768,7 @@ const Select = React.createClass({
     const vals = value.map(i => i.value);
     const sv = this.state.value.map(i => i.value);
     if (vals.length !== sv.length || !vals.every((val, index) => sv[index] === val)) {
-      const ex = {preValue: [...this.state.value]};
+      const ex = { preValue: [...this.state.value] };
       if (extraInfo) {
         assign(ex, extraInfo);
       }
@@ -916,7 +922,7 @@ const Select = React.createClass({
     const props = this.props;
     const multiple = isMultipleOrTags(props);
     const state = this.state;
-    const {className, disabled, allowClear, prefixCls} = props;
+    const { className, disabled, allowClear, prefixCls } = props;
     const ctrlNode = this.renderTopControlNode();
     let extraSelectionProps = {};
     if (!isMultipleOrTagsOrCombobox(props)) {
