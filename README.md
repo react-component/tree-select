@@ -85,6 +85,7 @@ online example: http://react-component.github.io/tree-select/
 |treeData | treeNodes data Array, if set it then you need not to construct children TreeNode. (value should be unique across the whole array) | array<{value,label,children, [disabled,selectable]}> | [] |
 |treeDataSimpleMode | enable simple mode of treeData.(treeData should be like this: [{"id":1, "pId":0, "label":"test1"},...], `pId` is parent node's id) | bool/object{id:'id', pId:'pId', rootPId:null} | false |
 |loadData | load data asynchronously | function(node) | - |
+|getPopupContainer | container which popup select menu rendered into | function(trigger:Node):Node | function(){return document.body;} |
 
 ### TreeNode props
 > note: you'd better to use `treeData` instead of using TreeNode.

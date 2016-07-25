@@ -969,6 +969,7 @@ const Select = React.createClass({
         inputElement={this.getInputElement()}
         value={state.value}
         onDropdownVisibleChange={this.onDropdownVisibleChange}
+        getPopupContainer={props.getPopupContainer}
         onSelect={this.onSelect}
         ref="trigger"
       >

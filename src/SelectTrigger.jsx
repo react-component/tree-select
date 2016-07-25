@@ -288,12 +288,13 @@ const SelectTrigger = React.createClass({
       ref="trigger"
       popupPlacement="bottomLeft"
       builtinPlacements={BUILT_IN_PLACEMENTS}
-      popupAlign={this.props.dropdownPopupAlign}
+      popupAlign={props.dropdownPopupAlign}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={this.getDropdownTransitionName()}
       onPopupVisibleChange={props.onDropdownVisibleChange}
       popup={popupElement}
       popupVisible={visible}
+      getPopupContainer={props.getPopupContainer}
       popupClassName={classnames(popupClassName)}
       popupStyle={props.dropdownStyle}
     >{this.props.children}</Trigger>);

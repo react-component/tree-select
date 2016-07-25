@@ -135,9 +135,11 @@ const Demo = React.createClass({
           maskAnimation="fade"
           onClose={this.onClose}
           style={{ width: 600, height: 400, overflow: 'auto' }}
+          id="area"
         >
           <div style={{ height: 600, paddingTop: 100 }}>
             <TreeSelect
+              getPopupContainer={(triggerNode) => triggerNode.parentNode}
               style={{ width: 300 }}
               transitionName="rc-tree-select-dropdown-slide-up"
               choiceTransitionName="rc-tree-select-selection__choice-zoom"
