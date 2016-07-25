@@ -134,25 +134,27 @@ const Demo = React.createClass({
           animation="zoom"
           maskAnimation="fade"
           onClose={this.onClose}
-          style={{ width: 600, height: 400 }}
+          style={{ width: 600, height: 400, overflow: 'auto' }}
         >
-          <TreeSelect
-            style={{ width: 300 }}
-            transitionName="rc-tree-select-dropdown-slide-up"
-            choiceTransitionName="rc-tree-select-selection__choice-zoom"
-            dropdownStyle={{ maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
-            placeholder={<i>请下拉选择</i>}
-            searchPlaceholder="please search"
-            showSearch allowClear treeLine
-            inputValue={this.state.inputValue}
-            value={this.state.value}
-            treeData={gData}
-            treeNodeFilterProp="label"
-            filterTreeNode={false}
-            onSearch={this.onSearch}
-            onChange={this.onChange}
-            onSelect={this.onSelect}
-          />
+          <div style={{ height: 600, paddingTop: 100 }}>
+            <TreeSelect
+              style={{ width: 300 }}
+              transitionName="rc-tree-select-dropdown-slide-up"
+              choiceTransitionName="rc-tree-select-selection__choice-zoom"
+              dropdownStyle={{ maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
+              placeholder={<i>请下拉选择</i>}
+              searchPlaceholder="please search"
+              showSearch allowClear treeLine
+              inputValue={this.state.inputValue}
+              value={this.state.value}
+              treeData={gData}
+              treeNodeFilterProp="label"
+              filterTreeNode={false}
+              onSearch={this.onSearch}
+              onChange={this.onChange}
+              onSelect={this.onSelect}
+            />
+          </div>
         </Dialog> : null}
         <h2>single select</h2>
         <TreeSelect
