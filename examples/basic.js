@@ -11,13 +11,7 @@ webpackJsonp([0],{
 /***/ 1:
 /***/ function(module, exports, __webpack_require__) {
 
-	/* eslint react/no-multi-comp:0, no-console:0 */
-	
 	'use strict';
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 	
 	__webpack_require__(2);
 	
@@ -27,21 +21,25 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(161);
+	var _reactDom = __webpack_require__(36);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	__webpack_require__(162);
+	__webpack_require__(175);
 	
-	var _rcDialog = __webpack_require__(163);
+	var _rcDialog = __webpack_require__(176);
 	
 	var _rcDialog2 = _interopRequireDefault(_rcDialog);
 	
-	var _rcTreeSelect = __webpack_require__(177);
+	var _rcTreeSelect = __webpack_require__(191);
 	
 	var _rcTreeSelect2 = _interopRequireDefault(_rcTreeSelect);
 	
 	var _util = __webpack_require__(225);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } /* eslint react/no-multi-comp:0, no-console:0 */
 	
 	function isLeaf(value) {
 	  if (!value) {
@@ -86,9 +84,8 @@ webpackJsonp([0],{
 	  return sel;
 	}
 	
-	var Demo = _react2['default'].createClass({
+	var Demo = _react2.default.createClass({
 	  displayName: 'Demo',
-	
 	  getInitialState: function getInitialState() {
 	    return {
 	      visible: false,
@@ -97,7 +94,7 @@ webpackJsonp([0],{
 	      // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
 	      lv: { value: '0-0-0-value', label: 'spe label' },
 	      multipleValue: [],
-	      simpleTreeData: [{ 'key': 1, 'pId': 0, 'label': 'test1' }, { 'key': '1-1', 'pId': 0, 'label': 'test1' }, { 'key': 11, 'pId': 1, 'label': 'test11' }, { 'key': 12, 'pId': 1, 'label': 'test12' }, { 'key': 111, 'pId': 11, 'label': 'test111' }],
+	      simpleTreeData: [{ key: 1, pId: 0, label: 'test1' }, { key: '1-1', pId: 0, label: 'test1' }, { key: 11, pId: 1, label: 'test11' }, { key: 12, pId: 1, label: 'test12' }, { key: 111, pId: 11, label: 'test111' }],
 	      treeDataSimpleMode: {
 	        id: 'key',
 	        rootPId: 0
@@ -157,21 +154,21 @@ webpackJsonp([0],{
 	    return String(child.props.title).indexOf(input) === 0;
 	  },
 	  render: function render() {
-	    return _react2['default'].createElement(
+	    return _react2.default.createElement(
 	      'div',
 	      { style: { margin: 20 } },
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'h2',
 	        null,
 	        'tree-select in dialog'
 	      ),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'button',
 	        { className: 'btn btn-primary', onClick: this.onClick },
 	        'show dialog'
 	      ),
-	      this.state.visible ? _react2['default'].createElement(
-	        _rcDialog2['default'],
+	      this.state.visible ? _react2.default.createElement(
+	        _rcDialog2.default,
 	        {
 	          visible: this.state.visible,
 	          animation: 'zoom',
@@ -179,12 +176,12 @@ webpackJsonp([0],{
 	          onClose: this.onClose,
 	          style: { width: 600, height: 400 }
 	        },
-	        _react2['default'].createElement(_rcTreeSelect2['default'], {
+	        _react2.default.createElement(_rcTreeSelect2.default, {
 	          style: { width: 300 },
 	          transitionName: 'rc-tree-select-dropdown-slide-up',
 	          choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
 	          dropdownStyle: { maxHeight: 200, overflow: 'auto', zIndex: 1500 },
-	          placeholder: _react2['default'].createElement(
+	          placeholder: _react2.default.createElement(
 	            'i',
 	            null,
 	            '请下拉选择'
@@ -201,17 +198,17 @@ webpackJsonp([0],{
 	          onSelect: this.onSelect
 	        })
 	      ) : null,
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'h2',
 	        null,
 	        'single select'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], {
+	      _react2.default.createElement(_rcTreeSelect2.default, {
 	        style: { width: 300 },
 	        transitionName: 'rc-tree-select-dropdown-slide-up',
 	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-	        placeholder: _react2['default'].createElement(
+	        placeholder: _react2.default.createElement(
 	          'i',
 	          null,
 	          '请下拉选择'
@@ -227,17 +224,17 @@ webpackJsonp([0],{
 	        onChange: this.onChange,
 	        onSelect: this.onSelect
 	      }),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'h2',
 	        null,
 	        'single select (just select children)'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], {
+	      _react2.default.createElement(_rcTreeSelect2.default, {
 	        style: { width: 300 },
 	        transitionName: 'rc-tree-select-dropdown-slide-up',
 	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-	        placeholder: _react2['default'].createElement(
+	        placeholder: _react2.default.createElement(
 	          'i',
 	          null,
 	          '请下拉选择'
@@ -251,17 +248,17 @@ webpackJsonp([0],{
 	        filterTreeNode: false,
 	        onChange: this.onChangeChildren
 	      }),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'h2',
 	        null,
 	        'multiple select'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], {
+	      _react2.default.createElement(_rcTreeSelect2.default, {
 	        style: { width: 300 },
 	        transitionName: 'rc-tree-select-dropdown-slide-up',
 	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-	        placeholder: _react2['default'].createElement(
+	        placeholder: _react2.default.createElement(
 	          'i',
 	          null,
 	          '请下拉选择'
@@ -275,19 +272,19 @@ webpackJsonp([0],{
 	        onChange: this.onMultipleChange,
 	        onSelect: this.onSelect
 	      }),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'h2',
 	        null,
 	        'check select'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], {
+	      _react2.default.createElement(_rcTreeSelect2.default, {
 	        className: 'check-select',
 	        transitionName: 'rc-tree-select-dropdown-slide-up',
 	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
 	        dropdownStyle: { height: 200, overflow: 'auto' },
 	        dropdownPopupAlign: { overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 2] },
 	        onDropdownVisibleChange: this.onDropdownVisibleChange,
-	        placeholder: _react2['default'].createElement(
+	        placeholder: _react2.default.createElement(
 	          'i',
 	          null,
 	          '请下拉选择'
@@ -301,17 +298,17 @@ webpackJsonp([0],{
 	        onChange: this.onChange,
 	        onSelect: this.onSelect
 	      }),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'h2',
 	        null,
 	        'labelInValue & show path'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], {
+	      _react2.default.createElement(_rcTreeSelect2.default, {
 	        style: { width: 500 },
 	        transitionName: 'rc-tree-select-dropdown-slide-up',
 	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-	        placeholder: _react2['default'].createElement(
+	        placeholder: _react2.default.createElement(
 	          'i',
 	          null,
 	          '请下拉选择'
@@ -324,15 +321,15 @@ webpackJsonp([0],{
 	        filterTreeNode: false,
 	        onChange: this.onChangeLV
 	      }),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'h2',
 	        null,
 	        'use treeDataSimpleMode'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], {
+	      _react2.default.createElement(_rcTreeSelect2.default, {
 	        style: { width: 300 },
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-	        placeholder: _react2['default'].createElement(
+	        placeholder: _react2.default.createElement(
 	          'i',
 	          null,
 	          '请下拉选择'
@@ -348,13 +345,13 @@ webpackJsonp([0],{
 	        onChange: this.onChange,
 	        onSelect: this.onSelect
 	      }),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'h2',
 	        null,
 	        'use TreeNode Component (not recommend)'
 	      ),
-	      _react2['default'].createElement(
-	        _rcTreeSelect2['default'],
+	      _react2.default.createElement(
+	        _rcTreeSelect2.default,
 	        {
 	          style: { width: 200 },
 	          dropdownStyle: { maxHeight: 200, overflow: 'auto' },
@@ -364,71 +361,65 @@ webpackJsonp([0],{
 	          filterTreeNode: this.filterTreeNode,
 	          onChange: this.onChange
 	        },
-	        _react2['default'].createElement(
+	        _react2.default.createElement(
 	          _rcTreeSelect.TreeNode,
 	          { value: 'parent 1', title: 'parent 1', key: '0-1' },
-	          _react2['default'].createElement(
+	          _react2.default.createElement(
 	            _rcTreeSelect.TreeNode,
 	            { value: 'parent 1-0', title: 'parent 1-0', key: '0-1-0' },
-	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf1', title: 'my leaf', key: 'random' }),
-	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'leaf2', title: 'your leaf', key: 'random1', disabled: true })
+	            _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'leaf1', title: 'my leaf', key: 'random' }),
+	            _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'leaf2', title: 'your leaf', key: 'random1', disabled: true })
 	          ),
-	          _react2['default'].createElement(
+	          _react2.default.createElement(
 	            _rcTreeSelect.TreeNode,
 	            { value: 'parent 1-1', title: 'parent 1-1', key: '0-1-1' },
-	            _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'sss', title: _react2['default'].createElement(
+	            _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'sss',
+	              title: _react2.default.createElement(
 	                'span',
 	                { style: { color: 'red' } },
 	                'sss'
-	              ), key: 'random3' }),
-	            _react2['default'].createElement(
+	              ), key: 'random3'
+	            }),
+	            _react2.default.createElement(
 	              _rcTreeSelect.TreeNode,
 	              { value: 'same value', title: 'same txtle', key: '0-1-1-1' },
-	              _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same titlexd', key: '0-1-1-1-0' })
+	              _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same titlexd', key: '0-1-1-1-0' })
 	            )
 	          )
 	        ),
-	        _react2['default'].createElement(
+	        _react2.default.createElement(
 	          _rcTreeSelect.TreeNode,
 	          { value: 'same value', title: 'same title', key: '0-2' },
-	          _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: '2same value', title: '2same title', key: '0-2-0' })
+	          _react2.default.createElement(_rcTreeSelect.TreeNode, { value: '2same value', title: '2same title', key: '0-2-0' })
 	        ),
-	        _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-3' }),
-	        _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-4' }),
-	        _react2['default'].createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-5' })
+	        _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-3' }),
+	        _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-4' }),
+	        _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-5' })
 	      )
 	    );
 	  }
 	});
 	
-	_reactDom2['default'].render(_react2['default'].createElement(Demo, null), document.getElementById('__react-content'));
+	_reactDom2.default.render(_react2.default.createElement(Demo, null), document.getElementById('__react-content'));
 
 /***/ },
 
 /***/ 3:
-/***/ function(module, exports) {
+2,
 
-	// removed by extract-text-webpack-plugin
+/***/ 175:
+2,
 
-/***/ },
-
-/***/ 162:
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-
-/***/ 163:
+/***/ 176:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(164);
+	module.exports = __webpack_require__(177);
 
 /***/ },
 
-/***/ 164:
+/***/ 177:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -439,181 +430,75 @@ webpackJsonp([0],{
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
 	var _react = __webpack_require__(4);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(161);
-	
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-	
-	var _Dialog = __webpack_require__(165);
+	var _Dialog = __webpack_require__(178);
 	
 	var _Dialog2 = _interopRequireDefault(_Dialog);
 	
+	var _getContainerRenderMixin = __webpack_require__(190);
+	
+	var _getContainerRenderMixin2 = _interopRequireDefault(_getContainerRenderMixin);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var DialogWrap = _react2["default"].createClass({
+	  displayName: 'DialogWrap',
 	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	  propTypes: {
+	    visible: _react.PropTypes.bool
+	  },
+	  mixins: [(0, _getContainerRenderMixin2["default"])({
+	    isVisible: function isVisible(instance) {
+	      return instance.props.visible;
+	    },
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	function noop() {}
-	
-	function copy(obj, fields) {
-	  var ret = {};
-	  fields.forEach(function (f) {
-	    if (obj[f] !== undefined) {
-	      ret[f] = obj[f];
+	    autoDestroy: false,
+	    getComponent: function getComponent(instance, extra) {
+	      return _react2["default"].createElement(_Dialog2["default"], _extends({}, instance.props, extra, {
+	        key: 'dialog'
+	      }));
 	    }
-	  });
-	  return ret;
-	}
+	  })],
 	
-	var DialogWrap = function (_React$Component) {
-	  _inherits(DialogWrap, _React$Component);
-	
-	  function DialogWrap(props) {
-	    _classCallCheck(this, DialogWrap);
-	
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(DialogWrap).call(this, props));
-	
-	    _this.state = {
-	      visible: props.visible
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      visible: false
 	    };
-	    ['onClose', 'cleanDialogContainer'].forEach(function (m) {
-	      _this[m] = _this[m].bind(_this);
-	    });
-	    return _this;
+	  },
+	  shouldComponentUpdate: function shouldComponentUpdate(_ref) {
+	    var visible = _ref.visible;
+	
+	    return !!(this.props.visible || visible);
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    if (this.props.visible) {
+	      this.renderComponent({
+	        onAfterClose: this.removeContainer,
+	        onClose: function onClose() {},
+	
+	        visible: false
+	      });
+	    } else {
+	      this.removeContainer();
+	    }
+	  },
+	  getElement: function getElement(part) {
+	    return this._component.getElement(part);
+	  },
+	  render: function render() {
+	    return null;
 	  }
-	
-	  _createClass(DialogWrap, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      this.componentDidUpdate();
-	    }
-	  }, {
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(props) {
-	      if ('visible' in props) {
-	        this.setState({
-	          visible: props.visible
-	        });
-	      }
-	    }
-	  }, {
-	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate(nextProps, nextState) {
-	      return !!(this.state.visible || nextState.visible);
-	    }
-	  }, {
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {
-	      if (this.dialogRendered) {
-	        this.dialogInstance = _reactDom2["default"].unstable_renderSubtreeIntoContainer(this, this.getDialogElement(), this.getDialogContainer());
-	      }
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      if (this.dialogContainer) {
-	        if (this.state.visible) {
-	          _reactDom2["default"].unstable_renderSubtreeIntoContainer(this, this.getDialogElement({
-	            onAfterClose: this.cleanDialogContainer,
-	            onClose: noop,
-	            visible: false
-	          }), this.dialogContainer);
-	        } else {
-	          this.cleanDialogContainer();
-	        }
-	      }
-	    }
-	  }, {
-	    key: 'onClose',
-	    value: function onClose(e) {
-	      this.props.onClose(e);
-	    }
-	  }, {
-	    key: 'getDialogContainer',
-	    value: function getDialogContainer() {
-	      if (!this.dialogContainer) {
-	        this.dialogContainer = document.createElement('div');
-	        document.body.appendChild(this.dialogContainer);
-	      }
-	      return this.dialogContainer;
-	    }
-	  }, {
-	    key: 'getDialogElement',
-	    value: function getDialogElement(extra) {
-	      var props = this.props;
-	      var dialogProps = copy(props, ['className', 'closable', 'maskClosable', 'title', 'footer', 'mask', 'keyboard', 'animation', 'transitionName', 'maskAnimation', 'maskTransitionName', 'mousePosition', 'prefixCls', 'style', 'width', 'wrapStyle', 'height', 'zIndex', 'bodyStyle', 'wrapClassName']);
-	      dialogProps = _extends({}, dialogProps, {
-	        onClose: this.onClose,
-	        visible: this.state.visible
-	      }, extra);
-	      return _react2["default"].createElement(
-	        _Dialog2["default"],
-	        _extends({}, dialogProps, { key: 'dialog' }),
-	        props.children
-	      );
-	    }
-	  }, {
-	    key: 'getElement',
-	    value: function getElement(part) {
-	      return this.dialogInstance.getElement(part);
-	    }
-	  }, {
-	    key: 'cleanDialogContainer',
-	    value: function cleanDialogContainer() {
-	      if (this.dialogContainer) {
-	        _reactDom2["default"].unmountComponentAtNode(this.dialogContainer);
-	        document.body.removeChild(this.dialogContainer);
-	        this.dialogContainer = null;
-	      }
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      this.dialogRendered = this.dialogRendered || this.state.visible;
-	      return null;
-	    }
-	  }]);
-	
-	  return DialogWrap;
-	}(_react2["default"].Component);
-	
-	DialogWrap.defaultProps = {
-	  className: '',
-	  mask: true,
-	  keyboard: true,
-	  closable: true,
-	  maskClosable: true,
-	  prefixCls: 'rc-dialog',
-	  onClose: noop
-	};
-	
-	DialogWrap.propTypes = {
-	  className: _react.PropTypes.string,
-	  keyboard: _react.PropTypes.bool,
-	  wrapStyle: _react.PropTypes.object,
-	  style: _react.PropTypes.object,
-	  mask: _react.PropTypes.bool,
-	  closable: _react.PropTypes.bool,
-	  maskClosable: _react.PropTypes.bool,
-	  prefixCls: _react.PropTypes.string,
-	  visible: _react.PropTypes.bool,
-	  onClose: _react.PropTypes.func
-	};
+	});
 	
 	exports["default"] = DialogWrap;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 165:
+/***/ 178:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -628,19 +513,19 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(161);
+	var _reactDom = __webpack_require__(36);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _KeyCode = __webpack_require__(166);
+	var _KeyCode = __webpack_require__(179);
 	
 	var _KeyCode2 = _interopRequireDefault(_KeyCode);
 	
-	var _rcAnimate = __webpack_require__(167);
+	var _rcAnimate = __webpack_require__(180);
 	
 	var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 	
-	var _LazyRenderBox = __webpack_require__(176);
+	var _LazyRenderBox = __webpack_require__(189);
 	
 	var _LazyRenderBox2 = _interopRequireDefault(_LazyRenderBox);
 	
@@ -700,6 +585,11 @@ webpackJsonp([0],{
 	  displayName: 'Dialog',
 	
 	  propTypes: {
+	    className: _react.PropTypes.string,
+	    keyboard: _react.PropTypes.bool,
+	    style: _react.PropTypes.object,
+	    mask: _react.PropTypes.bool,
+	    children: _react.PropTypes.any,
 	    onAfterClose: _react.PropTypes.func,
 	    onClose: _react.PropTypes.func,
 	    closable: _react.PropTypes.bool,
@@ -714,6 +604,13 @@ webpackJsonp([0],{
 	  getDefaultProps: function getDefaultProps() {
 	    return {
 	      onAfterClose: noop,
+	      className: '',
+	      mask: true,
+	      visible: false,
+	      keyboard: true,
+	      closable: true,
+	      maskClosable: true,
+	      prefixCls: 'rc-dialog',
 	      onClose: noop
 	    };
 	  },
@@ -1043,7 +940,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 176:
+/***/ 189:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1076,7 +973,11 @@ webpackJsonp([0],{
 	    if (this.props.hiddenClassName && !this.props.visible) {
 	      className += ' ' + this.props.hiddenClassName;
 	    }
-	    return _react2["default"].createElement('div', _extends({}, this.props, { className: className }));
+	    var props = _extends({}, this.props);
+	    delete props.hiddenClassName;
+	    delete props.visible;
+	    props.className = className;
+	    return _react2["default"].createElement('div', props);
 	  }
 	});
 	

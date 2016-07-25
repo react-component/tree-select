@@ -7,7 +7,7 @@
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
+  <link href="https://a.alipayobjects.com/normalize.css/3.0.1/normalize.css" rel="stylesheet"/>
   <style>
     .highlight pre {
       padding: .8em 1em;
@@ -251,26 +251,26 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <!--[if lt IE 9]>
   <script src="https://a.alipayobjects.com/??es5-shim/4.0.5/es5-shim.js,es5-shim/4.0.5/es5-sham.js,html5shiv/3.7.2/src/html5shiv.js"></script>
   <![endif]-->
+  
   <link rel="stylesheet" href="common.css" />
 </head>
 
 <body>
-<div class="container">
-  <div class="header">
-    <h1>rc-tree-select@1.7.9</h1>
+  <div class="container">
+    <div class="header">
+      <h1>rc-tree-select@1.7.9</h1>
 
-    <p>tree-select ui component for react</p>
-  </div>
-  <div class="example" id="__react-content"></div>
-  <script src="common.js?nowrap"></script>
-  <script src="filter.js?nowrap"></script>
-  <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
+      <p>tree-select ui component for react</p>
+    </div>
+    <div class="example" id="__react-content"></div>
 
-import <span class="hljs-string">'rc-tree-select/assets/index.css'</span>;
-import React from <span class="hljs-string">'react'</span>;
-import ReactDOM from <span class="hljs-string">'react-dom'</span>;
-import TreeSelect, { SHOW_PARENT } from <span class="hljs-string">'rc-tree-select'</span>;
-import { gData } from <span class="hljs-string">'./util'</span>;
+    <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-tree-select/assets/index.css'</span>;
+<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+<span class="hljs-keyword">import</span> TreeSelect, { SHOW_PARENT } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-tree-select'</span>;
+<span class="hljs-keyword">import</span> { gData } <span class="hljs-keyword">from</span> <span class="hljs-string">'./util'</span>;
 
 <span class="hljs-keyword">const</span> Demo = React.createClass({
   getInitialState() {
@@ -278,13 +278,13 @@ import { gData } from <span class="hljs-string">'./util'</span>;
       value: <span class="hljs-string">'11'</span>,
       <span class="hljs-comment">// value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],</span>
       simpleTreeData: [
-        {<span class="hljs-string">'key'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'pId'</span>: <span class="hljs-number">0</span>, <span class="hljs-string">'label'</span>: <span class="hljs-string">'a'</span>, <span class="hljs-string">'value'</span>: <span class="hljs-string">'a'</span>},
-        {<span class="hljs-string">'key'</span>: <span class="hljs-number">11</span>, <span class="hljs-string">'pId'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'label'</span>: <span class="hljs-string">'a12'</span>, <span class="hljs-string">'value'</span>: <span class="hljs-string">'a12'</span>},
-        {<span class="hljs-string">'key'</span>: <span class="hljs-number">111</span>, <span class="hljs-string">'pId'</span>: <span class="hljs-number">11</span>, <span class="hljs-string">'label'</span>: <span class="hljs-string">'a00'</span>, <span class="hljs-string">'value'</span>: <span class="hljs-string">'a00'</span>, selectable: <span class="hljs-literal">false</span>},
-        {<span class="hljs-string">'key'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'pId'</span>: <span class="hljs-number">0</span>, <span class="hljs-string">'label'</span>: <span class="hljs-string">'b'</span>, <span class="hljs-string">'value'</span>: <span class="hljs-string">'b'</span>},
-        {<span class="hljs-string">'key'</span>: <span class="hljs-number">20</span>, <span class="hljs-string">'pId'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'label'</span>: <span class="hljs-string">'b10'</span>, <span class="hljs-string">'value'</span>: <span class="hljs-string">'b10'</span>},
-        {<span class="hljs-string">'key'</span>: <span class="hljs-number">21</span>, <span class="hljs-string">'pId'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'label'</span>: <span class="hljs-string">'b1'</span>, <span class="hljs-string">'value'</span>: <span class="hljs-string">'b1'</span>},
-        {<span class="hljs-string">'key'</span>: <span class="hljs-number">22</span>, <span class="hljs-string">'pId'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'label'</span>: <span class="hljs-string">'b12'</span>, <span class="hljs-string">'value'</span>: <span class="hljs-string">'b12'</span>},
+        { key: <span class="hljs-number">1</span>, pId: <span class="hljs-number">0</span>, label: <span class="hljs-string">'a'</span>, value: <span class="hljs-string">'a'</span> },
+        { key: <span class="hljs-number">11</span>, pId: <span class="hljs-number">1</span>, label: <span class="hljs-string">'a12'</span>, value: <span class="hljs-string">'a12'</span> },
+        { key: <span class="hljs-number">111</span>, pId: <span class="hljs-number">11</span>, label: <span class="hljs-string">'a00'</span>, value: <span class="hljs-string">'a00'</span>, selectable: <span class="hljs-literal">false</span> },
+        { key: <span class="hljs-number">2</span>, pId: <span class="hljs-number">0</span>, label: <span class="hljs-string">'b'</span>, value: <span class="hljs-string">'b'</span> },
+        { key: <span class="hljs-number">20</span>, pId: <span class="hljs-number">2</span>, label: <span class="hljs-string">'b10'</span>, value: <span class="hljs-string">'b10'</span> },
+        { key: <span class="hljs-number">21</span>, pId: <span class="hljs-number">2</span>, label: <span class="hljs-string">'b1'</span>, value: <span class="hljs-string">'b1'</span> },
+        { key: <span class="hljs-number">22</span>, pId: <span class="hljs-number">2</span>, label: <span class="hljs-string">'b12'</span>, value: <span class="hljs-string">'b12'</span> },
       ],
       treeDataSimpleMode: {
         id: <span class="hljs-string">'key'</span>,
@@ -294,7 +294,7 @@ import { gData } from <span class="hljs-string">'./util'</span>;
   },
   onChange(value) {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, <span class="hljs-built_in">arguments</span>, <span class="hljs-keyword">this</span>.state.simpleTreeData);
-    <span class="hljs-keyword">this</span>.setState({value});
+    <span class="hljs-keyword">this</span>.setState({ value });
   },
   onSelect() {
     <span class="hljs-comment">// use onChange instead</span>
@@ -312,7 +312,7 @@ import { gData } from <span class="hljs-string">'./util'</span>;
           <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}
           <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
           <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
-          <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{height:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
+          <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">height:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>' }}
           <span class="hljs-attribute">dropdownPopupAlign</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">overflow:</span> { <span class="hljs-attribute">adjustY:</span> <span class="hljs-attribute">0</span>, <span class="hljs-attribute">adjustX:</span> <span class="hljs-attribute">0</span> }, <span class="hljs-attribute">offset:</span> [<span class="hljs-attribute">0</span>, <span class="hljs-attribute">2</span>] }}
           <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
           searchPlaceholder="please search"
@@ -328,7 +328,7 @@ import { gData } from <span class="hljs-string">'./util'</span>;
         <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>use treeDataSimpleMode<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
           <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}
-          <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
+          <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>' }}
           <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
           searchPlaceholder="please search"
           treeLine maxTagTextLength={10}
@@ -343,19 +343,22 @@ import { gData } from <span class="hljs-string">'./util'</span>;
         /&gt;
         <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.onDataChange}</span>&gt;</span>change data<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-    );
+    )</span>;
   },
 });
 
-ReactDOM.render(<span class="hljs-tag">&lt;<span class="hljs-title">Demo</span> /&gt;</span>, document.getElementById('__react-content'));
+ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Demo</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>
-</div>
-<a href="https://github.com/react-component/tree-select">
-  <img style="position: absolute; top: 0; right: 0; border: 0;"
-       src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
-       alt="Fork me on GitHub"
-       data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
-</a>
+  </div>
+  <a href="https://github.com/react-component/tree-select">
+    <img style="position: absolute; top: 0; right: 0; border: 0;"
+         src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
+         alt="Fork me on GitHub"
+         data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+  </a>
+  
+  <script src="common.js?nowrap"></script>
+  <script src="filter.js?nowrap"></script>
 </body>
 
 </html>

@@ -11,13 +11,7 @@ webpackJsonp([3],{
 /***/ 229:
 /***/ function(module, exports, __webpack_require__) {
 
-	/* eslint react/no-multi-comp:0, no-console:0 */
-	
 	'use strict';
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 	
 	__webpack_require__(2);
 	
@@ -25,24 +19,27 @@ webpackJsonp([3],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(161);
+	var _reactDom = __webpack_require__(36);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _rcTreeSelect = __webpack_require__(177);
+	var _rcTreeSelect = __webpack_require__(191);
 	
 	var _rcTreeSelect2 = _interopRequireDefault(_rcTreeSelect);
 	
 	var _util = __webpack_require__(225);
 	
-	var Demo = _react2['default'].createClass({
-	  displayName: 'Demo',
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } /* eslint react/no-multi-comp:0, no-console:0 */
+	
+	var Demo = _react2.default.createClass({
+	  displayName: 'Demo',
 	  getInitialState: function getInitialState() {
 	    return {
 	      value: '11',
 	      // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
-	      simpleTreeData: [{ 'key': 1, 'pId': 0, 'label': 'a', 'value': 'a' }, { 'key': 11, 'pId': 1, 'label': 'a12', 'value': 'a12' }, { 'key': 111, 'pId': 11, 'label': 'a00', 'value': 'a00', selectable: false }, { 'key': 2, 'pId': 0, 'label': 'b', 'value': 'b' }, { 'key': 20, 'pId': 2, 'label': 'b10', 'value': 'b10' }, { 'key': 21, 'pId': 2, 'label': 'b1', 'value': 'b1' }, { 'key': 22, 'pId': 2, 'label': 'b12', 'value': 'b12' }],
+	      simpleTreeData: [{ key: 1, pId: 0, label: 'a', value: 'a' }, { key: 11, pId: 1, label: 'a12', value: 'a12' }, { key: 111, pId: 11, label: 'a00', value: 'a00', selectable: false }, { key: 2, pId: 0, label: 'b', value: 'b' }, { key: 20, pId: 2, label: 'b10', value: 'b10' }, { key: 21, pId: 2, label: 'b1', value: 'b1' }, { key: 22, pId: 2, label: 'b12', value: 'b12' }],
 	      treeDataSimpleMode: {
 	        id: 'key',
 	        rootPId: 0
@@ -62,21 +59,21 @@ webpackJsonp([3],{
 	    this.setState({ simpleTreeData: data });
 	  },
 	  render: function render() {
-	    return _react2['default'].createElement(
+	    return _react2.default.createElement(
 	      'div',
 	      { style: { margin: 20 } },
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'h2',
 	        null,
 	        'check select'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], {
+	      _react2.default.createElement(_rcTreeSelect2.default, {
 	        style: { width: 300 },
 	        transitionName: 'rc-tree-select-dropdown-slide-up',
 	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
 	        dropdownStyle: { height: 200, overflow: 'auto' },
 	        dropdownPopupAlign: { overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 2] },
-	        placeholder: _react2['default'].createElement(
+	        placeholder: _react2.default.createElement(
 	          'i',
 	          null,
 	          '请下拉选择'
@@ -90,15 +87,15 @@ webpackJsonp([3],{
 	        onChange: this.onChange,
 	        onSelect: this.onSelect
 	      }),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'h2',
 	        null,
 	        'use treeDataSimpleMode'
 	      ),
-	      _react2['default'].createElement(_rcTreeSelect2['default'], {
+	      _react2.default.createElement(_rcTreeSelect2.default, {
 	        style: { width: 300 },
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-	        placeholder: _react2['default'].createElement(
+	        placeholder: _react2.default.createElement(
 	          'i',
 	          null,
 	          '请下拉选择'
@@ -114,7 +111,7 @@ webpackJsonp([3],{
 	        onChange: this.onChange,
 	        onSelect: this.onSelect
 	      }),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'button',
 	        { onClick: this.onDataChange },
 	        'change data'
@@ -123,7 +120,7 @@ webpackJsonp([3],{
 	  }
 	});
 	
-	_reactDom2['default'].render(_react2['default'].createElement(Demo, null), document.getElementById('__react-content'));
+	_reactDom2.default.render(_react2.default.createElement(Demo, null), document.getElementById('__react-content'));
 
 /***/ }
 
