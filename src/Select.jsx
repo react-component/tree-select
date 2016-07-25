@@ -211,6 +211,15 @@ const Select = React.createClass({
     }
   },
 
+  componentWillUpdate(nextProps) {
+    if (this._savedValue && nextProps.value &&
+      nextProps.value !== this._savedValue &&
+      nextProps.value === this.props.value) {
+      this._cacheTreeNodesStates = false;
+      this.getValue(nextProps, this.addLabelToValue(nextProps, toArray(nextProps.value)));
+    }
+  },
+
   componentDidUpdate() {
     const state = this.state;
     const props = this.props;
