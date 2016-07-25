@@ -174,29 +174,33 @@ webpackJsonp([0],{
 	          animation: 'zoom',
 	          maskAnimation: 'fade',
 	          onClose: this.onClose,
-	          style: { width: 600, height: 400 }
+	          style: { width: 600, height: 400, overflow: 'auto' }
 	        },
-	        _react2.default.createElement(_rcTreeSelect2.default, {
-	          style: { width: 300 },
-	          transitionName: 'rc-tree-select-dropdown-slide-up',
-	          choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
-	          dropdownStyle: { maxHeight: 200, overflow: 'auto', zIndex: 1500 },
-	          placeholder: _react2.default.createElement(
-	            'i',
-	            null,
-	            '请下拉选择'
-	          ),
-	          searchPlaceholder: 'please search',
-	          showSearch: true, allowClear: true, treeLine: true,
-	          inputValue: this.state.inputValue,
-	          value: this.state.value,
-	          treeData: _util.gData,
-	          treeNodeFilterProp: 'label',
-	          filterTreeNode: false,
-	          onSearch: this.onSearch,
-	          onChange: this.onChange,
-	          onSelect: this.onSelect
-	        })
+	        _react2.default.createElement(
+	          'div',
+	          { style: { height: 600, paddingTop: 100 } },
+	          _react2.default.createElement(_rcTreeSelect2.default, {
+	            style: { width: 300 },
+	            transitionName: 'rc-tree-select-dropdown-slide-up',
+	            choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
+	            dropdownStyle: { maxHeight: 200, overflow: 'auto', zIndex: 1500 },
+	            placeholder: _react2.default.createElement(
+	              'i',
+	              null,
+	              '请下拉选择'
+	            ),
+	            searchPlaceholder: 'please search',
+	            showSearch: true, allowClear: true, treeLine: true,
+	            inputValue: this.state.inputValue,
+	            value: this.state.value,
+	            treeData: _util.gData,
+	            treeNodeFilterProp: 'label',
+	            filterTreeNode: false,
+	            onSearch: this.onSearch,
+	            onChange: this.onChange,
+	            onSelect: this.onSelect
+	          })
+	        )
 	      ) : null,
 	      _react2.default.createElement(
 	        'h2',
