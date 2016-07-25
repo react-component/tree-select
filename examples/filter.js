@@ -47,6 +47,9 @@ webpackJsonp([3],{
 	    };
 	  },
 	  onChange: function onChange(value) {
+	    if (value.length === 1) {
+	      return;
+	    }
 	    console.log('onChange', arguments, this.state.simpleTreeData);
 	    this.setState({ value: value });
 	  },

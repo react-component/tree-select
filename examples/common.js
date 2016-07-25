@@ -23184,6 +23184,12 @@
 	      });
 	    }
 	  },
+	  componentWillUpdate: function componentWillUpdate(nextProps) {
+	    if (this._savedValue && nextProps.value && nextProps.value !== this._savedValue && nextProps.value === this.props.value) {
+	      this._cacheTreeNodesStates = false;
+	      this.getValue(nextProps, this.addLabelToValue(nextProps, (0, _util.toArray)(nextProps.value)));
+	    }
+	  },
 	  componentDidUpdate: function componentDidUpdate() {
 	    var state = this.state;
 	    var props = this.props;
