@@ -90,7 +90,7 @@ webpackJsonp([0],{
 	    return {
 	      visible: false,
 	      inputValue: '0-0-0-label',
-	      value: '0-0-0-value',
+	      value: '0-0-0-value1',
 	      // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
 	      lv: { value: '0-0-0-value', label: 'spe label' },
 	      multipleValue: [],
