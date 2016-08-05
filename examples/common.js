@@ -24020,7 +24020,7 @@
 	            'aria-expanded': state.open
 	          }, extraSelectionProps),
 	          ctrlNode,
-	          allowClear && !multiple ? clear : null,
+	          allowClear && !multiple && this.state.value.length ? clear : null,
 	          multiple || !props.showArrow ? null : _react2.default.createElement(
 	            'span',
 	            {
