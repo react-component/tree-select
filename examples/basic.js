@@ -94,7 +94,7 @@ webpackJsonp([0],{
 	      // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
 	      lv: { value: '0-0-0-value', label: 'spe label' },
 	      multipleValue: [],
-	      simpleTreeData: [{ key: 1, pId: 0, label: 'test1' }, { key: '1-1', pId: 0, label: 'test1' }, { key: 11, pId: 1, label: 'test11' }, { key: 12, pId: 1, label: 'test12' }, { key: 111, pId: 11, label: 'test111' }],
+	      simpleTreeData: [{ key: 1, pId: 0, label: 'test1', value: 'test1' }, { key: 121, pId: 0, label: 'test1', value: 'test121' }, { key: 11, pId: 1, label: 'test11', value: 'test11' }, { key: 12, pId: 1, label: 'test12', value: 'test12' }, { key: 111, pId: 11, label: 'test111', value: 'test111' }],
 	      treeDataSimpleMode: {
 	        id: 'key',
 	        rootPId: 0
