@@ -54,6 +54,7 @@ function findPath(value, data) {
 const Demo = React.createClass({
   getInitialState() {
     return {
+      tsOpen: false,
       visible: false,
       inputValue: '0-0-0-label',
       value: '0-0-0-value1',
@@ -112,8 +113,8 @@ const Demo = React.createClass({
     // use onChange instead
     console.log(arguments);
   },
-  onDropdownVisibleChange(visible) {
-    console.log(visible, this.state.value);
+  onDropdownVisibleChange(visible, info) {
+    console.log(visible, this.state.value, info);
     if (Array.isArray(this.state.value) && this.state.value.length > 1
       && this.state.value.length < 3) {
       alert('please select more than two item or less than one item.');
@@ -173,7 +174,24 @@ const Demo = React.createClass({
           treeNodeFilterProp="label"
           filterTreeNode={false}
           onSearch={this.onSearch}
-          onChange={this.onChange}
+          open={this.state.tsOpen}
+          onChange={(value) => {
+            console.log('onChange', arguments);
+            if (value === '0-0-0-0-value') {
+              this.setState({ tsOpen: true });
+            } else {
+              this.setState({ tsOpen: false });
+            }
+            this.setState({ value });
+          } }
+          onDropdownVisibleChange={(v, info) => {
+            console.log('single onDropdownVisibleChange', v, info);
+            // document clicked
+            if (info.documentClickClose && this.state.value === '0-0-0-0-value') {
+              return false;
+            }
+            return true;
+          } }
           onSelect={this.onSelect}
         />
 

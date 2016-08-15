@@ -64,7 +64,9 @@ const Select = React.createClass({
     disabled: PropTypes.bool,
     showArrow: PropTypes.bool,
     allowClear: PropTypes.bool,
-    tags: PropTypes.bool,
+    // tags: PropTypes.bool,
+    defaultOpen: PropTypes.bool,
+    open: PropTypes.bool,
     transitionName: PropTypes.string,
     animation: PropTypes.string,
     choiceTransitionName: PropTypes.string,
@@ -158,14 +160,10 @@ const Select = React.createClass({
     //   inputValue = value.length ? String(value[0].value) : '';
     // }
     this.saveInputRef = saveRef.bind(this, 'inputInstance');
-    let open = props.open;
-    if (open === undefined) {
-      open = props.defaultOpen;
-    }
     return {
       value,
       inputValue,
-      open,
+      open: props.open || props.defaultOpen,
       focused: false,
     };
   },
@@ -207,6 +205,11 @@ const Select = React.createClass({
     if (nextProps.inputValue !== this.props.inputValue) {
       this.setState({
         inputValue: nextProps.inputValue,
+      });
+    }
+    if ('open' in nextProps) {
+      this.setState({
+        open: nextProps.open,
       });
     }
   },
@@ -271,9 +274,7 @@ const Select = React.createClass({
     // this.setOpenState(open);
     // setTimeout, then have animation. why?
     setTimeout(() => {
-      if (this.props.onDropdownVisibleChange(open)) {
-        this.setOpenState(open);
-      }
+      this.setOpenState(open, undefined, !open);
     }, 10);
   },
 
@@ -662,13 +663,16 @@ const Select = React.createClass({
     this.fireChange(nv, { triggerValue: selectedValue, clear: true });
   },
 
-  setOpenState(open, needFocus) {
+  setOpenState(open, needFocus, documentClickClose = false) {
     this.clearDelayTimer();
     const { props, refs } = this;
     // can not optimize, if children is empty
     // if (this.state.open === open) {
     //   return;
     // }
+    if (!this.props.onDropdownVisibleChange(open, { documentClickClose })) {
+      return;
+    }
     this.setState({
       open,
     }, () => {
