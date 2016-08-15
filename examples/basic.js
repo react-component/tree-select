@@ -88,6 +88,7 @@ webpackJsonp([0],{
 	  displayName: 'Demo',
 	  getInitialState: function getInitialState() {
 	    return {
+	      tsOpen: false,
 	      visible: false,
 	      inputValue: '0-0-0-label',
 	      value: '0-0-0-value1',
@@ -142,8 +143,8 @@ webpackJsonp([0],{
 	    // use onChange instead
 	    console.log(arguments);
 	  },
-	  onDropdownVisibleChange: function onDropdownVisibleChange(visible) {
-	    console.log(visible, this.state.value);
+	  onDropdownVisibleChange: function onDropdownVisibleChange(visible, info) {
+	    console.log(visible, this.state.value, info);
 	    if (Array.isArray(this.state.value) && this.state.value.length > 1 && this.state.value.length < 3) {
 	      alert('please select more than two item or less than one item.');
 	      return false;
@@ -154,6 +155,9 @@ webpackJsonp([0],{
 	    return String(child.props.title).indexOf(input) === 0;
 	  },
 	  render: function render() {
+	    var _arguments = arguments,
+	        _this = this;
+	
 	    return _react2.default.createElement(
 	      'div',
 	      { style: { margin: 20 } },
@@ -229,7 +233,24 @@ webpackJsonp([0],{
 	        treeNodeFilterProp: 'label',
 	        filterTreeNode: false,
 	        onSearch: this.onSearch,
-	        onChange: this.onChange,
+	        open: this.state.tsOpen,
+	        onChange: function onChange(value) {
+	          console.log('onChange', _arguments);
+	          if (value === '0-0-0-0-value') {
+	            _this.setState({ tsOpen: true });
+	          } else {
+	            _this.setState({ tsOpen: false });
+	          }
+	          _this.setState({ value: value });
+	        },
+	        onDropdownVisibleChange: function onDropdownVisibleChange(v, info) {
+	          console.log('single onDropdownVisibleChange', v, info);
+	          // document clicked
+	          if (info.documentClickClose && _this.state.value === '0-0-0-0-value') {
+	            return false;
+	          }
+	          return true;
+	        },
 	        onSelect: this.onSelect
 	      }),
 	      _react2.default.createElement(

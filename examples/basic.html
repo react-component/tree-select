@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>basic.js - example - rc-tree-select@1.8.2</title>
+  <title>basic.js - example - rc-tree-select@1.8.3</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -258,7 +258,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-tree-select@1.8.2</h1>
+      <h1>rc-tree-select@1.8.3</h1>
 
       <p>tree-select ui component for react</p>
     </div>
@@ -320,6 +320,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <span class="hljs-keyword">const</span> Demo = React.createClass({
   getInitialState() {
     <span class="hljs-keyword">return</span> {
+      tsOpen: <span class="hljs-literal">false</span>,
       visible: <span class="hljs-literal">false</span>,
       inputValue: <span class="hljs-string">'0-0-0-label'</span>,
       value: <span class="hljs-string">'0-0-0-value1'</span>,
@@ -378,8 +379,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <span class="hljs-comment">// use onChange instead</span>
     <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">arguments</span>);
   },
-  onDropdownVisibleChange(visible) {
-    <span class="hljs-built_in">console</span>.log(visible, <span class="hljs-keyword">this</span>.state.value);
+  onDropdownVisibleChange(visible, info) {
+    <span class="hljs-built_in">console</span>.log(visible, <span class="hljs-keyword">this</span>.state.value, info);
     <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Array</span>.isArray(<span class="hljs-keyword">this</span>.state.value) &amp;&amp; <span class="hljs-keyword">this</span>.state.value.length &gt; <span class="hljs-number">1</span>
       &amp;&amp; <span class="hljs-keyword">this</span>.state.value.length &lt; <span class="hljs-number">3</span>) {
       alert(<span class="hljs-string">'please select more than two item or less than one item.'</span>);
@@ -439,7 +440,24 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           treeNodeFilterProp="label"
           filterTreeNode={false}
           onSearch={this.onSearch}
-          onChange={this.onChange}
+          open={this.state.tsOpen}
+          onChange={(value) =&gt; {
+            console.log('onChange', arguments);
+            if (value === '0-0-0-0-value') {
+              this.setState({ tsOpen: true });
+            } else {
+              this.setState({ tsOpen: false });
+            }
+            this.setState({ value });
+          } }
+          onDropdownVisibleChange={(v, info) =&gt; {
+            console.log('single onDropdownVisibleChange', v, info);
+            // document clicked
+            if (info.documentClickClose &amp;&amp; this.state.value === '0-0-0-0-value') {
+              return false;
+            }
+            return true;
+          } }
           onSelect={this.onSelect}
         /&gt;
 

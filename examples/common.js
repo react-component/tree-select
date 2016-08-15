@@ -23048,7 +23048,9 @@
 	    disabled: _react.PropTypes.bool,
 	    showArrow: _react.PropTypes.bool,
 	    allowClear: _react.PropTypes.bool,
-	    tags: _react.PropTypes.bool,
+	    // tags: PropTypes.bool,
+	    defaultOpen: _react.PropTypes.bool,
+	    open: _react.PropTypes.bool,
 	    transitionName: _react.PropTypes.string,
 	    animation: _react.PropTypes.string,
 	    choiceTransitionName: _react.PropTypes.string,
@@ -23135,14 +23137,10 @@
 	    //   inputValue = value.length ? String(value[0].value) : '';
 	    // }
 	    this.saveInputRef = saveRef.bind(this, 'inputInstance');
-	    var open = props.open;
-	    if (open === undefined) {
-	      open = props.defaultOpen;
-	    }
 	    return {
 	      value: value,
 	      inputValue: inputValue,
-	      open: open,
+	      open: props.open || props.defaultOpen,
 	      focused: false
 	    };
 	  },
@@ -23181,6 +23179,11 @@
 	    if (nextProps.inputValue !== this.props.inputValue) {
 	      this.setState({
 	        inputValue: nextProps.inputValue
+	      });
+	    }
+	    if ('open' in nextProps) {
+	      this.setState({
+	        open: nextProps.open
 	      });
 	    }
 	  },
@@ -23241,9 +23244,7 @@
 	    // this.setOpenState(open);
 	    // setTimeout, then have animation. why?
 	    setTimeout(function () {
-	      if (_this.props.onDropdownVisibleChange(open)) {
-	        _this.setOpenState(open);
-	      }
+	      _this.setOpenState(open, undefined, !open);
 	    }, 10);
 	  },
 	
@@ -23641,6 +23642,8 @@
 	  setOpenState: function setOpenState(open, needFocus) {
 	    var _this5 = this;
 	
+	    var documentClickClose = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+	
 	    this.clearDelayTimer();
 	    var props = this.props;
 	    var refs = this.refs;
@@ -23649,6 +23652,9 @@
 	    //   return;
 	    // }
 	
+	    if (!this.props.onDropdownVisibleChange(open, { documentClickClose: documentClickClose })) {
+	      return;
+	    }
 	    this.setState({
 	      open: open
 	    }, function () {
