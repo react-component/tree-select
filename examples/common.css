@@ -620,6 +620,9 @@ li.rc-tree-select-dropdown-menu-item-divider {
   vertical-align: top;
   background: url(https://t.alipayobjects.com/images/rmsweb/T1YxhiXgJbXXXXXXXX.gif) no-repeat scroll 0 0 transparent;
 }
+.rc-tree-select-tree li span.rc-tree-select-tree-switcher.rc-tree-select-tree-switcher-noop {
+  cursor: auto;
+}
 .rc-tree-select-tree li span.rc-tree-select-tree-switcher.rc-tree-select-tree-roots_open {
   background-position: -93px -56px;
 }

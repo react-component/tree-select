@@ -377,6 +377,23 @@ webpackJsonp([0],{
 	      _react2.default.createElement(
 	        'h2',
 	        null,
+	        'Testing in extreme conditions (Boundary conditions test) '
+	      ),
+	      _react2.default.createElement(_rcTreeSelect2.default, {
+	        style: { width: 200 },
+	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
+	        defaultValue: 'leaf1',
+	        treeDefaultExpandAll: true,
+	        treeData: [{ key: '', value: '', label: 'empty value', children: [] }, {
+	          key: '0', value: '0', label: '0 label', children: [{ key: '00', value: '00', label: '00 label', children: [] }, { key: '01', value: '01', label: '01 label', children: [] }]
+	        }],
+	        onChange: function onChange(val) {
+	          return console.log(val, _arguments);
+	        }
+	      }),
+	      _react2.default.createElement(
+	        'h2',
+	        null,
 	        'use TreeNode Component (not recommend)'
 	      ),
 	      _react2.default.createElement(
@@ -384,15 +401,17 @@ webpackJsonp([0],{
 	        {
 	          style: { width: 200 },
 	          dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-	          value: this.state.value || 'leaf1',
-	          treeDefaultExpandAll: true, treeCheckable: true,
+	          defaultValue: 'leaf1',
+	          treeDefaultExpandAll: true,
 	          treeNodeFilterProp: 'title',
 	          filterTreeNode: this.filterTreeNode,
-	          onChange: this.onChange
+	          onChange: function onChange(val) {
+	            return console.log(val, _arguments);
+	          }
 	        },
 	        _react2.default.createElement(
 	          _rcTreeSelect.TreeNode,
-	          { value: 'parent 1', title: 'parent 1', key: '0-1' },
+	          { value: '', title: 'parent 1', key: '' },
 	          _react2.default.createElement(
 	            _rcTreeSelect.TreeNode,
 	            { value: 'parent 1-0', title: 'parent 1-0', key: '0-1-0' },
@@ -411,19 +430,17 @@ webpackJsonp([0],{
 	            }),
 	            _react2.default.createElement(
 	              _rcTreeSelect.TreeNode,
-	              { value: 'same value', title: 'same txtle', key: '0-1-1-1' },
-	              _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same titlexd', key: '0-1-1-1-0' })
+	              { value: 'same value1', title: 'same txtle', key: '0-1-1-1' },
+	              _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'same value10', title: 'same titlexd', key: '0-1-1-1-0' })
 	            )
 	          )
 	        ),
 	        _react2.default.createElement(
 	          _rcTreeSelect.TreeNode,
-	          { value: 'same value', title: 'same title', key: '0-2' },
+	          { value: 'same value2', title: 'same title', key: '0-2' },
 	          _react2.default.createElement(_rcTreeSelect.TreeNode, { value: '2same value', title: '2same title', key: '0-2-0' })
 	        ),
-	        _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-3' }),
-	        _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-4' }),
-	        _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-5' })
+	        _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'same value3', title: 'same title', key: '0-3' })
 	      )
 	    );
 	  }

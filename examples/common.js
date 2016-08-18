@@ -23012,7 +23012,8 @@
 	    var pos = level + '-' + index;
 	    var props = {
 	      title: item.label,
-	      value: item.value || String(item.key || item.label),
+	      value: item.value,
+	      // value: item.value || String(item.key || item.label), // cause onChange callback error
 	      key: item.key || item.value || pos,
 	      disabled: item.disabled || false,
 	      selectable: item.hasOwnProperty('selectable') ? item.selectable : true
