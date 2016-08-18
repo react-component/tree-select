@@ -281,17 +281,35 @@ const Demo = React.createClass({
           onSelect={this.onSelect}
         />
 
+        <h2>Testing in extreme conditions (Boundary conditions test) </h2>
+        <TreeSelect
+          style={{ width: 200 }}
+          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+          defaultValue={'leaf1'}
+          treeDefaultExpandAll
+          treeData={[
+            { key: '', value: '', label: 'empty value', children: [] },
+            {
+              key: '0', value: '0', label: '0 label', children: [
+                { key: '00', value: '00', label: '00 label', children: [] },
+                { key: '01', value: '01', label: '01 label', children: [] },
+              ],
+            },
+          ]}
+          onChange={(val) => console.log(val, arguments)}
+        />
+
         <h2>use TreeNode Component (not recommend)</h2>
         <TreeSelect
           style={{ width: 200 }}
           dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
-          value={this.state.value || 'leaf1'}
-          treeDefaultExpandAll treeCheckable
+          defaultValue={'leaf1'}
+          treeDefaultExpandAll
           treeNodeFilterProp="title"
           filterTreeNode={this.filterTreeNode}
-          onChange={this.onChange}
+          onChange={(val) => console.log(val, arguments)}
         >
-          <TreeNode value="parent 1" title="parent 1" key="0-1">
+          <TreeNode value="" title="parent 1" key="">
             <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-0">
               <TreeNode value="leaf1" title="my leaf" key="random" />
               <TreeNode value="leaf2" title="your leaf" key="random1" disabled />
@@ -300,17 +318,15 @@ const Demo = React.createClass({
               <TreeNode value="sss"
                 title={<span style={{ color: 'red' }}>sss</span>} key="random3"
               />
-              <TreeNode value="same value" title="same txtle" key="0-1-1-1">
-                <TreeNode value="same value" title="same titlexd" key="0-1-1-1-0" />
+              <TreeNode value="same value1" title="same txtle" key="0-1-1-1">
+                <TreeNode value="same value10" title="same titlexd" key="0-1-1-1-0" />
               </TreeNode>
             </TreeNode>
           </TreeNode>
-          <TreeNode value="same value" title="same title" key="0-2">
+          <TreeNode value="same value2" title="same title" key="0-2">
             <TreeNode value="2same value" title="2same title" key="0-2-0" />
           </TreeNode>
-          <TreeNode value="same value" title="same title" key="0-3" />
-          <TreeNode value="same value" title="same title" key="0-4" />
-          <TreeNode value="same value" title="same title" key="0-5" />
+          <TreeNode value="same value3" title="same title" key="0-3" />
         </TreeSelect>
       </div>
     );
