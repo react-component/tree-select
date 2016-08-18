@@ -148,7 +148,6 @@ const Demo = React.createClass({
               placeholder={<i>请下拉选择</i>}
               searchPlaceholder="please search"
               showSearch allowClear treeLine
-              inputValue={this.state.inputValue}
               value={this.state.value}
               treeData={gData}
               treeNodeFilterProp="label"
@@ -204,7 +203,6 @@ const Demo = React.createClass({
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           showSearch allowClear treeLine
-          inputValue={this.state.inputValue}
           value={this.state.value}
           treeData={gData}
           treeNodeFilterProp="label"
@@ -221,7 +219,6 @@ const Demo = React.createClass({
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           multiple
-          inputValue={this.state.inputValue}
           value={this.state.multipleValue}
           treeData={gData}
           treeNodeFilterProp="title"
@@ -241,6 +238,7 @@ const Demo = React.createClass({
           searchPlaceholder="please search"
           treeLine maxTagTextLength={10}
           value={this.state.value}
+          inputValue={null}
           treeData={gData}
           treeNodeFilterProp="title"
           treeCheckable showCheckedStrategy={SHOW_PARENT}
