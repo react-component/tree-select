@@ -414,7 +414,6 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
               placeholder={<span class="hljs-tag">&lt;<span class="hljs-title">i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
               searchPlaceholder="please search"
               showSearch allowClear treeLine
-              inputValue={this.state.inputValue}
               value={this.state.value}
               treeData={gData}
               treeNodeFilterProp="label"
@@ -470,7 +469,6 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
           searchPlaceholder="please search"
           showSearch allowClear treeLine
-          inputValue={this.state.inputValue}
           value={this.state.value}
           treeData={gData}
           treeNodeFilterProp="label"
@@ -487,7 +485,6 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
           searchPlaceholder="please search"
           multiple
-          inputValue={this.state.inputValue}
           value={this.state.multipleValue}
           treeData={gData}
           treeNodeFilterProp="title"
@@ -507,6 +504,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           searchPlaceholder="please search"
           treeLine maxTagTextLength={10}
           value={this.state.value}
+          inputValue={null}
           treeData={gData}
           treeNodeFilterProp="title"
           treeCheckable showCheckedStrategy={SHOW_PARENT}
