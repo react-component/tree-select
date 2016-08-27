@@ -78,7 +78,7 @@ const Demo = React.createClass({
           searchPlaceholder="please search"
           treeLine maxTagTextLength={10}
           inputValue={null}
-          value={this.state.value}
+          defaultValue={this.state.value}
           treeData={this.state.simpleTreeData}
           treeDefaultExpandAll
           treeNodeFilterProp="title"

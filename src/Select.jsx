@@ -180,6 +180,8 @@ const Select = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
+    // save parsed treeData, for performance (treeData may be very big)
+    this.renderedTreeData = this.renderTreeData(nextProps);
     if ('value' in nextProps) {
       if (this._cacheTreeNodesStates !== 'no' &&
         this._savedValue && nextProps.value === this._savedValue) {
@@ -190,8 +192,6 @@ const Select = React.createClass({
         this._cacheTreeNodesStates = false;
       }
       let value = toArray(nextProps.value);
-      // save parsed treeData, for performance (treeData may be very big)
-      this.renderedTreeData = this.renderTreeData(nextProps);
       value = this.addLabelToValue(nextProps, value);
       value = this.getValue(nextProps, value);
       this.setState({
