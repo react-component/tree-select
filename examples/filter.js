@@ -114,7 +114,7 @@ webpackJsonp([3],{
 	        searchPlaceholder: 'please search',
 	        treeLine: true, maxTagTextLength: 10,
 	        inputValue: null,
-	        value: this.state.value,
+	        defaultValue: this.state.value,
 	        treeData: this.state.simpleTreeData,
 	        treeDefaultExpandAll: true,
 	        treeNodeFilterProp: 'title',

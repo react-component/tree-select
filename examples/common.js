@@ -23155,6 +23155,8 @@
 	    }
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    // save parsed treeData, for performance (treeData may be very big)
+	    this.renderedTreeData = this.renderTreeData(nextProps);
 	    if ('value' in nextProps) {
 	      if (this._cacheTreeNodesStates !== 'no' && this._savedValue && nextProps.value === this._savedValue) {
 	        // Detecting whether the object of `onChange`'s argument  is old ref.
@@ -23164,8 +23166,6 @@
 	        this._cacheTreeNodesStates = false;
 	      }
 	      var value = (0, _util.toArray)(nextProps.value);
-	      // save parsed treeData, for performance (treeData may be very big)
-	      this.renderedTreeData = this.renderTreeData(nextProps);
 	      value = this.addLabelToValue(nextProps, value);
 	      value = this.getValue(nextProps, value);
 	      this.setState({
