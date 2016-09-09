@@ -774,11 +774,6 @@ const Select = React.createClass({
 
   fireChange(value, extraInfo) {
     const props = this.props;
-    if (!('value' in props)) {
-      this.setState({
-        value,
-      });
-    }
     const vals = value.map(i => i.value);
     const sv = this.state.value.map(i => i.value);
     if (vals.length !== sv.length || !vals.every((val, index) => sv[index] === val)) {
@@ -798,7 +793,7 @@ const Select = React.createClass({
           }
         });
       }
-      if (ex.clear && props.treeCheckable) {
+      if (props.treeCheckable && ex.clear) {
         const treeData = this.renderedTreeData || props.children;
         ex.allCheckedNodes = flatToHierarchy(filterAllCheckedData(vals, treeData));
       }
@@ -830,6 +825,17 @@ const Select = React.createClass({
       }
       this._savedValue = isMultipleOrTags(props) ? vls : vls[0];
       props.onChange(this._savedValue, labs, ex);
+      if (!('value' in props)) {
+        this._cacheTreeNodesStates = false;
+        this.setState({
+          value: this.getValue(props, toArray(this._savedValue).map((v, i) => {
+            return {
+              value: v,
+              label: labs[i],
+            };
+          })),
+        });
+      }
     }
   },
 

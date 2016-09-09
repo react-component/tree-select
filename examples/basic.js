@@ -283,7 +283,7 @@ const Demo = React.createClass({
         <TreeSelect
           style={{ width: 200 }}
           dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
-          defaultValue={'leaf1'}
+          defaultValue={'leaf1'} multiple treeCheckable showCheckedStrategy={SHOW_PARENT}
           treeDefaultExpandAll
           treeData={[
             { key: '', value: '', label: 'empty value', children: [] },
