@@ -23755,11 +23755,6 @@
 	    var _this7 = this;
 	
 	    var props = this.props;
-	    if (!('value' in props)) {
-	      this.setState({
-	        value: value
-	      });
-	    }
 	    var vals = value.map(function (i) {
 	      return i.value;
 	    });
@@ -23792,7 +23787,7 @@
 	            }
 	          });
 	        }
-	        if (ex.clear && props.treeCheckable) {
+	        if (props.treeCheckable && ex.clear) {
 	          var treeData = _this7.renderedTreeData || props.children;
 	          ex.allCheckedNodes = (0, _util.flatToHierarchy)((0, _util.filterAllCheckedData)(vals, treeData));
 	        }
@@ -23832,6 +23827,17 @@
 	        }
 	        _this7._savedValue = (0, _util.isMultipleOrTags)(props) ? vls : vls[0];
 	        props.onChange(_this7._savedValue, labs, ex);
+	        if (!('value' in props)) {
+	          _this7._cacheTreeNodesStates = false;
+	          _this7.setState({
+	            value: _this7.getValue(props, (0, _util.toArray)(_this7._savedValue).map(function (v, i) {
+	              return {
+	                value: v,
+	                label: labs[i]
+	              };
+	            }))
+	          });
+	        }
 	      })();
 	    }
 	  },
@@ -24905,11 +24911,11 @@
 	      trProps.checkable = props.treeCheckable;
 	      trProps.onCheck = props.onSelect;
 	      trProps.checkStrictly = props.treeCheckStrictly;
-	      if (!props.inputValue) {
-	        trProps._treeNodesStates = props._treeNodesStates;
-	      } else {
+	      if (props.inputValue) {
 	        // enable checkStrictly when search tree.
 	        trProps.checkStrictly = true;
+	      } else {
+	        trProps._treeNodesStates = props._treeNodesStates;
 	      }
 	      if (trProps.treeCheckStrictly && halfCheckedKeys.length) {
 	        trProps.checkedKeys = { checked: keys, halfChecked: halfCheckedKeys };

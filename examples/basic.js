@@ -380,7 +380,7 @@ webpackJsonp([0],{
 	      _react2.default.createElement(_rcTreeSelect2.default, {
 	        style: { width: 200 },
 	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-	        defaultValue: 'leaf1',
+	        defaultValue: 'leaf1', multiple: true, treeCheckable: true, showCheckedStrategy: _rcTreeSelect.SHOW_PARENT,
 	        treeDefaultExpandAll: true,
 	        treeData: [{ key: '', value: '', label: 'empty value', children: [] }, {
 	          key: '0', value: '0', label: '0 label', children: [{ key: '00', value: '00', label: '00 label', children: [] }, { key: '01', value: '01', label: '01 label', children: [] }]
