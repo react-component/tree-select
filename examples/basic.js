@@ -102,6 +102,10 @@ webpackJsonp([0],{
 	      }
 	    };
 	  },
+	  componentDidMount: function componentDidMount() {
+	    // console.log(this.refs.mul.getInputDOMNode());
+	    this.refs.mul.getInputDOMNode().setAttribute('disabled', true);
+	  },
 	  onClick: function onClick() {
 	    this.setState({
 	      visible: true
@@ -280,7 +284,7 @@ webpackJsonp([0],{
 	        null,
 	        'multiple select'
 	      ),
-	      _react2.default.createElement(_rcTreeSelect2.default, {
+	      _react2.default.createElement(_rcTreeSelect2.default, { ref: 'mul',
 	        style: { width: 300 },
 	        transitionName: 'rc-tree-select-dropdown-slide-up',
 	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
