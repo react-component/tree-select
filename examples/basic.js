@@ -74,6 +74,10 @@ const Demo = React.createClass({
       },
     };
   },
+  componentDidMount() {
+    // console.log(this.refs.mul.getInputDOMNode());
+    this.refs.mul.getInputDOMNode().setAttribute('disabled', true);
+  },
   onClick() {
     this.setState({
       visible: true,
@@ -211,7 +215,7 @@ const Demo = React.createClass({
         />
 
         <h2>multiple select</h2>
-        <TreeSelect
+        <TreeSelect ref="mul"
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
