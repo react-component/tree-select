@@ -127,7 +127,7 @@ function getSiblingPosition(index, len, siblingPosition) {
 export function loopAllChildren(childs, callback, parent) {
   const loop = (children, level, _parent) => {
     const len = getChildrenlength(children);
-    React.Children.forEach(children, (item, index) => {
+    React.Children.forEach(children, function handler(item, index) { // eslint-disable-line
       const pos = `${level}-${index}`;
       if (item && item.props.children && item.type) {
         loop(item.props.children, pos, { node: item, pos });

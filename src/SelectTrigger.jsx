@@ -233,7 +233,7 @@ const SelectTrigger = React.createClass({
 
     const recursive = children => {
       // Note: if use `React.Children.map`, the node's key will be modified.
-      return toArray(children).map(child => {
+      return toArray(children).map(function handler(child) { // eslint-disable-line
         if (child && child.props.children) {
           // null or String has no Prop
           return (<TreeNode {...child.props} key={child.key}>

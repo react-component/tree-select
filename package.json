@@ -39,6 +39,9 @@
     "coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "jest": {
+    "setupFiles": [
+      "./tests/setup.js"
+    ],
     "collectCoverageFrom": [
       "src/**/*"
     ]
@@ -49,7 +52,7 @@
     "enzyme-to-json": "^1.4.5",
     "es6-promise": "^3.0.2",
     "expect.js": "0.3.x",
-    "jest": "^18.0.0",
+    "jest": "^18.1.0",
     "jquery": "^2.2.0",
     "pre-commit": "1.x",
     "rc-dialog": "^6.0.3",
