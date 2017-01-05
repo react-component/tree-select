@@ -34,13 +34,25 @@
     "lint": "rc-tools run lint",
     "karma": "rc-tools run karma",
     "saucelabs": "rc-tools run saucelabs",
-    "test": "rc-tools run test",
+    "test": "jest",
     "chrome-test": "rc-tools run chrome-test",
-    "coverage": "rc-tools run coverage"
+    "coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+  },
+  "jest": {
+    "setupFiles": [
+      "./tests/setup.js"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*"
+    ]
   },
   "devDependencies": {
+    "coveralls": "^2.11.15",
+    "enzyme": "^2.7.0",
+    "enzyme-to-json": "^1.4.5",
     "es6-promise": "^3.0.2",
     "expect.js": "0.3.x",
+    "jest": "^18.1.0",
     "jquery": "^2.2.0",
     "pre-commit": "1.x",
     "rc-dialog": "^6.0.3",

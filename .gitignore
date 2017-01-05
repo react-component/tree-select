@@ -22,3 +22,5 @@ node_modules
 *.css
 build
 lib
+coverage
+yarn.lock
