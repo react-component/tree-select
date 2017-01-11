@@ -182,15 +182,20 @@ const Select = React.createClass({
   componentWillReceiveProps(nextProps) {
     // save parsed treeData, for performance (treeData may be very big)
     this.renderedTreeData = this.renderTreeData(nextProps);
+    // Detecting whether the object of `onChange`'s argument  is old ref.
+    // Better to do a deep equal later.
+    this._cacheTreeNodesStates = this._cacheTreeNodesStates !== 'no' &&
+                                 this._savedValue &&
+                                 nextProps.value === this._savedValue;
+    if (this.props.treeData !== nextProps.treeData ||
+      this.props.children !== nextProps.children) {
+      // refresh this._treeNodesStates cache
+      this._treeNodesStates = getTreeNodesStates(
+        this.renderedTreeData || nextProps.children,
+        this.state.value.map(item => item.value)
+      );
+    }
     if ('value' in nextProps) {
-      if (this._cacheTreeNodesStates !== 'no' &&
-        this._savedValue && nextProps.value === this._savedValue) {
-        // Detecting whether the object of `onChange`'s argument  is old ref.
-        // Better to do a deep equal later.
-        this._cacheTreeNodesStates = true;
-      } else {
-        this._cacheTreeNodesStates = false;
-      }
       let value = toArray(nextProps.value);
       value = this.addLabelToValue(nextProps, value);
       value = this.getValue(nextProps, value);

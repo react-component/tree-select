@@ -226,4 +226,15 @@ describe('TreeSelect', () => {
     jest.runAllTimers();
     expect(wrapper.state('open')).toBe(false);
   });
+
+  // https://github.com/ant-design/ant-design/issues/4084
+  it('checks node correctly after treeData updated', () => {
+    const wrapper = mount(
+      <TreeSelect treeCheckable treeData={[]} />
+    );
+    wrapper.setProps({ treeData: [{ key: '0', value: '0', label: 'label0' }] });
+    const treeWrapper = mount(wrapper.find('Trigger').node.getComponent());
+    treeWrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
+    expect(wrapper.state().value).toEqual([{ value: '0', label: 'label0' }]);
+  });
 });
