@@ -60,12 +60,15 @@
 }
 .rc-tree-select-selection--single .rc-tree-select-selection__rendered {
   display: block;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   padding-left: 10px;
   padding-right: 20px;
   line-height: 28px;
+}
+.rc-tree-select-selection--single .rc-tree-select-selection-selected-value {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .rc-tree-select-selection--single .rc-tree-select-selection__clear {
   font-weight: bold;

@@ -3,7 +3,7 @@ webpackJsonp([1],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(226);
+	module.exports = __webpack_require__(274);
 
 
 /***/ },
@@ -11,7 +11,7 @@ webpackJsonp([1],{
 /***/ 3:
 2,
 
-/***/ 226:
+/***/ 274:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24,15 +24,15 @@ webpackJsonp([1],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(36);
+	var _reactDom = __webpack_require__(35);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _rcTreeSelect = __webpack_require__(191);
+	var _rcTreeSelect = __webpack_require__(197);
 	
 	var _rcTreeSelect2 = _interopRequireDefault(_rcTreeSelect);
 	
-	var _bigDataGenerator = __webpack_require__(227);
+	var _bigDataGenerator = __webpack_require__(275);
 	
 	var _bigDataGenerator2 = _interopRequireDefault(_bigDataGenerator);
 	
@@ -94,7 +94,7 @@ webpackJsonp([1],{
 	            placeholder: _react2.default.createElement(
 	              'i',
 	              null,
-	              '请下拉选择'
+	              '\u8BF7\u4E0B\u62C9\u9009\u62E9'
 	            ),
 	            treeCheckable: true,
 	            showCheckedStrategy: _rcTreeSelect.SHOW_PARENT,
@@ -117,7 +117,7 @@ webpackJsonp([1],{
 	            placeholder: _react2.default.createElement(
 	              'i',
 	              null,
-	              '请下拉选择'
+	              '\u8BF7\u4E0B\u62C9\u9009\u62E9'
 	            ),
 	            treeCheckable: true,
 	            treeCheckStrictly: true,
@@ -134,7 +134,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 227:
+/***/ 275:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -147,7 +147,7 @@ webpackJsonp([1],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _util = __webpack_require__(225);
+	var _util = __webpack_require__(273);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -193,10 +193,10 @@ webpackJsonp([1],{
 	    };
 	  },
 	  render: function render() {
-	    var _props = this.props;
-	    var x = _props.x;
-	    var y = _props.y;
-	    var z = _props.z;
+	    var _props = this.props,
+	        x = _props.x,
+	        y = _props.y,
+	        z = _props.z;
 	
 	    return _react2.default.createElement(
 	      'div',
@@ -242,7 +242,7 @@ webpackJsonp([1],{
 	      _react2.default.createElement(
 	        'p',
 	        { style: { fontSize: 12 } },
-	        'x：每一级下的节点总数。y：每级节点里有y个节点、存在子节点。z：树的level层级数（0表示一级）'
+	        'x\uFF1A\u6BCF\u4E00\u7EA7\u4E0B\u7684\u8282\u70B9\u603B\u6570\u3002y\uFF1A\u6BCF\u7EA7\u8282\u70B9\u91CC\u6709y\u4E2A\u8282\u70B9\u3001\u5B58\u5728\u5B50\u8282\u70B9\u3002z\uFF1A\u6811\u7684level\u5C42\u7EA7\u6570\uFF080\u8868\u793A\u4E00\u7EA7\uFF09'
 	      )
 	    );
 	  }
