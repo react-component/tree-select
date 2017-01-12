@@ -865,7 +865,13 @@ const Select = React.createClass({
         {props.placeholder}
       </span>);
       if (value.length) {
-        innerNode = <span key="value">{value[0].label}</span>;
+        innerNode = (<span
+          key="value"
+          title={value[0].label}
+          className={`${prefixCls}-selection-selected-value`}
+        >
+          {value[0].label}
+        </span>);
       }
       return (<span className={`${prefixCls}-selection__rendered`}>
         {innerNode}
