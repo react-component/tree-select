@@ -171,6 +171,7 @@ const SelectTrigger = React.createClass({
       showIcon: props.treeIcon,
       showLine: props.treeLine,
       defaultExpandAll: props.treeDefaultExpandAll,
+      defaultExpandedKeys: props.treeDefaultExpandedKeys,
       filterTreeNode: this.highlightTreeNode,
     };
 
@@ -196,7 +197,7 @@ const SelectTrigger = React.createClass({
     }
 
     // expand keys
-    if (!trProps.defaultExpandAll && !props.loadData) {
+    if (!trProps.defaultExpandAll && !trProps.defaultExpandedKeys && !props.loadData) {
       trProps.expandedKeys = keys;
     }
     trProps.autoExpandParent = true;

@@ -237,4 +237,19 @@ describe('TreeSelect', () => {
     treeWrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
     expect(wrapper.state().value).toEqual([{ value: '0', label: 'label0' }]);
   });
+
+  it('expands tree nodes by treeDefaultExpandedKeys', () => {
+    const wrapper = mount(
+      <TreeSelect treeDefaultExpandedKeys={['1']}>
+        <TreeNode key="0" value="0" title="0 label"/>
+        <TreeNode key="1" value="1" title="1 label">
+          <TreeNode key="10" value="10" title="10 label"/>
+          <TreeNode key="11" value="11" title="11 label"/>
+        </TreeNode>
+      </TreeSelect>
+    );
+    const treeWrapper = mount(wrapper.find('Trigger').node.getComponent());
+    const node = treeWrapper.find('.rc-tree-select-tree-node-content-wrapper').at(1);
+    expect(node.hasClass('rc-tree-select-tree-node-content-wrapper-open')).toBe(true);
+  });
 });
