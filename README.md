@@ -78,6 +78,7 @@ online example: http://react-component.github.io/tree-select/
 |treeIcon | show tree icon | bool | false |
 |treeLine | show tree line | bool | false |
 |treeDefaultExpandAll | default expand all treeNode | bool | false |
+|treeDefaultExpandedKeys | default expanded treeNode keys | Array<String> | - |
 |treeCheckable | whether tree show checkbox (select callback will not fire) | bool | false |
 |treeCheckStrictly | check node precisely, parent and children nodes are not associated| bool | false |
 |filterTreeNode | whether filter treeNodes by input value. default filter by treeNode's treeNodeFilterProp prop's value | bool/Function(inputValue:string, treeNode:TreeNode) | Function |
