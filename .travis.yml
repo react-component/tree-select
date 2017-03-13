@@ -5,6 +5,7 @@ sudo: false
 notifications:
   email:
   - hualei5280@gmail.com
+  - yesmeck@gmail.com
 
 node_js:
 - 6
