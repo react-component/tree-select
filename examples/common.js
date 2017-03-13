@@ -29809,7 +29809,7 @@
 	exports.generateTreeNodes = generateTreeNodes;
 	exports.getNewTreeData = getNewTreeData;
 	exports.getFilterValue = getFilterValue;
-	/* eslint no-loop-func: 0*/
+	/* eslint no-loop-func: 0, no-console: 0 */
 	
 	function generateData() {
 	  var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 3;
