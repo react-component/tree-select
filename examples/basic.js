@@ -1,4 +1,4 @@
-/* eslint react/no-multi-comp:0, no-console:0 */
+/* eslint react/no-multi-comp:0, no-console:0, no-alert: 0 */
 
 import 'rc-tree-select/assets/index.less';
 import './demo.less';
