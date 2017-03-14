@@ -23095,8 +23095,7 @@
 	      var value = state.value.concat();
 	      if (value.length) {
 	        var popValue = value.pop();
-	        props.onDeselect(this.isLabelInValue() ? popValue : popValue.key);
-	        this.fireChange(value);
+	        this.removeSelected(this.isLabelInValue() ? popValue : popValue.value);
 	      }
 	      return;
 	    }
