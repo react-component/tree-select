@@ -47,4 +47,33 @@ describe('TreeSelect.multiple', () => {
     expect(choice).toHaveLength(1);
     expect(choice.prop('children')).toBe('label0');
   });
+
+  // https://github.com/react-component/tree-select/issues/47
+  it('remove by backspace key twice when treeCheckable and under controlled', () => {
+    class App extends React.Component {
+      state = {
+        value: ['0', '1'],
+      }
+
+      handleChange = (value) => {
+        this.setState({ value });
+      }
+
+      render() {
+        return createSelect({
+          value: this.state.value,
+          onChange: this.handleChange,
+          treeCheckable: true,
+        });
+      }
+    }
+    const wrapper = mount(<App />);
+    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.BACKSPACE });
+    const treeWrapper = mount(wrapper.find('Trigger').node.getComponent());
+    treeWrapper.find('.rc-tree-select-tree-checkbox').at(1).simulate('click');
+    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.BACKSPACE });
+    const choice = wrapper.find('ul .rc-tree-select-selection__choice__content');
+    expect(choice).toHaveLength(1);
+    expect(choice.prop('children')).toBe('label0');
+  });
 });
