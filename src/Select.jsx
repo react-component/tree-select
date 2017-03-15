@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classnames from 'classnames';
@@ -16,6 +16,8 @@ import {
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import _TreeNode from './TreeNode';
+import { SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './strategies';
+import { SelectPropTypes } from './PropTypes';
 
 function noop() {
 }
@@ -50,65 +52,8 @@ function loopTreeData(data, level = 0) {
   });
 }
 
-const SHOW_ALL = 'SHOW_ALL';
-const SHOW_PARENT = 'SHOW_PARENT';
-const SHOW_CHILD = 'SHOW_CHILD';
-
 const Select = React.createClass({
-  propTypes: {
-    children: PropTypes.any,
-    className: PropTypes.string,
-    prefixCls: PropTypes.string,
-    multiple: PropTypes.bool,
-    filterTreeNode: PropTypes.any,
-    showSearch: PropTypes.bool,
-    disabled: PropTypes.bool,
-    showArrow: PropTypes.bool,
-    allowClear: PropTypes.bool,
-    // tags: PropTypes.bool,
-    defaultOpen: PropTypes.bool,
-    open: PropTypes.bool,
-    transitionName: PropTypes.string,
-    animation: PropTypes.string,
-    choiceTransitionName: PropTypes.string,
-    onClick: PropTypes.func,
-    onChange: PropTypes.func,
-    onSelect: PropTypes.func,
-    onDeselect: PropTypes.func,
-    onSearch: PropTypes.func,
-    searchPlaceholder: PropTypes.string,
-    placeholder: PropTypes.any,
-    inputValue: PropTypes.any,
-    value: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.object]),
-    defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.object]),
-    label: PropTypes.any,
-    defaultLabel: PropTypes.any,
-    labelInValue: PropTypes.bool,
-    dropdownStyle: PropTypes.object,
-    drodownPopupAlign: PropTypes.object,
-    onDropdownVisibleChange: PropTypes.func,
-    maxTagTextLength: PropTypes.number,
-    showCheckedStrategy: PropTypes.oneOf([
-      SHOW_ALL, SHOW_PARENT, SHOW_CHILD,
-    ]),
-    // skipHandleInitValue: PropTypes.bool, // Deprecated (use treeCheckStrictly)
-    treeCheckStrictly: PropTypes.bool,
-    treeIcon: PropTypes.bool,
-    treeLine: PropTypes.bool,
-    treeDefaultExpandAll: PropTypes.bool,
-    treeCheckable: PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.node,
-    ]),
-    treeNodeLabelProp: PropTypes.string,
-    treeNodeFilterProp: PropTypes.string,
-    treeData: PropTypes.array,
-    treeDataSimpleMode: PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.object,
-    ]),
-    loadData: PropTypes.func,
-  },
+  propTypes: SelectPropTypes,
 
   getDefaultProps() {
     return {
