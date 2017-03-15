@@ -1,6 +1,51 @@
 import { PropTypes } from 'react';
 import { SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './strategies';
 
+function valueType(props, propName, componentName) {
+  const labelInValueShape = PropTypes.shape({
+    value: PropTypes.string.isRequired,
+    label: PropTypes.string,
+  });
+  if (props.labelInValue) {
+    const validate = PropTypes.oneOfType([
+      PropTypes.arrayOf(labelInValueShape),
+      labelInValueShape,
+    ]);
+    const error = validate(...arguments);
+    if (error) {
+      return new Error(
+        `Invalid prop \`${propName}\` supplied to \`${componentName}\`, ` +
+        `when \`labelInValue\` is \`true\`, \`${propName}\` should in ` +
+        `shape of \`{ value: string, label?: string }\`.`
+      );
+    }
+  } else if (props.treeCheckable && props.treeCheckStrictly) {
+    const validate = PropTypes.oneOfType([
+      PropTypes.arrayOf(labelInValueShape),
+      labelInValueShape,
+    ]);
+    const error = validate(...arguments);
+    if (error) {
+      return new Error(
+        `Invalid prop \`${propName}\` supplied to \`${componentName}\`, ` +
+        `when \`treeCheckable\` and \`treeCheckStrictly\` are \`true\`, ` +
+        `\`${propName}\` should in shape of \`{ value: string, label?: string }\`.`
+      );
+    }
+  } else if (props.multiple && props[propName] === '') {
+    return new Error(
+      `Invalid prop \`${propName}\` of type \`string\` supplied to \`${componentName}\`, ` +
+      `expected \`array\` when \`multiple\` is \`true\`.`
+    );
+  } else {
+    const validate = PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.string),
+      PropTypes.string,
+    ]);
+    return validate(...arguments);
+  }
+}
+
 export const SelectPropTypes = {
   className: PropTypes.string,
   prefixCls: PropTypes.string,
@@ -23,8 +68,8 @@ export const SelectPropTypes = {
   searchPlaceholder: PropTypes.string,
   placeholder: PropTypes.any,
   inputValue: PropTypes.any,
-  value: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.object]),
-  defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.object]),
+  value: valueType,
+  defaultValue: valueType,
   label: PropTypes.any,
   defaultLabel: PropTypes.any,
   labelInValue: PropTypes.bool,

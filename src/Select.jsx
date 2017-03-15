@@ -64,7 +64,6 @@ const Select = React.createClass({
       placeholder: '',
       searchPlaceholder: '',
       labelInValue: false,
-      defaultValue: [],
       inputValue: '',
       onClick: noop,
       onChange: noop,

@@ -252,4 +252,57 @@ describe('TreeSelect', () => {
     const node = treeWrapper.find('.rc-tree-select-tree-node-content-wrapper').at(1);
     expect(node.hasClass('rc-tree-select-tree-node-content-wrapper-open')).toBe(true);
   });
+
+  describe('propTypes', () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    afterEach(() => {
+      spy.mockReset();
+    });
+
+    afterAll(() => {
+      spy.mockRestore();
+    });
+
+    it('warns on invalid value when labelInValue', () => {
+      mount(
+        <TreeSelect
+          labelInValue
+          value="foo"
+        />
+      );
+      expect(spy.mock.calls[0][0]).toMatch(
+        'Invalid prop `value` supplied to `Select`, when `labelInValue` ' +
+        'is `true`, `value` should in shape of `{ value: string, label?: string }`'
+      );
+    });
+
+    it('warns on invalid value when treeCheckable and treeCheckStrictly', () => {
+      mount(
+        <TreeSelect
+          treeCheckable
+          treeCheckStrictly
+          value="foo"
+        />
+      );
+      expect(spy.mock.calls[0][0]).toMatch(
+        'Invalid prop `value` supplied to `Select`, when `treeCheckable` ' +
+        'and `treeCheckStrictly` are `true`, `value` should in shape of ' +
+        '`{ value: string, label?: string }`'
+      );
+    });
+
+    it('warns on invalid value when multiple', () => {
+      mount(
+        <TreeSelect
+          multiple
+          value=""
+        />
+      );
+      expect(spy.mock.calls[0][0]).toMatch(
+        'Invalid prop `value` of type `string` supplied to `Select`, ' +
+        'expected `array` when `multiple` is `true`'
+      );
+    });
+  });
 });
