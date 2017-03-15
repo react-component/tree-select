@@ -1,72 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`TreeSelect render renders TreeNode correctly 1`] = `
 <div>
   <div
-    class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft  rc-tree-select-dropdown-hidden">
+    class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft  rc-tree-select-dropdown-hidden"
+  >
     <div>
       <span
-        class="rc-tree-select-dropdown-search">
+        class="rc-tree-select-dropdown-search"
+      >
         <span
-          class="rc-tree-select-search__field__wrap">
+          class="rc-tree-select-search__field__wrap"
+        >
           <input
             class="rc-tree-select-search__field"
             role="textbox"
-            value="" />
+            value=""
+          />
         </span>
       </span>
       <ul
         class="rc-tree-select-tree"
         role="tree-node"
-        unselectable="true">
+        unselectable="true"
+      >
         <li
-          class="">
+          class=""
+        >
           <span
-            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu" />
+            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
+          />
           <a
             class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-            title="0 label">
+            title="0 label"
+          >
             <span
-              class="rc-tree-select-tree-title">
+              class="rc-tree-select-tree-title"
+            >
               0 label
             </span>
           </a>
         </li>
         <li
-          class="">
+          class=""
+        >
           <span
-            class="rc-tree-select-tree-switcher rc-tree-select-tree-noline_open" />
+            class="rc-tree-select-tree-switcher rc-tree-select-tree-noline_open"
+          />
           <a
             class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-            title="1 label">
+            title="1 label"
+          >
             <span
-              class="rc-tree-select-tree-title">
+              class="rc-tree-select-tree-title"
+            >
               1 label
             </span>
           </a>
           <ul
             class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
-            data-expanded="true">
+            data-expanded="true"
+          >
             <li
-              class="">
+              class=""
+            >
               <span
-                class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu" />
+                class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
+              />
               <a
                 class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                title="10 label">
+                title="10 label"
+              >
                 <span
-                  class="rc-tree-select-tree-title">
+                  class="rc-tree-select-tree-title"
+                >
                   10 label
                 </span>
               </a>
             </li>
             <li
-              class="">
+              class=""
+            >
               <span
-                class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu" />
+                class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
+              />
               <a
                 class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                title="11 label">
+                title="11 label"
+              >
                 <span
-                  class="rc-tree-select-tree-title">
+                  class="rc-tree-select-tree-title"
+                >
                   11 label
                 </span>
               </a>
@@ -82,23 +106,29 @@ exports[`TreeSelect render renders TreeNode correctly 1`] = `
 exports[`TreeSelect render renders correctly 1`] = `
 <span
   class="forTest awesome awesome-enabled"
-  style="width:300px;">
+  style="width:300px;"
+>
   <span
     aria-autocomplete="list"
     aria-haspopup="true"
     class="awesome-selection
               awesome-selection--multiple"
-    role="combobox">
+    role="combobox"
+  >
     <ul
-      class="awesome-selection__rendered">
+      class="awesome-selection__rendered"
+    >
       <li
-        class="awesome-search awesome-search--inline">
+        class="awesome-search awesome-search--inline"
+      >
         <span
-          class="awesome-search__field__wrap">
+          class="awesome-search__field__wrap"
+        >
           <input
             class="awesome-search__field"
             role="textbox"
-            value="" />
+            value=""
+          />
         </span>
       </li>
     </ul>
@@ -108,22 +138,27 @@ exports[`TreeSelect render renders correctly 1`] = `
 
 exports[`TreeSelect render renders disabled correctly 1`] = `
 <span
-  class="rc-tree-select rc-tree-select-disabled">
+  class="rc-tree-select rc-tree-select-disabled"
+>
   <span
     aria-autocomplete="list"
     aria-haspopup="true"
     class="rc-tree-select-selection
               rc-tree-select-selection--single"
     role="combobox"
-    tabindex="0">
+    tabindex="0"
+  >
     <span
-      class="rc-tree-select-selection__rendered">
+      class="rc-tree-select-selection__rendered"
+    >
       <span
-        class="rc-tree-select-selection__placeholder" />
+        class="rc-tree-select-selection__placeholder"
+      />
     </span>
     <span
       class="rc-tree-select-arrow"
-      style="outline:none;">
+      style="outline:none;"
+    >
       <b />
     </span>
   </span>
@@ -134,70 +169,93 @@ exports[`TreeSelect render renders tree correctly 1`] = `
 <div>
   <div
     class="rc-tree-select-dropdown awesome rc-tree-select-dropdown--multiple rc-tree-select-dropdown-placement-bottomLeft  rc-tree-select-dropdown-hidden"
-    style="width:300px;">
+    style="width:300px;"
+  >
     <div>
       <ul
         class="rc-tree-select-tree"
         role="tree-node"
-        unselectable="true">
+        unselectable="true"
+      >
         <li
-          class="">
+          class=""
+        >
           <span
-            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu" />
+            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
+          />
           <span
-            class="rc-tree-select-tree-checkbox" />
+            class="rc-tree-select-tree-checkbox"
+          />
           <a
             class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-            title="0 label">
+            title="0 label"
+          >
             <span
-              class="rc-tree-select-tree-title">
+              class="rc-tree-select-tree-title"
+            >
               0 label
             </span>
           </a>
         </li>
         <li
-          class="">
+          class=""
+        >
           <span
-            class="rc-tree-select-tree-switcher rc-tree-select-tree-noline_open" />
+            class="rc-tree-select-tree-switcher rc-tree-select-tree-noline_open"
+          />
           <span
-            class="rc-tree-select-tree-checkbox" />
+            class="rc-tree-select-tree-checkbox"
+          />
           <a
             class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-            title="1 label">
+            title="1 label"
+          >
             <span
-              class="rc-tree-select-tree-title">
+              class="rc-tree-select-tree-title"
+            >
               1 label
             </span>
           </a>
           <ul
             class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
-            data-expanded="true">
+            data-expanded="true"
+          >
             <li
-              class="">
+              class=""
+            >
               <span
-                class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu" />
+                class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
+              />
               <span
-                class="rc-tree-select-tree-checkbox" />
+                class="rc-tree-select-tree-checkbox"
+              />
               <a
                 class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                title="10 label">
+                title="10 label"
+              >
                 <span
-                  class="rc-tree-select-tree-title">
+                  class="rc-tree-select-tree-title"
+                >
                   10 label
                 </span>
               </a>
             </li>
             <li
-              class="">
+              class=""
+            >
               <span
-                class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu" />
+                class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
+              />
               <span
-                class="rc-tree-select-tree-checkbox" />
+                class="rc-tree-select-tree-checkbox"
+              />
               <a
                 class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                title="11 label">
+                title="11 label"
+              >
                 <span
-                  class="rc-tree-select-tree-title">
+                  class="rc-tree-select-tree-title"
+                >
                   11 label
                 </span>
               </a>
@@ -213,44 +271,57 @@ exports[`TreeSelect render renders tree correctly 1`] = `
 exports[`TreeSelect render renders treeDataSimpleMode correctly 1`] = `
 <div>
   <div
-    class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft  rc-tree-select-dropdown-hidden">
+    class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft  rc-tree-select-dropdown-hidden"
+  >
     <div>
       <span
-        class="rc-tree-select-dropdown-search">
+        class="rc-tree-select-dropdown-search"
+      >
         <span
-          class="rc-tree-select-search__field__wrap">
+          class="rc-tree-select-search__field__wrap"
+        >
           <input
             class="rc-tree-select-search__field"
             role="textbox"
-            value="" />
+            value=""
+          />
         </span>
       </span>
       <ul
         class="rc-tree-select-tree"
         role="tree-node"
-        unselectable="true">
+        unselectable="true"
+      >
         <li
-          class="">
+          class=""
+        >
           <span
-            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu" />
+            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
+          />
           <a
             class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-            title="label0">
+            title="label0"
+          >
             <span
-              class="rc-tree-select-tree-title">
+              class="rc-tree-select-tree-title"
+            >
               label0
             </span>
           </a>
         </li>
         <li
-          class="">
+          class=""
+        >
           <span
-            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu" />
+            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
+          />
           <a
             class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-            title="label1">
+            title="label1"
+          >
             <span
-              class="rc-tree-select-tree-title">
+              class="rc-tree-select-tree-title"
+            >
               label1
             </span>
           </a>
@@ -264,44 +335,57 @@ exports[`TreeSelect render renders treeDataSimpleMode correctly 1`] = `
 exports[`TreeSelect search nodes renders search input 1`] = `
 <div>
   <div
-    class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft  rc-tree-select-dropdown-hidden">
+    class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft  rc-tree-select-dropdown-hidden"
+  >
     <div>
       <span
-        class="rc-tree-select-dropdown-search">
+        class="rc-tree-select-dropdown-search"
+      >
         <span
-          class="rc-tree-select-search__field__wrap">
+          class="rc-tree-select-search__field__wrap"
+        >
           <input
             class="rc-tree-select-search__field"
             role="textbox"
-            value="" />
+            value=""
+          />
         </span>
       </span>
       <ul
         class="rc-tree-select-tree"
         role="tree-node"
-        unselectable="true">
+        unselectable="true"
+      >
         <li
-          class="">
+          class=""
+        >
           <span
-            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu" />
+            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
+          />
           <a
             class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-            title="labela">
+            title="labela"
+          >
             <span
-              class="rc-tree-select-tree-title">
+              class="rc-tree-select-tree-title"
+            >
               labela
             </span>
           </a>
         </li>
         <li
-          class="">
+          class=""
+        >
           <span
-            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu" />
+            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
+          />
           <a
             class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-            title="labelb">
+            title="labelb"
+          >
             <span
-              class="rc-tree-select-tree-title">
+              class="rc-tree-select-tree-title"
+            >
               labelb
             </span>
           </a>
