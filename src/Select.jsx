@@ -593,7 +593,7 @@ const Select = React.createClass({
         unCheckPos = itemObj.pos;
       }
     });
-    const nArr = unCheckPos.split('-');
+    const nArr = unCheckPos && unCheckPos.split('-');
     const newVals = [];
     const newCkTns = [];
     checkedTreeNodes.forEach(itemObj => {
