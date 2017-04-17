@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import Trigger from 'rc-trigger';
@@ -25,8 +26,8 @@ const BUILT_IN_PLACEMENTS = {
   },
 };
 
-const SelectTrigger = React.createClass({
-  propTypes: {
+class SelectTrigger extends Component {
+  static propTypes = {
     dropdownMatchSelectWidth: PropTypes.bool,
     dropdownPopupAlign: PropTypes.object,
     visible: PropTypes.bool,
@@ -36,14 +37,12 @@ const SelectTrigger = React.createClass({
     prefixCls: PropTypes.string,
     popupClassName: PropTypes.string,
     children: PropTypes.any,
-  },
+  };
 
-  getInitialState() {
-    return {
-      _expandedKeys: [],
-      fireOnExpand: false,
-    };
-  },
+  state = {
+    _expandedKeys: [],
+    fireOnExpand: false,
+  };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.inputValue && nextProps.inputValue !== this.props.inputValue) {
@@ -53,7 +52,7 @@ const SelectTrigger = React.createClass({
         fireOnExpand: false,
       });
     }
-  },
+  }
 
   componentDidUpdate() {
     if (this.props.dropdownMatchSelectWidth && this.props.visible) {
@@ -62,23 +61,23 @@ const SelectTrigger = React.createClass({
         dropdownDOMNode.style.width = `${ReactDOM.findDOMNode(this).offsetWidth}px`;
       }
     }
-  },
+  }
 
-  onExpand(expandedKeys) {
+  onExpand = (expandedKeys) => {
     // rerender
     this.setState({
       _expandedKeys: expandedKeys,
       fireOnExpand: true,
     });
-  },
+  }
 
   getPopupEleRefs() {
     return this.popupEle && this.popupEle.refs;
-  },
+  }
 
   getPopupDOMNode() {
     return this.refs.trigger.getPopupDomNode();
-  },
+  }
 
   getDropdownTransitionName() {
     const props = this.props;
@@ -87,22 +86,22 @@ const SelectTrigger = React.createClass({
       transitionName = `${this.getDropdownPrefixCls()}-${props.animation}`;
     }
     return transitionName;
-  },
+  }
 
   getDropdownPrefixCls() {
     return `${this.props.prefixCls}-dropdown`;
-  },
+  }
 
-  highlightTreeNode(treeNode) {
+  highlightTreeNode = (treeNode) => {
     const props = this.props;
     const filterVal = treeNode.props[labelCompatible(props.treeNodeFilterProp)];
     if (typeof filterVal === 'string') {
       return props.inputValue && filterVal.indexOf(props.inputValue) > -1;
     }
     return false;
-  },
+  }
 
-  filterTreeNode(input, child) {
+  filterTreeNode = (input, child) => {
     if (!input) {
       return true;
     }
@@ -114,11 +113,11 @@ const SelectTrigger = React.createClass({
       return false;
     }
     return filterTreeNode.call(this, input, child);
-  },
+  }
 
-  savePopupElement(ele) {
+  savePopupElement = (ele) => {
     this.popupEle = ele;
-  },
+  }
 
   processTreeNode(treeNodes) {
     const filterPoss = [];
@@ -160,7 +159,7 @@ const SelectTrigger = React.createClass({
       });
     };
     return recursive(hierarchyNodes);
-  },
+  }
 
   renderTree(keys, halfCheckedKeys, newTreeNodes, multiple) {
     const props = this.props;
@@ -215,10 +214,13 @@ const SelectTrigger = React.createClass({
       trProps.loadData = props.loadData;
     }
 
-    return (<Tree ref={this.savePopupElement} {...trProps}>
+    return (
+      <Tree ref={this.savePopupElement} {...trProps}>
         {newTreeNodes}
-    </Tree>);
-  },
+      </Tree>
+    );
+  }
+
   render() {
     const props = this.props;
     const multiple = props.multiple;
@@ -273,33 +275,42 @@ const SelectTrigger = React.createClass({
     let notFoundContent;
     if (!treeNodes.length) {
       if (props.notFoundContent) {
-        notFoundContent = (<span className={`${props.prefixCls}-not-found`}>
-          {props.notFoundContent}</span>);
+        notFoundContent = (
+          <span className={`${props.prefixCls}-not-found`}>
+            {props.notFoundContent}
+          </span>
+        );
       } else if (!search) {
         visible = false;
       }
     }
-    const popupElement = (<div>
-      {search}
-      {notFoundContent || this.renderTree(keys, halfCheckedKeys, treeNodes, multiple)}
-    </div>);
+    const popupElement = (
+      <div>
+        {search}
+        {notFoundContent || this.renderTree(keys, halfCheckedKeys, treeNodes, multiple)}
+      </div>
+    );
 
-    return (<Trigger
-      action={props.disabled ? [] : ['click']}
-      ref="trigger"
-      popupPlacement="bottomLeft"
-      builtinPlacements={BUILT_IN_PLACEMENTS}
-      popupAlign={props.dropdownPopupAlign}
-      prefixCls={dropdownPrefixCls}
-      popupTransitionName={this.getDropdownTransitionName()}
-      onPopupVisibleChange={props.onDropdownVisibleChange}
-      popup={popupElement}
-      popupVisible={visible}
-      getPopupContainer={props.getPopupContainer}
-      popupClassName={classnames(popupClassName)}
-      popupStyle={props.dropdownStyle}
-    >{this.props.children}</Trigger>);
-  },
-});
+    return (
+      <Trigger
+        action={props.disabled ? [] : ['click']}
+        ref="trigger"
+        popupPlacement="bottomLeft"
+        builtinPlacements={BUILT_IN_PLACEMENTS}
+        popupAlign={props.dropdownPopupAlign}
+        prefixCls={dropdownPrefixCls}
+        popupTransitionName={this.getDropdownTransitionName()}
+        onPopupVisibleChange={props.onDropdownVisibleChange}
+        popup={popupElement}
+        popupVisible={visible}
+        getPopupContainer={props.getPopupContainer}
+        popupClassName={classnames(popupClassName)}
+        popupStyle={props.dropdownStyle}
+      >
+        {this.props.children}
+      </Trigger>
+    );
+  }
+}
 
 export default SelectTrigger;
