@@ -1,4 +1,4 @@
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import { SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './strategies';
 
 function valueType(props, propName, componentName) {
