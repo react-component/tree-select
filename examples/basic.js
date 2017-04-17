@@ -1,15 +1,15 @@
 webpackJsonp([0],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(1);
 
 
-/***/ },
+/***/ }),
 
 /***/ 1:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -21,21 +21,21 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(35);
+	var _reactDom = __webpack_require__(39);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	__webpack_require__(181);
+	__webpack_require__(185);
 	
-	var _rcDialog = __webpack_require__(182);
+	var _rcDialog = __webpack_require__(186);
 	
 	var _rcDialog2 = _interopRequireDefault(_rcDialog);
 	
-	var _rcTreeSelect = __webpack_require__(197);
+	var _rcTreeSelect = __webpack_require__(205);
 	
 	var _rcTreeSelect2 = _interopRequireDefault(_rcTreeSelect);
 	
-	var _util = __webpack_require__(273);
+	var _util = __webpack_require__(281);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -450,16 +450,16 @@ webpackJsonp([0],{
 	
 	_reactDom2.default.render(_react2.default.createElement(Demo, null), document.getElementById('__react-content'));
 
-/***/ },
+/***/ }),
 
 /***/ 3:
 2,
 
-/***/ 181:
+/***/ 185:
 2,
 
-/***/ 182:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 186:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -471,11 +471,11 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Dialog = __webpack_require__(183);
+	var _Dialog = __webpack_require__(187);
 	
 	var _Dialog2 = _interopRequireDefault(_Dialog);
 	
-	var _getContainerRenderMixin = __webpack_require__(196);
+	var _getContainerRenderMixin = __webpack_require__(204);
 	
 	var _getContainerRenderMixin2 = _interopRequireDefault(_getContainerRenderMixin);
 	
@@ -502,6 +502,14 @@ webpackJsonp([0],{
 	        autoDestroy: false,
 	        getComponent: function getComponent(instance, extra) {
 	            return _react2["default"].createElement(_Dialog2["default"], __assign({}, instance.props, extra, { key: "dialog" }));
+	        },
+	        getContainer: function getContainer(instance) {
+	            if (instance.props.getContainer) {
+	                return instance.props.getContainer();
+	            }
+	            var container = document.createElement('div');
+	            document.body.appendChild(container);
+	            return container;
 	        }
 	    })],
 	    getDefaultProps: function getDefaultProps() {
@@ -536,10 +544,10 @@ webpackJsonp([0],{
 	exports["default"] = DialogWrap;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
-/***/ 183:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 187:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -551,23 +559,23 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(35);
+	var _reactDom = __webpack_require__(39);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _KeyCode = __webpack_require__(184);
+	var _KeyCode = __webpack_require__(188);
 	
 	var _KeyCode2 = _interopRequireDefault(_KeyCode);
 	
-	var _rcAnimate = __webpack_require__(185);
+	var _rcAnimate = __webpack_require__(189);
 	
 	var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 	
-	var _LazyRenderBox = __webpack_require__(194);
+	var _LazyRenderBox = __webpack_require__(202);
 	
 	var _LazyRenderBox2 = _interopRequireDefault(_LazyRenderBox);
 	
-	var _getScrollBarSize = __webpack_require__(195);
+	var _getScrollBarSize = __webpack_require__(203);
 	
 	var _getScrollBarSize2 = _interopRequireDefault(_getScrollBarSize);
 	
@@ -864,10 +872,10 @@ webpackJsonp([0],{
 	exports["default"] = Dialog;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
-/***/ 194:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 202:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -915,10 +923,10 @@ webpackJsonp([0],{
 	exports["default"] = LazyRenderBox;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
-/***/ 195:
-/***/ function(module, exports) {
+/***/ 203:
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -966,7 +974,7 @@ webpackJsonp([0],{
 	}
 	module.exports = exports['default'];
 
-/***/ }
+/***/ })
 
 });
 //# sourceMappingURL=basic.js.map
