@@ -374,6 +374,10 @@ class Select extends Component {
     }
   }
 
+  onChoiceAnimationLeave = () => {
+    this.refs.trigger.refs.trigger.forcePopupAlign();
+  }
+
   getLabelFromNode(child) {
     return getPropValue(child, this.props.treeNodeLabelProp);
   }
@@ -808,6 +812,7 @@ class Select extends Component {
         className={className}
         component="ul"
         transitionName={choiceTransitionName}
+        onLeave={this.onChoiceAnimationLeave}
       >
         {selectedValueNodes}
       </Animate>);
