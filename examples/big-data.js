@@ -7,28 +7,29 @@ import ReactDOM from 'react-dom';
 import TreeSelect, { SHOW_PARENT } from 'rc-tree-select';
 import Gen from './big-data-generator';
 
-const Demo = React.createClass({
-  getInitialState() {
-    return {
-      gData: [],
-      gData1: [],
-      value: '',
-      value1: '',
-    };
-  },
-  onChange(value) {
+class Demo extends React.Component {
+  state = {
+    gData: [],
+    gData1: [],
+    value: '',
+    value1: '',
+  }
+
+  onChange = (value) => {
     console.log('onChange', arguments);
     this.setState({ value });
-  },
-  onChangeStrictly(value1) {
+  }
+
+  onChangeStrictly = (value1) => {
     console.log('onChangeStrictly', arguments);
     const ind = parseInt(Math.random() * 3, 10);
     value1.push({ value: `0-0-0-${ind}-value`, label: `0-0-0-${ind}-label`, halfChecked: true });
     this.setState({
       value1,
     });
-  },
-  onGen(data) {
+  }
+
+  onGen = (data) => {
     this.setState({
       gData: data,
       gData1: [...data],
@@ -39,7 +40,8 @@ const Demo = React.createClass({
       ],
       // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
     });
-  },
+  }
+
   render() {
     return (<div style={{ padding: '0 20px' }}>
       <Gen onGen={this.onGen} />
@@ -73,7 +75,7 @@ const Demo = React.createClass({
         </div>
       </div>
     </div>);
-  },
-});
+  }
+}
 
 ReactDOM.render(<Demo />, document.getElementById('__react-content'));

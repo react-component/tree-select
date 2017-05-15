@@ -6,38 +6,39 @@ import ReactDOM from 'react-dom';
 import TreeSelect, { SHOW_PARENT } from 'rc-tree-select';
 import { gData } from './util';
 
-const Demo = React.createClass({
-  getInitialState() {
-    return {
-      value: '11',
-      // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
-      simpleTreeData: [
-        { key: 1, pId: 0, label: 'a', value: 'a' },
-        { key: 11, pId: 1, label: 'a12', value: 'a12', disabled: true },
-        { key: 111, pId: 11, label: 'a00', value: 'a00', selectable: false },
-        { key: 2, pId: 0, label: 'b', value: 'b' },
-        { key: 20, pId: 2, label: 'b10', value: 'b10' },
-        { key: 21, pId: 2, label: 'b1', value: 'b1' },
-        { key: 22, pId: 2, label: 'b12', value: 'b12' },
-      ],
-      treeDataSimpleMode: {
-        id: 'key',
-        rootPId: 0,
-      },
-    };
-  },
-  onChange(value) {
+class Demo extends React.Component {
+  state = {
+    value: '11',
+    // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
+    simpleTreeData: [
+      { key: 1, pId: 0, label: 'a', value: 'a' },
+      { key: 11, pId: 1, label: 'a12', value: 'a12', disabled: true },
+      { key: 111, pId: 11, label: 'a00', value: 'a00', selectable: false },
+      { key: 2, pId: 0, label: 'b', value: 'b' },
+      { key: 20, pId: 2, label: 'b10', value: 'b10' },
+      { key: 21, pId: 2, label: 'b1', value: 'b1' },
+      { key: 22, pId: 2, label: 'b12', value: 'b12' },
+    ],
+    treeDataSimpleMode: {
+      id: 'key',
+      rootPId: 0,
+    },
+  }
+
+  onChange = (value) => {
     if (value.length === 1) {
       // return;
     }
     console.log('onChange', arguments, this.state.simpleTreeData);
     this.setState({ value });
-  },
-  onSelect() {
+  }
+
+  onSelect = () => {
     // use onChange instead
     // console.log(arguments);
-  },
-  onDataChange() {
+  }
+
+  onDataChange = () => {
     const data = [...this.state.simpleTreeData];
     data.forEach(i => {
       if (i.key === 11) {
@@ -48,7 +49,8 @@ const Demo = React.createClass({
       }
     });
     this.setState({ simpleTreeData: data });
-  },
+  }
+
   render() {
     return (
       <div style={{ margin: 20 }}>
@@ -90,7 +92,7 @@ const Demo = React.createClass({
         <button onClick={this.onDataChange}>change data</button>
       </div>
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(<Demo />, document.getElementById('__react-content'));

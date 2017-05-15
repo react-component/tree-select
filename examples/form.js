@@ -1,15 +1,18 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import 'rc-tree-select/assets/index.less';
-import './demo.less';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import TreeSelect from 'rc-tree-select';
+import Select from 'rc-select';
 import { createForm } from 'rc-form';
 import { regionStyle, errorStyle } from './styles';
 import { gData } from './util';
-import Select from 'rc-select';
 import 'rc-select/assets/index.css';
+import 'rc-tree-select/assets/index.less';
+import './demo.less';
+
+const { Option } = Select;
 
 class TreeSelectInput extends Component {
   onChange(value) {
@@ -30,7 +33,6 @@ class TreeSelectInput extends Component {
 class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
-    value: PropTypes.array,
   };
   onSubmit = (e) => {
     console.log('submit');
@@ -49,10 +51,9 @@ class Form extends Component {
   };
   render() {
     const { form } = this.props;
-    const { getFieldProps, getFieldError } = form;
+    const { getFieldDecorator, getFieldError } = form;
     const tProps = {
       multiple: true,
-      value: this.props.value,
       treeData: gData,
       treeCheckable: true,
       // treeDefaultExpandAll: true,
@@ -63,15 +64,17 @@ class Form extends Component {
         <div style={regionStyle}>
           <div>
             <p style={{ color: 'blue' }}>no onChange</p>
-            <TreeSelect
-              style={{ width: 300 }} {...tProps}
-              {...getFieldProps('tree-select', {
+              {getFieldDecorator('tree-select', {
                 initialValue: ['0-0-0-value'],
                 rules: [
                   { required: true, type: 'array', message: 'tree-select 需要必填' },
                 ],
-              }) }
-            />
+              })(
+                <TreeSelect
+                  {...tProps}
+                  style={{ width: 300 }}
+                />
+              )}
           </div>
           <p style={errorStyle}>
             {(getFieldError('tree-select')) ? getFieldError('tree-select').join(',') : null}
@@ -81,16 +84,18 @@ class Form extends Component {
         <div style={regionStyle}>
           <div>
             <p style={{ color: 'blue' }}>custom onChange</p>
-            <TreeSelectInput
-              style={{ width: 300 }} {...tProps}
-              treeData={gData}
-              {...getFieldProps('tree-select1', {
-                initialValue: ['0-0-0-value'],
-                rules: [
-                  { required: true, type: 'array', message: 'tree-select1 需要必填' },
-                ],
-              }) }
-            />
+            {getFieldDecorator('tree-select1', {
+              initialValue: ['0-0-0-value'],
+              rules: [
+                { required: true, type: 'array', message: 'tree-select1 需要必填' },
+              ],
+            })(
+              <TreeSelectInput
+                {...tProps}
+                style={{ width: 300 }}
+                treeData={gData}
+              />
+            )}
           </div>
           <p style={errorStyle}>
             {(getFieldError('tree-select1')) ? getFieldError('tree-select1').join(',') : null}
@@ -98,20 +103,22 @@ class Form extends Component {
         </div>
 
         <div style={regionStyle}>
-          <Select
-            style={{ width: 200 }} allowClear multiple
-            {...getFieldProps('select', {
-              initialValue: 'jack',
-              rules: [
-                { required: true, type: 'array', message: 'select 需要必填' },
-              ],
-            }) }
-          >
-            <Option value="jack">jack</Option>
-            <Option value="lucy">lucy</Option>
-            <Option value="disabled" disabled>disabled</Option>
-            <Option value="yiminghe">yiminghe</Option>
-          </Select>
+          {getFieldDecorator('select', {
+            initialValue: 'jack',
+            rules: [
+              { required: true, type: 'array', message: 'select 需要必填' },
+            ],
+          })(
+            <Select
+              style={{ width: 200 }} allowClear multiple
+
+            >
+              <Option value="jack">jack</Option>
+              <Option value="lucy">lucy</Option>
+              <Option value="disabled" disabled>disabled</Option>
+              <Option value="yiminghe">yiminghe</Option>
+            </Select>
+          )}
           <p style={errorStyle}>
             {(getFieldError('select')) ? getFieldError('select').join(',') : null}
           </p>

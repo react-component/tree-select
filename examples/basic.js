@@ -51,56 +51,61 @@ function findPath(value, data) {
   return sel;
 }
 
-const Demo = React.createClass({
-  getInitialState() {
-    return {
-      tsOpen: false,
-      visible: false,
-      inputValue: '0-0-0-label',
-      value: '0-0-0-value1',
-      // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
-      lv: { value: '0-0-0-value', label: 'spe label' },
-      multipleValue: [],
-      simpleTreeData: [
-        { key: 1, pId: 0, label: 'test1', value: 'test1' },
-        { key: 121, pId: 0, label: 'test1', value: 'test121' },
-        { key: 11, pId: 1, label: 'test11', value: 'test11' },
-        { key: 12, pId: 1, label: 'test12', value: 'test12' },
-        { key: 111, pId: 11, label: 'test111', value: 'test111' },
-      ],
-      treeDataSimpleMode: {
-        id: 'key',
-        rootPId: 0,
-      },
-    };
-  },
+class Demo extends React.Component {
+  state = {
+    tsOpen: false,
+    visible: false,
+    inputValue: '0-0-0-label',
+    value: '0-0-0-value1',
+    // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
+    lv: { value: '0-0-0-value', label: 'spe label' },
+    multipleValue: [],
+    simpleTreeData: [
+      { key: 1, pId: 0, label: 'test1', value: 'test1' },
+      { key: 121, pId: 0, label: 'test1', value: 'test121' },
+      { key: 11, pId: 1, label: 'test11', value: 'test11' },
+      { key: 12, pId: 1, label: 'test12', value: 'test12' },
+      { key: 111, pId: 11, label: 'test111', value: 'test111' },
+    ],
+    treeDataSimpleMode: {
+      id: 'key',
+      rootPId: 0,
+    },
+  }
+
   componentDidMount() {
     // console.log(this.refs.mul.getInputDOMNode());
     this.refs.mul.getInputDOMNode().setAttribute('disabled', true);
-  },
-  onClick() {
+  }
+
+  onClick = () => {
     this.setState({
       visible: true,
     });
-  },
-  onClose() {
+  }
+
+  onClose = () => {
     this.setState({
       visible: false,
     });
-  },
-  onSearch(value) {
+  }
+
+  onSearch = (value) => {
     console.log(value, arguments);
-  },
-  onChange(value) {
+  }
+
+  onChange = (value) => {
     console.log('onChange', arguments);
     this.setState({ value });
-  },
-  onChangeChildren(value) {
+  }
+
+  onChangeChildren = (value) => {
     console.log('onChangeChildren', arguments);
     const pre = value ? this.state.value : undefined;
     this.setState({ value: isLeaf(value) ? value : pre });
-  },
-  onChangeLV(value) {
+  }
+
+  onChangeLV = (value) => {
     console.log('labelInValue', arguments);
     if (!value) {
       this.setState({ lv: undefined });
@@ -108,16 +113,19 @@ const Demo = React.createClass({
     }
     const path = findPath(value.value, gData).map(i => i.label).reverse().join(' > ');
     this.setState({ lv: { value: value.value, label: path } });
-  },
-  onMultipleChange(value) {
+  }
+
+  onMultipleChange = (value) => {
     console.log('onMultipleChange', arguments);
     this.setState({ multipleValue: value });
-  },
-  onSelect() {
+  }
+
+  onSelect = () => {
     // use onChange instead
     console.log(arguments);
-  },
-  onDropdownVisibleChange(visible, info) {
+  }
+
+  onDropdownVisibleChange = (visible, info) => {
     console.log(visible, this.state.value, info);
     if (Array.isArray(this.state.value) && this.state.value.length > 1
       && this.state.value.length < 3) {
@@ -125,10 +133,12 @@ const Demo = React.createClass({
       return false;
     }
     return true;
-  },
-  filterTreeNode(input, child) {
+  }
+
+  filterTreeNode = (input, child) => {
     return String(child.props.title).indexOf(input) === 0;
-  },
+  }
+
   render() {
     return (
       <div style={{ margin: 20 }}>
@@ -332,7 +342,7 @@ const Demo = React.createClass({
         </TreeSelect>
       </div>
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(<Demo />, document.getElementById('__react-content'));
