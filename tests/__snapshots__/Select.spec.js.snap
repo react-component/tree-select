@@ -30,7 +30,7 @@ exports[`TreeSelect render renders TreeNode correctly 1`] = `
           <span
             class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
           />
-          <a
+          <span
             class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
             title="0 label"
           >
@@ -39,7 +39,7 @@ exports[`TreeSelect render renders TreeNode correctly 1`] = `
             >
               0 label
             </span>
-          </a>
+          </span>
         </li>
         <li
           class=""
@@ -47,7 +47,7 @@ exports[`TreeSelect render renders TreeNode correctly 1`] = `
           <span
             class="rc-tree-select-tree-switcher rc-tree-select-tree-noline_open"
           />
-          <a
+          <span
             class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
             title="1 label"
           >
@@ -56,7 +56,7 @@ exports[`TreeSelect render renders TreeNode correctly 1`] = `
             >
               1 label
             </span>
-          </a>
+          </span>
           <ul
             class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
             data-expanded="true"
@@ -67,7 +67,7 @@ exports[`TreeSelect render renders TreeNode correctly 1`] = `
               <span
                 class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
               />
-              <a
+              <span
                 class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
                 title="10 label"
               >
@@ -76,7 +76,7 @@ exports[`TreeSelect render renders TreeNode correctly 1`] = `
                 >
                   10 label
                 </span>
-              </a>
+              </span>
             </li>
             <li
               class=""
@@ -84,7 +84,7 @@ exports[`TreeSelect render renders TreeNode correctly 1`] = `
               <span
                 class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
               />
-              <a
+              <span
                 class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
                 title="11 label"
               >
@@ -93,7 +93,7 @@ exports[`TreeSelect render renders TreeNode correctly 1`] = `
                 >
                   11 label
                 </span>
-              </a>
+              </span>
             </li>
           </ul>
         </li>
@@ -186,7 +186,7 @@ exports[`TreeSelect render renders tree correctly 1`] = `
           <span
             class="rc-tree-select-tree-checkbox"
           />
-          <a
+          <span
             class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
             title="0 label"
           >
@@ -195,7 +195,7 @@ exports[`TreeSelect render renders tree correctly 1`] = `
             >
               0 label
             </span>
-          </a>
+          </span>
         </li>
         <li
           class=""
@@ -206,7 +206,7 @@ exports[`TreeSelect render renders tree correctly 1`] = `
           <span
             class="rc-tree-select-tree-checkbox"
           />
-          <a
+          <span
             class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
             title="1 label"
           >
@@ -215,7 +215,7 @@ exports[`TreeSelect render renders tree correctly 1`] = `
             >
               1 label
             </span>
-          </a>
+          </span>
           <ul
             class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
             data-expanded="true"
@@ -229,7 +229,7 @@ exports[`TreeSelect render renders tree correctly 1`] = `
               <span
                 class="rc-tree-select-tree-checkbox"
               />
-              <a
+              <span
                 class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
                 title="10 label"
               >
@@ -238,7 +238,7 @@ exports[`TreeSelect render renders tree correctly 1`] = `
                 >
                   10 label
                 </span>
-              </a>
+              </span>
             </li>
             <li
               class=""
@@ -249,7 +249,7 @@ exports[`TreeSelect render renders tree correctly 1`] = `
               <span
                 class="rc-tree-select-tree-checkbox"
               />
-              <a
+              <span
                 class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
                 title="11 label"
               >
@@ -258,7 +258,7 @@ exports[`TreeSelect render renders tree correctly 1`] = `
                 >
                   11 label
                 </span>
-              </a>
+              </span>
             </li>
           </ul>
         </li>
@@ -298,7 +298,7 @@ exports[`TreeSelect render renders treeDataSimpleMode correctly 1`] = `
           <span
             class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
           />
-          <a
+          <span
             class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
             title="label0"
           >
@@ -307,7 +307,7 @@ exports[`TreeSelect render renders treeDataSimpleMode correctly 1`] = `
             >
               label0
             </span>
-          </a>
+          </span>
         </li>
         <li
           class=""
@@ -315,7 +315,7 @@ exports[`TreeSelect render renders treeDataSimpleMode correctly 1`] = `
           <span
             class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
           />
-          <a
+          <span
             class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
             title="label1"
           >
@@ -324,7 +324,7 @@ exports[`TreeSelect render renders treeDataSimpleMode correctly 1`] = `
             >
               label1
             </span>
-          </a>
+          </span>
         </li>
       </ul>
     </div>
@@ -362,7 +362,7 @@ exports[`TreeSelect search nodes renders search input 1`] = `
           <span
             class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
           />
-          <a
+          <span
             class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
             title="labela"
           >
@@ -371,7 +371,7 @@ exports[`TreeSelect search nodes renders search input 1`] = `
             >
               labela
             </span>
-          </a>
+          </span>
         </li>
         <li
           class=""
@@ -379,7 +379,7 @@ exports[`TreeSelect search nodes renders search input 1`] = `
           <span
             class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
           />
-          <a
+          <span
             class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
             title="labelb"
           >
@@ -388,7 +388,7 @@ exports[`TreeSelect search nodes renders search input 1`] = `
             >
               labelb
             </span>
-          </a>
+          </span>
         </li>
       </ul>
     </div>
