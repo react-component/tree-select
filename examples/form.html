@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>form.js - example - rc-tree-select@1.9.4</title>
+  <title>form.js - example - rc-tree-select@1.9.5</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,145 +263,152 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-tree-select@1.9.4</h1>
+      <h1>rc-tree-select@1.9.5</h1>
 
       <p>tree-select ui component for react</p>
     </div>
     <div class="example" id="__react-content"></div>
 
-    <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
+    <div class="highlight"><pre><code language="undefined">/* eslint react/no-multi-comp:0, no-console:0 */
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-tree-select/assets/index.css'</span>;
-<span class="hljs-keyword">import</span> <span class="hljs-string">'./demo.less'</span>;
-<span class="hljs-keyword">import</span> React, { Component, PropTypes } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
-<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
-<span class="hljs-keyword">import</span> TreeSelect <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-tree-select'</span>;
-<span class="hljs-keyword">import</span> { createForm } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
-<span class="hljs-keyword">import</span> { regionStyle, errorStyle } <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
-<span class="hljs-keyword">import</span> { gData } <span class="hljs-keyword">from</span> <span class="hljs-string">'./util'</span>;
-<span class="hljs-keyword">import</span> Select <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-select'</span>;
-<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-select/assets/index.css'</span>;
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
+import TreeSelect from 'rc-tree-select';
+import Select from 'rc-select';
+import { createForm } from 'rc-form';
+import { regionStyle, errorStyle } from './styles';
+import { gData } from './util';
+import 'rc-select/assets/index.css';
+import 'rc-tree-select/assets/index.css';
+import './demo.less';
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TreeSelectInput</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+const { Option } = Select;
+
+class TreeSelectInput extends Component {
   onChange(value) {
-    <span class="hljs-built_in">console</span>.log(value, <span class="hljs-built_in">arguments</span>);
-    <span class="hljs-keyword">const</span> props = <span class="hljs-keyword">this</span>.props;
-    <span class="hljs-keyword">if</span> (props.onChange) {
+    console.log(value, arguments);
+    const props = this.props;
+    if (props.onChange) {
       props.onChange(value);
     }
   }
   render() {
-    <span class="hljs-keyword">return</span> (
-      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> {<span class="hljs-attribute">...this.props</span>} <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange.bind(this)}</span> /&gt;</span>
-    )</span>;
+    return (
+      &lt;TreeSelect {...this.props} onChange={this.onChange.bind(this)} /&gt;
+    );
   }
 }
 
-<span class="hljs-comment">// @createForm()</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Form</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+// @createForm()
+class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
-    value: PropTypes.array,
   };
   onSubmit = (e) =&gt; {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'submit'</span>);
+    console.log('submit');
     e.preventDefault();
-    <span class="hljs-keyword">this</span>.props.form.validateFields((error, values) =&gt; {
-      <span class="hljs-keyword">if</span> (!error) {
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'ok'</span>, values);
-      } <span class="hljs-keyword">else</span> {
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'error'</span>, error, values);
+    this.props.form.validateFields((error, values) =&gt; {
+      if (!error) {
+        console.log('ok', values);
+      } else {
+        console.log('error', error, values);
       }
     });
   };
   reset = (e) =&gt; {
     e.preventDefault();
-    <span class="hljs-keyword">this</span>.props.form.resetFields();
+    this.props.form.resetFields();
   };
   render() {
-    <span class="hljs-keyword">const</span> { form } = <span class="hljs-keyword">this</span>.props;
-    <span class="hljs-keyword">const</span> { getFieldProps, getFieldError } = form;
-    <span class="hljs-keyword">const</span> tProps = {
-      multiple: <span class="hljs-literal">true</span>,
-      value: <span class="hljs-keyword">this</span>.props.value,
+    const { form } = this.props;
+    const { getFieldDecorator, getFieldError } = form;
+    const tProps = {
+      multiple: true,
       treeData: gData,
-      treeCheckable: <span class="hljs-literal">true</span>,
-      <span class="hljs-comment">// treeDefaultExpandAll: true,</span>
+      treeCheckable: true,
+      // treeDefaultExpandAll: true,
     };
-    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">margin:</span> <span class="hljs-attribute">20</span> }}&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>validity<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">form</span> <span class="hljs-attribute">onSubmit</span>=<span class="hljs-value">{this.onSubmit}</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">color:</span> '<span class="hljs-attribute">blue</span>' }}&gt;</span>no onChange<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
-              <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }} {<span class="hljs-attribute">...tProps</span>}
-              {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">tree-select</span>', {
-                <span class="hljs-attribute">initialValue:</span> ['<span class="hljs-attribute">0-0-0-value</span>'],
-                <span class="hljs-attribute">rules:</span> [
-                  { <span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>, <span class="hljs-attribute">type:</span> '<span class="hljs-attribute">array</span>', <span class="hljs-attribute">message:</span> '<span class="hljs-attribute">tree-select</span> 需要必填' },
+    return (&lt;div style={{ margin: 20 }}&gt;
+      &lt;h2&gt;validity&lt;/h2&gt;
+      &lt;form onSubmit={this.onSubmit}&gt;
+        &lt;div style={regionStyle}&gt;
+          &lt;div&gt;
+            &lt;p style={{ color: 'blue' }}&gt;no onChange&lt;/p&gt;
+              {getFieldDecorator('tree-select', {
+                initialValue: ['0-0-0-value'],
+                rules: [
+                  { required: true, type: 'array', message: 'tree-select 需要必填' },
                 ],
-              }) }
-            /&gt;</span>
-          <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
+              })(
+                &lt;TreeSelect
+                  {...tProps}
+                  style={{ width: 300 }}
+                /&gt;
+              )}
+          &lt;/div&gt;
+          &lt;p style={errorStyle}&gt;
             {(getFieldError('tree-select')) ? getFieldError('tree-select').join(',') : null}
-          <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+          &lt;/p&gt;
+        &lt;/div&gt;
 
-        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">color:</span> '<span class="hljs-attribute">blue</span>' }}&gt;</span>custom onChange<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelectInput</span>
-              <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }} {<span class="hljs-attribute">...tProps</span>}
-              <span class="hljs-attribute">treeData</span>=<span class="hljs-value">{gData}</span>
-              {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">tree-select1</span>', {
-                <span class="hljs-attribute">initialValue:</span> ['<span class="hljs-attribute">0-0-0-value</span>'],
-                <span class="hljs-attribute">rules:</span> [
-                  { <span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>, <span class="hljs-attribute">type:</span> '<span class="hljs-attribute">array</span>', <span class="hljs-attribute">message:</span> '<span class="hljs-attribute">tree-select1</span> 需要必填' },
-                ],
-              }) }
-            /&gt;</span>
-          <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
-            {(getFieldError('tree-select1')) ? getFieldError('tree-select1').join(',') : null}
-          <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-
-        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
-            <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">200</span> }} <span class="hljs-attribute">allowClear</span> <span class="hljs-attribute">multiple</span>
-            {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">select</span>', {
-              <span class="hljs-attribute">initialValue:</span> '<span class="hljs-attribute">jack</span>',
-              <span class="hljs-attribute">rules:</span> [
-                { <span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>, <span class="hljs-attribute">type:</span> '<span class="hljs-attribute">array</span>', <span class="hljs-attribute">message:</span> '<span class="hljs-attribute">select</span> 需要必填' },
+        &lt;div style={regionStyle}&gt;
+          &lt;div&gt;
+            &lt;p style={{ color: 'blue' }}&gt;custom onChange&lt;/p&gt;
+            {getFieldDecorator('tree-select1', {
+              initialValue: ['0-0-0-value'],
+              rules: [
+                { required: true, type: 'array', message: 'tree-select1 需要必填' },
               ],
-            }) }
-          &gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"jack"</span>&gt;</span>jack<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"lucy"</span>&gt;</span>lucy<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"disabled"</span> <span class="hljs-attribute">disabled</span>&gt;</span>disabled<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"yiminghe"</span>&gt;</span>yiminghe<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-          <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
-            {(getFieldError('select')) ? getFieldError('select').join(',') : null}
-          <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            })(
+              &lt;TreeSelectInput
+                {...tProps}
+                style={{ width: 300 }}
+                treeData={gData}
+              /&gt;
+            )}
+          &lt;/div&gt;
+          &lt;p style={errorStyle}&gt;
+            {(getFieldError('tree-select1')) ? getFieldError('tree-select1').join(',') : null}
+          &lt;/p&gt;
+        &lt;/div&gt;
 
-        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.reset}</span>&gt;</span>reset<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
+        &lt;div style={regionStyle}&gt;
+          {getFieldDecorator('select', {
+            initialValue: 'jack',
+            rules: [
+              { required: true, type: 'array', message: 'select 需要必填' },
+            ],
+          })(
+            &lt;Select
+              style={{ width: 200 }} allowClear multiple
+
+            &gt;
+              &lt;Option value="jack"&gt;jack&lt;/Option&gt;
+              &lt;Option value="lucy"&gt;lucy&lt;/Option&gt;
+              &lt;Option value="disabled" disabled&gt;disabled&lt;/Option&gt;
+              &lt;Option value="yiminghe"&gt;yiminghe&lt;/Option&gt;
+            &lt;/Select&gt;
+          )}
+          &lt;p style={errorStyle}&gt;
+            {(getFieldError('select')) ? getFieldError('select').join(',') : null}
+          &lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div style={regionStyle}&gt;
+          &lt;button onClick={this.reset}&gt;reset&lt;/button&gt;
           &amp;nbsp;
-          <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"submit"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"submit"</span>/&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-title">form</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
+          &lt;input type="submit" value="submit"/&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;);
   }
 }
 
-<span class="hljs-comment">// ReactDOM.render(&lt;Form /&gt;, document.getElementById('__react-content'));</span>
-<span class="hljs-keyword">const</span> NewForm = createForm()(Form);
-ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">NewForm</span> /&gt;</span>, document.getElementById('__react-content'));
-</span></code></pre></div>
+// ReactDOM.render(&lt;Form /&gt;, document.getElementById('__react-content'));
+const NewForm = createForm()(Form);
+ReactDOM.render(&lt;NewForm /&gt;, document.getElementById('__react-content'));
+</code></pre></div>
   </div>
   <a href="https://github.com/react-component/tree-select">
     <img style="position: absolute; top: 0; right: 0; border: 0;"
