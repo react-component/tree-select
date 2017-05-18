@@ -34,19 +34,31 @@ function saveRef(name, component) {
 function loopTreeData(data, level = 0) {
   return data.map((item, index) => {
     const pos = `${level}-${index}`;
+    const {
+      label,
+      value,
+      disabled,
+      key,
+      hasOwnProperty,
+      selectable,
+      children,
+      isLeaf,
+      ...otherProps,
+    } = item;
     const props = {
-      title: item.label,
-      value: item.value,
-      // value: item.value || String(item.key || item.label), // cause onChange callback error
-      key: item.key || item.value || pos,
-      disabled: item.disabled || false,
-      selectable: item.hasOwnProperty('selectable') ? item.selectable : true,
+      value,
+      title: label,
+      // value: value || String(key || label), // cause onChange callback error
+      key: key || value || pos,
+      disabled: disabled || false,
+      selectable: selectable === false ? selectable : true,
+      ...otherProps,
     };
     let ret;
-    if (item.children && item.children.length) {
-      ret = (<_TreeNode {...props}>{loopTreeData(item.children, pos)}</_TreeNode>);
+    if (children && children.length) {
+      ret = (<_TreeNode {...props}>{loopTreeData(children, pos)}</_TreeNode>);
     } else {
-      ret = (<_TreeNode {...props} isLeaf={item.isLeaf}/>);
+      ret = (<_TreeNode {...props} isLeaf={isLeaf}/>);
     }
     return ret;
   });
