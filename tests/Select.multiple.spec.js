@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import TreeSelect from '..';
 
@@ -75,5 +75,11 @@ describe('TreeSelect.multiple', () => {
     const choice = wrapper.find('ul .rc-tree-select-selection__choice__content');
     expect(choice).toHaveLength(1);
     expect(choice.prop('children')).toBe('label0');
+  });
+
+  it('renders clear button', () => {
+    const wrapper = render(createSelect({ allowClear: true }));
+
+    expect(wrapper.find('.rc-tree-select-selection__clear')).toMatchSnapshot();
   });
 });
