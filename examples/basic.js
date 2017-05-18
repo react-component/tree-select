@@ -311,7 +311,8 @@ var Demo = function (_React$Component) {
           treeData: __WEBPACK_IMPORTED_MODULE_12__util__["a" /* gData */],
           treeNodeFilterProp: 'title',
           onChange: this.onMultipleChange,
-          onSelect: this.onSelect
+          onSelect: this.onSelect,
+          allowClear: true
         }),
         __WEBPACK_IMPORTED_MODULE_7_react___default.a.createElement(
           'h2',
@@ -844,7 +845,7 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _createReactClass = __webpack_require__(17);
+var _createReactClass = __webpack_require__(16);
 
 var _createReactClass2 = _interopRequireDefault(_createReactClass);
 
