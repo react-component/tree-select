@@ -1,6 +1,11 @@
 # History
 ---
 
+## 1.10.0 / 2017-05-18
+
+- Add `allowClear` to multiple.
+- Pass all props of tree item to TreeNode
+
 ## 1.7.0 / 2016-05-20
 - add `inputValue` api.
 
