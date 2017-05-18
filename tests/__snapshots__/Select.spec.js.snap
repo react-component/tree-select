@@ -1,397 +1,206 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TreeSelect render renders TreeNode correctly 1`] = `
-<div>
-  <div
-    class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft  rc-tree-select-dropdown-hidden"
+<div
+  id="TriggerContainer"
+>
+  <span
+    class="rc-tree-select rc-tree-select-enabled"
   >
-    <div>
+    <span
+      aria-autocomplete="list"
+      aria-haspopup="true"
+      class="rc-tree-select-selection
+                rc-tree-select-selection--single"
+      role="combobox"
+      tabindex="0"
+    >
       <span
-        class="rc-tree-select-dropdown-search"
+        class="rc-tree-select-selection__rendered"
       >
         <span
-          class="rc-tree-select-search__field__wrap"
-        >
-          <input
-            class="rc-tree-select-search__field"
-            role="textbox"
-            value=""
-          />
-        </span>
+          class="rc-tree-select-selection__placeholder"
+        />
       </span>
-      <ul
-        class="rc-tree-select-tree"
-        role="tree-node"
-        unselectable="true"
+      <span
+        class="rc-tree-select-arrow"
+        style="outline:none;"
       >
-        <li
-          class=""
-        >
-          <span
-            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
-          />
-          <span
-            class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-            title="0 label"
-          >
-            <span
-              class="rc-tree-select-tree-title"
-            >
-              0 label
-            </span>
-          </span>
-        </li>
-        <li
-          class=""
-        >
-          <span
-            class="rc-tree-select-tree-switcher rc-tree-select-tree-noline_open"
-          />
-          <span
-            class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-            title="1 label"
-          >
-            <span
-              class="rc-tree-select-tree-title"
-            >
-              1 label
-            </span>
-          </span>
-          <ul
-            class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
-            data-expanded="true"
-          >
-            <li
-              class=""
-            >
-              <span
-                class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
-              />
-              <span
-                class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                title="10 label"
-              >
-                <span
-                  class="rc-tree-select-tree-title"
-                >
-                  10 label
-                </span>
-              </span>
-            </li>
-            <li
-              class=""
-            >
-              <span
-                class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
-              />
-              <span
-                class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                title="11 label"
-              >
-                <span
-                  class="rc-tree-select-tree-title"
-                >
-                  11 label
-                </span>
-              </span>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
+        <b />
+      </span>
+    </span>
+  </span>
 </div>
 `;
 
 exports[`TreeSelect render renders correctly 1`] = `
-<span
-  class="forTest awesome awesome-enabled"
-  style="width:300px;"
+<div
+  id="TriggerContainer"
 >
   <span
-    aria-autocomplete="list"
-    aria-haspopup="true"
-    class="awesome-selection
-              awesome-selection--multiple"
-    role="combobox"
+    class="forTest awesome awesome-enabled"
+    style="width:300px;"
   >
-    <ul
-      class="awesome-selection__rendered"
+    <span
+      aria-autocomplete="list"
+      aria-haspopup="true"
+      class="awesome-selection
+                awesome-selection--multiple"
+      role="combobox"
     >
-      <li
-        class="awesome-search awesome-search--inline"
+      <ul
+        class="awesome-selection__rendered"
       >
-        <span
-          class="awesome-search__field__wrap"
+        <li
+          class="awesome-search awesome-search--inline"
         >
-          <input
-            class="awesome-search__field"
-            role="textbox"
-            value=""
-          />
-        </span>
-      </li>
-    </ul>
+          <span
+            class="awesome-search__field__wrap"
+          >
+            <input
+              class="awesome-search__field"
+              role="textbox"
+              value=""
+            />
+          </span>
+        </li>
+      </ul>
+    </span>
   </span>
-</span>
+</div>
 `;
 
 exports[`TreeSelect render renders disabled correctly 1`] = `
-<span
-  class="rc-tree-select rc-tree-select-disabled"
+<div
+  id="TriggerContainer"
 >
   <span
-    aria-autocomplete="list"
-    aria-haspopup="true"
-    class="rc-tree-select-selection
-              rc-tree-select-selection--single"
-    role="combobox"
-    tabindex="0"
+    class="rc-tree-select rc-tree-select-disabled"
   >
     <span
-      class="rc-tree-select-selection__rendered"
+      aria-autocomplete="list"
+      aria-haspopup="true"
+      class="rc-tree-select-selection
+                rc-tree-select-selection--single"
+      role="combobox"
+      tabindex="0"
     >
       <span
-        class="rc-tree-select-selection__placeholder"
-      />
-    </span>
-    <span
-      class="rc-tree-select-arrow"
-      style="outline:none;"
-    >
-      <b />
+        class="rc-tree-select-selection__rendered"
+      >
+        <span
+          class="rc-tree-select-selection__placeholder"
+        />
+      </span>
+      <span
+        class="rc-tree-select-arrow"
+        style="outline:none;"
+      >
+        <b />
+      </span>
     </span>
   </span>
-</span>
+</div>
 `;
 
 exports[`TreeSelect render renders tree correctly 1`] = `
-<div>
-  <div
-    class="rc-tree-select-dropdown awesome rc-tree-select-dropdown--multiple rc-tree-select-dropdown-placement-bottomLeft  rc-tree-select-dropdown-hidden"
-    style="width:300px;"
+<div
+  id="TriggerContainer"
+>
+  <span
+    class="rc-tree-select rc-tree-select-enabled"
   >
-    <div>
+    <span
+      aria-autocomplete="list"
+      aria-haspopup="true"
+      class="rc-tree-select-selection
+                rc-tree-select-selection--multiple"
+      role="combobox"
+    >
       <ul
-        class="rc-tree-select-tree"
-        role="tree-node"
-        unselectable="true"
+        class="rc-tree-select-selection__rendered"
       >
         <li
-          class=""
+          class="rc-tree-select-search rc-tree-select-search--inline"
         >
           <span
-            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
-          />
-          <span
-            class="rc-tree-select-tree-checkbox"
-          />
-          <span
-            class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-            title="0 label"
+            class="rc-tree-select-search__field__wrap"
           >
-            <span
-              class="rc-tree-select-tree-title"
-            >
-              0 label
-            </span>
+            <input
+              class="rc-tree-select-search__field"
+              role="textbox"
+              value=""
+            />
           </span>
-        </li>
-        <li
-          class=""
-        >
-          <span
-            class="rc-tree-select-tree-switcher rc-tree-select-tree-noline_open"
-          />
-          <span
-            class="rc-tree-select-tree-checkbox"
-          />
-          <span
-            class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-            title="1 label"
-          >
-            <span
-              class="rc-tree-select-tree-title"
-            >
-              1 label
-            </span>
-          </span>
-          <ul
-            class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
-            data-expanded="true"
-          >
-            <li
-              class=""
-            >
-              <span
-                class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
-              />
-              <span
-                class="rc-tree-select-tree-checkbox"
-              />
-              <span
-                class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                title="10 label"
-              >
-                <span
-                  class="rc-tree-select-tree-title"
-                >
-                  10 label
-                </span>
-              </span>
-            </li>
-            <li
-              class=""
-            >
-              <span
-                class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
-              />
-              <span
-                class="rc-tree-select-tree-checkbox"
-              />
-              <span
-                class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                title="11 label"
-              >
-                <span
-                  class="rc-tree-select-tree-title"
-                >
-                  11 label
-                </span>
-              </span>
-            </li>
-          </ul>
         </li>
       </ul>
-    </div>
-  </div>
+    </span>
+  </span>
 </div>
 `;
 
 exports[`TreeSelect render renders treeDataSimpleMode correctly 1`] = `
-<div>
-  <div
-    class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft  rc-tree-select-dropdown-hidden"
+<div
+  id="TriggerContainer"
+>
+  <span
+    class="rc-tree-select rc-tree-select-enabled"
   >
-    <div>
+    <span
+      aria-autocomplete="list"
+      aria-haspopup="true"
+      class="rc-tree-select-selection
+                rc-tree-select-selection--single"
+      role="combobox"
+      tabindex="0"
+    >
       <span
-        class="rc-tree-select-dropdown-search"
+        class="rc-tree-select-selection__rendered"
       >
         <span
-          class="rc-tree-select-search__field__wrap"
-        >
-          <input
-            class="rc-tree-select-search__field"
-            role="textbox"
-            value=""
-          />
-        </span>
+          class="rc-tree-select-selection__placeholder"
+        />
       </span>
-      <ul
-        class="rc-tree-select-tree"
-        role="tree-node"
-        unselectable="true"
+      <span
+        class="rc-tree-select-arrow"
+        style="outline:none;"
       >
-        <li
-          class=""
-        >
-          <span
-            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
-          />
-          <span
-            class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-            title="label0"
-          >
-            <span
-              class="rc-tree-select-tree-title"
-            >
-              label0
-            </span>
-          </span>
-        </li>
-        <li
-          class=""
-        >
-          <span
-            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
-          />
-          <span
-            class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-            title="label1"
-          >
-            <span
-              class="rc-tree-select-tree-title"
-            >
-              label1
-            </span>
-          </span>
-        </li>
-      </ul>
-    </div>
-  </div>
+        <b />
+      </span>
+    </span>
+  </span>
 </div>
 `;
 
 exports[`TreeSelect search nodes renders search input 1`] = `
-<div>
-  <div
-    class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft  rc-tree-select-dropdown-hidden"
+<div
+  id="TriggerContainer"
+>
+  <span
+    class="rc-tree-select rc-tree-select-enabled"
   >
-    <div>
+    <span
+      aria-autocomplete="list"
+      aria-haspopup="true"
+      class="rc-tree-select-selection
+                rc-tree-select-selection--single"
+      role="combobox"
+      tabindex="0"
+    >
       <span
-        class="rc-tree-select-dropdown-search"
+        class="rc-tree-select-selection__rendered"
       >
         <span
-          class="rc-tree-select-search__field__wrap"
-        >
-          <input
-            class="rc-tree-select-search__field"
-            role="textbox"
-            value=""
-          />
-        </span>
+          class="rc-tree-select-selection__placeholder"
+        />
       </span>
-      <ul
-        class="rc-tree-select-tree"
-        role="tree-node"
-        unselectable="true"
+      <span
+        class="rc-tree-select-arrow"
+        style="outline:none;"
       >
-        <li
-          class=""
-        >
-          <span
-            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
-          />
-          <span
-            class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-            title="labela"
-          >
-            <span
-              class="rc-tree-select-tree-title"
-            >
-              labela
-            </span>
-          </span>
-        </li>
-        <li
-          class=""
-        >
-          <span
-            class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop rc-tree-select-tree-noline_docu"
-          />
-          <span
-            class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-            title="labelb"
-          >
-            <span
-              class="rc-tree-select-tree-title"
-            >
-              labelb
-            </span>
-          </span>
-        </li>
-      </ul>
-    </div>
-  </div>
+        <b />
+      </span>
+    </span>
+  </span>
 </div>
 `;

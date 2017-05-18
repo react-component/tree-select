@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import { render, mount } from 'enzyme';
-import { renderToJson } from 'enzyme-to-json';
 import KeyCode from 'rc-util/lib/KeyCode';
 import TreeSelect from '..';
 
@@ -31,11 +30,11 @@ describe('TreeSelect', () => {
           treeData={treeData}
         />
       );
-      expect(renderToJson(wrapper)).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
     });
 
     it('renders tree correctly', () => {
-      const wrapper = mount(
+      const wrapper = render(
         <TreeSelect
           dropdownClassName="awesome"
           dropdownStyle={{ width: 300 }}
@@ -45,19 +44,18 @@ describe('TreeSelect', () => {
           treeData={treeData}
         />
       );
-      const treeWrapper = render(wrapper.find('Trigger').node.getComponent());
-      expect(renderToJson(treeWrapper)).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
     });
 
     it('renders disabled correctly', () => {
       const wrapper = render(
         <TreeSelect disabled treeData={treeData} />
       );
-      expect(renderToJson(wrapper)).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
     });
 
     it('renders TreeNode correctly', () => {
-      const wrapper = mount(
+      const wrapper = render(
         <TreeSelect treeDefaultExpandAll>
           <TreeNode key="0" value="0" title="0 label"/>
           <TreeNode key="1" value="1" title="1 label">
@@ -66,8 +64,7 @@ describe('TreeSelect', () => {
           </TreeNode>
         </TreeSelect>
       );
-      const treeWrapper = render(wrapper.find('Trigger').node.getComponent());
-      expect(renderToJson(treeWrapper)).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
     });
 
     it('renders treeDataSimpleMode correctly', () => {
@@ -75,11 +72,10 @@ describe('TreeSelect', () => {
         { id: '0', value: '0', label: 'label0' },
         { id: '1', value: '1', label: 'label1', pId: '0' },
       ];
-      const wrapper = mount(
+      const wrapper = render(
         <TreeSelect treeData={treeData} />
       );
-      const treeWrapper = render(wrapper.find('Trigger').node.getComponent());
-      expect(renderToJson(treeWrapper)).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
     });
   });
 
@@ -169,9 +165,8 @@ describe('TreeSelect', () => {
     );
 
     it('renders search input', () => {
-      const wrapper = mount(createSelect());
-      const treeWrapper = render(wrapper.find('Trigger').node.getComponent());
-      expect(renderToJson(treeWrapper)).toMatchSnapshot();
+      const wrapper = render(createSelect());
+      expect(wrapper).toMatchSnapshot();
     });
 
     it('fires search event', () => {
@@ -221,9 +216,7 @@ describe('TreeSelect', () => {
       </TreeSelect>
     );
     wrapper.setState({ open: true });
-    jest.useFakeTimers();
-    wrapper.find('.rc-tree-select-selection').simulate('keyDown', { keyCode: KeyCode.ESC });
-    jest.runAllTimers();
+    wrapper.find('.rc-tree-select-search__field').simulate('keyDown', { keyCode: KeyCode.ESC });
     expect(wrapper.state('open')).toBe(false);
   });
 
