@@ -56,6 +56,15 @@
     background-color: #fff;
     border-radius: 6px;
     border: 1px solid #d9d9d9;
+
+    &__clear {
+      font-weight: bold;
+      position: absolute;
+
+      &:after {
+        content: '×'
+      }
+    }
   }
 
   &-enabled &-selection {
@@ -88,14 +97,8 @@
     }
 
     .@{selectPrefixCls}-selection__clear {
-      font-weight: bold;
-      position: absolute;
       top: 5px;
       right: 20px;
-
-      &:after {
-        content: '×'
-      }
     }
   }
 
@@ -178,6 +181,11 @@
       height: 20px;
       line-height: 20px;
     }
+
+    .@{selectPrefixCls}-selection__clear {
+       top: 5px;
+       right: 8px;
+     }
   }
 
   &-enabled {

@@ -909,7 +909,7 @@ class Select extends Component {
             {...extraSelectionProps}
           >
           {ctrlNode}
-          {allowClear && !multiple && this.state.value.length &&
+          {allowClear && this.state.value.length &&
           this.state.value[0].value ? clear : null}
             {multiple || !props.showArrow ? null :
               (<span

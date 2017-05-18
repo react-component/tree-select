@@ -238,6 +238,7 @@ class Demo extends React.Component {
           treeNodeFilterProp="title"
           onChange={this.onMultipleChange}
           onSelect={this.onSelect}
+          allowClear
         />
 
         <h2>check select</h2>
