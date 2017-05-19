@@ -75,7 +75,7 @@ class Demo extends React.Component {
 
   componentDidMount() {
     // console.log(this.refs.mul.getInputDOMNode());
-    this.refs.mul.getInputDOMNode().setAttribute('disabled', true);
+    // this.refs.mul.getInputDOMNode().setAttribute('disabled', true);
   }
 
   onClick = () => {
