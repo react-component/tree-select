@@ -1,6 +1,6 @@
 webpackJsonp([2],{
 
-/***/ 170:
+/***/ 171:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24,7 +24,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_dom__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rc_tree_select__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__big_data_generator__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__big_data_generator__ = __webpack_require__(199);
 
 
 
@@ -108,7 +108,7 @@ var Demo = function (_React$Component) {
                 '\u8BF7\u4E0B\u62C9\u9009\u62E9'
               ),
               treeCheckable: true,
-              showCheckedStrategy: __WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["SHOW_PARENT"],
+              showCheckedStrategy: __WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["b" /* SHOW_PARENT */],
               onChange: this.onChange
             })
           ),
@@ -132,7 +132,7 @@ var Demo = function (_React$Component) {
               ),
               treeCheckable: true,
               treeCheckStrictly: true,
-              showCheckedStrategy: __WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["SHOW_PARENT"],
+              showCheckedStrategy: __WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["b" /* SHOW_PARENT */],
               onChange: this.onChangeStrictly
             })
           )
@@ -148,7 +148,7 @@ __WEBPACK_IMPORTED_MODULE_8_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ }),
 
-/***/ 198:
+/***/ 199:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -293,7 +293,7 @@ Gen.defaultProps = {
 /***/ 411:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(170);
+module.exports = __webpack_require__(171);
 
 
 /***/ }),

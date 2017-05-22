@@ -1,6 +1,6 @@
 webpackJsonp([3],{
 
-/***/ 172:
+/***/ 173:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -134,7 +134,7 @@ var Demo = function (_React$Component) {
           treeDefaultExpandAll: true,
           treeNodeFilterProp: 'title',
           treeDataSimpleMode: this.state.treeDataSimpleMode,
-          treeCheckable: true, showCheckedStrategy: __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["SHOW_PARENT"],
+          treeCheckable: true, showCheckedStrategy: __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* SHOW_PARENT */],
           onChange: this.onChange,
           onSelect: this.onSelect
         }),
@@ -157,7 +157,7 @@ __WEBPACK_IMPORTED_MODULE_7_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 /***/ 413:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(172);
+module.exports = __webpack_require__(173);
 
 
 /***/ })

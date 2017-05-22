@@ -143,6 +143,7 @@
   text-overflow: ellipsis;
   padding-left: 8px;
   padding-bottom: 2px;
+  padding-right: 10px;
 }
 .rc-tree-select-selection--multiple > ul > li {
   margin-top: 4px;
