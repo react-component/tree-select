@@ -375,6 +375,7 @@ class Select extends Component {
       return;
     }
     event.stopPropagation();
+    this._cacheTreeNodesStates = 'no';
     if (state.inputValue || state.value.length) {
       this.fireChange([]);
       this.setOpenState(false);
