@@ -24,7 +24,7 @@
     "assets/*.png",
     "assets/*.gif"
   ],
-  "licenses": "MIT",
+  "license": "MIT",
   "main": "./lib/index",
   "module": "./es/index",
   "config": {
