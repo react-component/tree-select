@@ -880,6 +880,7 @@ class Select extends Component {
       // [`${prefixCls}-combobox`]: isCombobox(props),
       [`${prefixCls}-disabled`]: disabled,
       [`${prefixCls}-enabled`]: !disabled,
+      [`${prefixCls}-allow-clear`]: !!props.allowClear,
     };
 
     const clear = (<span
