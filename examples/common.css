@@ -5,6 +5,9 @@
   vertical-align: middle;
   color: #666;
 }
+.rc-tree-select-allow-clear .rc-tree-select-selection--single .rc-tree-select-selection__rendered {
+  padding-right: 40px;
+}
 .rc-tree-select ul,
 .rc-tree-select li {
   margin: 0;
