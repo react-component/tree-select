@@ -138,9 +138,6 @@ class Select extends Component {
     this.renderedTreeData = this.renderTreeData(nextProps);
     // Detecting whether the object of `onChange`'s argument  is old ref.
     // Better to do a deep equal later.
-    this._cacheTreeNodesStates = this._cacheTreeNodesStates !== 'no' &&
-                                 this._savedValue &&
-                                 nextProps.value === this._savedValue;
     if (this.props.treeData !== nextProps.treeData ||
       this.props.children !== nextProps.children) {
       // refresh this._treeNodesStates cache
@@ -375,7 +372,8 @@ class Select extends Component {
       return;
     }
     event.stopPropagation();
-    this._cacheTreeNodesStates = 'no';
+    this._cacheTreeNodesStates = false;
+    this._checkedNodes = [];
     if (state.inputValue || state.value.length) {
       this.fireChange([]);
       this.setOpenState(false);
@@ -640,7 +638,7 @@ class Select extends Component {
     if (props.disabled) {
       return;
     }
-    this._cacheTreeNodesStates = 'no';
+    this._cacheTreeNodesStates = false;
     if (props.treeCheckable &&
       (props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT)
       && !(props.treeCheckStrictly || this.state.inputValue)) {
