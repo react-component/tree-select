@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import { mount } from 'enzyme';
-import TreeSelect, { SHOW_PARENT } from '../src';
+import TreeSelect, { SHOW_PARENT } from '..';
 
 describe('TreeSelect.checkable', () => {
   it('allow clear when controlled', () => {
