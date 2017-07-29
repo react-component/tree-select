@@ -24,7 +24,7 @@ export function isCombobox(props) {
 }
 
 export function isMultipleOrTags(props) {
-  return props.multiple || props.tags || props.treeCheckable;
+  return !!(props.multiple || props.tags || props.treeCheckable);
 }
 
 export function isMultipleOrTagsOrCombobox(props) {
