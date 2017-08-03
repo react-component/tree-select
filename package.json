@@ -74,7 +74,7 @@
     "object-assign": "^4.0.1",
     "prop-types": "^15.5.8",
     "rc-animate": "^2.0.2",
-    "rc-tree": "^1.3.0",
+    "rc-tree": "~1.7.1",
     "rc-trigger": "1.x",
     "rc-util": "^4.0.2"
   }
