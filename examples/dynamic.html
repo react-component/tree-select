@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>dynamic.js - example - rc-tree-select@1.8.8</title>
+  <title>dynamic.js - example - rc-tree-select@1.9.7</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,13 +257,13 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     document.writeln('<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');
   }
   </script>
-  <link rel="stylesheet" href="common.css" />
+  <link rel="stylesheet" href="../common.css" />
 </head>
 
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-tree-select@1.8.8</h1>
+      <h1>rc-tree-select@1.9.7</h1>
 
       <p>tree-select ui component for react</p>
     </div>
@@ -277,26 +277,27 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <span class="hljs-keyword">import</span> TreeSelect <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-tree-select'</span>;
 <span class="hljs-keyword">import</span> { getNewTreeData, generateTreeNodes } <span class="hljs-keyword">from</span> <span class="hljs-string">'./util'</span>;
 
-<span class="hljs-keyword">const</span> Demo = React.createClass({
-  propTypes: {},
-  getInitialState() {
-    <span class="hljs-keyword">return</span> {
-      treeData: [
-        { label: <span class="hljs-string">'pNode 01'</span>, value: <span class="hljs-string">'0-0'</span>, key: <span class="hljs-string">'0-0'</span> },
-        { label: <span class="hljs-string">'pNode 02'</span>, value: <span class="hljs-string">'0-1'</span>, key: <span class="hljs-string">'0-1'</span> },
-        { label: <span class="hljs-string">'pNode 03'</span>, value: <span class="hljs-string">'0-2'</span>, key: <span class="hljs-string">'0-2'</span>, isLeaf: <span class="hljs-literal">true</span> },
-      ],
-      <span class="hljs-comment">// value: '0-0',</span>
-      value: { value: <span class="hljs-string">'0-0-0-value'</span>, label: <span class="hljs-string">'0-0-0-label'</span> },
-    };
-  },
-  onChange(value) {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  static propTypes = {};
+
+  state = {
+    treeData: [
+      { label: <span class="hljs-string">'pNode 01'</span>, value: <span class="hljs-string">'0-0'</span>, key: <span class="hljs-string">'0-0'</span> },
+      { label: <span class="hljs-string">'pNode 02'</span>, value: <span class="hljs-string">'0-1'</span>, key: <span class="hljs-string">'0-1'</span> },
+      { label: <span class="hljs-string">'pNode 03'</span>, value: <span class="hljs-string">'0-2'</span>, key: <span class="hljs-string">'0-2'</span>, isLeaf: <span class="hljs-literal">true</span> },
+    ],
+    <span class="hljs-comment">// value: '0-0',</span>
+    value: { value: <span class="hljs-string">'0-0-0-value'</span>, label: <span class="hljs-string">'0-0-0-label'</span> },
+  };
+
+  onChange = (value) =&gt; {
     <span class="hljs-built_in">console</span>.log(value);
     <span class="hljs-keyword">this</span>.setState({
       value,
     });
-  },
-  onLoadData(treeNode) {
+  };
+
+  onLoadData = (treeNode) =&gt; {
     <span class="hljs-built_in">console</span>.log(treeNode);
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>((resolve) =&gt; {
       setTimeout(() =&gt; {
@@ -306,7 +307,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         resolve();
       }, <span class="hljs-number">500</span>);
     });
-  },
+  };
+
   render() {
     <span class="hljs-keyword">return</span> (
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">padding:</span> '<span class="hljs-attribute">10px</span> <span class="hljs-attribute">30px</span>' }}&gt;</span>
@@ -321,8 +323,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         /&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     )</span>;
-  },
-});
+  }
+}
 
 ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Demo</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>
@@ -334,7 +336,7 @@ ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-t
          data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
   </a>
   <script>FastClick.attach(document.body);</script>
-  <script src="common.js?nowrap"></script>
+  <script src="../common.js?nowrap"></script>
   <script src="dynamic.js?nowrap"></script>
 </body>
 

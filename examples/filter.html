@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>filter.js - example - rc-tree-select@1.8.8</title>
+  <title>filter.js - example - rc-tree-select@1.9.7</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,13 +257,13 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     document.writeln('<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');
   }
   </script>
-  <link rel="stylesheet" href="common.css" />
+  <link rel="stylesheet" href="../common.css" />
 </head>
 
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-tree-select@1.8.8</h1>
+      <h1>rc-tree-select@1.9.7</h1>
 
       <p>tree-select ui component for react</p>
     </div>
@@ -277,38 +277,39 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <span class="hljs-keyword">import</span> TreeSelect, { SHOW_PARENT } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-tree-select'</span>;
 <span class="hljs-keyword">import</span> { gData } <span class="hljs-keyword">from</span> <span class="hljs-string">'./util'</span>;
 
-<span class="hljs-keyword">const</span> Demo = React.createClass({
-  getInitialState() {
-    <span class="hljs-keyword">return</span> {
-      value: <span class="hljs-string">'11'</span>,
-      <span class="hljs-comment">// value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],</span>
-      simpleTreeData: [
-        { key: <span class="hljs-number">1</span>, pId: <span class="hljs-number">0</span>, label: <span class="hljs-string">'a'</span>, value: <span class="hljs-string">'a'</span> },
-        { key: <span class="hljs-number">11</span>, pId: <span class="hljs-number">1</span>, label: <span class="hljs-string">'a12'</span>, value: <span class="hljs-string">'a12'</span>, disabled: <span class="hljs-literal">true</span> },
-        { key: <span class="hljs-number">111</span>, pId: <span class="hljs-number">11</span>, label: <span class="hljs-string">'a00'</span>, value: <span class="hljs-string">'a00'</span>, selectable: <span class="hljs-literal">false</span> },
-        { key: <span class="hljs-number">2</span>, pId: <span class="hljs-number">0</span>, label: <span class="hljs-string">'b'</span>, value: <span class="hljs-string">'b'</span> },
-        { key: <span class="hljs-number">20</span>, pId: <span class="hljs-number">2</span>, label: <span class="hljs-string">'b10'</span>, value: <span class="hljs-string">'b10'</span> },
-        { key: <span class="hljs-number">21</span>, pId: <span class="hljs-number">2</span>, label: <span class="hljs-string">'b1'</span>, value: <span class="hljs-string">'b1'</span> },
-        { key: <span class="hljs-number">22</span>, pId: <span class="hljs-number">2</span>, label: <span class="hljs-string">'b12'</span>, value: <span class="hljs-string">'b12'</span> },
-      ],
-      treeDataSimpleMode: {
-        id: <span class="hljs-string">'key'</span>,
-        rootPId: <span class="hljs-number">0</span>,
-      },
-    };
-  },
-  onChange(value) {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  state = {
+    value: <span class="hljs-string">'11'</span>,
+    <span class="hljs-comment">// value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],</span>
+    simpleTreeData: [
+      { key: <span class="hljs-number">1</span>, pId: <span class="hljs-number">0</span>, label: <span class="hljs-string">'a'</span>, value: <span class="hljs-string">'a'</span> },
+      { key: <span class="hljs-number">11</span>, pId: <span class="hljs-number">1</span>, label: <span class="hljs-string">'a12'</span>, value: <span class="hljs-string">'a12'</span>, disabled: <span class="hljs-literal">true</span> },
+      { key: <span class="hljs-number">111</span>, pId: <span class="hljs-number">11</span>, label: <span class="hljs-string">'a00'</span>, value: <span class="hljs-string">'a00'</span>, selectable: <span class="hljs-literal">false</span> },
+      { key: <span class="hljs-number">2</span>, pId: <span class="hljs-number">0</span>, label: <span class="hljs-string">'b'</span>, value: <span class="hljs-string">'b'</span> },
+      { key: <span class="hljs-number">20</span>, pId: <span class="hljs-number">2</span>, label: <span class="hljs-string">'b10'</span>, value: <span class="hljs-string">'b10'</span> },
+      { key: <span class="hljs-number">21</span>, pId: <span class="hljs-number">2</span>, label: <span class="hljs-string">'b1'</span>, value: <span class="hljs-string">'b1'</span> },
+      { key: <span class="hljs-number">22</span>, pId: <span class="hljs-number">2</span>, label: <span class="hljs-string">'b12'</span>, value: <span class="hljs-string">'b12'</span> },
+    ],
+    treeDataSimpleMode: {
+      id: <span class="hljs-string">'key'</span>,
+      rootPId: <span class="hljs-number">0</span>,
+    },
+  }
+
+  onChange = (value) =&gt; {
     <span class="hljs-keyword">if</span> (value.length === <span class="hljs-number">1</span>) {
       <span class="hljs-comment">// return;</span>
     }
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, <span class="hljs-built_in">arguments</span>, <span class="hljs-keyword">this</span>.state.simpleTreeData);
     <span class="hljs-keyword">this</span>.setState({ value });
-  },
-  onSelect() {
+  }
+
+  onSelect = () =&gt; {
     <span class="hljs-comment">// use onChange instead</span>
     <span class="hljs-comment">// console.log(arguments);</span>
-  },
-  onDataChange() {
+  }
+
+  onDataChange = () =&gt; {
     <span class="hljs-keyword">const</span> data = [...this.state.simpleTreeData];
     data.forEach(i =&gt; {
       <span class="hljs-keyword">if</span> (i.key === <span class="hljs-number">11</span>) {
@@ -319,7 +320,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
       }
     });
     <span class="hljs-keyword">this</span>.setState({ simpleTreeData: data });
-  },
+  }
+
   render() {
     <span class="hljs-keyword">return</span> (
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">margin:</span> <span class="hljs-attribute">20</span> }}&gt;</span>
@@ -361,8 +363,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.onDataChange}</span>&gt;</span>change data<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     )</span>;
-  },
-});
+  }
+}
 
 ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Demo</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>
@@ -374,7 +376,7 @@ ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-t
          data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
   </a>
   <script>FastClick.attach(document.body);</script>
-  <script src="common.js?nowrap"></script>
+  <script src="../common.js?nowrap"></script>
   <script src="filter.js?nowrap"></script>
 </body>
 

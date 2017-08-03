@@ -77,7 +77,7 @@
   right: 20px;
 }
 .rc-tree-select-selection--single .rc-tree-select-selection__clear:after {
-  content: '×';
+  content: '\D7';
 }
 .rc-tree-select-disabled {
   color: #ccc;
@@ -261,7 +261,7 @@
   transition: opacity .3s, transform .3s, -webkit-transform .3s;
 }
 .rc-tree-select .rc-tree-select-selection__choice__remove:before {
-  content: '×';
+  content: '\D7';
 }
 .rc-tree-select .rc-tree-select-selection__choice__remove:hover {
   color: #333;
