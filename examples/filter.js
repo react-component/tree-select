@@ -39,7 +39,7 @@ webpackJsonp([3],{
 	    return {
 	      value: '11',
 	      // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
-	      simpleTreeData: [{ key: 1, pId: 0, label: 'a', value: 'a' }, { key: 11, pId: 1, label: 'a12', value: 'a12' }, { key: 111, pId: 11, label: 'a00', value: 'a00', selectable: false }, { key: 2, pId: 0, label: 'b', value: 'b' }, { key: 20, pId: 2, label: 'b10', value: 'b10' }, { key: 21, pId: 2, label: 'b1', value: 'b1' }, { key: 22, pId: 2, label: 'b12', value: 'b12' }],
+	      simpleTreeData: [{ key: 1, pId: 0, label: 'a', value: 'a' }, { key: 11, pId: 1, label: 'a12', value: 'a12', disabled: true }, { key: 111, pId: 11, label: 'a00', value: 'a00', selectable: false }, { key: 2, pId: 0, label: 'b', value: 'b' }, { key: 20, pId: 2, label: 'b10', value: 'b10' }, { key: 21, pId: 2, label: 'b1', value: 'b1' }, { key: 22, pId: 2, label: 'b12', value: 'b12' }],
 	      treeDataSimpleMode: {
 	        id: 'key',
 	        rootPId: 0
@@ -48,7 +48,7 @@ webpackJsonp([3],{
 	  },
 	  onChange: function onChange(value) {
 	    if (value.length === 1) {
-	      return;
+	      // return;
 	    }
 	    console.log('onChange', arguments, this.state.simpleTreeData);
 	    this.setState({ value: value });
@@ -59,6 +59,14 @@ webpackJsonp([3],{
 	  },
 	  onDataChange: function onDataChange() {
 	    var data = [].concat(_toConsumableArray(this.state.simpleTreeData));
+	    data.forEach(function (i) {
+	      if (i.key === 11) {
+	        delete i.disabled;
+	      }
+	      if (i.key === 20) {
+	        i.disabled = true;
+	      }
+	    });
 	    this.setState({ simpleTreeData: data });
 	  },
 	  render: function render() {
@@ -105,9 +113,10 @@ webpackJsonp([3],{
 	        ),
 	        searchPlaceholder: 'please search',
 	        treeLine: true, maxTagTextLength: 10,
-	        inputValue: 'a',
+	        inputValue: null,
 	        value: this.state.value,
 	        treeData: this.state.simpleTreeData,
+	        treeDefaultExpandAll: true,
 	        treeNodeFilterProp: 'title',
 	        treeDataSimpleMode: this.state.treeDataSimpleMode,
 	        treeCheckable: true, showCheckedStrategy: _rcTreeSelect.SHOW_PARENT,

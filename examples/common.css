@@ -60,12 +60,15 @@
 }
 .rc-tree-select-selection--single .rc-tree-select-selection__rendered {
   display: block;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   padding-left: 10px;
   padding-right: 20px;
   line-height: 28px;
+}
+.rc-tree-select-selection--single .rc-tree-select-selection-selected-value {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .rc-tree-select-selection--single .rc-tree-select-selection__clear {
   font-weight: bold;
@@ -616,6 +619,9 @@ li.rc-tree-select-dropdown-menu-item-divider {
   margin-right: 2px;
   vertical-align: top;
   background: url(https://t.alipayobjects.com/images/rmsweb/T1YxhiXgJbXXXXXXXX.gif) no-repeat scroll 0 0 transparent;
+}
+.rc-tree-select-tree li span.rc-tree-select-tree-switcher.rc-tree-select-tree-switcher-noop {
+  cursor: auto;
 }
 .rc-tree-select-tree li span.rc-tree-select-tree-switcher.rc-tree-select-tree-roots_open {
   background-position: -93px -56px;

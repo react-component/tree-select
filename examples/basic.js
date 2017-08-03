@@ -88,18 +88,23 @@ webpackJsonp([0],{
 	  displayName: 'Demo',
 	  getInitialState: function getInitialState() {
 	    return {
+	      tsOpen: false,
 	      visible: false,
 	      inputValue: '0-0-0-label',
-	      value: '0-0-0-value',
+	      value: '0-0-0-value1',
 	      // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
 	      lv: { value: '0-0-0-value', label: 'spe label' },
 	      multipleValue: [],
-	      simpleTreeData: [{ key: 1, pId: 0, label: 'test1' }, { key: '1-1', pId: 0, label: 'test1' }, { key: 11, pId: 1, label: 'test11' }, { key: 12, pId: 1, label: 'test12' }, { key: 111, pId: 11, label: 'test111' }],
+	      simpleTreeData: [{ key: 1, pId: 0, label: 'test1', value: 'test1' }, { key: 121, pId: 0, label: 'test1', value: 'test121' }, { key: 11, pId: 1, label: 'test11', value: 'test11' }, { key: 12, pId: 1, label: 'test12', value: 'test12' }, { key: 111, pId: 11, label: 'test111', value: 'test111' }],
 	      treeDataSimpleMode: {
 	        id: 'key',
 	        rootPId: 0
 	      }
 	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    // console.log(this.refs.mul.getInputDOMNode());
+	    this.refs.mul.getInputDOMNode().setAttribute('disabled', true);
 	  },
 	  onClick: function onClick() {
 	    this.setState({
@@ -142,8 +147,8 @@ webpackJsonp([0],{
 	    // use onChange instead
 	    console.log(arguments);
 	  },
-	  onDropdownVisibleChange: function onDropdownVisibleChange(visible) {
-	    console.log(visible, this.state.value);
+	  onDropdownVisibleChange: function onDropdownVisibleChange(visible, info) {
+	    console.log(visible, this.state.value, info);
 	    if (Array.isArray(this.state.value) && this.state.value.length > 1 && this.state.value.length < 3) {
 	      alert('please select more than two item or less than one item.');
 	      return false;
@@ -154,6 +159,9 @@ webpackJsonp([0],{
 	    return String(child.props.title).indexOf(input) === 0;
 	  },
 	  render: function render() {
+	    var _arguments = arguments,
+	        _this = this;
+	
 	    return _react2.default.createElement(
 	      'div',
 	      { style: { margin: 20 } },
@@ -174,12 +182,16 @@ webpackJsonp([0],{
 	          animation: 'zoom',
 	          maskAnimation: 'fade',
 	          onClose: this.onClose,
-	          style: { width: 600, height: 400, overflow: 'auto' }
+	          style: { width: 600, height: 400, overflow: 'auto' },
+	          id: 'area'
 	        },
 	        _react2.default.createElement(
 	          'div',
 	          { style: { height: 600, paddingTop: 100 } },
 	          _react2.default.createElement(_rcTreeSelect2.default, {
+	            getPopupContainer: function getPopupContainer(triggerNode) {
+	              return triggerNode.parentNode;
+	            },
 	            style: { width: 300 },
 	            transitionName: 'rc-tree-select-dropdown-slide-up',
 	            choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
@@ -191,7 +203,6 @@ webpackJsonp([0],{
 	            ),
 	            searchPlaceholder: 'please search',
 	            showSearch: true, allowClear: true, treeLine: true,
-	            inputValue: this.state.inputValue,
 	            value: this.state.value,
 	            treeData: _util.gData,
 	            treeNodeFilterProp: 'label',
@@ -225,7 +236,24 @@ webpackJsonp([0],{
 	        treeNodeFilterProp: 'label',
 	        filterTreeNode: false,
 	        onSearch: this.onSearch,
-	        onChange: this.onChange,
+	        open: this.state.tsOpen,
+	        onChange: function onChange(value) {
+	          console.log('onChange', _arguments);
+	          if (value === '0-0-0-0-value') {
+	            _this.setState({ tsOpen: true });
+	          } else {
+	            _this.setState({ tsOpen: false });
+	          }
+	          _this.setState({ value: value });
+	        },
+	        onDropdownVisibleChange: function onDropdownVisibleChange(v, info) {
+	          console.log('single onDropdownVisibleChange', v, info);
+	          // document clicked
+	          if (info.documentClickClose && _this.state.value === '0-0-0-0-value') {
+	            return false;
+	          }
+	          return true;
+	        },
 	        onSelect: this.onSelect
 	      }),
 	      _react2.default.createElement(
@@ -245,7 +273,6 @@ webpackJsonp([0],{
 	        ),
 	        searchPlaceholder: 'please search',
 	        showSearch: true, allowClear: true, treeLine: true,
-	        inputValue: this.state.inputValue,
 	        value: this.state.value,
 	        treeData: _util.gData,
 	        treeNodeFilterProp: 'label',
@@ -257,7 +284,7 @@ webpackJsonp([0],{
 	        null,
 	        'multiple select'
 	      ),
-	      _react2.default.createElement(_rcTreeSelect2.default, {
+	      _react2.default.createElement(_rcTreeSelect2.default, { ref: 'mul',
 	        style: { width: 300 },
 	        transitionName: 'rc-tree-select-dropdown-slide-up',
 	        choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
@@ -269,7 +296,6 @@ webpackJsonp([0],{
 	        ),
 	        searchPlaceholder: 'please search',
 	        multiple: true,
-	        inputValue: this.state.inputValue,
 	        value: this.state.multipleValue,
 	        treeData: _util.gData,
 	        treeNodeFilterProp: 'title',
@@ -296,6 +322,7 @@ webpackJsonp([0],{
 	        searchPlaceholder: 'please search',
 	        treeLine: true, maxTagTextLength: 10,
 	        value: this.state.value,
+	        inputValue: null,
 	        treeData: _util.gData,
 	        treeNodeFilterProp: 'title',
 	        treeCheckable: true, showCheckedStrategy: _rcTreeSelect.SHOW_PARENT,
@@ -352,6 +379,23 @@ webpackJsonp([0],{
 	      _react2.default.createElement(
 	        'h2',
 	        null,
+	        'Testing in extreme conditions (Boundary conditions test) '
+	      ),
+	      _react2.default.createElement(_rcTreeSelect2.default, {
+	        style: { width: 200 },
+	        dropdownStyle: { maxHeight: 200, overflow: 'auto' },
+	        defaultValue: 'leaf1', multiple: true, treeCheckable: true, showCheckedStrategy: _rcTreeSelect.SHOW_PARENT,
+	        treeDefaultExpandAll: true,
+	        treeData: [{ key: '', value: '', label: 'empty value', children: [] }, {
+	          key: '0', value: '0', label: '0 label', children: [{ key: '00', value: '00', label: '00 label', children: [] }, { key: '01', value: '01', label: '01 label', children: [] }]
+	        }],
+	        onChange: function onChange(val) {
+	          return console.log(val, _arguments);
+	        }
+	      }),
+	      _react2.default.createElement(
+	        'h2',
+	        null,
 	        'use TreeNode Component (not recommend)'
 	      ),
 	      _react2.default.createElement(
@@ -359,15 +403,17 @@ webpackJsonp([0],{
 	        {
 	          style: { width: 200 },
 	          dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-	          value: this.state.value || 'leaf1',
-	          treeDefaultExpandAll: true, treeCheckable: true,
+	          defaultValue: 'leaf1',
+	          treeDefaultExpandAll: true,
 	          treeNodeFilterProp: 'title',
 	          filterTreeNode: this.filterTreeNode,
-	          onChange: this.onChange
+	          onChange: function onChange(val) {
+	            return console.log(val, _arguments);
+	          }
 	        },
 	        _react2.default.createElement(
 	          _rcTreeSelect.TreeNode,
-	          { value: 'parent 1', title: 'parent 1', key: '0-1' },
+	          { value: '', title: 'parent 1', key: '' },
 	          _react2.default.createElement(
 	            _rcTreeSelect.TreeNode,
 	            { value: 'parent 1-0', title: 'parent 1-0', key: '0-1-0' },
@@ -386,19 +432,17 @@ webpackJsonp([0],{
 	            }),
 	            _react2.default.createElement(
 	              _rcTreeSelect.TreeNode,
-	              { value: 'same value', title: 'same txtle', key: '0-1-1-1' },
-	              _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same titlexd', key: '0-1-1-1-0' })
+	              { value: 'same value1', title: 'same txtle', key: '0-1-1-1' },
+	              _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'same value10', title: 'same titlexd', key: '0-1-1-1-0' })
 	            )
 	          )
 	        ),
 	        _react2.default.createElement(
 	          _rcTreeSelect.TreeNode,
-	          { value: 'same value', title: 'same title', key: '0-2' },
+	          { value: 'same value2', title: 'same title', key: '0-2' },
 	          _react2.default.createElement(_rcTreeSelect.TreeNode, { value: '2same value', title: '2same title', key: '0-2-0' })
 	        ),
-	        _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-3' }),
-	        _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-4' }),
-	        _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'same value', title: 'same title', key: '0-5' })
+	        _react2.default.createElement(_rcTreeSelect.TreeNode, { value: 'same value3', title: 'same title', key: '0-3' })
 	      )
 	    );
 	  }

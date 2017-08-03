@@ -24979,7 +24979,8 @@
 	    var pos = level + '-' + index;
 	    var props = {
 	      title: item.label,
-	      value: item.value || String(item.key || item.label),
+	      value: item.value,
+	      // value: item.value || String(item.key || item.label), // cause onChange callback error
 	      key: item.key || item.value || pos,
 	      disabled: item.disabled || false,
 	      selectable: item.hasOwnProperty('selectable') ? item.selectable : true
@@ -25015,7 +25016,9 @@
 	    disabled: _react.PropTypes.bool,
 	    showArrow: _react.PropTypes.bool,
 	    allowClear: _react.PropTypes.bool,
-	    tags: _react.PropTypes.bool,
+	    // tags: PropTypes.bool,
+	    defaultOpen: _react.PropTypes.bool,
+	    open: _react.PropTypes.bool,
 	    transitionName: _react.PropTypes.string,
 	    animation: _react.PropTypes.string,
 	    choiceTransitionName: _react.PropTypes.string,
@@ -25102,14 +25105,10 @@
 	    //   inputValue = value.length ? String(value[0].value) : '';
 	    // }
 	    this.saveInputRef = saveRef.bind(this, 'inputInstance');
-	    var open = props.open;
-	    if (open === undefined) {
-	      open = props.defaultOpen;
-	    }
 	    return {
 	      value: value,
 	      inputValue: inputValue,
-	      open: open,
+	      open: props.open || props.defaultOpen,
 	      focused: false
 	    };
 	  },
@@ -25123,17 +25122,19 @@
 	    }
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    // save parsed treeData, for performance (treeData may be very big)
+	    this.renderedTreeData = this.renderTreeData(nextProps);
+	    // Detecting whether the object of `onChange`'s argument  is old ref.
+	    // Better to do a deep equal later.
+	    this._cacheTreeNodesStates = this._cacheTreeNodesStates !== 'no' && this._savedValue && nextProps.value === this._savedValue;
+	    if (this.props.treeData !== nextProps.treeData || this.props.children !== nextProps.children) {
+	      // refresh this._treeNodesStates cache
+	      this._treeNodesStates = (0, _util.getTreeNodesStates)(this.renderedTreeData || nextProps.children, this.state.value.map(function (item) {
+	        return item.value;
+	      }));
+	    }
 	    if ('value' in nextProps) {
-	      if (this._cacheTreeNodesStates !== 'no' && this._savedValue && nextProps.value === this._savedValue) {
-	        // Detecting whether the object of `onChange`'s argument  is old ref.
-	        // Better to do a deep equal later.
-	        this._cacheTreeNodesStates = true;
-	      } else {
-	        this._cacheTreeNodesStates = false;
-	      }
 	      var value = (0, _util.toArray)(nextProps.value);
-	      // save parsed treeData, for performance (treeData may be very big)
-	      this.renderedTreeData = this.renderTreeData(nextProps);
 	      value = this.addLabelToValue(nextProps, value);
 	      value = this.getValue(nextProps, value);
 	      this.setState({
@@ -25148,6 +25149,11 @@
 	    if (nextProps.inputValue !== this.props.inputValue) {
 	      this.setState({
 	        inputValue: nextProps.inputValue
+	      });
+	    }
+	    if ('open' in nextProps) {
+	      this.setState({
+	        open: nextProps.open
 	      });
 	    }
 	  },
@@ -25208,9 +25214,7 @@
 	    // this.setOpenState(open);
 	    // setTimeout, then have animation. why?
 	    setTimeout(function () {
-	      if (_this.props.onDropdownVisibleChange(open)) {
-	        _this.setOpenState(open);
-	      }
+	      _this.setOpenState(open, undefined, !open);
 	    }, 10);
 	  },
 	
@@ -25604,6 +25608,8 @@
 	  setOpenState: function setOpenState(open, needFocus) {
 	    var _this5 = this;
 	
+	    var documentClickClose = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+	
 	    this.clearDelayTimer();
 	    var props = this.props,
 	        refs = this.refs;
@@ -25612,6 +25618,9 @@
 	    //   return;
 	    // }
 	
+	    if (!this.props.onDropdownVisibleChange(open, { documentClickClose: documentClickClose })) {
+	      return;
+	    }
 	    this.setState({
 	      open: open
 	    }, function () {
@@ -25709,11 +25718,6 @@
 	  },
 	  fireChange: function fireChange(value, extraInfo) {
 	    var props = this.props;
-	    if (!('value' in props)) {
-	      this.setState({
-	        value: value
-	      });
-	    }
 	    var vals = value.map(function (i) {
 	      return i.value;
 	    });
@@ -25745,7 +25749,7 @@
 	          }
 	        });
 	      }
-	      if (ex.clear && props.treeCheckable) {
+	      if (props.treeCheckable && ex.clear) {
 	        var treeData = this.renderedTreeData || props.children;
 	        ex.allCheckedNodes = (0, _util.flatToHierarchy)((0, _util.filterAllCheckedData)(vals, treeData));
 	      }
@@ -25783,6 +25787,17 @@
 	      }
 	      this._savedValue = (0, _util.isMultipleOrTags)(props) ? vls : vls[0];
 	      props.onChange(this._savedValue, labs, ex);
+	      if (!('value' in props)) {
+	        this._cacheTreeNodesStates = false;
+	        this.setState({
+	          value: this.getValue(props, (0, _util.toArray)(this._savedValue).map(function (v, i) {
+	            return {
+	              value: v,
+	              label: labs[i]
+	            };
+	          }))
+	        });
+	      }
 	    }
 	  },
 	  isLabelInValue: function isLabelInValue() {
@@ -25819,7 +25834,11 @@
 	      if (value.length) {
 	        innerNode = _react2.default.createElement(
 	          'span',
-	          { key: 'value' },
+	          {
+	            key: 'value',
+	            title: value[0].label,
+	            className: prefixCls + '-selection-selected-value'
+	          },
 	          value[0].label
 	        );
 	      }
@@ -25952,6 +25971,7 @@
 	        inputElement: this.getInputElement(),
 	        value: state.value,
 	        onDropdownVisibleChange: this.onDropdownVisibleChange,
+	        getPopupContainer: props.getPopupContainer,
 	        onSelect: this.onSelect,
 	        ref: 'trigger'
 	      }),
@@ -25976,7 +25996,7 @@
 	            'aria-expanded': state.open
 	          }, extraSelectionProps),
 	          ctrlNode,
-	          allowClear && !multiple ? clear : null,
+	          allowClear && !multiple && this.state.value.length && this.state.value[0].value ? clear : null,
 	          multiple || !props.showArrow ? null : _react2.default.createElement(
 	            'span',
 	            {
@@ -26746,7 +26766,8 @@
 	function loopAllChildren(childs, callback, parent) {
 	  var loop = function loop(children, level, _parent) {
 	    var len = getChildrenlength(children);
-	    _react2.default.Children.forEach(children, function (item, index) {
+	    _react2.default.Children.forEach(children, function handler(item, index) {
+	      // eslint-disable-line
 	      var pos = level + '-' + index;
 	      if (item && item.props.children && item.type) {
 	        loop(item.props.children, pos, { node: item, pos: pos });
@@ -27379,11 +27400,11 @@
 	      trProps.checkable = props.treeCheckable;
 	      trProps.onCheck = props.onSelect;
 	      trProps.checkStrictly = props.treeCheckStrictly;
-	      if (!props.inputValue) {
-	        trProps._treeNodesStates = props._treeNodesStates;
-	      } else {
+	      if (props.inputValue) {
 	        // enable checkStrictly when search tree.
 	        trProps.checkStrictly = true;
+	      } else {
+	        trProps._treeNodesStates = props._treeNodesStates;
 	      }
 	      if (trProps.treeCheckStrictly && halfCheckedKeys.length) {
 	        trProps.checkedKeys = { checked: keys, halfChecked: halfCheckedKeys };
@@ -27436,7 +27457,8 @@
 	
 	    var recursive = function recursive(children) {
 	      // Note: if use `React.Children.map`, the node's key will be modified.
-	      return (0, _toArray2.default)(children).map(function (child) {
+	      return (0, _toArray2.default)(children).map(function handler(child) {
+	        // eslint-disable-line
 	        if (child && child.props.children) {
 	          // null or String has no Prop
 	          return _react2.default.createElement(
@@ -27503,12 +27525,13 @@
 	        ref: 'trigger',
 	        popupPlacement: 'bottomLeft',
 	        builtinPlacements: BUILT_IN_PLACEMENTS,
-	        popupAlign: this.props.dropdownPopupAlign,
+	        popupAlign: props.dropdownPopupAlign,
 	        prefixCls: dropdownPrefixCls,
 	        popupTransitionName: this.getDropdownTransitionName(),
 	        onPopupVisibleChange: props.onDropdownVisibleChange,
 	        popup: popupElement,
 	        popupVisible: visible,
+	        getPopupContainer: props.getPopupContainer,
 	        popupClassName: (0, _classnames2.default)(popupClassName),
 	        popupStyle: props.dropdownStyle
 	      },

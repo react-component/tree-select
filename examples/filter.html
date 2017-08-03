@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>filter.js - example - rc-tree-select@1.7.11</title>
+  <title>filter.js - example - rc-tree-select@1.8.8</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-tree-select@1.7.11</h1>
+      <h1>rc-tree-select@1.8.8</h1>
 
       <p>tree-select ui component for react</p>
     </div>
@@ -284,7 +284,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
       <span class="hljs-comment">// value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],</span>
       simpleTreeData: [
         { key: <span class="hljs-number">1</span>, pId: <span class="hljs-number">0</span>, label: <span class="hljs-string">'a'</span>, value: <span class="hljs-string">'a'</span> },
-        { key: <span class="hljs-number">11</span>, pId: <span class="hljs-number">1</span>, label: <span class="hljs-string">'a12'</span>, value: <span class="hljs-string">'a12'</span> },
+        { key: <span class="hljs-number">11</span>, pId: <span class="hljs-number">1</span>, label: <span class="hljs-string">'a12'</span>, value: <span class="hljs-string">'a12'</span>, disabled: <span class="hljs-literal">true</span> },
         { key: <span class="hljs-number">111</span>, pId: <span class="hljs-number">11</span>, label: <span class="hljs-string">'a00'</span>, value: <span class="hljs-string">'a00'</span>, selectable: <span class="hljs-literal">false</span> },
         { key: <span class="hljs-number">2</span>, pId: <span class="hljs-number">0</span>, label: <span class="hljs-string">'b'</span>, value: <span class="hljs-string">'b'</span> },
         { key: <span class="hljs-number">20</span>, pId: <span class="hljs-number">2</span>, label: <span class="hljs-string">'b10'</span>, value: <span class="hljs-string">'b10'</span> },
@@ -299,7 +299,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   },
   onChange(value) {
     <span class="hljs-keyword">if</span> (value.length === <span class="hljs-number">1</span>) {
-      <span class="hljs-keyword">return</span>;
+      <span class="hljs-comment">// return;</span>
     }
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, <span class="hljs-built_in">arguments</span>, <span class="hljs-keyword">this</span>.state.simpleTreeData);
     <span class="hljs-keyword">this</span>.setState({ value });
@@ -310,6 +310,14 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   },
   onDataChange() {
     <span class="hljs-keyword">const</span> data = [...this.state.simpleTreeData];
+    data.forEach(i =&gt; {
+      <span class="hljs-keyword">if</span> (i.key === <span class="hljs-number">11</span>) {
+        <span class="hljs-keyword">delete</span> i.disabled;
+      }
+      <span class="hljs-keyword">if</span> (i.key === <span class="hljs-number">20</span>) {
+        i.disabled = <span class="hljs-literal">true</span>;
+      }
+    });
     <span class="hljs-keyword">this</span>.setState({ simpleTreeData: data });
   },
   render() {
@@ -340,9 +348,10 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
           searchPlaceholder="please search"
           treeLine maxTagTextLength={10}
-          inputValue={'a'}
+          inputValue={null}
           value={this.state.value}
           treeData={this.state.simpleTreeData}
+          treeDefaultExpandAll
           treeNodeFilterProp="title"
           treeDataSimpleMode={this.state.treeDataSimpleMode}
           treeCheckable showCheckedStrategy={SHOW_PARENT}
