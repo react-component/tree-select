@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-tree-select@1.10.2 - tree-select ui component for react</title>
+  <title>rc-tree-select@1.7.11 - tree-select ui component for react</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-tree-select@1.10.2</h1>
+  <h1>rc-tree-select@1.7.11</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -843,12 +843,6 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <td>-</td>
 </tr>
 <tr>
-<td>onDropdownVisibleChange</td>
-<td>control dropdown visible</td>
-<td>function</td>
-<td><code>() =&gt; { return true; }</code></td>
-</tr>
-<tr>
 <td>notFoundContent</td>
 <td>specify content to show when no result matches.</td>
 <td>String</td>
@@ -951,12 +945,6 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <td>false</td>
 </tr>
 <tr>
-<td>treeDefaultExpandedKeys</td>
-<td>default expanded treeNode keys</td>
-<td>Array<String></td>
-<td>-</td>
-</tr>
-<tr>
 <td>treeCheckable</td>
 <td>whether tree show checkbox (select callback will not fire)</td>
 <td>bool</td>
@@ -994,7 +982,7 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 </tr>
 <tr>
 <td>treeDataSimpleMode</td>
-<td>enable simple mode of treeData.(treeData should be like this: [{id:1, pId:0, value:&#39;1&#39;, label:&quot;test1&quot;,...},...], <code>pId</code> is parent node&#39;s id)</td>
+<td>enable simple mode of treeData.(treeData should be like this: [{&quot;id&quot;:1, &quot;pId&quot;:0, &quot;label&quot;:&quot;test1&quot;},...], <code>pId</code> is parent node&#39;s id)</td>
 <td>bool/object{id:&#39;id&#39;, pId:&#39;pId&#39;, rootPId:null}</td>
 <td>false</td>
 </tr>
@@ -1003,12 +991,6 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <td>load data asynchronously</td>
 <td>function(node)</td>
 <td>-</td>
-</tr>
-<tr>
-<td>getPopupContainer</td>
-<td>container which popup select menu rendered into</td>
-<td>function(trigger:Node):Node</td>
-<td>function(){return document.body;}</td>
 </tr>
 </tbody>
 </table>

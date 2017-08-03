@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>big-data.js - example - rc-tree-select@1.10.2</title>
+  <title>big-data.js - example - rc-tree-select@1.7.11</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-tree-select@1.10.2</h1>
+      <h1>rc-tree-select@1.7.11</h1>
 
       <p>tree-select ui component for react</p>
     </div>
@@ -278,29 +278,28 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <span class="hljs-keyword">import</span> TreeSelect, { SHOW_PARENT } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-tree-select'</span>;
 <span class="hljs-keyword">import</span> Gen <span class="hljs-keyword">from</span> <span class="hljs-string">'./big-data-generator'</span>;
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
-  state = {
-    gData: [],
-    gData1: [],
-    value: <span class="hljs-string">''</span>,
-    value1: <span class="hljs-string">''</span>,
-  }
-
-  onChange = (value) =&gt; {
+<span class="hljs-keyword">const</span> Demo = React.createClass({
+  getInitialState() {
+    <span class="hljs-keyword">return</span> {
+      gData: [],
+      gData1: [],
+      value: <span class="hljs-string">''</span>,
+      value1: <span class="hljs-string">''</span>,
+    };
+  },
+  onChange(value) {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, <span class="hljs-built_in">arguments</span>);
     <span class="hljs-keyword">this</span>.setState({ value });
-  }
-
-  onChangeStrictly = (value1) =&gt; {
+  },
+  onChangeStrictly(value1) {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChangeStrictly'</span>, <span class="hljs-built_in">arguments</span>);
     <span class="hljs-keyword">const</span> ind = <span class="hljs-built_in">parseInt</span>(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">3</span>, <span class="hljs-number">10</span>);
     value1.push({ value: <span class="hljs-string">`0-0-0-<span class="hljs-subst">${ind}</span>-value`</span>, label: <span class="hljs-string">`0-0-0-<span class="hljs-subst">${ind}</span>-label`</span>, halfChecked: <span class="hljs-literal">true</span> });
     <span class="hljs-keyword">this</span>.setState({
       value1,
     });
-  }
-
-  onGen = (data) =&gt; {
+  },
+  onGen(data) {
     <span class="hljs-keyword">this</span>.setState({
       gData: data,
       gData1: [...data],
@@ -311,8 +310,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
       ],
       <span class="hljs-comment">// value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],</span>
     });
-  }
-
+  },
   render() {
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">padding:</span> '<span class="hljs-attribute">0</span> <span class="hljs-attribute">20px</span>' }}&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">Gen</span> <span class="hljs-attribute">onGen</span>=<span class="hljs-value">{this.onGen}</span> /&gt;</span>
@@ -346,8 +344,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
-  }
-}
+  },
+});
 
 ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Demo</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>

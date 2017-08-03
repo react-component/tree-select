@@ -58,7 +58,7 @@
   text-decoration: none;
 }
 .rc-dialog-close-x:after {
-  content: '\D7';
+  content: '×';
 }
 .rc-dialog-close:hover {
   opacity: 1;
