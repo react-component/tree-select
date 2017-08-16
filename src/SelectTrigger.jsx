@@ -68,6 +68,11 @@ class SelectTrigger extends Component {
     this.setState({
       _expandedKeys: expandedKeys,
       fireOnExpand: true,
+    }, () => {
+      // Fix https://github.com/ant-design/ant-design/issues/5689
+      if (this.refs.trigger && this.refs.trigger.forcePopupAlign) {
+        this.refs.trigger.forcePopupAlign();
+      }
     });
   }
 
