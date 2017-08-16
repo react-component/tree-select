@@ -17258,7 +17258,7 @@ var Select = function (_Component) {
           unCheckPos = itemObj.pos;
         }
       });
-      var nArr = unCheckPos.split('-');
+      var nArr = unCheckPos && unCheckPos.split('-');
       var newVals = [];
       var newCkTns = [];
       checkedTreeNodes.forEach(function (itemObj) {
@@ -18022,6 +18022,11 @@ var SelectTrigger = function (_Component) {
       _this.setState({
         _expandedKeys: expandedKeys,
         fireOnExpand: true
+      }, function () {
+        // Fix https://github.com/ant-design/ant-design/issues/5689
+        if (_this.refs.trigger && _this.refs.trigger.forcePopupAlign) {
+          _this.refs.trigger.forcePopupAlign();
+        }
       });
     }, _this.highlightTreeNode = function (treeNode) {
       var props = _this.props;

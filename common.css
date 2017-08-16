@@ -630,41 +630,15 @@ li.rc-tree-select-dropdown-menu-item-divider {
   vertical-align: top;
   background: url("data:image/gif;base64,R0lGODlhEAAQAKIGAMLY8YSx5HOm4Mjc88/g9Ofw+v///wAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFCgAGACwAAAAAEAAQAAADMGi6RbUwGjKIXCAA016PgRBElAVlG/RdLOO0X9nK61W39qvqiwz5Ls/rRqrggsdkAgAh+QQFCgAGACwCAAAABwAFAAADD2hqELAmiFBIYY4MAutdCQAh+QQFCgAGACwGAAAABwAFAAADD1hU1kaDOKMYCGAGEeYFCQAh+QQFCgAGACwKAAIABQAHAAADEFhUZjSkKdZqBQG0IELDQAIAIfkEBQoABgAsCgAGAAUABwAAAxBoVlRKgyjmlAIBqCDCzUoCACH5BAUKAAYALAYACgAHAAUAAAMPaGpFtYYMAgJgLogA610JACH5BAUKAAYALAIACgAHAAUAAAMPCAHWFiI4o1ghZZJB5i0JACH5BAUKAAYALAAABgAFAAcAAAMQCAFmIaEp1motpDQySMNFAgA7") no-repeat scroll 0 0 transparent;
 }
-.rc-tree-select-tree li span.rc-tree-select-tree-switcher.rc-tree-select-tree-switcher-noop {
+.rc-tree-select-tree li span.rc-tree-select-tree-switcher-noop {
   cursor: auto;
+  background: none;
 }
-.rc-tree-select-tree li span.rc-tree-select-tree-switcher.rc-tree-select-tree-roots_open {
+.rc-tree-select-tree li span.rc-tree-select-tree-switcher_open {
   background-position: -93px -56px;
 }
-.rc-tree-select-tree li span.rc-tree-select-tree-switcher.rc-tree-select-tree-roots_close {
+.rc-tree-select-tree li span.rc-tree-select-tree-switcher_close {
   background-position: -75px -56px;
-}
-.rc-tree-select-tree li span.rc-tree-select-tree-switcher.rc-tree-select-tree-center_open {
-  background-position: -92px -18px;
-}
-.rc-tree-select-tree li span.rc-tree-select-tree-switcher.rc-tree-select-tree-center_close {
-  background-position: -74px -18px;
-}
-.rc-tree-select-tree li span.rc-tree-select-tree-switcher.rc-tree-select-tree-bottom_open {
-  background-position: -92px -36px;
-}
-.rc-tree-select-tree li span.rc-tree-select-tree-switcher.rc-tree-select-tree-bottom_close {
-  background-position: -74px -36px;
-}
-.rc-tree-select-tree li span.rc-tree-select-tree-switcher.rc-tree-select-tree-noline_open {
-  background-position: -92px -72px;
-}
-.rc-tree-select-tree li span.rc-tree-select-tree-switcher.rc-tree-select-tree-noline_close {
-  background-position: -74px -72px;
-}
-.rc-tree-select-tree li span.rc-tree-select-tree-switcher.rc-tree-select-tree-center_docu {
-  background-position: -56px -18px;
-}
-.rc-tree-select-tree li span.rc-tree-select-tree-switcher.rc-tree-select-tree-bottom_docu {
-  background-position: -56px -36px;
-}
-.rc-tree-select-tree li span.rc-tree-select-tree-switcher.rc-tree-select-tree-noline_docu {
-  background: none;
 }
 .rc-tree-select-tree li span.rc-tree-select-tree-checkbox {
   width: 13px;
