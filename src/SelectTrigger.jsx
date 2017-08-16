@@ -239,9 +239,11 @@ class SelectTrigger extends Component {
       return toArray(children).map(function handler(child) { // eslint-disable-line
         if (child && child.props.children) {
           // null or String has no Prop
-          return (<TreeNode {...child.props} key={child.key}>
-            {recursive(child.props.children) }
-          </TreeNode>);
+          return (
+            <TreeNode {...child.props} key={child.key}>
+              {recursive(child.props.children) }
+            </TreeNode>
+          );
         }
         return <TreeNode {...child.props} key={child.key} />;
       });
