@@ -743,9 +743,9 @@ class Select extends Component {
         this._cacheTreeNodesStates = false;
         this.setState({
           value: this.getValue(props, toArray(this._savedValue).map((v, i) => {
-            return {
+            return this.isLabelInValue() ? v : {
               value: v,
-              label: labs[i],
+              label: labs && labs[i],
             };
           })),
         });
