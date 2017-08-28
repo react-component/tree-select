@@ -2,7 +2,7 @@
 import React from 'react';
 import { render, mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
-import TreeSelect from '..';
+import TreeSelect from '../src';
 
 const { TreeNode } = TreeSelect;
 

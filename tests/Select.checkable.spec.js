@@ -1,7 +1,7 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef, react/no-multi-comp */
 import React from 'react';
 import { mount } from 'enzyme';
-import TreeSelect, { SHOW_PARENT } from '..';
+import TreeSelect, { SHOW_PARENT } from '../src';
 
 describe('TreeSelect.checkable', () => {
   it('allow clear when controlled', () => {
@@ -51,6 +51,82 @@ describe('TreeSelect.checkable', () => {
     wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
     // clear
     wrapper.find('.rc-tree-select-selection__clear').simulate('click');
+    expect(wrapper.find('.rc-tree-select-selection__choice')).toHaveLength(0);
+  });
+
+  // https://github.com/ant-design/ant-design/issues/6731
+  it.only('clear all should clear cache at the same time', () => {
+    const treeData = [{
+      label: 'Node1',
+      value: '0-0',
+      key: '0-0',
+      children: [{
+        label: 'Child Node1',
+        value: '0-0-0',
+        key: '0-0-0',
+      }],
+    }, {
+      label: 'Node2',
+      value: '0-1',
+      key: '0-1',
+      children: [{
+        label: 'Child Node3',
+        value: '0-1-0',
+        key: '0-1-0',
+      }, {
+        label: 'Child Node4',
+        value: '0-1-1',
+        key: '0-1-1',
+      }, {
+        label: 'Child Node5',
+        value: '0-1-2',
+        key: '0-1-2',
+      }],
+    }];
+
+    class App extends React.Component {
+      state = {
+        value: ['0-0-0'],
+        disabled: false,
+      }
+
+      handleChange = (value) => {
+        this.setState({ value });
+      }
+      switch = (checked) => {
+        this.setState({ disabled: checked });
+      }
+      render() {
+        return (<div>
+          <TreeSelect
+            treeData={treeData}
+            treeCheckable
+            allowClear
+            multiple
+            showCheckedStrategy={SHOW_PARENT}
+            value={this.state.value}
+            onChange={this.handleChange}
+            disabled={this.state.disabled}
+          />
+          <input type="checkbox" onChange={e => this.switch(e.target.checked)} id="checkbox"/> 禁用
+          </div>
+        );
+      }
+    }
+    const wrapper = mount(<App />);
+    expect(wrapper.find('.rc-tree-select-selection__choice')).toHaveLength(1);
+    // open
+    jest.useFakeTimers();
+    wrapper.find('.rc-tree-select').simulate('click');
+    jest.runAllTimers();
+    // select
+    wrapper.find('.rc-tree-select-tree-checkbox').at(2).simulate('click');
+    expect(wrapper.find('.rc-tree-select-selection__choice')).toHaveLength(2);
+    // clear
+    wrapper.find('.rc-tree-select-selection__clear').simulate('click');
+    expect(wrapper.find('.rc-tree-select-selection__choice')).toHaveLength(0);
+    // disabled
+    wrapper.find('#checkbox').simulate('change', { target: { checked: true } });
     expect(wrapper.find('.rc-tree-select-selection__choice')).toHaveLength(0);
   });
 
