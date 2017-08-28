@@ -55,7 +55,7 @@ describe('TreeSelect.checkable', () => {
   });
 
   // https://github.com/ant-design/ant-design/issues/6731
-  it.only('clear all should clear cache at the same time', () => {
+  it('clear all should clear cache at the same time', () => {
     const treeData = [{
       label: 'Node1',
       value: '0-0',
