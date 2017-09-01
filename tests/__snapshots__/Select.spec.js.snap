@@ -33,6 +33,39 @@ exports[`TreeSelect render renders TreeNode correctly 1`] = `
 </div>
 `;
 
+exports[`TreeSelect render renders TreeNode correctly with falsy child 1`] = `
+<div
+  id="TriggerContainer"
+>
+  <span
+    class="rc-tree-select rc-tree-select-enabled"
+  >
+    <span
+      aria-autocomplete="list"
+      aria-haspopup="true"
+      class="rc-tree-select-selection
+                rc-tree-select-selection--single"
+      role="combobox"
+      tabindex="0"
+    >
+      <span
+        class="rc-tree-select-selection__rendered"
+      >
+        <span
+          class="rc-tree-select-selection__placeholder"
+        />
+      </span>
+      <span
+        class="rc-tree-select-arrow"
+        style="outline:none;"
+      >
+        <b />
+      </span>
+    </span>
+  </span>
+</div>
+`;
+
 exports[`TreeSelect render renders correctly 1`] = `
 <div
   id="TriggerContainer"

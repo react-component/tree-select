@@ -67,6 +67,20 @@ describe('TreeSelect', () => {
       expect(wrapper).toMatchSnapshot();
     });
 
+    it('renders TreeNode correctly with falsy child', () => {
+      const wrapper = render(
+        <TreeSelect treeDefaultExpandAll>
+          <TreeNode key="0" value="0" title="0 label"/>
+          <TreeNode key="1" value="1" title="1 label">
+            <TreeNode key="10" value="10" title="10 label"/>
+            <TreeNode key="11" value="11" title="11 label"/>
+            {null}
+          </TreeNode>
+        </TreeSelect>
+      );
+      expect(wrapper).toMatchSnapshot();
+    });
+
     it('renders treeDataSimpleMode correctly', () => {
       treeData = [
         { id: '0', value: '0', label: 'label0' },
