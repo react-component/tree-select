@@ -18070,6 +18070,9 @@ var SelectTrigger = function (_Component) {
         // Note: if use `React.Children.map`, the node's key will be modified.
         return __WEBPACK_IMPORTED_MODULE_13_rc_util_lib_Children_toArray___default()(children).map(function handler(child) {
           // eslint-disable-line
+          if (!child) {
+            return null;
+          }
           if (child && child.props.children) {
             // null or String has no Prop
             return __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(
