@@ -459,13 +459,6 @@ class Select extends Component {
         <span
           ref={this.saveInputMirrorRef}
           className={`${prefixCls}-search__field__mirror`}
-          style={{
-            position: 'absolute',
-            top: '0',
-            left: '-9999px',
-            whiteSpace: 'pre',
-            pointerEvents: 'none',
-          }}
         >
           {inputValue}&nbsp;
         </span>
