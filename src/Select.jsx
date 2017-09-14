@@ -114,6 +114,7 @@ class Select extends Component {
     //   inputValue = value.length ? String(value[0].value) : '';
     // }
     this.saveInputRef = saveRef.bind(this, 'inputInstance');
+    this.saveInputMirrorRef = saveRef.bind(this, 'inputMirrorInstance');
     this.state = {
       value,
       inputValue,
@@ -123,11 +124,13 @@ class Select extends Component {
   }
 
   componentDidMount() {
-    if (this.state.inputValue) {
+    if (isMultipleOrTags(this.props)) {
       const inputNode = this.getInputDOMNode();
-      if (inputNode && inputNode.value) {
+      if (inputNode.value) {
         inputNode.style.width = '';
-        inputNode.style.width = `${inputNode.scrollWidth}px`;
+        inputNode.style.width = `${this.inputMirrorInstance.clientWidth}px`;
+      } else {
+        inputNode.style.width = '';
       }
     }
   }
@@ -189,7 +192,7 @@ class Select extends Component {
       const inputNode = this.getInputDOMNode();
       if (inputNode.value) {
         inputNode.style.width = '';
-        inputNode.style.width = `${inputNode.scrollWidth}px`;
+        inputNode.style.width = `${this.inputMirrorInstance.clientWidth}px`;
       } else {
         inputNode.style.width = '';
       }
@@ -441,17 +444,31 @@ class Select extends Component {
 
   getInputElement() {
     const { inputValue } = this.state;
+    const { prefixCls, disabled } = this.props;
     return (
-      <span className={`${this.props.prefixCls}-search__field__wrap`}>
+      <span className={`${prefixCls}-search__field__wrap`}>
         <input
           ref={this.saveInputRef}
           onChange={this.onInputChange}
           onKeyDown={this.onInputKeyDown}
           value={inputValue}
-          disabled={this.props.disabled}
-          className={`${this.props.prefixCls}-search__field`}
+          disabled={disabled}
+          className={`${prefixCls}-search__field`}
           role="textbox"
         />
+        <span
+          ref={this.saveInputMirrorRef}
+          className={`${prefixCls}-search__field__mirror`}
+          style={{
+            position: 'absolute',
+            top: '0',
+            left: '-9999px',
+            whiteSpace: 'pre',
+            pointerEvents: 'none',
+          }}
+        >
+          {inputValue}&nbsp;
+        </span>
         {isMultipleOrTags(this.props) ? null : this.getSearchPlaceholderElement(!!inputValue)}
       </span>
     );
