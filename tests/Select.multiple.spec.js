@@ -82,4 +82,17 @@ describe('TreeSelect.multiple', () => {
 
     expect(wrapper.find('.rc-tree-select-selection__clear')).toMatchSnapshot();
   });
+
+  it('should focus and clear search input after select and unselect item', () => {
+    const wrapper = mount(createSelect());
+    const treeWrapper = mount(wrapper.find('Trigger').node.getComponent());
+    wrapper.find('input').simulate('change', { target: { value: '0' } });
+    expect(wrapper.find('input').node.value).toBe('0');
+    select(treeWrapper, 0);
+    expect(wrapper.find('input').node.value).toBe('');
+    wrapper.find('input').simulate('change', { target: { value: '0' } });
+    expect(wrapper.find('input').node.value).toBe('0');
+    select(treeWrapper, 0);  // unselect
+    expect(wrapper.find('input').node.value).toBe('');
+  });
 });

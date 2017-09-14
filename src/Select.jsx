@@ -75,7 +75,6 @@ class Select extends Component {
     placeholder: '',
     searchPlaceholder: '',
     labelInValue: false,
-    inputValue: '',
     onClick: noop,
     onChange: noop,
     onSelect: noop,
@@ -300,6 +299,7 @@ class Select extends Component {
     props.onSelect(event, item, info);
     const checkEvt = info.event === 'check';
     if (isMultipleOrTags(props)) {
+      this.clearSearchInput();
       if (checkEvt) {
         value = this.getCheckedNodes(info, props).map(n => {
           return {
@@ -356,11 +356,8 @@ class Select extends Component {
     this.removeSelected(getValuePropValue(info.node));
     if (!isMultipleOrTags(this.props)) {
       this.setOpenState(false);
-    }
-    if (this.props.inputValue === null) {
-      this.setState({
-        inputValue: '',
-      });
+    } else {
+      this.clearSearchInput();
     }
   }
 
@@ -607,6 +604,13 @@ class Select extends Component {
         }
       }
     });
+  }
+
+  clearSearchInput() {
+    this.getInputDOMNode().focus();
+    if (!('inputValue' in this.props)) {
+      this.setState({ inputValue: '' });
+    }
   }
 
   addLabelToValue(props, value_) {
