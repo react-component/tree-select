@@ -95,6 +95,11 @@ exports[`TreeSelect render renders correctly 1`] = `
               role="textbox"
               value=""
             />
+            <span
+              class="awesome-search__field__mirror"
+            >
+               
+            </span>
           </span>
         </li>
       </ul>
@@ -164,6 +169,11 @@ exports[`TreeSelect render renders tree correctly 1`] = `
               role="textbox"
               value=""
             />
+            <span
+              class="rc-tree-select-search__field__mirror"
+            >
+               
+            </span>
           </span>
         </li>
       </ul>
