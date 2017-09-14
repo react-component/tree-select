@@ -429,31 +429,35 @@ class Select extends Component {
       placeholder = props.searchPlaceholder;
     }
     if (placeholder) {
-      return (<span
-        style={{ display: hidden ? 'none' : 'block' }}
-        onClick={this.onPlaceholderClick}
-        className={`${props.prefixCls}-search__field__placeholder`}
-      >
-        {placeholder}
-      </span>);
+      return (
+        <span
+          style={{ display: hidden ? 'none' : 'block' }}
+          onClick={this.onPlaceholderClick}
+          className={`${props.prefixCls}-search__field__placeholder`}
+        >
+          {placeholder}
+        </span>
+      );
     }
     return null;
   }
 
   getInputElement() {
-    const props = this.props;
-    return (<span className={`${props.prefixCls}-search__field__wrap`}>
-      <input
-        ref={this.saveInputRef}
-        onChange={this.onInputChange}
-        onKeyDown={this.onInputKeyDown}
-        value={this.state.inputValue}
-        disabled={props.disabled}
-        className={`${props.prefixCls}-search__field`}
-        role="textbox"
-      />
-      {isMultipleOrTags(props) ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)}
-    </span>);
+    const { inputValue } = this.state;
+    return (
+      <span className={`${this.props.prefixCls}-search__field__wrap`}>
+        <input
+          ref={this.saveInputRef}
+          onChange={this.onInputChange}
+          onKeyDown={this.onInputKeyDown}
+          value={inputValue}
+          disabled={this.props.disabled}
+          className={`${this.props.prefixCls}-search__field`}
+          role="textbox"
+        />
+        {isMultipleOrTags(this.props) ? null : this.getSearchPlaceholderElement(!!inputValue)}
+      </span>
+    );
   }
 
   getInputDOMNode() {
