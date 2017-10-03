@@ -674,8 +674,14 @@ class Select extends Component {
       if (singleValue.value === selectedVal) {
         label = singleValue.label;
       }
-      return (singleValue.value !== selectedVal);
+
+      if (selectedVal.value) {
+        return (singleValue.value !== selectedVal.value);
+      } else {
+        return (singleValue.value !== selectedVal);
+      }
     });
+
     const canMultiple = isMultipleOrTags(props);
 
     if (canMultiple) {
