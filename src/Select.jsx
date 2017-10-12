@@ -944,7 +944,7 @@ class Select extends Component {
           {ctrlNode}
           {allowClear && this.state.value.length &&
           this.state.value[0].value ? clear : null}
-            {multiple || !props.showArrow ? null :
+            {multiple && !props.multipleShowArrow || !props.showArrow ? null :
               (<span
                 key="arrow"
                 className={`${prefixCls}-arrow`}

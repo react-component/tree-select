@@ -95,4 +95,10 @@ describe('TreeSelect.multiple', () => {
     select(treeWrapper, 0);  // unselect
     expect(wrapper.find('input').node.value).toBe('');
   });
+
+  it('renders select multiple with arrow', () => {
+    const wrapper = render(createSelect({ multipleShowArrow: true }));
+
+    expect(wrapper.find('.rc-tree-select-arrow')).toHaveLength(1);
+  });
 });
