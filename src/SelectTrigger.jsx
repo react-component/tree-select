@@ -42,7 +42,12 @@ class SelectTrigger extends Component {
   state = {
     _expandedKeys: [],
     fireOnExpand: false,
+    dropdownWidth: null,
   };
+
+  componentDidMount() {
+    this.setDropdownWidth();
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.inputValue && nextProps.inputValue !== this.props.inputValue) {
@@ -55,12 +60,7 @@ class SelectTrigger extends Component {
   }
 
   componentDidUpdate() {
-    if (this.props.dropdownMatchSelectWidth && this.props.visible) {
-      const dropdownDOMNode = this.getPopupDOMNode();
-      if (dropdownDOMNode) {
-        dropdownDOMNode.style.width = `${ReactDOM.findDOMNode(this).offsetWidth}px`;
-      }
-    }
+    this.setDropdownWidth();
   }
 
   onExpand = (expandedKeys) => {
@@ -74,6 +74,16 @@ class SelectTrigger extends Component {
         this.refs.trigger.forcePopupAlign();
       }
     });
+  }
+
+  setDropdownWidth() {
+    const { visible } = this.props;
+    if (visible) {
+      const width = ReactDOM.findDOMNode(this).offsetWidth;
+      if (width !== this.state.dropdownWidth) {
+        this.setState({ dropdownWidth: width });
+      }
+    }
   }
 
   getPopupEleRefs() {
@@ -301,6 +311,12 @@ class SelectTrigger extends Component {
       </div>
     );
 
+    const popupStyle = { ...props.dropdownStyle };
+    const widthProp = props.dropdownMatchSelectWidth ? 'width' : 'minWidth';
+    if (this.state.dropdownWidth) {
+      popupStyle[widthProp] = `${this.state.dropdownWidth}px`;
+    }
+
     return (
       <Trigger
         action={props.disabled ? [] : ['click']}
@@ -315,7 +331,7 @@ class SelectTrigger extends Component {
         popupVisible={visible}
         getPopupContainer={props.getPopupContainer}
         popupClassName={classnames(popupClassName)}
-        popupStyle={props.dropdownStyle}
+        popupStyle={popupStyle}
       >
         {this.props.children}
       </Trigger>
