@@ -17797,13 +17797,9 @@ var SelectTrigger = function (_Component) {
   }, {
     key: 'setDropdownWidth',
     value: function setDropdownWidth() {
-      var visible = this.props.visible;
-
-      if (visible) {
-        var width = __WEBPACK_IMPORTED_MODULE_8_react_dom___default.a.findDOMNode(this).offsetWidth;
-        if (width !== this.state.dropdownWidth) {
-          this.setState({ dropdownWidth: width });
-        }
+      var width = __WEBPACK_IMPORTED_MODULE_8_react_dom___default.a.findDOMNode(this).offsetWidth;
+      if (width !== this.state.dropdownWidth) {
+        this.setState({ dropdownWidth: width });
       }
     }
   }, {
