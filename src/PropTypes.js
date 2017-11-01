@@ -1,9 +1,16 @@
 import PropTypes from 'prop-types';
 import { SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './strategies';
 
+function nonEmptyStringType(props, propsName) {
+  const value = props[propsName];
+  if (typeof value !== 'string' || !value) {
+    return new Error(); // Just a flag, so don't need message.
+  }
+}
+
 function valueType(props, propName, componentName) {
   const labelInValueShape = PropTypes.shape({
-    value: PropTypes.string.isRequired,
+    value: nonEmptyStringType,
     label: PropTypes.string,
   });
   if (props.labelInValue) {
