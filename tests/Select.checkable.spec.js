@@ -47,6 +47,7 @@ describe('TreeSelect.checkable', () => {
     jest.useFakeTimers();
     wrapper.find('.rc-tree-select').simulate('click');
     jest.runAllTimers();
+    wrapper.update();
     // select
     wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
     // clear
@@ -119,6 +120,7 @@ describe('TreeSelect.checkable', () => {
     jest.useFakeTimers();
     wrapper.find('.rc-tree-select').simulate('click');
     jest.runAllTimers();
+    wrapper.update();
     // select
     wrapper.find('.rc-tree-select-tree-checkbox').at(2).simulate('click');
     expect(wrapper.find('.rc-tree-select-selection__choice')).toHaveLength(2);
@@ -156,6 +158,7 @@ describe('TreeSelect.checkable', () => {
     jest.useFakeTimers();
     wrapper.find('.rc-tree-select').simulate('click');
     jest.runAllTimers();
+    wrapper.update();
     // select
     wrapper.find('.rc-tree-select-tree-checkbox').at(0).simulate('click');
     expect(handleChange).toBeCalled();

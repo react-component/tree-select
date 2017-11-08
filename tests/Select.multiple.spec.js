@@ -21,10 +21,9 @@ describe('TreeSelect.multiple', () => {
   };
 
   it('select multiple nodes', () => {
-    const wrapper = mount(createSelect());
-    const treeWrapper = mount(wrapper.find('Trigger').node.getComponent());
-    select(treeWrapper, 0);
-    select(treeWrapper, 1);
+    const wrapper = mount(createSelect({ open: true }));
+    select(wrapper, 0);
+    select(wrapper, 1);
     const result = wrapper.find('.rc-tree-select-selection__rendered');
     const choices = result.find('.rc-tree-select-selection__choice__content');
     expect(result.is('ul')).toBe(true);
@@ -61,6 +60,7 @@ describe('TreeSelect.multiple', () => {
 
       render() {
         return createSelect({
+          open: true,
           value: this.state.value,
           onChange: this.handleChange,
           treeCheckable: true,
@@ -69,8 +69,7 @@ describe('TreeSelect.multiple', () => {
     }
     const wrapper = mount(<App />);
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.BACKSPACE });
-    const treeWrapper = mount(wrapper.find('Trigger').node.getComponent());
-    treeWrapper.find('.rc-tree-select-tree-checkbox').at(1).simulate('click');
+    wrapper.find('.rc-tree-select-tree-checkbox').at(1).simulate('click');
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.BACKSPACE });
     const choice = wrapper.find('ul .rc-tree-select-selection__choice__content');
     expect(choice).toHaveLength(1);
@@ -85,14 +84,13 @@ describe('TreeSelect.multiple', () => {
 
   it('should focus and clear search input after select and unselect item', () => {
     const wrapper = mount(createSelect());
-    const treeWrapper = mount(wrapper.find('Trigger').node.getComponent());
     wrapper.find('input').simulate('change', { target: { value: '0' } });
-    expect(wrapper.find('input').node.value).toBe('0');
-    select(treeWrapper, 0);
-    expect(wrapper.find('input').node.value).toBe('');
+    expect(wrapper.find('input').getDOMNode().value).toBe('0');
+    select(wrapper, 0);
+    expect(wrapper.find('input').getDOMNode().value).toBe('');
     wrapper.find('input').simulate('change', { target: { value: '0' } });
-    expect(wrapper.find('input').node.value).toBe('0');
-    select(treeWrapper, 0);  // unselect
-    expect(wrapper.find('input').node.value).toBe('');
+    expect(wrapper.find('input').getDOMNode().value).toBe('0');
+    select(wrapper, 0);  // unselect
+    expect(wrapper.find('input').getDOMNode().value).toBe('');
   });
 });

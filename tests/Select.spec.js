@@ -113,9 +113,10 @@ describe('TreeSelect', () => {
     const wrapper = mount(
       <TreeSelect value="0" treeData={treeData} />
     );
-    const choice = wrapper.find('.rc-tree-select-selection__rendered > span');
+    let choice = wrapper.find('.rc-tree-select-selection__rendered > span');
     expect(choice.prop('children')).toBe('label0');
     wrapper.setProps({ value: '1' });
+    choice = wrapper.find('.rc-tree-select-selection__rendered > span');
     expect(choice.prop('children')).toBe('label1');
   });
 
@@ -126,6 +127,7 @@ describe('TreeSelect', () => {
     ];
     const createSelect = (props) => (
       <TreeSelect
+        open
         treeData={treeData}
         {...props}
       />
@@ -138,9 +140,8 @@ describe('TreeSelect', () => {
       const onChange = jest.fn();
       const onSelect = jest.fn();
       const wrapper = mount(createSelect({ onChange, onSelect }));
-      const treeWrapper = mount(wrapper.find('Trigger').node.getComponent());
-      select(treeWrapper);
-      const selectedNode = treeWrapper.find('TreeNode').first().node;
+      select(wrapper);
+      const selectedNode = wrapper.find('TreeNode').first().instance();
 
       expect(onChange).toBeCalledWith('0', ['label0'], {
         preValue: [],
@@ -159,8 +160,7 @@ describe('TreeSelect', () => {
 
     it('render result by treeNodeLabelProp', () => {
       const wrapper = mount(createSelect({ treeNodeLabelProp: 'value' }));
-      const treeWrapper = mount(wrapper.find('Trigger').node.getComponent());
-      select(treeWrapper);
+      select(wrapper);
       expect(wrapper.find('.rc-tree-select-selection__rendered > span').prop('children')).toBe('0');
     });
   });
@@ -172,6 +172,7 @@ describe('TreeSelect', () => {
     ];
     const createSelect = (props) => (
       <TreeSelect
+        open
         showSearch
         treeData={treeData}
         {...props}
@@ -186,28 +187,23 @@ describe('TreeSelect', () => {
     it('fires search event', () => {
       const onSearch = jest.fn();
       const wrapper = mount(createSelect({ onSearch }));
-      const treeWrapper = mount(wrapper.find('Trigger').node.getComponent());
-      treeWrapper.find('input').simulate('change', { target: { value: 'a' } });
+      wrapper.find('input').simulate('change', { target: { value: 'a' } });
       expect(onSearch).toBeCalledWith('a');
     });
 
     it('search nodes by filterTreeNode', () => {
       const filter = (value, node) => node.props.value.toLowerCase() === value.toLowerCase();
       const wrapper = mount(createSelect({ filterTreeNode: filter }));
-      let treeWrapper = mount(wrapper.find('Trigger').node.getComponent());
-      treeWrapper.find('input').simulate('change', { target: { value: 'A' } });
-      treeWrapper = mount(wrapper.find('Trigger').node.getComponent());
-      expect(treeWrapper.find('TreeNode')).toHaveLength(1);
-      expect(treeWrapper.find('TreeNode').prop('value')).toBe('a');
+      wrapper.find('input').simulate('change', { target: { value: 'A' } });
+      expect(wrapper.find('TreeNode')).toHaveLength(1);
+      expect(wrapper.find('TreeNode').prop('value')).toBe('a');
     });
 
     it('search nodes by treeNodeFilterProp', () => {
       const wrapper = mount(createSelect({ treeNodeFilterProp: 'label' }));
-      let treeWrapper = mount(wrapper.find('Trigger').node.getComponent());
-      treeWrapper.find('input').simulate('change', { target: { value: 'labela' } });
-      treeWrapper = mount(wrapper.find('Trigger').node.getComponent());
-      expect(treeWrapper.find('TreeNode')).toHaveLength(1);
-      expect(treeWrapper.find('TreeNode').prop('value')).toBe('a');
+      wrapper.find('input').simulate('change', { target: { value: 'labela' } });
+      expect(wrapper.find('TreeNode')).toHaveLength(1);
+      expect(wrapper.find('TreeNode').prop('value')).toBe('a');
     });
   });
 
@@ -220,6 +216,7 @@ describe('TreeSelect', () => {
     jest.useFakeTimers();
     wrapper.find('.rc-tree-select').simulate('click');
     jest.runAllTimers();
+    wrapper.update();
     expect(wrapper.state('open')).toBe(true);
   });
 
@@ -237,17 +234,16 @@ describe('TreeSelect', () => {
   // https://github.com/ant-design/ant-design/issues/4084
   it('checks node correctly after treeData updated', () => {
     const wrapper = mount(
-      <TreeSelect treeCheckable treeData={[]} />
+      <TreeSelect open treeCheckable treeData={[]} />
     );
     wrapper.setProps({ treeData: [{ key: '0', value: '0', label: 'label0' }] });
-    const treeWrapper = mount(wrapper.find('Trigger').node.getComponent());
-    treeWrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
+    wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
     expect(wrapper.state().value).toEqual([{ value: '0', label: 'label0' }]);
   });
 
   it('expands tree nodes by treeDefaultExpandedKeys', () => {
     const wrapper = mount(
-      <TreeSelect treeDefaultExpandedKeys={['1']}>
+      <TreeSelect open treeDefaultExpandedKeys={['1']}>
         <TreeNode key="0" value="0" title="0 label"/>
         <TreeNode key="1" value="1" title="1 label">
           <TreeNode key="10" value="10" title="10 label"/>
@@ -255,8 +251,7 @@ describe('TreeSelect', () => {
         </TreeNode>
       </TreeSelect>
     );
-    const treeWrapper = mount(wrapper.find('Trigger').node.getComponent());
-    const node = treeWrapper.find('.rc-tree-select-tree-node-content-wrapper').at(1);
+    const node = wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(1);
     expect(node.hasClass('rc-tree-select-tree-node-content-wrapper-open')).toBe(true);
   });
 
