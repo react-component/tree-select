@@ -520,3 +520,9 @@ export function processSimpleTreeData(treeData, format) {
   }
   return unflatten2(treeData);
 }
+
+export function saveRef(instance, name) {
+  return (node) => {
+    instance[name] = node;
+  };
+}

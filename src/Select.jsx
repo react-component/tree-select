@@ -12,7 +12,7 @@ import {
   preventDefaultEvent,
   getTreeNodesStates, flatToHierarchy, filterParentPosition,
   isInclude, labelCompatible, loopAllChildren, filterAllCheckedData,
-  processSimpleTreeData,
+  processSimpleTreeData, saveRef,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import _TreeNode from './TreeNode';
@@ -25,10 +25,6 @@ function noop() {
 function filterFn(input, child) {
   return String(getPropValue(child, labelCompatible(this.props.treeNodeFilterProp)))
     .indexOf(input) > -1;
-}
-
-function saveRef(name, component) {
-  this[name] = component;
 }
 
 function loopTreeData(data, level = 0) {
@@ -113,8 +109,6 @@ class Select extends Component {
     // if (props.combobox) {
     //   inputValue = value.length ? String(value[0].value) : '';
     // }
-    this.saveInputRef = saveRef.bind(this, 'inputInstance');
-    this.saveInputMirrorRef = saveRef.bind(this, 'inputMirrorInstance');
     this.state = {
       value,
       inputValue,
@@ -341,7 +335,7 @@ class Select extends Component {
       extraInfo.allCheckedNodes = props.treeCheckStrictly || this.state.inputValue ?
         info.checkedNodes : flatToHierarchy(info.checkedNodesPositions);
       this._checkedNodes = info.checkedNodesPositions;
-      const _tree = this.refs.trigger.popupEle;
+      const _tree = this.trigger.popupEle;
       this._treeNodesStates = _tree.checkKeys;
     } else {
       extraInfo.selected = info.selected;
@@ -389,7 +383,7 @@ class Select extends Component {
   }
 
   onChoiceAnimationLeave = () => {
-    this.refs.trigger.refs.trigger.forcePopupAlign();
+    this.trigger.trigger.forcePopupAlign();
   }
 
   getLabelFromNode(child) {
@@ -448,7 +442,7 @@ class Select extends Component {
     return (
       <span className={`${prefixCls}-search__field__wrap`}>
         <input
-          ref={this.saveInputRef}
+          ref={saveRef(this, 'inputInstance')}
           onChange={this.onInputChange}
           onKeyDown={this.onInputKeyDown}
           value={inputValue}
@@ -457,7 +451,7 @@ class Select extends Component {
           role="textbox"
         />
         <span
-          ref={this.saveInputMirrorRef}
+          ref={saveRef(this, 'inputMirrorInstance')}
           className={`${prefixCls}-search__field__mirror`}
         >
           {inputValue}&nbsp;
@@ -472,11 +466,11 @@ class Select extends Component {
   }
 
   getPopupDOMNode() {
-    return this.refs.trigger.getPopupDOMNode();
+    return this.trigger.getPopupDOMNode();
   }
 
   getPopupComponentRefs() {
-    return this.refs.trigger.getPopupEleRefs();
+    return this.trigger.getPopupEleRefs();
   }
 
   getValue(_props, val, init = true) {
@@ -592,7 +586,7 @@ class Select extends Component {
 
   setOpenState(open, needFocus, documentClickClose = false) {
     this.clearDelayTimer();
-    const { props, refs } = this;
+    const { props } = this;
     // can not optimize, if children is empty
     // if (this.state.open === open) {
     //   return;
@@ -609,8 +603,8 @@ class Select extends Component {
           if (input && document.activeElement !== input) {
             input.focus();
           }
-        } else if (refs.selection) {
-          refs.selection.focus();
+        } else if (this.selection) {
+          this.selection.focus();
         }
       }
     });
@@ -923,7 +917,7 @@ class Select extends Component {
         onDropdownVisibleChange={this.onDropdownVisibleChange}
         getPopupContainer={props.getPopupContainer}
         onSelect={this.onSelect}
-        ref="trigger"
+        ref={saveRef(this, 'trigger')}
       >
         <span
           style={props.style}
@@ -931,7 +925,7 @@ class Select extends Component {
           className={classnames(rootCls)}
         >
           <span
-            ref="selection"
+            ref={saveRef(this, 'selection')}
             key="selection"
             className={`${prefixCls}-selection
             ${prefixCls}-selection--${multiple ? 'multiple' : 'single'}`}

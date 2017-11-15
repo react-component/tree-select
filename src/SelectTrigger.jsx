@@ -4,7 +4,13 @@ import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import Trigger from 'rc-trigger';
 import Tree, { TreeNode } from 'rc-tree';
-import { loopAllChildren, flatToHierarchy, getValuePropValue, labelCompatible } from './util';
+import {
+  loopAllChildren,
+  flatToHierarchy,
+  getValuePropValue,
+  labelCompatible,
+  saveRef,
+} from './util';
 import toArray from 'rc-util/lib/Children/toArray';
 
 const BUILT_IN_PLACEMENTS = {
@@ -70,8 +76,8 @@ class SelectTrigger extends Component {
       fireOnExpand: true,
     }, () => {
       // Fix https://github.com/ant-design/ant-design/issues/5689
-      if (this.refs.trigger && this.refs.trigger.forcePopupAlign) {
-        this.refs.trigger.forcePopupAlign();
+      if (this.trigger && this.trigger.forcePopupAlign) {
+        this.trigger.forcePopupAlign();
       }
     });
   }
@@ -84,11 +90,11 @@ class SelectTrigger extends Component {
   }
 
   getPopupEleRefs() {
-    return this.popupEle && this.popupEle.refs;
+    return this.popupEle;
   }
 
   getPopupDOMNode() {
-    return this.refs.trigger.getPopupDomNode();
+    return this.trigger.getPopupDomNode();
   }
 
   getDropdownTransitionName() {
@@ -125,10 +131,6 @@ class SelectTrigger extends Component {
       return false;
     }
     return filterTreeNode.call(this, input, child);
-  }
-
-  savePopupElement = (ele) => {
-    this.popupEle = ele;
   }
 
   processTreeNode(treeNodes) {
@@ -227,7 +229,7 @@ class SelectTrigger extends Component {
     }
 
     return (
-      <Tree ref={this.savePopupElement} {...trProps}>
+      <Tree ref={saveRef(this, 'popupEle')} {...trProps}>
         {newTreeNodes}
       </Tree>
     );
@@ -317,7 +319,7 @@ class SelectTrigger extends Component {
     return (
       <Trigger
         action={props.disabled ? [] : ['click']}
-        ref="trigger"
+        ref={saveRef(this, 'trigger')}
         popupPlacement="bottomLeft"
         builtinPlacements={BUILT_IN_PLACEMENTS}
         popupAlign={props.dropdownPopupAlign}
