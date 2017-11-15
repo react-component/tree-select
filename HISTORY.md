@@ -1,6 +1,10 @@
 # History
 ---
 
+## 1.12.0 / 2017-11-15
+
+- Add `focus()` `blur()` `onFocus` `onBlur` and `autoFocus`.
+
 ## 1.10.0 / 2017-05-18
 
 - Add `allowClear` to multiple.
