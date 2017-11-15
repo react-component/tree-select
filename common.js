@@ -4654,7 +4654,7 @@ __WEBPACK_IMPORTED_MODULE_0__Select__["a" /* default */].TreeNode = __WEBPACK_IM
 /* harmony export (immutable) */ __webpack_exports__["j"] = isMultipleOrTags;
 /* harmony export (immutable) */ __webpack_exports__["k"] = isMultipleOrTagsOrCombobox;
 /* harmony export (immutable) */ __webpack_exports__["l"] = isSingleMode;
-/* harmony export (immutable) */ __webpack_exports__["q"] = toArray;
+/* harmony export (immutable) */ __webpack_exports__["r"] = toArray;
 /* harmony export (immutable) */ __webpack_exports__["o"] = preventDefaultEvent;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return UNSELECTABLE_STYLE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UNSELECTABLE_ATTRIBUTE; });
@@ -4668,6 +4668,7 @@ __WEBPACK_IMPORTED_MODULE_0__Select__["a" /* default */].TreeNode = __WEBPACK_IM
 /* unused harmony export recursiveCloneChildren */
 /* harmony export (immutable) */ __webpack_exports__["c"] = filterAllCheckedData;
 /* harmony export (immutable) */ __webpack_exports__["p"] = processSimpleTreeData;
+/* harmony export (immutable) */ __webpack_exports__["q"] = saveRef;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
@@ -5227,6 +5228,12 @@ function processSimpleTreeData(treeData, format) {
     }
   }
   return unflatten2(treeData);
+}
+
+function saveRef(instance, name) {
+  return function (node) {
+    instance[name] = node;
+  };
 }
 
 /***/ }),
@@ -28549,10 +28556,6 @@ function filterFn(input, child) {
   return String(Object(__WEBPACK_IMPORTED_MODULE_11__util__["f" /* getPropValue */])(child, Object(__WEBPACK_IMPORTED_MODULE_11__util__["m" /* labelCompatible */])(this.props.treeNodeFilterProp))).indexOf(input) > -1;
 }
 
-function saveRef(name, component) {
-  this[name] = component;
-}
-
 function loopTreeData(data) {
   var level = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 
@@ -28603,9 +28606,9 @@ var Select = function (_Component) {
 
     var value = [];
     if ('value' in props) {
-      value = Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* toArray */])(props.value);
+      value = Object(__WEBPACK_IMPORTED_MODULE_11__util__["r" /* toArray */])(props.value);
     } else {
-      value = Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* toArray */])(props.defaultValue);
+      value = Object(__WEBPACK_IMPORTED_MODULE_11__util__["r" /* toArray */])(props.defaultValue);
     }
     // save parsed treeData, for performance (treeData may be very big)
     _this.renderedTreeData = _this.renderTreeData();
@@ -28615,8 +28618,6 @@ var Select = function (_Component) {
     // if (props.combobox) {
     //   inputValue = value.length ? String(value[0].value) : '';
     // }
-    _this.saveInputRef = saveRef.bind(_this, 'inputInstance');
-    _this.saveInputMirrorRef = saveRef.bind(_this, 'inputMirrorInstance');
     _this.state = {
       value: value,
       inputValue: inputValue,
@@ -28627,6 +28628,10 @@ var Select = function (_Component) {
   }
 
   Select.prototype.componentDidMount = function componentDidMount() {
+    var _props2 = this.props,
+        autoFocus = _props2.autoFocus,
+        disabled = _props2.disabled;
+
     if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(this.props)) {
       var inputNode = this.getInputDOMNode();
       if (inputNode.value) {
@@ -28635,6 +28640,9 @@ var Select = function (_Component) {
       } else {
         inputNode.style.width = '';
       }
+    }
+    if (autoFocus && !disabled) {
+      this.focus();
     }
   };
 
@@ -28651,7 +28659,7 @@ var Select = function (_Component) {
       }));
     }
     if ('value' in nextProps) {
-      var value = Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* toArray */])(nextProps.value);
+      var value = Object(__WEBPACK_IMPORTED_MODULE_11__util__["r" /* toArray */])(nextProps.value);
       value = this.addLabelToValue(nextProps, value);
       value = this.getValue(nextProps, value);
       this.setState({
@@ -28678,7 +28686,7 @@ var Select = function (_Component) {
   Select.prototype.componentWillUpdate = function componentWillUpdate(nextProps) {
     if (this._savedValue && nextProps.value && nextProps.value !== this._savedValue && nextProps.value === this.props.value) {
       this._cacheTreeNodesStates = false;
-      this.getValue(nextProps, this.addLabelToValue(nextProps, Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* toArray */])(nextProps.value)));
+      this.getValue(nextProps, this.addLabelToValue(nextProps, Object(__WEBPACK_IMPORTED_MODULE_11__util__["r" /* toArray */])(nextProps.value)));
     }
   };
 
@@ -28762,15 +28770,15 @@ var Select = function (_Component) {
 
   Select.prototype.getInputElement = function getInputElement() {
     var inputValue = this.state.inputValue;
-    var _props2 = this.props,
-        prefixCls = _props2.prefixCls,
-        disabled = _props2.disabled;
+    var _props3 = this.props,
+        prefixCls = _props3.prefixCls,
+        disabled = _props3.disabled;
 
     return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
       'span',
       { className: prefixCls + '-search__field__wrap' },
       __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('input', {
-        ref: this.saveInputRef,
+        ref: Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* saveRef */])(this, 'inputInstance'),
         onChange: this.onInputChange,
         onKeyDown: this.onInputKeyDown,
         value: inputValue,
@@ -28781,7 +28789,7 @@ var Select = function (_Component) {
       __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
         'span',
         {
-          ref: this.saveInputMirrorRef,
+          ref: Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* saveRef */])(this, 'inputMirrorInstance'),
           className: prefixCls + '-search__field__mirror'
         },
         inputValue,
@@ -28796,11 +28804,11 @@ var Select = function (_Component) {
   };
 
   Select.prototype.getPopupDOMNode = function getPopupDOMNode() {
-    return this.refs.trigger.getPopupDOMNode();
+    return this.trigger.getPopupDOMNode();
   };
 
   Select.prototype.getPopupComponentRefs = function getPopupComponentRefs() {
-    return this.refs.trigger.getPopupEleRefs();
+    return this.trigger.getPopupEleRefs();
   };
 
   Select.prototype.getValue = function getValue(_props, val) {
@@ -28932,8 +28940,7 @@ var Select = function (_Component) {
     var documentClickClose = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
     this.clearDelayTimer();
-    var props = this.props,
-        refs = this.refs;
+    var props = this.props;
     // can not optimize, if children is empty
     // if (this.state.open === open) {
     //   return;
@@ -28951,8 +28958,8 @@ var Select = function (_Component) {
           if (input && document.activeElement !== input) {
             input.focus();
           }
-        } else if (refs.selection) {
-          refs.selection.focus();
+        } else if (_this4.selection) {
+          _this4.selection.focus();
         }
       }
     });
@@ -29125,7 +29132,7 @@ var Select = function (_Component) {
       if (!('value' in props)) {
         this._cacheTreeNodesStates = false;
         this.setState({
-          value: this.getValue(props, Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* toArray */])(this._savedValue).map(function (v, i) {
+          value: this.getValue(props, Object(__WEBPACK_IMPORTED_MODULE_11__util__["r" /* toArray */])(this._savedValue).map(function (v, i) {
             return _this6.isLabelInValue() ? v : {
               value: v,
               label: labs && labs[i]
@@ -29137,15 +29144,31 @@ var Select = function (_Component) {
   };
 
   Select.prototype.isLabelInValue = function isLabelInValue() {
-    var _props3 = this.props,
-        treeCheckable = _props3.treeCheckable,
-        treeCheckStrictly = _props3.treeCheckStrictly,
-        labelInValue = _props3.labelInValue;
+    var _props4 = this.props,
+        treeCheckable = _props4.treeCheckable,
+        treeCheckStrictly = _props4.treeCheckStrictly,
+        labelInValue = _props4.labelInValue;
 
     if (treeCheckable && treeCheckStrictly) {
       return true;
     }
     return labelInValue || false;
+  };
+
+  Select.prototype.focus = function focus() {
+    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["l" /* isSingleMode */])(this.props)) {
+      this.selection.focus();
+    } else {
+      this.getInputDOMNode().focus();
+    }
+  };
+
+  Select.prototype.blur = function blur() {
+    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["l" /* isSingleMode */])(this.props)) {
+      this.selection.blur();
+    } else {
+      this.getInputDOMNode().blur();
+    }
   };
 
   Select.prototype.renderTopControlNode = function renderTopControlNode() {
@@ -29313,19 +29336,21 @@ var Select = function (_Component) {
         onDropdownVisibleChange: this.onDropdownVisibleChange,
         getPopupContainer: props.getPopupContainer,
         onSelect: this.onSelect,
-        ref: 'trigger'
+        ref: Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* saveRef */])(this, 'trigger')
       }),
       __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
         'span',
         {
           style: props.style,
           onClick: props.onClick,
-          className: __WEBPACK_IMPORTED_MODULE_8_classnames___default()(rootCls)
+          className: __WEBPACK_IMPORTED_MODULE_8_classnames___default()(rootCls),
+          onBlur: props.onBlur,
+          onFocus: props.onFocus
         },
         __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
           'span',
           __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_extends___default()({
-            ref: 'selection',
+            ref: Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* saveRef */])(this, 'selection'),
             key: 'selection',
             className: prefixCls + '-selection\n            ' + prefixCls + '-selection--' + (multiple ? 'multiple' : 'single'),
             role: 'combobox',
@@ -29523,7 +29548,7 @@ var _initialiseProps = function _initialiseProps() {
       // if inputValue existing, tree is checkStrictly
       extraInfo.allCheckedNodes = props.treeCheckStrictly || _this8.state.inputValue ? info.checkedNodes : Object(__WEBPACK_IMPORTED_MODULE_11__util__["e" /* flatToHierarchy */])(info.checkedNodesPositions);
       _this8._checkedNodes = info.checkedNodesPositions;
-      var _tree = _this8.refs.trigger.popupEle;
+      var _tree = _this8.trigger.popupEle;
       _this8._treeNodesStates = _tree.checkKeys;
     } else {
       extraInfo.selected = info.selected;
@@ -29571,7 +29596,7 @@ var _initialiseProps = function _initialiseProps() {
   };
 
   this.onChoiceAnimationLeave = function () {
-    _this8.refs.trigger.refs.trigger.forcePopupAlign();
+    _this8.trigger.trigger.forcePopupAlign();
   };
 };
 
@@ -29661,8 +29686,8 @@ var SelectTrigger = function (_Component) {
         fireOnExpand: true
       }, function () {
         // Fix https://github.com/ant-design/ant-design/issues/5689
-        if (_this.refs.trigger && _this.refs.trigger.forcePopupAlign) {
-          _this.refs.trigger.forcePopupAlign();
+        if (_this.trigger && _this.trigger.forcePopupAlign) {
+          _this.trigger.forcePopupAlign();
         }
       });
     }, _this.highlightTreeNode = function (treeNode) {
@@ -29684,8 +29709,6 @@ var SelectTrigger = function (_Component) {
         return false;
       }
       return filterTreeNode.call(_this, input, child);
-    }, _this.savePopupElement = function (ele) {
-      _this.popupEle = ele;
     }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
@@ -29715,11 +29738,11 @@ var SelectTrigger = function (_Component) {
   };
 
   SelectTrigger.prototype.getPopupEleRefs = function getPopupEleRefs() {
-    return this.popupEle && this.popupEle.refs;
+    return this.popupEle;
   };
 
   SelectTrigger.prototype.getPopupDOMNode = function getPopupDOMNode() {
-    return this.refs.trigger.getPopupDomNode();
+    return this.trigger.getPopupDomNode();
   };
 
   SelectTrigger.prototype.getDropdownTransitionName = function getDropdownTransitionName() {
@@ -29834,7 +29857,7 @@ var SelectTrigger = function (_Component) {
 
     return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
       __WEBPACK_IMPORTED_MODULE_9_rc_tree__["b" /* default */],
-      __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({ ref: this.savePopupElement }, trProps),
+      __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({ ref: Object(__WEBPACK_IMPORTED_MODULE_10__util__["q" /* saveRef */])(this, 'popupEle') }, trProps),
       newTreeNodes
     );
   };
@@ -29929,7 +29952,7 @@ var SelectTrigger = function (_Component) {
       __WEBPACK_IMPORTED_MODULE_8_rc_trigger__["a" /* default */],
       {
         action: props.disabled ? [] : ['click'],
-        ref: 'trigger',
+        ref: Object(__WEBPACK_IMPORTED_MODULE_10__util__["q" /* saveRef */])(this, 'trigger'),
         popupPlacement: 'bottomLeft',
         builtinPlacements: BUILT_IN_PLACEMENTS,
         popupAlign: props.dropdownPopupAlign,
@@ -32418,9 +32441,16 @@ function toArray(children) {
 
 
 
+function nonEmptyStringType(props, propsName) {
+  var value = props[propsName];
+  if (typeof value !== 'string' || !value) {
+    return new Error(); // Just a flag, so don't need message.
+  }
+}
+
 function valueType(props, propName, componentName) {
   var labelInValueShape = __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.shape({
-    value: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string.isRequired,
+    value: nonEmptyStringType,
     label: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string
   });
   if (props.labelInValue) {
