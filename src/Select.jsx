@@ -118,6 +118,7 @@ class Select extends Component {
   }
 
   componentDidMount() {
+    const { autoFocus, disabled } = this.props;
     if (isMultipleOrTags(this.props)) {
       const inputNode = this.getInputDOMNode();
       if (inputNode.value) {
@@ -126,6 +127,9 @@ class Select extends Component {
       } else {
         inputNode.style.width = '';
       }
+    }
+    if (autoFocus && !disabled) {
+      this.focus();
     }
   }
 
@@ -774,6 +778,22 @@ class Select extends Component {
     return labelInValue || false;
   }
 
+  focus() {
+    if (isSingleMode(this.props)) {
+      this.selection.focus();
+    } else {
+      this.getInputDOMNode().focus();
+    }
+  }
+
+  blur() {
+    if (isSingleMode(this.props)) {
+      this.selection.blur();
+    } else {
+      this.getInputDOMNode().blur();
+    }
+  }
+
   renderTopControlNode() {
     const { value } = this.state;
     const props = this.props;
@@ -923,6 +943,8 @@ class Select extends Component {
           style={props.style}
           onClick={props.onClick}
           className={classnames(rootCls)}
+          onBlur={props.onBlur}
+          onFocus={props.onFocus}
         >
           <span
             ref={saveRef(this, 'selection')}

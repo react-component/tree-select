@@ -3,8 +3,11 @@ import React from 'react';
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import TreeSelect from '../src';
+import focusTest from './shared/focusTest';
 
 describe('TreeSelect.multiple', () => {
+  focusTest('multiple');
+
   const treeData = [
     { key: '0', value: '0', label: 'label0' },
     { key: '1', value: '1', label: 'label1' },
