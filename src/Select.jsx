@@ -11,7 +11,7 @@ import {
   UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
   preventDefaultEvent,
   getTreeNodesStates, flatToHierarchy, filterParentPosition,
-  isInclude, labelCompatible, loopAllChildren, filterAllCheckedData,
+  isPositionPrefix, labelCompatible, loopAllChildren, filterAllCheckedData,
   processSimpleTreeData, saveRef,
 } from './util';
 import SelectTrigger from './SelectTrigger';
@@ -569,14 +569,10 @@ class Select extends Component {
         unCheckPos = itemObj.pos;
       }
     });
-    const nArr = unCheckPos && unCheckPos.split('-');
     const newVals = [];
     const newCkTns = [];
     checkedTreeNodes.forEach(itemObj => {
-      const iArr = itemObj.pos.split('-');
-      if (itemObj.pos === unCheckPos ||
-        nArr.length > iArr.length && isInclude(iArr, nArr) ||
-        nArr.length < iArr.length && isInclude(nArr, iArr)) {
+      if (isPositionPrefix(itemObj.pos, unCheckPos) || isPositionPrefix(unCheckPos, itemObj.pos)) {
         // Filter ancestral and children nodes when uncheck a node.
         return;
       }
