@@ -75,6 +75,17 @@ export function isInclude(smallArray, bigArray) {
   });
 }
 
+export function isPositionPrefix(smallPos, bigPos) {
+  if (bigPos.length < smallPos.length) {
+    return false;
+  }
+  // attention: "0-0-1" "0-0-10"
+  if ((bigPos.length > smallPos.length) && (bigPos.charAt(smallPos.length) !== '-')) {
+    return false;
+  }
+  return bigPos.substr(0, smallPos.length) === smallPos;
+}
+
 /*
 export function getCheckedKeys(node, checkedKeys, allCheckedNodesKeys) {
   const nodeKey = node.props.eventKey;
@@ -87,13 +98,9 @@ export function getCheckedKeys(node, checkedKeys, allCheckedNodesKeys) {
     }
   });
   if (unCheck) {
-    const nArr = nodePos.split('-');
     newCks = [];
     allCheckedNodesKeys.forEach(item => {
-      const iArr = item.pos.split('-');
-      if (item.pos === nodePos ||
-        nArr.length > iArr.length && isInclude(iArr, nArr) ||
-        nArr.length < iArr.length && isInclude(nArr, iArr)) {
+      if (isPositionPrefix(item.pos, nodePos) || isPositionPrefix(nodePos, item.pos)) {
         return;
       }
       newCks.push(item.key);
@@ -179,7 +186,7 @@ export function flatToHierarchy(arr) {
       levelObj[pre].forEach((item) => {
         let haveParent = false;
         levelObj[cur].forEach((ii) => {
-          if (isInclude(ii.pos.split('-'), item.pos.split('-'))) {
+          if (isPositionPrefix(ii.pos, item.pos)) {
             haveParent = true;
             if (!ii.children) {
               ii.children = [];
@@ -215,7 +222,7 @@ export function filterParentPosition(arr) {
       levelObj[levelArr[i]].forEach(ii => {
         for (let j = i + 1; j < levelArr.length; j++) {
           levelObj[levelArr[j]].forEach((_i, index) => {
-            if (isInclude(ii.split('-'), _i.split('-'))) {
+            if (isPositionPrefix(ii, _i)) {
               levelObj[levelArr[j]][index] = null;
             }
           });
