@@ -4651,15 +4651,16 @@ __WEBPACK_IMPORTED_MODULE_0__Select__["a" /* default */].TreeNode = __WEBPACK_IM
 /* harmony export (immutable) */ __webpack_exports__["h"] = getValuePropValue;
 /* harmony export (immutable) */ __webpack_exports__["f"] = getPropValue;
 /* unused harmony export isCombobox */
-/* harmony export (immutable) */ __webpack_exports__["j"] = isMultipleOrTags;
-/* harmony export (immutable) */ __webpack_exports__["k"] = isMultipleOrTagsOrCombobox;
+/* harmony export (immutable) */ __webpack_exports__["i"] = isMultipleOrTags;
+/* harmony export (immutable) */ __webpack_exports__["j"] = isMultipleOrTagsOrCombobox;
 /* harmony export (immutable) */ __webpack_exports__["l"] = isSingleMode;
 /* harmony export (immutable) */ __webpack_exports__["r"] = toArray;
 /* harmony export (immutable) */ __webpack_exports__["o"] = preventDefaultEvent;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return UNSELECTABLE_STYLE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UNSELECTABLE_ATTRIBUTE; });
 /* harmony export (immutable) */ __webpack_exports__["m"] = labelCompatible;
-/* harmony export (immutable) */ __webpack_exports__["i"] = isInclude;
+/* unused harmony export isInclude */
+/* harmony export (immutable) */ __webpack_exports__["k"] = isPositionPrefix;
 /* harmony export (immutable) */ __webpack_exports__["n"] = loopAllChildren;
 /* harmony export (immutable) */ __webpack_exports__["e"] = flatToHierarchy;
 /* harmony export (immutable) */ __webpack_exports__["d"] = filterParentPosition;
@@ -4749,6 +4750,17 @@ function isInclude(smallArray, bigArray) {
   });
 }
 
+function isPositionPrefix(smallPos, bigPos) {
+  if (bigPos.length < smallPos.length) {
+    return false;
+  }
+  // attention: "0-0-1" "0-0-10"
+  if (bigPos.length > smallPos.length && bigPos.charAt(smallPos.length) !== '-') {
+    return false;
+  }
+  return bigPos.substr(0, smallPos.length) === smallPos;
+}
+
 /*
 export function getCheckedKeys(node, checkedKeys, allCheckedNodesKeys) {
   const nodeKey = node.props.eventKey;
@@ -4761,13 +4773,9 @@ export function getCheckedKeys(node, checkedKeys, allCheckedNodesKeys) {
     }
   });
   if (unCheck) {
-    const nArr = nodePos.split('-');
     newCks = [];
     allCheckedNodesKeys.forEach(item => {
-      const iArr = item.pos.split('-');
-      if (item.pos === nodePos ||
-        nArr.length > iArr.length && isInclude(iArr, nArr) ||
-        nArr.length < iArr.length && isInclude(nArr, iArr)) {
+      if (isPositionPrefix(item.pos, nodePos) || isPositionPrefix(nodePos, item.pos)) {
         return;
       }
       newCks.push(item.key);
@@ -4856,7 +4864,7 @@ function flatToHierarchy(arr) {
       levelObj[pre].forEach(function (item) {
         var haveParent = false;
         levelObj[cur].forEach(function (ii) {
-          if (isInclude(ii.pos.split('-'), item.pos.split('-'))) {
+          if (isPositionPrefix(ii.pos, item.pos)) {
             haveParent = true;
             if (!ii.children) {
               ii.children = [];
@@ -4892,7 +4900,7 @@ function filterParentPosition(arr) {
       levelObj[levelArr[i]].forEach(function (ii) {
         var _loop2 = function _loop2(j) {
           levelObj[levelArr[j]].forEach(function (_i, index) {
-            if (isInclude(ii.split('-'), _i.split('-'))) {
+            if (isPositionPrefix(ii, _i)) {
               levelObj[levelArr[j]][index] = null;
             }
           });
@@ -28632,7 +28640,7 @@ var Select = function (_Component) {
         autoFocus = _props2.autoFocus,
         disabled = _props2.disabled;
 
-    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(this.props)) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(this.props)) {
       var inputNode = this.getInputDOMNode();
       if (inputNode.value) {
         inputNode.style.width = '';
@@ -28693,7 +28701,7 @@ var Select = function (_Component) {
   Select.prototype.componentDidUpdate = function componentDidUpdate() {
     var state = this.state;
     var props = this.props;
-    if (state.open && Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(props)) {
+    if (state.open && Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(props)) {
       var inputNode = this.getInputDOMNode();
       if (inputNode.value) {
         inputNode.style.width = '';
@@ -28749,7 +28757,7 @@ var Select = function (_Component) {
   Select.prototype.getSearchPlaceholderElement = function getSearchPlaceholderElement(hidden) {
     var props = this.props;
     var placeholder = void 0;
-    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["k" /* isMultipleOrTagsOrCombobox */])(props)) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTagsOrCombobox */])(props)) {
       placeholder = props.placeholder || props.searchPlaceholder;
     } else {
       placeholder = props.searchPlaceholder;
@@ -28795,7 +28803,7 @@ var Select = function (_Component) {
         inputValue,
         '\xA0'
       ),
-      Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(this.props) ? null : this.getSearchPlaceholderElement(!!inputValue)
+      Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(this.props) ? null : this.getSearchPlaceholderElement(!!inputValue)
     );
   };
 
@@ -28915,12 +28923,10 @@ var Select = function (_Component) {
         unCheckPos = itemObj.pos;
       }
     });
-    var nArr = unCheckPos && unCheckPos.split('-');
     var newVals = [];
     var newCkTns = [];
     checkedTreeNodes.forEach(function (itemObj) {
-      var iArr = itemObj.pos.split('-');
-      if (itemObj.pos === unCheckPos || nArr.length > iArr.length && Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isInclude */])(iArr, nArr) || nArr.length < iArr.length && Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isInclude */])(nArr, iArr)) {
+      if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["k" /* isPositionPrefix */])(itemObj.pos, unCheckPos) || Object(__WEBPACK_IMPORTED_MODULE_11__util__["k" /* isPositionPrefix */])(unCheckPos, itemObj.pos)) {
         // Filter ancestral and children nodes when uncheck a node.
         return;
       }
@@ -28953,7 +28959,7 @@ var Select = function (_Component) {
       open: open
     }, function () {
       if (needFocus || open) {
-        if (open || Object(__WEBPACK_IMPORTED_MODULE_11__util__["k" /* isMultipleOrTagsOrCombobox */])(props)) {
+        if (open || Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTagsOrCombobox */])(props)) {
           var input = _this4.getInputDOMNode();
           if (input && document.activeElement !== input) {
             input.focus();
@@ -29025,7 +29031,7 @@ var Select = function (_Component) {
       }
       return singleValue.value !== selectedVal;
     });
-    var canMultiple = Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(props);
+    var canMultiple = Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(props);
 
     if (canMultiple) {
       var event = selectedVal;
@@ -29127,7 +29133,7 @@ var Select = function (_Component) {
           });
         }
       }
-      this._savedValue = Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(props) ? vls : vls[0];
+      this._savedValue = Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(props) ? vls : vls[0];
       props.onChange(this._savedValue, labs, ex);
       if (!('value' in props)) {
         this._cacheTreeNodesStates = false;
@@ -29210,7 +29216,7 @@ var Select = function (_Component) {
     }
 
     var selectedValueNodes = [];
-    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(props)) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(props)) {
       selectedValueNodes = value.map(function (singleValue) {
         var content = singleValue.label;
         var title = content;
@@ -29248,7 +29254,7 @@ var Select = function (_Component) {
       this.getInputElement()
     ));
     var className = prefixCls + '-selection__rendered';
-    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(props) && choiceTransitionName) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(props) && choiceTransitionName) {
       return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_10_rc_animate__["a" /* default */],
         {
@@ -29297,7 +29303,7 @@ var Select = function (_Component) {
     var _rootCls;
 
     var props = this.props;
-    var multiple = Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(props);
+    var multiple = Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(props);
     var state = this.state;
     var className = props.className,
         disabled = props.disabled,
@@ -29306,7 +29312,7 @@ var Select = function (_Component) {
 
     var ctrlNode = this.renderTopControlNode();
     var extraSelectionProps = {};
-    if (!Object(__WEBPACK_IMPORTED_MODULE_11__util__["k" /* isMultipleOrTagsOrCombobox */])(props)) {
+    if (!Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTagsOrCombobox */])(props)) {
       extraSelectionProps = {
         onKeyDown: this.onKeyDown,
         tabIndex: 0
@@ -29463,7 +29469,7 @@ var _initialiseProps = function _initialiseProps() {
     }
     var state = _this8.state;
     var keyCode = event.keyCode;
-    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(props) && !event.target.value && keyCode === __WEBPACK_IMPORTED_MODULE_7_rc_util_es_KeyCode__["a" /* default */].BACKSPACE) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(props) && !event.target.value && keyCode === __WEBPACK_IMPORTED_MODULE_7_rc_util_es_KeyCode__["a" /* default */].BACKSPACE) {
       var value = state.value.concat();
       if (value.length) {
         var popValue = value.pop();
@@ -29507,7 +29513,7 @@ var _initialiseProps = function _initialiseProps() {
     }
     props.onSelect(event, item, info);
     var checkEvt = info.event === 'check';
-    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(props)) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(props)) {
       _this8.clearSearchInput();
       if (checkEvt) {
         value = _this8.getCheckedNodes(info, props).map(function (n) {
@@ -29564,7 +29570,7 @@ var _initialiseProps = function _initialiseProps() {
 
   this.onDeselect = function (info) {
     _this8.removeSelected(Object(__WEBPACK_IMPORTED_MODULE_11__util__["h" /* getValuePropValue */])(info.node));
-    if (!Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(_this8.props)) {
+    if (!Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(_this8.props)) {
       _this8.setOpenState(false);
     } else {
       _this8.clearSearchInput();

@@ -120,12 +120,17 @@ function loopData(data, callback) {
   loop(data);
 }
 
-function isInclude(smallArray, bigArray) {
-  return smallArray.every(function (ii, i) {
-    return ii === bigArray[i];
-  });
+function isPositionPrefix(smallPos, bigPos) {
+  if (bigPos.length < smallPos.length) {
+    return false;
+  }
+  // attention: "0-0-1" "0-0-10"
+  if (bigPos.length > smallPos.length && bigPos.charAt(smallPos.length) !== '-') {
+    return false;
+  }
+  return bigPos.substr(0, smallPos.length) === smallPos;
 }
-// console.log(isInclude(['0', '1'], ['0', '10', '1']));
+// console.log(isPositionPrefix("0-1", "0-10-1"));
 
 function getFilterValue(val, sVal, delVal) {
   var allPos = [];
@@ -140,10 +145,8 @@ function getFilterValue(val, sVal, delVal) {
   });
   var newPos = [];
   delPos.forEach(function (item) {
-    var nArr = item.split('-');
     allPos.forEach(function (i) {
-      var iArr = i.split('-');
-      if (item === i || nArr.length > iArr.length && isInclude(iArr, nArr) || nArr.length < iArr.length && isInclude(nArr, iArr)) {
+      if (isPositionPrefix(item, i) || isPositionPrefix(i, item)) {
         // 过滤掉 父级节点 和 所有子节点。
         // 因为 node节点 不选时，其 父级节点 和 所有子节点 都不选。
         return;
