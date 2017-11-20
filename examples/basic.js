@@ -1,39 +1,36 @@
 webpackJsonp([1],{
 
-/***/ 121:
+/***/ 122:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(122);
+module.exports = __webpack_require__(123);
 
 
 /***/ }),
 
-/***/ 122:
+/***/ 123:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_inherits__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rc_tree_select_assets_index_less__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rc_tree_select_assets_index_less___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rc_tree_select_assets_index_less__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__demo_less__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__demo_less___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__demo_less__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_dom__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rc_dialog_assets_index_css__ = __webpack_require__(168);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rc_dialog_assets_index_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rc_dialog_assets_index_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rc_dialog__ = __webpack_require__(169);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rc_tree_select__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__util__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rc_tree_select_assets_index_less__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rc_tree_select_assets_index_less___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rc_tree_select_assets_index_less__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__demo_less__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__demo_less___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__demo_less__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_dom__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rc_dialog_assets_index_css__ = __webpack_require__(134);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rc_dialog_assets_index_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rc_dialog_assets_index_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rc_dialog__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rc_tree_select__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__util__ = __webpack_require__(18);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /* eslint react/no-multi-comp:0, no-console:0, no-alert: 0 */
 
@@ -50,7 +47,7 @@ function isLeaf(value) {
   if (!value) {
     return false;
   }
-  var queues = [].concat(__WEBPACK_IMPORTED_MODULE_10__util__["b" /* gData */]);
+  var queues = [].concat(__WEBPACK_IMPORTED_MODULE_7__util__["b" /* gData */]);
   while (queues.length) {
     // BFS
     var item = queues.shift();
@@ -90,7 +87,7 @@ function findPath(value, data) {
 }
 
 var Demo = function (_React$Component) {
-  __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_inherits___default()(Demo, _React$Component);
+  _inherits(Demo, _React$Component);
 
   function Demo() {
     var _arguments = arguments;
@@ -101,9 +98,9 @@ var Demo = function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, Demo);
+    _classCallCheck(this, Demo);
 
-    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
       tsOpen: false,
       visible: false,
       inputValue: '0-0-0-label',
@@ -139,7 +136,7 @@ var Demo = function (_React$Component) {
         _this.setState({ lv: undefined });
         return;
       }
-      var path = findPath(value.value, __WEBPACK_IMPORTED_MODULE_10__util__["b" /* gData */]).map(function (i) {
+      var path = findPath(value.value, __WEBPACK_IMPORTED_MODULE_7__util__["b" /* gData */]).map(function (i) {
         return i.label;
       }).reverse().join(' > ');
       _this.setState({ lv: { value: value.value, label: path } });
@@ -158,7 +155,7 @@ var Demo = function (_React$Component) {
       return true;
     }, _this.filterTreeNode = function (input, child) {
       return String(child.props.title).indexOf(input) === 0;
-    }, _temp), __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   Demo.prototype.componentDidMount = function componentDidMount() {
@@ -170,21 +167,21 @@ var Demo = function (_React$Component) {
     var _arguments2 = arguments,
         _this2 = this;
 
-    return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+    return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
       'div',
       { style: { margin: 20 } },
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
         'h2',
         null,
         'tree-select in dialog'
       ),
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
         'button',
         { className: 'btn btn-primary', onClick: this.onClick },
         'show dialog'
       ),
-      this.state.visible ? __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_8_rc_dialog__["a" /* default */],
+      this.state.visible ? __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_5_rc_dialog__["a" /* default */],
         {
           visible: this.state.visible,
           animation: 'zoom',
@@ -193,10 +190,10 @@ var Demo = function (_React$Component) {
           style: { width: 600, height: 400, overflow: 'auto' },
           id: 'area'
         },
-        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
           'div',
           { style: { height: 600, paddingTop: 100 } },
-          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["c" /* default */], {
+          __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["c" /* default */], {
             getPopupContainer: function getPopupContainer(triggerNode) {
               return triggerNode.parentNode;
             },
@@ -204,7 +201,7 @@ var Demo = function (_React$Component) {
             transitionName: 'rc-tree-select-dropdown-slide-up',
             choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
             dropdownStyle: { maxHeight: 200, overflow: 'auto', zIndex: 1500 },
-            placeholder: __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+            placeholder: __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
               'i',
               null,
               '\u8BF7\u4E0B\u62C9\u9009\u62E9'
@@ -212,7 +209,7 @@ var Demo = function (_React$Component) {
             searchPlaceholder: 'please search',
             showSearch: true, allowClear: true, treeLine: true,
             value: this.state.value,
-            treeData: __WEBPACK_IMPORTED_MODULE_10__util__["b" /* gData */],
+            treeData: __WEBPACK_IMPORTED_MODULE_7__util__["b" /* gData */],
             treeNodeFilterProp: 'label',
             filterTreeNode: false,
             onSearch: this.onSearch,
@@ -221,17 +218,17 @@ var Demo = function (_React$Component) {
           })
         )
       ) : null,
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
         'h2',
         null,
         'single select'
       ),
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["c" /* default */], {
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["c" /* default */], {
         style: { width: 300 },
         transitionName: 'rc-tree-select-dropdown-slide-up',
         choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
         dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-        placeholder: __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+        placeholder: __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
           'i',
           null,
           '\u8BF7\u4E0B\u62C9\u9009\u62E9'
@@ -240,7 +237,7 @@ var Demo = function (_React$Component) {
         showSearch: true, allowClear: true, treeLine: true,
         inputValue: this.state.inputValue,
         value: this.state.value,
-        treeData: __WEBPACK_IMPORTED_MODULE_10__util__["b" /* gData */],
+        treeData: __WEBPACK_IMPORTED_MODULE_7__util__["b" /* gData */],
         treeNodeFilterProp: 'label',
         filterTreeNode: false,
         onSearch: this.onSearch,
@@ -264,17 +261,17 @@ var Demo = function (_React$Component) {
         },
         onSelect: this.onSelect
       }),
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
         'h2',
         null,
         'single select (just select children)'
       ),
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["c" /* default */], {
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["c" /* default */], {
         style: { width: 300 },
         transitionName: 'rc-tree-select-dropdown-slide-up',
         choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
         dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-        placeholder: __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+        placeholder: __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
           'i',
           null,
           '\u8BF7\u4E0B\u62C9\u9009\u62E9'
@@ -282,22 +279,22 @@ var Demo = function (_React$Component) {
         searchPlaceholder: 'please search',
         showSearch: true, allowClear: true, treeLine: true,
         value: this.state.value,
-        treeData: __WEBPACK_IMPORTED_MODULE_10__util__["b" /* gData */],
+        treeData: __WEBPACK_IMPORTED_MODULE_7__util__["b" /* gData */],
         treeNodeFilterProp: 'label',
         filterTreeNode: false,
         onChange: this.onChangeChildren
       }),
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
         'h2',
         null,
         'multiple select'
       ),
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["c" /* default */], { ref: 'mul',
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["c" /* default */], { ref: 'mul',
         style: { width: 300 },
         transitionName: 'rc-tree-select-dropdown-slide-up',
         choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
         dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-        placeholder: __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+        placeholder: __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
           'i',
           null,
           '\u8BF7\u4E0B\u62C9\u9009\u62E9'
@@ -305,25 +302,25 @@ var Demo = function (_React$Component) {
         searchPlaceholder: 'please search',
         multiple: true,
         value: this.state.multipleValue,
-        treeData: __WEBPACK_IMPORTED_MODULE_10__util__["b" /* gData */],
+        treeData: __WEBPACK_IMPORTED_MODULE_7__util__["b" /* gData */],
         treeNodeFilterProp: 'title',
         onChange: this.onMultipleChange,
         onSelect: this.onSelect,
         allowClear: true
       }),
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
         'h2',
         null,
         'check select'
       ),
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["c" /* default */], {
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["c" /* default */], {
         className: 'check-select',
         transitionName: 'rc-tree-select-dropdown-slide-up',
         choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
         dropdownStyle: { height: 200, overflow: 'auto' },
         dropdownPopupAlign: { overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 2] },
         onDropdownVisibleChange: this.onDropdownVisibleChange,
-        placeholder: __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+        placeholder: __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
           'i',
           null,
           '\u8BF7\u4E0B\u62C9\u9009\u62E9'
@@ -332,23 +329,23 @@ var Demo = function (_React$Component) {
         treeLine: true, maxTagTextLength: 10,
         value: this.state.value,
         inputValue: null,
-        treeData: __WEBPACK_IMPORTED_MODULE_10__util__["b" /* gData */],
+        treeData: __WEBPACK_IMPORTED_MODULE_7__util__["b" /* gData */],
         treeNodeFilterProp: 'title',
-        treeCheckable: true, showCheckedStrategy: __WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["a" /* SHOW_PARENT */],
+        treeCheckable: true, showCheckedStrategy: __WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["a" /* SHOW_PARENT */],
         onChange: this.onChange,
         onSelect: this.onSelect
       }),
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
         'h2',
         null,
         'labelInValue & show path'
       ),
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["c" /* default */], {
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["c" /* default */], {
         style: { width: 500 },
         transitionName: 'rc-tree-select-dropdown-slide-up',
         choiceTransitionName: 'rc-tree-select-selection__choice-zoom',
         dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-        placeholder: __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+        placeholder: __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
           'i',
           null,
           '\u8BF7\u4E0B\u62C9\u9009\u62E9'
@@ -356,20 +353,20 @@ var Demo = function (_React$Component) {
         searchPlaceholder: 'please search',
         showSearch: true, allowClear: true, treeLine: true,
         value: this.state.lv, labelInValue: true,
-        treeData: __WEBPACK_IMPORTED_MODULE_10__util__["b" /* gData */],
+        treeData: __WEBPACK_IMPORTED_MODULE_7__util__["b" /* gData */],
         treeNodeFilterProp: 'label',
         filterTreeNode: false,
         onChange: this.onChangeLV
       }),
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
         'h2',
         null,
         'use treeDataSimpleMode'
       ),
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["c" /* default */], {
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["c" /* default */], {
         style: { width: 300 },
         dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-        placeholder: __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+        placeholder: __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
           'i',
           null,
           '\u8BF7\u4E0B\u62C9\u9009\u62E9'
@@ -381,19 +378,19 @@ var Demo = function (_React$Component) {
         treeData: this.state.simpleTreeData,
         treeNodeFilterProp: 'title',
         treeDataSimpleMode: this.state.treeDataSimpleMode,
-        treeCheckable: true, showCheckedStrategy: __WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["a" /* SHOW_PARENT */],
+        treeCheckable: true, showCheckedStrategy: __WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["a" /* SHOW_PARENT */],
         onChange: this.onChange,
         onSelect: this.onSelect
       }),
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
         'h2',
         null,
         'Testing in extreme conditions (Boundary conditions test) '
       ),
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["c" /* default */], {
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["c" /* default */], {
         style: { width: 200 },
         dropdownStyle: { maxHeight: 200, overflow: 'auto' },
-        defaultValue: 'leaf1', multiple: true, treeCheckable: true, showCheckedStrategy: __WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["a" /* SHOW_PARENT */],
+        defaultValue: 'leaf1', multiple: true, treeCheckable: true, showCheckedStrategy: __WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["a" /* SHOW_PARENT */],
         treeDefaultExpandAll: true,
         treeData: [{ key: '', value: '', label: 'empty value', children: [] }, {
           key: '0', value: '0', label: '0 label', children: [{ key: '00', value: '00', label: '00 label', children: [] }, { key: '01', value: '01', label: '01 label', children: [] }]
@@ -402,13 +399,13 @@ var Demo = function (_React$Component) {
           return console.log(val, _arguments2);
         }
       }),
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
         'h2',
         null,
         'use TreeNode Component (not recommend)'
       ),
-      __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["c" /* default */],
+      __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["c" /* default */],
         {
           style: { width: 200 },
           dropdownStyle: { maxHeight: 200, overflow: 'auto' },
@@ -420,71 +417,71 @@ var Demo = function (_React$Component) {
             return console.log(val, _arguments2);
           }
         },
-        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["b" /* TreeNode */],
+        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+          __WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["b" /* TreeNode */],
           { value: '', title: 'parent 1', key: '' },
-          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["b" /* TreeNode */],
+          __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["b" /* TreeNode */],
             { value: 'parent 1-0', title: 'parent 1-0', key: '0-1-0' },
-            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["b" /* TreeNode */], { value: 'leaf1', title: 'my leaf', key: 'random' }),
-            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["b" /* TreeNode */], { value: 'leaf2', title: 'your leaf', key: 'random1', disabled: true })
+            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["b" /* TreeNode */], { value: 'leaf1', title: 'my leaf', key: 'random' }),
+            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["b" /* TreeNode */], { value: 'leaf2', title: 'your leaf', key: 'random1', disabled: true })
           ),
-          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["b" /* TreeNode */],
+          __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["b" /* TreeNode */],
             { value: 'parent 1-1', title: 'parent 1-1', key: '0-1-1' },
-            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["b" /* TreeNode */], { value: 'sss',
-              title: __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["b" /* TreeNode */], { value: 'sss',
+              title: __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                 'span',
                 { style: { color: 'red' } },
                 'sss'
               ), key: 'random3'
             }),
-            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-              __WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["b" /* TreeNode */],
+            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+              __WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["b" /* TreeNode */],
               { value: 'same value1', title: 'same txtle', key: '0-1-1-1' },
-              __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["b" /* TreeNode */], { value: 'same value10', title: 'same titlexd', key: '0-1-1-1-0' })
+              __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["b" /* TreeNode */], { value: 'same value10', title: 'same titlexd', key: '0-1-1-1-0' })
             )
           )
         ),
-        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["b" /* TreeNode */],
+        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+          __WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["b" /* TreeNode */],
           { value: 'same value2', title: 'same title', key: '0-2' },
-          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["b" /* TreeNode */], { value: '2same value', title: '2same title', key: '0-2-0' })
+          __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["b" /* TreeNode */], { value: '2same value', title: '2same title', key: '0-2-0' })
         ),
-        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_tree_select__["b" /* TreeNode */], { value: 'same value3', title: 'same title', key: '0-3' })
+        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_rc_tree_select__["b" /* TreeNode */], { value: 'same value3', title: 'same title', key: '0-3' })
       )
     );
   };
 
   return Demo;
-}(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);
+}(__WEBPACK_IMPORTED_MODULE_2_react___default.a.Component);
 
-__WEBPACK_IMPORTED_MODULE_6_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(Demo, null), document.getElementById('__react-content'));
+__WEBPACK_IMPORTED_MODULE_3_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(Demo, null), document.getElementById('__react-content'));
 
 /***/ }),
 
-/***/ 168:
+/***/ 134:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 169:
+/***/ 135:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_create_react_class__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_create_react_class__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_create_react_class___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_create_react_class__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Dialog__ = __webpack_require__(175);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rc_util_es_getContainerRenderMixin__ = __webpack_require__(184);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rc_util_lib_Portal__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Dialog__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rc_util_es_getContainerRenderMixin__ = __webpack_require__(183);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rc_util_lib_Portal__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rc_util_lib_Portal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rc_util_lib_Portal__);
 
 
@@ -538,40 +535,44 @@ var DialogWrap = __WEBPACK_IMPORTED_MODULE_3_create_react_class___default()({
     render: function render() {
         var visible = this.props.visible;
 
-        if (visible || this._component) {
-            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_rc_util_lib_Portal___default.a, { getContainer: this.getContainer }, this.getComponent());
+        var portal = null;
+        if (!IS_REACT_16) {
+            return portal;
         }
-        return null;
+        if (visible || this._component) {
+            portal = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_rc_util_lib_Portal___default.a, { getContainer: this.getContainer }, this.getComponent());
+        }
+        return portal;
     }
 });
 /* harmony default export */ __webpack_exports__["a"] = (DialogWrap);
 
 /***/ }),
 
-/***/ 175:
+/***/ 144:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_dom__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_dom__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rc_util_es_KeyCode__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rc_animate__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__LazyRenderBox__ = __webpack_require__(182);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rc_util_lib_getScrollBarSize__ = __webpack_require__(183);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rc_util_es_KeyCode__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rc_animate__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__LazyRenderBox__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rc_util_lib_getScrollBarSize__ = __webpack_require__(182);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rc_util_lib_getScrollBarSize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_rc_util_lib_getScrollBarSize__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_object_assign__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_object_assign__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_object_assign___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_object_assign__);
 
 
@@ -1050,23 +1051,23 @@ function getFilterValue(val, sVal, delVal) {
 
 /***/ }),
 
-/***/ 182:
+/***/ 181:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_object_assign__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_object_assign__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_object_assign___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_object_assign__);
 
 
@@ -1112,7 +1113,7 @@ var LazyRenderBox = function (_React$Component) {
 
 /***/ }),
 
-/***/ 183:
+/***/ 182:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1164,14 +1165,14 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 184:
+/***/ 183:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = getContainerRenderMixin;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 
 
@@ -1188,6 +1189,7 @@ function getContainerRenderMixin(config) {
       _config$autoDestroy = config.autoDestroy,
       autoDestroy = _config$autoDestroy === undefined ? true : _config$autoDestroy,
       isVisible = config.isVisible,
+      isForceRender = config.isForceRender,
       getComponent = config.getComponent,
       _config$getContainer = config.getContainer,
       getContainer = _config$getContainer === undefined ? defaultGetContainer : _config$getContainer;
@@ -1196,7 +1198,7 @@ function getContainerRenderMixin(config) {
   var mixin = void 0;
 
   function _renderComponent(instance, componentArg, ready) {
-    if (!isVisible || instance._component || isVisible(instance)) {
+    if (!isVisible || instance._component || isVisible(instance) || isForceRender && isForceRender(instance)) {
       if (!instance._container) {
         instance._container = getContainer(instance);
       }
@@ -1262,12 +1264,12 @@ function getContainerRenderMixin(config) {
 
 /***/ }),
 
-/***/ 37:
+/***/ 34:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ })
 
-},[121]);
+},[122]);
 //# sourceMappingURL=basic.js.map
