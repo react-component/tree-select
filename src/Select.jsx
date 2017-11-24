@@ -376,12 +376,15 @@ class Select extends Component {
     this._cacheTreeNodesStates = 'no';
     this._checkedNodes = [];
     if (state.inputValue || state.value.length) {
-      this.fireChange([]);
       this.setOpenState(false);
-      if (props.inputValue === null) {
+      if (typeof props.inputValue === 'undefined') {
         this.setState({
           inputValue: '',
+        }, () => {
+          this.fireChange([]);
         });
+      } else {
+        this.fireChange([]);
       }
     }
   }

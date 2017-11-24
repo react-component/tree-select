@@ -4,6 +4,14 @@ import { mount } from 'enzyme';
 import TreeSelect, { SHOW_PARENT } from '../src';
 
 describe('TreeSelect.checkable', () => {
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
   it('allow clear when controlled', () => {
     const treeData = [
       {
@@ -44,10 +52,7 @@ describe('TreeSelect.checkable', () => {
     }
     const wrapper = mount(<App />);
     // open
-    jest.useFakeTimers();
-    wrapper.find('.rc-tree-select').simulate('click');
-    jest.runAllTimers();
-    wrapper.update();
+    wrapper.openSelect();
     // select
     wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
     // clear
@@ -117,10 +122,7 @@ describe('TreeSelect.checkable', () => {
     const wrapper = mount(<App />);
     expect(wrapper.find('.rc-tree-select-selection__choice')).toHaveLength(1);
     // open
-    jest.useFakeTimers();
-    wrapper.find('.rc-tree-select').simulate('click');
-    jest.runAllTimers();
-    wrapper.update();
+    wrapper.openSelect();
     // select
     wrapper.find('.rc-tree-select-tree-checkbox').at(2).simulate('click');
     expect(wrapper.find('.rc-tree-select-selection__choice')).toHaveLength(2);
@@ -155,7 +157,6 @@ describe('TreeSelect.checkable', () => {
       />
     );
     // open
-    jest.useFakeTimers();
     wrapper.find('.rc-tree-select').simulate('click');
     jest.runAllTimers();
     wrapper.update();
@@ -164,5 +165,30 @@ describe('TreeSelect.checkable', () => {
     expect(handleChange).toBeCalled();
     expect(wrapper.find('.rc-tree-select-selection__choice__content').length).toBe(1);
     expect(wrapper.find('.rc-tree-select-selection__choice__content').at(0).text()).toBe('1-1');
+  });
+
+  it('clear selected value and input value', () => {
+    const treeData = [
+      {
+        key: '0',
+        value: '0',
+        label: 'label0',
+      },
+    ];
+
+    const wrapper = mount(
+      <TreeSelect
+        treeData={treeData}
+        treeCheckable
+        allowClear
+        showCheckedStrategy={SHOW_PARENT}
+      />
+    );
+    wrapper.openSelect();
+    wrapper.find('.rc-tree-select-tree-checkbox').at(0).simulate('click');
+    wrapper.find('input').simulate('change', { target: { value: 'foo' } });
+    wrapper.find('.rc-tree-select-selection__clear').simulate('click');
+    expect(wrapper.state().value).toEqual([]);
+    expect(wrapper.state().inputValue).toBe('');
   });
 });

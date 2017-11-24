@@ -8,6 +8,14 @@ import focusTest from './shared/focusTest';
 const { TreeNode } = TreeSelect;
 
 describe('TreeSelect', () => {
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
   focusTest('single');
 
   describe('render', () => {
@@ -135,15 +143,12 @@ describe('TreeSelect', () => {
         {...props}
       />
     );
-    const select = (wrapper, index = 0) => {
-      wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(index).simulate('click');
-    };
 
     it('fires change and select event', () => {
       const onChange = jest.fn();
       const onSelect = jest.fn();
       const wrapper = mount(createSelect({ onChange, onSelect }));
-      select(wrapper);
+      wrapper.selectNode(0);
       const selectedNode = wrapper.find('TreeNode').first().instance();
 
       expect(onChange).toBeCalledWith('0', ['label0'], {
@@ -163,7 +168,7 @@ describe('TreeSelect', () => {
 
     it('render result by treeNodeLabelProp', () => {
       const wrapper = mount(createSelect({ treeNodeLabelProp: 'value' }));
-      select(wrapper);
+      wrapper.selectNode(0);
       expect(wrapper.find('.rc-tree-select-selection__rendered > span').prop('children')).toBe('0');
     });
   });
@@ -216,10 +221,7 @@ describe('TreeSelect', () => {
         <TreeNode key="a" value="a" title="labela"/>
       </TreeSelect>
     );
-    jest.useFakeTimers();
-    wrapper.find('.rc-tree-select').simulate('click');
-    jest.runAllTimers();
-    wrapper.update();
+    wrapper.openSelect();
     expect(wrapper.state('open')).toBe(true);
   });
 
@@ -256,6 +258,51 @@ describe('TreeSelect', () => {
     );
     const node = wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(1);
     expect(node.hasClass('rc-tree-select-tree-node-content-wrapper-open')).toBe(true);
+  });
+
+  describe('allowClear', () => {
+    it('not inputValue prop', () => {
+      const wrapper = mount(
+        <TreeSelect allowClear>
+          <TreeNode key="0" value="0" title="0 label"/>
+        </TreeSelect>
+      );
+      wrapper.openSelect();
+      wrapper.find('.rc-tree-select-tree-title').simulate('click');
+      wrapper.find('.rc-tree-select-selection__clear').simulate('click');
+      expect(wrapper.state().value).toEqual([]);
+    });
+
+    it('has inputValue prop', () => {
+      class App extends React.Component {
+        state = {
+          inputValue: '0',
+        }
+
+        handleSearch = (inputValue) => {
+          this.setState({ inputValue });
+        }
+
+        render() {
+          return (
+            <div>
+              <TreeSelect
+                allowClear
+                inputValue={this.state.inputValue}
+                onSearch={this.handleSearch}
+              >
+                <TreeNode key="0" value="0" title="0 label"/>
+              </TreeSelect>
+            </div>
+          );
+        }
+      }
+      const wrapper = mount(<App />);
+      wrapper.openSelect();
+      wrapper.selectNode(0);
+      wrapper.find('.rc-tree-select-selection__clear').simulate('click');
+      expect(wrapper.find(TreeSelect).instance().state.value).toEqual([]);
+    });
   });
 
   describe('propTypes', () => {
