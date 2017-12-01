@@ -4775,16 +4775,15 @@ __WEBPACK_IMPORTED_MODULE_0__Select__["a" /* default */].TreeNode = __WEBPACK_IM
 /* harmony export (immutable) */ __webpack_exports__["h"] = getValuePropValue;
 /* harmony export (immutable) */ __webpack_exports__["f"] = getPropValue;
 /* unused harmony export isCombobox */
-/* harmony export (immutable) */ __webpack_exports__["i"] = isMultipleOrTags;
-/* harmony export (immutable) */ __webpack_exports__["j"] = isMultipleOrTagsOrCombobox;
+/* harmony export (immutable) */ __webpack_exports__["j"] = isMultipleOrTags;
+/* harmony export (immutable) */ __webpack_exports__["k"] = isMultipleOrTagsOrCombobox;
 /* harmony export (immutable) */ __webpack_exports__["l"] = isSingleMode;
-/* harmony export (immutable) */ __webpack_exports__["r"] = toArray;
+/* harmony export (immutable) */ __webpack_exports__["q"] = toArray;
 /* harmony export (immutable) */ __webpack_exports__["o"] = preventDefaultEvent;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return UNSELECTABLE_STYLE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UNSELECTABLE_ATTRIBUTE; });
 /* harmony export (immutable) */ __webpack_exports__["m"] = labelCompatible;
-/* unused harmony export isInclude */
-/* harmony export (immutable) */ __webpack_exports__["k"] = isPositionPrefix;
+/* harmony export (immutable) */ __webpack_exports__["i"] = isInclude;
 /* harmony export (immutable) */ __webpack_exports__["n"] = loopAllChildren;
 /* harmony export (immutable) */ __webpack_exports__["e"] = flatToHierarchy;
 /* harmony export (immutable) */ __webpack_exports__["d"] = filterParentPosition;
@@ -4793,7 +4792,6 @@ __WEBPACK_IMPORTED_MODULE_0__Select__["a" /* default */].TreeNode = __WEBPACK_IM
 /* unused harmony export recursiveCloneChildren */
 /* harmony export (immutable) */ __webpack_exports__["c"] = filterAllCheckedData;
 /* harmony export (immutable) */ __webpack_exports__["p"] = processSimpleTreeData;
-/* harmony export (immutable) */ __webpack_exports__["q"] = saveRef;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
@@ -4874,17 +4872,6 @@ function isInclude(smallArray, bigArray) {
   });
 }
 
-function isPositionPrefix(smallPos, bigPos) {
-  if (bigPos.length < smallPos.length) {
-    return false;
-  }
-  // attention: "0-0-1" "0-0-10"
-  if (bigPos.length > smallPos.length && bigPos.charAt(smallPos.length) !== '-') {
-    return false;
-  }
-  return bigPos.substr(0, smallPos.length) === smallPos;
-}
-
 /*
 export function getCheckedKeys(node, checkedKeys, allCheckedNodesKeys) {
   const nodeKey = node.props.eventKey;
@@ -4897,9 +4884,13 @@ export function getCheckedKeys(node, checkedKeys, allCheckedNodesKeys) {
     }
   });
   if (unCheck) {
+    const nArr = nodePos.split('-');
     newCks = [];
     allCheckedNodesKeys.forEach(item => {
-      if (isPositionPrefix(item.pos, nodePos) || isPositionPrefix(nodePos, item.pos)) {
+      const iArr = item.pos.split('-');
+      if (item.pos === nodePos ||
+        nArr.length > iArr.length && isInclude(iArr, nArr) ||
+        nArr.length < iArr.length && isInclude(nArr, iArr)) {
         return;
       }
       newCks.push(item.key);
@@ -4988,7 +4979,7 @@ function flatToHierarchy(arr) {
       levelObj[pre].forEach(function (item) {
         var haveParent = false;
         levelObj[cur].forEach(function (ii) {
-          if (isPositionPrefix(ii.pos, item.pos)) {
+          if (isInclude(ii.pos.split('-'), item.pos.split('-'))) {
             haveParent = true;
             if (!ii.children) {
               ii.children = [];
@@ -5024,7 +5015,7 @@ function filterParentPosition(arr) {
       levelObj[levelArr[i]].forEach(function (ii) {
         var _loop2 = function _loop2(j) {
           levelObj[levelArr[j]].forEach(function (_i, index) {
-            if (isPositionPrefix(ii, _i)) {
+            if (isInclude(ii.split('-'), _i.split('-'))) {
               levelObj[levelArr[j]][index] = null;
             }
           });
@@ -5360,12 +5351,6 @@ function processSimpleTreeData(treeData, format) {
     }
   }
   return unflatten2(treeData);
-}
-
-function saveRef(instance, name) {
-  return function (node) {
-    instance[name] = node;
-  };
 }
 
 /***/ }),
@@ -26397,6 +26382,10 @@ function filterFn(input, child) {
   return String(Object(__WEBPACK_IMPORTED_MODULE_11__util__["f" /* getPropValue */])(child, Object(__WEBPACK_IMPORTED_MODULE_11__util__["m" /* labelCompatible */])(this.props.treeNodeFilterProp))).indexOf(input) > -1;
 }
 
+function saveRef(name, component) {
+  this[name] = component;
+}
+
 function loopTreeData(data) {
   var level = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 
@@ -26447,9 +26436,9 @@ var Select = function (_Component) {
 
     var value = [];
     if ('value' in props) {
-      value = Object(__WEBPACK_IMPORTED_MODULE_11__util__["r" /* toArray */])(props.value);
+      value = Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* toArray */])(props.value);
     } else {
-      value = Object(__WEBPACK_IMPORTED_MODULE_11__util__["r" /* toArray */])(props.defaultValue);
+      value = Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* toArray */])(props.defaultValue);
     }
     // save parsed treeData, for performance (treeData may be very big)
     _this.renderedTreeData = _this.renderTreeData();
@@ -26459,6 +26448,8 @@ var Select = function (_Component) {
     // if (props.combobox) {
     //   inputValue = value.length ? String(value[0].value) : '';
     // }
+    _this.saveInputRef = saveRef.bind(_this, 'inputInstance');
+    _this.saveInputMirrorRef = saveRef.bind(_this, 'inputMirrorInstance');
     _this.state = {
       value: value,
       inputValue: inputValue,
@@ -26469,11 +26460,7 @@ var Select = function (_Component) {
   }
 
   Select.prototype.componentDidMount = function componentDidMount() {
-    var _props2 = this.props,
-        autoFocus = _props2.autoFocus,
-        disabled = _props2.disabled;
-
-    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(this.props)) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(this.props)) {
       var inputNode = this.getInputDOMNode();
       if (inputNode.value) {
         inputNode.style.width = '';
@@ -26481,9 +26468,6 @@ var Select = function (_Component) {
       } else {
         inputNode.style.width = '';
       }
-    }
-    if (autoFocus && !disabled) {
-      this.focus();
     }
   };
 
@@ -26500,7 +26484,7 @@ var Select = function (_Component) {
       }));
     }
     if ('value' in nextProps) {
-      var value = Object(__WEBPACK_IMPORTED_MODULE_11__util__["r" /* toArray */])(nextProps.value);
+      var value = Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* toArray */])(nextProps.value);
       value = this.addLabelToValue(nextProps, value);
       value = this.getValue(nextProps, value);
       this.setState({
@@ -26527,14 +26511,14 @@ var Select = function (_Component) {
   Select.prototype.componentWillUpdate = function componentWillUpdate(nextProps) {
     if (this._savedValue && nextProps.value && nextProps.value !== this._savedValue && nextProps.value === this.props.value) {
       this._cacheTreeNodesStates = false;
-      this.getValue(nextProps, this.addLabelToValue(nextProps, Object(__WEBPACK_IMPORTED_MODULE_11__util__["r" /* toArray */])(nextProps.value)));
+      this.getValue(nextProps, this.addLabelToValue(nextProps, Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* toArray */])(nextProps.value)));
     }
   };
 
   Select.prototype.componentDidUpdate = function componentDidUpdate() {
     var state = this.state;
     var props = this.props;
-    if (state.open && Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(props)) {
+    if (state.open && Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(props)) {
       var inputNode = this.getInputDOMNode();
       if (inputNode.value) {
         inputNode.style.width = '';
@@ -26590,7 +26574,7 @@ var Select = function (_Component) {
   Select.prototype.getSearchPlaceholderElement = function getSearchPlaceholderElement(hidden) {
     var props = this.props;
     var placeholder = void 0;
-    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTagsOrCombobox */])(props)) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["k" /* isMultipleOrTagsOrCombobox */])(props)) {
       placeholder = props.placeholder || props.searchPlaceholder;
     } else {
       placeholder = props.searchPlaceholder;
@@ -26611,15 +26595,15 @@ var Select = function (_Component) {
 
   Select.prototype.getInputElement = function getInputElement() {
     var inputValue = this.state.inputValue;
-    var _props3 = this.props,
-        prefixCls = _props3.prefixCls,
-        disabled = _props3.disabled;
+    var _props2 = this.props,
+        prefixCls = _props2.prefixCls,
+        disabled = _props2.disabled;
 
     return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
       'span',
       { className: prefixCls + '-search__field__wrap' },
       __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('input', {
-        ref: Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* saveRef */])(this, 'inputInstance'),
+        ref: this.saveInputRef,
         onChange: this.onInputChange,
         onKeyDown: this.onInputKeyDown,
         value: inputValue,
@@ -26630,13 +26614,13 @@ var Select = function (_Component) {
       __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
         'span',
         {
-          ref: Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* saveRef */])(this, 'inputMirrorInstance'),
+          ref: this.saveInputMirrorRef,
           className: prefixCls + '-search__field__mirror'
         },
         inputValue,
         '\xA0'
       ),
-      Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(this.props) ? null : this.getSearchPlaceholderElement(!!inputValue)
+      Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(this.props) ? null : this.getSearchPlaceholderElement(!!inputValue)
     );
   };
 
@@ -26645,11 +26629,11 @@ var Select = function (_Component) {
   };
 
   Select.prototype.getPopupDOMNode = function getPopupDOMNode() {
-    return this.trigger.getPopupDOMNode();
+    return this.refs.trigger.getPopupDOMNode();
   };
 
   Select.prototype.getPopupComponentRefs = function getPopupComponentRefs() {
-    return this.trigger.getPopupEleRefs();
+    return this.refs.trigger.getPopupEleRefs();
   };
 
   Select.prototype.getValue = function getValue(_props, val) {
@@ -26756,10 +26740,12 @@ var Select = function (_Component) {
         unCheckPos = itemObj.pos;
       }
     });
+    var nArr = unCheckPos && unCheckPos.split('-');
     var newVals = [];
     var newCkTns = [];
     checkedTreeNodes.forEach(function (itemObj) {
-      if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["k" /* isPositionPrefix */])(itemObj.pos, unCheckPos) || Object(__WEBPACK_IMPORTED_MODULE_11__util__["k" /* isPositionPrefix */])(unCheckPos, itemObj.pos)) {
+      var iArr = itemObj.pos.split('-');
+      if (itemObj.pos === unCheckPos || nArr.length > iArr.length && Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isInclude */])(iArr, nArr) || nArr.length < iArr.length && Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isInclude */])(nArr, iArr)) {
         // Filter ancestral and children nodes when uncheck a node.
         return;
       }
@@ -26779,7 +26765,8 @@ var Select = function (_Component) {
     var documentClickClose = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
     this.clearDelayTimer();
-    var props = this.props;
+    var props = this.props,
+        refs = this.refs;
     // can not optimize, if children is empty
     // if (this.state.open === open) {
     //   return;
@@ -26792,13 +26779,13 @@ var Select = function (_Component) {
       open: open
     }, function () {
       if (needFocus || open) {
-        if (open || Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTagsOrCombobox */])(props)) {
+        if (open || Object(__WEBPACK_IMPORTED_MODULE_11__util__["k" /* isMultipleOrTagsOrCombobox */])(props)) {
           var input = _this4.getInputDOMNode();
           if (input && document.activeElement !== input) {
             input.focus();
           }
-        } else if (_this4.selection) {
-          _this4.selection.focus();
+        } else if (refs.selection) {
+          refs.selection.focus();
         }
       }
     });
@@ -26864,7 +26851,7 @@ var Select = function (_Component) {
       }
       return singleValue.value !== selectedVal;
     });
-    var canMultiple = Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(props);
+    var canMultiple = Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(props);
 
     if (canMultiple) {
       var event = selectedVal;
@@ -26966,12 +26953,12 @@ var Select = function (_Component) {
           });
         }
       }
-      this._savedValue = Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(props) ? vls : vls[0];
+      this._savedValue = Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(props) ? vls : vls[0];
       props.onChange(this._savedValue, labs, ex);
       if (!('value' in props)) {
         this._cacheTreeNodesStates = false;
         this.setState({
-          value: this.getValue(props, Object(__WEBPACK_IMPORTED_MODULE_11__util__["r" /* toArray */])(this._savedValue).map(function (v, i) {
+          value: this.getValue(props, Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* toArray */])(this._savedValue).map(function (v, i) {
             return _this6.isLabelInValue() ? v : {
               value: v,
               label: labs && labs[i]
@@ -26983,31 +26970,15 @@ var Select = function (_Component) {
   };
 
   Select.prototype.isLabelInValue = function isLabelInValue() {
-    var _props4 = this.props,
-        treeCheckable = _props4.treeCheckable,
-        treeCheckStrictly = _props4.treeCheckStrictly,
-        labelInValue = _props4.labelInValue;
+    var _props3 = this.props,
+        treeCheckable = _props3.treeCheckable,
+        treeCheckStrictly = _props3.treeCheckStrictly,
+        labelInValue = _props3.labelInValue;
 
     if (treeCheckable && treeCheckStrictly) {
       return true;
     }
     return labelInValue || false;
-  };
-
-  Select.prototype.focus = function focus() {
-    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["l" /* isSingleMode */])(this.props)) {
-      this.selection.focus();
-    } else {
-      this.getInputDOMNode().focus();
-    }
-  };
-
-  Select.prototype.blur = function blur() {
-    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["l" /* isSingleMode */])(this.props)) {
-      this.selection.blur();
-    } else {
-      this.getInputDOMNode().blur();
-    }
   };
 
   Select.prototype.renderTopControlNode = function renderTopControlNode() {
@@ -27049,7 +27020,7 @@ var Select = function (_Component) {
     }
 
     var selectedValueNodes = [];
-    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(props)) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(props)) {
       selectedValueNodes = value.map(function (singleValue) {
         var content = singleValue.label;
         var title = content;
@@ -27087,7 +27058,7 @@ var Select = function (_Component) {
       this.getInputElement()
     ));
     var className = prefixCls + '-selection__rendered';
-    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(props) && choiceTransitionName) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(props) && choiceTransitionName) {
       return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_10_rc_animate__["a" /* default */],
         {
@@ -27136,7 +27107,7 @@ var Select = function (_Component) {
     var _rootCls;
 
     var props = this.props;
-    var multiple = Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(props);
+    var multiple = Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(props);
     var state = this.state;
     var className = props.className,
         disabled = props.disabled,
@@ -27145,7 +27116,7 @@ var Select = function (_Component) {
 
     var ctrlNode = this.renderTopControlNode();
     var extraSelectionProps = {};
-    if (!Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTagsOrCombobox */])(props)) {
+    if (!Object(__WEBPACK_IMPORTED_MODULE_11__util__["k" /* isMultipleOrTagsOrCombobox */])(props)) {
       extraSelectionProps = {
         onKeyDown: this.onKeyDown,
         tabIndex: 0
@@ -27175,21 +27146,19 @@ var Select = function (_Component) {
         onDropdownVisibleChange: this.onDropdownVisibleChange,
         getPopupContainer: props.getPopupContainer,
         onSelect: this.onSelect,
-        ref: Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* saveRef */])(this, 'trigger')
+        ref: 'trigger'
       }),
       __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
         'span',
         {
           style: props.style,
           onClick: props.onClick,
-          className: __WEBPACK_IMPORTED_MODULE_8_classnames___default()(rootCls),
-          onBlur: props.onBlur,
-          onFocus: props.onFocus
+          className: __WEBPACK_IMPORTED_MODULE_8_classnames___default()(rootCls)
         },
         __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
           'span',
           __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_extends___default()({
-            ref: Object(__WEBPACK_IMPORTED_MODULE_11__util__["q" /* saveRef */])(this, 'selection'),
+            ref: 'selection',
             key: 'selection',
             className: prefixCls + '-selection\n            ' + prefixCls + '-selection--' + (multiple ? 'multiple' : 'single'),
             role: 'combobox',
@@ -27302,7 +27271,7 @@ var _initialiseProps = function _initialiseProps() {
     }
     var state = _this8.state;
     var keyCode = event.keyCode;
-    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(props) && !event.target.value && keyCode === __WEBPACK_IMPORTED_MODULE_7_rc_util_es_KeyCode__["a" /* default */].BACKSPACE) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(props) && !event.target.value && keyCode === __WEBPACK_IMPORTED_MODULE_7_rc_util_es_KeyCode__["a" /* default */].BACKSPACE) {
       var value = state.value.concat();
       if (value.length) {
         var popValue = value.pop();
@@ -27346,7 +27315,7 @@ var _initialiseProps = function _initialiseProps() {
     }
     props.onSelect(event, item, info);
     var checkEvt = info.event === 'check';
-    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(props)) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(props)) {
       _this8.clearSearchInput();
       if (checkEvt) {
         value = _this8.getCheckedNodes(info, props).map(function (n) {
@@ -27387,7 +27356,7 @@ var _initialiseProps = function _initialiseProps() {
       // if inputValue existing, tree is checkStrictly
       extraInfo.allCheckedNodes = props.treeCheckStrictly || _this8.state.inputValue ? info.checkedNodes : Object(__WEBPACK_IMPORTED_MODULE_11__util__["e" /* flatToHierarchy */])(info.checkedNodesPositions);
       _this8._checkedNodes = info.checkedNodesPositions;
-      var _tree = _this8.trigger.popupEle;
+      var _tree = _this8.refs.trigger.popupEle;
       _this8._treeNodesStates = _tree.checkKeys;
     } else {
       extraInfo.selected = info.selected;
@@ -27403,7 +27372,7 @@ var _initialiseProps = function _initialiseProps() {
 
   this.onDeselect = function (info) {
     _this8.removeSelected(Object(__WEBPACK_IMPORTED_MODULE_11__util__["h" /* getValuePropValue */])(info.node));
-    if (!Object(__WEBPACK_IMPORTED_MODULE_11__util__["i" /* isMultipleOrTags */])(_this8.props)) {
+    if (!Object(__WEBPACK_IMPORTED_MODULE_11__util__["j" /* isMultipleOrTags */])(_this8.props)) {
       _this8.setOpenState(false);
     } else {
       _this8.clearSearchInput();
@@ -27438,7 +27407,7 @@ var _initialiseProps = function _initialiseProps() {
   };
 
   this.onChoiceAnimationLeave = function () {
-    _this8.trigger.trigger.forcePopupAlign();
+    _this8.refs.trigger.refs.trigger.forcePopupAlign();
   };
 };
 
@@ -27528,8 +27497,8 @@ var SelectTrigger = function (_Component) {
         fireOnExpand: true
       }, function () {
         // Fix https://github.com/ant-design/ant-design/issues/5689
-        if (_this.trigger && _this.trigger.forcePopupAlign) {
-          _this.trigger.forcePopupAlign();
+        if (_this.refs.trigger && _this.refs.trigger.forcePopupAlign) {
+          _this.refs.trigger.forcePopupAlign();
         }
       });
     }, _this.highlightTreeNode = function (treeNode) {
@@ -27551,6 +27520,8 @@ var SelectTrigger = function (_Component) {
         return false;
       }
       return filterTreeNode.call(_this, input, child);
+    }, _this.savePopupElement = function (ele) {
+      _this.popupEle = ele;
     }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
@@ -27580,11 +27551,11 @@ var SelectTrigger = function (_Component) {
   };
 
   SelectTrigger.prototype.getPopupEleRefs = function getPopupEleRefs() {
-    return this.popupEle;
+    return this.popupEle && this.popupEle.refs;
   };
 
   SelectTrigger.prototype.getPopupDOMNode = function getPopupDOMNode() {
-    return this.trigger.getPopupDomNode();
+    return this.refs.trigger.getPopupDomNode();
   };
 
   SelectTrigger.prototype.getDropdownTransitionName = function getDropdownTransitionName() {
@@ -27699,7 +27670,7 @@ var SelectTrigger = function (_Component) {
 
     return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
       __WEBPACK_IMPORTED_MODULE_9_rc_tree__["b" /* default */],
-      __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({ ref: Object(__WEBPACK_IMPORTED_MODULE_10__util__["q" /* saveRef */])(this, 'popupEle') }, trProps),
+      __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({ ref: this.savePopupElement }, trProps),
       newTreeNodes
     );
   };
@@ -27794,7 +27765,7 @@ var SelectTrigger = function (_Component) {
       __WEBPACK_IMPORTED_MODULE_8_rc_trigger__["a" /* default */],
       {
         action: props.disabled ? [] : ['click'],
-        ref: Object(__WEBPACK_IMPORTED_MODULE_10__util__["q" /* saveRef */])(this, 'trigger'),
+        ref: 'trigger',
         popupPlacement: 'bottomLeft',
         builtinPlacements: BUILT_IN_PLACEMENTS,
         popupAlign: props.dropdownPopupAlign,
@@ -30071,16 +30042,9 @@ TreeNode.isTreeNode = 1;
 
 
 
-function nonEmptyStringType(props, propsName) {
-  var value = props[propsName];
-  if (typeof value !== 'string' || !value) {
-    return new Error(); // Just a flag, so don't need message.
-  }
-}
-
 function valueType(props, propName, componentName) {
   var labelInValueShape = __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.shape({
-    value: nonEmptyStringType,
+    value: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string.isRequired,
     label: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.node
   });
   if (props.labelInValue) {
