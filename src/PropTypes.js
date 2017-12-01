@@ -4,7 +4,7 @@ import { SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './strategies';
 function valueType(props, propName, componentName) {
   const labelInValueShape = PropTypes.shape({
     value: PropTypes.string.isRequired,
-    label: PropTypes.string,
+    label: PropTypes.node,
   });
   if (props.labelInValue) {
     const validate = PropTypes.oneOfType([
@@ -70,7 +70,7 @@ export const SelectPropTypes = {
   inputValue: PropTypes.any,
   value: valueType,
   defaultValue: valueType,
-  label: PropTypes.any,
+  label: PropTypes.node,
   defaultLabel: PropTypes.any,
   labelInValue: PropTypes.bool,
   dropdownStyle: PropTypes.object,
