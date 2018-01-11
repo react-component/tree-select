@@ -281,15 +281,12 @@ class Select extends Component {
   }
 
   onSelect = (selectedKeys, info) => {
-    if (info.selected === false) {
-      this.onDeselect(info);
-      return;
-    }
     const item = info.node;
     let value = this.state.value;
     const props = this.props;
     const selectedValue = getValuePropValue(item);
     const selectedLabel = this.getLabelFromNode(item);
+    const checkableSelect = props.treeCheckable && info.event === 'select';
     let event = selectedValue;
     if (this.isLabelInValue()) {
       event = {
@@ -297,7 +294,13 @@ class Select extends Component {
         label: selectedLabel,
       };
     }
+    if (info.selected === false) {
+      this.onDeselect(info);
+      if (checkableSelect) props.onSelect(event, item, info);
+      return;
+    }
     props.onSelect(event, item, info);
+    if (checkableSelect) return;
     const checkEvt = info.event === 'check';
     if (isMultipleOrTags(props)) {
       this.clearSearchInput();
