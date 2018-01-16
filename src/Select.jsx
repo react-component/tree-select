@@ -47,7 +47,7 @@ function loopTreeData(data, level = 0, treeCheckable) {
       // value: value || String(key || label), // cause onChange callback error
       key: key || value || pos,
       disabled: disabled || false,
-      selectable: selectable === false ? selectable : treeCheckable? false : true,
+      selectable: selectable === false ? selectable : !treeCheckable,
       ...otherProps,
     };
     let ret;
@@ -299,7 +299,7 @@ class Select extends Component {
       if (!checkableSelect) return;
     }
     props.onSelect(event, item, info);
-    
+
     const checkEvt = info.event === 'check';
     if (isMultipleOrTags(props)) {
       this.clearSearchInput();
