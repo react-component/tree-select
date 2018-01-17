@@ -76,6 +76,10 @@ export function isInclude(smallArray, bigArray) {
 }
 
 export function isPositionPrefix(smallPos, bigPos) {
+  if (!bigPos || !smallPos) {
+    // console.log(smallPos, bigPos);
+    return false;
+  }
   if (bigPos.length < smallPos.length) {
     return false;
   }
