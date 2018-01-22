@@ -224,6 +224,24 @@ class Demo extends React.Component {
           onChange={this.onChangeChildren}
         />
 
+        <h2>single select (combobox)</h2>
+        <TreeSelect
+          style={{ width: 300 }}
+          transitionName="rc-tree-select-dropdown-slide-up"
+          choiceTransitionName="rc-tree-select-selection__choice-zoom"
+          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+          placeholder={<i>请下拉选择</i>}
+          searchPlaceholder="please search"
+          combobox allowClear treeLine
+          value={this.state.value}
+          treeData={gData}
+          treeNodeFilterProp="label"
+          filterTreeNode={false}
+          onChange={this.onChangeChildren}
+          onSelect={this.onSelect}
+          onSearch={this.onSearch}
+        />
+
         <h2>multiple select</h2>
         <TreeSelect ref="mul"
           style={{ width: 300 }}
