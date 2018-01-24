@@ -38,7 +38,8 @@
     "pub": "rc-tools run pub --babel-runtime",
     "lint": "rc-tools run lint",
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "prepublish": "rc-tools run guard"
   },
   "jest": {
     "setupFiles": [
