@@ -198,6 +198,9 @@ describe('TreeSelect.checkable', () => {
     expect(handleChange).toBeCalled();
     expect(wrapper.find('.rc-tree-select-selection__choice__content').length).toBe(1);
     expect(wrapper.find('.rc-tree-select-selection__choice__content').at(0).text()).toBe('1-1');
+    // clear
+    wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(0).simulate('click');
+    expect(wrapper.find('.rc-tree-select-selection__choice__content').length).toBe(0);
   });
 
   it('clear selected value and input value', () => {
