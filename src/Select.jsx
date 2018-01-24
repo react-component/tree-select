@@ -27,7 +27,7 @@ function filterFn(input, child) {
     .indexOf(input) > -1;
 }
 
-function loopTreeData(data, level = 0) {
+function loopTreeData(data, level = 0, treeCheckable) {
   return data.map((item, index) => {
     const pos = `${level}-${index}`;
     const {
@@ -47,12 +47,12 @@ function loopTreeData(data, level = 0) {
       // value: value || String(key || label), // cause onChange callback error
       key: key || value || pos,
       disabled: disabled || false,
-      selectable: selectable === false ? selectable : true,
+      selectable: selectable === false ? selectable : !treeCheckable,
       ...otherProps,
     };
     let ret;
     if (children && children.length) {
-      ret = (<_TreeNode {...props}>{loopTreeData(children, pos)}</_TreeNode>);
+      ret = (<_TreeNode {...props}>{loopTreeData(children, pos, treeCheckable)}</_TreeNode>);
     } else {
       ret = (<_TreeNode {...props} isLeaf={isLeaf}/>);
     }
@@ -281,15 +281,12 @@ class Select extends Component {
   }
 
   onSelect = (selectedKeys, info) => {
-    if (info.selected === false) {
-      this.onDeselect(info);
-      return;
-    }
     const item = info.node;
     let value = this.state.value;
     const props = this.props;
     const selectedValue = getValuePropValue(item);
     const selectedLabel = this.getLabelFromNode(item);
+    const checkableSelect = props.treeCheckable && info.event === 'select';
     let event = selectedValue;
     if (this.isLabelInValue()) {
       event = {
@@ -297,7 +294,12 @@ class Select extends Component {
         label: selectedLabel,
       };
     }
+    if (info.selected === false) {
+      this.onDeselect(info);
+      if (!checkableSelect) return;
+    }
     props.onSelect(event, item, info);
+
     const checkEvt = info.event === 'check';
     if (isMultipleOrTags(props)) {
       this.clearSearchInput();
@@ -887,7 +889,7 @@ class Select extends Component {
         }
         treeData = processSimpleTreeData(treeData, simpleFormat);
       }
-      return loopTreeData(treeData);
+      return loopTreeData(treeData, undefined, this.props.treeCheckable);
     }
   }
 

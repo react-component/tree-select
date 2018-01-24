@@ -167,6 +167,42 @@ describe('TreeSelect.checkable', () => {
     expect(wrapper.find('.rc-tree-select-selection__choice__content').at(0).text()).toBe('1-1');
   });
 
+  // Fix https://github.com/ant-design/ant-design/issues/8581
+  it('Label should be click when treeCheckable is true', () => {
+    const treeData = [
+      { label: '1-1', value: '1-1', children: [] },
+      { label: '1-2', value: '1-2', children: [] },
+      {
+        label: '1-3', value: '1-3', children: [
+          { label: '2-1', value: '2-1', children: [] },
+          { label: '2-2', value: '2-2', children: [] },
+        ],
+      },
+    ];
+    const handleChange = jest.fn();
+    const wrapper = mount(
+      <TreeSelect
+        treeData={treeData}
+        treeCheckable
+        treeCheckStrictly
+        multiple
+        onChange={handleChange}
+      />
+    );
+    // open
+    wrapper.find('.rc-tree-select').simulate('click');
+    jest.runAllTimers();
+    wrapper.update();
+    // select
+    wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(0).simulate('click');
+    expect(handleChange).toBeCalled();
+    expect(wrapper.find('.rc-tree-select-selection__choice__content').length).toBe(1);
+    expect(wrapper.find('.rc-tree-select-selection__choice__content').at(0).text()).toBe('1-1');
+    // clear
+    wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(0).simulate('click');
+    expect(wrapper.find('.rc-tree-select-selection__choice__content').length).toBe(0);
+  });
+
   it('clear selected value and input value', () => {
     const treeData = [
       {
