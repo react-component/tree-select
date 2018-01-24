@@ -84,16 +84,4 @@ describe('TreeSelect.multiple', () => {
 
     expect(wrapper.find('.rc-tree-select-selection__clear')).toMatchSnapshot();
   });
-
-  it('should focus and clear search input after select and unselect item', () => {
-    const wrapper = mount(createSelect());
-    wrapper.find('input').simulate('change', { target: { value: '0' } });
-    expect(wrapper.find('input').getDOMNode().value).toBe('0');
-    select(wrapper, 0);
-    expect(wrapper.find('input').getDOMNode().value).toBe('');
-    wrapper.find('input').simulate('change', { target: { value: '0' } });
-    expect(wrapper.find('input').getDOMNode().value).toBe('0');
-    select(wrapper, 0);  // unselect
-    expect(wrapper.find('input').getDOMNode().value).toBe('');
-  });
 });
