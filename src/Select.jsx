@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classnames from 'classnames';
-import assign from 'object-assign';
 import Animate from 'rc-animate';
 import {
   getPropValue, getValuePropValue, /* isCombobox,*/
@@ -704,15 +703,15 @@ class Select extends Component {
     }
   }
 
-  fireChange(value, extraInfo) {
+  fireChange(value, extraInfo = {}) {
     const props = this.props;
     const vals = value.map(i => i.value);
     const sv = this.state.value.map(i => i.value);
     if (vals.length !== sv.length || !vals.every((val, index) => sv[index] === val)) {
-      const ex = { preValue: [...this.state.value] };
-      if (extraInfo) {
-        assign(ex, extraInfo);
-      }
+      const ex = {
+        preValue: [...this.state.value],
+        ...extraInfo,
+      };
       let labs = null;
       let vls = value;
       if (!this.isLabelInValue()) {
@@ -879,13 +878,13 @@ class Select extends Component {
       let treeData = [...validProps.treeData];
       // process treeDataSimpleMode
       if (validProps.treeDataSimpleMode) {
-        const simpleFormat = {
+        let simpleFormat = {
           id: 'id',
           pId: 'pId',
           rootPId: null,
         };
         if (Object.prototype.toString.call(validProps.treeDataSimpleMode) === '[object Object]') {
-          assign(simpleFormat, validProps.treeDataSimpleMode);
+          simpleFormat = { ...simpleFormat, ...validProps.treeDataSimpleMode };
         }
         treeData = processSimpleTreeData(treeData, simpleFormat);
       }
