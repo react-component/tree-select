@@ -4,7 +4,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import classnames from 'classnames';
 import Animate from 'rc-animate';
 import {
-  getPropValue, getValuePropValue, /* isCombobox,*/
+  getPropValue, getValuePropValue, isCombobox,
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
   isSingleMode, toArray,
   UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
@@ -104,10 +104,10 @@ class Select extends Component {
     this.renderedTreeData = this.renderTreeData();
     value = this.addLabelToValue(props, value);
     value = this.getValue(props, value, props.inputValue ? '__strict' : true);
-    const inputValue = props.inputValue || '';
-    // if (props.combobox) {
-    //   inputValue = value.length ? String(value[0].value) : '';
-    // }
+    let inputValue = props.inputValue || '';
+    if (props.combobox) {
+      inputValue = value.length ? String(value[0].label) : '';
+    }
     this.state = {
       value,
       inputValue,
@@ -155,11 +155,11 @@ class Select extends Component {
       this.setState({
         value,
       });
-      // if (nextProps.combobox) {
-      //   this.setState({
-      //     inputValue: value.length ? String(value[0].key) : '',
-      //   });
-      // }
+      if (nextProps.combobox) {
+        this.setState({
+          inputValue: value.length ? String(value[0].label) : '',
+        });
+      }
     }
     if (nextProps.inputValue !== this.props.inputValue) {
       this.setState({
@@ -223,7 +223,7 @@ class Select extends Component {
   onDropdownVisibleChange = (open) => {
     // selection inside combobox cause click
     if (!open && document.activeElement === this.getInputDOMNode()) {
-      // return;
+      return;
     }
     // this.setOpenState(open);
     // setTimeout, then have animation. why?
@@ -910,7 +910,7 @@ class Select extends Component {
       [prefixCls]: 1,
       [`${prefixCls}-open`]: state.open,
       [`${prefixCls}-focused`]: state.open || state.focused,
-      // [`${prefixCls}-combobox`]: isCombobox(props),
+      [`${prefixCls}-combobox`]: isCombobox(props),
       [`${prefixCls}-disabled`]: disabled,
       [`${prefixCls}-enabled`]: !disabled,
       [`${prefixCls}-allow-clear`]: !!props.allowClear,
