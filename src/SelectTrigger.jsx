@@ -193,10 +193,7 @@ class SelectTrigger extends Component {
       trProps.checkable = props.treeCheckable;
       trProps.onCheck = props.onSelect;
       trProps.checkStrictly = props.treeCheckStrictly;
-      if (props.inputValue) {
-        // enable checkStrictly when search tree.
-        trProps.checkStrictly = true;
-      } else {
+      if (!props.inputValue) {
         trProps._treeNodesStates = props._treeNodesStates;
       }
       if (trProps.treeCheckStrictly && halfCheckedKeys.length) {
