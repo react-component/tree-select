@@ -81,7 +81,7 @@ export const SelectPropTypes = {
   defaultLabel: PropTypes.any,
   labelInValue: PropTypes.bool,
   dropdownStyle: PropTypes.object,
-  drodownPopupAlign: PropTypes.object,
+  dropdownPopupAlign: PropTypes.object,
   onDropdownVisibleChange: PropTypes.func,
   maxTagTextLength: PropTypes.number,
   showCheckedStrategy: PropTypes.oneOf([
