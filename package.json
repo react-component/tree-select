@@ -28,10 +28,17 @@
   "main": "./lib/index",
   "module": "./es/index",
   "config": {
-    "port": 8007
+    "port": 8007,
+    "entry": {
+      "rc-tree-select": [
+        "./assets/index.less",
+        "./src/index.js"
+      ]
+    }
   },
   "scripts": {
     "build": "rc-tools run build",
+    "dist": "rc-tools run dist",
     "compile": "rc-tools run compile --babel-runtime",
     "gh-pages": "rc-tools run gh-pages",
     "start": "rc-tools run server",
