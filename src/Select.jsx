@@ -70,6 +70,7 @@ class Select extends Component {
     placeholder: '',
     searchPlaceholder: '',
     labelInValue: false,
+    onBeforeSelect: () => { return true; },
     onClick: noop,
     onChange: noop,
     onSelect: noop,
@@ -296,6 +297,10 @@ class Select extends Component {
     if (info.selected === false) {
       this.onDeselect(info);
       if (!checkableSelect) return;
+    }
+    if (!props.onBeforeSelect(event, item, info)) {
+      this.onDeselect(info);
+      return;
     }
     props.onSelect(event, item, info);
 

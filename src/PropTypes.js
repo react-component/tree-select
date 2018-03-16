@@ -67,6 +67,7 @@ export const SelectPropTypes = {
   transitionName: PropTypes.string,
   animation: PropTypes.string,
   choiceTransitionName: PropTypes.string,
+  onBeforeSelect: PropTypes.func,
   onClick: PropTypes.func,
   onChange: PropTypes.func,
   onSelect: PropTypes.func,
