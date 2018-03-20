@@ -797,8 +797,10 @@ class Select extends Component {
     const { value } = this.state;
     const props = this.props;
     const { choiceTransitionName, prefixCls, maxTagTextLength } = props;
+    const multiple = isMultiple(props);
+
     // single and not combobox, input is inside dropdown
-    if (!isMultiple(props)) {
+    if (!multiple) {
       let innerNode = (<span
         key="placeholder"
         className={`${prefixCls}-selection__placeholder`}
@@ -819,32 +821,30 @@ class Select extends Component {
       </span>);
     }
 
-    let selectedValueNodes = [];
-    if (isMultiple(props)) {
-      selectedValueNodes = value.map((singleValue) => {
-        let content = singleValue.label;
-        const title = content;
-        if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
-          content = `${content.slice(0, maxTagTextLength)}...`;
-        }
-        return (
-          <li
-            style={UNSELECTABLE_STYLE}
-            {...UNSELECTABLE_ATTRIBUTE}
-            onMouseDown={preventDefaultEvent}
-            className={`${prefixCls}-selection__choice`}
-            key={singleValue.value}
-            title={title}
-          >
-            <span
-              className={`${prefixCls}-selection__choice__remove`}
-              onClick={this.removeSelected.bind(this, singleValue.value)}
-            />
-            <span className={`${prefixCls}-selection__choice__content`}>{content}</span>
-          </li>
-        );
-      });
-    }
+    const selectedValueNodes = value.map((singleValue) => {
+      let content = singleValue.label;
+      const title = content;
+      if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
+        content = `${content.slice(0, maxTagTextLength)}...`;
+      }
+      return (
+        <li
+          style={UNSELECTABLE_STYLE}
+          {...UNSELECTABLE_ATTRIBUTE}
+          onMouseDown={preventDefaultEvent}
+          className={`${prefixCls}-selection__choice`}
+          key={singleValue.value}
+          title={title}
+        >
+          <span
+            className={`${prefixCls}-selection__choice__remove`}
+            onClick={this.removeSelected.bind(this, singleValue.value)}
+          />
+          <span className={`${prefixCls}-selection__choice__content`}>{content}</span>
+        </li>
+      );
+    });
+
     selectedValueNodes.push(<li
       className={`${prefixCls}-search ${prefixCls}-search--inline`}
       key="__input"
@@ -852,7 +852,7 @@ class Select extends Component {
       {this.getInputElement()}
     </li>);
     const className = `${prefixCls}-selection__rendered`;
-    if (isMultiple(props) && choiceTransitionName) {
+    if (choiceTransitionName) {
       return (<Animate
         className={className}
         component="ul"
@@ -898,7 +898,7 @@ class Select extends Component {
     const { className, disabled, allowClear, prefixCls } = props;
     const ctrlNode = this.renderTopControlNode();
     let extraSelectionProps = {};
-    if (!isMultiple(props)) {
+    if (!multiple) {
       extraSelectionProps = {
         onKeyDown: this.onKeyDown,
         tabIndex: 0,
