@@ -244,7 +244,7 @@ class SelectTrigger extends Component {
       [`${dropdownPrefixCls}--${multiple ? 'multiple' : 'single'}`]: 1,
     };
     let visible = props.visible;
-    const search = multiple || props.combobox || !props.showSearch ? null : (
+    const search = multiple || !props.showSearch ? null : (
       <span className={`${dropdownPrefixCls}-search`}>{props.inputElement}</span>
     );
 
