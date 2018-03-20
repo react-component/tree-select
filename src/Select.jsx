@@ -601,14 +601,18 @@ class Select extends Component {
       open,
     }, () => {
       if (needFocus || open) {
-        if (open || isMultiple(props)) {
-          const input = this.getInputDOMNode();
-          if (input && document.activeElement !== input) {
-            input.focus();
+        // Input dom init after first time component render
+        // Add delay for this to get focus
+        Promise.resolve().then(() => {
+          if (open || isMultiple(props)) {
+            const input = this.getInputDOMNode();
+            if (input && document.activeElement !== input) {
+              input.focus();
+            }
+          } else if (this.selection) {
+            this.selection.focus();
           }
-        } else if (this.selection) {
-          this.selection.focus();
-        }
+        });
       }
     });
   }
