@@ -19,20 +19,8 @@ export function getPropValue(child, prop) {
   return child.props[prop];
 }
 
-export function isCombobox(props) {
-  return props.combobox;
-}
-
-export function isMultipleOrTags(props) {
-  return !!(props.multiple || props.tags || props.treeCheckable);
-}
-
-export function isMultipleOrTagsOrCombobox(props) {
-  return isMultipleOrTags(props) || isCombobox(props);
-}
-
-export function isSingleMode(props) {
-  return !isMultipleOrTagsOrCombobox(props);
+export function isMultiple(props) {
+  return !!(props.multiple || props.treeCheckable);
 }
 
 export function toArray(value) {
@@ -533,7 +521,13 @@ export function processSimpleTreeData(treeData, format) {
 }
 
 export function saveRef(instance, name) {
-  return (node) => {
-    instance[name] = node;
-  };
+  if (!instance.saveRefs) {
+    instance.saveRefs = {};
+  }
+  if (!instance.saveRefs[name]) {
+    instance.saveRefs[name] = (node) => {
+      instance[name] = node;
+    };
+  }
+  return instance.saveRefs[name];
 }

@@ -4,9 +4,8 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import classnames from 'classnames';
 import Animate from 'rc-animate';
 import {
-  getPropValue, getValuePropValue, /* isCombobox,*/
-  isMultipleOrTags, isMultipleOrTagsOrCombobox,
-  isSingleMode, toArray,
+  getPropValue, getValuePropValue,
+  isMultiple, toArray,
   UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
   preventDefaultEvent,
   getTreeNodesStates, flatToHierarchy, filterParentPosition,
@@ -118,7 +117,7 @@ class Select extends Component {
 
   componentDidMount() {
     const { autoFocus, disabled } = this.props;
-    if (isMultipleOrTags(this.props)) {
+    if (isMultiple(this.props)) {
       const inputNode = this.getInputDOMNode();
       if (inputNode.value) {
         inputNode.style.width = '';
@@ -185,7 +184,7 @@ class Select extends Component {
   componentDidUpdate() {
     const state = this.state;
     const props = this.props;
-    if (state.open && isMultipleOrTags(props)) {
+    if (state.open && isMultiple(props)) {
       const inputNode = this.getInputDOMNode();
       if (inputNode.value) {
         inputNode.style.width = '';
@@ -254,7 +253,7 @@ class Select extends Component {
     }
     const state = this.state;
     const keyCode = event.keyCode;
-    if (isMultipleOrTags(props) && !event.target.value && keyCode === KeyCode.BACKSPACE) {
+    if (isMultiple(props) && !event.target.value && keyCode === KeyCode.BACKSPACE) {
       const value = state.value.concat();
       if (value.length) {
         const popValue = value.pop();
@@ -300,7 +299,7 @@ class Select extends Component {
     props.onSelect(event, item, info);
 
     const checkEvt = info.event === 'check';
-    if (isMultipleOrTags(props)) {
+    if (isMultiple(props)) {
       this.clearSearchInput();
       if (checkEvt) {
         value = this.getCheckedNodes(info, props).map(n => {
@@ -356,7 +355,7 @@ class Select extends Component {
 
   onDeselect = (info) => {
     this.removeSelected(getValuePropValue(info.node));
-    if (!isMultipleOrTags(this.props)) {
+    if (!isMultiple(this.props)) {
       this.setOpenState(false);
     } else {
       this.clearSearchInput();
@@ -425,7 +424,7 @@ class Select extends Component {
   getSearchPlaceholderElement(hidden) {
     const props = this.props;
     let placeholder;
-    if (isMultipleOrTagsOrCombobox(props)) {
+    if (isMultiple(props)) {
       placeholder = props.placeholder || props.searchPlaceholder;
     } else {
       placeholder = props.searchPlaceholder;
@@ -464,7 +463,7 @@ class Select extends Component {
         >
           {inputValue}&nbsp;
         </span>
-        {isMultipleOrTags(this.props) ? null : this.getSearchPlaceholderElement(!!inputValue)}
+        {isMultiple(this.props) ? null : this.getSearchPlaceholderElement(!!inputValue)}
       </span>
     );
   }
@@ -602,14 +601,18 @@ class Select extends Component {
       open,
     }, () => {
       if (needFocus || open) {
-        if (open || isMultipleOrTagsOrCombobox(props)) {
-          const input = this.getInputDOMNode();
-          if (input && document.activeElement !== input) {
-            input.focus();
+        // Input dom init after first time component render
+        // Add delay for this to get focus
+        Promise.resolve().then(() => {
+          if (open || isMultiple(props)) {
+            const input = this.getInputDOMNode();
+            if (input && document.activeElement !== input) {
+              input.focus();
+            }
+          } else if (this.selection) {
+            this.selection.focus();
           }
-        } else if (this.selection) {
-          this.selection.focus();
-        }
+        });
       }
     });
   }
@@ -674,7 +677,7 @@ class Select extends Component {
       }
       return (singleValue.value !== selectedVal);
     });
-    const canMultiple = isMultipleOrTags(props);
+    const canMultiple = isMultiple(props);
 
     if (canMultiple) {
       let event = selectedVal;
@@ -698,7 +701,7 @@ class Select extends Component {
 
   openIfHasChildren() {
     const props = this.props;
-    if (React.Children.count(props.children) || isSingleMode(props)) {
+    if (React.Children.count(props.children) || !isMultiple(props)) {
       this.setOpenState(true);
     }
   }
@@ -754,7 +757,7 @@ class Select extends Component {
           vls = _vls.map(v => v.value);
         }
       }
-      this._savedValue = isMultipleOrTags(props) ? vls : vls[0];
+      this._savedValue = isMultiple(props) ? vls : vls[0];
       props.onChange(this._savedValue, labs, ex);
       if (!('value' in props)) {
         this._cacheTreeNodesStates = false;
@@ -779,7 +782,7 @@ class Select extends Component {
   }
 
   focus() {
-    if (isSingleMode(this.props)) {
+    if (!isMultiple(this.props)) {
       this.selection.focus();
     } else {
       this.getInputDOMNode().focus();
@@ -787,7 +790,7 @@ class Select extends Component {
   }
 
   blur() {
-    if (isSingleMode(this.props)) {
+    if (!isMultiple(this.props)) {
       this.selection.blur();
     } else {
       this.getInputDOMNode().blur();
@@ -798,8 +801,10 @@ class Select extends Component {
     const { value } = this.state;
     const props = this.props;
     const { choiceTransitionName, prefixCls, maxTagTextLength } = props;
+    const multiple = isMultiple(props);
+
     // single and not combobox, input is inside dropdown
-    if (isSingleMode(props)) {
+    if (!multiple) {
       let innerNode = (<span
         key="placeholder"
         className={`${prefixCls}-selection__placeholder`}
@@ -820,32 +825,30 @@ class Select extends Component {
       </span>);
     }
 
-    let selectedValueNodes = [];
-    if (isMultipleOrTags(props)) {
-      selectedValueNodes = value.map((singleValue) => {
-        let content = singleValue.label;
-        const title = content;
-        if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
-          content = `${content.slice(0, maxTagTextLength)}...`;
-        }
-        return (
-          <li
-            style={UNSELECTABLE_STYLE}
-            {...UNSELECTABLE_ATTRIBUTE}
-            onMouseDown={preventDefaultEvent}
-            className={`${prefixCls}-selection__choice`}
-            key={singleValue.value}
-            title={title}
-          >
-            <span
-              className={`${prefixCls}-selection__choice__remove`}
-              onClick={this.removeSelected.bind(this, singleValue.value)}
-            />
-            <span className={`${prefixCls}-selection__choice__content`}>{content}</span>
-          </li>
-        );
-      });
-    }
+    const selectedValueNodes = value.map((singleValue) => {
+      let content = singleValue.label;
+      const title = content;
+      if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
+        content = `${content.slice(0, maxTagTextLength)}...`;
+      }
+      return (
+        <li
+          style={UNSELECTABLE_STYLE}
+          {...UNSELECTABLE_ATTRIBUTE}
+          onMouseDown={preventDefaultEvent}
+          className={`${prefixCls}-selection__choice`}
+          key={singleValue.value}
+          title={title}
+        >
+          <span
+            className={`${prefixCls}-selection__choice__remove`}
+            onClick={this.removeSelected.bind(this, singleValue.value)}
+          />
+          <span className={`${prefixCls}-selection__choice__content`}>{content}</span>
+        </li>
+      );
+    });
+
     selectedValueNodes.push(<li
       className={`${prefixCls}-search ${prefixCls}-search--inline`}
       key="__input"
@@ -853,7 +856,7 @@ class Select extends Component {
       {this.getInputElement()}
     </li>);
     const className = `${prefixCls}-selection__rendered`;
-    if (isMultipleOrTags(props) && choiceTransitionName) {
+    if (choiceTransitionName) {
       return (<Animate
         className={className}
         component="ul"
@@ -894,12 +897,12 @@ class Select extends Component {
 
   render() {
     const props = this.props;
-    const multiple = isMultipleOrTags(props);
+    const multiple = isMultiple(props);
     const state = this.state;
     const { className, disabled, allowClear, prefixCls } = props;
     const ctrlNode = this.renderTopControlNode();
     let extraSelectionProps = {};
-    if (!isMultipleOrTagsOrCombobox(props)) {
+    if (!multiple) {
       extraSelectionProps = {
         onKeyDown: this.onKeyDown,
         tabIndex: 0,
