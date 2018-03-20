@@ -385,15 +385,17 @@ export function recursiveCloneChildren(children, cb = ch => ch) {
 function recursiveGen(children, level = 0) {
   return React.Children.map(children, (child, index) => {
     const pos = `${level}-${index}`;
+    const { title, label, value, children: subChildren, ...rest } = child.props;
     const o = {
-      title: child.props.title,
-      label: child.props.label || child.props.title,
-      value: child.props.value,
+      ...rest,
+      title,
+      label: label || title,
+      value,
       key: child.key,
       _pos: pos,
     };
-    if (child.props.children) {
-      o.children = recursiveGen(child.props.children, pos);
+    if (subChildren) {
+      o.children = recursiveGen(subChildren, pos);
     }
     return o;
   });
