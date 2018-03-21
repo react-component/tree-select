@@ -79,6 +79,48 @@ describe('TreeSelect.multiple', () => {
     expect(choice.prop('children')).toBe('label0');
   });
 
+  it('click X to delete select', () => {
+    const treeDataWithProps = [
+      { key: '0', value: '0', label: 'label0', foo: 0 },
+      { key: '1', value: '1', label: 'label1', foo: 1 },
+    ];
+
+    const handleChange = jest.fn();
+    const wrapper = mount(createSelect({
+      open: true,
+      value: ['0', '1'],
+      onChange: handleChange,
+      treeCheckable: true,
+      treeData: treeDataWithProps,
+    }));
+
+    const $remove = wrapper
+      .find('.rc-tree-select-selection__rendered')
+      .find('.rc-tree-select-selection__choice')
+      .find('.rc-tree-select-selection__choice__remove')
+      .at(1);
+
+    $remove.simulate('click');
+
+    expect(handleChange).toBeCalledWith(['0'], ['label0'], expect.objectContaining({
+      allCheckedNodes: [{
+        node: {
+          disabled: false,
+          isLeaf: undefined,
+          key: '0',
+          foo: 0,
+          selectable: false,
+          props: {
+            label: 'label0',
+            title: 'label0',
+            value: '0',
+          },
+        },
+        pos: '0-0',
+      }],
+    }));
+  });
+
   it('renders clear button', () => {
     const wrapper = render(createSelect({ allowClear: true }));
 
