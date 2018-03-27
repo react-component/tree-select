@@ -224,11 +224,7 @@ class Select extends Component {
     if (!open && document.activeElement === this.getInputDOMNode()) {
       // return;
     }
-    // this.setOpenState(open);
-    // setTimeout, then have animation. why?
-    setTimeout(() => {
-      this.setOpenState(open, undefined, !open);
-    }, 10);
+    this.setOpenState(open, undefined, !open);
   }
 
   // combobox ignore
