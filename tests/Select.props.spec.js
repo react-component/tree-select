@@ -74,7 +74,6 @@ describe('TreeSelect.props', () => {
   });
 
   it('allowClear', () => {
-    let $node;
     const handleChange = jest.fn();
 
     const wrapper = mount(createOpenSelect({
@@ -84,7 +83,7 @@ describe('TreeSelect.props', () => {
     expect(wrapperToJson(wrapper)).toMatchSnapshot();
 
     // Click node 0-1
-    $node = wrapper.find(TreeNode).at(2);
+    const $node = wrapper.find(TreeNode).at(2);
     $node.find('.rc-tree-select-tree-node-content-wrapper').simulate('click');
 
     expect(wrapperToJson(wrapper)).toMatchSnapshot();
@@ -118,5 +117,72 @@ describe('TreeSelect.props', () => {
       placeholder: 'Ant Design',
     }));
     expect(renderToJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('searchPlaceholder', () => {
+    const wrapper = render(createOpenSelect({
+      searchPlaceholder: 'Ant Design',
+    }));
+    expect(renderToJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('labelInValue', () => {
+    const handleChange = jest.fn();
+    const wrapper = mount(createOpenSelect({
+      labelInValue: true,
+      onChange: handleChange,
+    }));
+
+    // Click node 0-1
+    const $node = wrapper.find(TreeNode).at(2);
+    $node.find('.rc-tree-select-tree-node-content-wrapper').simulate('click');
+
+    expect(handleChange).toBeCalledWith(
+      { label: 'Title 0-1', value: 'Value 0-1' },
+      null,
+      {
+        preValue: [],
+        selected: true,
+        triggerValue: 'Value 0-1',
+        triggerNode: $node.instance(),
+      },
+    );
+  });
+
+  it('onClick', () => {
+    const handleClick = jest.fn();
+    const wrapper = mount(createSelect({
+      labelInValue: true,
+      onClick: handleClick,
+    }));
+
+    // `onClick` depends on origin event trigger. Need't test args
+    wrapper.find('.rc-tree-select').simulate('click');
+    expect(handleClick).toBeCalled();
+  });
+
+  // onChange - is already test above
+
+  it('onSelect', () => {
+    const handleSelect = jest.fn();
+    const wrapper = mount(createOpenSelect({
+      onSelect: handleSelect,
+    }));
+
+    const $paren = wrapper.find(TreeNode).at(0);
+    const $node = wrapper.find(TreeNode).at(2);
+    $node.find('.rc-tree-select-tree-node-content-wrapper').simulate('click');
+
+    // TreeNode use cloneElement so that the node is not the same
+    expect(handleSelect).toBeCalledWith(
+      'Value 0-1',
+      $node.instance(),
+      {
+        event: 'select',
+        node: $node.instance(),
+        selected: true,
+        selectedNodes: [$paren.props().children[1]],
+      },
+    );
   });
 });
