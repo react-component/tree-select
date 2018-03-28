@@ -63,7 +63,7 @@ class Select extends Component {
 
   static defaultProps = {
     prefixCls: 'rc-tree-select',
-    filterTreeNode: filterFn,
+    filterTreeNode: filterFn, // [Legacy] TODO: Set false and filter not hide?
     showSearch: true,
     allowClear: false,
     placeholder: '',
