@@ -86,6 +86,6 @@
     "rc-animate": "^2.0.2",
     "rc-tree": "~1.7.1",
     "rc-trigger": "^2.2.2",
-    "rc-util": "^4.0.2"
+    "rc-util": "^4.5.0"
   }
 }
