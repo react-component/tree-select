@@ -185,4 +185,26 @@ describe('TreeSelect.props', () => {
       },
     );
   });
+
+  // TODO: `onDeselect` is copy from `Select` component and not implement complete.
+  // This should be removed.
+
+  it('onSearch', () => {
+    const handleSearch = jest.fn();
+    const wrapper = mount(createOpenSelect({
+      onSearch: handleSearch,
+    }));
+
+    wrapper.find('input').simulate('change', { target: { value: 'Search changed' } });
+    expect(handleSearch).toBeCalledWith('Search changed');
+  });
+
+  it('showArrow', () => {
+    const wrapper = render(createOpenSelect({ showArrow: false }));
+    expect(renderToJson(wrapper)).toMatchSnapshot();
+  });
+
+  // TODO: `dropdownMatchSelectWidth` is far away from origin design. consider set default to `false`.
+  // ref: https://github.com/react-component/select/blob/4cad95e098a341a09de239ad6981067188842020/src/Select.jsx#L344
+  // ref: https://github.com/react-component/select/pull/71
 });
