@@ -7,7 +7,7 @@ import focusTest from './shared/focusTest';
 
 const { TreeNode } = TreeSelect;
 
-describe('TreeSelect', () => {
+describe('TreeSelect.basic', () => {
   beforeAll(() => {
     jest.useFakeTimers();
   });
