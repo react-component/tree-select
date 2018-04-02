@@ -10,6 +10,7 @@ import {
   getValuePropValue,
   labelCompatible,
   saveRef,
+  isMultiple,
 } from './util';
 import toArray from 'rc-util/lib/Children/toArray';
 
@@ -310,6 +311,15 @@ class SelectTrigger extends Component {
       </div>
     );
 
+    let hideAction;
+    if (props.disabled) {
+      hideAction = [];
+    } else if (!isMultiple(props) && !props.showSearch) {
+      hideAction = ['click'];
+    } else {
+      hideAction = ['blur'];
+    }
+
     const popupStyle = { ...props.dropdownStyle };
     const widthProp = props.dropdownMatchSelectWidth ? 'width' : 'minWidth';
     if (this.state.dropdownWidth) {
@@ -318,7 +328,8 @@ class SelectTrigger extends Component {
 
     return (
       <Trigger
-        action={props.disabled ? [] : ['click']}
+        showAction={props.disabled ? [] : ['click']}
+        hideAction={hideAction}
         ref={saveRef(this, 'trigger')}
         popupPlacement="bottomLeft"
         builtinPlacements={BUILT_IN_PLACEMENTS}
