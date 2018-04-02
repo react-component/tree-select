@@ -153,6 +153,9 @@ class Select extends Component {
       value = this.getValue(nextProps, value);
       this.setState({
         value,
+      }, () => {
+        // Refresh popup position
+        this.trigger.trigger.forcePopupAlign();
       });
       // if (nextProps.combobox) {
       //   this.setState({
@@ -768,6 +771,9 @@ class Select extends Component {
               label: labs && labs[i],
             };
           })),
+        }, () => {
+          // Refresh popup position
+          this.trigger.trigger.forcePopupAlign();
         });
       }
     }
