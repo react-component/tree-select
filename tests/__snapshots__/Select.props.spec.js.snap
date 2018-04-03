@@ -1017,6 +1017,69 @@ exports[`TreeSelect.props filterTreeNode 2`] = `
 </div>
 `;
 
+exports[`TreeSelect.props notFoundContent 1`] = `
+<div>
+  <span
+    class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
+  >
+    <span
+      aria-autocomplete="list"
+      aria-expanded="true"
+      aria-haspopup="true"
+      class="rc-tree-select-selection
+            rc-tree-select-selection--single"
+      role="combobox"
+      tabindex="0"
+    >
+      <span
+        class="rc-tree-select-selection__rendered"
+      >
+        <span
+          class="rc-tree-select-selection__placeholder"
+        />
+      </span>
+      <span
+        class="rc-tree-select-arrow"
+        style="outline:none"
+      >
+        <b />
+      </span>
+    </span>
+  </span>
+  <div>
+    <div
+      class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
+    >
+      <div>
+        <span
+          class="rc-tree-select-dropdown-search"
+        >
+          <span
+            class="rc-tree-select-search__field__wrap"
+          >
+            <input
+              class="rc-tree-select-search__field"
+              role="textbox"
+              value=""
+            />
+            <span
+              class="rc-tree-select-search__field__mirror"
+            >
+               
+            </span>
+          </span>
+        </span>
+        <span
+          class="rc-tree-select-not-found"
+        >
+          Noting Matched!
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`TreeSelect.props placeholder 1`] = `
 <div>
   <span

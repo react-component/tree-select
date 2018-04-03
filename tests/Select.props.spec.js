@@ -280,4 +280,12 @@ describe('TreeSelect.props', () => {
     jest.runAllTimers();
     expect(handleDropdownVisibleChange).not.toBeCalled();
   });
+
+  it('notFoundContent', () => {
+    const wrapper = render(createOpenSelect({
+      notFoundContent: 'Noting Matched!',
+      treeData: [],
+    }));
+    expect(renderToJson(wrapper)).toMatchSnapshot();
+  });
 });
