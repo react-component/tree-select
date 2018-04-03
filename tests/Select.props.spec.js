@@ -232,17 +232,20 @@ describe('TreeSelect.props', () => {
     expect(renderToJson(wrapper)).toMatchSnapshot();
   });
 
-  it.only('onDropdownVisibleChange', () => {
+  it('onDropdownVisibleChange', () => {
+    let canProcess = true;
+
     const handleDropdownVisibleChange = jest.fn();
     const wrapper = mount(createSelect({
       onDropdownVisibleChange: (...args) => {
         handleDropdownVisibleChange(...args);
-        return true;
+        return canProcess;
       },
     }));
 
     const $select = wrapper.find('.rc-tree-select');
 
+    // Simulate when can process
     $select.simulate('click');
     expect(handleDropdownVisibleChange).toBeCalledWith(
       true, { documentClickClose: false });
@@ -258,5 +261,23 @@ describe('TreeSelect.props', () => {
     jest.runAllTimers();
     expect(handleDropdownVisibleChange).toBeCalledWith(
         false, { documentClickClose: true });
+    handleDropdownVisibleChange.mockReset();
+
+    // Simulate when can't process
+    canProcess = false;
+
+    $select.simulate('click');
+    expect(handleDropdownVisibleChange).toBeCalledWith(
+      true, { documentClickClose: false });
+    handleDropdownVisibleChange.mockReset();
+
+    $select.simulate('click');
+    expect(handleDropdownVisibleChange).toBeCalledWith(
+      true, { documentClickClose: false });
+    handleDropdownVisibleChange.mockReset();
+
+    $select.simulate('blur');
+    jest.runAllTimers();
+    expect(handleDropdownVisibleChange).not.toBeCalled();
   });
 });
