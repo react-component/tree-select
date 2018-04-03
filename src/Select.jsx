@@ -153,7 +153,7 @@ class Select extends Component {
       value = this.getValue(nextProps, value);
       this.setState({
         value,
-      });
+      }, this.forcePopupAlign);
       // if (nextProps.combobox) {
       //   this.setState({
       //     inputValue: value.length ? String(value[0].key) : '',
@@ -210,7 +210,7 @@ class Select extends Component {
     this.setState({
       inputValue: val,
       open: true,
-    });
+    }, this.forcePopupAlign);
     if (props.treeCheckable && !val) {
       this.setState({
         value: this.getValue(props, [...this.state.value], false),
@@ -390,7 +390,7 @@ class Select extends Component {
   }
 
   onChoiceAnimationLeave = () => {
-    this.trigger.trigger.forcePopupAlign();
+    this.forcePopupAlign();
   }
 
   getLabelFromNode(child) {
@@ -768,7 +768,7 @@ class Select extends Component {
               label: labs && labs[i],
             };
           })),
-        });
+        }, this.forcePopupAlign);
       }
     }
   }
@@ -796,6 +796,10 @@ class Select extends Component {
       this.getInputDOMNode().blur();
     }
   }
+
+  forcePopupAlign = () => {
+    this.trigger.trigger.forcePopupAlign();
+  };
 
   renderTopControlNode() {
     const { value } = this.state;
