@@ -18,6 +18,14 @@ const wrapperToJson = (wrapper) => (
 );
 
 describe('TreeSelect.props', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   // Must wrap with `div` since enzyme will only return first child of fragment
   const createSelect = (props = {}) => (
     <div>
@@ -213,5 +221,42 @@ describe('TreeSelect.props', () => {
       dropdownMatchSelectWidth: false,
     }));
     expect(renderToJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('dropdownStyle', () => {
+    const wrapper = render(createOpenSelect({
+      dropdownStyle: {
+        background: 'red',
+      },
+    }));
+    expect(renderToJson(wrapper)).toMatchSnapshot();
+  });
+
+  it.only('onDropdownVisibleChange', () => {
+    const handleDropdownVisibleChange = jest.fn();
+    const wrapper = mount(createSelect({
+      onDropdownVisibleChange: (...args) => {
+        handleDropdownVisibleChange(...args);
+        return true;
+      },
+    }));
+
+    const $select = wrapper.find('.rc-tree-select');
+
+    $select.simulate('click');
+    expect(handleDropdownVisibleChange).toBeCalledWith(
+      true, { documentClickClose: false });
+    handleDropdownVisibleChange.mockReset();
+
+    // https://github.com/ant-design/ant-design/issues/9857
+    // Both use blur to hide. click not affect this.
+    $select.simulate('click');
+    expect(handleDropdownVisibleChange).not.toBeCalled();
+    handleDropdownVisibleChange.mockReset();
+
+    $select.simulate('blur');
+    jest.runAllTimers();
+    expect(handleDropdownVisibleChange).toBeCalledWith(
+        false, { documentClickClose: true });
   });
 });
