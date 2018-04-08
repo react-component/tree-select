@@ -3,6 +3,7 @@ import React from 'react';
 import { mount, render } from 'enzyme';
 import { renderToJson } from 'enzyme-to-json';
 import Tree, { TreeNode } from 'rc-tree';
+import Trigger from 'rc-trigger';
 import TreeSelect, { SHOW_ALL, SHOW_CHILD, SHOW_PARENT } from '../src';
 
 
@@ -73,7 +74,7 @@ describe('TreeSelect.props', () => {
     expect(wrapperToJson(wrapper)).toMatchSnapshot();
   });
 
-  it.only('choiceTransitionName', () => {
+  it('choiceTransitionName', () => {
     class Wrapper extends React.Component {
       state = {
         value: [],
@@ -266,6 +267,13 @@ describe('TreeSelect.props', () => {
     expect(renderToJson(wrapper)).toMatchSnapshot();
   });
 
+  it('dropdownClassName', () => {
+    const wrapper = render(createOpenSelect({
+      dropdownClassName: 'test-dropdownClassName',
+    }));
+    expect(renderToJson(wrapper)).toMatchSnapshot();
+  });
+
   it('dropdownStyle', () => {
     const wrapper = render(createOpenSelect({
       dropdownStyle: {
@@ -273,6 +281,16 @@ describe('TreeSelect.props', () => {
       },
     }));
     expect(renderToJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('dropdownPopupAlign', () => {
+    const dropdownPopupAlign = {
+      forPassPropTest: true,
+    };
+
+    const wrapper = mount(createOpenSelect({ dropdownPopupAlign }));
+
+    expect(wrapper.find(Trigger).props().popupAlign).toBe(dropdownPopupAlign);
   });
 
   it('onDropdownVisibleChange', () => {
