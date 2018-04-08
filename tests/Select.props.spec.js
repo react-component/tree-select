@@ -482,4 +482,13 @@ describe('TreeSelect.props', () => {
   // treeCheckable - already tested in Select.checkable.spec.js
   // treeNodeFilterProp - already tested in Select.spec.js
   // treeNodeLabelProp - already tested in Select.spec.js
+
+  it('maxTagTextLength', () => {
+    const wrapper = mount(createSelect({
+      multiple: true,
+      maxTagTextLength: 2,
+      value: ['Value 0-0', 'Value 1', 'Value 0-1'],
+    }));
+    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+  });
 });
