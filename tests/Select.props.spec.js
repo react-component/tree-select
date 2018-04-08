@@ -516,7 +516,7 @@ describe('TreeSelect.props', () => {
   // treeDefaultExpandedKeys - already tested in Select.spec.js
   // treeData - already tested in Select.spec.js
 
-  it.only('loadData', () => {
+  it('loadData', () => {
     jest.useRealTimers();
 
     let called = 0;
@@ -561,5 +561,17 @@ describe('TreeSelect.props', () => {
       expect(called).toBe(1);
       expect(wrapperToJson(wrapper)).toMatchSnapshot();
     });
+  });
+
+  it('getPopupContainer', () => {
+
+  });
+
+  it('getPopupContainer', () => {
+    const getPopupContainer = (trigger) => trigger.parentNode;
+
+    const wrapper = mount(createOpenSelect({ getPopupContainer }));
+
+    expect(wrapper.find(Trigger).props().getPopupContainer).toBe(getPopupContainer);
   });
 });
