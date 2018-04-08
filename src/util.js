@@ -154,6 +154,7 @@ export function loopAllChildren(childs, callback, parent) {
 //   loop(childs, 0);
 // }
 
+// TODO: Here has the side effect. Update node children data affect.
 export function flatToHierarchy(arr) {
   if (!arr.length) {
     return arr;

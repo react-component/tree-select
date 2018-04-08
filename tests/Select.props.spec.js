@@ -2,12 +2,8 @@
 import React from 'react';
 import { mount, render } from 'enzyme';
 import { renderToJson } from 'enzyme-to-json';
-// import KeyCode from 'rc-util/lib/KeyCode';
-import TreeSelect from '../src';
-import { TreeNode } from 'rc-tree';
-
-// import diff from 'rc-util/lib/debug/diff';
-// import focusTest from './shared/focusTest';
+import Tree, { TreeNode } from 'rc-tree';
+import TreeSelect, { SHOW_ALL } from '../src';
 
 
 const { TreeNode: SelectNode } = TreeSelect;
@@ -287,5 +283,60 @@ describe('TreeSelect.props', () => {
       treeData: [],
     }));
     expect(renderToJson(wrapper)).toMatchSnapshot();
+  });
+
+  describe.only('showCheckedStrategy', () => {
+    const testList = [
+      {
+        strategy: SHOW_ALL,
+        arg1: ['Value 0-0', 'Value 0-1', 'Value 0'],
+        arg2: ['Title 0-0', 'Title 0-1', 'Title 0'],
+        arg3: ($node, $oriNode) => {
+          const children = $node.props().children;
+
+          return {
+            allCheckedNodes: [{
+              node: $oriNode,
+              pos: '0-0',
+              children: [
+                { node: children[0], pos: '0-0-0' },
+                { node: children[1], pos: '0-0-1' },
+              ],
+            }],
+            checked: true,
+            preValue: [],
+            triggerNode: $node.instance(),
+            triggerValue: 'Value 0',
+          };
+        },
+      },
+      // { strategy: SHOW_CHILD },
+      // { strategy: SHOW_PARENT },
+    ];
+
+    testList.forEach(({ strategy, arg1, arg2, arg3 }) => {
+      it(strategy, () => {
+        const handleChange = jest.fn();
+
+        const wrapper = mount(createOpenSelect({
+          treeCheckable: true,
+          showCheckedStrategy: strategy,
+          onChange: handleChange,
+        }));
+
+
+        // TreeSelect will convert SelectNode to TreeNode.
+        // Transitional node should get before click event
+        // Since after click will render new TreeNode
+        // [Legacy] FIXME: This is so hard to test
+        const $tree = wrapper.find(Tree);
+        const $oriNode = $tree.props().children[0];
+
+        const $node = wrapper.find(TreeNode).at(0);
+        $node.find('.rc-tree-select-tree-checkbox').first().simulate('click');
+
+        expect(handleChange).toBeCalledWith(arg1, arg2, arg3($node, $oriNode));
+      });
+    });
   });
 });
