@@ -3,7 +3,7 @@ import React from 'react';
 import { mount, render } from 'enzyme';
 import { renderToJson } from 'enzyme-to-json';
 import Tree, { TreeNode } from 'rc-tree';
-import TreeSelect, { SHOW_ALL } from '../src';
+import TreeSelect, { SHOW_ALL, SHOW_CHILD, SHOW_PARENT } from '../src';
 
 
 const { TreeNode: SelectNode } = TreeSelect;
@@ -310,8 +310,52 @@ describe('TreeSelect.props', () => {
           };
         },
       },
-      // { strategy: SHOW_CHILD },
-      // { strategy: SHOW_PARENT },
+      {
+        strategy: SHOW_CHILD,
+        arg1: ['Value 0-0', 'Value 0-1'],
+        arg2: ['Title 0-0', 'Title 0-1'],
+        arg3: ($node, $oriNode) => {
+          const children = $node.props().children;
+
+          return {
+            allCheckedNodes: [{
+              node: $oriNode,
+              pos: '0-0',
+              children: [
+                { node: children[0], pos: '0-0-0' },
+                { node: children[1], pos: '0-0-1' },
+              ],
+            }],
+            checked: true,
+            preValue: [],
+            triggerNode: $node.instance(),
+            triggerValue: 'Value 0',
+          };
+        },
+      },
+      {
+        strategy: SHOW_PARENT,
+        arg1: ['Value 0'],
+        arg2: ['Title 0'],
+        arg3: ($node, $oriNode) => {
+          const children = $node.props().children;
+
+          return {
+            allCheckedNodes: [{
+              node: $oriNode,
+              pos: '0-0',
+              children: [
+                { node: children[0], pos: '0-0-0' },
+                { node: children[1], pos: '0-0-1' },
+              ],
+            }],
+            checked: true,
+            preValue: [],
+            triggerNode: $node.instance(),
+            triggerValue: 'Value 0',
+          };
+        },
+      },
     ];
 
     testList.forEach(({ strategy, arg1, arg2, arg3 }) => {
