@@ -9,11 +9,6 @@ import TreeSelect, { SHOW_ALL, SHOW_CHILD, SHOW_PARENT } from '../src';
 
 const { TreeNode: SelectNode } = TreeSelect;
 
-// Convert wrapper to render json
-const wrapperToJson = (wrapper) => (
-  renderToJson(wrapper.render())
-);
-
 // Promisify timeout to let jest catch works
 function timeoutPromise(delay = 0) {
   return new Promise(resolve => {
@@ -49,20 +44,20 @@ describe('TreeSelect.props', () => {
 
   it('basic', () => {
     const wrapper = mount(createSelect());
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
 
     wrapper.find('.rc-tree-select').simulate('click');
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
   it('className', () => {
     const wrapper = mount(createOpenSelect({ className: 'test-class' }));
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
   it('prefixCls', () => {
     const wrapper = mount(createOpenSelect({ prefixCls: 'another-cls' }));
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
   it('animation', () => {
@@ -70,7 +65,7 @@ describe('TreeSelect.props', () => {
       animation: 'test-animation',
     }));
     wrapper.find('.rc-tree-select').simulate('click');
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
   it('transitionName', () => {
@@ -78,7 +73,7 @@ describe('TreeSelect.props', () => {
       transitionName: 'test-transitionName',
     }));
     wrapper.find('.rc-tree-select').simulate('click');
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
   it('choiceTransitionName', () => {
@@ -109,10 +104,10 @@ describe('TreeSelect.props', () => {
     }
 
     const wrapper = mount(<Wrapper />);
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
 
     wrapper.instance().doValueUpdate();
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
   it('filterTreeNode', () => {
@@ -121,15 +116,15 @@ describe('TreeSelect.props', () => {
     }
     const wrapper = mount(createOpenSelect({ filterTreeNode }));
     wrapper.find('input').simulate('change', { target: { value: 'Title 1' } });
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
 
     wrapper.find('input').simulate('change', { target: { value: '0-0' } });
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
   it('showSearch', () => {
     const wrapper = mount(createOpenSelect({ showSearch: false }));
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
   it('allowClear', () => {
@@ -139,13 +134,13 @@ describe('TreeSelect.props', () => {
       allowClear: true,
       onChange: handleChange,
     }));
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
 
     // Click node 0-1
     const $node = wrapper.find(TreeNode).at(2);
     $node.find('.rc-tree-select-tree-node-content-wrapper').simulate('click');
 
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
     expect(handleChange).toBeCalledWith(
       'Value 0-1',
       ['Title 0-1'],
@@ -161,7 +156,7 @@ describe('TreeSelect.props', () => {
     // Click to clear
     wrapper.find('.rc-tree-select-selection__clear').simulate('click');
 
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
     expect(handleChange).toBeCalledWith(
       undefined,
       [],
@@ -462,14 +457,14 @@ describe('TreeSelect.props', () => {
     const wrapper = mount(createOpenSelect({
       treeIcon: true,
     }));
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
   it('treeLine', () => {
     const wrapper = mount(createOpenSelect({
       treeLine: true,
     }));
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
   // treeDataSimpleMode - already tested in Select.spec.js
@@ -478,12 +473,12 @@ describe('TreeSelect.props', () => {
     const expandWrapper = mount(createOpenSelect({
       treeDefaultExpandAll: true,
     }));
-    expect(wrapperToJson(expandWrapper)).toMatchSnapshot();
+    expect(expandWrapper.render()).toMatchSnapshot();
 
     const unexpandWrapper = mount(createOpenSelect({
       treeDefaultExpandAll: false,
     }));
-    expect(wrapperToJson(unexpandWrapper)).toMatchSnapshot();
+    expect(unexpandWrapper.render()).toMatchSnapshot();
   });
 
   // treeCheckable - already tested in Select.checkable.spec.js
@@ -497,7 +492,7 @@ describe('TreeSelect.props', () => {
       maxTagTextLength: 2,
       value: ['Value 0-0', 'Value 1', 'Value 0-1'],
     }));
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
   // disabled - already tested in Select.spec.js
@@ -507,7 +502,7 @@ describe('TreeSelect.props', () => {
     const wrapper = mount(createSelect({
       defaultValue: 'Value 0-0',
     }));
-    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
   // labelInValue - already tested in Select.spec.js
@@ -559,7 +554,7 @@ describe('TreeSelect.props', () => {
     return timeoutPromise().then(() => {
       expect(handleLoadData).toBeCalledWith(node);
       expect(called).toBe(1);
-      expect(wrapperToJson(wrapper)).toMatchSnapshot();
+      expect(wrapper.render()).toMatchSnapshot();
     });
   });
 
