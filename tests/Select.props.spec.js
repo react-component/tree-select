@@ -39,14 +39,6 @@ describe('TreeSelect.props', () => {
     createSelect({ open: true, treeDefaultExpandAll: true, ...props })
   );
 
-  /* beforeAll(() => {
-    jest.useFakeTimers();
-  });
-
-  afterAll(() => {
-    jest.useRealTimers();
-  }); */
-
   it('basic', () => {
     const wrapper = mount(createSelect());
     expect(wrapperToJson(wrapper)).toMatchSnapshot();
@@ -55,8 +47,63 @@ describe('TreeSelect.props', () => {
     expect(wrapperToJson(wrapper)).toMatchSnapshot();
   });
 
+  it('className', () => {
+    const wrapper = mount(createOpenSelect({ className: 'test-class' }));
+    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+  });
+
   it('prefixCls', () => {
     const wrapper = mount(createOpenSelect({ prefixCls: 'another-cls' }));
+    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('animation', () => {
+    const wrapper = mount(createSelect({
+      animation: 'test-animation',
+    }));
+    wrapper.find('.rc-tree-select').simulate('click');
+    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('transitionName', () => {
+    const wrapper = mount(createSelect({
+      transitionName: 'test-transitionName',
+    }));
+    wrapper.find('.rc-tree-select').simulate('click');
+    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+  });
+
+  it.only('choiceTransitionName', () => {
+    class Wrapper extends React.Component {
+      state = {
+        value: [],
+      };
+
+      doValueUpdate = () => {
+        this.setState({
+          value: ['Value 0'],
+        });
+      };
+
+      render() {
+        return (
+          <div>
+            <TreeSelect
+              choiceTransitionName="test-choiceTransitionName"
+              value={this.state.value}
+              multiple
+            >
+              <SelectNode value="Value 0" title="Title 0" key="key 0" />
+            </TreeSelect>
+          </div>
+        );
+      }
+    }
+
+    const wrapper = mount(<Wrapper />);
+    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+
+    wrapper.instance().doValueUpdate();
     expect(wrapperToJson(wrapper)).toMatchSnapshot();
   });
 
@@ -118,14 +165,14 @@ describe('TreeSelect.props', () => {
 
   it('placeholder', () => {
     const wrapper = render(createSelect({
-      placeholder: 'Ant Design',
+      placeholder: 'RC Component',
     }));
     expect(renderToJson(wrapper)).toMatchSnapshot();
   });
 
   it('searchPlaceholder', () => {
     const wrapper = render(createOpenSelect({
-      searchPlaceholder: 'Ant Design',
+      searchPlaceholder: 'RC Component',
     }));
     expect(renderToJson(wrapper)).toMatchSnapshot();
   });
@@ -285,7 +332,7 @@ describe('TreeSelect.props', () => {
     expect(renderToJson(wrapper)).toMatchSnapshot();
   });
 
-  describe.only('showCheckedStrategy', () => {
+  describe('showCheckedStrategy', () => {
     const testList = [
       {
         strategy: SHOW_ALL,
@@ -383,4 +430,38 @@ describe('TreeSelect.props', () => {
       });
     });
   });
+
+  // treeCheckStrictly - already tested in Select.checkable.spec.js
+
+  it('treeIcon', () => {
+    const wrapper = mount(createOpenSelect({
+      treeIcon: true,
+    }));
+    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('treeLine', () => {
+    const wrapper = mount(createOpenSelect({
+      treeLine: true,
+    }));
+    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+  });
+
+  // treeDataSimpleMode - already tested in Select.spec.js
+
+  it('treeDefaultExpandAll', () => {
+    const expandWrapper = mount(createOpenSelect({
+      treeDefaultExpandAll: true,
+    }));
+    expect(wrapperToJson(expandWrapper)).toMatchSnapshot();
+
+    const unexpandWrapper = mount(createOpenSelect({
+      treeDefaultExpandAll: false,
+    }));
+    expect(wrapperToJson(unexpandWrapper)).toMatchSnapshot();
+  });
+
+  // treeCheckable - already tested in Select.checkable.spec.js
+  // treeNodeFilterProp - already tested in Select.spec.js
+  // treeNodeLabelProp - already tested in Select.spec.js
 });
