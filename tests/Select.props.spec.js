@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef, react/no-multi-comp */
 import React from 'react';
 import { mount, render } from 'enzyme';
 import { renderToJson } from 'enzyme-to-json';
@@ -13,6 +13,13 @@ const { TreeNode: SelectNode } = TreeSelect;
 const wrapperToJson = (wrapper) => (
   renderToJson(wrapper.render())
 );
+
+// Promisify timeout to let jest catch works
+function timeoutPromise(delay = 0) {
+  return new Promise(resolve => {
+    setTimeout(resolve, delay);
+  });
+}
 
 describe('TreeSelect.props', () => {
   beforeEach(() => {
@@ -480,6 +487,7 @@ describe('TreeSelect.props', () => {
   });
 
   // treeCheckable - already tested in Select.checkable.spec.js
+  // treeCheckStrictly - already tested in Select.checkable.spec.js
   // treeNodeFilterProp - already tested in Select.spec.js
   // treeNodeLabelProp - already tested in Select.spec.js
 
@@ -490,5 +498,68 @@ describe('TreeSelect.props', () => {
       value: ['Value 0-0', 'Value 1', 'Value 0-1'],
     }));
     expect(wrapperToJson(wrapper)).toMatchSnapshot();
+  });
+
+  // disabled - already tested in Select.spec.js
+  // inputValue - already tested in Select.spec.js
+
+  it('defaultValue', () => {
+    const wrapper = mount(createSelect({
+      defaultValue: 'Value 0-0',
+    }));
+    expect(wrapperToJson(wrapper)).toMatchSnapshot();
+  });
+
+  // labelInValue - already tested in Select.spec.js
+  // onSelect - already tested in Select.spec.js
+  // onSearch - already tested in Select.spec.js
+  // treeDefaultExpandedKeys - already tested in Select.spec.js
+  // treeData - already tested in Select.spec.js
+
+  it.only('loadData', () => {
+    jest.useRealTimers();
+
+    let called = 0;
+
+    const handleLoadData = jest.fn();
+
+    class Demo extends React.Component {
+      state = {
+        loaded: false,
+      };
+
+      loadData = (...args) => {
+        called += 1;
+        handleLoadData(...args);
+
+        this.setState({ loaded: true });
+
+        return Promise.resolve();
+      };
+
+      render() {
+        return (
+          <TreeSelect loadData={this.loadData} open>
+            <TreeNode key="0-0">
+              {this.state.loaded ? <TreeNode key="0-0-0" /> : null}
+            </TreeNode>
+          </TreeSelect>
+        );
+      }
+    }
+
+    const wrapper = mount(<Demo />);
+
+    expect(handleLoadData).not.toBeCalled();
+
+    const switcher = wrapper.find('.rc-tree-select-tree-switcher');
+    const node = wrapper.find(TreeNode).instance();
+    switcher.simulate('click');
+
+    return timeoutPromise().then(() => {
+      expect(handleLoadData).toBeCalledWith(node);
+      expect(called).toBe(1);
+      expect(wrapperToJson(wrapper)).toMatchSnapshot();
+    });
   });
 });

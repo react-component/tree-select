@@ -885,6 +885,40 @@ exports[`TreeSelect.props className 1`] = `
 </div>
 `;
 
+exports[`TreeSelect.props defaultValue 1`] = `
+<div>
+  <span
+    class="rc-tree-select rc-tree-select-enabled"
+  >
+    <span
+      aria-autocomplete="list"
+      aria-haspopup="true"
+      class="rc-tree-select-selection
+            rc-tree-select-selection--single"
+      role="combobox"
+      tabindex="0"
+    >
+      <span
+        class="rc-tree-select-selection__rendered"
+      >
+        <span
+          class="rc-tree-select-selection-selected-value"
+          title="Title 0-0"
+        >
+          Title 0-0
+        </span>
+      </span>
+      <span
+        class="rc-tree-select-arrow"
+        style="outline: none;"
+      >
+        <b />
+      </span>
+    </span>
+  </span>
+</div>
+`;
+
 exports[`TreeSelect.props dropdownClassName 1`] = `
 <div>
   <span
@@ -1483,6 +1517,37 @@ exports[`TreeSelect.props filterTreeNode 2`] = `
     </div>
   </div>
 </div>
+`;
+
+exports[`TreeSelect.props loadData 1`] = `
+<span
+  class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
+  style=""
+>
+  <span
+    aria-autocomplete="list"
+    aria-expanded="true"
+    aria-haspopup="true"
+    class="rc-tree-select-selection
+            rc-tree-select-selection--single"
+    role="combobox"
+    tabindex="0"
+  >
+    <span
+      class="rc-tree-select-selection__rendered"
+    >
+      <span
+        class="rc-tree-select-selection__placeholder"
+      />
+    </span>
+    <span
+      class="rc-tree-select-arrow"
+      style="outline: none;"
+    >
+      <b />
+    </span>
+  </span>
+</span>
 `;
 
 exports[`TreeSelect.props maxTagTextLength 1`] = `
