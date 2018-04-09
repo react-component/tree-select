@@ -28,6 +28,7 @@ class SelectInput extends React.Component {
   };
 
   // TODO: Placeholder
+  onPlaceholderClick = () => {};
   onClearSelection = () => {};
 
   /**
@@ -114,13 +115,11 @@ class SelectInput extends React.Component {
       prefixCls, placeholder, searchPlaceholder,
       isMultiple, inputValue, value,
     } = this.props;
+    const hidden = !!inputValue || value.length;
 
-    if (!isMultiple) {
+    if (isMultiple) {
       return null;
     }
-
-    // TODO: do this
-    const hidden = !!inputValue || value.length;
 
     const currentPlaceholder = placeholder || searchPlaceholder;
     if (currentPlaceholder) {

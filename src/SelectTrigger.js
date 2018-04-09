@@ -1,6 +1,6 @@
 import React from 'react';
-import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import Trigger from 'rc-trigger';
 import classNames from 'classnames';
 
@@ -29,7 +29,6 @@ class SelectTrigger extends React.Component {
     disabled: PropTypes.bool,
     showSearch: PropTypes.bool,
     prefixCls: PropTypes.string,
-    dropdownPrefixCls: PropTypes.string,
     dropdownPopupAlign: PropTypes.object,
     dropdownClassName: PropTypes.string,
     dropdownStyle: PropTypes.object,
@@ -40,17 +39,16 @@ class SelectTrigger extends React.Component {
 
     // Pass by Select
     isMultiple: PropTypes.bool,
+    dropdownPrefixCls: PropTypes.string,
     onDropdownVisibleChange: PropTypes.func,
     popupElement: PropTypes.node,
-    visible: PropTypes.bool,
+    open: PropTypes.bool,
   };
 
-  getDropdownPrefixCls = () => `${this.props.prefixCls}-dropdown`;
-
   getDropdownTransitionName = () => {
-    const { transitionName, animation } = this.props;
+    const { transitionName, animation, dropdownPrefixCls } = this.props;
     if (!transitionName && animation) {
-      return `${this.getDropdownPrefixCls()}-${animation}`;
+      return `${dropdownPrefixCls}-${animation}`;
     }
     return transitionName;
   };
@@ -60,10 +58,9 @@ class SelectTrigger extends React.Component {
       disabled, isMultiple, showSearch,
       dropdownPopupAlign, dropdownClassName,
       dropdownStyle, onDropdownVisibleChange, getPopupContainer,
-      popupElement, visible,
+      dropdownPrefixCls, popupElement, open,
       children,
     } = this.props;
-    const dropdownPrefixCls = this.getDropdownPrefixCls();
 
     let hideAction;
     if (disabled) {
@@ -88,7 +85,7 @@ class SelectTrigger extends React.Component {
         popupTransitionName={this.getDropdownTransitionName()}
         onPopupVisibleChange={onDropdownVisibleChange}
         popup={popupElement}
-        popupVisible={visible}
+        popupVisible={open}
         getPopupContainer={getPopupContainer}
         popupClassName={classNames(
           dropdownClassName,

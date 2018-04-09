@@ -5,6 +5,7 @@ import { polyfill } from 'react-lifecycles-compat';
 import SelectTrigger from './SelectTrigger';
 import SelectPopup from './SelectPopup';
 import SelectInput from './SelectInput';
+import { createRef } from './util';
 
 class Select extends React.Component {
   static propTypes = {
@@ -14,6 +15,10 @@ class Select extends React.Component {
     showArrow: PropTypes.bool,
     open: PropTypes.bool,
     defaultOpen: PropTypes.bool,
+    showSearch: PropTypes.bool,
+    placeholder: PropTypes.string,
+    searchPlaceholder: PropTypes.string,
+    disabled: PropTypes.bool,
 
     onDropdownVisibleChange: PropTypes.func,
   };
@@ -21,22 +26,34 @@ class Select extends React.Component {
   static defaultProps = {
     prefixCls: 'rc-tree-select',
     showArrow: true,
+    showSearch: true,
     // TODO: double confirm
   };
 
   constructor(props) {
     super();
 
-    const { open, defaultOpen } = props;
+    const { open, defaultOpen, inputValue } = props;
     this.state = {
-      value: [],
+      value: [], // TODO: logic update
+      inputValue: inputValue || '',
       open: open || defaultOpen,
     };
+
+    this.searchInputRef = createRef();
+    // IE need addition check for the content width
+    // ref: https://github.com/react-component/tree-select/issues/65
+    this.searchMirrorInstanceRef = createRef();
   }
 
   onDropdownVisibleChange = (open) => {
     this.setOpenState(open, true);
   };
+
+  // TODO: implement require
+  onInputChange = () => {};
+  onInputKeyDown = () => {};
+  onPlaceholderClick = () => {};
 
   // [Legacy] Origin provide `documentClickClose` which triggered by `Trigger`
   // Currently `TreeSelect` align the hide popup logic as `Select` which blur to hide.
@@ -65,16 +82,19 @@ class Select extends React.Component {
   };
 
   render() {
-    const { value, open } = this.state;
+    const { prefixCls, value, open } = this.state;
     const isMultiple = this.isMultiple();
     const passProps = {
       ...this.props,
       isMultiple,
       value,
       open,
+      dropdownPrefixCls: `${prefixCls}-dropdown`,
     };
 
-    const $popup = <SelectPopup />;
+    const $popup = (
+      <SelectPopup />
+    );
 
     return (
       <SelectTrigger
@@ -82,7 +102,9 @@ class Select extends React.Component {
         popupElement={$popup}
         onDropdownVisibleChange={this.onDropdownVisibleChange}
       >
-        <SelectInput {...passProps} />
+        <SelectInput
+          {...passProps}
+        />
       </SelectTrigger>
     );
   }
