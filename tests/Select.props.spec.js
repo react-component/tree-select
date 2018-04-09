@@ -42,7 +42,7 @@ describe('TreeSelect.props', () => {
     createSelect({ open: true, treeDefaultExpandAll: true, ...props })
   );
 
-  it('basic', () => {
+  it.only('basic', () => {
     const wrapper = mount(createSelect());
     expect(wrapper.render()).toMatchSnapshot();
 
