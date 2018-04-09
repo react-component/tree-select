@@ -10,10 +10,12 @@ class Select extends React.Component {
     prefixCls: PropTypes.string,
     multiple: PropTypes.bool,
     treeCheckable: PropTypes.bool,
+    showArrow: PropTypes.bool,
   };
 
   static defaultProps = {
     prefixCls: 'rc-tree-select',
+    showArrow: true,
     // TODO: double confirm
   };
 

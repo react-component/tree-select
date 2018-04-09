@@ -10,8 +10,10 @@ class SelectInput extends React.Component {
     className: PropTypes.string,
     style: PropTypes.object,
     allowClear: PropTypes.bool,
+    showArrow: PropTypes.bool,
     disabled: PropTypes.bool,
     placeholder: PropTypes.string,
+    searchPlaceholder: PropTypes.string,
 
     onClick: PropTypes.func,
     onBlur: PropTypes.func,
@@ -22,7 +24,11 @@ class SelectInput extends React.Component {
     focused: PropTypes.bool,
     isMultiple: PropTypes.bool,
     value: PropTypes.array, // Internal always array
+    inputValue: PropTypes.string,
   };
+
+  // TODO: Placeholder
+  onClearSelection = () => {};
 
   /**
    * Return value nodes. Will return <ul> if multiple value.
@@ -65,6 +71,69 @@ class SelectInput extends React.Component {
     }
 
     // Multiple value mode
+    return null;
+  };
+
+  renderClear = () => {
+    const { prefixCls, allowClear, value } = this.props;
+
+    if (!allowClear || value.length === 0) {
+      // TODO: origin code check value[0].value. Need confirm
+      return null;
+    }
+
+    return (
+      <span
+        key="clear"
+        className={`${prefixCls}-selection__clear`}
+        onClick={this.onClearSelection}
+      />
+    );
+  };
+
+  renderArrow = () => {
+    const { prefixCls, showArrow, isMultiple } = this.props;
+
+    if (isMultiple || !showArrow) {
+      return null;
+    }
+
+    return (
+      <span
+        key="arrow"
+        className={`${prefixCls}-arrow`}
+        style={{ outline: 'none' }}
+      >
+        <b/>
+      </span>
+    );
+  };
+
+  renderSearchPlaceholder = () => {
+    const {
+      prefixCls, placeholder, searchPlaceholder,
+      isMultiple, inputValue, value,
+    } = this.props;
+
+    if (!isMultiple) {
+      return null;
+    }
+
+    // TODO: do this
+    const hidden = !!inputValue || value.length;
+
+    const currentPlaceholder = placeholder || searchPlaceholder;
+    if (currentPlaceholder) {
+      return (
+        <span
+          style={{ display: hidden ? 'none' : 'block' }}
+          onClick={this.onPlaceholderClick}
+          className={`${prefixCls}-search__field__placeholder`}
+        >
+          {currentPlaceholder}
+        </span>
+      );
+    }
     return null;
   };
 
@@ -119,6 +188,9 @@ class SelectInput extends React.Component {
           {...selectionProps}
         >
           {this.renderValueNodes()}
+          {this.renderClear()}
+          {this.renderArrow()}
+          {this.renderSearchPlaceholder()}
         </span>
       </span>
     );
