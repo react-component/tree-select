@@ -28,10 +28,13 @@ class SelectTrigger extends React.Component {
     // Pass by outside user props
     disabled: PropTypes.bool,
     showSearch: PropTypes.bool,
+    prefixCls: PropTypes.string,
     dropdownPrefixCls: PropTypes.string,
     dropdownPopupAlign: PropTypes.object,
     dropdownClassName: PropTypes.string,
     dropdownStyle: PropTypes.object,
+    transitionName: PropTypes.string,
+    animation: PropTypes.string,
     getPopupContainer: PropTypes.func,
     children: PropTypes.node,
 
@@ -42,14 +45,25 @@ class SelectTrigger extends React.Component {
     visible: PropTypes.bool,
   };
 
+  getDropdownPrefixCls = () => `${this.props.prefixCls}-dropdown`;
+
+  getDropdownTransitionName = () => {
+    const { transitionName, animation } = this.props;
+    if (!transitionName && animation) {
+      return `${this.getDropdownPrefixCls()}-${animation}`;
+    }
+    return transitionName;
+  };
+
   render() {
     const {
       disabled, isMultiple, showSearch,
-      dropdownPrefixCls, dropdownPopupAlign, dropdownClassName,
+      dropdownPopupAlign, dropdownClassName,
       dropdownStyle, onDropdownVisibleChange, getPopupContainer,
       popupElement, visible,
       children,
     } = this.props;
+    const dropdownPrefixCls = this.getDropdownPrefixCls();
 
     let hideAction;
     if (disabled) {
