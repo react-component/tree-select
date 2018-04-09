@@ -531,8 +531,7 @@ exports[`TreeSelect.props basic 1`] = `
     <span
       aria-autocomplete="list"
       aria-haspopup="true"
-      class="rc-tree-select-selection
-            rc-tree-select-selection--single"
+      class="rc-tree-select-selection rc-tree-select-selection--single"
       role="combobox"
       tabindex="0"
     >

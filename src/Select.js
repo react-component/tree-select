@@ -8,6 +8,8 @@ import SelectInput from './SelectInput';
 class Select extends React.Component {
   static propTypes = {
     prefixCls: PropTypes.string,
+    multiple: PropTypes.bool,
+    treeCheckable: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -15,10 +17,28 @@ class Select extends React.Component {
     // TODO: double confirm
   };
 
+  state = {
+    value: [],
+  };
+
+  // Tree checkable is also a multiple case
+  isMultiple = () => {
+    const { multiple, treeCheckable } = this.props;
+    return !!(multiple || treeCheckable);
+  };
+
   render() {
+    const { value } = this.state;
+    const isMultiple = this.isMultiple();
+    const passProps = {
+      ...this.props,
+      isMultiple,
+      value,
+    };
+
     return (
-      <SelectTrigger {...this.props}>
-        <SelectInput {...this.props} />
+      <SelectTrigger {...passProps}>
+        <SelectInput {...passProps} />
       </SelectTrigger>
     );
   }
