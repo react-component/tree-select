@@ -81,8 +81,34 @@ class Select extends React.Component {
     return !!(multiple || treeCheckable);
   };
 
+  /**
+   * [Legacy] Select redesign the search input position but TreeSelect not.
+   * Since new version tag is released. Let's keep the current design.
+   * This function will give search placeholder to:
+   * - multiple: input box
+   * - single: popup panel
+   *
+   * @param visible [Legacy] Use current value to decide display or not
+   * @param placeholder
+   */
+  renderSearchPlaceholder = (visible, placeholder) => {
+    const { prefixCls } = this.props;
+    if (visible && placeholder) {
+      return (
+        <span
+          onClick={this.onPlaceholderClick}
+          className={`${prefixCls}-search__field__placeholder`}
+        >
+          {placeholder}
+        </span>
+      );
+    }
+    return null;
+  };
+
   render() {
-    const { prefixCls, value, open } = this.state;
+    const { value, open } = this.state;
+    const { prefixCls } = this.props;
     const isMultiple = this.isMultiple();
     const passProps = {
       ...this.props,
@@ -90,6 +116,7 @@ class Select extends React.Component {
       value,
       open,
       dropdownPrefixCls: `${prefixCls}-dropdown`,
+      renderSearchPlaceholder: this.renderSearchPlaceholder,
     };
 
     const $popup = (

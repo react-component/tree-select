@@ -25,10 +25,10 @@ class SelectInput extends React.Component {
     isMultiple: PropTypes.bool,
     value: PropTypes.array, // Internal always array
     inputValue: PropTypes.string,
+    renderSearchPlaceholder: PropTypes.func,
   };
 
   // TODO: Placeholder
-  onPlaceholderClick = () => {};
   onClearSelection = () => {};
 
   /**
@@ -110,39 +110,16 @@ class SelectInput extends React.Component {
     );
   };
 
-  renderSearchPlaceholder = () => {
-    const {
-      prefixCls, placeholder, searchPlaceholder,
-      isMultiple, inputValue, value,
-    } = this.props;
-    const hidden = !!inputValue || value.length;
-
-    if (isMultiple) {
-      return null;
-    }
-
-    const currentPlaceholder = placeholder || searchPlaceholder;
-    if (currentPlaceholder) {
-      return (
-        <span
-          style={{ display: hidden ? 'none' : 'block' }}
-          onClick={this.onPlaceholderClick}
-          className={`${prefixCls}-search__field__placeholder`}
-        >
-          {currentPlaceholder}
-        </span>
-      );
-    }
-    return null;
-  };
-
   render() {
     const {
       prefixCls, className, style,
       onClick, onBlur, onFocus,
       allowClear, disabled,
+      placeholder, searchPlaceholder,
 
+      inputValue, value,
       open, focused, isMultiple,
+      renderSearchPlaceholder,
     } = this.props;
 
     const selectionProps = {};
@@ -189,7 +166,11 @@ class SelectInput extends React.Component {
           {this.renderValueNodes()}
           {this.renderClear()}
           {this.renderArrow()}
-          {this.renderSearchPlaceholder()}
+          {/* Search placeholder is in input bar when multiple */}
+          {isMultiple && renderSearchPlaceholder(
+            inputValue || value.length,
+            placeholder || searchPlaceholder,
+          )}
         </span>
       </span>
     );

@@ -557,6 +557,7 @@ exports[`TreeSelect.props basic 2`] = `
 <div>
   <span
     class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
+    style=""
   >
     <span
       aria-autocomplete="list"
