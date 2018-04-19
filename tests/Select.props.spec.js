@@ -317,13 +317,14 @@ describe('TreeSelect.props', () => {
     // https://github.com/ant-design/ant-design/issues/9857
     // Both use blur to hide. click not affect this.
     $select.simulate('click');
-    expect(handleDropdownVisibleChange).not.toBeCalled();
+    expect(handleDropdownVisibleChange).toBeCalledWith(
+      false, { documentClickClose: true }
+    );
     handleDropdownVisibleChange.mockReset();
 
     $select.simulate('blur');
     jest.runAllTimers();
-    expect(handleDropdownVisibleChange).toBeCalledWith(
-        false, { documentClickClose: true });
+    expect(handleDropdownVisibleChange).not.toBeCalled();
     handleDropdownVisibleChange.mockReset();
 
     // Simulate when can't process
