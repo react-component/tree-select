@@ -27193,11 +27193,17 @@ var Select = function (_Component) {
     }
   };
 
-  Select.prototype.removeSelected = function removeSelected(selectedVal) {
+  Select.prototype.removeSelected = function removeSelected(selectedVal, e) {
     var props = this.props;
     if (props.disabled) {
       return;
     }
+
+    // Do not trigger Trigger popup
+    if (e && e.stopPropagation) {
+      e.stopPropagation();
+    }
+
     this._cacheTreeNodesStates = 'no';
     if (props.treeCheckable && (props.showCheckedStrategy === __WEBPACK_IMPORTED_MODULE_13__strategies__["a" /* SHOW_ALL */] || props.showCheckedStrategy === __WEBPACK_IMPORTED_MODULE_13__strategies__["c" /* SHOW_PARENT */]) && !(props.treeCheckStrictly || this.state.inputValue)) {
       this.getDeselectedValue(selectedVal);
@@ -27234,6 +27240,7 @@ var Select = function (_Component) {
         });
       }
     }
+
     this.fireChange(value, { triggerValue: selectedVal, clear: true });
   };
 
@@ -27418,7 +27425,9 @@ var Select = function (_Component) {
         }),
         __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('span', {
           className: prefixCls + '-selection__choice__remove',
-          onClick: _this7.removeSelected.bind(_this7, singleValue.value)
+          onClick: function onClick(event) {
+            _this7.removeSelected(singleValue.value, event);
+          }
         }),
         __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
           'span',
