@@ -651,11 +651,17 @@ class Select extends Component {
     }
   }
 
-  removeSelected(selectedVal) {
+  removeSelected(selectedVal, e) {
     const props = this.props;
     if (props.disabled) {
       return;
     }
+
+    // Do not trigger Trigger popup
+    if (e && e.stopPropagation) {
+      e.stopPropagation();
+    }
+
     this._cacheTreeNodesStates = 'no';
     if (props.treeCheckable &&
       (props.showCheckedStrategy === SHOW_ALL || props.showCheckedStrategy === SHOW_PARENT)
@@ -692,6 +698,7 @@ class Select extends Component {
         });
       }
     }
+
     this.fireChange(value, { triggerValue: selectedVal, clear: true });
   }
 
@@ -842,7 +849,9 @@ class Select extends Component {
         >
           <span
             className={`${prefixCls}-selection__choice__remove`}
-            onClick={this.removeSelected.bind(this, singleValue.value)}
+            onClick={(event) => {
+              this.removeSelected(singleValue.value, event);
+            }}
           />
           <span className={`${prefixCls}-selection__choice__content`}>{content}</span>
         </li>
