@@ -74,8 +74,6 @@ class SelectTrigger extends React.Component {
     // TODO: saveRef(this, 'trigger')
     // TODO: dropdownWidth
 
-    console.log('~~~~~~>', dropdownPrefixCls);
-
     return (
       <Trigger
         showAction={disabled ? [] : ['click']}

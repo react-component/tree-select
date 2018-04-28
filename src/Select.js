@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 
 import SelectTrigger from './SelectTrigger';
-import SelectPopup from './SelectPopup';
-import SelectInput from './SelectInput';
+import SinglePopup from './SinglePopup';
+import MultiplePopup from './MultiplePopup';
+import SingleInput from './SingleInput';
+import MultipleInput from './MultipleInput';
+
 import { createRef } from './util';
 
 class Select extends React.Component {
@@ -106,6 +109,39 @@ class Select extends React.Component {
     return null;
   };
 
+  /**
+   * [Legacy] Search input is in diff place when mode diff.
+   * And for the diff mode placeholder position is also diff.
+   * render function need less logic on mode.
+   * Let's just move the placeholder out as argument.
+   *
+   * @param additionalPlaceholder
+   */
+  renderInputElement(additionalPlaceholder) {
+    const { inputValue } = this.state;
+    const { prefixCls, disabled } = this.props;
+    return (
+      <span className={`${prefixCls}-search__field__wrap`}>
+        <input
+          ref={this.searchInputRef}
+          onChange={this.onInputChange}
+          onKeyDown={this.onInputKeyDown}
+          value={inputValue}
+          disabled={disabled}
+          className={`${prefixCls}-search__field`}
+          role="textbox"
+        />
+        <span
+          ref={this.searchMirrorInstanceRef}
+          className={`${prefixCls}-search__field__mirror`}
+        >
+          {inputValue}&nbsp;
+        </span>
+        {additionalPlaceholder}
+      </span>
+    );
+  }
+
   render() {
     const { value, open } = this.state;
     const { prefixCls } = this.props;
@@ -119,8 +155,17 @@ class Select extends React.Component {
       renderSearchPlaceholder: this.renderSearchPlaceholder,
     };
 
-    const $popup = (
-      <SelectPopup />
+    // TODO: process the logic of mode diff
+    const $popup = isMultiple ? (
+      <MultiplePopup {...passProps} />
+    ) : (
+      <SinglePopup {...passProps} />
+    );
+
+    const $input = isMultiple ? (
+      <MultipleInput {...passProps} />
+    ) : (
+      <SingleInput {...passProps} />
     );
 
     return (
@@ -129,9 +174,7 @@ class Select extends React.Component {
         popupElement={$popup}
         onDropdownVisibleChange={this.onDropdownVisibleChange}
       >
-        <SelectInput
-          {...passProps}
-        />
+        {$input}
       </SelectTrigger>
     );
   }
