@@ -138,4 +138,15 @@ describe('TreeSelect.multiple', () => {
     select(wrapper, 0);  // unselect
     expect(wrapper.find('input').getDOMNode().value).toBe('');
   });
+
+  it('do not open tree when close button click', () => {
+    const wrapper = mount(createSelect());
+    wrapper.find('.rc-tree-select-selection').simulate('click');
+    select(wrapper, 0);
+    select(wrapper, 1);
+    wrapper.setState({ open: false });
+    wrapper.find('.rc-tree-select-selection__choice__remove').at(0).simulate('click');
+    expect(wrapper.state('open')).toBe(false);
+    expect(wrapper.state('value')).toEqual([{ label: 'label1', value: '1' }]);
+  });
 });
