@@ -1,3 +1,7 @@
+/**
+ * ARIA: https://www.w3.org/blog/wai-components-gallery/widget/combobox-with-aria-autocompleteinline/
+ */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
@@ -5,10 +9,10 @@ import { polyfill } from 'react-lifecycles-compat';
 import SelectTrigger from './SelectTrigger';
 import SinglePopup from './SinglePopup';
 import MultiplePopup from './MultiplePopup';
-import SingleInput from './SingleInput';
-import MultipleInput from './MultipleInput';
+import SingleSelector from './SingleSelector';
+import MultipleSelector from './MultipleSelector';
 
-import { createRef } from './util';
+import { createRef, generateAriaId } from './util';
 
 class Select extends React.Component {
   static propTypes = {
@@ -20,6 +24,7 @@ class Select extends React.Component {
     defaultOpen: PropTypes.bool,
     showSearch: PropTypes.bool,
     placeholder: PropTypes.string,
+    inputValue: PropTypes.string,
     searchPlaceholder: PropTypes.string,
     disabled: PropTypes.bool,
 
@@ -47,6 +52,10 @@ class Select extends React.Component {
     // IE need addition check for the content width
     // ref: https://github.com/react-component/tree-select/issues/65
     this.searchMirrorInstanceRef = createRef();
+
+    // ARIA need `aria-controls` props mapping
+    // Since this need user input. Let's generate ourselves
+    this.ariaId = generateAriaId();
   }
 
   onDropdownVisibleChange = (open) => {
@@ -129,7 +138,6 @@ class Select extends React.Component {
           value={inputValue}
           disabled={disabled}
           className={`${prefixCls}-search__field`}
-          role="textbox"
         />
         <span
           ref={this.searchMirrorInstanceRef}
@@ -153,6 +161,7 @@ class Select extends React.Component {
       open,
       dropdownPrefixCls: `${prefixCls}-dropdown`,
       renderSearchPlaceholder: this.renderSearchPlaceholder,
+      ariaId: this.ariaId,
     };
 
     // TODO: process the logic of mode diff
@@ -163,9 +172,9 @@ class Select extends React.Component {
     );
 
     const $input = isMultiple ? (
-      <MultipleInput {...passProps} />
+      <MultipleSelector {...passProps} />
     ) : (
-      <SingleInput {...passProps} />
+      <SingleSelector {...passProps} />
     );
 
     return (

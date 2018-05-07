@@ -3,7 +3,9 @@ import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 
 export default function () {
-  class BaseInput extends React.Component {
+  class BasePopup extends React.Component {
+    placeholder = null; // TODO: Remove this
+
     render() {
       return (
         <h1>Nice Day</h1>
@@ -11,7 +13,7 @@ export default function () {
     }
   }
 
-  polyfill(BaseInput);
+  polyfill(BasePopup);
 
-  return BaseInput;
+  return BasePopup;
 }

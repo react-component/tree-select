@@ -103,18 +103,19 @@ describe('TreeSelect.checkable', () => {
         this.setState({ disabled: checked });
       }
       render() {
-        return (<div>
-          <TreeSelect
-            treeData={treeData}
-            treeCheckable
-            allowClear
-            multiple
-            showCheckedStrategy={SHOW_PARENT}
-            value={this.state.value}
-            onChange={this.handleChange}
-            disabled={this.state.disabled}
-          />
-          <input type="checkbox" onChange={e => this.switch(e.target.checked)} id="checkbox"/> 禁用
+        return (
+          <div>
+            <TreeSelect
+              treeData={treeData}
+              treeCheckable
+              allowClear
+              multiple
+              showCheckedStrategy={SHOW_PARENT}
+              value={this.state.value}
+              onChange={this.handleChange}
+              disabled={this.state.disabled}
+            />
+            <input type="checkbox" onChange={e => this.switch(e.target.checked)} id="checkbox"/> 禁用
           </div>
         );
       }

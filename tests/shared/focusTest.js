@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import TreeSelect from '../../src/Select';
 import { mount } from 'enzyme';
+import TreeSelect from '../../src/Select';
 
 export default function focusTest(mode) {
   let container;

@@ -15,6 +15,8 @@ class SelectNode extends React.Component {
     value: PropTypes.string,
   };
 
+  placeholder = null; // TODO: Remove this
+
   render() {
     const { label, ...props } = this.props;
     delete props.value;

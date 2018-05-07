@@ -6,17 +6,17 @@ import ReactDOM from 'react-dom';
 import TreeSelect from 'rc-tree-select';
 import Select from 'rc-select';
 import { createForm } from 'rc-form';
-import { regionStyle, errorStyle } from './styles';
-import { gData } from './util';
 import 'rc-select/assets/index.css';
 import 'rc-tree-select/assets/index.less';
+import { regionStyle, errorStyle } from './styles';
+import { gData } from './util';
 import './demo.less';
 
 const { Option } = Select;
 
 class TreeSelectInput extends Component {
-  onChange(value) {
-    console.log(value, arguments);
+  onChange = (value, ...args) => {
+    console.log(value, ...args);
     const props = this.props;
     if (props.onChange) {
       props.onChange(value);
@@ -24,7 +24,7 @@ class TreeSelectInput extends Component {
   }
   render() {
     return (
-      <TreeSelect {...this.props} onChange={this.onChange.bind(this)} />
+      <TreeSelect {...this.props} onChange={this.onChange} />
     );
   }
 }
@@ -64,17 +64,17 @@ class Form extends Component {
         <div style={regionStyle}>
           <div>
             <p style={{ color: 'blue' }}>no onChange</p>
-              {getFieldDecorator('tree-select', {
-                initialValue: ['0-0-0-value'],
-                rules: [
-                  { required: true, type: 'array', message: 'tree-select 需要必填' },
-                ],
-              })(
-                <TreeSelect
-                  {...tProps}
-                  style={{ width: 300 }}
-                />
-              )}
+            {getFieldDecorator('tree-select', {
+              initialValue: ['0-0-0-value'],
+              rules: [
+                { required: true, type: 'array', message: 'tree-select 需要必填' },
+              ],
+            })(
+              <TreeSelect
+                {...tProps}
+                style={{ width: 300 }}
+              />
+            )}
           </div>
           <p style={errorStyle}>
             {(getFieldError('tree-select')) ? getFieldError('tree-select').join(',') : null}

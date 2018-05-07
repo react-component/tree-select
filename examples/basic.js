@@ -1,13 +1,13 @@
 /* eslint react/no-multi-comp:0, no-console:0, no-alert: 0 */
 
 import 'rc-tree-select/assets/index.less';
-import './demo.less';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'rc-dialog/assets/index.css';
 import Dialog from 'rc-dialog';
 import TreeSelect, { TreeNode, SHOW_PARENT } from 'rc-tree-select';
 import { gData } from './util';
+import './demo.less';
 
 function isLeaf(value) {
   if (!value) {
@@ -73,11 +73,6 @@ class Demo extends React.Component {
     },
   }
 
-  componentDidMount() {
-    // console.log(this.refs.mul.getInputDOMNode());
-    // this.refs.mul.getInputDOMNode().setAttribute('disabled', true);
-  }
-
   onClick = () => {
     this.setState({
       visible: true,
@@ -129,7 +124,7 @@ class Demo extends React.Component {
     console.log(visible, this.state.value, info);
     if (Array.isArray(this.state.value) && this.state.value.length > 1
       && this.state.value.length < 3) {
-      alert('please select more than two item or less than one item.');
+      window.alert('please select more than two item or less than one item.');
       return false;
     }
     return true;
@@ -188,8 +183,8 @@ class Demo extends React.Component {
           filterTreeNode={false}
           onSearch={this.onSearch}
           open={this.state.tsOpen}
-          onChange={(value) => {
-            console.log('onChange', arguments);
+          onChange={(value, ...args) => {
+            console.log('onChange', ...args);
             if (value === '0-0-0-0-value') {
               this.setState({ tsOpen: true });
             } else {
@@ -225,7 +220,7 @@ class Demo extends React.Component {
         />
 
         <h2>multiple select</h2>
-        <TreeSelect ref="mul"
+        <TreeSelect
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
@@ -284,7 +279,7 @@ class Demo extends React.Component {
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           treeLine maxTagTextLength={10}
-          inputValue={'test111'}
+          inputValue="test111"
           value={this.state.value}
           treeData={this.state.simpleTreeData}
           treeNodeFilterProp="title"
@@ -298,7 +293,7 @@ class Demo extends React.Component {
         <TreeSelect
           style={{ width: 200 }}
           dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
-          defaultValue={'leaf1'} multiple treeCheckable showCheckedStrategy={SHOW_PARENT}
+          defaultValue="leaf1" multiple treeCheckable showCheckedStrategy={SHOW_PARENT}
           treeDefaultExpandAll
           treeData={[
             { key: '', value: '', label: 'empty value', children: [] },
@@ -309,18 +304,18 @@ class Demo extends React.Component {
               ],
             },
           ]}
-          onChange={(val) => console.log(val, arguments)}
+          onChange={(val, ...args) => console.log(val, ...args)}
         />
 
         <h2>use TreeNode Component (not recommend)</h2>
         <TreeSelect
           style={{ width: 200 }}
           dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
-          defaultValue={'leaf1'}
+          defaultValue="leaf1"
           treeDefaultExpandAll
           treeNodeFilterProp="title"
           filterTreeNode={this.filterTreeNode}
-          onChange={(val) => console.log(val, arguments)}
+          onChange={(val, ...args) => console.log(val, ...args)}
         >
           <TreeNode value="" title="parent 1" key="">
             <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-0">
