@@ -2,10 +2,8 @@
 import React from 'react';
 import { render, mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
-import TreeSelect from '../src';
+import TreeSelect, { TreeNode } from '../src';
 import focusTest from './shared/focusTest';
-
-const { TreeNode } = TreeSelect;
 
 describe('TreeSelect.basic', () => {
   beforeAll(() => {

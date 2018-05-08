@@ -158,8 +158,8 @@ class MultipleSelector extends React.Component {
           onKeyDown: this.onKeyDown,
           tabIndex: 0,
         }}
-        renderPlaceholder={this.renderPlaceholder}
         renderSelection={this.renderSelection}
+        renderPlaceholder={this.renderPlaceholder}
       />
     );
   }

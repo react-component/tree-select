@@ -13,6 +13,7 @@ import SingleSelector from './SingleSelector';
 import MultipleSelector from './MultipleSelector';
 
 import { createRef, generateAriaId } from './util';
+import { valueProp } from './propTypes';
 
 class Select extends React.Component {
   static propTypes = {
@@ -22,6 +23,8 @@ class Select extends React.Component {
     showArrow: PropTypes.bool,
     open: PropTypes.bool,
     defaultOpen: PropTypes.bool,
+    value: valueProp,
+    defaultValue: valueProp,
     showSearch: PropTypes.bool,
     placeholder: PropTypes.string,
     inputValue: PropTypes.string,
@@ -41,7 +44,10 @@ class Select extends React.Component {
   constructor(props) {
     super();
 
-    const { open, defaultOpen, inputValue } = props;
+    const {
+      // value, defaultValue,
+      open, defaultOpen, inputValue,
+    } = props;
     this.state = {
       value: [], // TODO: logic update
       inputValue: inputValue || '',

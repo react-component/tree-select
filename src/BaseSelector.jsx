@@ -13,8 +13,8 @@ import { polyfill } from 'react-lifecycles-compat';
 import { createRef } from './util';
 
 export const selectorPropTypes = {
-  rootCls: PropTypes.string,
   prefixCls: PropTypes.string,
+  className: PropTypes.string,
   style: PropTypes.object,
   open: PropTypes.bool,
   value: PropTypes.array,
@@ -80,8 +80,8 @@ export default function (modeName) {
 
     render() {
       const {
-        prefixCls, rootCls, style,
-        open,
+        prefixCls, className, style,
+        open, focused, disabled, allowClear,
         onClick, onBlur, onFocus,
         ariaId,
         renderSelection, selectorProps, renderPlaceholder,
@@ -91,7 +91,15 @@ export default function (modeName) {
         <span
           style={style}
           onClick={onClick}
-          className={classNames(rootCls)}
+          className={classNames({
+            [className]: !!className,
+            [prefixCls]: 1,
+            [`${prefixCls}-open`]: open,
+            [`${prefixCls}-focused`]: open || focused,
+            [`${prefixCls}-disabled`]: disabled,
+            [`${prefixCls}-enabled`]: !disabled,
+            [`${prefixCls}-allow-clear`]: allowClear,
+          })}
           onBlur={onBlur}
           onFocus={onFocus}
         >

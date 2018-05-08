@@ -1,6 +1,4 @@
-const ARIA_BASIC = String(Math.random()).replace( /\D/g, '');
-let ariaId = 0;
-
+// =============== Legacy ===============
 export const UNSELECTABLE_STYLE = {
   userSelect: 'none',
   WebkitUserSelect: 'none',
@@ -22,7 +20,13 @@ export function createRef() {
   return func;
 }
 
-export function generateAriaId () {
+// =============== Current ===============
+const ARIA_BASIC = String(Math.random()).replace( /\D/g, '');
+let ariaId = 0;
+
+export function generateAriaId() {
   ariaId += 1;
   return `RC_TREE_SELECT_${ARIA_BASIC}_${ariaId}`;
 }
+
+export function formatValue() {}
