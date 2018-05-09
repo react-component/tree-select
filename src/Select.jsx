@@ -12,7 +12,7 @@ import MultiplePopup from './MultiplePopup';
 import SingleSelector from './SingleSelector';
 import MultipleSelector from './MultipleSelector';
 
-import { createRef, generateAriaId } from './util';
+import { createRef, generateAriaId, formatValue } from './util';
 import { valueProp } from './propTypes';
 
 class Select extends React.Component {
@@ -41,15 +41,18 @@ class Select extends React.Component {
     // TODO: double confirm
   };
 
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  // }
+
   constructor(props) {
     super();
 
     const {
-      // value, defaultValue,
+      value, defaultValue,
       open, defaultOpen, inputValue,
     } = props;
     this.state = {
-      value: [], // TODO: logic update
+      value: formatValue(value || defaultValue),
       inputValue: inputValue || '',
       open: open || defaultOpen,
     };

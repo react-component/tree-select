@@ -29,4 +29,21 @@ export function generateAriaId() {
   return `RC_TREE_SELECT_${ARIA_BASIC}_${ariaId}`;
 }
 
-export function formatValue() {}
+/**
+ * Convert value to array format to make logic simplify
+ */
+export function formatValue(origin) {
+  if (!origin) return [];
+
+  const valueList = Array.isArray(origin) ? origin : [origin];
+
+  return valueList.map((val) => {
+    if (typeof val === 'object') {
+      return val;
+    }
+
+    return {
+      value: val,
+    };
+  });
+}
