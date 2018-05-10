@@ -41,8 +41,28 @@ class Select extends React.Component {
     // TODO: double confirm
   };
 
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  // }
+  static getDerivedStateFromProps(nextProps) {
+    const newState = {};
+    let changed = false;
+
+    // Check if state need update
+    function processState(propName, updater) {
+      if (propName in nextProps) {
+        changed = true;
+        updater(propName, nextProps[propName]);
+      }
+    }
+
+    // TODO: Process all the pass props
+    processState('value', (propName, propValue) => {
+      newState[propName] = formatValue(propValue);
+    });
+
+    if (changed) {
+      return newState;
+    }
+    return null;
+  }
 
   constructor(props) {
     super();
