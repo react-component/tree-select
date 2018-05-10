@@ -31,6 +31,8 @@ class Select extends React.Component {
     searchPlaceholder: PropTypes.string,
     disabled: PropTypes.bool,
 
+    treeNodeLabelProp: PropTypes.string,
+
     onDropdownVisibleChange: PropTypes.func,
   };
 
@@ -39,6 +41,7 @@ class Select extends React.Component {
     showArrow: true,
     showSearch: true,
     // TODO: double confirm
+    treeNodeLabelProp: 'title',
   };
 
   static getDerivedStateFromProps(nextProps) {
@@ -55,7 +58,7 @@ class Select extends React.Component {
 
     // TODO: Process all the pass props
     processState('value', (propName, propValue) => {
-      newState[propName] = formatValue(propValue);
+      newState[propName] = formatValue(propValue, nextProps);
     });
 
     if (changed) {
@@ -72,7 +75,7 @@ class Select extends React.Component {
       open, defaultOpen, inputValue,
     } = props;
     this.state = {
-      value: formatValue(value || defaultValue),
+      value: formatValue(value || defaultValue, props),
       inputValue: inputValue || '',
       open: open || defaultOpen,
     };
@@ -186,7 +189,7 @@ class Select extends React.Component {
     const passProps = {
       ...this.props,
       isMultiple,
-      value,
+      valueList: value,
       open,
       dropdownPrefixCls: `${prefixCls}-dropdown`,
       renderSearchPlaceholder: this.renderSearchPlaceholder,

@@ -29,21 +29,37 @@ export function generateAriaId() {
   return `RC_TREE_SELECT_${ARIA_BASIC}_${ariaId}`;
 }
 
+export function isLabelInValue(props) {
+  const { treeCheckable, treeCheckStrictly, labelInValue } = props;
+  if (treeCheckable && treeCheckStrictly) {
+    return true;
+  }
+  return labelInValue || false;
+}
+
 /**
  * Convert value to array format to make logic simplify
  */
-export function formatValue(origin) {
-  if (!origin) return [];
+export function formatValue(value, props) {
+  if (!value) return [];
 
-  const valueList = Array.isArray(origin) ? origin : [origin];
+  const valueList = Array.isArray(value) ? value : [value];
 
-  return valueList.map((val) => {
-    if (typeof val === 'object') {
+  // Parse label in value
+  if (isLabelInValue(props)) {
+    return valueList.map((val) => {
+      if (typeof val !== 'object' || !val) {
+        return {
+          value: '',
+          label: '',
+        };
+      }
+
       return val;
-    }
+    });
+  }
 
-    return {
-      value: val,
-    };
-  });
+  return valueList.map(val => ({
+    value: val,
+  }));
 }

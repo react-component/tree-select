@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { isLabelInValue } from './util';
 
 export function genArrProps(propType) {
   return PropTypes.oneOfType([
@@ -12,23 +13,15 @@ export function genArrProps(propType) {
  * But in process logic is already cover to array.
  * Check array is not necessary. Let's simplify this check logic.
  */
-export function valueProp(props, propName, componentName) {
+export function valueProp(...args) {
+  const [props] = args;
 
-  if (props.treeCheckable && props.treeCheckStrictly) {
-    genArrProps(PropTypes.shape({
+  if (isLabelInValue(props)) {
+    return genArrProps(PropTypes.shape({
       label: PropTypes.node,
       value: PropTypes.string,
-    }))(props, propName, componentName);
+    }))(...args);
   }
 
-  if (props.labelInValue) {
-    genArrProps(PropTypes.shape({
-      label: PropTypes.node,
-      value: PropTypes.string,
-    }))(props, propName, componentName);
-  }
-
-  genArrProps(PropTypes.string)(props, propName, componentName);
-
-  return null;
+  return genArrProps(PropTypes.string)(...args);
 }

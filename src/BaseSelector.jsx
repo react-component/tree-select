@@ -17,7 +17,8 @@ export const selectorPropTypes = {
   className: PropTypes.string,
   style: PropTypes.object,
   open: PropTypes.bool,
-  value: PropTypes.array,
+  // value: PropTypes.array,
+  valueList: PropTypes.array, // Name as valueList to diff the single value
   allowClear: PropTypes.bool,
   showArrow: PropTypes.bool,
   onClick: PropTypes.func,

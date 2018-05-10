@@ -9,18 +9,19 @@ class SingleSelector extends React.Component {
   };
 
   renderSelection = () => {
-    const { value, placeholder, prefixCls } = this.props;
+    const { valueList, placeholder, prefixCls } = this.props;
 
     let innerNode;
 
-    if (value.length) {
+    if (valueList.length) {
+      const { label } = valueList[0];
       innerNode = (
         <span
           key="value"
-          title={value[0].label}
+          title={label}
           className={`${prefixCls}-selection-selected-value`}
         >
-          {value[0].label}
+          {label}
         </span>
       );
     } else {
