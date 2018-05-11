@@ -21,6 +21,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
+import KeyCode from 'rc-util/lib/KeyCode';
 
 import SelectTrigger from './SelectTrigger';
 import { selectorContextTypes } from './BaseSelector';
@@ -55,6 +56,7 @@ class Select extends React.Component {
 
     treeData: PropTypes.any,
     treeNodeLabelProp: PropTypes.string,
+    treeIcon: PropTypes.bool,
 
     onDropdownVisibleChange: PropTypes.func,
   };
@@ -65,6 +67,7 @@ class Select extends React.Component {
     showSearch: true,
     // TODO: double confirm
     treeNodeLabelProp: 'title',
+    treeIcon: false,
   };
 
   static childContextTypes = {
@@ -151,6 +154,7 @@ class Select extends React.Component {
       rcTreeSelect: {
         onSelectorFocus: this.onSelectorFocus,
         onSelectorBlur: this.onSelectorBlur,
+        onSelectorKeyDown: this.onComponentKeyDown,
       },
     };
   }
@@ -161,6 +165,22 @@ class Select extends React.Component {
   };
   onSelectorBlur = () => {
     this.setState({ focused: false });
+
+    // TODO: Close when Popup is also not focused
+  };
+
+  // Handle key board event in both Selector and Popup
+  onComponentKeyDown = ({ which }) => {
+    const { open } = this.state;
+
+    if (!open) {
+      if (which === KeyCode.ENTER || which === KeyCode.DOWN) {
+        this.setState({ open: true });
+      }
+    } else {
+      // TODO: Handle `open` state
+    }
+
   };
 
   // ==================== Trigger =====================
@@ -270,14 +290,17 @@ class Select extends React.Component {
       dropdownPrefixCls: `${prefixCls}-dropdown`,
       renderSearchPlaceholder: this.renderSearchPlaceholder,
       ariaId: this.ariaId,
-      children: treeNodes,
     };
 
     // TODO: process the logic of mode diff
     const $popup = isMultiple ? (
-      <MultiplePopup {...passProps} />
+      <MultiplePopup {...passProps}>
+        {treeNodes}
+      </MultiplePopup>
     ) : (
-      <SinglePopup {...passProps} />
+      <SinglePopup {...passProps}>
+        {treeNodes}
+      </SinglePopup>
     );
 
     const $input = isMultiple ? (
@@ -290,6 +313,8 @@ class Select extends React.Component {
       <SelectTrigger
         {...passProps}
         popupElement={$popup}
+
+        onKeyDown={this.onKeyDown}
         onDropdownVisibleChange={this.onDropdownVisibleChange}
       >
         {$input}

@@ -33,6 +33,7 @@ export const selectorPropTypes = {
 export const selectorContextTypes = {
   onSelectorFocus: PropTypes.func.isRequired,
   onSelectorBlur: PropTypes.func.isRequired,
+  onSelectorKeyDown: PropTypes.func.isRequired,
 };
 
 export default function (modeName) {
@@ -123,6 +124,7 @@ export default function (modeName) {
         ariaId,
         renderSelection, selectorProps, renderPlaceholder,
       } = this.props;
+      const { rcTreeSelect: { onSelectorKeyDown } } = this.context;
 
       return (
         <span
@@ -147,6 +149,7 @@ export default function (modeName) {
 
           onFocus={this.onFocus}
           onBlur={this.onBlur}
+          onKeyDown={onSelectorKeyDown}
         >
           <span
             ref={this.selectionRef}
