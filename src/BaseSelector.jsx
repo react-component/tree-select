@@ -30,6 +30,11 @@ export const selectorPropTypes = {
   ariaId: PropTypes.string,
 };
 
+export const selectorContextTypes = {
+  onSelectorFocus: PropTypes.func.isRequired,
+  onSelectorBlur: PropTypes.func.isRequired,
+};
+
 export default function (modeName) {
   class BaseSelector extends React.Component {
     static propTypes = {
@@ -41,11 +46,41 @@ export default function (modeName) {
       renderPlaceholder: PropTypes.func,
     };
 
+    static contextTypes = {
+      rcTreeSelect: PropTypes.shape({
+        ...selectorContextTypes,
+      }),
+    };
+
     constructor() {
       super();
 
       this.selectionRef = createRef();
     }
+
+    onFocus = (...args) => {
+      const { onFocus } = this.props;
+      const { rcTreeSelect: { onSelectorFocus } } = this.context;
+
+      // TODO: Trigger it
+      onSelectorFocus();
+
+      if (onFocus) {
+        onFocus(...args);
+      }
+    };
+
+    onBlur = (...args) => {
+      const { onBlur } = this.props;
+      const { rcTreeSelect: { onSelectorBlur } } = this.context;
+
+      // TODO: Trigger it
+      onSelectorBlur();
+
+      if (onBlur) {
+        onBlur(...args);
+      }
+    };
 
     renderClear() {
       const { prefixCls, allowClear, value } = this.props;
@@ -83,7 +118,7 @@ export default function (modeName) {
       const {
         prefixCls, className, style,
         open, focused, disabled, allowClear,
-        onClick, onBlur, onFocus,
+        onClick,
         ariaId,
         renderSelection, selectorProps, renderPlaceholder,
       } = this.props;
@@ -101,8 +136,16 @@ export default function (modeName) {
             [`${prefixCls}-enabled`]: !disabled,
             [`${prefixCls}-allow-clear`]: allowClear,
           })}
-          onBlur={onBlur}
-          onFocus={onFocus}
+
+          role="combobox"
+          aria-autocomplete="list"
+          aria-haspopup="true"
+          aria-expanded={open}
+          aria-controls={`${ariaId}_list`}
+          tabIndex={0}
+
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
         >
           <span
             ref={this.selectionRef}
@@ -111,11 +154,6 @@ export default function (modeName) {
               `${prefixCls}-selection`,
               `${prefixCls}-selection--${modeName}`
             )}
-            role="combobox"
-            aria-autocomplete="list"
-            aria-haspopup="true"
-            aria-expanded={open}
-            aria-controls={`${ariaId}_list`}
 
             {...selectorProps}
           >

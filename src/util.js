@@ -1,3 +1,14 @@
+import React from 'react';
+import { traverseTreeNodes } from 'rc-tree/lib/util';
+import SelectNode from './SelectNode';
+
+// =================== MISC ====================
+export function toArray(data) {
+  if (!data) return [];
+
+  return Array.isArray(data) ? data : [data];
+}
+
 // =============== Legacy ===============
 export const UNSELECTABLE_STYLE = {
   userSelect: 'none',
@@ -20,7 +31,7 @@ export function createRef() {
   return func;
 }
 
-// =============== Current ===============
+// =============== Accessibility ===============
 const ARIA_BASIC = String(Math.random()).replace( /\D/g, '');
 let ariaId = 0;
 
@@ -37,13 +48,26 @@ export function isLabelInValue(props) {
   return labelInValue || false;
 }
 
+// =================== Tree ====================
+/**
+ * Cover `treeData` to `TreeNode` structure
+ */
+export function dataToTree(treeData) {
+  const list = toArray(treeData);
+
+  return list.map(({ key, label, children ,...nodeProps }) => (
+    <SelectNode key={key} title={label} label={label} {...nodeProps}>
+      {dataToTree(children)}
+    </SelectNode>
+  ));
+}
+
+// =================== Value ===================
 /**
  * Convert value to array format to make logic simplify
  */
 export function formatValue(value, props) {
-  if (!value) return [];
-
-  const valueList = Array.isArray(value) ? value : [value];
+  const valueList = toArray(value);
 
   // Parse label in value
   if (isLabelInValue(props)) {
@@ -62,4 +86,24 @@ export function formatValue(value, props) {
   return valueList.map(val => ({
     value: val,
   }));
+}
+
+/**
+ * Since value not provide label info, we need nest loop for the label
+ */
+export function mapValueWithLabel(valueList, treeNodes) {
+  const labeledValueList = valueList.slice();
+
+  traverseTreeNodes(treeNodes, ({ node }) => {
+    if (!node || !node.props) return;
+
+    const { title, value } = node.props;
+    const index = labeledValueList.findIndex(item => item.value === value);
+
+    if (index >= 0) {
+      labeledValueList[index].label = title;
+    }
+  });
+
+  return labeledValueList;
 }

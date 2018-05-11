@@ -55,29 +55,21 @@ class SelectTrigger extends React.Component {
 
   render() {
     const {
-      disabled, isMultiple, showSearch,
+      disabled, isMultiple,
       dropdownPopupAlign, dropdownClassName,
       dropdownStyle, onDropdownVisibleChange, getPopupContainer,
       dropdownPrefixCls, popupElement, open,
       children,
     } = this.props;
 
-    let hideAction;
-    if (disabled) {
-      hideAction = [];
-    } else if (isMultiple && !showSearch) {
-      hideAction = ['click'];
-    } else {
-      hideAction = ['blur'];
-    }
+    // TODO: [Legacy] Use new action when trigger fixed: https://github.com/react-component/trigger/pull/86
 
     // TODO: saveRef(this, 'trigger')
     // TODO: dropdownWidth
 
     return (
       <Trigger
-        showAction={disabled ? [] : ['click']}
-        hideAction={hideAction}
+        action={disabled ? [] : ['click']}
         popupPlacement="bottomLeft"
         builtinPlacements={BUILT_IN_PLACEMENTS}
         popupAlign={dropdownPopupAlign}

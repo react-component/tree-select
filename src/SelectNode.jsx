@@ -11,16 +11,15 @@ import { TreeNode } from 'rc-tree';
 class SelectNode extends React.Component {
   static propTypes = {
     ...TreeNode.propTypes,
-    label: PropTypes.string,
     value: PropTypes.string,
   };
 
   placeholder = null; // TODO: Remove this
 
   render() {
-    const { label, ...props } = this.props;
+    const { ...props } = this.props;
     delete props.value;
-    return <TreeNode title={label} {...props} />;
+    return <TreeNode {...props} />;
   }
 }
 

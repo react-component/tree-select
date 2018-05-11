@@ -1,5 +1,21 @@
 /**
- * ARIA: https://www.w3.org/blog/wai-components-gallery/widget/combobox-with-aria-autocompleteinline/
+ * ARIA: https://www.w3.org/TR/2017/NOTE-wai-aria-practices-1.1-20171214/examples/combobox/aria1.1pattern/listbox-combo.html
+ * Sample: https://www.w3.org/blog/wai-components-gallery/widget/combobox-with-aria-autocompleteinline/
+ *
+ * Tab logic:
+ * Popup is close
+ * 1. Focus input (mark component as focused)
+ * 2. Press enter to show the popup
+ * 3. If popup has input, focus it
+ *
+ * Popup is open
+ * 1. press tab to close the popup
+ * 2. Focus back to the selection input box
+ * 3. Let the native tab going on
+ *
+ * TreeSelect use 2 design type.
+ * In single mode, we should focus on the `span`
+ * In multiple mode, we should focus on the `input`
  */
 
 import React from 'react';
@@ -7,12 +23,17 @@ import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 
 import SelectTrigger from './SelectTrigger';
-import SinglePopup from './SinglePopup';
-import MultiplePopup from './MultiplePopup';
+import { selectorContextTypes } from './BaseSelector';
 import SingleSelector from './SingleSelector';
 import MultipleSelector from './MultipleSelector';
+import SinglePopup from './SinglePopup';
+import MultiplePopup from './MultiplePopup';
 
-import { createRef, generateAriaId, formatValue } from './util';
+import {
+  createRef, generateAriaId,
+  formatValue, mapValueWithLabel,
+  dataToTree,
+} from './util';
 import { valueProp } from './propTypes';
 
 class Select extends React.Component {
@@ -30,7 +51,9 @@ class Select extends React.Component {
     inputValue: PropTypes.string,
     searchPlaceholder: PropTypes.string,
     disabled: PropTypes.bool,
+    children: PropTypes.node,
 
+    treeData: PropTypes.any,
     treeNodeLabelProp: PropTypes.string,
 
     onDropdownVisibleChange: PropTypes.func,
@@ -44,7 +67,13 @@ class Select extends React.Component {
     treeNodeLabelProp: 'title',
   };
 
-  static getDerivedStateFromProps(nextProps) {
+  static childContextTypes = {
+    rcTreeSelect: PropTypes.shape({
+      ...selectorContextTypes,
+    }),
+  };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
     const newState = {};
     let changed = false;
 
@@ -52,13 +81,33 @@ class Select extends React.Component {
     function processState(propName, updater) {
       if (propName in nextProps) {
         changed = true;
-        updater(propName, nextProps[propName]);
+        updater(nextProps[propName]);
+        return true;
       }
+      return false;
     }
 
     // TODO: Process all the pass props
-    processState('value', (propName, propValue) => {
-      newState[propName] = formatValue(propValue, nextProps);
+
+    // Tree Nodes
+    processState('treeData', (propValue) => {
+      newState.treeNodes = dataToTree(propValue);
+    });
+
+    // If `treeData` not provide, use children TreeNodes
+    if (!('treeData' in nextProps)) {
+      processState('children', (propValue) => {
+        newState.treeNodes = propValue;
+      });
+    }
+
+    // Value
+    processState('value', (propValue) => {
+      const valueList = formatValue(propValue, nextProps);
+
+      // Map with label
+      const treeNodes = newState.treeNodes || prevState.treeNodes;
+      newState.valueList = mapValueWithLabel(valueList, treeNodes);
     });
 
     if (changed) {
@@ -72,12 +121,18 @@ class Select extends React.Component {
 
     const {
       value, defaultValue,
+      treeData, children,
       open, defaultOpen, inputValue,
     } = props;
+
+    const valueList = formatValue(value || defaultValue, props);
+    const treeNodes = treeData ? dataToTree(treeData) : (children || []);
+
     this.state = {
-      value: formatValue(value || defaultValue, props),
+      treeNodes,
+      valueList: mapValueWithLabel(valueList, treeNodes),
       inputValue: inputValue || '',
-      open: open || defaultOpen,
+      open: open || defaultOpen || false,
     };
 
     this.searchInputRef = createRef();
@@ -88,6 +143,16 @@ class Select extends React.Component {
     // ARIA need `aria-controls` props mapping
     // Since this need user input. Let's generate ourselves
     this.ariaId = generateAriaId();
+  }
+
+  getChildContext() {
+    // TODO: Handle this
+    return {
+      rcTreeSelect: {
+        onSelectorFocus: () => {},
+        onSelectorBlur: () => {},
+      },
+    };
   }
 
   onDropdownVisibleChange = (open) => {
@@ -183,17 +248,18 @@ class Select extends React.Component {
   }
 
   render() {
-    const { value, open } = this.state;
+    const { valueList, open, treeNodes } = this.state;
     const { prefixCls } = this.props;
     const isMultiple = this.isMultiple();
     const passProps = {
       ...this.props,
       isMultiple,
-      valueList: value,
+      valueList,
       open,
       dropdownPrefixCls: `${prefixCls}-dropdown`,
       renderSearchPlaceholder: this.renderSearchPlaceholder,
       ariaId: this.ariaId,
+      children: treeNodes,
     };
 
     // TODO: process the logic of mode diff
