@@ -31,6 +31,33 @@ export function createRef() {
   return func;
 }
 
+// =================== Delay ===================
+export class Defer {
+  id = null;
+  func = null;
+  priority = -1;
+
+  next(func, priority = 0) {
+    if (!this.func || this.priority <= priority) {
+      this.func = func;
+      this.priority = priority;
+
+      this._timeout();
+    }
+  }
+
+  _timeout() {
+    clearTimeout(this.id);
+    this.id = setTimeout(() => {
+      if (this.func) {
+        this.func();
+        this.func = null;
+        this.priority = -1;
+      }
+    }, 0);
+  }
+}
+
 // =============== Accessibility ===============
 const ARIA_BASIC = String(Math.random()).replace( /\D/g, '');
 let ariaId = 0;

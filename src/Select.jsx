@@ -149,11 +149,21 @@ class Select extends React.Component {
     // TODO: Handle this
     return {
       rcTreeSelect: {
-        onSelectorFocus: () => {},
-        onSelectorBlur: () => {},
+        onSelectorFocus: this.onSelectorFocus,
+        onSelectorBlur: this.onSelectorBlur,
       },
     };
   }
+
+  // ==================== Selector ====================
+  onSelectorFocus = () => {
+    this.setState({ focused: true });
+  };
+  onSelectorBlur = () => {
+    this.setState({ focused: false });
+  };
+
+  // ==================== Trigger =====================
 
   onDropdownVisibleChange = (open) => {
     this.setOpenState(open, true);
@@ -248,7 +258,7 @@ class Select extends React.Component {
   }
 
   render() {
-    const { valueList, open, treeNodes } = this.state;
+    const { valueList, open, focused, treeNodes } = this.state;
     const { prefixCls } = this.props;
     const isMultiple = this.isMultiple();
     const passProps = {
@@ -256,6 +266,7 @@ class Select extends React.Component {
       isMultiple,
       valueList,
       open,
+      focused,
       dropdownPrefixCls: `${prefixCls}-dropdown`,
       renderSearchPlaceholder: this.renderSearchPlaceholder,
       ariaId: this.ariaId,

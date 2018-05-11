@@ -59,11 +59,12 @@ export default function (modeName) {
     }
 
     onFocus = (...args) => {
-      const { onFocus } = this.props;
+      const { onFocus, focused } = this.props;
       const { rcTreeSelect: { onSelectorFocus } } = this.context;
 
-      // TODO: Trigger it
-      onSelectorFocus();
+      if (!focused) {
+        onSelectorFocus();
+      }
 
       if (onFocus) {
         onFocus(...args);
@@ -74,7 +75,7 @@ export default function (modeName) {
       const { onBlur } = this.props;
       const { rcTreeSelect: { onSelectorBlur } } = this.context;
 
-      // TODO: Trigger it
+      // TODO: Not trigger when is inner component get focused
       onSelectorBlur();
 
       if (onBlur) {
