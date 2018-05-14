@@ -77,13 +77,15 @@ export function isLabelInValue(props) {
 
 // =================== Tree ====================
 /**
- * Cover `treeData` to `TreeNode` structure
+ * Cover `treeData` to `TreeNode` structure.
+ * `label` will force replace the `title` props.
+ * ref: https://github.com/ant-design/ant-design/issues/9879
  */
 export function dataToTree(treeData) {
   const list = toArray(treeData);
 
   return list.map(({ key, label, children ,...nodeProps }) => (
-    <SelectNode key={key} title={label} label={label} {...nodeProps}>
+    <SelectNode key={key} {...nodeProps} title={label} label={label}>
       {dataToTree(children)}
     </SelectNode>
   ));

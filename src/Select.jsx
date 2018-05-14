@@ -25,15 +25,19 @@ import KeyCode from 'rc-util/lib/KeyCode';
 
 import SelectTrigger from './SelectTrigger';
 import { selectorContextTypes } from './BaseSelector';
+import { popupContextTypes } from './BasePopup';
 import SingleSelector from './SingleSelector';
 import MultipleSelector from './MultipleSelector';
 import SinglePopup from './SinglePopup';
 import MultiplePopup from './MultiplePopup';
 
+import { SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './strategies';
+
 import {
   createRef, generateAriaId,
   formatValue, mapValueWithLabel,
   dataToTree,
+  isLabelInValue,
 } from './util';
 import { valueProp } from './propTypes';
 
@@ -54,10 +58,14 @@ class Select extends React.Component {
     disabled: PropTypes.bool,
     children: PropTypes.node,
 
+    dropdownMatchSelectWidth: PropTypes.bool,
     treeData: PropTypes.any,
     treeNodeLabelProp: PropTypes.string,
     treeIcon: PropTypes.bool,
+    treeDefaultExpandAll: PropTypes.bool,
 
+    onSelect: PropTypes.func,
+    onChange: PropTypes.func,
     onDropdownVisibleChange: PropTypes.func,
   };
 
@@ -66,6 +74,7 @@ class Select extends React.Component {
     showArrow: true,
     showSearch: true,
     // TODO: double confirm
+    dropdownMatchSelectWidth: false,
     treeNodeLabelProp: 'title',
     treeIcon: false,
   };
@@ -73,6 +82,7 @@ class Select extends React.Component {
   static childContextTypes = {
     rcTreeSelect: PropTypes.shape({
       ...selectorContextTypes,
+      ...popupContextTypes,
     }),
   };
 
@@ -155,6 +165,9 @@ class Select extends React.Component {
         onSelectorFocus: this.onSelectorFocus,
         onSelectorBlur: this.onSelectorBlur,
         onSelectorKeyDown: this.onComponentKeyDown,
+
+        onTreeNodeSelect: this.onTreeNodeSelect,
+        onPopupKeyDown: this.onComponentKeyDown,
       },
     };
   }
@@ -167,20 +180,60 @@ class Select extends React.Component {
     this.setState({ focused: false });
 
     // TODO: Close when Popup is also not focused
+    // this.setState({ open: false });
   };
 
   // Handle key board event in both Selector and Popup
-  onComponentKeyDown = ({ which }) => {
+  onComponentKeyDown = (event) => {
     const { open } = this.state;
+    const { which } = event;
 
     if (!open) {
-      if (which === KeyCode.ENTER || which === KeyCode.DOWN) {
+      if ([KeyCode.ENTER, KeyCode.DOWN].indexOf(which) !== -1) {
         this.setState({ open: true });
       }
-    } else {
+    } else if ([KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT].indexOf(which) !== -1) {
       // TODO: Handle `open` state
+      event.preventDefault();
+    }
+  };
+
+  // ===================== Popup ======================
+  onTreeNodeSelect = (_, nodeEventInfo) => {
+    const { valueList } = this.state;
+    const { node } = nodeEventInfo;
+    const { title, value } = node.props;
+    const { onSelect, treeCheckable } = this.props;
+    const checkableSelect = treeCheckable && nodeEventInfo.event === 'select';
+
+    // Trigger `onSelect` event
+    let wrappedValue;
+
+    if (this.isLabelInValue()) {
+      wrappedValue = {
+        value,
+        label: title,
+      };
+    } else {
+      wrappedValue = value;
     }
 
+    if (nodeEventInfo.selected === false) {
+      this.onDeselect(nodeEventInfo);
+      // [Legacy] If is not treeCheckable, not trigger select. Why?
+      // This is strange since it not follow the `Tree` component logic
+      if (!checkableSelect) return;
+    }
+
+    if (onSelect) {
+      onSelect(wrappedValue, node, nodeEventInfo);
+    }
+
+    // Calculate value - since remove logic is in `onDeselect`, just think of add value
+    const newValueList = [...valueList, { label: title, value }];
+
+    // TODO: Consider treeCheckable
+    this.triggerChange(newValueList);
   };
 
   // ==================== Trigger =====================
@@ -220,6 +273,37 @@ class Select extends React.Component {
     return !!(multiple || treeCheckable);
   };
 
+  isLabelInValue = () => {
+    return isLabelInValue(this.props);
+  };
+
+  /**
+   * 1. Update state valueList.
+   * 2. Fire `onChange` event to user.
+   */
+  triggerChange = (valueList) => {
+    const { onChange } = this.props;
+    let targetValue = valueList;
+    const labelList = valueList.map(({ label }) => label);
+
+    // Show value only
+    if (!this.isLabelInValue()) {
+      targetValue = targetValue.map(({ value }) => value);
+    }
+
+    if (!this.isMultiple()) {
+      targetValue = targetValue[0];
+    }
+
+    // Update state
+    this.setState({
+      valueList,
+    });
+
+    onChange(targetValue, labelList);
+  };
+
+  // ===================== Render =====================
   /**
    * [Legacy] Select redesign the search input position but TreeSelect not.
    * Since new version tag is released. Let's keep the current design.
@@ -292,6 +376,8 @@ class Select extends React.Component {
       ariaId: this.ariaId,
     };
 
+    console.log('>>>', valueList);
+
     // TODO: process the logic of mode diff
     const $popup = isMultiple ? (
       <MultiplePopup {...passProps}>
@@ -322,6 +408,10 @@ class Select extends React.Component {
     );
   }
 }
+
+Select.SHOW_ALL = SHOW_ALL;
+Select.SHOW_PARENT = SHOW_PARENT;
+Select.SHOW_CHILD = SHOW_CHILD;
 
 polyfill(Select);
 

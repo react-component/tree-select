@@ -17,9 +17,7 @@ class SelectNode extends React.Component {
   placeholder = null; // TODO: Remove this
 
   render() {
-    const { ...props } = this.props;
-    delete props.value;
-    return <TreeNode {...props} />;
+    return <TreeNode {...this.props} />;
   }
 }
 

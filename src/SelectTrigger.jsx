@@ -37,6 +37,8 @@ class SelectTrigger extends React.Component {
     getPopupContainer: PropTypes.func,
     children: PropTypes.node,
 
+    dropdownMatchSelectWidth: PropTypes.bool,
+
     // Pass by Select
     isMultiple: PropTypes.bool,
     dropdownPrefixCls: PropTypes.string,
@@ -56,7 +58,7 @@ class SelectTrigger extends React.Component {
   render() {
     const {
       disabled, isMultiple,
-      dropdownPopupAlign, dropdownClassName,
+      dropdownPopupAlign, dropdownMatchSelectWidth, dropdownClassName,
       dropdownStyle, onDropdownVisibleChange, getPopupContainer,
       dropdownPrefixCls, popupElement, open,
       children,
@@ -79,6 +81,7 @@ class SelectTrigger extends React.Component {
         popup={popupElement}
         popupVisible={open}
         getPopupContainer={getPopupContainer}
+        stretch={dropdownMatchSelectWidth ? 'width' : 'minWidth'}
         popupClassName={classNames(
           dropdownClassName,
           {
