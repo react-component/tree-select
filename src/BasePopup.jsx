@@ -32,7 +32,7 @@ export default function () {
       if (valueList !== prevState.valueList) {
         return {
           valueList,
-          selectedKeys: valueList.map(({ value }) => value),
+          selectedKeys: valueList.map(({ key }) => key),
         };
       }
       return null;
@@ -51,7 +51,7 @@ export default function () {
         onTreeNodeSelect,
       } } = this.context;
 
-      console.log('Keys:', selectedKeys);
+      console.log('Keys:', selectedKeys, multiple);
 
       return (
         <div>

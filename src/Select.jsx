@@ -202,7 +202,7 @@ class Select extends React.Component {
   onTreeNodeSelect = (_, nodeEventInfo) => {
     const { valueList } = this.state;
     const { node } = nodeEventInfo;
-    const { title, value } = node.props;
+    const { title, value, eventKey } = node.props;
     const { onSelect, treeCheckable } = this.props;
     const checkableSelect = treeCheckable && nodeEventInfo.event === 'select';
 
@@ -230,7 +230,12 @@ class Select extends React.Component {
     }
 
     // Calculate value - since remove logic is in `onDeselect`, just think of add value
-    const newValueList = [...valueList, { label: title, value }];
+    let newValueList;
+    if (this.isMultiple()) {
+      newValueList = [...valueList, { label: title, value, key: eventKey }];
+    } else {
+      newValueList = [{ label: title, value, key: eventKey }];
+    }
 
     // TODO: Consider treeCheckable
     this.triggerChange(newValueList);
@@ -287,7 +292,9 @@ class Select extends React.Component {
     const labelList = valueList.map(({ label }) => label);
 
     // Show value only
-    if (!this.isLabelInValue()) {
+    if (this.isLabelInValue()) {
+      targetValue = targetValue.map(({ label, value }) => ({ label, value }));
+    } else {
       targetValue = targetValue.map(({ value }) => value);
     }
 
@@ -375,8 +382,6 @@ class Select extends React.Component {
       renderSearchPlaceholder: this.renderSearchPlaceholder,
       ariaId: this.ariaId,
     };
-
-    console.log('>>>', valueList);
 
     // TODO: process the logic of mode diff
     const $popup = isMultiple ? (

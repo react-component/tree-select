@@ -93,7 +93,7 @@ export function dataToTree(treeData) {
 
 // =================== Value ===================
 /**
- * Convert value to array format to make logic simplify
+ * Convert value to array format to make logic simplify.
  */
 export function formatValue(value, props) {
   const valueList = toArray(value);
@@ -123,7 +123,7 @@ export function formatValue(value, props) {
 export function mapValueWithLabel(valueList, treeNodes) {
   const labeledValueList = valueList.slice();
 
-  traverseTreeNodes(treeNodes, ({ node }) => {
+  traverseTreeNodes(treeNodes, ({ node, key }) => {
     if (!node || !node.props) return;
 
     const { title, value } = node.props;
@@ -131,6 +131,7 @@ export function mapValueWithLabel(valueList, treeNodes) {
 
     if (index >= 0) {
       labeledValueList[index].label = title;
+      labeledValueList[index].key = key;
     }
   });
 
