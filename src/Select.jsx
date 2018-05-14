@@ -45,7 +45,6 @@ class Select extends React.Component {
   static propTypes = {
     prefixCls: PropTypes.string,
     multiple: PropTypes.bool,
-    treeCheckable: PropTypes.bool,
     showArrow: PropTypes.bool,
     open: PropTypes.bool,
     defaultOpen: PropTypes.bool,
@@ -61,6 +60,8 @@ class Select extends React.Component {
     dropdownMatchSelectWidth: PropTypes.bool,
     treeData: PropTypes.any,
     treeNodeLabelProp: PropTypes.string,
+    treeCheckable: PropTypes.bool,
+    treeCheckStrictly: PropTypes.bool,
     treeIcon: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
 
@@ -121,6 +122,11 @@ class Select extends React.Component {
       // Map with label
       const treeNodes = newState.treeNodes || prevState.treeNodes;
       newState.valueList = mapValueWithLabel(valueList, treeNodes);
+    });
+
+    // Input value
+    processState('inputValue', (propValue) => {
+      newState.inputValue = propValue;
     });
 
     if (changed) {
@@ -200,11 +206,12 @@ class Select extends React.Component {
 
   // ===================== Popup ======================
   onTreeNodeSelect = (_, nodeEventInfo) => {
-    const { valueList } = this.state;
+    const { valueList, inputValue } = this.state;
     const { node } = nodeEventInfo;
     const { title, value, eventKey } = node.props;
-    const { onSelect, treeCheckable } = this.props;
+    const { onSelect, treeCheckable, treeCheckStrictly } = this.props;
     const checkableSelect = treeCheckable && nodeEventInfo.event === 'select';
+    const isCheckEvent = nodeEventInfo.event === 'check';
 
     // Trigger `onSelect` event
     let wrappedValue;
@@ -238,7 +245,35 @@ class Select extends React.Component {
     }
 
     // TODO: Consider treeCheckable
-    this.triggerChange(newValueList);
+
+    // [Legacy] Provide extra info
+    const extraInfo = {
+      triggerValue: value,
+      triggerNode: node,
+    };
+    if (isCheckEvent) {
+      extraInfo.checked = nodeEventInfo.checked;
+
+      // [Legacy] TODO: add optimize prop to skip node process
+      // [Legacy] TODO: Here old code use cache, double check necessary
+      // [Legacy] Check event provide `allCheckedNodes`.
+      // When `treeCheckStrictly` or internal `inputValue` is set, TreeNode will be unrelated:
+      // - Related: Show the top checked nodes and has children prop.
+      // - Unrelated: Show all the checked nodes.
+      if (treeCheckStrictly || inputValue) {
+        extraInfo.allCheckedNodes = nodeEventInfo.checkedNodes;
+      } else {
+        extraInfo.allCheckedNodes = [];
+      }
+
+      // if inputValue existing, tree is checkStrictly
+      // extraInfo.allCheckedNodes = props.treeCheckStrictly || this.state.inputValue ?
+      //   info.checkedNodes : flatToHierarchy(info.checkedNodesPositions);
+    } else {
+      extraInfo.selected = nodeEventInfo.selected;
+    }
+
+    this.triggerChange(newValueList, extraInfo);
   };
 
   // ==================== Trigger =====================
@@ -283,31 +318,43 @@ class Select extends React.Component {
   };
 
   /**
+   * Convert internal state `valueList` to user needed value list.
+   * This will return an array list. You need check if is not multiple when return.
+   */
+  formatReturnValue = (valueList) => {
+    if (this.isLabelInValue()) {
+      return valueList.map(({ label, value }) => ({ label, value }));
+    }
+    return valueList.map(({ value }) => value);
+  };
+
+  /**
    * 1. Update state valueList.
    * 2. Fire `onChange` event to user.
    */
-  triggerChange = (valueList) => {
+  triggerChange = (valueList, extraInfo = {}) => {
     const { onChange } = this.props;
-    let targetValue = valueList;
     const labelList = valueList.map(({ label }) => label);
-
-    // Show value only
-    if (this.isLabelInValue()) {
-      targetValue = targetValue.map(({ label, value }) => ({ label, value }));
-    } else {
-      targetValue = targetValue.map(({ value }) => value);
-    }
-
-    if (!this.isMultiple()) {
-      targetValue = targetValue[0];
-    }
+    let targetValue = this.formatReturnValue(valueList);
 
     // Update state
     this.setState({
       valueList,
     });
 
-    onChange(targetValue, labelList);
+    // Format value
+    if (!this.isMultiple()) {
+      targetValue = targetValue[0];
+    }
+
+    // Trigger
+    const extra = {
+      // [Legacy] Always return as array contains label & value
+      preValue: this.state.valueList.map(({ label, value }) => ({ label, value })),
+      ...extraInfo,
+    };
+
+    onChange(targetValue, labelList, extra);
   };
 
   // ===================== Render =====================
@@ -417,6 +464,9 @@ class Select extends React.Component {
 Select.SHOW_ALL = SHOW_ALL;
 Select.SHOW_PARENT = SHOW_PARENT;
 Select.SHOW_CHILD = SHOW_CHILD;
+
+// Let warning show correct component name
+Select.displayName = 'TreeSelect';
 
 polyfill(Select);
 

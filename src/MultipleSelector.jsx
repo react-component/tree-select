@@ -93,7 +93,7 @@ class MultipleSelector extends React.Component {
   }
 
   renderSelection = () => {
-    const { value: valueList } = this.props;
+    const { valueList } = this.props;
     const {
       choiceTransitionName, prefixCls, maxTagTextLength,
       removeSelected,

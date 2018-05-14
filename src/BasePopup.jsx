@@ -17,6 +17,7 @@ export default function () {
       valueList: PropTypes.array,
       treeIcon: PropTypes.bool,
       treeCheckable: PropTypes.bool,
+      treeCheckStrictly: PropTypes.bool,
       treeDefaultExpandAll: PropTypes.bool,
       multiple: PropTypes.bool,
     };
@@ -44,14 +45,12 @@ export default function () {
       const { selectedKeys } = this.state;
       const {
         prefixCls, children,
-        treeIcon, treeCheckable, multiple,
+        treeIcon, treeCheckable, treeCheckStrictly, multiple,
         treeDefaultExpandAll,
       } = this.props;
       const { rcTreeSelect: {
         onTreeNodeSelect,
       } } = this.context;
-
-      console.log('Keys:', selectedKeys, multiple);
 
       return (
         <div>
@@ -59,6 +58,7 @@ export default function () {
             prefixCls={`${prefixCls}-tree`}
             showIcon={treeIcon}
             checkable={treeCheckable}
+            checkStrictly={treeCheckStrictly}
             multiple={multiple}
             selectedKeys={selectedKeys}
 

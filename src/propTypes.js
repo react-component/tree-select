@@ -14,13 +14,19 @@ export function genArrProps(propType) {
  * Check array is not necessary. Let's simplify this check logic.
  */
 export function valueProp(...args) {
-  const [props] = args;
+  const [props, propName, Component] = args;
 
   if (isLabelInValue(props)) {
-    return genArrProps(PropTypes.shape({
+    const err = genArrProps(PropTypes.shape({
       label: PropTypes.node,
       value: PropTypes.string,
     }))(...args);
+    if (err) {
+      return new Error(
+        `Invalid prop \`${propName}\` supplied to \`${Component}\`. ` +
+        `You should use { label: string, value: string } or [{ label: string, value: string }] instead.`
+      );
+    }
   }
 
   return genArrProps(PropTypes.string)(...args);
