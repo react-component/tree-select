@@ -942,7 +942,7 @@ class Select extends Component {
         halfCheckedValues={this.halfCheckedValues}
         multiple={multiple}
         disabled={disabled}
-        visible={state.open}
+        visible={state.open && !disabled}
         inputValue={state.inputValue}
         inputElement={this.getInputElement()}
         value={state.value}
