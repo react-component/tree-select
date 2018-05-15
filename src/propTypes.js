@@ -30,5 +30,12 @@ export function valueProp(...args) {
     return null;
   }
 
-  return genArrProps(PropTypes.string)(...args);
+  const err = genArrProps(PropTypes.string)(...args);
+  if (err) {
+    return new Error(
+      `Invalid prop \`${propName}\` supplied to \`${Component}\`. ` +
+      `You should use string or [string] instead.`
+    );
+  }
+  return null;
 }
