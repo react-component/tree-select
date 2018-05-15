@@ -33,7 +33,7 @@ export default function () {
       if (valueList !== prevState.valueList) {
         return {
           valueList,
-          selectedKeys: valueList.map(({ key }) => key),
+          keyList: valueList.map(({ key }) => key),
         };
       }
       return null;
@@ -42,7 +42,7 @@ export default function () {
     state = {};
 
     render() {
-      const { selectedKeys } = this.state;
+      const { keyList } = this.state;
       const {
         prefixCls, children,
         treeIcon, treeCheckable, treeCheckStrictly, multiple,
@@ -52,19 +52,29 @@ export default function () {
         onTreeNodeSelect,
       } } = this.context;
 
+      const treeProps = {};
+
+      if (treeCheckable) {
+        treeProps.checkedKeys = keyList;
+        treeProps.onCheck = onTreeNodeSelect;
+      } else if (multiple) {
+        treeProps.selectedKeys = keyList;
+        treeProps.onSelect = onTreeNodeSelect;
+      }
+
       return (
         <div>
           <Tree
             prefixCls={`${prefixCls}-tree`}
             showIcon={treeIcon}
+            selectable={!treeCheckable}
             checkable={treeCheckable}
             checkStrictly={treeCheckStrictly}
             multiple={multiple}
-            selectedKeys={selectedKeys}
 
             defaultExpandAll={treeDefaultExpandAll}
 
-            onSelect={onTreeNodeSelect}
+            {...treeProps}
           >
             {children}
           </Tree>

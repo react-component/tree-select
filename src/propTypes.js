@@ -27,6 +27,7 @@ export function valueProp(...args) {
         `You should use { label: string, value: string } or [{ label: string, value: string }] instead.`
       );
     }
+    return null;
   }
 
   return genArrProps(PropTypes.string)(...args);

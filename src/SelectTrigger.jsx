@@ -4,6 +4,8 @@ import { polyfill } from 'react-lifecycles-compat';
 import Trigger from 'rc-trigger';
 import classNames from 'classnames';
 
+import { createRef } from './util';
+
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
     points: ['tl', 'bl'],
@@ -47,12 +49,26 @@ class SelectTrigger extends React.Component {
     open: PropTypes.bool,
   };
 
+  constructor() {
+    super();
+
+    this.triggerRef = createRef();
+  }
+
   getDropdownTransitionName = () => {
     const { transitionName, animation, dropdownPrefixCls } = this.props;
     if (!transitionName && animation) {
       return `${dropdownPrefixCls}-${animation}`;
     }
     return transitionName;
+  };
+
+  forcePopupAlign = () => {
+    const $trigger = this.triggerRef.current;
+
+    if ($trigger) {
+      $trigger.forcePopupAlign();
+    }
   };
 
   render() {
@@ -71,6 +87,7 @@ class SelectTrigger extends React.Component {
 
     return (
       <Trigger
+        ref={this.triggerRef}
         action={disabled ? [] : ['click']}
         popupPlacement="bottomLeft"
         builtinPlacements={BUILT_IN_PLACEMENTS}

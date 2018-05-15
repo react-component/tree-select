@@ -154,6 +154,7 @@ class Select extends React.Component {
       open: open || defaultOpen || false,
     };
 
+    this.selectTriggerRef = createRef();
     this.searchInputRef = createRef();
     // IE need addition check for the content width
     // ref: https://github.com/react-component/tree-select/issues/65
@@ -176,6 +177,12 @@ class Select extends React.Component {
         onPopupKeyDown: this.onComponentKeyDown,
       },
     };
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (prevState.valueList !== this.state.valueList) {
+      this.forcePopupAlign();
+    }
   }
 
   // ==================== Selector ====================
@@ -205,6 +212,11 @@ class Select extends React.Component {
   };
 
   // ===================== Popup ======================
+  /**
+   * This function fire on:
+   * - onCheck: When treeCheckable is true
+   * - onSelect: Other case
+   */
   onTreeNodeSelect = (_, nodeEventInfo) => {
     const { valueList, inputValue } = this.state;
     const { node } = nodeEventInfo;
@@ -315,6 +327,16 @@ class Select extends React.Component {
 
   isLabelInValue = () => {
     return isLabelInValue(this.props);
+  };
+
+  // TODO: onInputChange
+  // TODO: onChoiceAnimationLeave
+  forcePopupAlign = () => {
+    const $trigger = this.selectTriggerRef.current;
+
+    if ($trigger) {
+      $trigger.forcePopupAlign();
+    }
   };
 
   /**
@@ -450,6 +472,8 @@ class Select extends React.Component {
     return (
       <SelectTrigger
         {...passProps}
+
+        ref={this.selectTriggerRef}
         popupElement={$popup}
 
         onKeyDown={this.onKeyDown}
