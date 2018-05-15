@@ -69,6 +69,8 @@ export function flatToHierarchy(positionList) {
       parentEntity.children.push(entity);
     }
 
+    // Some time position list provide key, we don't need it
+    delete entity.key;
     delete entity.fields;
   });
 
@@ -162,26 +164,37 @@ export function formatValue(value, props) {
 }
 
 /**
+ * Convert value list to node list.
+ * This will filter value if not exist in tree.
+ */
+export function mapValueToEntity(valueList, treeNodes) {
+  const nodeList = [];
+
+  traverseTreeNodes(treeNodes, ({ node, key, pos }) => {
+    if (!node || !node.props) return;
+
+    const { value } = node.props;
+    const index = valueList.findIndex(item => item.value === value);
+
+    if (index >= 0) {
+      nodeList[index] = { node, key, pos };
+    }
+  });
+
+  return nodeList.filter(node => node);
+}
+
+/**
  * Since value not provide label info, we need nest loop for the label.
  * This will filter value if not exist in tree.
  */
 export function mapValueWithLabel(valueList, treeNodes) {
-  const labeledValueList = valueList.slice();
-  const matchedList = [];
-
-  traverseTreeNodes(treeNodes, ({ node, key }) => {
-    if (!node || !node.props) return;
-
+  return mapValueToEntity(valueList, treeNodes).map(({ node, key }) => {
     const { title, value } = node.props;
-    const index = labeledValueList.findIndex(item => item.value === value);
-
-    if (index >= 0) {
-      labeledValueList[index].label = title;
-      labeledValueList[index].key = key;
-      matchedList[index] = true;
-    }
+    return {
+      label: title,
+      value,
+      key,
+    };
   });
-
-  // Filter the value which not exist in Tree
-  return labeledValueList.filter((_, index) => matchedList[index]);
 }

@@ -1,4 +1,4 @@
 // import React from 'react';
-import generatePopup from './BasePopup';
+import generatePopup from '../Base/BasePopup';
 
 export default generatePopup();

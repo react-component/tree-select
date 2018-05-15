@@ -24,18 +24,19 @@ import { polyfill } from 'react-lifecycles-compat';
 import KeyCode from 'rc-util/lib/KeyCode';
 
 import SelectTrigger from './SelectTrigger';
-import { selectorContextTypes } from './BaseSelector';
-import { popupContextTypes } from './BasePopup';
-import SingleSelector from './SingleSelector';
-import MultipleSelector from './MultipleSelector';
-import SinglePopup from './SinglePopup';
-import MultiplePopup from './MultiplePopup';
+import { selectorContextTypes } from './Base/BaseSelector';
+import { popupContextTypes } from './Base/BasePopup';
+import SingleSelector from './Selector/SingleSelector';
+import MultipleSelector, { multipleSelectorContextTypes } from './Selector/MultipleSelector';
+import SinglePopup from './Popup/SinglePopup';
+import MultiplePopup from './Popup/MultiplePopup';
 
 import { SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './strategies';
 
 import {
   createRef, generateAriaId,
-  formatValue, mapValueWithLabel,
+  formatValue,
+  mapValueToEntity, mapValueWithLabel,
   dataToTree, flatToHierarchy,
   isLabelInValue,
 } from './util';
@@ -56,6 +57,7 @@ class Select extends React.Component {
     searchPlaceholder: PropTypes.string,
     disabled: PropTypes.bool,
     children: PropTypes.node,
+    maxTagTextLength: PropTypes.number,
 
     dropdownMatchSelectWidth: PropTypes.bool,
     treeData: PropTypes.any,
@@ -84,6 +86,7 @@ class Select extends React.Component {
   static childContextTypes = {
     rcTreeSelect: PropTypes.shape({
       ...selectorContextTypes,
+      ...multipleSelectorContextTypes,
       ...popupContextTypes,
     }),
   };
@@ -173,6 +176,7 @@ class Select extends React.Component {
         onSelectorFocus: this.onSelectorFocus,
         onSelectorBlur: this.onSelectorBlur,
         onSelectorKeyDown: this.onComponentKeyDown,
+        onMultipleSelectorRemove: this.onMultipleSelectorRemove,
 
         onTreeNodeSelect: this.onTreeNodeSelect,
         onTreeNodeCheck: this.onTreeNodeCheck,
@@ -186,6 +190,7 @@ class Select extends React.Component {
       this.forcePopupAlign();
     }
   }
+
 
   // ==================== Selector ====================
   onSelectorFocus = () => {
@@ -211,6 +216,43 @@ class Select extends React.Component {
       // TODO: Handle `open` state
       event.preventDefault();
     }
+  };
+
+  onMultipleSelectorRemove = (event, removeValue) => {
+    event.stopPropagation();
+
+    const { valueList, treeNodes, inputValue } = this.state;
+    const { treeCheckable, treeCheckStrictly } = this.props;
+
+    const entityList = mapValueToEntity(valueList, treeNodes);
+    const newValueList = valueList.filter(({ value }) => value !== removeValue);
+
+    let triggerNode = null;
+    const filteredEntityList = entityList.filter((entity) => {
+      const { node } = entity;
+      const { value } = node.props;
+      if (value === removeValue) {
+        triggerNode = node;
+        return false;
+      }
+      return true;
+    });
+
+    const extraInfo = {
+      triggerValue: removeValue,
+      triggerNode,
+    };
+
+    // [Legacy] Little hack on this to make same action as `onCheck` event.
+    if (treeCheckable) {
+      if (treeCheckStrictly || inputValue) {
+        extraInfo.allCheckedNodes = filteredEntityList.map(({ node }) => node);
+      } else {
+        extraInfo.allCheckedNodes = flatToHierarchy(filteredEntityList);
+      }
+    }
+
+    this.triggerChange(newValueList, extraInfo);
   };
 
   // ===================== Popup ======================
@@ -257,7 +299,6 @@ class Select extends React.Component {
     };
 
     this.triggerChange(newValueList, extraInfo);
-
   };
 
   onTreeNodeSelect = (_, nodeEventInfo) => {

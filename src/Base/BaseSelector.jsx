@@ -10,7 +10,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
-import { createRef } from './util';
+import { createRef } from '../util';
 
 export const selectorPropTypes = {
   prefixCls: PropTypes.string,

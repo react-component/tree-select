@@ -2,10 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Animate from 'rc-animate';
 import KeyCode from 'rc-util/lib/KeyCode';
-import generateSelector, { selectorPropTypes } from './BaseSelector';
-import { UNSELECTABLE_STYLE, UNSELECTABLE_ATTRIBUTE, preventDefaultEvent } from './util';
+import generateSelector, { selectorPropTypes } from '../../Base/BaseSelector';
+
+import Selection from './Selection';
 
 const Selector = generateSelector('multiple');
+
+export const multipleSelectorContextTypes = {
+  onMultipleSelectorRemove: PropTypes.func.isRequired,
+};
 
 class MultipleSelector extends React.Component {
   static propTypes = {
@@ -16,6 +21,12 @@ class MultipleSelector extends React.Component {
     onInputChange: PropTypes.func,
     onInputKeyDown: PropTypes.func,
     onPlaceholderClick: PropTypes.func,
+  };
+
+  static contextTypes = {
+    rcTreeSelect: PropTypes.shape({
+      ...multipleSelectorContextTypes,
+    }),
   };
 
   onKeyDown = (event) => {
@@ -93,41 +104,20 @@ class MultipleSelector extends React.Component {
   }
 
   renderSelection = () => {
-    const { valueList } = this.props;
     const {
-      choiceTransitionName, prefixCls, maxTagTextLength,
-      removeSelected,
+      valueList, choiceTransitionName, prefixCls,
     } = this.props;
+    const { rcTreeSelect: { onMultipleSelectorRemove } } = this.context;
 
-    const selectedValueNodes = valueList.map(({ label, value }) => {
-      let content = label;
-      if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
-        content = `${content.slice(0, maxTagTextLength)}...`;
-      }
-
-      // TODO: Is this OK for role 'menuitem'?
-      return (
-        <li
-          style={UNSELECTABLE_STYLE}
-          {...UNSELECTABLE_ATTRIBUTE}
-          role="menuitem"
-          onMouseDown={preventDefaultEvent}
-          className={`${prefixCls}-selection__choice`}
-          key={value}
-          title={label}
-        >
-          <span
-            className={`${prefixCls}-selection__choice__remove`}
-            onClick={() => {
-              removeSelected(value)
-            }}
-          />
-          <span className={`${prefixCls}-selection__choice__content`}>
-            {content}
-          </span>
-        </li>
-      );
-    });
+    const selectedValueNodes = valueList.map(({ label, value }) => (
+      <Selection
+        {...this.props}
+        key={value}
+        label={label}
+        value={value}
+        onRemove={onMultipleSelectorRemove}
+      />
+    ));
 
     selectedValueNodes.push(<li
       className={`${prefixCls}-search ${prefixCls}-search--inline`}

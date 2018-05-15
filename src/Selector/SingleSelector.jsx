@@ -1,5 +1,5 @@
 import React from 'react';
-import generateSelector, { selectorPropTypes } from './BaseSelector';
+import generateSelector, { selectorPropTypes } from '../Base/BaseSelector';
 
 const Selector = generateSelector('multiple');
 
