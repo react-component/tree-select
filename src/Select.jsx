@@ -297,8 +297,9 @@ class Select extends React.Component {
     this.onValueTrigger(isAdd, nodeEventInfo, { selected: isAdd });
   };
 
-  onTreeNodeCheck = (_, nodeEventInfo) => {
-    console.log('>>>', nodeEventInfo);
+  onTreeNodeCheck = (checkedObj, nodeEventInfo) => {
+    console.log('checkedObj >>>', checkedObj);
+    console.log('nodeEventInfo >>>', nodeEventInfo);
     const { inputValue } = this.state;
     const { treeCheckStrictly } = this.props;
     const isAdd = nodeEventInfo.checked;

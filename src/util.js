@@ -118,10 +118,12 @@ export function formatValue(value, props) {
 }
 
 /**
- * Since value not provide label info, we need nest loop for the label
+ * Since value not provide label info, we need nest loop for the label.
+ * This will filter value if not exist in tree.
  */
 export function mapValueWithLabel(valueList, treeNodes) {
   const labeledValueList = valueList.slice();
+  const matchedList = [];
 
   traverseTreeNodes(treeNodes, ({ node, key }) => {
     if (!node || !node.props) return;
@@ -132,8 +134,10 @@ export function mapValueWithLabel(valueList, treeNodes) {
     if (index >= 0) {
       labeledValueList[index].label = title;
       labeledValueList[index].key = key;
+      matchedList[index] = true;
     }
   });
 
-  return labeledValueList;
+  // Filter the value which not exist in Tree
+  return labeledValueList.filter((_, index) => matchedList[index]);
 }
