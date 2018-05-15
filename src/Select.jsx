@@ -66,6 +66,7 @@ class Select extends React.Component {
     treeDefaultExpandAll: PropTypes.bool,
 
     onSelect: PropTypes.func,
+    onDeselect: PropTypes.func,
     onChange: PropTypes.func,
     onDropdownVisibleChange: PropTypes.func,
   };
@@ -174,6 +175,7 @@ class Select extends React.Component {
         onSelectorKeyDown: this.onComponentKeyDown,
 
         onTreeNodeSelect: this.onTreeNodeSelect,
+        onTreeNodeCheck: this.onTreeNodeCheck,
         onPopupKeyDown: this.onComponentKeyDown,
       },
     };
@@ -212,20 +214,12 @@ class Select extends React.Component {
   };
 
   // ===================== Popup ======================
-  /**
-   * This function fire on:
-   * - onCheck: When treeCheckable is true
-   * - onSelect: Other case
-   */
-  onTreeNodeSelect = (_, nodeEventInfo) => {
-    const { valueList, inputValue } = this.state;
+  onValueTrigger = (isAdd, nodeEventInfo, nodeExtraInfo) => {
     const { node } = nodeEventInfo;
-    const { title, value, eventKey } = node.props;
-    const { onSelect, treeCheckable, treeCheckStrictly } = this.props;
-    const checkableSelect = treeCheckable && nodeEventInfo.event === 'select';
-    const isCheckEvent = nodeEventInfo.event === 'check';
+    const { title, value } = node.props;
 
-    // Trigger `onSelect` event
+    // TreeSelect use unique `onSelect` to match with Select component.
+    // So trigger `onSelect` whatever is checked or selected.
     let wrappedValue;
 
     if (this.isLabelInValue()) {
@@ -237,55 +231,98 @@ class Select extends React.Component {
       wrappedValue = value;
     }
 
-    if (nodeEventInfo.selected === false) {
-      this.onDeselect(nodeEventInfo);
-      // [Legacy] If is not treeCheckable, not trigger select. Why?
-      // This is strange since it not follow the `Tree` component logic
-      if (!checkableSelect) return;
-    }
-
-    if (onSelect) {
-      onSelect(wrappedValue, node, nodeEventInfo);
-    }
-
-    // Calculate value - since remove logic is in `onDeselect`, just think of add value
+    // Origin code is half process on the de-select since select not provide the checkable logic.
+    // Let's unique the logic on this.
     let newValueList;
-    if (this.isMultiple()) {
-      newValueList = [...valueList, { label: title, value, key: eventKey }];
+    if (isAdd) {
+      newValueList = this.onValueAdd(wrappedValue, nodeEventInfo);
     } else {
-      newValueList = [{ label: title, value, key: eventKey }];
+      newValueList = this.onValueRemove(wrappedValue, nodeEventInfo);
     }
 
     // TODO: Consider treeCheckable
 
     // [Legacy] Provide extra info
     const extraInfo = {
+      ...nodeExtraInfo,
       triggerValue: value,
       triggerNode: node,
     };
-    if (isCheckEvent) {
-      extraInfo.checked = nodeEventInfo.checked;
-
-      // [Legacy] TODO: add optimize prop to skip node process
-      // [Legacy] TODO: Here old code use cache, double check necessary
-      // [Legacy] Check event provide `allCheckedNodes`.
-      // When `treeCheckStrictly` or internal `inputValue` is set, TreeNode will be unrelated:
-      // - Related: Show the top checked nodes and has children prop.
-      // - Unrelated: Show all the checked nodes.
-      if (treeCheckStrictly || inputValue) {
-        extraInfo.allCheckedNodes = nodeEventInfo.checkedNodes;
-      } else {
-        extraInfo.allCheckedNodes = [];
-      }
-
-      // if inputValue existing, tree is checkStrictly
-      // extraInfo.allCheckedNodes = props.treeCheckStrictly || this.state.inputValue ?
-      //   info.checkedNodes : flatToHierarchy(info.checkedNodesPositions);
-    } else {
-      extraInfo.selected = nodeEventInfo.selected;
-    }
 
     this.triggerChange(newValueList, extraInfo);
+
+  };
+
+  onValueAdd = (wrappedValue, nodeEventInfo) => {
+    const { valueList } = this.state;
+    const { onSelect } = this.props;
+
+    const { node } = nodeEventInfo;
+    const { title, value, eventKey } = node.props;
+
+    const innerValue = {
+      key: eventKey,
+      label: title,
+      value,
+    };
+
+    if (onSelect) {
+      onSelect(wrappedValue, node, nodeEventInfo);
+    }
+
+    if (this.isMultiple()) {
+      return [...valueList, innerValue];
+    }
+    return [innerValue];
+  };
+
+  onValueRemove = (wrappedValue, nodeEventInfo) => {
+    const { valueList } = this.state;
+    const { onDeselect } = this.props;
+
+    const { props: nodeProps } = nodeEventInfo.node;
+
+    if (onDeselect) {
+      onDeselect(wrappedValue);
+    }
+
+    return valueList.filter(({ value }) => value !== nodeProps.value);
+  };
+
+  onTreeNodeSelect = (_, nodeEventInfo) => {
+    const { treeCheckable } = this.props;
+    if (treeCheckable) return;
+
+    const isAdd = nodeEventInfo.selected;
+    this.onValueTrigger(isAdd, nodeEventInfo, { selected: isAdd });
+  };
+
+  onTreeNodeCheck = (_, nodeEventInfo) => {
+    console.log('>>>', nodeEventInfo);
+    const { inputValue } = this.state;
+    const { treeCheckStrictly } = this.props;
+    const isAdd = nodeEventInfo.checked;
+
+    const extraInfo = {
+      checked: isAdd,
+    };
+
+    // [Legacy] TODO: add optimize prop to skip node process
+    // [Legacy] TODO: Here old code use cache, double check necessary
+    // [Legacy] Check event provide `allCheckedNodes`.
+    // When `treeCheckStrictly` or internal `inputValue` is set, TreeNode will be unrelated:
+    // - Related: Show the top checked nodes and has children prop.
+    // - Unrelated: Show all the checked nodes.
+    if (treeCheckStrictly || inputValue) {
+      extraInfo.allCheckedNodes = nodeEventInfo.checkedNodes;
+    } else {
+      // TODO: handle this
+      // extraInfo.allCheckedNodes = props.treeCheckStrictly || this.state.inputValue ?
+      //   info.checkedNodes : flatToHierarchy(info.checkedNodesPositions);
+      extraInfo.allCheckedNodes = [];
+    }
+
+    this.onValueTrigger(isAdd, nodeEventInfo, extraInfo);
   };
 
   // ==================== Trigger =====================

@@ -7,6 +7,7 @@ import Tree from 'rc-tree';
 export const popupContextTypes = {
   onPopupKeyDown: PropTypes.func.isRequired,
   onTreeNodeSelect: PropTypes.func.isRequired,
+  onTreeNodeCheck: PropTypes.func.isRequired,
 };
 
 export default function () {
@@ -50,16 +51,15 @@ export default function () {
       } = this.props;
       const { rcTreeSelect: {
         onTreeNodeSelect,
+        onTreeNodeCheck,
       } } = this.context;
 
       const treeProps = {};
 
       if (treeCheckable) {
         treeProps.checkedKeys = keyList;
-        treeProps.onCheck = onTreeNodeSelect;
       } else if (multiple) {
         treeProps.selectedKeys = keyList;
-        treeProps.onSelect = onTreeNodeSelect;
       }
 
       return (
@@ -73,6 +73,9 @@ export default function () {
             multiple={multiple}
 
             defaultExpandAll={treeDefaultExpandAll}
+
+            onSelect={onTreeNodeSelect}
+            onCheck={onTreeNodeCheck}
 
             {...treeProps}
           >
