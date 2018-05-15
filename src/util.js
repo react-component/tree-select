@@ -9,6 +9,14 @@ export function toArray(data) {
   return Array.isArray(data) ? data : [data];
 }
 
+// Shallow copy of React 16.3 createRef api
+export function createRef() {
+  const func = function setRef(node) {
+    func.current = node;
+  };
+  return func;
+}
+
 // =============== Legacy ===============
 export const UNSELECTABLE_STYLE = {
   userSelect: 'none',
@@ -23,12 +31,48 @@ export function preventDefaultEvent(e) {
   e.preventDefault();
 }
 
-// Shallow copy of React 16.3 createRef api
-export function createRef() {
-  const func = function setRef(node) {
-    func.current = node;
-  };
-  return func;
+/**
+ * Convert position list to hierarchy structure.
+ * This is little hack since use '-' to split the position.
+ */
+export function flatToHierarchy(positionList) {
+  if (!positionList.length) {
+    return [];
+  }
+
+  const entrances = {};
+
+  // Prepare the position map
+  const posMap = {};
+  const parsedList = positionList.slice().map(entity => ({
+    ...entity,
+    fields: entity.pos.split('-'),
+  }));
+
+  parsedList.forEach((entity) => {
+    posMap[entity.pos] = entity;
+  });
+
+  parsedList.sort((a, b) => {
+    return a.fields.length - b.fields.length;
+  });
+
+  // Create the hierarchy
+  parsedList.forEach((entity) => {
+    const parentPos = entity.fields.slice(0, -1).join('-');
+    const parentEntity = posMap[parentPos];
+
+    if (!parentEntity) {
+      entrances[entity.pos] = entity;
+    } else {
+      parentEntity.children = parentEntity.children || [];
+      parentEntity.children.push(entity);
+    }
+
+    delete entity.fields;
+  });
+
+  return Object.keys(entrances).map(key => entrances[key]);
 }
 
 // =================== Delay ===================

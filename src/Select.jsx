@@ -36,7 +36,7 @@ import { SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './strategies';
 import {
   createRef, generateAriaId,
   formatValue, mapValueWithLabel,
-  dataToTree,
+  dataToTree, flatToHierarchy,
   isLabelInValue,
 } from './util';
 import { valueProp } from './propTypes';
@@ -214,14 +214,13 @@ class Select extends React.Component {
   };
 
   // ===================== Popup ======================
-  onValueTrigger = (isAdd, nodeEventInfo, nodeExtraInfo) => {
+  onValueTrigger = (isAdd, nodeList, nodeEventInfo, nodeExtraInfo) => {
     const { node } = nodeEventInfo;
     const { title, value } = node.props;
+    const { onSelect, onDeselect } = this.props;
 
-    // TreeSelect use unique `onSelect` to match with Select component.
-    // So trigger `onSelect` whatever is checked or selected.
+    // Wrap the return value for user
     let wrappedValue;
-
     if (this.isLabelInValue()) {
       wrappedValue = {
         value,
@@ -231,14 +230,22 @@ class Select extends React.Component {
       wrappedValue = value;
     }
 
-    // Origin code is half process on the de-select since select not provide the checkable logic.
-    // Let's unique the logic on this.
-    let newValueList;
+    // [Legacy] Origin code not trigger `onDeselect` every time. Let's align the behaviour.
     if (isAdd) {
-      newValueList = this.onValueAdd(wrappedValue, nodeEventInfo);
-    } else {
-      newValueList = this.onValueRemove(wrappedValue, nodeEventInfo);
+      if (onSelect) {
+        onSelect(wrappedValue, node, nodeEventInfo);
+      }
+    } else if (onDeselect) {
+      onDeselect(wrappedValue, node, nodeEventInfo);
     }
+
+    // Get wrapped value list.
+    // This is a bit hack cause we use key to match the value.
+    const newValueList = nodeList.map(({ key, props }) => ({
+      value: props.value,
+      label: props.title,
+      key,
+    }));
 
     // TODO: Consider treeCheckable
 
@@ -253,55 +260,20 @@ class Select extends React.Component {
 
   };
 
-  onValueAdd = (wrappedValue, nodeEventInfo) => {
-    const { valueList } = this.state;
-    const { onSelect } = this.props;
-
-    const { node } = nodeEventInfo;
-    const { title, value, eventKey } = node.props;
-
-    const innerValue = {
-      key: eventKey,
-      label: title,
-      value,
-    };
-
-    if (onSelect) {
-      onSelect(wrappedValue, node, nodeEventInfo);
-    }
-
-    if (this.isMultiple()) {
-      return [...valueList, innerValue];
-    }
-    return [innerValue];
-  };
-
-  onValueRemove = (wrappedValue, nodeEventInfo) => {
-    const { valueList } = this.state;
-    const { onDeselect } = this.props;
-
-    const { props: nodeProps } = nodeEventInfo.node;
-
-    if (onDeselect) {
-      onDeselect(wrappedValue);
-    }
-
-    return valueList.filter(({ value }) => value !== nodeProps.value);
-  };
-
   onTreeNodeSelect = (_, nodeEventInfo) => {
     const { treeCheckable } = this.props;
     if (treeCheckable) return;
 
+    const { selectedNodes } = nodeEventInfo;
     const isAdd = nodeEventInfo.selected;
-    this.onValueTrigger(isAdd, nodeEventInfo, { selected: isAdd });
+    this.onValueTrigger(isAdd, selectedNodes, nodeEventInfo, { selected: isAdd });
   };
 
-  onTreeNodeCheck = (checkedObj, nodeEventInfo) => {
-    console.log('checkedObj >>>', checkedObj);
-    console.log('nodeEventInfo >>>', nodeEventInfo);
+  onTreeNodeCheck = (_, nodeEventInfo) => {
     const { inputValue } = this.state;
     const { treeCheckStrictly } = this.props;
+
+    const { checkedNodes } = nodeEventInfo;
     const isAdd = nodeEventInfo.checked;
 
     const extraInfo = {
@@ -317,13 +289,10 @@ class Select extends React.Component {
     if (treeCheckStrictly || inputValue) {
       extraInfo.allCheckedNodes = nodeEventInfo.checkedNodes;
     } else {
-      // TODO: handle this
-      // extraInfo.allCheckedNodes = props.treeCheckStrictly || this.state.inputValue ?
-      //   info.checkedNodes : flatToHierarchy(info.checkedNodesPositions);
-      extraInfo.allCheckedNodes = [];
+      extraInfo.allCheckedNodes = flatToHierarchy(nodeEventInfo.checkedNodesPositions);
     }
 
-    this.onValueTrigger(isAdd, nodeEventInfo, extraInfo);
+    this.onValueTrigger(isAdd, checkedNodes, nodeEventInfo, extraInfo);
   };
 
   // ==================== Trigger =====================
