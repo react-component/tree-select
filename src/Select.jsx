@@ -36,7 +36,7 @@ import { SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './strategies';
 import {
   createRef, generateAriaId,
   formatValue,
-  mapValueToEntity, mapValueWithLabel,
+  mapValueToEntity, mapEntityToValue, isPosRelated,
   dataToTree, flatToHierarchy,
   isLabelInValue,
 } from './util';
@@ -125,7 +125,8 @@ class Select extends React.Component {
 
       // Map with label
       const treeNodes = newState.treeNodes || prevState.treeNodes;
-      newState.valueList = mapValueWithLabel(valueList, treeNodes);
+      newState.entityList = mapValueToEntity(valueList, treeNodes);
+      newState.valueList = mapEntityToValue(newState.entityList);
     });
 
     // Input value
@@ -150,10 +151,12 @@ class Select extends React.Component {
 
     const valueList = formatValue(value || defaultValue, props);
     const treeNodes = treeData ? dataToTree(treeData) : (children || []);
+    const entityList = mapValueToEntity(valueList, treeNodes);
 
     this.state = {
       treeNodes,
-      valueList: mapValueWithLabel(valueList, treeNodes),
+      entityList,
+      valueList: mapEntityToValue(entityList),
       inputValue: inputValue || '',
       open: open || defaultOpen || false,
     };
@@ -221,26 +224,41 @@ class Select extends React.Component {
   onMultipleSelectorRemove = (event, removeValue) => {
     event.stopPropagation();
 
+    let { entityList } = this.state;
     const { valueList, treeNodes, inputValue } = this.state;
     const { treeCheckable, treeCheckStrictly } = this.props;
 
-    const entityList = mapValueToEntity(valueList, treeNodes);
-    const newValueList = valueList.filter(({ value }) => value !== removeValue);
+    // Generate `entityList` if not exist
+    if (!entityList) {
+      entityList = mapValueToEntity(valueList, treeNodes);
+    }
 
-    let triggerNode = null;
-    const filteredEntityList = entityList.filter((entity) => {
-      const { node } = entity;
-      const { value } = node.props;
-      if (value === removeValue) {
-        triggerNode = node;
-        return false;
+    // Find trigger entity
+    let triggerEntity = null;
+
+    entityList.some((entity) => {
+      if (entity.node.props.value === removeValue) {
+        triggerEntity = entity;
+        return true;
       }
-      return true;
+      return false;
     });
+
+    // Clean up value
+    let filteredEntityList;
+    if (treeCheckable && !treeCheckStrictly) {
+      filteredEntityList = entityList.filter(({ pos }) => (
+        !isPosRelated(pos, triggerEntity.pos)
+      ));
+    } else {
+      filteredEntityList = entityList.filter(({ pos }) => (
+        pos !== triggerEntity.pos
+      ));
+    }
 
     const extraInfo = {
       triggerValue: removeValue,
-      triggerNode,
+      triggerNode: triggerEntity.node,
     };
 
     // [Legacy] Little hack on this to make same action as `onCheck` event.
@@ -252,7 +270,13 @@ class Select extends React.Component {
       }
     }
 
-    this.triggerChange(newValueList, extraInfo);
+    const newValueList = filteredEntityList.map(({ node: { props, key } }) => ({
+      label: props.title,
+      value: props.value,
+      key,
+    }));
+
+    this.triggerChange(newValueList, extraInfo, filteredEntityList);
   };
 
   // ===================== Popup ======================
@@ -402,14 +426,18 @@ class Select extends React.Component {
    * 1. Update state valueList.
    * 2. Fire `onChange` event to user.
    */
-  triggerChange = (valueList, extraInfo = {}) => {
+  triggerChange = (valueList, extraInfo = {}, entityList = null) => {
     const { onChange } = this.props;
     const labelList = valueList.map(({ label }) => label);
     let targetValue = this.formatReturnValue(valueList);
 
-    // Update state
+    // Update `valueList`.
+    // We needn't use entityList since `valueList` is already fully wrapped.
+    // To avoid `entityList` out of date for `onTreeNodeRemove` miss use,
+    // default set to null if not provided
     this.setState({
       valueList,
+      entityList,
     });
 
     // Format value

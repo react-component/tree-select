@@ -137,6 +137,25 @@ export function dataToTree(treeData) {
   ));
 }
 
+/**
+ * Detect if position has relation.
+ * e.g. 1-2 related with 1-2-3
+ * e.g. 1-3-2 related with 1
+ * e.g. 1-2 not related with 1-21
+ */
+export function isPosRelated(pos1, pos2) {
+  const fields1 = pos1.split('-');
+  const fields2 = pos2.split('-');
+
+  const minLen = Math.min(fields1.length, fields2.length);
+  for (let i = 0; i < minLen; i += 1) {
+    if (fields1[i] !== fields2[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
 // =================== Value ===================
 /**
  * Convert value to array format to make logic simplify.
@@ -185,11 +204,12 @@ export function mapValueToEntity(valueList, treeNodes) {
 }
 
 /**
- * Since value not provide label info, we need nest loop for the label.
- * This will filter value if not exist in tree.
+ * Convert entity list back to value list.
+ * Through the mapValueToEntity -> mapEntityToValue,
+ * you can get the value list with `label` prop.
  */
-export function mapValueWithLabel(valueList, treeNodes) {
-  return mapValueToEntity(valueList, treeNodes).map(({ node, key }) => {
+export function mapEntityToValue(entityList) {
+  return entityList.map(({ node, key }) => {
     const { title, value } = node.props;
     return {
       label: title,
