@@ -39,6 +39,7 @@ import {
   mapValueToEntity, mapEntityToValue, isPosRelated,
   dataToTree, flatToHierarchy,
   isLabelInValue,
+  requestIdleCallback,
 } from './util';
 import { valueProp } from './propTypes';
 
@@ -438,6 +439,16 @@ class Select extends React.Component {
     this.setState({
       valueList,
       entityList,
+    });
+
+    // This function will delay to create the `entityList` if not exist.
+    // This is not a promise execution, only when browser support.
+    requestIdleCallback(() => {
+      if (!entityList && this.state.valueList === valueList) {
+        this.setState({
+          entityList: mapValueToEntity(valueList, this.state.treeNodes),
+        });
+      }
     });
 
     // Format value
