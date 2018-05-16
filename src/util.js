@@ -204,7 +204,7 @@ export function mapValueToEntity(valueList, treeNodes) {
 /**
  * Convert entity list back to value list.
  * Through the mapValueToEntity -> mapEntityToValue,
- * you can get the value list with `label` prop.
+ * you can get the value list with `label`, `key` prop.
  */
 export function mapEntityToValue(entityList) {
   return entityList.map(({ node, key }) => {
