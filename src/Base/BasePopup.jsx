@@ -8,6 +8,7 @@ export const popupContextTypes = {
   onPopupKeyDown: PropTypes.func.isRequired,
   onTreeNodeSelect: PropTypes.func.isRequired,
   onTreeNodeCheck: PropTypes.func.isRequired,
+  onTreeStateUpdate: PropTypes.func.isRequired,
 };
 
 export default function () {
@@ -52,6 +53,7 @@ export default function () {
       const { rcTreeSelect: {
         onTreeNodeSelect,
         onTreeNodeCheck,
+        onTreeStateUpdate,
       } } = this.context;
 
       const treeProps = {};
@@ -76,6 +78,7 @@ export default function () {
 
             onSelect={onTreeNodeSelect}
             onCheck={onTreeNodeCheck}
+            internalOnStateUpdate={onTreeStateUpdate}
 
             {...treeProps}
           >
