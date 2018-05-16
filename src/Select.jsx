@@ -497,7 +497,7 @@ class Select extends React.Component {
     // This function will delay to create the `entityList` if not exist.
     // This is not a promise execution, only when browser support.
     requestIdleCallback(() => {
-      if (!entityList && this.state.valueList === valueList) {
+      if (!entityList && this.state.valueList === valueList && !this.state.entityList) {
         this.setState({
           entityList: mapValueToEntity(valueList, this.state.treeNodes),
         });
