@@ -1,6 +1,7 @@
 import React from 'react';
 import { traverseTreeNodes } from 'rc-tree/lib/util';
 import SelectNode from './SelectNode';
+import {SHOW_CHILD, SHOW_PARENT} from "./strategies";
 
 // =================== MISC ====================
 export function toArray(data) {
@@ -94,7 +95,7 @@ export function flatToHierarchy(positionList) {
       parentEntity.children.push(entity);
     }
 
-    // Some time position list provide key, we don't need it
+    // Some time position list provide `key`, we don't need it
     delete entity.key;
     delete entity.fields;
   });
@@ -158,7 +159,7 @@ export function isPosRelated(pos1, pos2) {
 /**
  * Convert value to array format to make logic simplify.
  */
-export function formatValue(value, props) {
+export function formatInternalValue(value, props) {
   const valueList = toArray(value);
 
   // Parse label in value
@@ -181,38 +182,69 @@ export function formatValue(value, props) {
 }
 
 /**
- * Convert value list to node list.
- * This will filter value if not exist in tree.
+ * Convert internal state `valueList` to user needed value list.
+ * This will return an array list. You need check if is not multiple when return.
+ *
+ * `allCheckedNodes` is used for `treeCheckStrictly`
  */
-export function mapValueToEntity(valueList, treeNodes) {
-  const nodeList = [];
+export function formatSelectorValue(valueList, props, entities) {
+  const { treeCheckable, treeCheckStrictly, showCheckedStrategy } = props;
+
+  let targetValueList = valueList;
+
+  // Will hide some value if `showCheckedStrategy` is set
+  if (treeCheckable && !treeCheckStrictly) {
+    const hierarchyList = flatToHierarchy(valueList.map(({ value }) => entities[value]));
+
+    if (showCheckedStrategy === SHOW_PARENT) {
+      // Only get the parent checked value
+      targetValueList = hierarchyList.map(({ node: { props: { title, value } } }) => ({
+        label: title,
+        value,
+      }));
+
+    } else if (showCheckedStrategy === SHOW_CHILD) {
+      // Only get the children checked value
+      targetValueList = [];
+
+      // Find the leaf children
+      const traverse = ({ node, children }) => {
+        if (!children || children.length === 0) {
+          targetValueList.push({
+            label: node.props.title,
+            value: node.props.value,
+          });
+          return;
+        }
+
+        children.forEach((entity) => {
+          traverse(entity);
+        });
+      };
+
+      hierarchyList.forEach((entity) => {
+        traverse(entity);
+      });
+    }
+  }
+
+  return targetValueList;
+}
+
+/**
+ * Convert TreeNode list to a key-value map.
+ * Key: `value` prop of TreeNode
+ * Value: { node, key, pos, value }
+ */
+export function mapNodesToValueEntities(treeNodes) {
+  const entities = {};
 
   traverseTreeNodes(treeNodes, ({ node, key, pos }) => {
     if (!node || !node.props) return;
 
     const { value } = node.props;
-    const index = valueList.findIndex(item => item.value === value);
-
-    if (index >= 0) {
-      nodeList[index] = { node, key, pos };
-    }
+    entities[value] = { node, key, value, pos };
   });
 
-  return nodeList.filter(node => node);
-}
-
-/**
- * Convert entity list back to value list.
- * Through the mapValueToEntity -> mapEntityToValue,
- * you can get the value list with `label`, `key` prop.
- */
-export function mapEntityToValue(entityList) {
-  return entityList.map(({ node, key }) => {
-    const { title, value } = node.props;
-    return {
-      label: title,
-      value,
-      key,
-    };
-  });
+  return entities;
 }

@@ -35,11 +35,10 @@ import { SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './strategies';
 
 import {
   createRef, generateAriaId,
-  formatValue,
-  mapValueToEntity, mapEntityToValue, isPosRelated,
+  formatInternalValue, formatSelectorValue,
+  mapNodesToValueEntities, isPosRelated,
   dataToTree, flatToHierarchy,
   isLabelInValue,
-  requestIdleCallback,
 } from './util';
 import { valueProp } from './propTypes';
 
@@ -97,20 +96,21 @@ class Select extends React.Component {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const newState = {};
-    let changed = false;
+    // React 16.4 will support `prevProps` natively.
+    // Consider the capacity on 16.3, we have to do this ourselves.
+    const { prevProps = {} } = prevState;
+    const newState = {
+      prevProps: nextProps,
+    };
 
-    // Check if state need update
+    // Process the state when props updated
     function processState(propName, updater) {
-      if (propName in nextProps) {
-        changed = true;
+      if (prevProps[propName] !== nextProps[propName]) {
         updater(nextProps[propName]);
         return true;
       }
       return false;
     }
-
-    // TODO: Process all the pass props
 
     // Tree Nodes
     processState('treeData', (propValue) => {
@@ -124,14 +124,17 @@ class Select extends React.Component {
       });
     }
 
-    // Value
-    processState('value', (propValue) => {
-      const valueList = formatValue(propValue, nextProps);
+    // Entity List
+    if (newState.treeNodes) {
+      newState.entities = mapNodesToValueEntities(newState.treeNodes);
+    }
 
-      // Map with label
-      const treeNodes = newState.treeNodes || prevState.treeNodes;
-      newState.entityList = mapValueToEntity(valueList, treeNodes);
-      newState.valueList = mapEntityToValue(newState.entityList);
+    // Value List
+    processState('value', (propValue) => {
+      newState.valueList = formatInternalValue(propValue, nextProps);
+      newState.selectorValueList = formatSelectorValue(
+        newState.valueList, nextProps, newState.entities || prevState.entities
+      );
     });
 
     // Input value
@@ -139,32 +142,11 @@ class Select extends React.Component {
       newState.inputValue = propValue;
     });
 
-    if (changed) {
-      return newState;
-    }
-    return null;
+    return newState;
   }
 
-  constructor(props) {
+  constructor() {
     super();
-
-    const {
-      value, defaultValue,
-      treeData, children,
-      open, defaultOpen, inputValue,
-    } = props;
-
-    const valueList = formatValue(value || defaultValue, props);
-    const treeNodes = treeData ? dataToTree(treeData) : (children || []);
-    const entityList = mapValueToEntity(valueList, treeNodes);
-
-    this.state = {
-      treeNodes,
-      entityList,
-      valueList: mapEntityToValue(entityList),
-      inputValue: inputValue || '',
-      open: open || defaultOpen || false,
-    };
 
     this.selectTriggerRef = createRef();
     this.searchInputRef = createRef();
@@ -176,6 +158,12 @@ class Select extends React.Component {
     // Since this need user input. Let's generate ourselves
     this.ariaId = generateAriaId();
   }
+
+  state = {
+    valueList: [],
+    selectorValueList: [], // Used for multiple selector
+    entities: {},
+  };
 
   getChildContext() {
     // TODO: Handle this
@@ -230,36 +218,22 @@ class Select extends React.Component {
   onMultipleSelectorRemove = (event, removeValue) => {
     event.stopPropagation();
 
-    let { entityList } = this.state;
-    const { valueList, treeNodes, inputValue } = this.state;
+    const { valueList, entities, inputValue } = this.state;
+
     const { treeCheckable, treeCheckStrictly } = this.props;
 
-    // Generate `entityList` if not exist
-    if (!entityList) {
-      entityList = mapValueToEntity(valueList, treeNodes);
-    }
-
     // Find trigger entity
-    let triggerEntity = null;
-
-    entityList.some((entity) => {
-      if (entity.node.props.value === removeValue) {
-        triggerEntity = entity;
-        return true;
-      }
-      return false;
-    });
+    const triggerEntity = entities[removeValue];
 
     // Clean up value
-    let filteredEntityList;
+    let newValueList;
     if (treeCheckable && !treeCheckStrictly) {
-      filteredEntityList = entityList.filter(({ pos }) => (
-        !isPosRelated(pos, triggerEntity.pos)
-      ));
+      newValueList = valueList.filter(({ value }) => {
+        const entity = entities[value];
+        return !isPosRelated(entity.pos, triggerEntity.pos);
+      });
     } else {
-      filteredEntityList = entityList.filter(({ pos }) => (
-        pos !== triggerEntity.pos
-      ));
+      newValueList = valueList.filter(({ value }) => value !== removeValue);
     }
 
     const extraInfo = {
@@ -269,6 +243,7 @@ class Select extends React.Component {
 
     // [Legacy] Little hack on this to make same action as `onCheck` event.
     if (treeCheckable) {
+      const filteredEntityList = newValueList.map(({ value }) => entities[value]);
       if (treeCheckStrictly || inputValue) {
         extraInfo.allCheckedNodes = filteredEntityList.map(({ node }) => node);
       } else {
@@ -276,18 +251,12 @@ class Select extends React.Component {
       }
     }
 
-    const newValueList = filteredEntityList.map(({ node: { props, key } }) => ({
-      label: props.title,
-      value: props.value,
-      key,
-    }));
-
-    this.triggerChange(newValueList, extraInfo, filteredEntityList);
+    this.triggerChange(newValueList, extraInfo);
   };
 
   // ===================== Popup ======================
   onValueTrigger = (isAdd, nodeList, nodeEventInfo, nodeExtraInfo) => {
-    const { node, checkedNodesPositions } = nodeEventInfo;
+    const { node } = nodeEventInfo;
     const { title, value } = node.props;
     const { onSelect, onDeselect } = this.props;
 
@@ -328,17 +297,7 @@ class Select extends React.Component {
       triggerNode: node,
     };
 
-    // Reuse `checkedNodesPositions` to create `entityList` for optimization.
-    let entityList = null;
-    if (checkedNodesPositions) {
-      entityList = checkedNodesPositions.map((entity) => ({
-        node: entity.node,
-        pos: entity.pos,
-        key: entity.node.key,
-      }));
-    }
-
-    this.triggerChange(newValueList, extraInfo, entityList);
+    this.triggerChange(newValueList, extraInfo);
   };
 
   onTreeNodeSelect = (_, nodeEventInfo) => {
@@ -442,82 +401,13 @@ class Select extends React.Component {
   };
 
   /**
-   * Convert internal state `valueList` to user needed value list.
-   * This will return an array list. You need check if is not multiple when return.
-   *
-   * `allCheckedNodes` is used for `treeCheckStrictly`
-   */
-  formatReturnValue = (valueList, allCheckedNodes) => {
-    const { treeCheckable, treeCheckStrictly, showCheckedStrategy } = this.props;
-
-    let targetValueList = valueList;
-
-    // Will hide some value if `showCheckedStrategy` is set
-    if (treeCheckable && !treeCheckStrictly) {
-      if (showCheckedStrategy === SHOW_PARENT) {
-        // Only get the parent checked value
-        targetValueList = allCheckedNodes.map(({ node: { props } }) => ({
-          label: props.title,
-          value: props.value,
-        }));
-
-      } else if (showCheckedStrategy === SHOW_CHILD) {
-        // Only get the children checked value
-        targetValueList = [];
-
-        // Find the leaf children
-        const traverse = ({ node, children }) => {
-          if (!children || children.length === 0) {
-            targetValueList.push({
-              label: node.props.title,
-              value: node.props.value,
-            });
-            return;
-          }
-
-          children.forEach((entity) => {
-            traverse(entity);
-          });
-        };
-
-        allCheckedNodes.forEach((entity) => {
-          traverse(entity);
-        });
-      }
-    }
-
-    if (this.isLabelInValue()) {
-      return targetValueList.map(({ label, value }) => ({ label, value }));
-    }
-    return targetValueList.map(({ value }) => value);
-  };
-
-  /**
    * 1. Update state valueList.
    * 2. Fire `onChange` event to user.
    */
-  triggerChange = (valueList, extraInfo = {}, entityList = null) => {
+  triggerChange = (valueList, extraInfo = {}) => {
+    const { entities } = this.state;
     const { onChange } = this.props;
     const labelList = valueList.map(({ label }) => label);
-
-    // Update `valueList`.
-    // We needn't use entityList since `valueList` is already fully wrapped.
-    // To avoid `entityList` out of date for `onTreeNodeRemove` miss use,
-    // default set to null if not provided
-    this.setState({
-      valueList,
-      entityList,
-    });
-
-    // This function will delay to create the `entityList` if not exist.
-    // This is not a promise execution, only when browser support.
-    requestIdleCallback(() => {
-      if (!entityList && this.state.valueList === valueList && !this.state.entityList) {
-        this.setState({
-          entityList: mapValueToEntity(valueList, this.state.treeNodes),
-        });
-      }
-    });
 
     // Trigger
     const extra = {
@@ -526,13 +416,26 @@ class Select extends React.Component {
       ...extraInfo,
     };
 
-    // Format value
-    let targetValue = this.formatReturnValue(valueList, extraInfo.allCheckedNodes);
-    if (!this.isMultiple()) {
-      targetValue = targetValue[0];
+    // Format value by `treeCheckStrictly`
+    const selectorValueList = formatSelectorValue(valueList, this.props, entities);
+
+    this.setState({
+      valueList,
+      selectorValueList,
+    });
+
+    let returnValue;
+    if (this.isLabelInValue()) {
+      returnValue = selectorValueList.map(({ label, value }) => ({ label, value }));
+    } else {
+      returnValue = selectorValueList.map(({value}) => value);
     }
 
-    onChange(targetValue, labelList, extra);
+    if (!this.isMultiple()) {
+      returnValue = returnValue[0];
+    }
+
+    onChange(returnValue, labelList, extra);
   };
 
   // ===================== Render =====================
@@ -594,13 +497,20 @@ class Select extends React.Component {
   }
 
   render() {
-    const { valueList, open, focused, treeNodes } = this.state;
+    const {
+      valueList, selectorValueList,
+      open, focused, treeNodes,
+    } = this.state;
     const { prefixCls } = this.props;
     const isMultiple = this.isMultiple();
+
+
+
     const passProps = {
       ...this.props,
       isMultiple,
       valueList,
+      selectorValueList,
       open,
       focused,
       dropdownPrefixCls: `${prefixCls}-dropdown`,

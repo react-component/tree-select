@@ -15,6 +15,7 @@ export const multipleSelectorContextTypes = {
 class MultipleSelector extends React.Component {
   static propTypes = {
     ...selectorPropTypes,
+    selectorValueList: PropTypes.array,
     disabled: PropTypes.bool,
     inputValue: PropTypes.string,
 
@@ -105,11 +106,11 @@ class MultipleSelector extends React.Component {
 
   renderSelection = () => {
     const {
-      valueList, choiceTransitionName, prefixCls,
+      selectorValueList, choiceTransitionName, prefixCls,
     } = this.props;
     const { rcTreeSelect: { onMultipleSelectorRemove } } = this.context;
 
-    const selectedValueNodes = valueList.map(({ label, value }) => (
+    const selectedValueNodes = selectorValueList.map(({ label, value }) => (
       <Selection
         {...this.props}
         key={value}
