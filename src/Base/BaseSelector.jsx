@@ -41,7 +41,6 @@ export default function (modeName) {
       ...selectorPropTypes,
 
       // Pass by HOC
-      selectorProps: PropTypes.object,
       renderSelection: PropTypes.func.isRequired,
       renderPlaceholder: PropTypes.func,
     };
@@ -121,7 +120,7 @@ export default function (modeName) {
         open, focused, disabled, allowClear,
         onClick,
         ariaId,
-        renderSelection, selectorProps, renderPlaceholder,
+        renderSelection, renderPlaceholder,
       } = this.props;
       const { rcTreeSelect: { onSelectorKeyDown } } = this.context;
 
@@ -157,8 +156,6 @@ export default function (modeName) {
               `${prefixCls}-selection`,
               `${prefixCls}-selection--${modeName}`
             )}
-
-            {...selectorProps}
           >
             {renderSelection()}
             {this.renderClear()}

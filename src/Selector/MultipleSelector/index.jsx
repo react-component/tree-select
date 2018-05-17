@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Animate from 'rc-animate';
-import KeyCode from 'rc-util/lib/KeyCode';
 import generateSelector, { selectorPropTypes } from '../../Base/BaseSelector';
 import { createRef } from '../../util';
 
@@ -54,21 +53,6 @@ class MultipleSelector extends React.Component {
 
     if (searchValue !== prevProps.searchValue) {
       this.alignInputWidth();
-    }
-  }
-
-  onKeyDown = (event) => {
-    const { disabled, open } = this.props;
-    if (disabled) {
-      return;
-    }
-
-    const keyCode = event.keyCode;
-    if (open && !this.inputRef.current) {
-      this.onInputKeyDown(event);
-    } else if (keyCode === KeyCode.ENTER || keyCode === KeyCode.DOWN) {
-      this.setOpenState(true);
-      event.preventDefault();
     }
   }
 
@@ -175,10 +159,6 @@ class MultipleSelector extends React.Component {
     return (
       <Selector
         {...this.props}
-        selectorProps={{
-          onKeyDown: this.onKeyDown,
-          tabIndex: 0,
-        }}
         renderSelection={this.renderSelection}
         renderPlaceholder={this.renderPlaceholder}
       />
