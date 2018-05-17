@@ -83,7 +83,6 @@ class SelectTrigger extends React.Component {
     // TODO: [Legacy] Use new action when trigger fixed: https://github.com/react-component/trigger/pull/86
 
     // TODO: saveRef(this, 'trigger')
-    // TODO: dropdownWidth
 
     return (
       <Trigger

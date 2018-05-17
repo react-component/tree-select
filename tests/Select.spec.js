@@ -16,7 +16,7 @@ describe('TreeSelect.basic', () => {
 
   focusTest('single');
 
-  describe.only('render', () => {
+  describe('render', () => {
     let treeData = [
       { key: '0', value: '0', label: '0 label' },
       {
@@ -90,7 +90,7 @@ describe('TreeSelect.basic', () => {
       expect(wrapper).toMatchSnapshot();
     });
 
-    it.only('renders treeDataSimpleMode correctly', () => {
+    it('renders treeDataSimpleMode correctly', () => {
       treeData = [
         { id: '0', value: '0', label: 'label0' },
         { id: '1', value: '1', label: 'label1', pId: '0' },
@@ -171,7 +171,7 @@ describe('TreeSelect.basic', () => {
     });
   });
 
-  describe('search nodes', () => {
+  describe.only('search nodes', () => {
     const treeData = [
       { key: 'a', value: 'a', label: 'labela' },
       { key: 'b', value: 'b', label: 'labelb' },
@@ -197,7 +197,7 @@ describe('TreeSelect.basic', () => {
       expect(onSearch).toBeCalledWith('a');
     });
 
-    it('search nodes by filterTreeNode', () => {
+    it.only('search nodes by filterTreeNode', () => {
       const filter = (value, node) => node.props.value.toLowerCase() === value.toLowerCase();
       const wrapper = mount(createSelect({ filterTreeNode: filter }));
       wrapper.find('input').simulate('change', { target: { value: 'A' } });

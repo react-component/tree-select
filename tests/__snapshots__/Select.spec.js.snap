@@ -164,15 +164,15 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
 
 exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
 <span
+  aria-autocomplete="list"
+  aria-controls="RC_TREE_SELECT_03632925363736088_1_list"
+  aria-haspopup="true"
   class="rc-tree-select rc-tree-select-enabled"
+  role="combobox"
+  tabindex="0"
 >
   <span
-    aria-autocomplete="list"
-    aria-haspopup="true"
-    class="rc-tree-select-selection
-            rc-tree-select-selection--single"
-    role="combobox"
-    tabindex="0"
+    class="rc-tree-select-selection rc-tree-select-selection--single"
   >
     <span
       class="rc-tree-select-selection__rendered"
@@ -194,16 +194,16 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
 exports[`TreeSelect.basic search nodes renders search input 1`] = `
 Array [
   <span
+    aria-autocomplete="list"
+    aria-controls="RC_TREE_SELECT_009466128533948015_1_list"
+    aria-expanded="true"
+    aria-haspopup="true"
     class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
+    role="combobox"
+    tabindex="0"
   >
     <span
-      aria-autocomplete="list"
-      aria-expanded="true"
-      aria-haspopup="true"
-      class="rc-tree-select-selection
-            rc-tree-select-selection--single"
-      role="combobox"
-      tabindex="0"
+      class="rc-tree-select-selection rc-tree-select-selection--single"
     >
       <span
         class="rc-tree-select-selection__rendered"
@@ -223,6 +223,7 @@ Array [
   <div>
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
+      style="visibility:hidden"
     >
       <div>
         <span
@@ -233,7 +234,6 @@ Array [
           >
             <input
               class="rc-tree-select-search__field"
-              role="textbox"
               value=""
             />
             <span
@@ -249,7 +249,7 @@ Array [
           unselectable="on"
         >
           <li
-            class=""
+            class="rc-tree-select-tree-treenode-switcher-close"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -266,7 +266,7 @@ Array [
             </span>
           </li>
           <li
-            class=""
+            class="rc-tree-select-tree-treenode-switcher-close"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"

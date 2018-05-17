@@ -75,6 +75,7 @@ class Select extends React.Component {
     treeIcon: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
 
+    onSearch: PropTypes.func,
     onSelect: PropTypes.func,
     onDeselect: PropTypes.func,
     onChange: PropTypes.func,
@@ -432,7 +433,12 @@ class Select extends React.Component {
 
   // TODO: implement require
   onSearchInputChange = ({ target: { value } }) => {
+    const { onSearch } = this.props;
     this.setUncontrolledState({ searchValue: value });
+
+    if (onSearch) {
+      onSearch(value);
+    }
   };
 
   onInputKeyDown = () => {};
