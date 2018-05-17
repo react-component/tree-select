@@ -202,8 +202,6 @@ export function getLabel(wrappedValue, entity) {
 export function formatSelectorValue(valueList, props, entities) {
   const { treeCheckable, treeCheckStrictly, showCheckedStrategy } = props;
 
-  let targetValueList = valueList;
-
   // Will hide some value if `showCheckedStrategy` is set
   if (treeCheckable && !treeCheckStrictly) {
     const values = {};
@@ -214,14 +212,14 @@ export function formatSelectorValue(valueList, props, entities) {
 
     if (showCheckedStrategy === SHOW_PARENT) {
       // Only get the parent checked value
-      targetValueList = hierarchyList.map(({ node: { props: { value } } }) => ({
+      return hierarchyList.map(({ node: { props: { value } } }) => ({
         label: getLabel(values[value], entities[value]),
         value,
       }));
 
     } else if (showCheckedStrategy === SHOW_CHILD) {
       // Only get the children checked value
-      targetValueList = [];
+      const targetValueList = [];
 
       // Find the leaf children
       const traverse = ({ node: { props: { value } }, children }) => {
@@ -241,15 +239,15 @@ export function formatSelectorValue(valueList, props, entities) {
       hierarchyList.forEach((entity) => {
         traverse(entity);
       });
+
+      return targetValueList;
     }
-  } else {
-    targetValueList = valueList.map(wrappedValue => ({
-      label: getLabel(wrappedValue, entities[wrappedValue.value]),
-      value: wrappedValue.value,
-    }));
   }
 
-  return targetValueList;
+  return valueList.map(wrappedValue => ({
+    label: getLabel(wrappedValue, entities[wrappedValue.value]),
+    value: wrappedValue.value,
+  }));
 }
 
 /**
