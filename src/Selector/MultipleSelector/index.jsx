@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Animate from 'rc-animate';
-import generateSelector, { selectorPropTypes } from '../../Base/BaseSelector';
-import { createRef } from '../../util';
 
+import generateSelector, { selectorPropTypes } from '../../Base/BaseSelector';
+import SearchInput from '../../SearchInput';
 import Selection from './Selection';
 
 const Selector = generateSelector('multiple');
@@ -19,8 +19,6 @@ class MultipleSelector extends React.Component {
     disabled: PropTypes.bool,
     searchValue: PropTypes.string,
 
-    onInputChange: PropTypes.func,
-    onInputKeyDown: PropTypes.func,
     onPlaceholderClick: PropTypes.func,
   };
 
@@ -31,66 +29,6 @@ class MultipleSelector extends React.Component {
       onSearchInputChange: PropTypes.func,
     }),
   };
-
-  constructor() {
-    super();
-
-    this.inputRef = createRef();
-    this.mirrorInputRef = createRef();
-  }
-
-  componentDidMount() {
-    this.alignInputWidth();
-  }
-
-  componentDidUpdate(prevProps) {
-    const { open, searchValue } = this.props;
-
-    if (open && prevProps.open !== open) {
-      this.inputRef.current.focus();
-    }
-
-
-    if (searchValue !== prevProps.searchValue) {
-      this.alignInputWidth();
-    }
-  }
-
-  /**
-   * `scrollWidth` is not correct in IE, do the workaround.
-   * ref: https://github.com/react-component/tree-select/issues/65
-   */
-  alignInputWidth = () => {
-    this.inputRef.current.style.width =
-      `${this.mirrorInputRef.current.clientWidth}px`;
-  };
-
-  renderInput() {
-    const {
-      prefixCls, searchValue = '', disabled,
-      onInputKeyDown,
-    } = this.props;
-    const { rcTreeSelect: { onSearchInputChange } } = this.context;
-
-    return (
-      <span className={`${prefixCls}-search__field__wrap`}>
-        <input
-          ref={this.inputRef}
-          onChange={onSearchInputChange}
-          onKeyDown={onInputKeyDown}
-          value={searchValue}
-          disabled={disabled}
-          className={`${prefixCls}-search__field`}
-        />
-        <span
-          ref={this.mirrorInputRef}
-          className={`${prefixCls}-search__field__mirror`}
-        >
-          {searchValue}&nbsp;
-        </span>
-      </span>
-    );
-  }
 
   renderPlaceholder = () => {
     const {
@@ -138,7 +76,7 @@ class MultipleSelector extends React.Component {
       className={`${prefixCls}-search ${prefixCls}-search--inline`}
       key="__input"
     >
-      {this.renderInput()}
+      <SearchInput {...this.props} needAlign />
     </li>);
     const className = `${prefixCls}-selection__rendered`;
     if (choiceTransitionName) {

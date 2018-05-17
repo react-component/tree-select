@@ -1,4 +1,10 @@
-// import React from 'react';
-import generatePopup from '../Base/BasePopup';
+import React from 'react';
+import BasePopup from '../Base/BasePopup';
 
-export default generatePopup();
+const MultiplePopup = (props) => (
+  <BasePopup {...props} />
+);
+
+MultiplePopup.propTypes = BasePopup.propTypes;
+
+export default MultiplePopup;
