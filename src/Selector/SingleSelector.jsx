@@ -9,12 +9,12 @@ class SingleSelector extends React.Component {
   };
 
   renderSelection = () => {
-    const { valueList, placeholder, prefixCls } = this.props;
+    const { selectorValueList, placeholder, prefixCls } = this.props;
 
     let innerNode;
 
-    if (valueList.length) {
-      const { label } = valueList[0];
+    if (selectorValueList.length) {
+      const { label } = selectorValueList[0];
       innerNode = (
         <span
           key="value"

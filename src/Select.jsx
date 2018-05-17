@@ -49,9 +49,11 @@ class Select extends React.Component {
     multiple: PropTypes.bool,
     showArrow: PropTypes.bool,
     open: PropTypes.bool,
-    defaultOpen: PropTypes.bool,
     value: valueProp,
+
+    defaultOpen: PropTypes.bool,
     defaultValue: valueProp,
+
     showSearch: PropTypes.bool,
     placeholder: PropTypes.node,
     inputValue: PropTypes.string, // [Legacy] TODO: Deprecated. Use `searchValue` instead.
@@ -119,15 +121,24 @@ class Select extends React.Component {
       return false;
     }
 
+    let valueRefresh = false;
+
+    // Open
+    processState('open', (propValue) => {
+      newState.open = propValue;
+    });
+
     // Tree Nodes
     processState('treeData', (propValue) => {
       newState.treeNodes = dataToTree(propValue);
+      valueRefresh = true;
     });
 
     // If `treeData` not provide, use children TreeNodes
     if (!('treeData' in nextProps)) {
       processState('children', (propValue) => {
         newState.treeNodes = propValue;
+        valueRefresh = true;
       });
     }
 
@@ -141,13 +152,18 @@ class Select extends React.Component {
     // Value List
     processState('value', (propValue) => {
       newState.valueList = formatInternalValue(propValue, nextProps);
+      valueRefresh = true;
+    });
 
+    // Selector Value List
+    if (valueRefresh) {
       // We need calculate the value when tree is checked tree
       if (treeCheckable && !treeCheckStrictly) {
         // Get keys by values
-        const keyList = newState.valueList.map(({ value }) => (
-          newState.valueEntities || prevState.valueEntities)[value].key
-        );
+        const keyList = (newState.valueList || prevState.valueList)
+          .map(({ value }) => (
+            newState.valueEntities || prevState.valueEntities)[value].key
+          );
 
         // Calculate the keys need to be checked
         const { checkedKeys } = calcCheckStateConduct(
@@ -166,9 +182,11 @@ class Select extends React.Component {
 
       // Calculate the value list for `Selector` usage
       newState.selectorValueList = formatSelectorValue(
-        newState.valueList, nextProps, newState.valueEntities || prevState.valueEntities
+        newState.valueList || prevState.valueList,
+        nextProps,
+        newState.valueEntities || prevState.valueEntities,
       );
-    });
+    }
 
     // Input value
     processState('inputValue', (propValue) => {
@@ -192,8 +210,22 @@ class Select extends React.Component {
     return newState;
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    const {
+      defaultOpen, defaultValue,
+      open,
+    } = props;
+
+    this.state = {
+      open: open || defaultOpen,
+      valueList: defaultValue ? formatInternalValue(defaultValue, props) : [],
+      selectorValueList: [], // Used for multiple selector
+      valueEntities: {},
+      keyEntities: {},
+      searchValue: '',
+    };
 
     this.selectTriggerRef = createRef();
     this.searchInputRef = createRef();
@@ -205,14 +237,6 @@ class Select extends React.Component {
     // Since this need user input. Let's generate ourselves
     this.ariaId = generateAriaId();
   }
-
-  state = {
-    valueList: [],
-    selectorValueList: [], // Used for multiple selector
-    valueEntities: {},
-    keyEntities: {},
-    searchValue: '',
-  };
 
   getChildContext() {
     // TODO: Handle this
@@ -258,7 +282,7 @@ class Select extends React.Component {
 
     if (!open) {
       if ([KeyCode.ENTER, KeyCode.DOWN].indexOf(which) !== -1) {
-        this.setState({ open: true });
+        this.setUncontrolledState({ open: true });
       }
     } else if ([KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT].indexOf(which) !== -1) {
       // TODO: Handle `open` state
@@ -445,7 +469,7 @@ class Select extends React.Component {
       return;
     }
 
-    this.setState({ open }, () => {
+    this.setUncontrolledState({ open }, () => {
       if (open) {
         // TODO: do focus
       }
