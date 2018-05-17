@@ -18,7 +18,7 @@ class MultipleSelector extends React.Component {
     ...selectorPropTypes,
     selectorValueList: PropTypes.array,
     disabled: PropTypes.bool,
-    inputValue: PropTypes.string,
+    searchValue: PropTypes.string,
 
     onInputChange: PropTypes.func,
     onInputKeyDown: PropTypes.func,
@@ -28,6 +28,8 @@ class MultipleSelector extends React.Component {
   static contextTypes = {
     rcTreeSelect: PropTypes.shape({
       ...multipleSelectorContextTypes,
+
+      onSearchInputChange: PropTypes.func,
     }),
   };
 
@@ -39,10 +41,17 @@ class MultipleSelector extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { open } = this.props;
+    const { open, searchValue } = this.props;
 
     if (open && prevProps.open !== open) {
       this.inputRef.current.focus();
+    }
+
+    // `scrollWidth` is not correct in IE, do the workaround
+    // ref: https://github.com/react-component/tree-select/issues/65
+    if (searchValue !== prevProps.searchValue) {
+      this.inputRef.current.style.width =
+        `${this.mirrorInputRef.current.clientWidth}px`;
     }
   }
 
@@ -53,7 +62,7 @@ class MultipleSelector extends React.Component {
     }
 
     const keyCode = event.keyCode;
-    if (open && !this.getInputDOMNode()) {
+    if (open && !this.inputRef.current) {
       this.onInputKeyDown(event);
     } else if (keyCode === KeyCode.ENTER || keyCode === KeyCode.DOWN) {
       this.setOpenState(true);
@@ -63,16 +72,18 @@ class MultipleSelector extends React.Component {
 
   renderInput() {
     const {
-      prefixCls, inputValue, disabled,
-      onInputChange, onInputKeyDown,
+      prefixCls, searchValue = '', disabled,
+      onInputKeyDown,
     } = this.props;
+    const { rcTreeSelect: { onSearchInputChange } } = this.context;
+
     return (
       <span className={`${prefixCls}-search__field__wrap`}>
         <input
           ref={this.inputRef}
-          onChange={onInputChange}
+          onChange={onSearchInputChange}
           onKeyDown={onInputKeyDown}
-          value={inputValue}
+          value={searchValue}
           disabled={disabled}
           className={`${prefixCls}-search__field`}
         />
@@ -80,7 +91,7 @@ class MultipleSelector extends React.Component {
           ref={this.mirrorInputRef}
           className={`${prefixCls}-search__field__mirror`}
         >
-          {inputValue}&nbsp;
+          {searchValue}&nbsp;
         </span>
       </span>
     );
@@ -90,7 +101,7 @@ class MultipleSelector extends React.Component {
     const {
       prefixCls,
       placeholder, searchPlaceholder,
-      inputValue, value,
+      searchValue, valueList,
       onPlaceholderClick,
     } = this.props;
 
@@ -98,7 +109,7 @@ class MultipleSelector extends React.Component {
 
     if (!currentPlaceholder) return null;
 
-    const hidden = !!inputValue || value.length;
+    const hidden = searchValue || valueList.length;
 
     // [Legacy] Not remove the placeholder
     return (

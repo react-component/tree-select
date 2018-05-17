@@ -53,9 +53,11 @@ class Select extends React.Component {
     value: valueProp,
     defaultValue: valueProp,
     showSearch: PropTypes.bool,
-    placeholder: PropTypes.string,
-    inputValue: PropTypes.string,
-    searchPlaceholder: PropTypes.string,
+    placeholder: PropTypes.node,
+    inputValue: PropTypes.string, // [Legacy] TODO: Deprecated. Use `searchValue` instead.
+    searchValue: PropTypes.string,
+    autoClearSearchValue: PropTypes.bool,
+    searchPlaceholder: PropTypes.node, // [Legacy] TODO: This should be deprecated.
     disabled: PropTypes.bool,
     children: PropTypes.node,
     maxTagTextLength: PropTypes.number,
@@ -81,6 +83,7 @@ class Select extends React.Component {
     prefixCls: 'rc-tree-select',
     showArrow: true,
     showSearch: true,
+    autoClearSearchValue: true,
     showCheckedStrategy: SHOW_CHILD,
     // TODO: double confirm
     dropdownMatchSelectWidth: false,
@@ -93,6 +96,8 @@ class Select extends React.Component {
       ...selectorContextTypes,
       ...multipleSelectorContextTypes,
       ...popupContextTypes,
+
+      onSearchInputChange: PropTypes.func,
     }),
   };
 
@@ -167,7 +172,12 @@ class Select extends React.Component {
 
     // Input value
     processState('inputValue', (propValue) => {
-      newState.inputValue = propValue;
+      newState.searchValue = propValue;
+    });
+
+    // Search value
+    processState('searchValue', (propValue) => {
+      newState.searchValue = propValue;
     });
 
     // Checked Strategy
@@ -201,6 +211,7 @@ class Select extends React.Component {
     selectorValueList: [], // Used for multiple selector
     valueEntities: {},
     keyEntities: {},
+    searchValue: '',
   };
 
   getChildContext() {
@@ -216,6 +227,8 @@ class Select extends React.Component {
         onTreeNodeCheck: this.onTreeNodeCheck,
         onPopupKeyDown: this.onComponentKeyDown,
         // onTreeStateUpdate: this.onTreeStateUpdate,
+
+        onSearchInputChange: this.onSearchInputChange,
       },
     };
   }
@@ -256,7 +269,7 @@ class Select extends React.Component {
   onMultipleSelectorRemove = (event, removeValue) => {
     event.stopPropagation();
 
-    const { valueList, valueEntities, inputValue } = this.state;
+    const { valueList, valueEntities, searchValue } = this.state;
 
     const { treeCheckable, treeCheckStrictly } = this.props;
 
@@ -282,7 +295,7 @@ class Select extends React.Component {
     // [Legacy] Little hack on this to make same action as `onCheck` event.
     if (treeCheckable) {
       const filteredEntityList = newValueList.map(({ value }) => valueEntities[value]);
-      if (treeCheckStrictly || inputValue) {
+      if (treeCheckStrictly || searchValue) {
         extraInfo.allCheckedNodes = filteredEntityList.map(({ node }) => node);
       } else {
         extraInfo.allCheckedNodes = flatToHierarchy(filteredEntityList);
@@ -347,7 +360,7 @@ class Select extends React.Component {
   };
 
   onTreeNodeCheck = (_, nodeEventInfo) => {
-    const { inputValue } = this.state;
+    const { searchValue } = this.state;
     const { treeCheckStrictly } = this.props;
 
     const { checkedNodes, checkedNodesPositions } = nodeEventInfo;
@@ -360,10 +373,10 @@ class Select extends React.Component {
     // [Legacy] TODO: add optimize prop to skip node process
     // [Legacy] TODO: Here old code use cache, double check necessary
     // [Legacy] Check event provide `allCheckedNodes`.
-    // When `treeCheckStrictly` or internal `inputValue` is set, TreeNode will be unrelated:
+    // When `treeCheckStrictly` or internal `searchValue` is set, TreeNode will be unrelated:
     // - Related: Show the top checked nodes and has children prop.
     // - Unrelated: Show all the checked nodes.
-    if (treeCheckStrictly || inputValue) {
+    if (treeCheckStrictly || searchValue) {
       extraInfo.allCheckedNodes = nodeEventInfo.checkedNodes;
     } else {
       extraInfo.allCheckedNodes = flatToHierarchy(checkedNodesPositions);
@@ -393,9 +406,31 @@ class Select extends React.Component {
   };
 
   // TODO: implement require
-  onInputChange = () => {};
+  onSearchInputChange = ({ target: { value } }) => {
+    this.setUncontrolledState({ searchValue: value });
+  };
+
   onInputKeyDown = () => {};
   onPlaceholderClick = () => {};
+
+  /**
+   * Only update the value which is not in props
+   */
+  setUncontrolledState = (state) => {
+    let needSync = false;
+    const newState = {};
+
+    Object.keys(state).forEach(name => {
+      if (name in this.props) return;
+
+      needSync = true;
+      newState[name] = state[name];
+    });
+
+    if (needSync) {
+      this.setState(newState);
+    }
+  };
 
   // [Legacy] Origin provide `documentClickClose` which triggered by `Trigger`
   // Currently `TreeSelect` align the hide popup logic as `Select` which blur to hide.
@@ -476,67 +511,12 @@ class Select extends React.Component {
   };
 
   // ===================== Render =====================
-  /**
-   * [Legacy] Select redesign the search input position but TreeSelect not.
-   * Since new version tag is released. Let's keep the current design.
-   * This function will give search placeholder to:
-   * - multiple: input box
-   * - single: popup panel
-   *
-   * @param visible [Legacy] Use current value to decide display or not
-   * @param placeholder
-   */
-  renderSearchPlaceholder = (visible, placeholder) => {
-    const { prefixCls } = this.props;
-    if (visible && placeholder) {
-      return (
-        <span
-          onClick={this.onPlaceholderClick}
-          className={`${prefixCls}-search__field__placeholder`}
-        >
-          {placeholder}
-        </span>
-      );
-    }
-    return null;
-  };
-
-  /**
-   * [Legacy] Search input is in diff place when mode diff.
-   * And for the diff mode placeholder position is also diff.
-   * render function need less logic on mode.
-   * Let's just move the placeholder out as argument.
-   *
-   * @param additionalPlaceholder
-   */
-  renderInputElement(additionalPlaceholder) {
-    const { inputValue } = this.state;
-    const { prefixCls, disabled } = this.props;
-    return (
-      <span className={`${prefixCls}-search__field__wrap`}>
-        <input
-          ref={this.searchInputRef}
-          onChange={this.onInputChange}
-          onKeyDown={this.onInputKeyDown}
-          value={inputValue}
-          disabled={disabled}
-          className={`${prefixCls}-search__field`}
-        />
-        <span
-          ref={this.searchMirrorInstanceRef}
-          className={`${prefixCls}-search__field__mirror`}
-        >
-          {inputValue}&nbsp;
-        </span>
-        {additionalPlaceholder}
-      </span>
-    );
-  }
 
   render() {
     const {
       valueList, selectorValueList,
       valueEntities, keyEntities,
+      searchValue,
       open, focused, treeNodes,
     } = this.state;
     const { prefixCls } = this.props;
@@ -551,10 +531,10 @@ class Select extends React.Component {
       selectorValueList,
       valueEntities,
       keyEntities,
+      searchValue,
       open,
       focused,
       dropdownPrefixCls: `${prefixCls}-dropdown`,
-      renderSearchPlaceholder: this.renderSearchPlaceholder,
       ariaId: this.ariaId,
     };
 
