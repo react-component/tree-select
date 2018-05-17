@@ -22,6 +22,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import KeyCode from 'rc-util/lib/KeyCode';
+import { calcCheckStateConduct } from 'rc-tree/lib/util';
 
 import SelectTrigger from './SelectTrigger';
 import { selectorContextTypes } from './Base/BaseSelector';
@@ -99,6 +100,7 @@ class Select extends React.Component {
     // React 16.4 will support `prevProps` natively.
     // Consider the capacity on 16.3, we have to do this ourselves.
     const { prevProps = {} } = prevState;
+    const { treeCheckable, treeCheckStrictly } = nextProps;
     const newState = {
       prevProps: nextProps,
     };
@@ -126,14 +128,40 @@ class Select extends React.Component {
 
     // Entity List
     if (newState.treeNodes) {
-      newState.entities = mapNodesToValueEntities(newState.treeNodes);
+      const { valueEntities, keyEntities } = mapNodesToValueEntities(newState.treeNodes);
+      newState.valueEntities = valueEntities;
+      newState.keyEntities = keyEntities;
     }
 
     // Value List
     processState('value', (propValue) => {
       newState.valueList = formatInternalValue(propValue, nextProps);
+
+      // We need calculate the value when tree is checked tree
+      if (treeCheckable && !treeCheckStrictly) {
+        // Get keys by values
+        const keyList = newState.valueList.map(({ value }) => (
+          newState.valueEntities || prevState.valueEntities)[value].key
+        );
+
+        // Calculate the keys need to be checked
+        const { checkedKeys } = calcCheckStateConduct(
+          newState.treeNodes || prevState.treeNodes,
+          keyList,
+        );
+
+        // Convert key back to value
+        const valueList = checkedKeys.map(key => (
+          (newState.keyEntities || prevState.keyEntities)[key].value
+        ));
+
+        // Format value list again for internal usage
+        newState.valueList = formatInternalValue(valueList, nextProps);
+      }
+
+      // Calculate the value list for `Selector` usage
       newState.selectorValueList = formatSelectorValue(
-        newState.valueList, nextProps, newState.entities || prevState.entities
+        newState.valueList, nextProps, newState.valueEntities || prevState.valueEntities
       );
     });
 
@@ -144,9 +172,10 @@ class Select extends React.Component {
 
     // Checked Strategy
     processState('showCheckedStrategy', () => {
-      newState.valueList = newState.valueList || prevState.valueList;
       newState.selectorValueList = newState.selectorValueList || formatSelectorValue(
-        newState.valueList, nextProps, newState.entities || prevState.entities
+        newState.valueList || prevState.valueList,
+        nextProps,
+        newState.valueEntities || prevState.valueEntities,
       );
     });
 
@@ -170,7 +199,8 @@ class Select extends React.Component {
   state = {
     valueList: [],
     selectorValueList: [], // Used for multiple selector
-    entities: {},
+    valueEntities: {},
+    keyEntities: {},
   };
 
   getChildContext() {
@@ -185,7 +215,7 @@ class Select extends React.Component {
         onTreeNodeSelect: this.onTreeNodeSelect,
         onTreeNodeCheck: this.onTreeNodeCheck,
         onPopupKeyDown: this.onComponentKeyDown,
-        onTreeStateUpdate: this.onTreeStateUpdate,
+        // onTreeStateUpdate: this.onTreeStateUpdate,
       },
     };
   }
@@ -226,18 +256,18 @@ class Select extends React.Component {
   onMultipleSelectorRemove = (event, removeValue) => {
     event.stopPropagation();
 
-    const { valueList, entities, inputValue } = this.state;
+    const { valueList, valueEntities, inputValue } = this.state;
 
     const { treeCheckable, treeCheckStrictly } = this.props;
 
     // Find trigger entity
-    const triggerEntity = entities[removeValue];
+    const triggerEntity = valueEntities[removeValue];
 
     // Clean up value
     let newValueList;
     if (treeCheckable && !treeCheckStrictly) {
       newValueList = valueList.filter(({ value }) => {
-        const entity = entities[value];
+        const entity = valueEntities[value];
         return !isPosRelated(entity.pos, triggerEntity.pos);
       });
     } else {
@@ -251,7 +281,7 @@ class Select extends React.Component {
 
     // [Legacy] Little hack on this to make same action as `onCheck` event.
     if (treeCheckable) {
-      const filteredEntityList = newValueList.map(({ value }) => entities[value]);
+      const filteredEntityList = newValueList.map(({ value }) => valueEntities[value]);
       if (treeCheckStrictly || inputValue) {
         extraInfo.allCheckedNodes = filteredEntityList.map(({ node }) => node);
       } else {
@@ -290,10 +320,9 @@ class Select extends React.Component {
 
     // Get wrapped value list.
     // This is a bit hack cause we use key to match the value.
-    const newValueList = nodeList.map(({ key, props }) => ({
+    const newValueList = nodeList.map(({ props }) => ({
       value: props.value,
       label: props.title,
-      key,
     }));
 
     // TODO: Consider treeCheckable
@@ -413,7 +442,7 @@ class Select extends React.Component {
    * 2. Fire `onChange` event to user.
    */
   triggerChange = (valueList, extraInfo = {}) => {
-    const { entities } = this.state;
+    const { valueEntities } = this.state;
     const { onChange } = this.props;
     const labelList = valueList.map(({ label }) => label);
 
@@ -425,7 +454,7 @@ class Select extends React.Component {
     };
 
     // Format value by `treeCheckStrictly`
-    const selectorValueList = formatSelectorValue(valueList, this.props, entities);
+    const selectorValueList = formatSelectorValue(valueList, this.props, valueEntities);
 
     this.setState({
       valueList,
@@ -507,6 +536,7 @@ class Select extends React.Component {
   render() {
     const {
       valueList, selectorValueList,
+      valueEntities, keyEntities,
       open, focused, treeNodes,
     } = this.state;
     const { prefixCls } = this.props;
@@ -519,6 +549,8 @@ class Select extends React.Component {
       isMultiple,
       valueList,
       selectorValueList,
+      valueEntities,
+      keyEntities,
       open,
       focused,
       dropdownPrefixCls: `${prefixCls}-dropdown`,

@@ -8,7 +8,7 @@ export const popupContextTypes = {
   onPopupKeyDown: PropTypes.func.isRequired,
   onTreeNodeSelect: PropTypes.func.isRequired,
   onTreeNodeCheck: PropTypes.func.isRequired,
-  onTreeStateUpdate: PropTypes.func.isRequired,
+  onTreeStateUpdate: PropTypes.func,
 };
 
 export default function () {
@@ -17,6 +17,7 @@ export default function () {
       children: PropTypes.node,
       prefixCls: PropTypes.string,
       valueList: PropTypes.array,
+      valueEntities: PropTypes.object,
       treeIcon: PropTypes.bool,
       treeCheckable: PropTypes.bool,
       treeCheckStrictly: PropTypes.bool,
@@ -31,11 +32,11 @@ export default function () {
     };
 
     static getDerivedStateFromProps(nextProps, prevState) {
-      const { valueList } = nextProps;
+      const { valueList, valueEntities } = nextProps;
       if (valueList !== prevState.valueList) {
         return {
           valueList,
-          keyList: valueList.map(({ key }) => key),
+          keyList: valueList.map(({ value }) => valueEntities[value].key),
         };
       }
       return null;

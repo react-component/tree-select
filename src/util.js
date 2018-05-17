@@ -181,6 +181,18 @@ export function formatInternalValue(value, props) {
   }));
 }
 
+export function getLabel(wrappedValue, entity) {
+  if (wrappedValue.label) {
+    return wrappedValue.label;
+  }
+
+  if (entity && entity.node.props) {
+    return entity.node.props.title;
+  }
+
+  return wrappedValue.value;
+}
+
 /**
  * Convert internal state `valueList` to user needed value list.
  * This will return an array list. You need check if is not multiple when return.
@@ -194,12 +206,16 @@ export function formatSelectorValue(valueList, props, entities) {
 
   // Will hide some value if `showCheckedStrategy` is set
   if (treeCheckable && !treeCheckStrictly) {
+    const values = {};
+    valueList.forEach((wrappedValue) => {
+      values[wrappedValue.value] = wrappedValue;
+    });
     const hierarchyList = flatToHierarchy(valueList.map(({ value }) => entities[value]));
 
     if (showCheckedStrategy === SHOW_PARENT) {
       // Only get the parent checked value
-      targetValueList = hierarchyList.map(({ node: { props: { title, value } } }) => ({
-        label: title,
+      targetValueList = hierarchyList.map(({ node: { props: { value } } }) => ({
+        label: getLabel(values[value], entities[value]),
         value,
       }));
 
@@ -208,11 +224,11 @@ export function formatSelectorValue(valueList, props, entities) {
       targetValueList = [];
 
       // Find the leaf children
-      const traverse = ({ node, children }) => {
+      const traverse = ({ node: { props: { value } }, children }) => {
         if (!children || children.length === 0) {
           targetValueList.push({
-            label: node.props.title,
-            value: node.props.value,
+            label: getLabel(values[value], entities[value]),
+            value,
           });
           return;
         }
@@ -226,6 +242,11 @@ export function formatSelectorValue(valueList, props, entities) {
         traverse(entity);
       });
     }
+  } else {
+    targetValueList = valueList.map(wrappedValue => ({
+      label: getLabel(wrappedValue, entities[wrappedValue.value]),
+      value: wrappedValue.value,
+    }));
   }
 
   return targetValueList;
@@ -237,14 +258,20 @@ export function formatSelectorValue(valueList, props, entities) {
  * Value: { node, key, pos, value }
  */
 export function mapNodesToValueEntities(treeNodes) {
-  const entities = {};
+  const valueEntities = {};
+  const keyEntities = {};
 
   traverseTreeNodes(treeNodes, ({ node, key, pos }) => {
     if (!node || !node.props) return;
 
     const { value } = node.props;
-    entities[value] = { node, key, value, pos };
+    const entity = { node, key, value, pos };
+    valueEntities[value] = entity;
+    keyEntities[key] = entity;
   });
 
-  return entities;
+  return {
+    valueEntities,
+    keyEntities,
+  };
 }
