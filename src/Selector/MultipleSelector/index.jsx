@@ -40,6 +40,10 @@ class MultipleSelector extends React.Component {
     this.mirrorInputRef = createRef();
   }
 
+  componentDidMount() {
+    this.alignInputWidth();
+  }
+
   componentDidUpdate(prevProps) {
     const { open, searchValue } = this.props;
 
@@ -47,11 +51,9 @@ class MultipleSelector extends React.Component {
       this.inputRef.current.focus();
     }
 
-    // `scrollWidth` is not correct in IE, do the workaround
-    // ref: https://github.com/react-component/tree-select/issues/65
+
     if (searchValue !== prevProps.searchValue) {
-      this.inputRef.current.style.width =
-        `${this.mirrorInputRef.current.clientWidth}px`;
+      this.alignInputWidth();
     }
   }
 
@@ -69,6 +71,15 @@ class MultipleSelector extends React.Component {
       event.preventDefault();
     }
   }
+
+  /**
+   * `scrollWidth` is not correct in IE, do the workaround.
+   * ref: https://github.com/react-component/tree-select/issues/65
+   */
+  alignInputWidth = () => {
+    this.inputRef.current.style.width =
+      `${this.mirrorInputRef.current.clientWidth}px`;
+  };
 
   renderInput() {
     const {
