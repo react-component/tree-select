@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Animate from 'rc-animate';
 import KeyCode from 'rc-util/lib/KeyCode';
 import generateSelector, { selectorPropTypes } from '../../Base/BaseSelector';
+import { createRef } from '../../util';
 
 import Selection from './Selection';
 
@@ -30,6 +31,21 @@ class MultipleSelector extends React.Component {
     }),
   };
 
+  constructor() {
+    super();
+
+    this.inputRef = createRef();
+    this.mirrorInputRef = createRef();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { open } = this.props;
+
+    if (open && prevProps.open !== open) {
+      this.inputRef.current.focus();
+    }
+  }
+
   onKeyDown = (event) => {
     const { disabled, open } = this.props;
     if (disabled) {
@@ -45,14 +61,6 @@ class MultipleSelector extends React.Component {
     }
   }
 
-  setInputInstanceRef = (ele) => {
-    this.$inputInstance = ele;
-  };
-
-  setInputMirrorInstanceRef = (ele) => {
-    this.$inputMirrorInstance = ele;
-  };
-
   renderInput() {
     const {
       prefixCls, inputValue, disabled,
@@ -61,7 +69,7 @@ class MultipleSelector extends React.Component {
     return (
       <span className={`${prefixCls}-search__field__wrap`}>
         <input
-          ref={this.setInputInstanceRef}
+          ref={this.inputRef}
           onChange={onInputChange}
           onKeyDown={onInputKeyDown}
           value={inputValue}
@@ -69,7 +77,7 @@ class MultipleSelector extends React.Component {
           className={`${prefixCls}-search__field`}
         />
         <span
-          ref={this.setInputMirrorInstanceRef}
+          ref={this.mirrorInputRef}
           className={`${prefixCls}-search__field__mirror`}
         >
           {inputValue}&nbsp;
