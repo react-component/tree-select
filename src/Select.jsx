@@ -142,6 +142,14 @@ class Select extends React.Component {
       newState.inputValue = propValue;
     });
 
+    // Checked Strategy
+    processState('showCheckedStrategy', () => {
+      newState.valueList = newState.valueList || prevState.valueList;
+      newState.selectorValueList = newState.selectorValueList || formatSelectorValue(
+        newState.valueList, nextProps, newState.entities || prevState.entities
+      );
+    });
+
     return newState;
   }
 
