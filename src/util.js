@@ -181,13 +181,13 @@ export function formatInternalValue(value, props) {
   }));
 }
 
-export function getLabel(wrappedValue, entity) {
+export function getLabel(wrappedValue, entity, treeNodeLabelProp) {
   if (wrappedValue.label) {
     return wrappedValue.label;
   }
 
   if (entity && entity.node.props) {
-    return entity.node.props.title;
+    return entity.node.props[treeNodeLabelProp];
   }
 
   return wrappedValue.value;
@@ -200,7 +200,10 @@ export function getLabel(wrappedValue, entity) {
  * `allCheckedNodes` is used for `treeCheckStrictly`
  */
 export function formatSelectorValue(valueList, props, entities) {
-  const { treeCheckable, treeCheckStrictly, showCheckedStrategy } = props;
+  const {
+    treeNodeLabelProp,
+    treeCheckable, treeCheckStrictly, showCheckedStrategy,
+  } = props;
 
   // Will hide some value if `showCheckedStrategy` is set
   if (treeCheckable && !treeCheckStrictly) {
@@ -213,7 +216,7 @@ export function formatSelectorValue(valueList, props, entities) {
     if (showCheckedStrategy === SHOW_PARENT) {
       // Only get the parent checked value
       return hierarchyList.map(({ node: { props: { value } } }) => ({
-        label: getLabel(values[value], entities[value]),
+        label: getLabel(values[value], entities[value], treeNodeLabelProp),
         value,
       }));
 
@@ -225,7 +228,7 @@ export function formatSelectorValue(valueList, props, entities) {
       const traverse = ({ node: { props: { value } }, children }) => {
         if (!children || children.length === 0) {
           targetValueList.push({
-            label: getLabel(values[value], entities[value]),
+            label: getLabel(values[value], entities[value], treeNodeLabelProp),
             value,
           });
           return;
@@ -245,7 +248,7 @@ export function formatSelectorValue(valueList, props, entities) {
   }
 
   return valueList.map(wrappedValue => ({
-    label: getLabel(wrappedValue, entities[wrappedValue.value]),
+    label: getLabel(wrappedValue, entities[wrappedValue.value], treeNodeLabelProp),
     value: wrappedValue.value,
   }));
 }

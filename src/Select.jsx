@@ -332,15 +332,16 @@ class Select extends React.Component {
   // ===================== Popup ======================
   onValueTrigger = (isAdd, nodeList, nodeEventInfo, nodeExtraInfo) => {
     const { node } = nodeEventInfo;
-    const { title, value } = node.props;
-    const { onSelect, onDeselect } = this.props;
+    const { value } = node.props;
+    const { treeNodeLabelProp, onSelect, onDeselect } = this.props;
+    const label = node.props[treeNodeLabelProp];
 
     // Wrap the return value for user
     let wrappedValue;
     if (this.isLabelInValue()) {
       wrappedValue = {
         value,
-        label: title,
+        label,
       };
     } else {
       wrappedValue = value;
@@ -359,7 +360,7 @@ class Select extends React.Component {
     // This is a bit hack cause we use key to match the value.
     const newValueList = nodeList.map(({ props }) => ({
       value: props.value,
-      label: props.title,
+      label: props[treeNodeLabelProp],
     }));
 
     // TODO: Consider treeCheckable
@@ -520,18 +521,21 @@ class Select extends React.Component {
       selectorValueList,
     });
 
-    let returnValue;
-    if (this.isLabelInValue()) {
-      returnValue = selectorValueList.map(({ label, value }) => ({ label, value }));
-    } else {
-      returnValue = selectorValueList.map(({value}) => value);
-    }
+    // Only do the logic when `onChange` function provided
+    if (onChange) {
+      let returnValue;
+      if (this.isLabelInValue()) {
+        returnValue = selectorValueList.map(({ label, value }) => ({ label, value }));
+      } else {
+        returnValue = selectorValueList.map(({value}) => value);
+      }
 
-    if (!this.isMultiple()) {
-      returnValue = returnValue[0];
-    }
+      if (!this.isMultiple()) {
+        returnValue = returnValue[0];
+      }
 
-    onChange(returnValue, labelList, extra);
+      onChange(returnValue, labelList, extra);
+    }
   };
 
   // ===================== Render =====================
