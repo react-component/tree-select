@@ -159,6 +159,7 @@ class MultipleSelector extends React.Component {
     return (
       <Selector
         {...this.props}
+        showArrow={false}
         renderSelection={this.renderSelection}
         renderPlaceholder={this.renderPlaceholder}
       />

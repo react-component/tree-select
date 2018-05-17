@@ -16,7 +16,7 @@ describe('TreeSelect.basic', () => {
 
   focusTest('single');
 
-  describe('render', () => {
+  describe.only('render', () => {
     let treeData = [
       { key: '0', value: '0', label: '0 label' },
       {
@@ -27,7 +27,7 @@ describe('TreeSelect.basic', () => {
       },
     ];
 
-    it('renders correctly', () => {
+    it.only('renders correctly', () => {
       const wrapper = render(
         <TreeSelect
           style={{ width: 300 }}

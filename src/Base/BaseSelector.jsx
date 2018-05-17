@@ -99,7 +99,6 @@ export default function (modeName) {
     }
 
     renderArrow() {
-      // TODO: multiple || !props.showArrow
       const { prefixCls, showArrow } = this.props;
       if (!showArrow) return null;
 

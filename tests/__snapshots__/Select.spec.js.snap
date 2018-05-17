@@ -60,15 +60,16 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
 
 exports[`TreeSelect.basic render renders correctly 1`] = `
 <span
+  aria-autocomplete="list"
+  aria-controls="RC_TREE_SELECT_040904314297099886_1_list"
+  aria-haspopup="true"
   class="forTest awesome awesome-enabled"
+  role="combobox"
   style="width:300px"
+  tabindex="0"
 >
   <span
-    aria-autocomplete="list"
-    aria-haspopup="true"
-    class="awesome-selection
-            awesome-selection--multiple"
-    role="combobox"
+    class="awesome-selection awesome-selection--multiple"
   >
     <ul
       class="awesome-selection__rendered"
@@ -81,7 +82,6 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
         >
           <input
             class="awesome-search__field"
-            role="textbox"
             value=""
           />
           <span
