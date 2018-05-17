@@ -27,7 +27,7 @@ describe('TreeSelect.basic', () => {
       },
     ];
 
-    it.only('renders correctly', () => {
+    it('renders correctly', () => {
       const wrapper = render(
         <TreeSelect
           style={{ width: 300 }}
@@ -90,7 +90,7 @@ describe('TreeSelect.basic', () => {
       expect(wrapper).toMatchSnapshot();
     });
 
-    it('renders treeDataSimpleMode correctly', () => {
+    it.only('renders treeDataSimpleMode correctly', () => {
       treeData = [
         { id: '0', value: '0', label: 'label0' },
         { id: '1', value: '1', label: 'label1', pId: '0' },

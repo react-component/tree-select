@@ -1,7 +1,7 @@
 import React from 'react';
 import generateSelector, { selectorPropTypes } from '../Base/BaseSelector';
 
-const Selector = generateSelector('multiple');
+const Selector = generateSelector('single');
 
 class SingleSelector extends React.Component {
   static propTypes = {

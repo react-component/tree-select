@@ -2,15 +2,15 @@
 
 exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
 <span
+  aria-autocomplete="list"
+  aria-controls="RC_TREE_SELECT_07088089578811041_1_list"
+  aria-haspopup="true"
   class="rc-tree-select rc-tree-select-enabled"
+  role="combobox"
+  tabindex="0"
 >
   <span
-    aria-autocomplete="list"
-    aria-haspopup="true"
-    class="rc-tree-select-selection
-            rc-tree-select-selection--single"
-    role="combobox"
-    tabindex="0"
+    class="rc-tree-select-selection rc-tree-select-selection--single"
   >
     <span
       class="rc-tree-select-selection__rendered"
@@ -31,15 +31,15 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
 
 exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`] = `
 <span
+  aria-autocomplete="list"
+  aria-controls="RC_TREE_SELECT_040308595111437984_1_list"
+  aria-haspopup="true"
   class="rc-tree-select rc-tree-select-enabled"
+  role="combobox"
+  tabindex="0"
 >
   <span
-    aria-autocomplete="list"
-    aria-haspopup="true"
-    class="rc-tree-select-selection
-            rc-tree-select-selection--single"
-    role="combobox"
-    tabindex="0"
+    class="rc-tree-select-selection rc-tree-select-selection--single"
   >
     <span
       class="rc-tree-select-selection__rendered"
@@ -98,15 +98,15 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
 
 exports[`TreeSelect.basic render renders disabled correctly 1`] = `
 <span
+  aria-autocomplete="list"
+  aria-controls="RC_TREE_SELECT_09803413425316203_1_list"
+  aria-haspopup="true"
   class="rc-tree-select rc-tree-select-disabled"
+  role="combobox"
+  tabindex="0"
 >
   <span
-    aria-autocomplete="list"
-    aria-haspopup="true"
-    class="rc-tree-select-selection
-            rc-tree-select-selection--single"
-    role="combobox"
-    tabindex="0"
+    class="rc-tree-select-selection rc-tree-select-selection--single"
   >
     <span
       class="rc-tree-select-selection__rendered"
@@ -127,14 +127,15 @@ exports[`TreeSelect.basic render renders disabled correctly 1`] = `
 
 exports[`TreeSelect.basic render renders tree correctly 1`] = `
 <span
+  aria-autocomplete="list"
+  aria-controls="RC_TREE_SELECT_05023583122634554_1_list"
+  aria-haspopup="true"
   class="rc-tree-select rc-tree-select-enabled"
+  role="combobox"
+  tabindex="0"
 >
   <span
-    aria-autocomplete="list"
-    aria-haspopup="true"
-    class="rc-tree-select-selection
-            rc-tree-select-selection--multiple"
-    role="combobox"
+    class="rc-tree-select-selection rc-tree-select-selection--multiple"
   >
     <ul
       class="rc-tree-select-selection__rendered"
@@ -147,7 +148,6 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
         >
           <input
             class="rc-tree-select-search__field"
-            role="textbox"
             value=""
           />
           <span
