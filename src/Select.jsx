@@ -77,6 +77,8 @@ class Select extends React.Component {
     treeDefaultExpandAll: PropTypes.bool,
     filterTreeNode: PropTypes.func,
 
+    notFoundContent: PropTypes.string,
+
     onSearch: PropTypes.func,
     onSelect: PropTypes.func,
     onDeselect: PropTypes.func,
@@ -95,6 +97,7 @@ class Select extends React.Component {
     treeNodeFilterProp: 'value',
     treeNodeLabelProp: 'title',
     treeIcon: false,
+    notFoundContent: 'Not Found',
   };
 
   static childContextTypes = {
@@ -312,7 +315,7 @@ class Select extends React.Component {
       }
     } else if ([KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT].indexOf(which) !== -1) {
       // TODO: Handle `open` state
-      event.preventDefault();
+      event.stopPropagation();
     }
   };
 
@@ -460,9 +463,11 @@ class Select extends React.Component {
   onSearchInputChange = ({ target: { value } }) => {
     const { treeNodes } = this.state;
     const { onSearch, filterTreeNode, treeNodeFilterProp } = this.props;
+
     const isSet = this.setUncontrolledState({
       searchValue: value,
     });
+    this.setOpenState(true);
 
     if (onSearch) {
       onSearch(value);

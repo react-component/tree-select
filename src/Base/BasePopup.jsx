@@ -24,6 +24,7 @@ class BasePopup extends React.Component {
 
     treeNodes: PropTypes.node,
     filteredTreeNodes: PropTypes.node,
+    notFoundContent: PropTypes.string,
 
     // HOC
     renderSearch: PropTypes.func,
@@ -55,6 +56,7 @@ class BasePopup extends React.Component {
       treeNodes, filteredTreeNodes,
       treeIcon, treeCheckable, treeCheckStrictly, multiple,
       treeDefaultExpandAll,
+      notFoundContent,
 
       renderSearch,
     } = this.props;
@@ -72,40 +74,48 @@ class BasePopup extends React.Component {
       treeProps.selectedKeys = keyList;
     }
 
-    // TODO: not found
-    // {notFoundContent || this.renderTree(keys, halfCheckedKeys, treeNodes, multiple)}
-
-    let $children;
+    let $notFound;
+    let $treeNodes;
     if (filteredTreeNodes) {
-      $children = filteredTreeNodes;
-      treeProps.checkStrictly = true;
+      if (filteredTreeNodes.length) {
+        treeProps.checkStrictly = true;
+        $treeNodes = filteredTreeNodes;
+      } else {
+        $notFound = (
+          <span className={`${prefixCls}-not-found`}>
+            {notFoundContent}
+          </span>
+        );
+      }
     } else {
-      $children = treeNodes;
+      $treeNodes = treeNodes;
     }
 
-    console.log('->', keyList);
-    console.log('=>', $children);
+    let $tree;
+    if ($notFound) {
+      $tree = $notFound;
+    } else {
+      $tree = (
+        <Tree
+          prefixCls={`${prefixCls}-tree`}
+          showIcon={treeIcon}
+          selectable={!treeCheckable}
+          checkable={treeCheckable}
+          checkStrictly={treeCheckStrictly}
+          multiple={multiple}
 
-    const $tree = (
-      <Tree
-        prefixCls={`${prefixCls}-tree`}
-        showIcon={treeIcon}
-        selectable={!treeCheckable}
-        checkable={treeCheckable}
-        checkStrictly={treeCheckStrictly}
-        multiple={multiple}
+          defaultExpandAll={treeDefaultExpandAll}
 
-        defaultExpandAll={treeDefaultExpandAll}
+          onSelect={onTreeNodeSelect}
+          onCheck={onTreeNodeCheck}
+          internalOnStateUpdate={onTreeStateUpdate}
 
-        onSelect={onTreeNodeSelect}
-        onCheck={onTreeNodeCheck}
-        internalOnStateUpdate={onTreeStateUpdate}
-
-        {...treeProps}
-      >
-        {$children}
-      </Tree>
-    );
+          {...treeProps}
+        >
+          {$treeNodes}
+        </Tree>
+      );
+    }
 
     return (
       <div>
