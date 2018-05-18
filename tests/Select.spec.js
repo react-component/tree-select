@@ -171,7 +171,7 @@ describe('TreeSelect.basic', () => {
     });
   });
 
-  describe.only('search nodes', () => {
+  describe('search nodes', () => {
     const treeData = [
       { key: 'a', value: 'a', label: 'labela' },
       { key: 'b', value: 'b', label: 'labelb' },
@@ -197,7 +197,7 @@ describe('TreeSelect.basic', () => {
       expect(onSearch).toBeCalledWith('a');
     });
 
-    it.only('search nodes by filterTreeNode', () => {
+    it('search nodes by filterTreeNode', () => {
       const filter = (value, node) => node.props.value.toLowerCase() === value.toLowerCase();
       const wrapper = mount(createSelect({ filterTreeNode: filter }));
       wrapper.find('input').simulate('change', { target: { value: 'A' } });
@@ -213,7 +213,7 @@ describe('TreeSelect.basic', () => {
     });
   });
 
-  it('open tree when click on select', () => {
+  it.only('open tree when click on select', () => {
     const wrapper = mount(
       <TreeSelect>
         <TreeNode key="a" value="a" title="labela"/>

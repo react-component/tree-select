@@ -113,12 +113,11 @@ export function flatToHierarchy(positionList) {
 }
 
 // =============== Accessibility ===============
-const ARIA_BASIC = String(Math.random()).replace( /\D/g, '');
 let ariaId = 0;
 
-export function generateAriaId() {
+export function generateAriaId(prefix) {
   ariaId += 1;
-  return `RC_TREE_SELECT_${ARIA_BASIC}_${ariaId}`;
+  return `RC_TREE_SELECT_${prefix}_${ariaId}`;
 }
 
 export function isLabelInValue(props) {

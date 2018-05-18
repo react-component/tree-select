@@ -195,7 +195,7 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
 Array [
   <span
     aria-autocomplete="list"
-    aria-controls="RC_TREE_SELECT_009466128533948015_1_list"
+    aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
     aria-expanded="true"
     aria-haspopup="true"
     class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"

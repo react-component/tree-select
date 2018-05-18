@@ -46,6 +46,7 @@ import { valueProp } from './propTypes';
 class Select extends React.Component {
   static propTypes = {
     prefixCls: PropTypes.string,
+    prefixAria: PropTypes.string,
     multiple: PropTypes.bool,
     showArrow: PropTypes.bool,
     open: PropTypes.bool,
@@ -88,6 +89,7 @@ class Select extends React.Component {
 
   static defaultProps = {
     prefixCls: 'rc-tree-select',
+    prefixAria: 'rc-tree-select',
     showArrow: true,
     showSearch: true,
     autoClearSearchValue: true,
@@ -243,6 +245,7 @@ class Select extends React.Component {
     super(props);
 
     const {
+      prefixAria,
       defaultOpen, defaultValue,
       open,
     } = props;
@@ -264,7 +267,7 @@ class Select extends React.Component {
 
     // ARIA need `aria-controls` props mapping
     // Since this need user input. Let's generate ourselves
-    this.ariaId = generateAriaId();
+    this.ariaId = generateAriaId(prefixAria);
   }
 
   getChildContext() {
