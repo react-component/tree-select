@@ -4,6 +4,13 @@ import SelectNode from './SelectNode';
 import { SHOW_CHILD, SHOW_PARENT } from './strategies';
 
 // =================== MISC ====================
+export function toTitle(title) {
+  if (typeof title === 'string') {
+    return title;
+  }
+  return null;
+}
+
 export function toArray(data) {
   if (!data) return [];
 

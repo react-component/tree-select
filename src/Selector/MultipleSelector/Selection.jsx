@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  preventDefaultEvent, UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
+  preventDefaultEvent, toTitle,
+  UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
 } from '../../util';
 
 class Selection extends React.Component {
@@ -38,7 +39,7 @@ class Selection extends React.Component {
         role="menuitem"
         onMouseDown={preventDefaultEvent}
         className={`${prefixCls}-selection__choice`}
-        title={label}
+        title={toTitle(label)}
       >
         <span
           className={`${prefixCls}-selection__choice__remove`}

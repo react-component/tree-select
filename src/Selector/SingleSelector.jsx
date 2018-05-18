@@ -1,5 +1,6 @@
 import React from 'react';
 import generateSelector, { selectorPropTypes } from '../Base/BaseSelector';
+import { toTitle } from '../util';
 
 const Selector = generateSelector('single');
 
@@ -18,7 +19,7 @@ class SingleSelector extends React.Component {
       innerNode = (
         <span
           key="value"
-          title={label}
+          title={toTitle(label)}
           className={`${prefixCls}-selection-selected-value`}
         >
           {label}
