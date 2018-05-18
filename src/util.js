@@ -1,6 +1,13 @@
 /* eslint no-loop-func: 0*/
 import React from 'react';
 
+export function toTitle(title) {
+  if (typeof title === 'string') {
+    return title;
+  }
+  return null;
+}
+
 export function getValuePropValue(child) {
   const props = child.props;
   if ('value' in props) {

@@ -1,5 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TreeSelect.basic propTypes check title when label is a object 1`] = `
+<span
+  class="rc-tree-select rc-tree-select-enabled"
+>
+  <span
+    aria-autocomplete="list"
+    aria-haspopup="true"
+    class="rc-tree-select-selection
+            rc-tree-select-selection--single"
+    role="combobox"
+    tabindex="0"
+  >
+    <span
+      class="rc-tree-select-selection__rendered"
+    >
+      <span
+        class="rc-tree-select-selection-selected-value"
+      >
+        <span>
+          Do not show
+        </span>
+      </span>
+    </span>
+    <span
+      class="rc-tree-select-arrow"
+      style="outline:none"
+    >
+      <b />
+    </span>
+  </span>
+</span>
+`;
+
 exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
 <span
   class="rc-tree-select rc-tree-select-enabled"

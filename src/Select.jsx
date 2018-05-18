@@ -10,7 +10,7 @@ import {
   preventDefaultEvent,
   getTreeNodesStates, flatToHierarchy, filterParentPosition,
   isPositionPrefix, labelCompatible, loopAllChildren, filterAllCheckedData,
-  processSimpleTreeData, saveRef,
+  processSimpleTreeData, saveRef, toTitle,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import _TreeNode from './TreeNode';
@@ -821,7 +821,7 @@ class Select extends Component {
       if (value.length) {
         innerNode = (<span
           key="value"
-          title={value[0].label}
+          title={toTitle(value[0].label)}
           className={`${prefixCls}-selection-selected-value`}
         >
           {value[0].label}
@@ -845,7 +845,7 @@ class Select extends Component {
           onMouseDown={preventDefaultEvent}
           className={`${prefixCls}-selection__choice`}
           key={singleValue.value}
-          title={title}
+          title={toTitle(title)}
         >
           <span
             className={`${prefixCls}-selection__choice__remove`}

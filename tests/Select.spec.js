@@ -356,5 +356,14 @@ describe('TreeSelect.basic', () => {
         'expected `array` when `multiple` is `true`'
       );
     });
+
+    it('check title when label is a object', () => {
+      const wrapper = render(
+        <TreeSelect defaultValue="0">
+          <TreeNode title={<span>Do not show</span>} value="0" key="0" />
+        </TreeSelect>
+      );
+      expect(wrapper).toMatchSnapshot();
+    });
   });
 });
