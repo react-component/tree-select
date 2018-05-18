@@ -4659,6 +4659,7 @@ __WEBPACK_IMPORTED_MODULE_0__Select__["a" /* default */].TreeNode = __WEBPACK_IM
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["q"] = toTitle;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getValuePropValue;
 /* harmony export (immutable) */ __webpack_exports__["f"] = getPropValue;
 /* harmony export (immutable) */ __webpack_exports__["i"] = isMultiple;
@@ -4688,6 +4689,13 @@ __WEBPACK_IMPORTED_MODULE_0__Select__["a" /* default */].TreeNode = __WEBPACK_IM
 
 /* eslint no-loop-func: 0*/
 
+
+function toTitle(title) {
+  if (typeof title === 'string') {
+    return title;
+  }
+  return null;
+}
 
 function getValuePropValue(child) {
   var props = child.props;
@@ -27394,7 +27402,7 @@ var Select = function (_Component) {
           'span',
           {
             key: 'value',
-            title: value[0].label,
+            title: Object(__WEBPACK_IMPORTED_MODULE_10__util__["q" /* toTitle */])(value[0].label),
             className: prefixCls + '-selection-selected-value'
           },
           value[0].label
@@ -27421,7 +27429,7 @@ var Select = function (_Component) {
           onMouseDown: __WEBPACK_IMPORTED_MODULE_10__util__["m" /* preventDefaultEvent */],
           className: prefixCls + '-selection__choice',
           key: singleValue.value,
-          title: title
+          title: Object(__WEBPACK_IMPORTED_MODULE_10__util__["q" /* toTitle */])(title)
         }),
         __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('span', {
           className: prefixCls + '-selection__choice__remove',
