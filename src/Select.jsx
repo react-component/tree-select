@@ -365,7 +365,7 @@ class Select extends React.Component {
     const { searchValue, valueEntities, keyEntities, treeNodes } = this.state;
     const {
       treeNodeLabelProp, onSelect, onDeselect,
-      treeCheckable, treeCheckStrictly,
+      treeCheckable, treeCheckStrictly, autoClearSearchValue,
     } = this.props;
     const label = node.props[treeNodeLabelProp];
 
@@ -411,6 +411,15 @@ class Select extends React.Component {
           value: props.value,
           label: props[treeNodeLabelProp],
         };
+      });
+    }
+
+    // Clean up `searchValue` when this prop is set
+    // `inputValue` is a legacy prop as current `searchValue`
+    if (autoClearSearchValue && searchValue && !('inputValue' in this.props)) {
+      this.setUncontrolledState({
+        searchValue: '',
+        filteredTreeNodes: null,
       });
     }
 
