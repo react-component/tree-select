@@ -37,9 +37,9 @@ import { SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './strategies';
 import {
   createRef, generateAriaId,
   formatInternalValue, formatSelectorValue,
-  mapNodesToValueEntities, isPosRelated,
+  mapNodesToValueEntities, calcUncheckConduct,
   dataToTree, flatToHierarchy,
-  isLabelInValue, getFilterTree,
+  isPosRelated, isLabelInValue, getFilterTree,
 } from './util';
 import { valueProp } from './propTypes';
 
@@ -362,7 +362,11 @@ class Select extends React.Component {
   onValueTrigger = (isAdd, nodeList, nodeEventInfo, nodeExtraInfo) => {
     const { node } = nodeEventInfo;
     const { value } = node.props;
-    const { treeNodeLabelProp, onSelect, onDeselect } = this.props;
+    const { searchValue, valueEntities, keyEntities, treeNodes } = this.state;
+    const {
+      treeNodeLabelProp, onSelect, onDeselect,
+      treeCheckable, treeCheckStrictly,
+    } = this.props;
     const label = node.props[treeNodeLabelProp];
 
     // Wrap the return value for user
@@ -387,12 +391,28 @@ class Select extends React.Component {
 
     // Get wrapped value list.
     // This is a bit hack cause we use key to match the value.
-    const newValueList = nodeList.map(({ props }) => ({
+    let newValueList = nodeList.map(({ props }) => ({
       value: props.value,
       label: props[treeNodeLabelProp],
     }));
 
-    // TODO: Consider treeCheckable
+    // When is `treeCheckable` and with `searchValue`, `valueList` is not full filled.
+    // We need calculate the missing nodes.
+    if (treeCheckable && !treeCheckStrictly && searchValue) {
+      let keyList = newValueList.map(({ value: val }) => valueEntities[val].key);
+      if (isAdd) {
+        keyList = calcCheckStateConduct(treeNodes, keyList).checkedKeys;
+      } else {
+        keyList = calcUncheckConduct(keyList, valueEntities[value].key, keyEntities);
+      }
+      newValueList = keyList.map(key => {
+        const { node: { props } } = keyEntities[key];
+        return {
+          value: props.value,
+          label: props[treeNodeLabelProp],
+        };
+      });
+    }
 
     // [Legacy] Provide extra info
     const extraInfo = {
@@ -424,8 +444,6 @@ class Select extends React.Component {
       checked: isAdd,
     };
 
-    // [Legacy] TODO: add optimize prop to skip node process
-    // [Legacy] TODO: Here old code use cache, double check necessary
     // [Legacy] Check event provide `allCheckedNodes`.
     // When `treeCheckStrictly` or internal `searchValue` is set, TreeNode will be unrelated:
     // - Related: Show the top checked nodes and has children prop.

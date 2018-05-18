@@ -61,6 +61,7 @@ export function preventDefaultEvent(e) {
  * Convert position list to hierarchy structure.
  * This is little hack since use '-' to split the position.
  */
+// TODO: Refactor this
 export function flatToHierarchy(positionList) {
   if (!positionList.length) {
     return [];
@@ -72,6 +73,7 @@ export function flatToHierarchy(positionList) {
   const posMap = {};
   const parsedList = positionList.slice().map(entity => ({
     ...entity,
+    children: [],
     fields: entity.pos.split('-'),
   }));
 
@@ -236,7 +238,7 @@ export function getLabel(wrappedValue, entity, treeNodeLabelProp) {
  *
  * `allCheckedNodes` is used for `treeCheckStrictly`
  */
-export function formatSelectorValue(valueList, props, entities) {
+export function formatSelectorValue(valueList, props, valueEntities) {
   const {
     treeNodeLabelProp,
     treeCheckable, treeCheckStrictly, showCheckedStrategy,
@@ -248,12 +250,12 @@ export function formatSelectorValue(valueList, props, entities) {
     valueList.forEach((wrappedValue) => {
       values[wrappedValue.value] = wrappedValue;
     });
-    const hierarchyList = flatToHierarchy(valueList.map(({ value }) => entities[value]));
+    const hierarchyList = flatToHierarchy(valueList.map(({ value }) => valueEntities[value]));
 
     if (showCheckedStrategy === SHOW_PARENT) {
       // Only get the parent checked value
       return hierarchyList.map(({ node: { props: { value } } }) => ({
-        label: getLabel(values[value], entities[value], treeNodeLabelProp),
+        label: getLabel(values[value], valueEntities[value], treeNodeLabelProp),
         value,
       }));
 
@@ -265,7 +267,7 @@ export function formatSelectorValue(valueList, props, entities) {
       const traverse = ({ node: { props: { value } }, children }) => {
         if (!children || children.length === 0) {
           targetValueList.push({
-            label: getLabel(values[value], entities[value], treeNodeLabelProp),
+            label: getLabel(values[value], valueEntities[value], treeNodeLabelProp),
             value,
           });
           return;
@@ -285,7 +287,7 @@ export function formatSelectorValue(valueList, props, entities) {
   }
 
   return valueList.map(wrappedValue => ({
-    label: getLabel(wrappedValue, entities[wrappedValue.value], treeNodeLabelProp),
+    label: getLabel(wrappedValue, valueEntities[wrappedValue.value], treeNodeLabelProp),
     value: wrappedValue.value,
   }));
 }
@@ -298,18 +300,62 @@ export function formatSelectorValue(valueList, props, entities) {
 export function mapNodesToValueEntities(treeNodes) {
   const valueEntities = {};
   const keyEntities = {};
+  const posEntities = {};
 
-  traverseTreeNodes(treeNodes, ({ node, key, pos }) => {
+  traverseTreeNodes(treeNodes, ({ node, key, pos, parentPos }) => {
     if (!node || !node.props) return;
 
     const { value } = node.props;
     const entity = { node, key, value, pos };
+
+    // Fill children
+    if (parentPos) {
+      entity.parent = posEntities[parentPos];
+      entity.parent.children = entity.parent.children || [];
+      entity.parent.children.push(entity);
+    }
+
     valueEntities[value] = entity;
     keyEntities[key] = entity;
+    posEntities[pos] = entity;
   });
 
   return {
     valueEntities,
     keyEntities,
+    posEntities,
   };
+}
+
+/**
+ * When user search the tree, will not get correct tree checked status.
+ * For checked key, use the `rc-tree` `calcCheckStateConduct` function.
+ * For unchecked key, we need the calculate ourselves.
+ */
+export function calcUncheckConduct(keyList, uncheckedKey, keyEntities) {
+  let myKeyList = keyList.slice();
+  console.log('asdassdsad', myKeyList);
+
+  function conductUp(conductKey) {
+    myKeyList = myKeyList.filter(key => key !== conductKey);
+
+    // Check if need conduct
+    const parentEntity = keyEntities[conductKey].parent;
+    if (parentEntity && myKeyList.some(key => key === parentEntity.key)) {
+      conductUp(parentEntity.key);
+    }
+  }
+
+  function conductDown(conductKey) {
+    myKeyList = myKeyList.filter(key => key !== conductKey);
+
+    (keyEntities[conductKey].children || []).forEach((childEntity) => {
+      conductDown(childEntity.key);
+    });
+  }
+
+  conductUp(uncheckedKey);
+  conductDown(uncheckedKey);
+
+  return myKeyList;
 }
