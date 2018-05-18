@@ -1,7 +1,7 @@
 import React from 'react';
 import { traverseTreeNodes } from 'rc-tree/lib/util';
 import SelectNode from './SelectNode';
-import {SHOW_CHILD, SHOW_PARENT} from "./strategies";
+import { SHOW_CHILD, SHOW_PARENT } from './strategies';
 
 // =================== MISC ====================
 export function toArray(data) {
@@ -129,8 +129,8 @@ export function isLabelInValue(props) {
 export function dataToTree(treeData) {
   const list = toArray(treeData);
 
-  return list.map(({ key, label, children ,...nodeProps }) => (
-    <SelectNode key={key} {...nodeProps} title={label} label={label}>
+  return list.map(({ key, title, label, children ,...nodeProps }) => (
+    <SelectNode key={key} {...nodeProps} title={label || title} label={label}>
       {dataToTree(children)}
     </SelectNode>
   ));
@@ -153,6 +153,43 @@ export function isPosRelated(pos1, pos2) {
     }
   }
   return true;
+}
+
+/**
+ * Get a filtered TreeNode list by provided treeNodes.
+ * [Legacy] Since `Tree` use `key` as map but `key` will changed by React,
+ * we have to convert `treeNodes > data > treeNodes` to keep the key.
+ * Such performance hungry!
+ */
+export function getFilterTree(treeNodes, searchValue, filterFunc) {
+  if (!searchValue) {
+    return null;
+  }
+
+  function mapFilteredNodeToData(node) {
+    if (!node) return null;
+
+    let match = false;
+    if (filterFunc(searchValue, node)) {
+      match = true;
+    }
+
+    const children = (React.Children.map(node.props.children, mapFilteredNodeToData) || []).filter(n => n);
+
+    if (children.length || match) {
+      return {
+        ...node.props,
+        key: node.key,
+        children,
+      };
+    }
+
+    return null;
+  }
+
+  return dataToTree(
+    treeNodes.map(mapFilteredNodeToData).filter(node => node)
+  );
 }
 
 // =================== Value ===================

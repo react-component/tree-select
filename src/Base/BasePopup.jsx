@@ -13,7 +13,6 @@ export const popupContextTypes = {
 
 class BasePopup extends React.Component {
   static propTypes = {
-    children: PropTypes.node,
     prefixCls: PropTypes.string,
     valueList: PropTypes.array,
     valueEntities: PropTypes.object,
@@ -22,6 +21,9 @@ class BasePopup extends React.Component {
     treeCheckStrictly: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
     multiple: PropTypes.bool,
+
+    treeNodes: PropTypes.node,
+    filteredTreeNodes: PropTypes.node,
 
     // HOC
     renderSearch: PropTypes.func,
@@ -49,7 +51,8 @@ class BasePopup extends React.Component {
   render() {
     const { keyList } = this.state;
     const {
-      prefixCls, children,
+      prefixCls,
+      treeNodes, filteredTreeNodes,
       treeIcon, treeCheckable, treeCheckStrictly, multiple,
       treeDefaultExpandAll,
 
@@ -72,6 +75,17 @@ class BasePopup extends React.Component {
     // TODO: not found
     // {notFoundContent || this.renderTree(keys, halfCheckedKeys, treeNodes, multiple)}
 
+    let $children;
+    if (filteredTreeNodes) {
+      $children = filteredTreeNodes;
+      treeProps.checkStrictly = true;
+    } else {
+      $children = treeNodes;
+    }
+
+    console.log('->', keyList);
+    console.log('=>', $children);
+
     const $tree = (
       <Tree
         prefixCls={`${prefixCls}-tree`}
@@ -89,7 +103,7 @@ class BasePopup extends React.Component {
 
         {...treeProps}
       >
-        {children}
+        {$children}
       </Tree>
     );
 

@@ -39,7 +39,7 @@ import {
   formatInternalValue, formatSelectorValue,
   mapNodesToValueEntities, isPosRelated,
   dataToTree, flatToHierarchy,
-  isLabelInValue,
+  isLabelInValue, getFilterTree,
 } from './util';
 import { valueProp } from './propTypes';
 
@@ -69,11 +69,13 @@ class Select extends React.Component {
 
     dropdownMatchSelectWidth: PropTypes.bool,
     treeData: PropTypes.any,
+    treeNodeFilterProp: PropTypes.string,
     treeNodeLabelProp: PropTypes.string,
     treeCheckable: PropTypes.bool,
     treeCheckStrictly: PropTypes.bool,
     treeIcon: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
+    filterTreeNode: PropTypes.func,
 
     onSearch: PropTypes.func,
     onSelect: PropTypes.func,
@@ -90,6 +92,7 @@ class Select extends React.Component {
     showCheckedStrategy: SHOW_CHILD,
     // TODO: double confirm
     dropdownMatchSelectWidth: false,
+    treeNodeFilterProp: 'value',
     treeNodeLabelProp: 'title',
     treeIcon: false,
   };
@@ -108,7 +111,10 @@ class Select extends React.Component {
     // React 16.4 will support `prevProps` natively.
     // Consider the capacity on 16.3, we have to do this ourselves.
     const { prevProps = {} } = prevState;
-    const { treeCheckable, treeCheckStrictly } = nextProps;
+    const {
+      treeCheckable, treeCheckStrictly,
+      filterTreeNode, treeNodeFilterProp,
+    } = nextProps;
     const newState = {
       prevProps: nextProps,
     };
@@ -198,6 +204,25 @@ class Select extends React.Component {
     processState('searchValue', (propValue) => {
       newState.searchValue = propValue;
     });
+
+    // Do the search logic
+    if (newState.searchValue) {
+      const upperSearchValue = String(newState.searchValue).toUpperCase();
+
+      let filterTreeNodeFn = filterTreeNode;
+      if (!filterTreeNodeFn) {
+        filterTreeNodeFn = (_, node) => {
+          const nodeValue = String(node.props[treeNodeFilterProp]).toUpperCase();
+          return nodeValue.indexOf(upperSearchValue) !== -1;
+        };
+      }
+
+      newState.filteredTreeNodes = getFilterTree(
+        newState.treeNodes || prevState.treeNodes,
+        newState.searchValue,
+        filterTreeNodeFn,
+      );
+    }
 
     // Checked Strategy
     processState('showCheckedStrategy', () => {
@@ -433,11 +458,31 @@ class Select extends React.Component {
 
   // TODO: implement require
   onSearchInputChange = ({ target: { value } }) => {
-    const { onSearch } = this.props;
-    this.setUncontrolledState({ searchValue: value });
+    const { treeNodes } = this.state;
+    const { onSearch, filterTreeNode, treeNodeFilterProp } = this.props;
+    const isSet = this.setUncontrolledState({
+      searchValue: value,
+    });
 
     if (onSearch) {
       onSearch(value);
+    }
+
+    if (isSet) {
+      // Do the search logic
+      const upperSearchValue = String(value).toUpperCase();
+
+      let filterTreeNodeFn = filterTreeNode;
+      if (!filterTreeNodeFn) {
+        filterTreeNodeFn = (_, node) => {
+          const nodeValue = String(node.props[treeNodeFilterProp]).toUpperCase();
+          return nodeValue.indexOf(upperSearchValue) !== -1;
+        };
+      }
+
+      this.setState({
+        filteredTreeNodes: getFilterTree(treeNodes, value, filterTreeNodeFn),
+      });
     }
   };
 
@@ -461,6 +506,8 @@ class Select extends React.Component {
     if (needSync) {
       this.setState(newState);
     }
+
+    return needSync;
   };
 
   // [Legacy] Origin provide `documentClickClose` which triggered by `Trigger`
@@ -551,12 +598,11 @@ class Select extends React.Component {
       valueList, selectorValueList,
       valueEntities, keyEntities,
       searchValue,
-      open, focused, treeNodes,
+      open, focused,
+      treeNodes, filteredTreeNodes,
     } = this.state;
     const { prefixCls } = this.props;
     const isMultiple = this.isMultiple();
-
-
 
     const passProps = {
       ...this.props,
@@ -573,21 +619,17 @@ class Select extends React.Component {
     };
 
     // TODO: process the logic of mode diff
-    const $popup = isMultiple ? (
-      <MultiplePopup {...passProps}>
-        {treeNodes}
-      </MultiplePopup>
-    ) : (
-      <SinglePopup {...passProps}>
-        {treeNodes}
-      </SinglePopup>
+    const Popup = isMultiple ? MultiplePopup : SinglePopup;
+    const $popup = (
+      <Popup
+        {...passProps}
+        treeNodes={treeNodes}
+        filteredTreeNodes={filteredTreeNodes}
+      />
     );
 
-    const $input = isMultiple ? (
-      <MultipleSelector {...passProps} />
-    ) : (
-      <SingleSelector {...passProps} />
-    );
+    const Selector = isMultiple ? MultipleSelector : SingleSelector;
+    const $selector = <Selector {...passProps} />;
 
     return (
       <SelectTrigger
@@ -599,7 +641,7 @@ class Select extends React.Component {
         onKeyDown={this.onKeyDown}
         onDropdownVisibleChange={this.onDropdownVisibleChange}
       >
-        {$input}
+        {$selector}
       </SelectTrigger>
     );
   }
