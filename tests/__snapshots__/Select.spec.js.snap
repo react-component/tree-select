@@ -1,9 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TreeSelect.basic check title when label is a object 1`] = `
+<span
+  aria-autocomplete="list"
+  aria-controls="RC_TREE_SELECT_rc-tree-select_26_list"
+  aria-haspopup="true"
+  class="rc-tree-select rc-tree-select-enabled"
+  role="combobox"
+  tabindex="0"
+>
+  <span
+    class="rc-tree-select-selection rc-tree-select-selection--single"
+  >
+    <span
+      class="rc-tree-select-selection__rendered"
+    >
+      <span
+        class="rc-tree-select-selection-selected-value"
+      >
+        <span>
+          Do not show
+        </span>
+      </span>
+    </span>
+    <span
+      class="rc-tree-select-arrow"
+      style="outline:none"
+    >
+      <b />
+    </span>
+  </span>
+</span>
+`;
+
 exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
 <span
   aria-autocomplete="list"
-  aria-controls="RC_TREE_SELECT_07088089578811041_1_list"
+  aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
   aria-haspopup="true"
   class="rc-tree-select rc-tree-select-enabled"
   role="combobox"
@@ -32,7 +65,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
 exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`] = `
 <span
   aria-autocomplete="list"
-  aria-controls="RC_TREE_SELECT_040308595111437984_1_list"
+  aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
   aria-haspopup="true"
   class="rc-tree-select rc-tree-select-enabled"
   role="combobox"
@@ -61,7 +94,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
 exports[`TreeSelect.basic render renders correctly 1`] = `
 <span
   aria-autocomplete="list"
-  aria-controls="RC_TREE_SELECT_040904314297099886_1_list"
+  aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
   aria-haspopup="true"
   class="forTest awesome awesome-enabled"
   role="combobox"
@@ -99,7 +132,7 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
 exports[`TreeSelect.basic render renders disabled correctly 1`] = `
 <span
   aria-autocomplete="list"
-  aria-controls="RC_TREE_SELECT_09803413425316203_1_list"
+  aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
   aria-haspopup="true"
   class="rc-tree-select rc-tree-select-disabled"
   role="combobox"
@@ -128,7 +161,7 @@ exports[`TreeSelect.basic render renders disabled correctly 1`] = `
 exports[`TreeSelect.basic render renders tree correctly 1`] = `
 <span
   aria-autocomplete="list"
-  aria-controls="RC_TREE_SELECT_05023583122634554_1_list"
+  aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
   aria-haspopup="true"
   class="rc-tree-select rc-tree-select-enabled"
   role="combobox"
@@ -165,7 +198,7 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
 exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
 <span
   aria-autocomplete="list"
-  aria-controls="RC_TREE_SELECT_03632925363736088_1_list"
+  aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
   aria-haspopup="true"
   class="rc-tree-select rc-tree-select-enabled"
   role="combobox"

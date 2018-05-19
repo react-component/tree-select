@@ -1,11 +1,19 @@
 /* eslint-disable no-undef */
 import React from 'react';
+import ReactPropTypesSecret from 'prop-types/lib/ReactPropTypesSecret';
 import { render, mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import TreeSelect, { TreeNode } from '../src';
+import { resetAriaId } from '../src/util';
+import { valueProp } from '../src/propTypes';
 import focusTest from './shared/focusTest';
 
 describe('TreeSelect.basic', () => {
+  beforeEach(() => {
+    resetAriaId();
+    jest.useFakeTimers();
+  });
+
   beforeAll(() => {
     jest.useFakeTimers();
   });
@@ -213,7 +221,7 @@ describe('TreeSelect.basic', () => {
     });
   });
 
-  it.only('open tree when click on select', () => {
+  it('open tree when click on select', () => {
     const wrapper = mount(
       <TreeSelect>
         <TreeNode key="a" value="a" title="labela"/>
@@ -223,7 +231,7 @@ describe('TreeSelect.basic', () => {
     expect(wrapper.state('open')).toBe(true);
   });
 
-  it('close tree when press ESC', () => {
+  it.only('close tree when press ESC', () => {
     const wrapper = mount(
       <TreeSelect>
         <TreeNode key="a" value="a" title="labela"/>
@@ -303,42 +311,27 @@ describe('TreeSelect.basic', () => {
     });
   });
 
+  // React only console error once when the message is the same for the same propType.
+  // Use native Type to check the validate.
   describe('propTypes', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
-    afterEach(() => {
-      spy.mockReset();
-    });
-
-    afterAll(() => {
-      spy.mockRestore();
-    });
-
     it('warns on invalid value when labelInValue', () => {
-      mount(
-        <TreeSelect
-          labelInValue
-          value="foo"
-        />
-      );
-      expect(spy.mock.calls[0][0]).toMatch(
-        'Invalid prop `value` supplied to `Select`, when `labelInValue` ' +
-        'is `true`, `value` should in shape of `{ value: string, label?: string }`'
+      const error = valueProp({
+        labelInValue: true,
+        value: 'foo',
+      }, 'value', 'TreeSelect', '', '', ReactPropTypesSecret);
+      expect(error.message).toBe(
+        'Invalid prop `value` supplied to `TreeSelect`. You should use { label: string, value: string } or [{ label: string, value: string }] instead.'
       );
     });
 
     it('warns on invalid value when treeCheckable and treeCheckStrictly', () => {
-      mount(
-        <TreeSelect
-          treeCheckable
-          treeCheckStrictly
-          value="foo"
-        />
-      );
-      expect(spy.mock.calls[0][0]).toMatch(
-        'Invalid prop `value` supplied to `Select`, when `treeCheckable` ' +
-        'and `treeCheckStrictly` are `true`, `value` should in shape of ' +
-        '`{ value: string, label?: string }`'
+      const error = valueProp({
+        treeCheckable: true,
+        treeCheckStrictly: true,
+        value: 'foo',
+      }, 'value', 'TreeSelect', '', '', ReactPropTypesSecret);
+      expect(error.message).toBe(
+        'Invalid prop `value` supplied to `TreeSelect`. You should use { label: string, value: string } or [{ label: string, value: string }] instead.'
       );
     });
 
@@ -349,19 +342,21 @@ describe('TreeSelect.basic', () => {
           value=""
         />
       );
-      expect(spy.mock.calls[0][0]).toMatch(
-        'Invalid prop `value` of type `string` supplied to `Select`, ' +
-        'expected `array` when `multiple` is `true`'
-      );
-    });
 
-    it('check title when label is a object', () => {
-      const wrapper = render(
-        <TreeSelect defaultValue="0">
-          <TreeNode title={<span>Do not show</span>} value="0" key="0" />
-        </TreeSelect>
-      );
-      expect(wrapper).toMatchSnapshot();
+      const error = valueProp({
+        multiple: true,
+        value: '',
+      }, 'value', 'TreeSelect', '', '', ReactPropTypesSecret);
+      expect(error).toBeNull();
     });
+  });
+
+  it('check title when label is a object', () => {
+    const wrapper = render(
+      <TreeSelect defaultValue="0">
+        <TreeNode title={<span>Do not show</span>} value="0" key="0" />
+      </TreeSelect>
+    );
+    expect(wrapper).toMatchSnapshot();
   });
 });

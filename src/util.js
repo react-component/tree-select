@@ -115,6 +115,10 @@ export function flatToHierarchy(positionList) {
 // =============== Accessibility ===============
 let ariaId = 0;
 
+export function resetAriaId() {
+  ariaId = 0;
+}
+
 export function generateAriaId(prefix) {
   ariaId += 1;
   return `RC_TREE_SELECT_${prefix}_${ariaId}`;

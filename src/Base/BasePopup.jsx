@@ -61,6 +61,7 @@ class BasePopup extends React.Component {
       renderSearch,
     } = this.props;
     const { rcTreeSelect: {
+      onPopupKeyDown,
       onTreeNodeSelect,
       onTreeNodeCheck,
       onTreeStateUpdate,
@@ -118,7 +119,9 @@ class BasePopup extends React.Component {
     }
 
     return (
-      <div>
+      <div
+        onKeyDown={onPopupKeyDown}
+      >
         {renderSearch ? renderSearch() : null}
         {$tree}
       </div>

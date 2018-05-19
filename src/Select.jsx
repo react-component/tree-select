@@ -310,13 +310,15 @@ class Select extends React.Component {
   // Handle key board event in both Selector and Popup
   onComponentKeyDown = (event) => {
     const { open } = this.state;
-    const { which } = event;
+    const { keyCode } = event;
 
     if (!open) {
-      if ([KeyCode.ENTER, KeyCode.DOWN].indexOf(which) !== -1) {
-        this.setUncontrolledState({ open: true });
+      if ([KeyCode.ENTER, KeyCode.DOWN].indexOf(keyCode) !== -1) {
+        this.setOpenState(true);
       }
-    } else if ([KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT].indexOf(which) !== -1) {
+    } else if (KeyCode.ESC === keyCode) {
+      this.setOpenState(false);
+    } else if ([KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT].indexOf(keyCode) !== -1) {
       // TODO: Handle `open` state
       event.stopPropagation();
     }
