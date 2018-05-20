@@ -231,7 +231,7 @@ describe('TreeSelect.basic', () => {
     expect(wrapper.state('open')).toBe(true);
   });
 
-  it.only('close tree when press ESC', () => {
+  it('close tree when press ESC', () => {
     const wrapper = mount(
       <TreeSelect>
         <TreeNode key="a" value="a" title="labela"/>
@@ -249,10 +249,13 @@ describe('TreeSelect.basic', () => {
     );
     wrapper.setProps({ treeData: [{ key: '0', value: '0', label: 'label0' }] });
     wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
-    expect(wrapper.state().value).toEqual([{ value: '0', label: 'label0' }]);
+    // expect(wrapper.state().value).toEqual([{ value: '0', label: 'label0' }]);
+    expect(wrapper.state().valueList).toEqual(
+      [{ value: '0', label: 'label0' }]
+    );
   });
 
-  it('expands tree nodes by treeDefaultExpandedKeys', () => {
+  it.only('expands tree nodes by treeDefaultExpandedKeys', () => {
     const wrapper = mount(
       <TreeSelect open treeDefaultExpandedKeys={['1']}>
         <TreeNode key="0" value="0" title="0 label"/>

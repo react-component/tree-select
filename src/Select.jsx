@@ -173,9 +173,11 @@ class Select extends React.Component {
       if (treeCheckable && !treeCheckStrictly) {
         // Get keys by values
         const keyList = (newState.valueList || prevState.valueList)
-          .map(({ value }) => (
-            newState.valueEntities || prevState.valueEntities)[value].key
-          );
+          .map(({ value }) => {
+            const entity = (newState.valueEntities || prevState.valueEntities)[value];
+            return entity ? entity.key : null;
+          })
+          .filter(key => key);
 
         // Calculate the keys need to be checked
         const { checkedKeys } = calcCheckStateConduct(
