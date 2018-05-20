@@ -150,7 +150,7 @@ class Select extends React.Component {
     // If `treeData` not provide, use children TreeNodes
     if (!('treeData' in nextProps)) {
       processState('children', (propValue) => {
-        newState.treeNodes = propValue;
+        newState.treeNodes = React.Children.toArray(propValue);
         valueRefresh = true;
       });
     }
