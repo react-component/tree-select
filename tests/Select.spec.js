@@ -255,7 +255,7 @@ describe('TreeSelect.basic', () => {
     );
   });
 
-  it.only('expands tree nodes by treeDefaultExpandedKeys', () => {
+  it('expands tree nodes by treeDefaultExpandedKeys', () => {
     const wrapper = mount(
       <TreeSelect open treeDefaultExpandedKeys={['1']}>
         <TreeNode key="0" value="0" title="0 label"/>
@@ -269,7 +269,7 @@ describe('TreeSelect.basic', () => {
     expect(node.hasClass('rc-tree-select-tree-node-content-wrapper-open')).toBe(true);
   });
 
-  describe('allowClear', () => {
+  describe.only('allowClear', () => {
     it('not inputValue prop', () => {
       const wrapper = mount(
         <TreeSelect allowClear>
