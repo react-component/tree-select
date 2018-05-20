@@ -280,6 +280,7 @@ class Select extends React.Component {
         onSelectorFocus: this.onSelectorFocus,
         onSelectorBlur: this.onSelectorBlur,
         onSelectorKeyDown: this.onComponentKeyDown,
+        onSelectorClear: this.onSelectorClear,
         onMultipleSelectorRemove: this.onMultipleSelectorRemove,
 
         onTreeNodeSelect: this.onTreeNodeSelect,
@@ -327,12 +328,25 @@ class Select extends React.Component {
     }
   };
 
+  onSelectorClear = (event) => {
+    const { disabled } = this.props;
+    if (disabled) {
+      return;
+    }
+
+    this.triggerChange([]);
+    event.stopPropagation();
+  };
+
   onMultipleSelectorRemove = (event, removeValue) => {
     event.stopPropagation();
 
     const { valueList, valueEntities, searchValue } = this.state;
 
-    const { treeCheckable, treeCheckStrictly } = this.props;
+    const { treeCheckable, treeCheckStrictly, disabled } = this.props;
+    if (disabled) {
+      return;
+    }
 
     // Find trigger entity
     const triggerEntity = valueEntities[removeValue];
@@ -372,10 +386,15 @@ class Select extends React.Component {
     const { value } = node.props;
     const { searchValue, valueEntities, keyEntities, treeNodes } = this.state;
     const {
+      disabled,
       treeNodeLabelProp, onSelect, onDeselect,
       treeCheckable, treeCheckStrictly, autoClearSearchValue,
     } = this.props;
     const label = node.props[treeNodeLabelProp];
+
+    if (disabled) {
+      return;
+    }
 
     // Wrap the return value for user
     let wrappedValue;
@@ -596,8 +615,12 @@ class Select extends React.Component {
    */
   triggerChange = (valueList, extraInfo = {}) => {
     const { valueEntities } = this.state;
-    const { onChange } = this.props;
+    const { onChange, disabled } = this.props;
     const labelList = valueList.map(({ label }) => label);
+
+    if (disabled) {
+      return;
+    }
 
     // Trigger
     const extra = {

@@ -33,6 +33,7 @@ export const selectorContextTypes = {
   onSelectorFocus: PropTypes.func.isRequired,
   onSelectorBlur: PropTypes.func.isRequired,
   onSelectorKeyDown: PropTypes.func.isRequired,
+  onSelectorClear: PropTypes.func.isRequired,
 };
 
 export default function (modeName) {
@@ -83,9 +84,10 @@ export default function (modeName) {
     };
 
     renderClear() {
-      const { prefixCls, allowClear, value } = this.props;
+      const { prefixCls, allowClear, valueList } = this.props;
+      const { rcTreeSelect: { onSelectorClear } } = this.context;
 
-      if (!allowClear || !value.length || !value[0].value) {
+      if (!allowClear || !valueList.length || !valueList[0].value) {
         return null;
       }
 
@@ -93,7 +95,7 @@ export default function (modeName) {
         <span
           key="clear"
           className={`${prefixCls}-selection__clear`}
-          onClick={this.onClearSelection}
+          onClick={onSelectorClear}
         />
       );
     }

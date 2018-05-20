@@ -270,7 +270,7 @@ describe('TreeSelect.basic', () => {
   });
 
   describe.only('allowClear', () => {
-    it('not inputValue prop', () => {
+    it.only('not inputValue prop', () => {
       const wrapper = mount(
         <TreeSelect allowClear>
           <TreeNode key="0" value="0" title="0 label"/>
@@ -279,7 +279,7 @@ describe('TreeSelect.basic', () => {
       wrapper.openSelect();
       wrapper.find('.rc-tree-select-tree-title').simulate('click');
       wrapper.find('.rc-tree-select-selection__clear').simulate('click');
-      expect(wrapper.state().value).toEqual([]);
+      expect(wrapper.state().valueList).toEqual([]);
     });
 
     it('has inputValue prop', () => {
