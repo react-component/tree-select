@@ -103,7 +103,11 @@ class MultipleSelector extends React.Component {
         {selectedValueNodes}
       </Animate>);
     }
-    return (<ul className={className}>{selectedValueNodes}</ul>);
+    return (
+      <ul className={className} role="menubar">
+        {selectedValueNodes}
+      </ul>
+    );
   }
 
   render() {

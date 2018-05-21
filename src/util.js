@@ -121,7 +121,7 @@ export function resetAriaId() {
 
 export function generateAriaId(prefix) {
   ariaId += 1;
-  return `RC_TREE_SELECT_${prefix}_${ariaId}`;
+  return `${prefix}_${ariaId}`;
 }
 
 export function isLabelInValue(props) {

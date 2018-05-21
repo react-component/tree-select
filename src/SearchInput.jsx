@@ -22,6 +22,7 @@ class SearchInput extends React.Component {
     disabled: PropTypes.bool,
     renderPlaceholder: PropTypes.func,
     needAlign: PropTypes.bool,
+    ariaId: PropTypes.string,
   };
 
   static contextTypes = {
@@ -79,12 +80,13 @@ class SearchInput extends React.Component {
   };
 
   render() {
-    const { searchValue, prefixCls, disabled, renderPlaceholder } = this.props;
+    const { searchValue, prefixCls, disabled, renderPlaceholder, open, ariaId } = this.props;
     const { rcTreeSelect: { onSearchInputChange } } = this.context;
 
     return (
       <span className={`${prefixCls}-search__field__wrap`}>
         <input
+          type="text"
           ref={this.inputRef}
           onChange={onSearchInputChange}
           // TODO: handle this
@@ -92,6 +94,11 @@ class SearchInput extends React.Component {
           value={searchValue}
           disabled={disabled}
           className={`${prefixCls}-search__field`}
+
+          aria-label="filter select"
+          aria-autocomplete="list"
+          aria-controls={open ? ariaId : undefined}
+          aria-multiline="false"
         />
         <span
           ref={this.mirrorInputRef}

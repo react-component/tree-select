@@ -1,6 +1,7 @@
 /**
- * ARIA: https://www.w3.org/TR/2017/NOTE-wai-aria-practices-1.1-20171214/examples/combobox/aria1.1pattern/listbox-combo.html
- * Sample: https://www.w3.org/blog/wai-components-gallery/widget/combobox-with-aria-autocompleteinline/
+ * ARIA: https://www.w3.org/TR/wai-aria/#combobox
+ * Sample 1: https://www.w3.org/TR/2017/NOTE-wai-aria-practices-1.1-20171214/examples/combobox/aria1.1pattern/listbox-combo.html
+ * Sample 2: https://www.w3.org/blog/wai-components-gallery/widget/combobox-with-aria-autocompleteinline/
  *
  * Tab logic:
  * Popup is close
@@ -269,7 +270,7 @@ class Select extends React.Component {
 
     // ARIA need `aria-controls` props mapping
     // Since this need user input. Let's generate ourselves
-    this.ariaId = generateAriaId(prefixAria);
+    this.ariaId = generateAriaId(`${prefixAria}-list`);
   }
 
   getChildContext() {

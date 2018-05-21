@@ -27,6 +27,8 @@ class BasePopup extends React.Component {
     filteredTreeNodes: PropTypes.node,
     notFoundContent: PropTypes.string,
 
+    ariaId: PropTypes.string,
+
     // HOC
     renderSearch: PropTypes.func,
   };
@@ -58,6 +60,7 @@ class BasePopup extends React.Component {
       treeIcon, treeCheckable, treeCheckStrictly, multiple,
       treeDefaultExpandAll, treeDefaultExpandedKeys,
       notFoundContent,
+      ariaId,
 
       renderSearch,
     } = this.props;
@@ -122,7 +125,10 @@ class BasePopup extends React.Component {
 
     return (
       <div
+        role="listbox"
+        id={ariaId}
         onKeyDown={onPopupKeyDown}
+        tabIndex={-1}
       >
         {renderSearch ? renderSearch() : null}
         {$tree}

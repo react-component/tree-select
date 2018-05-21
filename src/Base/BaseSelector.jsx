@@ -58,6 +58,7 @@ export default function (modeName) {
       this.domRef = createRef();
     }
 
+    // TODO: When is `combobox`, focus should on the text input
     onFocus = (...args) => {
       const { onFocus, focused } = this.props;
       const { rcTreeSelect: { onSelectorFocus } } = this.context;
@@ -150,10 +151,10 @@ export default function (modeName) {
           ref={this.domRef}
 
           role="combobox"
-          aria-autocomplete="list"
-          aria-haspopup="true"
           aria-expanded={open}
-          aria-controls={`${ariaId}_list`}
+          aria-owns={open ? ariaId : undefined}
+          aria-controls={open ? ariaId : undefined}
+          aria-haspopup="listbox"
           tabIndex={0}
 
           onFocus={this.onFocus}
