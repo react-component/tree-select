@@ -1,5 +1,5 @@
 import React from 'react';
-import { traverseTreeNodes } from 'rc-tree/lib/util';
+// import { traverseTreeNodes, getPosition } from 'rc-tree/lib/util';
 import SelectNode from './SelectNode';
 import { SHOW_CHILD, SHOW_PARENT } from './strategies';
 
@@ -134,18 +134,74 @@ export function isLabelInValue(props) {
 
 // =================== Tree ====================
 /**
- * Cover `treeData` to `TreeNode` structure.
- * `label` will force replace the `title` props.
- * ref: https://github.com/ant-design/ant-design/issues/9879
+ * `Tree` use `key` to track state but it will changed by React.
+ * We need convert it back to the data and re-generate by `key`.
+ * This is will cause performance issue.
  */
-export function dataToTree(treeData) {
+export function convertTreeToData(treeNodes) {
+  return React.Children.map(treeNodes || [], (node) => {
+    if (!React.isValidElement(node) || !node.type || !node.type.isTreeNode) {
+      return null;
+    }
+
+    const { key, props } = node;
+
+    return {
+      ...props,
+      key,
+      children: convertTreeToData(props.children),
+    };
+  }).filter(data => data);
+}
+
+/**
+ * Convert `treeData` to TreeNode List contains the mapping data.
+ */
+export function convertDataToEntities(treeData) {
   const list = toArray(treeData);
 
-  return list.map(({ key, title, label, children ,...nodeProps }) => (
-    <SelectNode key={key} {...nodeProps} title={label || title} label={label}>
-      {dataToTree(children)}
-    </SelectNode>
-  ));
+  const valueEntities = {};
+  const keyEntities = {};
+  const posEntities = {};
+
+  function traverse(subTreeData, parentPos) {
+    const subList = toArray(subTreeData);
+
+    return subList.map(({ key, title, label, value, children ,...nodeProps }, index) => {
+      const pos = `${parentPos}-${index}`;
+      const node = (
+        <SelectNode key={key} {...nodeProps} title={label || title} label={label} value={value}>
+          {traverse(children, pos)}
+        </SelectNode>
+      );
+
+      const entity = { node, key, value, pos };
+
+      // Fill children
+      entity.parent = posEntities[parentPos];
+      if (entity.parent) {
+        entity.parent.children = entity.parent.children || [];
+        entity.parent.children.push(entity);
+      }
+
+      // Fill entities
+      valueEntities[value] = entity;
+      keyEntities[key] = entity;
+      posEntities[pos] = entity;
+
+      return node;
+    });
+  }
+
+  const treeNodes = traverse(list, '0');
+
+  return {
+    treeNodes,
+
+    valueEntities,
+    keyEntities,
+    posEntities,
+  };
 }
 
 /**
@@ -199,9 +255,9 @@ export function getFilterTree(treeNodes, searchValue, filterFunc) {
     return null;
   }
 
-  return dataToTree(
+  return convertDataToEntities(
     treeNodes.map(mapFilteredNodeToData).filter(node => node)
-  );
+  ).treeNodes;
 }
 
 // =================== Value ===================
@@ -303,48 +359,12 @@ export function formatSelectorValue(valueList, props, valueEntities) {
 }
 
 /**
- * Convert TreeNode list to a key-value map.
- * Key: `value` prop of TreeNode
- * Value: { node, key, pos, value }
- */
-export function mapNodesToValueEntities(treeNodes) {
-  const valueEntities = {};
-  const keyEntities = {};
-  const posEntities = {};
-
-  traverseTreeNodes(treeNodes, ({ node, key, pos, parentPos }) => {
-    if (!node || !node.props) return;
-
-    const { value } = node.props;
-    const entity = { node, key, value, pos };
-
-    // Fill children
-    if (parentPos) {
-      entity.parent = posEntities[parentPos];
-      entity.parent.children = entity.parent.children || [];
-      entity.parent.children.push(entity);
-    }
-
-    valueEntities[value] = entity;
-    keyEntities[key] = entity;
-    posEntities[pos] = entity;
-  });
-
-  return {
-    valueEntities,
-    keyEntities,
-    posEntities,
-  };
-}
-
-/**
  * When user search the tree, will not get correct tree checked status.
  * For checked key, use the `rc-tree` `calcCheckStateConduct` function.
  * For unchecked key, we need the calculate ourselves.
  */
 export function calcUncheckConduct(keyList, uncheckedKey, keyEntities) {
   let myKeyList = keyList.slice();
-  console.log('asdassdsad', myKeyList);
 
   function conductUp(conductKey) {
     myKeyList = myKeyList.filter(key => key !== conductKey);

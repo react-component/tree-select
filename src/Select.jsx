@@ -37,8 +37,8 @@ import { SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './strategies';
 import {
   createRef, generateAriaId,
   formatInternalValue, formatSelectorValue,
-  mapNodesToValueEntities, calcUncheckConduct,
-  dataToTree, flatToHierarchy,
+  convertDataToEntities, convertTreeToData, calcUncheckConduct,
+  flatToHierarchy,
   isPosRelated, isLabelInValue, getFilterTree,
 } from './util';
 import { valueProp } from './propTypes';
@@ -142,24 +142,25 @@ class Select extends React.Component {
     });
 
     // Tree Nodes
+    let treeData;
     processState('treeData', (propValue) => {
-      newState.treeNodes = dataToTree(propValue);
-      valueRefresh = true;
+      treeData = propValue;
     });
 
     // If `treeData` not provide, use children TreeNodes
     if (!('treeData' in nextProps)) {
       processState('children', (propValue) => {
-        newState.treeNodes = React.Children.toArray(propValue);
-        valueRefresh = true;
+        treeData = convertTreeToData(propValue);
       });
     }
 
-    // Entity List
-    if (newState.treeNodes) {
-      const { valueEntities, keyEntities } = mapNodesToValueEntities(newState.treeNodes);
+    // Convert `treeData` to entities
+    if (treeData) {
+      const { treeNodes, valueEntities, keyEntities } = convertDataToEntities(treeData);
+      newState.treeNodes = treeNodes;
       newState.valueEntities = valueEntities;
       newState.keyEntities = keyEntities;
+      valueRefresh = true;
     }
 
     // Value List

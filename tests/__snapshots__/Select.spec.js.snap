@@ -3,7 +3,7 @@
 exports[`TreeSelect.basic check title when label is a object 1`] = `
 <span
   aria-autocomplete="list"
-  aria-controls="RC_TREE_SELECT_rc-tree-select_26_list"
+  aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
   aria-haspopup="true"
   class="rc-tree-select rc-tree-select-enabled"
   role="combobox"

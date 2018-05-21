@@ -255,7 +255,7 @@ describe('TreeSelect.basic', () => {
     );
   });
 
-  it('expands tree nodes by treeDefaultExpandedKeys', () => {
+  it.only('expands tree nodes by treeDefaultExpandedKeys', () => {
     const wrapper = mount(
       <TreeSelect open treeDefaultExpandedKeys={['1']}>
         <TreeNode key="0" value="0" title="0 label"/>
@@ -265,6 +265,7 @@ describe('TreeSelect.basic', () => {
         </TreeNode>
       </TreeSelect>
     );
+
     const node = wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(1);
     expect(node.hasClass('rc-tree-select-tree-node-content-wrapper-open')).toBe(true);
   });
@@ -354,7 +355,7 @@ describe('TreeSelect.basic', () => {
     });
   });
 
-  it.only('check title when label is a object', () => {
+  it('check title when label is a object', () => {
     const wrapper = render(
       <TreeSelect defaultValue="0">
         <TreeNode title={<span>Do not show</span>} value="0" key="0" />
