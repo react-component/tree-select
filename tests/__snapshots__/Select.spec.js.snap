@@ -2,9 +2,7 @@
 
 exports[`TreeSelect.basic check title when label is a object 1`] = `
 <span
-  aria-autocomplete="list"
-  aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
-  aria-haspopup="true"
+  aria-haspopup="listbox"
   class="rc-tree-select rc-tree-select-enabled"
   role="combobox"
   tabindex="0"
@@ -35,9 +33,7 @@ exports[`TreeSelect.basic check title when label is a object 1`] = `
 
 exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
 <span
-  aria-autocomplete="list"
-  aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
-  aria-haspopup="true"
+  aria-haspopup="listbox"
   class="rc-tree-select rc-tree-select-enabled"
   role="combobox"
   tabindex="0"
@@ -64,9 +60,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
 
 exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`] = `
 <span
-  aria-autocomplete="list"
-  aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
-  aria-haspopup="true"
+  aria-haspopup="listbox"
   class="rc-tree-select rc-tree-select-enabled"
   role="combobox"
   tabindex="0"
@@ -93,9 +87,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
 
 exports[`TreeSelect.basic render renders correctly 1`] = `
 <span
-  aria-autocomplete="list"
-  aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
-  aria-haspopup="true"
+  aria-haspopup="listbox"
   class="forTest awesome awesome-enabled"
   role="combobox"
   style="width:300px"
@@ -106,6 +98,7 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
   >
     <ul
       class="awesome-selection__rendered"
+      role="menubar"
     >
       <li
         class="awesome-search awesome-search--inline"
@@ -114,7 +107,11 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
           class="awesome-search__field__wrap"
         >
           <input
+            aria-autocomplete="list"
+            aria-label="filter select"
+            aria-multiline="false"
             class="awesome-search__field"
+            type="text"
             value=""
           />
           <span
@@ -131,9 +128,7 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
 
 exports[`TreeSelect.basic render renders disabled correctly 1`] = `
 <span
-  aria-autocomplete="list"
-  aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
-  aria-haspopup="true"
+  aria-haspopup="listbox"
   class="rc-tree-select rc-tree-select-disabled"
   role="combobox"
   tabindex="0"
@@ -160,9 +155,7 @@ exports[`TreeSelect.basic render renders disabled correctly 1`] = `
 
 exports[`TreeSelect.basic render renders tree correctly 1`] = `
 <span
-  aria-autocomplete="list"
-  aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
-  aria-haspopup="true"
+  aria-haspopup="listbox"
   class="rc-tree-select rc-tree-select-enabled"
   role="combobox"
   tabindex="0"
@@ -172,6 +165,7 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
   >
     <ul
       class="rc-tree-select-selection__rendered"
+      role="menubar"
     >
       <li
         class="rc-tree-select-search rc-tree-select-search--inline"
@@ -180,7 +174,11 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
           class="rc-tree-select-search__field__wrap"
         >
           <input
+            aria-autocomplete="list"
+            aria-label="filter select"
+            aria-multiline="false"
             class="rc-tree-select-search__field"
+            type="text"
             value=""
           />
           <span
@@ -197,9 +195,7 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
 
 exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
 <span
-  aria-autocomplete="list"
-  aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
-  aria-haspopup="true"
+  aria-haspopup="listbox"
   class="rc-tree-select rc-tree-select-enabled"
   role="combobox"
   tabindex="0"
@@ -227,10 +223,10 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
 exports[`TreeSelect.basic search nodes renders search input 1`] = `
 Array [
   <span
-    aria-autocomplete="list"
-    aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
+    aria-controls="rc-tree-select-list_1"
     aria-expanded="true"
-    aria-haspopup="true"
+    aria-haspopup="listbox"
+    aria-owns="rc-tree-select-list_1"
     class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
     role="combobox"
     tabindex="0"
@@ -258,7 +254,11 @@ Array [
       class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
       style="visibility:hidden"
     >
-      <div>
+      <div
+        id="rc-tree-select-list_1"
+        role="listbox"
+        tabindex="-1"
+      >
         <span
           class="rc-tree-select-dropdown-search"
         >
@@ -266,7 +266,12 @@ Array [
             class="rc-tree-select-search__field__wrap"
           >
             <input
+              aria-autocomplete="list"
+              aria-controls="rc-tree-select-list_1"
+              aria-label="filter select"
+              aria-multiline="false"
               class="rc-tree-select-search__field"
+              type="text"
               value=""
             />
             <span
