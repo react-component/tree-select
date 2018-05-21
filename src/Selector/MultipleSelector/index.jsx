@@ -5,6 +5,7 @@ import Animate from 'rc-animate';
 import generateSelector, { selectorPropTypes } from '../../Base/BaseSelector';
 import SearchInput from '../../SearchInput';
 import Selection from './Selection';
+import { createRef } from '../../util';
 
 const Selector = generateSelector('multiple');
 
@@ -28,6 +29,18 @@ class MultipleSelector extends React.Component {
 
       onSearchInputChange: PropTypes.func,
     }),
+  };
+
+  constructor() {
+    super();
+    this.inputRef = createRef();
+  }
+
+  focus = () => {
+    this.inputRef.current.focus();
+  };
+  blur = () => {
+    this.inputRef.current.blur();
   };
 
   renderPlaceholder = () => {
@@ -76,7 +89,7 @@ class MultipleSelector extends React.Component {
       className={`${prefixCls}-search ${prefixCls}-search--inline`}
       key="__input"
     >
-      <SearchInput {...this.props} needAlign />
+      <SearchInput {...this.props} ref={this.inputRef} needAlign />
     </li>);
     const className = `${prefixCls}-selection__rendered`;
     if (choiceTransitionName) {

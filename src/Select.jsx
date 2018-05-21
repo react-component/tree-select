@@ -51,6 +51,7 @@ class Select extends React.Component {
     showArrow: PropTypes.bool,
     open: PropTypes.bool,
     value: valueProp,
+    autoFocus: PropTypes.bool,
 
     defaultOpen: PropTypes.bool,
     defaultValue: valueProp,
@@ -263,11 +264,8 @@ class Select extends React.Component {
       searchValue: '',
     };
 
+    this.selectorRef = createRef();
     this.selectTriggerRef = createRef();
-    this.searchInputRef = createRef();
-    // IE need addition check for the content width
-    // ref: https://github.com/react-component/tree-select/issues/65
-    this.searchMirrorInstanceRef = createRef();
 
     // ARIA need `aria-controls` props mapping
     // Since this need user input. Let's generate ourselves
@@ -292,6 +290,14 @@ class Select extends React.Component {
         onSearchInputChange: this.onSearchInputChange,
       },
     };
+  }
+
+  componentDidMount() {
+    const { autoFocus, disabled } = this.props;
+
+    if (autoFocus && !disabled) {
+      this.focus();
+    }
   }
 
   componentDidUpdate(_, prevState) {
@@ -655,6 +661,14 @@ class Select extends React.Component {
     }
   };
 
+  focus() {
+    this.selectorRef.current.focus();
+  }
+
+  blur() {
+    this.selectorRef.current.blur();
+  }
+
   // ===================== Render =====================
 
   render() {
@@ -693,7 +707,7 @@ class Select extends React.Component {
     );
 
     const Selector = isMultiple ? MultipleSelector : SingleSelector;
-    const $selector = <Selector {...passProps} />;
+    const $selector = <Selector {...passProps} ref={this.selectorRef} />;
 
     return (
       <SelectTrigger

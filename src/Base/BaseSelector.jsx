@@ -55,7 +55,7 @@ export default function (modeName) {
     constructor() {
       super();
 
-      this.selectionRef = createRef();
+      this.domRef = createRef();
     }
 
     onFocus = (...args) => {
@@ -82,6 +82,14 @@ export default function (modeName) {
         onBlur(...args);
       }
     };
+
+    focus = () => {
+      this.domRef.current.focus();
+    }
+
+    blur = () => {
+      this.domRef.current.focus();
+    }
 
     renderClear() {
       const { prefixCls, allowClear, valueList } = this.props;
@@ -139,6 +147,8 @@ export default function (modeName) {
             [`${prefixCls}-allow-clear`]: allowClear,
           })}
 
+          ref={this.domRef}
+
           role="combobox"
           aria-autocomplete="list"
           aria-haspopup="true"
@@ -151,7 +161,6 @@ export default function (modeName) {
           onKeyDown={onSelectorKeyDown}
         >
           <span
-            ref={this.selectionRef}
             key="selection"
             className={classNames(
               `${prefixCls}-selection`,
