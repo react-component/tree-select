@@ -526,14 +526,15 @@ exports[`TreeSelect.props animation 1`] = `
 exports[`TreeSelect.props basic 1`] = `
 <div>
   <span
+    aria-autocomplete="list"
+    aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
+    aria-haspopup="true"
     class="rc-tree-select rc-tree-select-enabled"
+    role="combobox"
+    tabindex="0"
   >
     <span
-      aria-autocomplete="list"
-      aria-haspopup="true"
       class="rc-tree-select-selection rc-tree-select-selection--single"
-      role="combobox"
-      tabindex="0"
     >
       <span
         class="rc-tree-select-selection__rendered"
@@ -556,16 +557,17 @@ exports[`TreeSelect.props basic 1`] = `
 exports[`TreeSelect.props basic 2`] = `
 <div>
   <span
+    aria-autocomplete="list"
+    aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
+    aria-expanded="true"
+    aria-haspopup="true"
     class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
+    role="combobox"
     style=""
+    tabindex="0"
   >
     <span
-      aria-autocomplete="list"
-      aria-expanded="true"
-      aria-haspopup="true"
       class="rc-tree-select-selection rc-tree-select-selection--single"
-      role="combobox"
-      tabindex="0"
     >
       <span
         class="rc-tree-select-selection__rendered"
@@ -585,7 +587,7 @@ exports[`TreeSelect.props basic 2`] = `
   <div>
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
-      style="left: -999px; top: -995px;"
+      style="left: -999px; top: -995px; min-width: 0;"
     >
       <div>
         <span
@@ -596,7 +598,6 @@ exports[`TreeSelect.props basic 2`] = `
           >
             <input
               class="rc-tree-select-search__field"
-              role="textbox"
               value=""
             />
             <span
@@ -612,7 +613,7 @@ exports[`TreeSelect.props basic 2`] = `
           unselectable="on"
         >
           <li
-            class=""
+            class="rc-tree-select-tree-treenode-switcher-close"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_close"
@@ -629,7 +630,7 @@ exports[`TreeSelect.props basic 2`] = `
             </span>
           </li>
           <li
-            class=""
+            class="rc-tree-select-tree-treenode-switcher-close"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
