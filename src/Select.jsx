@@ -677,6 +677,9 @@ class Select extends Component {
       if (singleValue.value === selectedVal) {
         label = singleValue.label;
       }
+      if (selectedVal.value) {
+        return (singleValue.value !== selectedVal.value);
+      }
       return (singleValue.value !== selectedVal);
     });
     const canMultiple = isMultiple(props);
