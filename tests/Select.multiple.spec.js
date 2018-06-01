@@ -149,4 +149,10 @@ describe('TreeSelect.multiple', () => {
     expect(wrapper.state('open')).toBe(false);
     expect(wrapper.state('value')).toEqual([{ label: 'label1', value: '1' }]);
   });
+
+  it('renders select multiple with arrow', () => {
+    const wrapper = render(createSelect({ multipleShowArrow: true }));
+
+    expect(wrapper.find('.rc-tree-select-arrow')).toHaveLength(1);
+  });
 });

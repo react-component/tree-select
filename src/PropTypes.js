@@ -57,6 +57,7 @@ export const SelectPropTypes = {
   className: PropTypes.string,
   prefixCls: PropTypes.string,
   multiple: PropTypes.bool,
+  multipleShowArrow: PropTypes.bool,
   filterTreeNode: PropTypes.any,
   showSearch: PropTypes.bool,
   disabled: PropTypes.bool,
