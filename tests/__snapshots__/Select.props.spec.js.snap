@@ -2189,17 +2189,17 @@ exports[`TreeSelect.props showArrow 1`] = `
 exports[`TreeSelect.props showSearch 1`] = `
 <div>
   <span
+    aria-controls="rc-tree-select-list_1"
+    aria-expanded="true"
+    aria-haspopup="listbox"
+    aria-owns="rc-tree-select-list_1"
     class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
+    role="combobox"
     style=""
+    tabindex="0"
   >
     <span
-      aria-autocomplete="list"
-      aria-expanded="true"
-      aria-haspopup="true"
-      class="rc-tree-select-selection
-            rc-tree-select-selection--single"
-      role="combobox"
-      tabindex="0"
+      class="rc-tree-select-selection rc-tree-select-selection--single"
     >
       <span
         class="rc-tree-select-selection__rendered"
@@ -2219,16 +2219,20 @@ exports[`TreeSelect.props showSearch 1`] = `
   <div>
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
-      style="left: -999px; top: -995px;"
+      style="left: -999px; top: -995px; min-width: 0;"
     >
-      <div>
+      <div
+        id="rc-tree-select-list_1"
+        role="listbox"
+        tabindex="-1"
+      >
         <ul
           class="rc-tree-select-tree"
           role="tree-node"
           unselectable="on"
         >
           <li
-            class=""
+            class="rc-tree-select-tree-treenode-switcher-open"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -2248,7 +2252,7 @@ exports[`TreeSelect.props showSearch 1`] = `
               data-expanded="true"
             >
               <li
-                class=""
+                class="rc-tree-select-tree-treenode-switcher-open"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -2265,7 +2269,7 @@ exports[`TreeSelect.props showSearch 1`] = `
                 </span>
               </li>
               <li
-                class=""
+                class="rc-tree-select-tree-treenode-switcher-open"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -2284,7 +2288,7 @@ exports[`TreeSelect.props showSearch 1`] = `
             </ul>
           </li>
           <li
-            class=""
+            class="rc-tree-select-tree-treenode-switcher-open"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"

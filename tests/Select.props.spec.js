@@ -109,7 +109,7 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it.only('filterTreeNode', () => {
+  it('filterTreeNode', () => {
     function filterTreeNode(input, child) {
       return String(child.props.title).indexOf(input) !== -1;
     }
@@ -121,7 +121,7 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('showSearch', () => {
+  it.only('showSearch', () => {
     const wrapper = mount(createOpenSelect({ showSearch: false }));
     expect(wrapper.render()).toMatchSnapshot();
   });
