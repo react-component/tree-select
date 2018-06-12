@@ -1,5 +1,16 @@
-import { genAnimate } from 'rc-animate';
+import React from 'react';
+import Animate, { genAnimate } from 'rc-animate';
 import { genAnimateChild } from 'rc-animate/lib/AnimateChild';
 
-const AnimateChild = genAnimateChild(true);
-export default genAnimate(AnimateChild);
+let mockTransition = true;
+
+export function setMock(useTransitionMock) {
+  mockTransition = useTransitionMock;
+}
+
+const MockAnimateChild = genAnimateChild(true);
+const MockAnimate = genAnimate(MockAnimateChild);
+
+export default (props) => (
+  mockTransition ? <MockAnimate {...props} /> : <Animate {...props} />
+);

@@ -6,6 +6,7 @@ import Tree, { TreeNode } from 'rc-tree';
 import Trigger from 'rc-trigger';
 import TreeSelect, { SHOW_ALL, SHOW_CHILD, SHOW_PARENT, TreeNode as SelectNode } from '../src';
 import { resetAriaId } from '../src/util';
+import { setMock } from './__mocks__/rc-animate';
 
 // Promisify timeout to let jest catch works
 function timeoutPromise(delay = 0) {
@@ -121,18 +122,21 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it.only('showSearch', () => {
+  it('showSearch', () => {
     const wrapper = mount(createOpenSelect({ showSearch: false }));
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('allowClear', () => {
+  it.only('allowClear', () => {
+    setMock(false);
     const handleChange = jest.fn();
 
-    const wrapper = mount(createOpenSelect({
+    const wrapper = mount(createSelect({
       allowClear: true,
       onChange: handleChange,
+      treeDefaultExpandAll: true,
     }));
+    wrapper.find('.rc-tree-select').simulate('click');
     expect(wrapper.render()).toMatchSnapshot();
 
     // Click node 0-1
