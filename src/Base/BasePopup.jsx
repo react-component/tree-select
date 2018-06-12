@@ -39,6 +39,8 @@ class BasePopup extends React.Component {
     }),
   };
 
+  state = {};
+
   static getDerivedStateFromProps(nextProps, prevState) {
     const { valueList, valueEntities } = nextProps;
     if (valueList !== prevState.valueList) {
@@ -49,8 +51,6 @@ class BasePopup extends React.Component {
     }
     return null;
   }
-
-  state = {};
 
   render() {
     const { keyList } = this.state;

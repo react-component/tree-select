@@ -90,6 +90,16 @@ class Select extends React.Component {
     onDropdownVisibleChange: PropTypes.func,
   };
 
+  static childContextTypes = {
+    rcTreeSelect: PropTypes.shape({
+      ...selectorContextTypes,
+      ...multipleSelectorContextTypes,
+      ...popupContextTypes,
+
+      onSearchInputChange: PropTypes.func,
+    }),
+  };
+
   static defaultProps = {
     prefixCls: 'rc-tree-select',
     prefixAria: 'rc-tree-select',
@@ -105,15 +115,51 @@ class Select extends React.Component {
     notFoundContent: 'Not Found',
   };
 
-  static childContextTypes = {
-    rcTreeSelect: PropTypes.shape({
-      ...selectorContextTypes,
-      ...multipleSelectorContextTypes,
-      ...popupContextTypes,
+  constructor(props) {
+    super(props);
 
-      onSearchInputChange: PropTypes.func,
-    }),
-  };
+    const {
+      prefixAria,
+      defaultOpen, defaultValue,
+      open,
+    } = props;
+
+    this.state = {
+      open: open || defaultOpen,
+      valueList: defaultValue ? formatInternalValue(defaultValue, props) : [],
+      selectorValueList: [], // Used for multiple selector
+      valueEntities: {},
+      keyEntities: {},
+      searchValue: '',
+    };
+
+    this.selectorRef = createRef();
+    this.selectTriggerRef = createRef();
+
+    // ARIA need `aria-controls` props mapping
+    // Since this need user input. Let's generate ourselves
+    this.ariaId = generateAriaId(`${prefixAria}-list`);
+  }
+
+  getChildContext() {
+    // TODO: Handle this
+    return {
+      rcTreeSelect: {
+        onSelectorFocus: this.onSelectorFocus,
+        onSelectorBlur: this.onSelectorBlur,
+        onSelectorKeyDown: this.onComponentKeyDown,
+        onSelectorClear: this.onSelectorClear,
+        onMultipleSelectorRemove: this.onMultipleSelectorRemove,
+
+        onTreeNodeSelect: this.onTreeNodeSelect,
+        onTreeNodeCheck: this.onTreeNodeCheck,
+        onPopupKeyDown: this.onComponentKeyDown,
+        // onTreeStateUpdate: this.onTreeStateUpdate,
+
+        onSearchInputChange: this.onSearchInputChange,
+      },
+    };
+  }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     // React 16.4 will support `prevProps` natively.
@@ -245,52 +291,6 @@ class Select extends React.Component {
     });
 
     return newState;
-  }
-
-  constructor(props) {
-    super(props);
-
-    const {
-      prefixAria,
-      defaultOpen, defaultValue,
-      open,
-    } = props;
-
-    this.state = {
-      open: open || defaultOpen,
-      valueList: defaultValue ? formatInternalValue(defaultValue, props) : [],
-      selectorValueList: [], // Used for multiple selector
-      valueEntities: {},
-      keyEntities: {},
-      searchValue: '',
-    };
-
-    this.selectorRef = createRef();
-    this.selectTriggerRef = createRef();
-
-    // ARIA need `aria-controls` props mapping
-    // Since this need user input. Let's generate ourselves
-    this.ariaId = generateAriaId(`${prefixAria}-list`);
-  }
-
-  getChildContext() {
-    // TODO: Handle this
-    return {
-      rcTreeSelect: {
-        onSelectorFocus: this.onSelectorFocus,
-        onSelectorBlur: this.onSelectorBlur,
-        onSelectorKeyDown: this.onComponentKeyDown,
-        onSelectorClear: this.onSelectorClear,
-        onMultipleSelectorRemove: this.onMultipleSelectorRemove,
-
-        onTreeNodeSelect: this.onTreeNodeSelect,
-        onTreeNodeCheck: this.onTreeNodeCheck,
-        onPopupKeyDown: this.onComponentKeyDown,
-        // onTreeStateUpdate: this.onTreeStateUpdate,
-
-        onSearchInputChange: this.onSearchInputChange,
-      },
-    };
   }
 
   componentDidMount() {

@@ -94,6 +94,7 @@ class MultipleSelector extends React.Component {
     const className = `${prefixCls}-selection__rendered`;
     if (choiceTransitionName) {
       // TODO: onChoiceAnimationLeave
+      console.log('TODO: onChoiceAnimationLeave');
       return (<Animate
         className={className}
         component="ul"
