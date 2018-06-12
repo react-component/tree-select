@@ -49,12 +49,12 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it.only('className', () => {
+  it('className', () => {
     const wrapper = mount(createOpenSelect({ className: 'test-class' }));
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('prefixCls', () => {
+  it.only('prefixCls', () => {
     const wrapper = mount(createOpenSelect({ prefixCls: 'another-cls' }));
     expect(wrapper.render()).toMatchSnapshot();
   });
