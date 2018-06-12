@@ -59,7 +59,7 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it.only('animation', () => {
+  it('animation', () => {
     const wrapper = mount(createSelect({
       animation: 'test-animation',
     }));
@@ -67,7 +67,7 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('transitionName', () => {
+  it.only('transitionName', () => {
     const wrapper = mount(createSelect({
       transitionName: 'test-transitionName',
     }));
