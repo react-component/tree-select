@@ -10,6 +10,26 @@ class SinglePopup extends React.Component {
     showSearch: PropTypes.bool,
     dropdownPrefixCls: PropTypes.string,
     disabled: PropTypes.bool,
+    searchPlaceholder: PropTypes.string,
+    onPlaceholderClick: PropTypes.func,
+  };
+
+  renderPlaceholder = () => {
+    const { valueList, searchPlaceholder, prefixCls, onPlaceholderClick } = this.props;
+
+    if (!searchPlaceholder) return null;
+
+    const hasValue = !!valueList.length;
+
+    return (
+      <span
+        style={{ display: hasValue ? 'none' : 'block' }}
+        onClick={onPlaceholderClick}
+        className={`${prefixCls}-search__field__placeholder`}
+      >
+        {searchPlaceholder}
+      </span>
+    );
   };
 
   renderSearch = () => {
@@ -21,7 +41,10 @@ class SinglePopup extends React.Component {
 
     return (
       <span className={`${dropdownPrefixCls}-search`}>
-        <SearchInput {...this.props} />
+        <SearchInput
+          {...this.props}
+          renderPlaceholder={this.renderPlaceholder}
+        />
       </span>
     );
   };

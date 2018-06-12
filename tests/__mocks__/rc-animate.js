@@ -2,7 +2,7 @@ import React from 'react';
 import Animate, { genAnimate } from 'rc-animate';
 import { genAnimateChild } from 'rc-animate/lib/AnimateChild';
 
-let mockTransition = true;
+let mockTransition = false;
 
 export function setMock(useTransitionMock) {
   mockTransition = useTransitionMock;

@@ -61,22 +61,27 @@ describe('TreeSelect.props', () => {
   });
 
   it('animation', () => {
+    setMock(true);
     const wrapper = mount(createSelect({
       animation: 'test-animation',
     }));
     wrapper.find('.rc-tree-select').simulate('click');
     expect(wrapper.render()).toMatchSnapshot();
+    setMock(false);
   });
 
   it('transitionName', () => {
+    setMock(true);
     const wrapper = mount(createSelect({
       transitionName: 'test-transitionName',
     }));
     wrapper.find('.rc-tree-select').simulate('click');
     expect(wrapper.render()).toMatchSnapshot();
+    setMock(false);
   });
 
   it('choiceTransitionName', () => {
+    setMock(true);
     class Wrapper extends React.Component {
       state = {
         value: [],
@@ -108,6 +113,7 @@ describe('TreeSelect.props', () => {
 
     wrapper.instance().doValueUpdate();
     expect(wrapper.render()).toMatchSnapshot();
+    setMock(false);
   });
 
   it('filterTreeNode', () => {
@@ -127,8 +133,7 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it.only('allowClear', () => {
-    setMock(false);
+  it('allowClear', () => {
     const handleChange = jest.fn();
 
     const wrapper = mount(createSelect({
@@ -176,11 +181,11 @@ describe('TreeSelect.props', () => {
     expect(renderToJson(wrapper)).toMatchSnapshot();
   });
 
-  it('searchPlaceholder', () => {
-    const wrapper = render(createOpenSelect({
+  it.only('searchPlaceholder', () => {
+    const wrapper = mount(createOpenSelect({
       searchPlaceholder: 'RC Component',
     }));
-    expect(renderToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
   it('labelInValue', () => {
