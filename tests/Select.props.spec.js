@@ -75,7 +75,7 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it.only('choiceTransitionName', () => {
+  it('choiceTransitionName', () => {
     class Wrapper extends React.Component {
       state = {
         value: [],
@@ -109,7 +109,7 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('filterTreeNode', () => {
+  it.only('filterTreeNode', () => {
     function filterTreeNode(input, child) {
       return String(child.props.title).indexOf(input) !== -1;
     }
