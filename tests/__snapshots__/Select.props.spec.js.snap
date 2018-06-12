@@ -455,7 +455,7 @@ exports[`TreeSelect.props animation 1`] = `
   </span>
   <div>
     <div
-      class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
+      class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft rc-tree-select-dropdown-test-animation-appear"
       style="left: -999px; top: -995px; min-width: 0;"
     >
       <div
