@@ -181,7 +181,7 @@ describe('TreeSelect.props', () => {
     expect(renderToJson(wrapper)).toMatchSnapshot();
   });
 
-  it.only('searchPlaceholder', () => {
+  it('searchPlaceholder', () => {
     const wrapper = mount(createOpenSelect({
       searchPlaceholder: 'RC Component',
     }));
@@ -225,7 +225,7 @@ describe('TreeSelect.props', () => {
 
   // onChange - is already test above
 
-  it('onSelect', () => {
+  it.only('onSelect', () => {
     const handleSelect = jest.fn();
     const wrapper = mount(createOpenSelect({
       onSelect: handleSelect,

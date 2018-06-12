@@ -613,10 +613,14 @@ class Select extends React.Component {
   triggerChange = (valueList, extraInfo = {}) => {
     const { valueEntities } = this.state;
     const { onChange, disabled } = this.props;
-    const labelList = valueList.map(({ label }) => label);
+    let labelList = null;
 
     if (disabled) {
       return;
+    }
+
+    if (!this.isLabelInValue()) {
+      labelList = valueList.map(({ label }) => label);
     }
 
     // Trigger
