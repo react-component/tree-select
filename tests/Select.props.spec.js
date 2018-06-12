@@ -54,12 +54,12 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it.only('prefixCls', () => {
+  it('prefixCls', () => {
     const wrapper = mount(createOpenSelect({ prefixCls: 'another-cls' }));
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('animation', () => {
+  it.only('animation', () => {
     const wrapper = mount(createSelect({
       animation: 'test-animation',
     }));

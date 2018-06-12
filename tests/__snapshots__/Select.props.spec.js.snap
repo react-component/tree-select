@@ -1737,17 +1737,17 @@ exports[`TreeSelect.props placeholder 1`] = `
 exports[`TreeSelect.props prefixCls 1`] = `
 <div>
   <span
+    aria-controls="rc-tree-select-list_1"
+    aria-expanded="true"
+    aria-haspopup="listbox"
+    aria-owns="rc-tree-select-list_1"
     class="another-cls another-cls-open another-cls-focused another-cls-enabled"
+    role="combobox"
     style=""
+    tabindex="0"
   >
     <span
-      aria-autocomplete="list"
-      aria-expanded="true"
-      aria-haspopup="true"
-      class="another-cls-selection
-            another-cls-selection--single"
-      role="combobox"
-      tabindex="0"
+      class="another-cls-selection another-cls-selection--single"
     >
       <span
         class="another-cls-selection__rendered"
@@ -1767,9 +1767,13 @@ exports[`TreeSelect.props prefixCls 1`] = `
   <div>
     <div
       class="another-cls-dropdown another-cls-dropdown--single another-cls-dropdown-placement-bottomLeft "
-      style="left: -999px; top: -995px;"
+      style="left: -999px; top: -995px; min-width: 0;"
     >
-      <div>
+      <div
+        id="rc-tree-select-list_1"
+        role="listbox"
+        tabindex="-1"
+      >
         <span
           class="another-cls-dropdown-search"
         >
@@ -1777,8 +1781,12 @@ exports[`TreeSelect.props prefixCls 1`] = `
             class="another-cls-search__field__wrap"
           >
             <input
+              aria-autocomplete="list"
+              aria-controls="rc-tree-select-list_1"
+              aria-label="filter select"
+              aria-multiline="false"
               class="another-cls-search__field"
-              role="textbox"
+              type="text"
               value=""
             />
             <span
@@ -1794,7 +1802,7 @@ exports[`TreeSelect.props prefixCls 1`] = `
           unselectable="on"
         >
           <li
-            class=""
+            class="another-cls-tree-treenode-switcher-open"
           >
             <span
               class="another-cls-tree-switcher another-cls-tree-switcher_open"
@@ -1814,7 +1822,7 @@ exports[`TreeSelect.props prefixCls 1`] = `
               data-expanded="true"
             >
               <li
-                class=""
+                class="another-cls-tree-treenode-switcher-open"
               >
                 <span
                   class="another-cls-tree-switcher another-cls-tree-switcher-noop"
@@ -1831,7 +1839,7 @@ exports[`TreeSelect.props prefixCls 1`] = `
                 </span>
               </li>
               <li
-                class=""
+                class="another-cls-tree-treenode-switcher-open"
               >
                 <span
                   class="another-cls-tree-switcher another-cls-tree-switcher-noop"
@@ -1850,7 +1858,7 @@ exports[`TreeSelect.props prefixCls 1`] = `
             </ul>
           </li>
           <li
-            class=""
+            class="another-cls-tree-treenode-switcher-open"
           >
             <span
               class="another-cls-tree-switcher another-cls-tree-switcher-noop"
