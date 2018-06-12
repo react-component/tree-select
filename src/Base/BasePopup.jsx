@@ -8,7 +8,6 @@ export const popupContextTypes = {
   onPopupKeyDown: PropTypes.func.isRequired,
   onTreeNodeSelect: PropTypes.func.isRequired,
   onTreeNodeCheck: PropTypes.func.isRequired,
-  onTreeStateUpdate: PropTypes.func,
 };
 
 class BasePopup extends React.Component {
@@ -68,7 +67,6 @@ class BasePopup extends React.Component {
       onPopupKeyDown,
       onTreeNodeSelect,
       onTreeNodeCheck,
-      onTreeStateUpdate,
     } } = this.context;
 
     const treeProps = {};
@@ -114,7 +112,6 @@ class BasePopup extends React.Component {
 
           onSelect={onTreeNodeSelect}
           onCheck={onTreeNodeCheck}
-          internalOnStateUpdate={onTreeStateUpdate}
 
           {...treeProps}
         >

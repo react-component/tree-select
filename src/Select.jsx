@@ -154,7 +154,6 @@ class Select extends React.Component {
         onTreeNodeSelect: this.onTreeNodeSelect,
         onTreeNodeCheck: this.onTreeNodeCheck,
         onPopupKeyDown: this.onComponentKeyDown,
-        // onTreeStateUpdate: this.onTreeStateUpdate,
 
         onSearchInputChange: this.onSearchInputChange,
       },
@@ -499,20 +498,6 @@ class Select extends React.Component {
     }
 
     this.onValueTrigger(isAdd, checkedNodes, nodeEventInfo, extraInfo);
-  };
-
-  /**
-   * This function triggered when `Tree` value update.
-   * We need to get the accurate checked value when `treeCheckable` and not `treeCheckStrictly`.
-   */
-  onTreeStateUpdate = (treeState) => {
-    const { treeCheckable, treeCheckStrictly } = this.props;
-    const { checkedKeys } = treeState;
-
-    // Get the value passed by tree.
-    if ((treeCheckable && !treeCheckStrictly) && checkedKeys) {
-      console.log('Tree Update:', checkedKeys);
-    }
   };
 
   // ==================== Trigger =====================
