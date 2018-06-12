@@ -21,6 +21,7 @@ class MultipleSelector extends React.Component {
     searchValue: PropTypes.string,
 
     onPlaceholderClick: PropTypes.func,
+    onChoiceAnimationLeave: PropTypes.func,
   };
 
   static contextTypes = {
@@ -72,6 +73,7 @@ class MultipleSelector extends React.Component {
   renderSelection = () => {
     const {
       selectorValueList, choiceTransitionName, prefixCls,
+      onChoiceAnimationLeave,
     } = this.props;
     const { rcTreeSelect: { onMultipleSelectorRemove } } = this.context;
 
@@ -93,13 +95,11 @@ class MultipleSelector extends React.Component {
     </li>);
     const className = `${prefixCls}-selection__rendered`;
     if (choiceTransitionName) {
-      // TODO: onChoiceAnimationLeave
-      console.log('TODO: onChoiceAnimationLeave');
       return (<Animate
         className={className}
         component="ul"
         transitionName={choiceTransitionName}
-        onLeave={this.onChoiceAnimationLeave}
+        onLeave={onChoiceAnimationLeave}
       >
         {selectedValueNodes}
       </Animate>);

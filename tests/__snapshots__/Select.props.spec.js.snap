@@ -664,14 +664,13 @@ exports[`TreeSelect.props basic 2`] = `
 exports[`TreeSelect.props choiceTransitionName 1`] = `
 <div>
   <span
+    aria-haspopup="listbox"
     class="rc-tree-select rc-tree-select-enabled"
+    role="combobox"
+    tabindex="0"
   >
     <span
-      aria-autocomplete="list"
-      aria-haspopup="true"
-      class="rc-tree-select-selection
-            rc-tree-select-selection--multiple"
-      role="combobox"
+      class="rc-tree-select-selection rc-tree-select-selection--multiple"
     >
       <ul
         class="rc-tree-select-selection__rendered"
@@ -683,8 +682,12 @@ exports[`TreeSelect.props choiceTransitionName 1`] = `
             class="rc-tree-select-search__field__wrap"
           >
             <input
+              aria-autocomplete="list"
+              aria-label="filter select"
+              aria-multiline="false"
               class="rc-tree-select-search__field"
-              role="textbox"
+              style="width: 0px;"
+              type="text"
               value=""
             />
             <span
@@ -703,20 +706,20 @@ exports[`TreeSelect.props choiceTransitionName 1`] = `
 exports[`TreeSelect.props choiceTransitionName 2`] = `
 <div>
   <span
+    aria-haspopup="listbox"
     class="rc-tree-select rc-tree-select-enabled"
+    role="combobox"
+    tabindex="0"
   >
     <span
-      aria-autocomplete="list"
-      aria-haspopup="true"
-      class="rc-tree-select-selection
-            rc-tree-select-selection--multiple"
-      role="combobox"
+      class="rc-tree-select-selection rc-tree-select-selection--multiple"
     >
       <ul
         class="rc-tree-select-selection__rendered"
       >
         <li
           class="rc-tree-select-selection__choice test-choiceTransitionName-enter"
+          role="menuitem"
           title="Title 0"
           unselectable="unselectable"
         >
@@ -736,8 +739,12 @@ exports[`TreeSelect.props choiceTransitionName 2`] = `
             class="rc-tree-select-search__field__wrap"
           >
             <input
+              aria-autocomplete="list"
+              aria-label="filter select"
+              aria-multiline="false"
               class="rc-tree-select-search__field"
-              role="textbox"
+              style="width: 0px;"
+              type="text"
               value=""
             />
             <span

@@ -67,7 +67,7 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it.only('transitionName', () => {
+  it('transitionName', () => {
     const wrapper = mount(createSelect({
       transitionName: 'test-transitionName',
     }));
@@ -75,7 +75,7 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('choiceTransitionName', () => {
+  it.only('choiceTransitionName', () => {
     class Wrapper extends React.Component {
       state = {
         value: [],

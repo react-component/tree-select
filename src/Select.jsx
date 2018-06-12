@@ -693,7 +693,13 @@ class Select extends React.Component {
     );
 
     const Selector = isMultiple ? MultipleSelector : SingleSelector;
-    const $selector = <Selector {...passProps} ref={this.selectorRef} />;
+    const $selector = (
+      <Selector
+        {...passProps}
+        ref={this.selectorRef}
+        onChoiceAnimationLeave={this.forcePopupAlign}
+      />
+    );
 
     return (
       <SelectTrigger
