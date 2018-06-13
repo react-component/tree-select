@@ -111,6 +111,7 @@ describe('TreeSelect.checkable', () => {
               allowClear
               multiple
               showCheckedStrategy={SHOW_PARENT}
+              treeDefaultExpandAll
               value={this.state.value}
               onChange={this.handleChange}
               disabled={this.state.disabled}
@@ -153,6 +154,7 @@ describe('TreeSelect.checkable', () => {
         treeData={treeData}
         treeCheckable
         treeCheckStrictly
+        treeDefaultExpandAll
         multiple
         onChange={handleChange}
       />
@@ -169,7 +171,7 @@ describe('TreeSelect.checkable', () => {
   });
 
   // Fix https://github.com/ant-design/ant-design/issues/8581
-  it('Label should be click when treeCheckable is true', () => {
+  it.only('Label should be click when treeCheckable is true', () => {
     const treeData = [
       { label: '1-1', value: '1-1', children: [] },
       { label: '1-2', value: '1-2', children: [] },
@@ -186,6 +188,7 @@ describe('TreeSelect.checkable', () => {
         treeData={treeData}
         treeCheckable
         treeCheckStrictly
+        treeDefaultExpandAll
         multiple
         onChange={handleChange}
       />
@@ -217,6 +220,7 @@ describe('TreeSelect.checkable', () => {
       <TreeSelect
         treeData={treeData}
         treeCheckable
+        treeDefaultExpandAll
         allowClear
         showCheckedStrategy={SHOW_PARENT}
       />

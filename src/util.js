@@ -169,7 +169,7 @@ export function convertDataToEntities(treeData) {
     return subList.map(({ key, title, label, value, children ,...nodeProps }, index) => {
       const pos = `${parentPos}-${index}`;
       const node = (
-        <SelectNode key={key} {...nodeProps} title={label || title} label={label} value={value}>
+        <SelectNode key={key || value} {...nodeProps} title={label || title} label={label} value={value}>
           {traverse(children, pos)}
         </SelectNode>
       );
