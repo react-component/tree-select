@@ -171,7 +171,7 @@ describe('TreeSelect.checkable', () => {
   });
 
   // Fix https://github.com/ant-design/ant-design/issues/8581
-  it.only('Label should be click when treeCheckable is true', () => {
+  it('Label should be click when treeCheckable is true', () => {
     const treeData = [
       { label: '1-1', value: '1-1', children: [] },
       { label: '1-2', value: '1-2', children: [] },
@@ -228,7 +228,7 @@ describe('TreeSelect.checkable', () => {
     wrapper.find('.rc-tree-select-tree-checkbox').at(0).simulate('click');
     wrapper.find('input').simulate('change', { target: { value: 'foo' } });
     wrapper.find('.rc-tree-select-selection__clear').simulate('click');
-    expect(wrapper.state().value).toEqual([]);
-    expect(wrapper.state().inputValue).toBe('');
+    expect(wrapper.state().valueList).toEqual([]);
+    expect(wrapper.state().searchValue).toBe('');
   });
 });

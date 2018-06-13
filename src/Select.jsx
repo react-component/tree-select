@@ -353,6 +353,12 @@ class Select extends React.Component {
     }
 
     this.triggerChange([]);
+
+    // [Legacy] `inputValue` is deprecated but we still need check
+    if (!('inputValue' in this.props)) {
+      this.setUncontrolledState({ searchValue: '' });
+    }
+
     event.stopPropagation();
   };
 
