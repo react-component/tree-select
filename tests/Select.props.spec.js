@@ -281,7 +281,7 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it.only('dropdownStyle', () => {
+  it('dropdownStyle', () => {
     const wrapper = mount(createOpenSelect({
       dropdownStyle: {
         background: 'red',
@@ -351,14 +351,14 @@ describe('TreeSelect.props', () => {
   });
 
   it('notFoundContent', () => {
-    const wrapper = render(createOpenSelect({
+    const wrapper = mount(createOpenSelect({
       notFoundContent: 'Noting Matched!',
       treeData: [],
     }));
-    expect(renderToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
-  describe('showCheckedStrategy', () => {
+  describe.only('showCheckedStrategy', () => {
     const testList = [
       {
         strategy: SHOW_ALL,

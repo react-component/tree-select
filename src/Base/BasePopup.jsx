@@ -51,6 +51,16 @@ class BasePopup extends React.Component {
     return null;
   }
 
+  renderNotFound = () => {
+    const { prefixCls, notFoundContent } = this.props;
+
+    return (
+      <span className={`${prefixCls}-not-found`}>
+        {notFoundContent}
+      </span>
+    );
+  };
+
   render() {
     const { keyList } = this.state;
     const {
@@ -58,7 +68,6 @@ class BasePopup extends React.Component {
       treeNodes, filteredTreeNodes,
       treeIcon, treeCheckable, treeCheckStrictly, multiple,
       treeDefaultExpandAll, treeDefaultExpandedKeys,
-      notFoundContent,
       ariaId,
 
       renderSearch,
@@ -84,12 +93,10 @@ class BasePopup extends React.Component {
         treeProps.checkStrictly = true;
         $treeNodes = filteredTreeNodes;
       } else {
-        $notFound = (
-          <span className={`${prefixCls}-not-found`}>
-            {notFoundContent}
-          </span>
-        );
+        $notFound = this.renderNotFound();
       }
+    } else if (!treeNodes.length) {
+      $notFound = this.renderNotFound();
     } else {
       $treeNodes = treeNodes;
     }
