@@ -44,6 +44,7 @@ export default function (modeName) {
       // Pass by HOC
       renderSelection: PropTypes.func.isRequired,
       renderPlaceholder: PropTypes.func,
+      tabIndex: PropTypes.number,
     };
 
     static contextTypes = {
@@ -51,6 +52,10 @@ export default function (modeName) {
         ...selectorContextTypes,
       }),
     };
+
+    static defaultProps = {
+      tabIndex: 0,
+    }
 
     constructor() {
       super();
@@ -131,6 +136,7 @@ export default function (modeName) {
         onClick,
         ariaId,
         renderSelection, renderPlaceholder,
+        tabIndex,
       } = this.props;
       const { rcTreeSelect: { onSelectorKeyDown } } = this.context;
 
@@ -155,7 +161,8 @@ export default function (modeName) {
           aria-owns={open ? ariaId : undefined}
           aria-controls={open ? ariaId : undefined}
           aria-haspopup="listbox"
-          tabIndex={0}
+
+          tabIndex={tabIndex}
 
           onFocus={this.onFocus}
           onBlur={this.onBlur}

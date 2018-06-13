@@ -303,7 +303,7 @@ class Select extends React.Component {
     const { autoFocus, disabled } = this.props;
 
     if (autoFocus && !disabled) {
-      this.focus();
+      this.focusSelector();
     }
   }
 
@@ -317,7 +317,9 @@ class Select extends React.Component {
   // ==================== Selector ====================
   onSelectorFocus = () => {
     this.setState({ focused: true });
+
   };
+
   onSelectorBlur = () => {
     this.setState({ focused: false });
 
@@ -662,12 +664,8 @@ class Select extends React.Component {
     }
   };
 
-  focus() {
+  focusSelector() {
     this.selectorRef.current.focus();
-  }
-
-  blur() {
-    this.selectorRef.current.blur();
   }
 
   // ===================== Render =====================

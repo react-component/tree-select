@@ -3,6 +3,7 @@ import React from 'react';
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import TreeSelect from '../src';
+import { resetAriaId } from '../src/util';
 import focusTest from './shared/focusTest';
 
 describe('TreeSelect.multiple', () => {
@@ -23,6 +24,10 @@ describe('TreeSelect.multiple', () => {
     wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(index).simulate('click');
   };
 
+  beforeEach(() => {
+    resetAriaId();
+  });
+
   it('select multiple nodes', () => {
     const wrapper = mount(createSelect({ open: true }));
     select(wrapper, 0);
@@ -42,7 +47,7 @@ describe('TreeSelect.multiple', () => {
     expect(choice.prop('children')).toBe('label1');
   });
 
-  it('remove by backspace key', () => {
+  it.only('remove by backspace key', () => {
     const wrapper = mount(createSelect({ defaultValue: ['0', '1'] }));
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.BACKSPACE });
     const choice = wrapper.find('ul .rc-tree-select-selection__choice__content');
