@@ -72,11 +72,15 @@ class SearchInput extends React.Component {
   };
 
   focus = () => {
-    setTimeout(() => {
-      if (this.inputRef.current) {
-        this.inputRef.current.focus();
-      }
-    }, 0);
+    if (this.inputRef.current) {
+      this.inputRef.current.focus();
+    }
+  };
+
+  blur = () => {
+    if (this.inputRef.current) {
+      this.inputRef.current.blur();
+    }
   };
 
   render() {

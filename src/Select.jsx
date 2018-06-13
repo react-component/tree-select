@@ -204,7 +204,7 @@ class Select extends React.Component {
     });
 
     // If `treeData` not provide, use children TreeNodes
-    if (!('treeData' in nextProps)) {
+    if (!nextProps.treeData) {
       processState('children', (propValue) => {
         treeData = convertTreeToData(propValue);
       });
@@ -305,7 +305,7 @@ class Select extends React.Component {
     const { autoFocus, disabled } = this.props;
 
     if (autoFocus && !disabled) {
-      this.focusSelector();
+      this.focus();
     }
   }
 
@@ -391,7 +391,8 @@ class Select extends React.Component {
       if (treeCheckStrictly || searchValue) {
         extraInfo.allCheckedNodes = filteredEntityList.map(({ node }) => node);
       } else {
-        extraInfo.allCheckedNodes = flatToHierarchy(filteredEntityList);
+        extraInfo.allCheckedNodes = flatToHierarchy(filteredEntityList)
+          .map(({ node }) => node);
       }
     }
 
@@ -682,8 +683,12 @@ class Select extends React.Component {
     }
   };
 
-  focusSelector() {
+  focus() {
     this.selectorRef.current.focus();
+  }
+
+  blur() {
+    this.selectorRef.current.blur();
   }
 
   // ===================== Render =====================
