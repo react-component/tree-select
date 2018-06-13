@@ -492,7 +492,7 @@ describe('TreeSelect.props', () => {
   // treeNodeFilterProp - already tested in Select.spec.js
   // treeNodeLabelProp - already tested in Select.spec.js
 
-  it.only('maxTagTextLength', () => {
+  it('maxTagTextLength', () => {
     const wrapper = mount(createSelect({
       multiple: true,
       maxTagTextLength: 2,
@@ -504,7 +504,7 @@ describe('TreeSelect.props', () => {
   // disabled - already tested in Select.spec.js
   // inputValue - already tested in Select.spec.js
 
-  it('defaultValue', () => {
+  it.only('defaultValue', () => {
     const wrapper = mount(createSelect({
       defaultValue: 'Value 0-0',
     }));

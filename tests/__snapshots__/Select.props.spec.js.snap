@@ -1640,20 +1640,21 @@ exports[`TreeSelect.props loadData 1`] = `
 exports[`TreeSelect.props maxTagTextLength 1`] = `
 <div>
   <span
+    aria-haspopup="listbox"
     class="rc-tree-select rc-tree-select-enabled"
+    role="combobox"
+    tabindex="0"
   >
     <span
-      aria-autocomplete="list"
-      aria-haspopup="true"
-      class="rc-tree-select-selection
-            rc-tree-select-selection--multiple"
-      role="combobox"
+      class="rc-tree-select-selection rc-tree-select-selection--multiple"
     >
       <ul
         class="rc-tree-select-selection__rendered"
+        role="menubar"
       >
         <li
           class="rc-tree-select-selection__choice"
+          role="menuitem"
           title="Title 0-0"
           unselectable="unselectable"
         >
@@ -1668,6 +1669,7 @@ exports[`TreeSelect.props maxTagTextLength 1`] = `
         </li>
         <li
           class="rc-tree-select-selection__choice"
+          role="menuitem"
           title="Title 1"
           unselectable="unselectable"
         >
@@ -1682,6 +1684,7 @@ exports[`TreeSelect.props maxTagTextLength 1`] = `
         </li>
         <li
           class="rc-tree-select-selection__choice"
+          role="menuitem"
           title="Title 0-1"
           unselectable="unselectable"
         >
@@ -1701,8 +1704,12 @@ exports[`TreeSelect.props maxTagTextLength 1`] = `
             class="rc-tree-select-search__field__wrap"
           >
             <input
+              aria-autocomplete="list"
+              aria-label="filter select"
+              aria-multiline="false"
               class="rc-tree-select-search__field"
-              role="textbox"
+              style="width: 0px;"
+              type="text"
               value=""
             />
             <span
