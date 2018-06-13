@@ -504,7 +504,7 @@ describe('TreeSelect.props', () => {
   // disabled - already tested in Select.spec.js
   // inputValue - already tested in Select.spec.js
 
-  it('defaultValue', () => {
+  it.only('defaultValue', () => {
     const wrapper = mount(createSelect({
       defaultValue: 'Value 0-0',
     }));
@@ -517,7 +517,7 @@ describe('TreeSelect.props', () => {
   // treeDefaultExpandedKeys - already tested in Select.spec.js
   // treeData - already tested in Select.spec.js
 
-  it.only('loadData', () => {
+  it('loadData', () => {
     jest.useRealTimers();
 
     let called = 0;

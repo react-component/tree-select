@@ -930,15 +930,13 @@ exports[`TreeSelect.props className 1`] = `
 exports[`TreeSelect.props defaultValue 1`] = `
 <div>
   <span
+    aria-haspopup="listbox"
     class="rc-tree-select rc-tree-select-enabled"
+    role="combobox"
+    tabindex="0"
   >
     <span
-      aria-autocomplete="list"
-      aria-haspopup="true"
-      class="rc-tree-select-selection
-            rc-tree-select-selection--single"
-      role="combobox"
-      tabindex="0"
+      class="rc-tree-select-selection rc-tree-select-selection--single"
     >
       <span
         class="rc-tree-select-selection__rendered"
