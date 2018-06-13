@@ -196,7 +196,6 @@ describe('TreeSelect.checkable', () => {
     // open
     wrapper.find('.rc-tree-select').simulate('click');
     jest.runAllTimers();
-    wrapper.update();
     // select
     wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(0).simulate('click');
     expect(handleChange).toBeCalled();

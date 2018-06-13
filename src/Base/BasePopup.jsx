@@ -48,7 +48,7 @@ class BasePopup extends React.Component {
     if (valueList !== prevState.valueList) {
       return {
         valueList,
-        keyList: valueList.map(({ value }) => valueEntities[value].key),
+        keyList: valueList.map(({ value }) => valueEntities[value].key || value),
       };
     }
     return null;
