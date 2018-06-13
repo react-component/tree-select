@@ -81,7 +81,9 @@ class SearchInput extends React.Component {
 
   render() {
     const { searchValue, prefixCls, disabled, renderPlaceholder, open, ariaId } = this.props;
-    const { rcTreeSelect: { onSearchInputChange } } = this.context;
+    const { rcTreeSelect: {
+      onSearchInputChange, onSearchInputKeyDown,
+    } } = this.context;
 
     return (
       <span className={`${prefixCls}-search__field__wrap`}>
@@ -89,6 +91,7 @@ class SearchInput extends React.Component {
           type="text"
           ref={this.inputRef}
           onChange={onSearchInputChange}
+          onKeyDown={onSearchInputKeyDown}
           // TODO: handle this
           // onKeyDown={this.onInputKeyDown}
           value={searchValue}

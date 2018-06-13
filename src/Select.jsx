@@ -100,6 +100,7 @@ class Select extends React.Component {
       ...popupContextTypes,
 
       onSearchInputChange: PropTypes.func,
+      onSearchInputKeyDown: PropTypes.func,
     }),
   };
 
@@ -163,6 +164,7 @@ class Select extends React.Component {
         onPopupKeyDown: this.onComponentKeyDown,
 
         onSearchInputChange: this.onSearchInputChange,
+        onSearchInputKeyDown: this.onSearchInputKeyDown,
       },
     };
   }
@@ -551,7 +553,23 @@ class Select extends React.Component {
     }
   };
 
-  onInputKeyDown = () => {};
+  onSearchInputKeyDown = (event) => {
+    const { searchValue, valueList } = this.state;
+
+    const { keyCode } = event;
+
+    if (
+      KeyCode.BACKSPACE === keyCode &&
+      this.isMultiple() &&
+      !searchValue &&
+      valueList.length
+    ) {
+      const lastValue = valueList[valueList.length - 1].value;
+      this.onMultipleSelectorRemove(event, lastValue);
+    }
+  }
+
+  // TODO: Useless, remove me!
   onPlaceholderClick = () => {};
 
   /**
