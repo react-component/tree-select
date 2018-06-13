@@ -252,7 +252,7 @@ describe('TreeSelect.props', () => {
   // TODO: `onDeselect` is copy from `Select` component and not implement complete.
   // This should be removed.
 
-  it.only('onSearch', () => {
+  it('onSearch', () => {
     const handleSearch = jest.fn();
     const wrapper = mount(createOpenSelect({
       onSearch: handleSearch,
@@ -271,7 +271,7 @@ describe('TreeSelect.props', () => {
   // consider set default to `false`.
   // ref: https://github.com/react-component/select/blob/4cad95e098a341a09de239ad6981067188842020/src/Select.jsx#L344
   // ref: https://github.com/react-component/select/pull/71
-  it('dropdownMatchSelectWidth', () => {
+  it.only('dropdownMatchSelectWidth', () => {
     const wrapper = render(createOpenSelect({
       dropdownMatchSelectWidth: false,
     }));
