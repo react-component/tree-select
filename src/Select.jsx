@@ -43,6 +43,7 @@ import {
   isPosRelated, isLabelInValue, getFilterTree,
 } from './util';
 import { valueProp } from './propTypes';
+import SelectNode from './SelectNode';
 
 class Select extends React.Component {
   static propTypes = {
@@ -623,10 +624,6 @@ class Select extends React.Component {
       return;
     }
 
-    if (!this.isLabelInValue()) {
-      labelList = valueList.map(({ label }) => label);
-    }
-
     // Trigger
     const extra = {
       // [Legacy] Always return as array contains label & value
@@ -636,6 +633,10 @@ class Select extends React.Component {
 
     // Format value by `treeCheckStrictly`
     const selectorValueList = formatSelectorValue(valueList, this.props, valueEntities);
+
+    if (!this.isLabelInValue()) {
+      labelList = selectorValueList.map(({ label }) => label);
+    }
 
     this.setState({
       valueList,
@@ -730,6 +731,7 @@ class Select extends React.Component {
   }
 }
 
+Select.TreeNode = SelectNode;
 Select.SHOW_ALL = SHOW_ALL;
 Select.SHOW_PARENT = SHOW_PARENT;
 Select.SHOW_CHILD = SHOW_CHILD;

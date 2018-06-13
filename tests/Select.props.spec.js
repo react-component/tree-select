@@ -358,12 +358,12 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  describe.only('showCheckedStrategy', () => {
+  describe('showCheckedStrategy', () => {
     const testList = [
       {
         strategy: SHOW_ALL,
-        arg1: ['Value 0-0', 'Value 0-1', 'Value 0'],
-        arg2: ['Title 0-0', 'Title 0-1', 'Title 0'],
+        arg1: ['Value 0', 'Value 0-0', 'Value 0-1'],
+        arg2: ['Title 0', 'Title 0-0', 'Title 0-1'],
         arg3: ($node, $oriNode) => {
           const children = $node.props().children;
 
@@ -459,7 +459,7 @@ describe('TreeSelect.props', () => {
 
   // treeCheckStrictly - already tested in Select.checkable.spec.js
 
-  it('treeIcon', () => {
+  it.only('treeIcon', () => {
     const wrapper = mount(createOpenSelect({
       treeIcon: true,
     }));

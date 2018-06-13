@@ -80,7 +80,6 @@ export function flatToHierarchy(positionList) {
   const posMap = {};
   const parsedList = positionList.slice().map(entity => ({
     ...entity,
-    children: [],
     fields: entity.pos.split('-'),
   }));
 
@@ -309,6 +308,7 @@ export function formatSelectorValue(valueList, props, valueEntities) {
     treeNodeLabelProp,
     treeCheckable, treeCheckStrictly, showCheckedStrategy,
   } = props;
+
 
   // Will hide some value if `showCheckedStrategy` is set
   if (treeCheckable && !treeCheckStrictly) {
