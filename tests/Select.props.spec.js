@@ -459,14 +459,14 @@ describe('TreeSelect.props', () => {
 
   // treeCheckStrictly - already tested in Select.checkable.spec.js
 
-  it.only('treeIcon', () => {
+  it('treeIcon', () => {
     const wrapper = mount(createOpenSelect({
       treeIcon: true,
     }));
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('treeLine', () => {
+  it.only('treeLine', () => {
     const wrapper = mount(createOpenSelect({
       treeLine: true,
     }));
