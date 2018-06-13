@@ -274,14 +274,14 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it.only('dropdownClassName', () => {
-    const wrapper = render(createOpenSelect({
+  it('dropdownClassName', () => {
+    const wrapper = mount(createOpenSelect({
       dropdownClassName: 'test-dropdownClassName',
     }));
-    expect(renderToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('dropdownStyle', () => {
+  it.only('dropdownStyle', () => {
     const wrapper = render(createOpenSelect({
       dropdownStyle: {
         background: 'red',
