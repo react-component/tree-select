@@ -282,12 +282,12 @@ describe('TreeSelect.props', () => {
   });
 
   it.only('dropdownStyle', () => {
-    const wrapper = render(createOpenSelect({
+    const wrapper = mount(createOpenSelect({
       dropdownStyle: {
         background: 'red',
       },
     }));
-    expect(renderToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
   it('dropdownPopupAlign', () => {
