@@ -694,7 +694,7 @@ exports[`TreeSelect.props choiceTransitionName 1`] = `
     aria-haspopup="listbox"
     class="rc-tree-select rc-tree-select-enabled"
     role="combobox"
-    tabindex="0"
+    tabindex="-1"
   >
     <span
       class="rc-tree-select-selection rc-tree-select-selection--multiple"
@@ -736,7 +736,7 @@ exports[`TreeSelect.props choiceTransitionName 2`] = `
     aria-haspopup="listbox"
     class="rc-tree-select rc-tree-select-enabled"
     role="combobox"
-    tabindex="0"
+    tabindex="-1"
   >
     <span
       class="rc-tree-select-selection rc-tree-select-selection--multiple"
@@ -1586,7 +1586,7 @@ exports[`TreeSelect.props filterTreeNode 2`] = `
               data-expanded="true"
             >
               <li
-                class="rc-tree-select-tree-treenode-switcher-open"
+                class="rc-tree-select-tree-treenode-switcher-open filter-node"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1648,7 +1648,7 @@ exports[`TreeSelect.props maxTagTextLength 1`] = `
     aria-haspopup="listbox"
     class="rc-tree-select rc-tree-select-enabled"
     role="combobox"
-    tabindex="0"
+    tabindex="-1"
   >
     <span
       class="rc-tree-select-selection rc-tree-select-selection--multiple"
