@@ -16,6 +16,7 @@ class BasePopup extends React.Component {
     valueList: PropTypes.array,
     valueEntities: PropTypes.object,
     treeIcon: PropTypes.bool,
+    treeLine: PropTypes.bool,
     treeCheckable: PropTypes.bool,
     treeCheckStrictly: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
@@ -66,7 +67,7 @@ class BasePopup extends React.Component {
     const {
       prefixCls,
       treeNodes, filteredTreeNodes,
-      treeIcon, treeCheckable, treeCheckStrictly, multiple,
+      treeIcon, treeLine, treeCheckable, treeCheckStrictly, multiple,
       treeDefaultExpandAll, treeDefaultExpandedKeys,
       ariaId,
 
@@ -109,6 +110,7 @@ class BasePopup extends React.Component {
         <Tree
           prefixCls={`${prefixCls}-tree`}
           showIcon={treeIcon}
+          showLine={treeLine}
           selectable={!treeCheckable}
           checkable={treeCheckable}
           checkStrictly={treeCheckStrictly}

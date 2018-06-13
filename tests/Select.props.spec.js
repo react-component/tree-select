@@ -466,7 +466,7 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it.only('treeLine', () => {
+  it('treeLine', () => {
     const wrapper = mount(createOpenSelect({
       treeLine: true,
     }));
@@ -475,7 +475,7 @@ describe('TreeSelect.props', () => {
 
   // treeDataSimpleMode - already tested in Select.spec.js
 
-  it('treeDefaultExpandAll', () => {
+  it.only('treeDefaultExpandAll', () => {
     const expandWrapper = mount(createOpenSelect({
       treeDefaultExpandAll: true,
     }));
