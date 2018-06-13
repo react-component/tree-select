@@ -504,7 +504,7 @@ describe('TreeSelect.props', () => {
   // disabled - already tested in Select.spec.js
   // inputValue - already tested in Select.spec.js
 
-  it.only('defaultValue', () => {
+  it('defaultValue', () => {
     const wrapper = mount(createSelect({
       defaultValue: 'Value 0-0',
     }));
@@ -564,11 +564,7 @@ describe('TreeSelect.props', () => {
     });
   });
 
-  it('getPopupContainer', () => {
-
-  });
-
-  it('getPopupContainer', () => {
+  it.only('getPopupContainer', () => {
     const getPopupContainer = (trigger) => trigger.parentNode;
 
     const wrapper = mount(createOpenSelect({ getPopupContainer }));

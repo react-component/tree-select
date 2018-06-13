@@ -1606,17 +1606,17 @@ exports[`TreeSelect.props filterTreeNode 2`] = `
 
 exports[`TreeSelect.props loadData 1`] = `
 <span
+  aria-controls="rc-tree-select-list_1"
+  aria-expanded="true"
+  aria-haspopup="listbox"
+  aria-owns="rc-tree-select-list_1"
   class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
+  role="combobox"
   style=""
+  tabindex="0"
 >
   <span
-    aria-autocomplete="list"
-    aria-expanded="true"
-    aria-haspopup="true"
-    class="rc-tree-select-selection
-            rc-tree-select-selection--single"
-    role="combobox"
-    tabindex="0"
+    class="rc-tree-select-selection rc-tree-select-selection--single"
   >
     <span
       class="rc-tree-select-selection__rendered"

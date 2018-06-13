@@ -78,8 +78,10 @@ class Select extends React.Component {
     treeCheckable: PropTypes.bool,
     treeCheckStrictly: PropTypes.bool,
     treeIcon: PropTypes.bool,
+    treeLine: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
     treeDefaultExpandedKeys: PropTypes.array,
+    loadData: PropTypes.func,
     filterTreeNode: PropTypes.func,
 
     notFoundContent: PropTypes.string,
