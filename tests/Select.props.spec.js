@@ -225,7 +225,7 @@ describe('TreeSelect.props', () => {
 
   // onChange - is already test above
 
-  it.only('onSelect', () => {
+  it('onSelect', () => {
     const handleSelect = jest.fn();
     const wrapper = mount(createOpenSelect({
       onSelect: handleSelect,
@@ -244,6 +244,7 @@ describe('TreeSelect.props', () => {
         node: $node.instance(),
         selected: true,
         selectedNodes: [$paren.props().children[1]],
+        nativeEvent: expect.objectContaining({}), // Native event object
       },
     );
   });
@@ -251,7 +252,7 @@ describe('TreeSelect.props', () => {
   // TODO: `onDeselect` is copy from `Select` component and not implement complete.
   // This should be removed.
 
-  it('onSearch', () => {
+  it.only('onSearch', () => {
     const handleSearch = jest.fn();
     const wrapper = mount(createOpenSelect({
       onSearch: handleSearch,
