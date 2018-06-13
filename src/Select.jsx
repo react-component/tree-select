@@ -910,9 +910,16 @@ class Select extends Component {
     const state = this.state;
     const { className, disabled, allowClear, prefixCls } = props;
     const ctrlNode = this.renderTopControlNode();
-    let extraSelectionProps = {};
+    const dataOrAriaAttributeProps = Object.keys(props).reduce((prev, key) => {
+      if ((key.substr(0, 5) === 'data-' || key.substr(0, 5) === 'aria-')) {
+        prev[key] = props[key];
+      }
+      return prev;
+    }, {});
+    let extraSelectionProps = { ...dataOrAriaAttributeProps };
     if (!multiple) {
       extraSelectionProps = {
+        ...extraSelectionProps,
         onKeyDown: this.onKeyDown,
         tabIndex: 0,
       };

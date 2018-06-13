@@ -91,6 +91,37 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
 </span>
 `;
 
+exports[`TreeSelect.basic render renders aria attributes correctly 1`] = `
+<span
+  class="rc-tree-select rc-tree-select-enabled"
+>
+  <span
+    aria-autocomplete="list"
+    aria-haspopup="true"
+    aria-label="some-label"
+    aria-labelledby="label-id"
+    class="rc-tree-select-selection
+            rc-tree-select-selection--single"
+    role="combobox"
+    tabindex="0"
+  >
+    <span
+      class="rc-tree-select-selection__rendered"
+    >
+      <span
+        class="rc-tree-select-selection__placeholder"
+      />
+    </span>
+    <span
+      class="rc-tree-select-arrow"
+      style="outline:none"
+    >
+      <b />
+    </span>
+  </span>
+</span>
+`;
+
 exports[`TreeSelect.basic render renders correctly 1`] = `
 <span
   class="forTest awesome awesome-enabled"
@@ -125,6 +156,37 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
         </span>
       </li>
     </ul>
+  </span>
+</span>
+`;
+
+exports[`TreeSelect.basic render renders data attributes correctly 1`] = `
+<span
+  class="rc-tree-select rc-tree-select-enabled"
+>
+  <span
+    aria-autocomplete="list"
+    aria-haspopup="true"
+    class="rc-tree-select-selection
+            rc-tree-select-selection--single"
+    data-id="12345"
+    data-test="test-id"
+    role="combobox"
+    tabindex="0"
+  >
+    <span
+      class="rc-tree-select-selection__rendered"
+    >
+      <span
+        class="rc-tree-select-selection__placeholder"
+      />
+    </span>
+    <span
+      class="rc-tree-select-arrow"
+      style="outline:none"
+    >
+      <b />
+    </span>
   </span>
 </span>
 `;

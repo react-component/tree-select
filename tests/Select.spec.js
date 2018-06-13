@@ -102,6 +102,20 @@ describe('TreeSelect.basic', () => {
       );
       expect(wrapper).toMatchSnapshot();
     });
+
+    it('renders data attributes correctly', () => {
+      const wrapper = render(
+        <TreeSelect treeData={treeData} data-test="test-id" data-id="12345" />
+      );
+      expect(wrapper).toMatchSnapshot();
+    });
+
+    it('renders aria attributes correctly', () => {
+      const wrapper = render(
+        <TreeSelect treeData={treeData} aria-label="some-label" aria-labelledby="label-id" />
+      );
+      expect(wrapper).toMatchSnapshot();
+    });
   });
 
   it('sets default value', () => {
