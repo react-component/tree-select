@@ -475,7 +475,7 @@ describe('TreeSelect.props', () => {
 
   // treeDataSimpleMode - already tested in Select.spec.js
 
-  it.only('treeDefaultExpandAll', () => {
+  it('treeDefaultExpandAll', () => {
     const expandWrapper = mount(createOpenSelect({
       treeDefaultExpandAll: true,
     }));
@@ -492,7 +492,7 @@ describe('TreeSelect.props', () => {
   // treeNodeFilterProp - already tested in Select.spec.js
   // treeNodeLabelProp - already tested in Select.spec.js
 
-  it('maxTagTextLength', () => {
+  it.only('maxTagTextLength', () => {
     const wrapper = mount(createSelect({
       multiple: true,
       maxTagTextLength: 2,
