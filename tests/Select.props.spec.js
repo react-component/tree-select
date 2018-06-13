@@ -263,22 +263,18 @@ describe('TreeSelect.props', () => {
   });
 
   it('showArrow', () => {
-    const wrapper = render(createOpenSelect({ showArrow: false }));
-    expect(renderToJson(wrapper)).toMatchSnapshot();
+    const wrapper = mount(createOpenSelect({ showArrow: false }));
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
-  // TODO: `dropdownMatchSelectWidth` is far away from origin design.
-  // consider set default to `false`.
-  // ref: https://github.com/react-component/select/blob/4cad95e098a341a09de239ad6981067188842020/src/Select.jsx#L344
-  // ref: https://github.com/react-component/select/pull/71
-  it.only('dropdownMatchSelectWidth', () => {
-    const wrapper = render(createOpenSelect({
+  it('dropdownMatchSelectWidth', () => {
+    const wrapper = mount(createOpenSelect({
       dropdownMatchSelectWidth: false,
     }));
-    expect(renderToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('dropdownClassName', () => {
+  it.only('dropdownClassName', () => {
     const wrapper = render(createOpenSelect({
       dropdownClassName: 'test-dropdownClassName',
     }));
