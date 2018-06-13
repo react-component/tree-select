@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import Tree from 'rc-tree';
 
-
 export const popupContextTypes = {
   onPopupKeyDown: PropTypes.func.isRequired,
   onTreeNodeSelect: PropTypes.func.isRequired,
@@ -13,10 +12,12 @@ export const popupContextTypes = {
 class BasePopup extends React.Component {
   static propTypes = {
     prefixCls: PropTypes.string,
+    searchValue: PropTypes.string,
     valueList: PropTypes.array,
     valueEntities: PropTypes.object,
     treeIcon: PropTypes.bool,
     treeLine: PropTypes.bool,
+    treeNodeFilterProp: PropTypes.string,
     treeCheckable: PropTypes.bool,
     treeCheckStrictly: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
@@ -52,6 +53,21 @@ class BasePopup extends React.Component {
     }
     return null;
   }
+
+  /**
+   * This method pass to Tree component which is used for add filtered class
+   * in TreeNode > li
+   */
+  filterTreeNode = (treeNode) => {
+    const { searchValue, treeNodeFilterProp } = this.props;
+
+    const filterVal = treeNode.props[treeNodeFilterProp];
+    if (typeof filterVal === 'string') {
+      return searchValue && filterVal.indexOf(searchValue) !== -1;
+    }
+
+    return false;
+  };
 
   renderNotFound = () => {
     const { prefixCls, notFoundContent } = this.props;
@@ -121,6 +137,8 @@ class BasePopup extends React.Component {
 
           defaultExpandAll={treeDefaultExpandAll}
           defaultExpandedKeys={treeDefaultExpandedKeys}
+
+          filterTreeNode={this.filterTreeNode}
 
           onSelect={onTreeNodeSelect}
           onCheck={onTreeNodeCheck}
