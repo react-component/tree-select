@@ -554,9 +554,7 @@ exports[`TreeSelect.props animation 1`] = `
 exports[`TreeSelect.props basic 1`] = `
 <div>
   <span
-    aria-autocomplete="list"
-    aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
-    aria-haspopup="true"
+    aria-haspopup="listbox"
     class="rc-tree-select rc-tree-select-enabled"
     role="combobox"
     tabindex="0"
@@ -585,10 +583,10 @@ exports[`TreeSelect.props basic 1`] = `
 exports[`TreeSelect.props basic 2`] = `
 <div>
   <span
-    aria-autocomplete="list"
-    aria-controls="RC_TREE_SELECT_rc-tree-select_1_list"
+    aria-controls="rc-tree-select-list_1"
     aria-expanded="true"
-    aria-haspopup="true"
+    aria-haspopup="listbox"
+    aria-owns="rc-tree-select-list_1"
     class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
     role="combobox"
     style=""
@@ -617,7 +615,11 @@ exports[`TreeSelect.props basic 2`] = `
       class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
       style="left: -999px; top: -995px; min-width: 0;"
     >
-      <div>
+      <div
+        id="rc-tree-select-list_1"
+        role="listbox"
+        tabindex="-1"
+      >
         <span
           class="rc-tree-select-dropdown-search"
         >
@@ -625,7 +627,12 @@ exports[`TreeSelect.props basic 2`] = `
             class="rc-tree-select-search__field__wrap"
           >
             <input
+              aria-autocomplete="list"
+              aria-controls="rc-tree-select-list_1"
+              aria-label="filter select"
+              aria-multiline="false"
               class="rc-tree-select-search__field"
+              type="text"
               value=""
             />
             <span

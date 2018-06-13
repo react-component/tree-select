@@ -564,7 +564,7 @@ describe('TreeSelect.props', () => {
     });
   });
 
-  it.only('getPopupContainer', () => {
+  it('getPopupContainer', () => {
     const getPopupContainer = (trigger) => trigger.parentNode;
 
     const wrapper = mount(createOpenSelect({ getPopupContainer }));
