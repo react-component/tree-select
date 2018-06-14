@@ -78,10 +78,14 @@ export function flatToHierarchy(positionList) {
 
   // Prepare the position map
   const posMap = {};
-  const parsedList = positionList.slice().map(entity => ({
-    ...entity,
-    fields: entity.pos.split('-'),
-  }));
+  const parsedList = positionList.slice().map(entity => {
+    const clone = {
+      ...entity,
+      fields: entity.pos.split('-'),
+    };
+    delete clone.children;
+    return clone;
+  });
 
   parsedList.forEach((entity) => {
     posMap[entity.pos] = entity;
@@ -168,13 +172,10 @@ export function convertDataToEntities(treeData) {
 
     return subList.map(({ key, title, label, value, children ,...nodeProps }, index) => {
       const pos = `${parentPos}-${index}`;
-      const node = (
-        <SelectNode key={key || value} {...nodeProps} title={label || title} label={label} value={value}>
-          {traverse(children, pos)}
-        </SelectNode>
-      );
 
-      const entity = { node, key, value, pos };
+      const entity = { key, value, pos };
+      // This may cause some side effect, need additional check
+      entity.key = entity.key || value;
 
       // Fill children
       entity.parent = posEntities[parentPos];
@@ -187,6 +188,14 @@ export function convertDataToEntities(treeData) {
       valueEntities[value] = entity;
       keyEntities[key] = entity;
       posEntities[pos] = entity;
+
+      const node = (
+        <SelectNode key={key || value} {...nodeProps} title={label || title} label={label} value={value}>
+          {traverse(children, pos)}
+        </SelectNode>
+      );
+
+      entity.node = node;
 
       return node;
     });
