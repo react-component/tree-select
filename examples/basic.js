@@ -87,6 +87,7 @@ class Demo extends React.Component {
 
   onSearch = (value) => {
     console.log(value, arguments);
+    this.setState({ inputValue: value });
   }
 
   onChange = (value) => {
@@ -198,6 +199,9 @@ class Demo extends React.Component {
             if (info.documentClickClose && this.state.value === '0-0-0-0-value') {
               return false;
             }
+            this.setState({
+              tsOpen: v,
+            });
             return true;
           } }
           onSelect={this.onSelect}
