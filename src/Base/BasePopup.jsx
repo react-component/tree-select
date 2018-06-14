@@ -44,17 +44,27 @@ class BasePopup extends React.Component {
   state = {};
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { valueList, valueEntities } = nextProps;
-    if (valueList !== prevState.valueList) {
-      return {
-        valueList,
-        keyList: valueList
-          .map(({ value }) => valueEntities[value])
-          .filter(entity => entity)
-          .map(({ key }) => key),
-      };
+    const { prevProps = {} } = prevState || {};
+    const { valueList, valueEntities, filteredTreeNodes } = nextProps;
+
+    const newState = {
+      prevProps: nextProps,
+    };
+
+    // Check value update
+    if (valueList !== prevProps.valueList) {
+      newState.keyList = valueList
+        .map(({ value }) => valueEntities[value])
+        .filter(entity => entity)
+        .map(({ key }) => key);
     }
-    return null;
+
+    // Show all when tree is in filter
+    if (filteredTreeNodes && filteredTreeNodes !== prevProps.filteredTreeNodes) {
+      console.log('do changed!!!');
+    }
+
+    return newState;
   }
 
   /**

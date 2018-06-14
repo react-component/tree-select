@@ -45,7 +45,7 @@ class SearchInput extends React.Component {
     }
 
     if (open) {
-      this.focus();
+      this.focus(true);
     }
   }
 
@@ -71,9 +71,17 @@ class SearchInput extends React.Component {
       `${this.mirrorInputRef.current.clientWidth}px`;
   };
 
-  focus = () => {
+  /**
+   * Need additional timeout for focus cause parent dom is not ready when didMount trigger
+   */
+  focus = (isDidMount) => {
     if (this.inputRef.current) {
       this.inputRef.current.focus();
+      if (isDidMount) {
+        setTimeout(() => {
+          this.inputRef.current.focus();
+        }, 0);
+      }
     }
   };
 
