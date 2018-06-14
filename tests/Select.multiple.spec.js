@@ -88,8 +88,8 @@ describe('TreeSelect.multiple', () => {
   it('click X to delete select', () => {
     const handleChange = jest.fn();
     const children = [
-      <TreeNode key="0" value="0" label="label0" foo={0} />,
-      <TreeNode key="1" value="1" label="label1" foo={1} />,
+      <TreeNode key="0" value="0" title="label0" foo={0} />,
+      <TreeNode key="1" value="1" title="label1" foo={1} />,
     ];
     const wrapper = mount(createSelect({
       open: true,

@@ -17,12 +17,12 @@ describe('TreeSelect.checkable', () => {
       {
         key: '0',
         value: '0',
-        label: 'label0',
+        title: 'label0',
         children: [
           {
             key: '1',
             value: '1',
-            label: 'label1',
+            title: 'label1',
           },
         ],
       },
@@ -63,28 +63,28 @@ describe('TreeSelect.checkable', () => {
   // https://github.com/ant-design/ant-design/issues/6731
   it('clear all should clear cache at the same time', () => {
     const treeData = [{
-      label: 'Node1',
+      title: 'Node1',
       value: '0-0',
       key: '0-0',
       children: [{
-        label: 'Child Node1',
+        title: 'Child Node1',
         value: '0-0-0',
         key: '0-0-0',
       }],
     }, {
-      label: 'Node2',
+      title: 'Node2',
       value: '0-1',
       key: '0-1',
       children: [{
-        label: 'Child Node3',
+        title: 'Child Node3',
         value: '0-1-0',
         key: '0-1-0',
       }, {
-        label: 'Child Node4',
+        title: 'Child Node4',
         value: '0-1-1',
         key: '0-1-1',
       }, {
-        label: 'Child Node5',
+        title: 'Child Node5',
         value: '0-1-2',
         key: '0-1-2',
       }],
@@ -139,12 +139,12 @@ describe('TreeSelect.checkable', () => {
   // Fix https://github.com/ant-design/ant-design/issues/7312#issuecomment-324865971
   it('should be checkable when treeCheckStrictly is true', () => {
     const treeData = [
-      { label: '1-1', value: '1-1', children: [] },
-      { label: '1-2', value: '1-2', children: [] },
+      { title: '1-1', value: '1-1', children: [] },
+      { title: '1-2', value: '1-2', children: [] },
       {
-        label: '1-3', value: '1-3', children: [
-          { label: '2-1', value: '2-1', children: [] },
-          { label: '2-2', value: '2-2', children: [] },
+        title: '1-3', value: '1-3', children: [
+          { title: '2-1', value: '2-1', children: [] },
+          { title: '2-2', value: '2-2', children: [] },
         ],
       },
     ];
@@ -173,12 +173,12 @@ describe('TreeSelect.checkable', () => {
   // Fix https://github.com/ant-design/ant-design/issues/8581
   it('Label should be click when treeCheckable is true', () => {
     const treeData = [
-      { label: '1-1', value: '1-1', children: [] },
-      { label: '1-2', value: '1-2', children: [] },
+      { title: '1-1', value: '1-1', children: [] },
+      { title: '1-2', value: '1-2', children: [] },
       {
-        label: '1-3', value: '1-3', children: [
-          { label: '2-1', value: '2-1', children: [] },
-          { label: '2-2', value: '2-2', children: [] },
+        title: '1-3', value: '1-3', children: [
+          { title: '2-1', value: '2-1', children: [] },
+          { title: '2-2', value: '2-2', children: [] },
         ],
       },
     ];
@@ -211,7 +211,7 @@ describe('TreeSelect.checkable', () => {
       {
         key: '0',
         value: '0',
-        label: 'label0',
+        title: 'label0',
       },
     ];
 

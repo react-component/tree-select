@@ -3,6 +3,8 @@ import warning from 'warning';
 import SelectNode from './SelectNode';
 import { SHOW_CHILD, SHOW_PARENT } from './strategies';
 
+let warnDeprecatedLabel = false;
+
 // =================== MISC ====================
 export function toTitle(title) {
   if (typeof title === 'string') {
@@ -167,8 +169,6 @@ export function convertDataToEntities(treeData) {
   const keyEntities = {};
   const posEntities = {};
 
-  let warned = false;
-
   function traverse(subTreeData, parentPos) {
     const subList = toArray(subTreeData);
 
@@ -192,12 +192,12 @@ export function convertDataToEntities(treeData) {
       posEntities[pos] = entity;
 
       // Warning user not to use deprecated label prop.
-      if ((!title && label) && !warned) {
+      if ((!title && label) && !warnDeprecatedLabel) {
         warning(
           false,
           '\'label\' in treeData is deprecated. Please use \'title\' instead.'
         );
-        warned = true;
+        warnDeprecatedLabel = true;
       }
 
 
