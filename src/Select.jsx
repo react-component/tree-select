@@ -363,7 +363,10 @@ class Select extends React.Component {
     this.triggerChange([]);
 
     if (!this.isSearchValueControlled()) {
-      this.setUncontrolledState({ searchValue: '' });
+      this.setUncontrolledState({
+        searchValue: '',
+        filteredTreeNodes: null,
+      });
     }
 
     event.stopPropagation();
