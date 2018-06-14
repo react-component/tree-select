@@ -2043,7 +2043,7 @@ exports[`TreeSelect.props searchPlaceholder 1`] = `
             </span>
             <span
               class="rc-tree-select-search__field__placeholder"
-              style="display: block;"
+              style="display: block; pointer-events: none;"
             >
               RC Component
             </span>
