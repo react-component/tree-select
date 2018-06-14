@@ -699,10 +699,12 @@ class Select extends React.Component {
       labelList = selectorValueList.map(({ label }) => label);
     }
 
-    this.setState({
-      valueList,
-      selectorValueList,
-    });
+    if (!('value' in this.props)) {
+      this.setState({
+        valueList,
+        selectorValueList,
+      });
+    }
 
     // Only do the logic when `onChange` function provided
     if (onChange) {

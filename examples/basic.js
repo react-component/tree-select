@@ -95,8 +95,9 @@ class Demo extends React.Component {
     this.setState({ value });
   }
 
-  onChangeChildren = (value) => {
-    console.log('onChangeChildren', arguments);
+  onChangeChildren = (...args) => {
+    console.log('onChangeChildren', ...args);
+    const value = args[0];
     const pre = value ? this.state.value : undefined;
     this.setState({ value: isLeaf(value) ? value : pre });
   }
