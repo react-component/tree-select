@@ -688,7 +688,7 @@ class Select extends React.Component {
     // Trigger
     const extra = {
       // [Legacy] Always return as array contains label & value
-      preValue: this.state.valueList.map(({ label, value }) => ({ label, value })),
+      preValue: this.state.selectorValueList.map(({ label, value }) => ({ label, value })),
       ...extraInfo,
     };
 

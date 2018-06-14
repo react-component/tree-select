@@ -1,5 +1,5 @@
 import React from 'react';
-// import { traverseTreeNodes, getPosition } from 'rc-tree/lib/util';
+import warning from 'warning';
 import SelectNode from './SelectNode';
 import { SHOW_CHILD, SHOW_PARENT } from './strategies';
 
@@ -189,8 +189,14 @@ export function convertDataToEntities(treeData) {
       keyEntities[key] = entity;
       posEntities[pos] = entity;
 
+      // Warning user not to use deprecated label prop.
+      warning(
+        !(!title && label),
+        '\'label\' in treeData is deprecated. Please use \'title\' instead.'
+      );
+
       const node = (
-        <SelectNode key={key || value} {...nodeProps} title={label || title} label={label} value={value}>
+        <SelectNode key={key || value} {...nodeProps} title={title || label} label={label} value={value}>
           {traverse(children, pos)}
         </SelectNode>
       );

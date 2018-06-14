@@ -87,6 +87,7 @@
     "rc-tree": "~1.11.4",
     "rc-trigger": "^3.0.0-rc.1",
     "rc-util": "^4.5.0",
-    "react-lifecycles-compat": "^3.0.4"
+    "react-lifecycles-compat": "^3.0.4",
+    "warning": "^4.0.1"
   }
 }
