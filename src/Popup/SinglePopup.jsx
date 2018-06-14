@@ -11,11 +11,10 @@ class SinglePopup extends React.Component {
     dropdownPrefixCls: PropTypes.string,
     disabled: PropTypes.bool,
     searchPlaceholder: PropTypes.string,
-    onPlaceholderClick: PropTypes.func,
   };
 
-  renderPlaceholder = () => {
-    const { valueList, searchPlaceholder, prefixCls, onPlaceholderClick } = this.props;
+  renderPlaceholder = (onPlaceholderClick) => {
+    const { valueList, searchPlaceholder, prefixCls } = this.props;
 
     if (!searchPlaceholder) return null;
 
@@ -23,7 +22,10 @@ class SinglePopup extends React.Component {
 
     return (
       <span
-        style={{ display: hasValue ? 'none' : 'block' }}
+        style={{
+          display: hasValue ? 'none' : 'block',
+          pointerEvents: 'none', // IE 11+
+        }}
         onClick={onPlaceholderClick}
         className={`${prefixCls}-search__field__placeholder`}
       >

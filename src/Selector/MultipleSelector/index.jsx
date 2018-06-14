@@ -20,7 +20,6 @@ class MultipleSelector extends React.Component {
     disabled: PropTypes.bool,
     searchValue: PropTypes.string,
 
-    onPlaceholderClick: PropTypes.func,
     onChoiceAnimationLeave: PropTypes.func,
   };
 
@@ -44,12 +43,11 @@ class MultipleSelector extends React.Component {
     this.inputRef.current.blur();
   };
 
-  renderPlaceholder = () => {
+  renderPlaceholder = (onPlaceholderClick) => {
     const {
       prefixCls,
       placeholder, searchPlaceholder,
       searchValue, valueList,
-      onPlaceholderClick,
     } = this.props;
 
     const currentPlaceholder = placeholder || searchPlaceholder;
@@ -61,7 +59,10 @@ class MultipleSelector extends React.Component {
     // [Legacy] Not remove the placeholder
     return (
       <span
-        style={{ display: hidden ? 'none' : 'block' }}
+        style={{
+          display: hidden ? 'none' : 'block',
+          pointerEvents: 'none', // IE 11+
+        }}
         onClick={onPlaceholderClick}
         className={`${prefixCls}-search__field__placeholder`}
       >

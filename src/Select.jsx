@@ -601,9 +601,6 @@ class Select extends React.Component {
     }
   }
 
-  // TODO: Useless, remove me!
-  onPlaceholderClick = () => {};
-
   /**
    * Only update the value which is not in props
    */
@@ -757,7 +754,6 @@ class Select extends React.Component {
       focused,
       dropdownPrefixCls: `${prefixCls}-dropdown`,
       ariaId: this.ariaId,
-      onPlaceholderClick: this.onPlaceholderClick,
     };
 
     // TODO: process the logic of mode diff
