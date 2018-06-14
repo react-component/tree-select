@@ -15,6 +15,7 @@ class BasePopup extends React.Component {
     searchValue: PropTypes.string,
     valueList: PropTypes.array,
     valueEntities: PropTypes.object,
+    keyEntities: PropTypes.object,
     treeIcon: PropTypes.bool,
     treeLine: PropTypes.bool,
     treeNodeFilterProp: PropTypes.string,
@@ -41,11 +42,29 @@ class BasePopup extends React.Component {
     }),
   };
 
-  state = {};
+  constructor(props) {
+    super();
+
+    const {
+      treeDefaultExpandAll, treeDefaultExpandedKeys,
+      keyEntities,
+    } = props;
+
+    // TODO: make `expandedKeyList` control
+    let expandedKeyList = treeDefaultExpandedKeys;
+    if (treeDefaultExpandAll) {
+      expandedKeyList = Object.keys(keyEntities);
+    }
+
+    this.state = {
+      keyList: [],
+      expandedKeyList,
+    };
+  }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { prevProps = {} } = prevState || {};
-    const { valueList, valueEntities, filteredTreeNodes } = nextProps;
+    const { valueList, valueEntities, keyEntities, filteredTreeNodes } = nextProps;
 
     const newState = {
       prevProps: nextProps,
@@ -59,13 +78,17 @@ class BasePopup extends React.Component {
         .map(({ key }) => key);
     }
 
-    // Show all when tree is in filter
-    if (filteredTreeNodes && filteredTreeNodes !== prevProps.filteredTreeNodes) {
-      console.log('do changed!!!');
+    // Show all when tree is in filter mode
+    if (filteredTreeNodes && filteredTreeNodes.length && filteredTreeNodes !== prevProps.filteredTreeNodes) {
+      newState.expandedKeyList = Object.keys(keyEntities);
     }
 
     return newState;
   }
+
+  onTreeExpand = (expandedKeyList) => {
+    this.setState({ expandedKeyList });
+  };
 
   /**
    * This method pass to Tree component which is used for add filtered class
@@ -93,12 +116,11 @@ class BasePopup extends React.Component {
   };
 
   render() {
-    const { keyList } = this.state;
+    const { keyList, expandedKeyList } = this.state;
     const {
       prefixCls,
       treeNodes, filteredTreeNodes,
       treeIcon, treeLine, treeCheckable, treeCheckStrictly, multiple,
-      treeDefaultExpandAll, treeDefaultExpandedKeys,
       loadData,
       ariaId,
 
@@ -148,13 +170,13 @@ class BasePopup extends React.Component {
           multiple={multiple}
           loadData={loadData}
 
-          defaultExpandAll={treeDefaultExpandAll}
-          defaultExpandedKeys={treeDefaultExpandedKeys}
+          expandedKeys={expandedKeyList}
 
           filterTreeNode={this.filterTreeNode}
 
           onSelect={onTreeNodeSelect}
           onCheck={onTreeNodeCheck}
+          onExpand={this.onTreeExpand}
 
           {...treeProps}
         >
