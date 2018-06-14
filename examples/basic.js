@@ -239,6 +239,7 @@ class Demo extends React.Component {
           onChange={this.onMultipleChange}
           onSelect={this.onSelect}
           allowClear
+          onBeforeSelect={(value, node) => (!node.props || !node.props.children)}
         />
 
         <h2>check select</h2>
