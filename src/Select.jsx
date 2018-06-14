@@ -260,9 +260,13 @@ class Select extends React.Component {
       );
     }
 
-    // Input value
+    // [Legacy] To align with `Select` component,
+    // We use `searchValue` instead of `inputValue` but still keep the api
+    // `inputValue` support `null` to work as `autoClearSearchValue`
     processState('inputValue', (propValue) => {
-      newState.searchValue = propValue;
+      if (propValue !== null) {
+        newState.searchValue = propValue;
+      }
     });
 
     // Search value
@@ -358,8 +362,7 @@ class Select extends React.Component {
 
     this.triggerChange([]);
 
-    // [Legacy] `inputValue` is deprecated but we still need check
-    if (!('inputValue' in this.props)) {
+    if (!this.isSearchValueControlled()) {
       this.setUncontrolledState({ searchValue: '' });
     }
 
@@ -415,7 +418,7 @@ class Select extends React.Component {
     const { value } = node.props;
     const { searchValue, valueEntities, keyEntities, treeNodes } = this.state;
     const {
-      disabled,
+      disabled, inputValue,
       treeNodeLabelProp, onSelect, onDeselect,
       treeCheckable, treeCheckStrictly, autoClearSearchValue,
     } = this.props;
@@ -471,8 +474,7 @@ class Select extends React.Component {
     }
 
     // Clean up `searchValue` when this prop is set
-    // `inputValue` is a legacy prop as current `searchValue`
-    if (autoClearSearchValue && searchValue && !('inputValue' in this.props)) {
+    if (!this.isSearchValueControlled() && (autoClearSearchValue || inputValue === null)) {
       this.setUncontrolledState({
         searchValue: '',
         filteredTreeNodes: null,
@@ -543,8 +545,7 @@ class Select extends React.Component {
 
     let isSet = false;
 
-    // [Legacy] Old api use `inputValue`, still need check this
-    if (!('inputValue' in this.props)) {
+    if (!this.isSearchValueControlled()) {
       isSet = this.setUncontrolledState({
         searchValue: value,
       });
@@ -637,6 +638,16 @@ class Select extends React.Component {
 
   isLabelInValue = () => {
     return isLabelInValue(this.props);
+  };
+
+  // [Legacy] To align with `Select` component,
+  // We use `searchValue` instead of `inputValue`
+  // but currently still need support that.
+  // Add this method the check if is controlled
+  isSearchValueControlled = () => {
+    const { inputValue } = this.props;
+    if ('searchValue' in this.props) return true;
+    return ('inputValue' in this.props) && inputValue !== null;
   };
 
   // TODO: onInputChange
