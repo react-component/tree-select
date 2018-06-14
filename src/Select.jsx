@@ -498,13 +498,13 @@ class Select extends React.Component {
     const { treeCheckable, multiple } = this.props;
     if (treeCheckable) return;
 
-    const { selectedNodes } = nodeEventInfo;
-    const isAdd = nodeEventInfo.selected;
-    this.onValueTrigger(isAdd, selectedNodes, nodeEventInfo, { selected: isAdd });
-
     if (!multiple) {
       this.setOpenState(false);
     }
+
+    const { selectedNodes } = nodeEventInfo;
+    const isAdd = nodeEventInfo.selected;
+    this.onValueTrigger(isAdd, selectedNodes, nodeEventInfo, { selected: isAdd });
   };
 
   onTreeNodeCheck = (_, nodeEventInfo) => {
