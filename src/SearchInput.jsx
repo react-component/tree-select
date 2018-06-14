@@ -96,8 +96,6 @@ class SearchInput extends React.Component {
           ref={this.inputRef}
           onChange={onSearchInputChange}
           onKeyDown={onSearchInputKeyDown}
-          // TODO: handle this
-          // onKeyDown={this.onInputKeyDown}
           value={searchValue}
           disabled={disabled}
           className={`${prefixCls}-search__field`}

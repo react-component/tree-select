@@ -60,10 +60,10 @@ class Select extends React.Component {
 
     showSearch: PropTypes.bool,
     placeholder: PropTypes.node,
-    inputValue: PropTypes.string, // [Legacy] TODO: Deprecated. Use `searchValue` instead.
+    inputValue: PropTypes.string, // [Legacy] Deprecated. Use `searchValue` instead.
     searchValue: PropTypes.string,
     autoClearSearchValue: PropTypes.bool,
-    searchPlaceholder: PropTypes.node, // [Legacy] TODO: This should be deprecated.
+    searchPlaceholder: PropTypes.node, // [Legacy] Confuse with placeholder
     disabled: PropTypes.bool,
     children: PropTypes.node,
     maxTagTextLength: PropTypes.number,
@@ -82,7 +82,7 @@ class Select extends React.Component {
     treeDefaultExpandAll: PropTypes.bool,
     treeDefaultExpandedKeys: PropTypes.array,
     loadData: PropTypes.func,
-    filterTreeNode: PropTypes.func,
+    filterTreeNode: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 
     notFoundContent: PropTypes.string,
 
@@ -275,7 +275,11 @@ class Select extends React.Component {
       const upperSearchValue = String(newState.searchValue).toUpperCase();
 
       let filterTreeNodeFn = filterTreeNode;
-      if (!filterTreeNodeFn) {
+      if (filterTreeNode === false) {
+        // Don't filter if is false
+        filterTreeNodeFn = () => true;
+      } else if (typeof filterTreeNodeFn !== 'function') {
+        // When is not function (true or undefined), use inner filter
         filterTreeNodeFn = (_, node) => {
           const nodeValue = String(node.props[treeNodeFilterProp]).toUpperCase();
           return nodeValue.indexOf(upperSearchValue) !== -1;
@@ -533,13 +537,18 @@ class Select extends React.Component {
     const { treeNodes } = this.state;
     const { onSearch, filterTreeNode, treeNodeFilterProp } = this.props;
 
-    const isSet = this.setUncontrolledState({
-      searchValue: value,
-    });
-    this.setOpenState(true);
-
     if (onSearch) {
       onSearch(value);
+    }
+
+    let isSet = false;
+
+    // [Legacy] Old api use `inputValue`, still need check this
+    if (!('inputValue' in this.props)) {
+      isSet = this.setUncontrolledState({
+        searchValue: value,
+      });
+      this.setOpenState(true);
     }
 
     if (isSet) {
