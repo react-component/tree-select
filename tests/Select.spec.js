@@ -26,11 +26,11 @@ describe('TreeSelect.basic', () => {
 
   describe('render', () => {
     let treeData = [
-      { key: '0', value: '0', label: '0 label' },
+      { key: '0', value: '0', title: '0 label' },
       {
-        key: '1', value: '1', label: '1 label', children: [
-          { key: '10', value: '10', label: '10 label' },
-          { key: '11', value: '11', label: '11 label' },
+        key: '1', value: '1', title: '1 label', children: [
+          { key: '10', value: '10', title: '10 label' },
+          { key: '11', value: '11', title: '11 label' },
         ],
       },
     ];
@@ -100,8 +100,8 @@ describe('TreeSelect.basic', () => {
 
     it('renders treeDataSimpleMode correctly', () => {
       treeData = [
-        { id: '0', value: '0', label: 'label0' },
-        { id: '1', value: '1', label: 'label1', pId: '0' },
+        { id: '0', value: '0', title: 'label0' },
+        { id: '1', value: '1', title: 'label1', pId: '0' },
       ];
       const wrapper = render(
         <TreeSelect treeData={treeData} />
@@ -112,7 +112,7 @@ describe('TreeSelect.basic', () => {
 
   it('sets default value', () => {
     const treeData = [
-      { key: '0', value: '0', label: 'label0' },
+      { key: '0', value: '0', title: 'label0' },
     ];
     const wrapper = mount(
       <TreeSelect defaultValue="0" treeData={treeData} />
@@ -124,8 +124,8 @@ describe('TreeSelect.basic', () => {
 
   it('can be controlled by value', () => {
     const treeData = [
-      { key: '0', value: '0', label: 'label0' },
-      { key: '1', value: '1', label: 'label1' },
+      { key: '0', value: '0', title: 'label0' },
+      { key: '1', value: '1', title: 'label1' },
     ];
     const wrapper = mount(
       <TreeSelect value="0" treeData={treeData} />
@@ -139,8 +139,8 @@ describe('TreeSelect.basic', () => {
 
   describe('select', () => {
     const treeData = [
-      { key: '0', value: '0', label: 'label0' },
-      { key: '1', value: '1', label: 'label1' },
+      { key: '0', value: '0', title: 'label0' },
+      { key: '1', value: '1', title: 'label1' },
     ];
     const createSelect = (props) => (
       <TreeSelect
@@ -181,8 +181,8 @@ describe('TreeSelect.basic', () => {
 
   describe('search nodes', () => {
     const treeData = [
-      { key: 'a', value: 'a', label: 'labela' },
-      { key: 'b', value: 'b', label: 'labelb' },
+      { key: 'a', value: 'a', title: 'labela' },
+      { key: 'b', value: 'b', title: 'labelb' },
     ];
     const createSelect = (props) => (
       <TreeSelect
@@ -214,7 +214,7 @@ describe('TreeSelect.basic', () => {
     });
 
     it('search nodes by treeNodeFilterProp', () => {
-      const wrapper = mount(createSelect({ treeNodeFilterProp: 'label' }));
+      const wrapper = mount(createSelect({ treeNodeFilterProp: 'title' }));
       wrapper.find('input').simulate('change', { target: { value: 'labela' } });
       expect(wrapper.find('TreeNode')).toHaveLength(1);
       expect(wrapper.find('TreeNode').prop('value')).toBe('a');
@@ -247,9 +247,8 @@ describe('TreeSelect.basic', () => {
     const wrapper = mount(
       <TreeSelect open treeCheckable treeData={[]} />
     );
-    wrapper.setProps({ treeData: [{ key: '0', value: '0', label: 'label0' }] });
+    wrapper.setProps({ treeData: [{ key: '0', value: '0', title: 'label0' }] });
     wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
-    // expect(wrapper.state().value).toEqual([{ value: '0', label: 'label0' }]);
     expect(wrapper.state().valueList).toEqual(
       [{ value: '0', label: 'label0' }]
     );

@@ -167,6 +167,8 @@ export function convertDataToEntities(treeData) {
   const keyEntities = {};
   const posEntities = {};
 
+  let warned = false;
+
   function traverse(subTreeData, parentPos) {
     const subList = toArray(subTreeData);
 
@@ -190,10 +192,14 @@ export function convertDataToEntities(treeData) {
       posEntities[pos] = entity;
 
       // Warning user not to use deprecated label prop.
-      warning(
-        !(!title && label),
-        '\'label\' in treeData is deprecated. Please use \'title\' instead.'
-      );
+      if ((!title && label) && !warned) {
+        warning(
+          false,
+          '\'label\' in treeData is deprecated. Please use \'title\' instead.'
+        );
+        warned = true;
+      }
+
 
       const node = (
         <SelectNode key={key || value} {...nodeProps} title={title || label} label={label} value={value}>

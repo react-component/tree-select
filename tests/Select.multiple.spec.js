@@ -10,8 +10,8 @@ describe('TreeSelect.multiple', () => {
   focusTest('multiple');
 
   const treeData = [
-    { key: '0', value: '0', label: 'label0' },
-    { key: '1', value: '1', label: 'label1' },
+    { key: '0', value: '0', title: 'label0' },
+    { key: '1', value: '1', title: 'label1' },
   ];
   const createSelect = (props) => (
     <TreeSelect
