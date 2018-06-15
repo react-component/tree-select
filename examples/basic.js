@@ -63,7 +63,7 @@ class Demo extends React.Component {
     simpleSearchValue: 'test111',
     simpleTreeData: [
       { key: 1, pId: 0, label: 'test1', value: 'test1' },
-      { key: 121, pId: 0, label: 'test1', value: 'test121' },
+      { key: 121, pId: 0, label: 'test2', value: 'test2' },
       { key: 11, pId: 1, label: 'test11', value: 'test11' },
       { key: 12, pId: 1, label: 'test12', value: 'test12' },
       { key: 111, pId: 11, label: 'test111', value: 'test111' },

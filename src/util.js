@@ -232,7 +232,6 @@ export function convertDataToEntities(treeData) {
         warnDeprecatedLabel = true;
       }
 
-
       const node = (
         <SelectNode key={key || value} {...nodeProps} title={title || label} label={label} value={value}>
           {traverse(children, pos)}
