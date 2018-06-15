@@ -3,6 +3,10 @@ import warning from 'warning';
 import SelectNode from './SelectNode';
 import { SHOW_CHILD, SHOW_PARENT } from './strategies';
 
+// When treeNode not provide key, and we will use value as key.
+// Some time value is empty, we should pass it instead.
+const KEY_OF_VALUE_EMPTY = 'RC_TREE_SELECT_KEY_OF_VALUE_EMPTY';
+
 let warnDeprecatedLabel = false;
 
 // =================== MISC ====================
@@ -208,8 +212,12 @@ export function convertDataToEntities(treeData) {
       const pos = `${parentPos}-${index}`;
 
       const entity = { key, value, pos };
+
       // This may cause some side effect, need additional check
       entity.key = entity.key || value;
+      if (!entity.key && entity.key !== 0) {
+        entity.key = KEY_OF_VALUE_EMPTY;
+      }
 
       // Fill children
       entity.parent = posEntities[parentPos];
@@ -233,7 +241,7 @@ export function convertDataToEntities(treeData) {
       }
 
       const node = (
-        <SelectNode key={key || value} {...nodeProps} title={title || label} label={label} value={value}>
+        <SelectNode key={entity.key} {...nodeProps} title={title || label} label={label} value={value}>
           {traverse(children, pos)}
         </SelectNode>
       );
