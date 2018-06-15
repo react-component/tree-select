@@ -228,7 +228,7 @@ export function convertDataToEntities(treeData) {
 
       // Fill entities
       valueEntities[value] = entity;
-      keyEntities[key] = entity;
+      keyEntities[entity.key] = entity;
       posEntities[pos] = entity;
 
       // Warning user not to use deprecated label prop.
