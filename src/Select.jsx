@@ -324,7 +324,7 @@ class Select extends React.Component {
     });
 
     // Do the search logic
-    if (newState.searchValue) {
+    if (newState.searchValue !== undefined) {
       const upperSearchValue = String(newState.searchValue).toUpperCase();
 
       let filterTreeNodeFn = filterTreeNode;
@@ -760,11 +760,13 @@ class Select extends React.Component {
 
     // Only do the logic when `onChange` function provided
     if (onChange) {
+      const connectValueList = [...missValueList, ...valueList];
       let returnValue;
+
       if (this.isLabelInValue()) {
-        returnValue = selectorValueList.map(({ label, value }) => ({ label, value }));
+        returnValue = connectValueList.map(({ label, value }) => ({ label, value }));
       } else {
-        returnValue = selectorValueList.map(({value}) => value);
+        returnValue = connectValueList.map(({value}) => value);
       }
 
       if (!this.isMultiple()) {
