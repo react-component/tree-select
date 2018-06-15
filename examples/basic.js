@@ -91,8 +91,8 @@ class Demo extends React.Component {
     this.setState({ searchValue: value });
   }
 
-  onChange = (value) => {
-    console.log('onChange', arguments);
+  onChange = (value, ...rest) => {
+    console.log('onChange', value, ...rest);
     this.setState({ value });
   }
 

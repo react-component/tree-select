@@ -14,11 +14,11 @@ class SinglePopup extends React.Component {
   };
 
   renderPlaceholder = (onPlaceholderClick) => {
-    const { valueList, searchPlaceholder, searchValue, prefixCls } = this.props;
+    const { selectorValueList, searchPlaceholder, searchValue, prefixCls } = this.props;
 
     if (!searchPlaceholder) return null;
 
-    const hidePlaceholder = valueList.length || searchValue;
+    const hidePlaceholder = selectorValueList.length || searchValue;
 
     return (
       <span

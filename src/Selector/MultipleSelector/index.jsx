@@ -47,14 +47,14 @@ class MultipleSelector extends React.Component {
     const {
       prefixCls,
       placeholder, searchPlaceholder,
-      searchValue, valueList,
+      searchValue, selectorValueList,
     } = this.props;
 
     const currentPlaceholder = placeholder || searchPlaceholder;
 
     if (!currentPlaceholder) return null;
 
-    const hidden = searchValue || valueList.length;
+    const hidden = searchValue || selectorValueList.length;
 
     // [Legacy] Not remove the placeholder
     return (
