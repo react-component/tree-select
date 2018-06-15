@@ -140,6 +140,11 @@ export default function (modeName) {
       } = this.props;
       const { rcTreeSelect: { onSelectorKeyDown } } = this.context;
 
+      let myTabIndex = tabIndex;
+      if (disabled) {
+        myTabIndex = null;
+      }
+
       return (
         <span
           style={style}
@@ -161,8 +166,9 @@ export default function (modeName) {
           aria-owns={open ? ariaId : undefined}
           aria-controls={open ? ariaId : undefined}
           aria-haspopup="listbox"
+          aria-disabled={disabled}
 
-          tabIndex={tabIndex}
+          tabIndex={myTabIndex}
 
           onFocus={this.onFocus}
           onBlur={this.onBlur}
