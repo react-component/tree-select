@@ -138,6 +138,38 @@ export function isLabelInValue(props) {
 }
 
 // =================== Tree ====================
+export function parseSimpleTreeData(treeData, { id, pId, rootPId }) {
+  const keyNodes = {};
+  const rootNodeList = [];
+
+  // Fill in the map
+  const nodeList = treeData.map((node) => {
+    const clone = { ...node };
+    const key = clone[id];
+    keyNodes[key] = clone;
+    return clone;
+  });
+
+  // Connect tree
+  nodeList.forEach((node) => {
+    const parentKey = node[pId];
+    const parent = keyNodes[parentKey];
+
+    // Fill parent
+    if (parent) {
+      parent.children = parent.children || [];
+      parent.children.push(node);
+    }
+
+    // Fill root tree node
+    if (parentKey === rootPId || (!parent && rootPId === null)) {
+      rootNodeList.push(node);
+    }
+  });
+
+  return rootNodeList;
+}
+
 /**
  * `Tree` use `key` to track state but it will changed by React.
  * We need convert it back to the data and re-generate by `key`.

@@ -88,6 +88,7 @@
     "rc-trigger": "^3.0.0-rc.1",
     "rc-util": "^4.5.0",
     "react-lifecycles-compat": "^3.0.4",
+    "shallowequal": "^1.0.2",
     "warning": "^4.0.1"
   }
 }

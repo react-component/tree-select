@@ -55,11 +55,12 @@ class Demo extends React.Component {
   state = {
     tsOpen: false,
     visible: false,
-    inputValue: '0-0-0-label',
+    searchValue: '0-0-0-label',
     value: '0-0-0-value1',
     // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
     lv: { value: '0-0-0-value', label: 'spe label' },
     multipleValue: [],
+    simpleSearchValue: 'test111',
     simpleTreeData: [
       { key: 1, pId: 0, label: 'test1', value: 'test1' },
       { key: 121, pId: 0, label: 'test1', value: 'test121' },
@@ -87,7 +88,7 @@ class Demo extends React.Component {
 
   onSearch = (value) => {
     console.log(value, arguments);
-    this.setState({ inputValue: value });
+    this.setState({ searchValue: value });
   }
 
   onChange = (value) => {
@@ -178,7 +179,7 @@ class Demo extends React.Component {
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           showSearch allowClear treeLine
-          inputValue={this.state.inputValue}
+          searchValue={this.state.searchValue}
           value={this.state.value}
           treeData={gData}
           treeNodeFilterProp="label"
@@ -253,7 +254,7 @@ class Demo extends React.Component {
           searchPlaceholder="please search"
           treeLine maxTagTextLength={10}
           value={this.state.value}
-          inputValue={null}
+          autoClearSearchValue
           treeData={gData}
           treeNodeFilterProp="title"
           treeCheckable showCheckedStrategy={SHOW_PARENT}
@@ -284,7 +285,10 @@ class Demo extends React.Component {
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           treeLine maxTagTextLength={10}
-          inputValue="test111"
+          searchValue={this.state.simpleSearchValue}
+          onSearch={(simpleSearchValue) => {
+            this.setState({ simpleSearchValue });
+          }}
           value={this.state.value}
           treeData={this.state.simpleTreeData}
           treeNodeFilterProp="title"

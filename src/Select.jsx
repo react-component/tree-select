@@ -24,6 +24,7 @@ import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { calcCheckStateConduct } from 'rc-tree/lib/util';
+import shallowEqual from 'shallowequal';
 
 import SelectTrigger from './SelectTrigger';
 import { selectorContextTypes } from './Base/BaseSelector';
@@ -38,8 +39,8 @@ import { SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './strategies';
 import {
   createRef, generateAriaId,
   formatInternalValue, formatSelectorValue,
-  convertDataToEntities, convertTreeToData, calcUncheckConduct,
-  flatToHierarchy,
+  parseSimpleTreeData, convertDataToEntities, convertTreeToData,
+  calcUncheckConduct, flatToHierarchy,
   isPosRelated, isLabelInValue, getFilterTree,
 } from './util';
 import { valueProp } from './propTypes';
@@ -72,7 +73,8 @@ class Select extends React.Component {
     ]),
 
     dropdownMatchSelectWidth: PropTypes.bool,
-    treeData: PropTypes.any,
+    treeData: PropTypes.array,
+    treeDataSimpleMode: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
     treeNodeFilterProp: PropTypes.string,
     treeNodeLabelProp: PropTypes.string,
     treeCheckable: PropTypes.bool,
@@ -128,18 +130,22 @@ class Select extends React.Component {
 
     const {
       prefixAria,
-      defaultOpen, defaultValue,
-      open,
+      defaultOpen, open,
+      defaultValue,
     } = props;
 
     this.state = {
       open: open || defaultOpen,
       valueList: defaultValue ? formatInternalValue(defaultValue, props) : [],
+      missValueList: [], // Contains the value not in the tree
+      // TODO: handle this
       selectorValueList: [], // Used for multiple selector
       valueEntities: {},
       keyEntities: {},
       searchValue: '',
     };
+
+    console.log('>>>', this.state.missValueList);
 
     this.selectorRef = createRef();
     this.selectTriggerRef = createRef();
@@ -170,12 +176,11 @@ class Select extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    // React 16.4 will support `prevProps` natively.
-    // Consider the capacity on 16.3, we have to do this ourselves.
     const { prevProps = {} } = prevState;
     const {
       treeCheckable, treeCheckStrictly,
       filterTreeNode, treeNodeFilterProp,
+      treeDataSimpleMode,
     } = nextProps;
     const newState = {
       prevProps: nextProps,
@@ -184,7 +189,7 @@ class Select extends React.Component {
     // Process the state when props updated
     function processState(propName, updater) {
       if (prevProps[propName] !== nextProps[propName]) {
-        updater(nextProps[propName]);
+        updater(nextProps[propName], prevProps[propName]);
         return true;
       }
       return false;
@@ -199,9 +204,34 @@ class Select extends React.Component {
 
     // Tree Nodes
     let treeData;
+    let treeDataChanged = false;
+    let treeDataModeChanged = false;
     processState('treeData', (propValue) => {
       treeData = propValue;
+      treeDataChanged = true;
     });
+
+    processState('treeDataSimpleMode', (propValue, prevValue) => {
+      if (!propValue) return;
+
+      const prev = !prevValue || prevValue === true ? {} : prevValue;
+
+      // Shallow equal to avoid dynamic prop object
+      if (!shallowEqual(propValue, prev)) {
+        treeDataModeChanged = true;
+      }
+    });
+
+    // Parse by `treeDataSimpleMode`
+    if (treeDataSimpleMode && (treeDataChanged || treeDataModeChanged)) {
+      const simpleMapper = {
+        id: 'id',
+        pId:'pId',
+        rootPId: null,
+        ...(treeDataSimpleMode !== true ? treeDataSimpleMode : {}),
+      };
+      treeData = parseSimpleTreeData(treeData, simpleMapper);
+    }
 
     // If `treeData` not provide, use children TreeNodes
     if (!nextProps.treeData) {
@@ -227,16 +257,25 @@ class Select extends React.Component {
 
     // Selector Value List
     if (valueRefresh) {
+      // Find out that value not exist in the tree
+      const missValueList = [];
+
+      // Get key by value
+      const keyList = (newState.valueList || prevState.valueList)
+        .map((wrapperValue) => {
+          const { value } = wrapperValue;
+          const entity = (newState.valueEntities || prevState.valueEntities)[value];
+
+          if (entity) return entity.key;
+
+          // If not match, it may caused by ajax load. We need keep this
+          missValueList.push(wrapperValue);
+          return null;
+        })
+        .filter(key => key);
+
       // We need calculate the value when tree is checked tree
       if (treeCheckable && !treeCheckStrictly) {
-        // Get keys by values
-        const keyList = (newState.valueList || prevState.valueList)
-          .map(({ value }) => {
-            const entity = (newState.valueEntities || prevState.valueEntities)[value];
-            return entity ? entity.key : null;
-          })
-          .filter(key => key);
-
         // Calculate the keys need to be checked
         const { checkedKeys } = calcCheckStateConduct(
           newState.treeNodes || prevState.treeNodes,
@@ -251,6 +290,9 @@ class Select extends React.Component {
         // Format value list again for internal usage
         newState.valueList = formatInternalValue(valueList, nextProps);
       }
+
+      // Fill the missValueList, we still need display in the selector
+      newState.missValueList = missValueList;
 
       // Calculate the value list for `Selector` usage
       newState.selectorValueList = formatSelectorValue(
