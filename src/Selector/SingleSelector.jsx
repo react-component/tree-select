@@ -27,14 +27,14 @@ class SingleSelector extends React.Component {
     let innerNode;
 
     if (selectorValueList.length) {
-      const { label } = selectorValueList[0];
+      const { label, value } = selectorValueList[0];
       innerNode = (
         <span
           key="value"
           title={toTitle(label)}
           className={`${prefixCls}-selection-selected-value`}
         >
-          {label}
+          {label || value}
         </span>
       );
     } else {

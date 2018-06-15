@@ -131,21 +131,20 @@ class Select extends React.Component {
     const {
       prefixAria,
       defaultOpen, open,
-      defaultValue,
     } = props;
 
     this.state = {
       open: open || defaultOpen,
-      valueList: defaultValue ? formatInternalValue(defaultValue, props) : [],
+      valueList: [],
       missValueList: [], // Contains the value not in the tree
       // TODO: handle this
       selectorValueList: [], // Used for multiple selector
       valueEntities: {},
       keyEntities: {},
       searchValue: '',
-    };
 
-    console.log('>>>', this.state.missValueList);
+      init: true,
+    };
 
     this.selectorRef = createRef();
     this.selectTriggerRef = createRef();
@@ -184,6 +183,7 @@ class Select extends React.Component {
     } = nextProps;
     const newState = {
       prevProps: nextProps,
+      init: false,
     };
 
     // Process the state when props updated
@@ -230,7 +230,7 @@ class Select extends React.Component {
         rootPId: null,
         ...(treeDataSimpleMode !== true ? treeDataSimpleMode : {}),
       };
-      treeData = parseSimpleTreeData(treeData, simpleMapper);
+      treeData = parseSimpleTreeData(nextProps.treeData, simpleMapper);
     }
 
     // If `treeData` not provide, use children TreeNodes
@@ -250,6 +250,13 @@ class Select extends React.Component {
     }
 
     // Value List
+    if (prevState.init) {
+      processState('defaultValue', (propValue) => {
+        newState.valueList = formatInternalValue(propValue, nextProps);
+        valueRefresh = true;
+      });
+    }
+
     processState('value', (propValue) => {
       newState.valueList = formatInternalValue(propValue, nextProps);
       valueRefresh = true;
@@ -402,7 +409,7 @@ class Select extends React.Component {
       return;
     }
 
-    this.triggerChange([]);
+    this.triggerChange([], []);
 
     if (!this.isSearchValueControlled()) {
       this.setUncontrolledState({
@@ -417,7 +424,7 @@ class Select extends React.Component {
   onMultipleSelectorRemove = (event, removeValue) => {
     event.stopPropagation();
 
-    const { valueList, valueEntities, searchValue } = this.state;
+    const { valueList, missValueList, valueEntities, searchValue } = this.state;
 
     const { treeCheckable, treeCheckStrictly, disabled } = this.props;
     if (disabled) {
@@ -440,7 +447,7 @@ class Select extends React.Component {
 
     const extraInfo = {
       triggerValue: removeValue,
-      triggerNode: triggerEntity.node,
+      triggerNode: triggerEntity ? triggerEntity.node : null,
     };
 
     // [Legacy] Little hack on this to make same action as `onCheck` event.
@@ -454,14 +461,17 @@ class Select extends React.Component {
       }
     }
 
-    this.triggerChange(newValueList, extraInfo);
+    // Some value user pass prop is not in the tree, we also need clean it
+    const newMissValueList = missValueList.filter(({ value }) => value !== removeValue);
+
+    this.triggerChange(newMissValueList, newValueList, extraInfo);
   };
 
   // ===================== Popup ======================
   onValueTrigger = (isAdd, nodeList, nodeEventInfo, nodeExtraInfo) => {
     const { node } = nodeEventInfo;
     const { value } = node.props;
-    const { searchValue, valueEntities, keyEntities, treeNodes } = this.state;
+    const { missValueList, searchValue, valueEntities, keyEntities, treeNodes } = this.state;
     const {
       disabled, inputValue,
       treeNodeLabelProp, onSelect, onDeselect,
@@ -533,7 +543,7 @@ class Select extends React.Component {
       triggerNode: node,
     };
 
-    this.triggerChange(newValueList, extraInfo);
+    this.triggerChange(missValueList, newValueList, extraInfo);
   };
 
   onTreeNodeSelect = (_, nodeEventInfo) => {
@@ -704,7 +714,6 @@ class Select extends React.Component {
     return ('inputValue' in this.props) && inputValue !== null;
   };
 
-  // TODO: onInputChange
   // TODO: onChoiceAnimationLeave
   forcePopupAlign = () => {
     const $trigger = this.selectTriggerRef.current;
@@ -718,7 +727,7 @@ class Select extends React.Component {
    * 1. Update state valueList.
    * 2. Fire `onChange` event to user.
    */
-  triggerChange = (valueList, extraInfo = {}) => {
+  triggerChange = (missValueList, valueList, extraInfo = {}) => {
     const { valueEntities } = this.state;
     const { onChange, disabled } = this.props;
     let labelList = null;
@@ -743,6 +752,7 @@ class Select extends React.Component {
 
     if (!('value' in this.props)) {
       this.setState({
+        missValueList,
         valueList,
         selectorValueList,
       });
@@ -777,7 +787,7 @@ class Select extends React.Component {
 
   render() {
     const {
-      valueList, selectorValueList,
+      valueList, missValueList, selectorValueList,
       valueEntities, keyEntities,
       searchValue,
       open, focused,
@@ -790,7 +800,7 @@ class Select extends React.Component {
       ...this.props,
       isMultiple,
       valueList,
-      selectorValueList,
+      selectorValueList: [...missValueList, ...selectorValueList],
       valueEntities,
       keyEntities,
       searchValue,

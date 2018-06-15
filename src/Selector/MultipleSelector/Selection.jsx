@@ -23,10 +23,10 @@ class Selection extends React.Component {
   render() {
     const {
       prefixCls, maxTagTextLength,
-      label,
+      label, value,
     } = this.props;
 
-    let content = label;
+    let content = label || value;
     if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
       content = `${content.slice(0, maxTagTextLength)}...`;
     }
