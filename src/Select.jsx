@@ -435,14 +435,17 @@ class Select extends React.Component {
     const triggerEntity = valueEntities[removeValue];
 
     // Clean up value
-    let newValueList;
-    if (treeCheckable && !treeCheckStrictly) {
-      newValueList = valueList.filter(({ value }) => {
-        const entity = valueEntities[value];
-        return !isPosRelated(entity.pos, triggerEntity.pos);
-      });
-    } else {
-      newValueList = valueList.filter(({ value }) => value !== removeValue);
+    let newValueList = valueList;
+    if (triggerEntity) {
+      // If value is in tree
+      if (treeCheckable && !treeCheckStrictly) {
+        newValueList = valueList.filter(({value}) => {
+          const entity = valueEntities[value];
+          return !isPosRelated(entity.pos, triggerEntity.pos);
+        });
+      } else {
+        newValueList = valueList.filter(({value}) => value !== removeValue);
+      }
     }
 
     const extraInfo = {
@@ -730,7 +733,6 @@ class Select extends React.Component {
   triggerChange = (missValueList, valueList, extraInfo = {}) => {
     const { valueEntities } = this.state;
     const { onChange, disabled } = this.props;
-    let labelList = null;
 
     if (disabled) {
       return;
@@ -746,9 +748,9 @@ class Select extends React.Component {
     // Format value by `treeCheckStrictly`
     const selectorValueList = formatSelectorValue(valueList, this.props, valueEntities);
 
-    if (!this.isLabelInValue()) {
-      labelList = selectorValueList.map(({ label }) => label);
-    }
+    // if (!this.isLabelInValue()) {
+    //   labelList = selectorValueList.map(({ label }) => label);
+    // }
 
     if (!('value' in this.props)) {
       this.setState({
@@ -760,13 +762,18 @@ class Select extends React.Component {
 
     // Only do the logic when `onChange` function provided
     if (onChange) {
-      const connectValueList = [...missValueList, ...valueList];
+      const connectValueList = [...missValueList, ...selectorValueList];
+      let labelList = null;
       let returnValue;
 
       if (this.isLabelInValue()) {
         returnValue = connectValueList.map(({ label, value }) => ({ label, value }));
       } else {
-        returnValue = connectValueList.map(({value}) => value);
+        labelList = [];
+        returnValue = connectValueList.map(({ label, value }) => {
+          labelList.push(label);
+          return value;
+        });
       }
 
       if (!this.isMultiple()) {
