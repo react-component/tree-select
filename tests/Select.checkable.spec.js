@@ -1,9 +1,14 @@
 /* eslint-disable no-undef, react/no-multi-comp */
 import React from 'react';
 import { mount } from 'enzyme';
-import TreeSelect, { SHOW_PARENT } from '../src';
+import TreeSelect, { SHOW_PARENT, SHOW_ALL, TreeNode } from '../src';
+import { resetAriaId } from '../src/util';
 
 describe('TreeSelect.checkable', () => {
+  beforeEach(() => {
+    resetAriaId();
+  });
+
   beforeAll(() => {
     jest.useFakeTimers();
   });
@@ -230,5 +235,31 @@ describe('TreeSelect.checkable', () => {
     wrapper.find('.rc-tree-select-selection__clear').simulate('click');
     expect(wrapper.state().valueList).toEqual([]);
     expect(wrapper.state().searchValue).toBe('');
+  });
+
+  it('uncheck', () => {
+    const wrapper = mount(
+      <div>
+        <TreeSelect
+          defaultValue={['0']}
+          showCheckedStrategy={SHOW_ALL}
+          treeCheckable
+          treeDefaultExpandAll
+          open
+        >
+          <TreeNode value="0">
+            <TreeNode value="0-0">
+              <TreeNode value="0-0" />
+            </TreeNode>
+          </TreeNode>
+        </TreeSelect>
+      </div>
+    );
+
+    expect(wrapper.render()).toMatchSnapshot();
+
+    wrapper.find('.rc-tree-select-selection__choice__remove').at(1).simulate('click');
+
+    expect(wrapper.render()).toMatchSnapshot();
   });
 });
