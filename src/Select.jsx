@@ -762,7 +762,15 @@ class Select extends React.Component {
 
     // Only do the logic when `onChange` function provided
     if (onChange) {
-      const connectValueList = [...missValueList, ...selectorValueList];
+      let connectValueList;
+
+      // Get value by mode
+      if (this.isMultiple()) {
+        connectValueList = [...missValueList, ...selectorValueList];
+      } else {
+        connectValueList = selectorValueList.slice(0, 1);
+      }
+
       let labelList = null;
       let returnValue;
 

@@ -187,7 +187,7 @@ class Demo extends React.Component {
           onSearch={this.onSearch}
           open={this.state.tsOpen}
           onChange={(value, ...args) => {
-            console.log('onChange', ...args);
+            console.log('onChange', value, ...args);
             if (value === '0-0-0-0-value') {
               this.setState({ tsOpen: true });
             } else {
