@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TreeSelect.checkable uncheck remove by selector 1`] = `
+exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1`] = `
 <div>
   <span
     aria-controls="rc-tree-select-list_1"
@@ -182,7 +182,7 @@ exports[`TreeSelect.checkable uncheck remove by selector 1`] = `
 </div>
 `;
 
-exports[`TreeSelect.checkable uncheck remove by selector 2`] = `
+exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2`] = `
 <div>
   <span
     aria-controls="rc-tree-select-list_1"

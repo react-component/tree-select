@@ -422,7 +422,7 @@ class Select extends React.Component {
   onMultipleSelectorRemove = (event, removeValue) => {
     event.stopPropagation();
 
-    const { valueList, missValueList, valueEntities, searchValue } = this.state;
+    const { valueList, missValueList, valueEntities } = this.state;
 
     const { treeCheckable, treeCheckStrictly, disabled } = this.props;
     if (disabled) return;
@@ -452,7 +452,7 @@ class Select extends React.Component {
     // [Legacy] Little hack on this to make same action as `onCheck` event.
     if (treeCheckable) {
       const filteredEntityList = newValueList.map(({ value }) => valueEntities[value]);
-      if (treeCheckStrictly || searchValue) {
+      if (treeCheckStrictly) {
         extraInfo.allCheckedNodes = filteredEntityList.map(({ node }) => node);
       } else {
         extraInfo.allCheckedNodes = flatToHierarchy(filteredEntityList)
@@ -724,9 +724,7 @@ class Select extends React.Component {
     const { valueEntities } = this.state;
     const { onChange, disabled } = this.props;
 
-    if (disabled) {
-      return;
-    }
+    if (disabled) return;
 
     // Trigger
     const extra = {

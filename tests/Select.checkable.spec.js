@@ -259,12 +259,40 @@ describe('TreeSelect.checkable', () => {
       )
     );
 
-    it ('remove by selector', () => {
-      const wrapper = createSelect();
-      expect(wrapper.render()).toMatchSnapshot();
+    describe('remove by selector', () => {
+      it('not treeCheckStrictly', () => {
+        const wrapper = createSelect();
+        expect(wrapper.render()).toMatchSnapshot();
 
-      wrapper.find('.rc-tree-select-selection__choice__remove').at(1).simulate('click');
-      expect(wrapper.render()).toMatchSnapshot();
+        wrapper.find('.rc-tree-select-selection__choice__remove').at(1).simulate('click');
+        expect(wrapper.render()).toMatchSnapshot();
+      });
+
+      it('treeCheckStrictly', () => {
+        const val = (value) => ({ label: value, value });
+        const onChange = jest.fn();
+        const wrapper = createSelect({
+          treeCheckStrictly: true,
+          defaultValue: [val('0'), val('0-0'), val('0-0-0')],
+          onChange,
+        });
+        wrapper.find('.rc-tree-select-selection__choice__remove').at(1).simulate('click');
+
+        expect(onChange.mock.calls[0][0]).toEqual(
+          [{ label: '0', value: '0' }, { label: '0-0-0', value: '0-0-0' }]
+        );
+        expect(onChange.mock.calls[0][1]).toEqual(null);
+
+        const getProps = (index) => {
+          const node = onChange.mock.calls[0][2].allCheckedNodes[index];
+          return {
+            title: node.props.title,
+            value: node.props.value,
+          };
+        }
+        expect(getProps(0)).toEqual({ title: '0', value: '0' });
+        expect(getProps(1)).toEqual({ title: '0-0-0', value: '0-0-0' });
+      });
     });
 
     it ('remove by tree check', () => {
