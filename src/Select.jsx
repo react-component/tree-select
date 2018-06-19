@@ -474,7 +474,7 @@ class Select extends React.Component {
   onValueTrigger = (isAdd, nodeList, nodeEventInfo, nodeExtraInfo) => {
     const { node } = nodeEventInfo;
     const { value } = node.props;
-    const { missValueList, searchValue, valueEntities, keyEntities, treeNodes } = this.state;
+    const { missValueList, valueEntities, keyEntities, treeNodes } = this.state;
     const {
       disabled, inputValue,
       treeNodeLabelProp, onSelect, onDeselect,
@@ -515,7 +515,7 @@ class Select extends React.Component {
 
     // When is `treeCheckable` and with `searchValue`, `valueList` is not full filled.
     // We need calculate the missing nodes.
-    if (treeCheckable && !treeCheckStrictly && searchValue) {
+    if (treeCheckable && !treeCheckStrictly) {
       let keyList = newValueList.map(({ value: val }) => valueEntities[val].key);
       if (isAdd) {
         keyList = calcCheckStateConduct(treeNodes, keyList).checkedKeys;

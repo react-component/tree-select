@@ -237,29 +237,42 @@ describe('TreeSelect.checkable', () => {
     expect(wrapper.state().searchValue).toBe('');
   });
 
-  it('uncheck', () => {
-    const wrapper = mount(
-      <div>
-        <TreeSelect
-          defaultValue={['0']}
-          showCheckedStrategy={SHOW_ALL}
-          treeCheckable
-          treeDefaultExpandAll
-          open
-        >
-          <TreeNode value="0">
-            <TreeNode value="0-0">
-              <TreeNode value="0-0" />
+  describe('uncheck', () => {
+    const createSelect = (props) => (
+      mount(
+        <div>
+          <TreeSelect
+            defaultValue={['0']}
+            showCheckedStrategy={SHOW_ALL}
+            treeCheckable
+            treeDefaultExpandAll
+            open
+            {...props}
+          >
+            <TreeNode title="0" value="0">
+              <TreeNode title="0-0" value="0-0">
+                <TreeNode title="0-0-0" value="0-0-0" />
+              </TreeNode>
             </TreeNode>
-          </TreeNode>
-        </TreeSelect>
-      </div>
+          </TreeSelect>
+        </div>
+      )
     );
 
-    expect(wrapper.render()).toMatchSnapshot();
+    it ('remove by selector', () => {
+      const wrapper = createSelect();
+      expect(wrapper.render()).toMatchSnapshot();
 
-    wrapper.find('.rc-tree-select-selection__choice__remove').at(1).simulate('click');
+      wrapper.find('.rc-tree-select-selection__choice__remove').at(1).simulate('click');
+      expect(wrapper.render()).toMatchSnapshot();
+    });
 
-    expect(wrapper.render()).toMatchSnapshot();
+    it ('remove by tree check', () => {
+      const wrapper = createSelect({ searchValue: '0' });
+      expect(wrapper.render()).toMatchSnapshot();
+
+      wrapper.find('.rc-tree-select-tree-checkbox').at(1).simulate('click');
+      expect(wrapper.render()).toMatchSnapshot();
+    });
   });
 });
