@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef react/no-multi-comp */
 import React from 'react';
 import { render, mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
@@ -203,6 +203,18 @@ describe('TreeSelect.basic', () => {
       const wrapper = mount(createSelect({ onSearch }));
       wrapper.find('input').simulate('change', { target: { value: 'a' } });
       expect(onSearch).toBeCalledWith('a');
+    });
+
+    it('check tree changed by filter', () => {
+      const Wrapper = (props) => (
+        <div>
+          {createSelect(props)}
+        </div>
+      );
+      const wrapper = mount(<Wrapper searchValue="a" treeDefaultExpandAll open />);
+      expect(wrapper.render()).toMatchSnapshot();
+      wrapper.setProps({ searchValue: '' });
+      expect(wrapper.render()).toMatchSnapshot();
     });
 
     it('search nodes by filterTreeNode', () => {

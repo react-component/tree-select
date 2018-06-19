@@ -571,4 +571,21 @@ describe('TreeSelect.props', () => {
 
     expect(wrapper.find(Trigger).props().getPopupContainer).toBe(getPopupContainer);
   });
+
+  it('set value not in the Tree', () => {
+    const onChange = jest.fn();
+
+    const wrapper = mount(
+      <div>
+        <TreeSelect value={['not exist']} onChange={onChange} treeCheckable open>
+          <SelectNode title="exist" value="exist" />
+        </TreeSelect>
+      </div>
+    );
+
+    wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
+
+    const valueList = onChange.mock.calls[0][0];
+    expect(valueList).toEqual(['not exist', 'exist']);
+  });
 });
