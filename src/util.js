@@ -41,10 +41,6 @@ export const UNSELECTABLE_ATTRIBUTE = {
   unselectable: 'unselectable',
 };
 
-export function preventDefaultEvent(e) {
-  e.preventDefault();
-}
-
 /**
  * Convert position list to hierarchy structure.
  * This is little hack since use '-' to split the position.
