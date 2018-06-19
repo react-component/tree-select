@@ -31,31 +31,6 @@ export function createRef() {
   return func;
 }
 
-/**
- * Use `requestIdleCallback` to do the optimized operation.
- * DO NOT call this if it's key operation.
- * `cancelIdleCallback` is still in proposal, not use it.
- */
-const canUseIdle = typeof window && 'requestIdleCallback' in window;
-let idleFunc;
-let idleCreated = false;
-export function requestIdleCallback(callback) {
-  if (!canUseIdle) {
-    return;
-  }
-
-  idleFunc = callback;
-  if (!idleCreated) {
-    window.requestIdleCallback(() => {
-      if (idleFunc) {
-        idleFunc();
-      }
-      idleCreated = false;
-    });
-    idleCreated = true;
-  }
-}
-
 // =============== Legacy ===============
 export const UNSELECTABLE_STYLE = {
   userSelect: 'none',
