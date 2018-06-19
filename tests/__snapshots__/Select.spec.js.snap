@@ -128,10 +128,10 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
 
 exports[`TreeSelect.basic render renders disabled correctly 1`] = `
 <span
+  aria-disabled="true"
   aria-haspopup="listbox"
   class="rc-tree-select rc-tree-select-disabled"
   role="combobox"
-  tabindex="0"
 >
   <span
     class="rc-tree-select-selection rc-tree-select-selection--single"
