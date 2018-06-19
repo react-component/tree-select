@@ -104,7 +104,9 @@ describe('TreeSelect.basic', () => {
         { id: '1', value: '1', title: 'label1', pId: '0' },
       ];
       const wrapper = render(
-        <TreeSelect treeData={treeData} />
+        <div>
+          <TreeSelect treeData={treeData} treeDataSimpleMode treeDefaultExpandAll open />
+        </div>
       );
       expect(wrapper).toMatchSnapshot();
     });

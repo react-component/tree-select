@@ -194,30 +194,115 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
 `;
 
 exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
-<span
-  aria-haspopup="listbox"
-  class="rc-tree-select rc-tree-select-enabled"
-  role="combobox"
-  tabindex="0"
->
+<div>
   <span
-    class="rc-tree-select-selection rc-tree-select-selection--single"
+    aria-controls="rc-tree-select-list_1"
+    aria-expanded="true"
+    aria-haspopup="listbox"
+    aria-owns="rc-tree-select-list_1"
+    class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
+    role="combobox"
+    tabindex="0"
   >
     <span
-      class="rc-tree-select-selection__rendered"
+      class="rc-tree-select-selection rc-tree-select-selection--single"
     >
       <span
-        class="rc-tree-select-selection__placeholder"
-      />
-    </span>
-    <span
-      class="rc-tree-select-arrow"
-      style="outline:none"
-    >
-      <b />
+        class="rc-tree-select-selection__rendered"
+      >
+        <span
+          class="rc-tree-select-selection__placeholder"
+        />
+      </span>
+      <span
+        class="rc-tree-select-arrow"
+        style="outline:none"
+      >
+        <b />
+      </span>
     </span>
   </span>
-</span>
+  <div>
+    <div
+      class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
+      style="visibility:hidden"
+    >
+      <div
+        id="rc-tree-select-list_1"
+        role="listbox"
+        tabindex="-1"
+      >
+        <span
+          class="rc-tree-select-dropdown-search"
+        >
+          <span
+            class="rc-tree-select-search__field__wrap"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-controls="rc-tree-select-list_1"
+              aria-label="filter select"
+              aria-multiline="false"
+              class="rc-tree-select-search__field"
+              type="text"
+              value=""
+            />
+            <span
+              class="rc-tree-select-search__field__mirror"
+            >
+               
+            </span>
+          </span>
+        </span>
+        <ul
+          class="rc-tree-select-tree"
+          role="tree-node"
+          unselectable="on"
+        >
+          <li
+            class="rc-tree-select-tree-treenode-switcher-open"
+          >
+            <span
+              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+            />
+            <span
+              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+              title="label0"
+            >
+              <span
+                class="rc-tree-select-tree-title"
+              >
+                label0
+              </span>
+            </span>
+            <ul
+              class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
+              data-expanded="true"
+            >
+              <li
+                class="rc-tree-select-tree-treenode-switcher-open"
+              >
+                <span
+                  class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                />
+                <span
+                  class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                  title="label1"
+                >
+                  <span
+                    class="rc-tree-select-tree-title"
+                  >
+                    label1
+                  </span>
+                </span>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`TreeSelect.basic search nodes renders search input 1`] = `
