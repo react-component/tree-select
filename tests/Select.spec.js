@@ -1,11 +1,9 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import ReactPropTypesSecret from 'prop-types/lib/ReactPropTypesSecret';
 import { render, mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import TreeSelect, { TreeNode } from '../src';
 import { resetAriaId } from '../src/util';
-import { valueProp } from '../src/propTypes';
 import focusTest from './shared/focusTest';
 
 describe('TreeSelect.basic', () => {
@@ -313,46 +311,6 @@ describe('TreeSelect.basic', () => {
       wrapper.selectNode(0);
       wrapper.find('.rc-tree-select-selection__clear').simulate('click');
       expect(wrapper.find(TreeSelect).instance().state.valueList).toEqual([]);
-    });
-  });
-
-  // React only console error once when the message is the same for the same propType.
-  // Use native Type to check the validate.
-  describe('propTypes', () => {
-    it('warns on invalid value when labelInValue', () => {
-      const error = valueProp({
-        labelInValue: true,
-        value: 'foo',
-      }, 'value', 'TreeSelect', '', '', ReactPropTypesSecret);
-      expect(error.message).toBe(
-        'Invalid prop `value` supplied to `TreeSelect`. You should use { label: string, value: string } or [{ label: string, value: string }] instead.'
-      );
-    });
-
-    it('warns on invalid value when treeCheckable and treeCheckStrictly', () => {
-      const error = valueProp({
-        treeCheckable: true,
-        treeCheckStrictly: true,
-        value: 'foo',
-      }, 'value', 'TreeSelect', '', '', ReactPropTypesSecret);
-      expect(error.message).toBe(
-        'Invalid prop `value` supplied to `TreeSelect`. You should use { label: string, value: string } or [{ label: string, value: string }] instead.'
-      );
-    });
-
-    it('warns on invalid value when multiple', () => {
-      mount(
-        <TreeSelect
-          multiple
-          value=""
-        />
-      );
-
-      const error = valueProp({
-        multiple: true,
-        value: '',
-      }, 'value', 'TreeSelect', '', '', ReactPropTypesSecret);
-      expect(error).toBeNull();
     });
   });
 
