@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import BasePopup from '../Base/BasePopup';
 import SearchInput from '../SearchInput';
+import { createRef } from '../util';
 
 class SinglePopup extends React.Component {
   static propTypes = {
@@ -13,20 +14,27 @@ class SinglePopup extends React.Component {
     searchPlaceholder: PropTypes.string,
   };
 
-  renderPlaceholder = (onPlaceholderClick) => {
-    const { selectorValueList, searchPlaceholder, searchValue, prefixCls } = this.props;
+  constructor() {
+    super();
+
+    this.inputRef = createRef();
+  }
+
+  onPlaceholderClick = () => {
+    this.inputRef.current.focus();
+  }
+
+  renderPlaceholder = () => {
+    const { searchPlaceholder, searchValue, prefixCls } = this.props;
 
     if (!searchPlaceholder) return null;
-
-    const hidePlaceholder = selectorValueList.length || searchValue;
 
     return (
       <span
         style={{
-          display: hidePlaceholder ? 'none' : 'block',
-          pointerEvents: 'none', // IE 11+
+          display: searchValue ? 'none' : 'block',
         }}
-        onClick={onPlaceholderClick}
+        onClick={this.onPlaceholderClick}
         className={`${prefixCls}-search__field__placeholder`}
       >
         {searchPlaceholder}
@@ -45,6 +53,7 @@ class SinglePopup extends React.Component {
       <span className={`${dropdownPrefixCls}-search`}>
         <SearchInput
           {...this.props}
+          ref={this.inputRef}
           renderPlaceholder={this.renderPlaceholder}
         />
       </span>

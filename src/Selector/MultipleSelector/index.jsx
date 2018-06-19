@@ -36,6 +36,10 @@ class MultipleSelector extends React.Component {
     this.inputRef = createRef();
   }
 
+  onPlaceholderClick = () => {
+    this.inputRef.current.focus();
+  }
+
   focus = () => {
     this.inputRef.current.focus();
   };
@@ -43,7 +47,7 @@ class MultipleSelector extends React.Component {
     this.inputRef.current.blur();
   };
 
-  renderPlaceholder = (onPlaceholderClick) => {
+  renderPlaceholder = () => {
     const {
       prefixCls,
       placeholder, searchPlaceholder,
@@ -61,9 +65,10 @@ class MultipleSelector extends React.Component {
       <span
         style={{
           display: hidden ? 'none' : 'block',
-          pointerEvents: 'none', // IE 11+
         }}
-        onClick={onPlaceholderClick}
+        // role="button"
+        // tabIndex={-1}
+        onClick={this.onPlaceholderClick}
         className={`${prefixCls}-search__field__placeholder`}
       >
         {currentPlaceholder}

@@ -62,10 +62,6 @@ class SearchInput extends React.Component {
     }
   }
 
-  onPlaceholderClick = () => {
-    this.focus();
-  };
-
   /**
    * `scrollWidth` is not correct in IE, do the workaround.
    * ref: https://github.com/react-component/tree-select/issues/65
@@ -124,7 +120,7 @@ class SearchInput extends React.Component {
           {searchValue}&nbsp;
         </span>
 
-        {renderPlaceholder ? renderPlaceholder(this.onPlaceholderClick) : null}
+        {renderPlaceholder ? renderPlaceholder() : null}
       </span>
     );
   }
