@@ -231,6 +231,20 @@ describe('TreeSelect.basic', () => {
       expect(wrapper.find('TreeNode')).toHaveLength(1);
       expect(wrapper.find('TreeNode').prop('value')).toBe('a');
     });
+
+    it('filter node but not remove then', () => {
+      const wrapper = mount(
+        <div>
+          {createSelect({
+            searchValue: 'a',
+            open: true,
+            treeDefaultExpandAll: true,
+            filterTreeNode: false,
+          })}
+        </div>
+      );
+      expect(wrapper.render()).toMatchSnapshot();
+    });
   });
 
   it('open tree when click on select', () => {

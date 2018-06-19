@@ -405,9 +405,7 @@ class Select extends React.Component {
 
   onSelectorClear = (event) => {
     const { disabled } = this.props;
-    if (disabled) {
-      return;
-    }
+    if (disabled) return;
 
     this.triggerChange([], []);
 
@@ -427,9 +425,7 @@ class Select extends React.Component {
     const { valueList, missValueList, valueEntities, searchValue } = this.state;
 
     const { treeCheckable, treeCheckStrictly, disabled } = this.props;
-    if (disabled) {
-      return;
-    }
+    if (disabled) return;
 
     // Find trigger entity
     const triggerEntity = valueEntities[removeValue];
@@ -482,9 +478,7 @@ class Select extends React.Component {
     } = this.props;
     const label = node.props[treeNodeLabelProp];
 
-    if (disabled) {
-      return;
-    }
+    if (disabled) return;
 
     // Wrap the return value for user
     let wrappedValue;
@@ -690,11 +684,7 @@ class Select extends React.Component {
       return;
     }
 
-    this.setUncontrolledState({ open }, () => {
-      if (open) {
-        // TODO: do focus
-      }
-    });
+    this.setUncontrolledState({ open });
   };
 
   // Tree checkable is also a multiple case
