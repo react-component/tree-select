@@ -189,27 +189,40 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('labelInValue', () => {
-    const handleChange = jest.fn();
-    const wrapper = mount(createOpenSelect({
-      labelInValue: true,
-      onChange: handleChange,
-    }));
+  describe('labelInValue', () => {
+    it('basic', () => {
+      const handleChange = jest.fn();
+      const wrapper = mount(createOpenSelect({
+        labelInValue: true,
+        onChange: handleChange,
+      }));
 
-    // Click node 0-1
-    const $node = wrapper.find(TreeNode).at(2);
-    $node.find('.rc-tree-select-tree-node-content-wrapper').simulate('click');
+      // Click node 0-1
+      const $node = wrapper.find(TreeNode).at(2);
+      $node.find('.rc-tree-select-tree-node-content-wrapper').simulate('click');
 
-    expect(handleChange).toBeCalledWith(
-      { label: 'Title 0-1', value: 'Value 0-1' },
-      null,
-      {
-        preValue: [],
-        selected: true,
-        triggerValue: 'Value 0-1',
-        triggerNode: $node.instance(),
-      },
-    );
+      expect(handleChange).toBeCalledWith(
+        { label: 'Title 0-1', value: 'Value 0-1' },
+        null,
+        {
+          preValue: [],
+          selected: true,
+          triggerValue: 'Value 0-1',
+          triggerNode: $node.instance(),
+        },
+      );
+    });
+
+    it('set illegal value', () => {
+      const wrapper = mount(createSelect({
+        labelInValue: true,
+        value: [null],
+      }));
+
+      expect(wrapper.find(TreeSelect).instance().state.valueList).toEqual(
+        [{ label: '', value: '' }]
+      );
+    });
   });
 
   it('onClick', () => {
