@@ -31,7 +31,6 @@ class Selection extends React.Component {
       content = `${content.slice(0, maxTagTextLength)}...`;
     }
 
-    // TODO: Is this OK for role 'menuitem'?
     return (
       <li
         style={UNSELECTABLE_STYLE}

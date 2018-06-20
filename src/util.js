@@ -45,7 +45,6 @@ export const UNSELECTABLE_ATTRIBUTE = {
  * Convert position list to hierarchy structure.
  * This is little hack since use '-' to split the position.
  */
-// TODO: Refactor this
 export function flatToHierarchy(positionList) {
   if (!positionList.length) {
     return [];

@@ -63,7 +63,6 @@ export default function (modeName) {
       this.domRef = createRef();
     }
 
-    // TODO: When is `combobox`, focus should on the text input
     onFocus = (...args) => {
       const { onFocus, focused } = this.props;
       const { rcTreeSelect: { onSelectorFocus } } = this.context;

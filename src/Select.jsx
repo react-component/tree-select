@@ -113,7 +113,6 @@ class Select extends React.Component {
     showSearch: true,
     autoClearSearchValue: true,
     showCheckedStrategy: SHOW_CHILD,
-    // TODO: double confirm
 
     // dropdownMatchSelectWidth change the origin design, set to false now
     // ref: https://github.com/react-component/select/blob/4cad95e098a341a09de239ad6981067188842020/src/Select.jsx#L344
@@ -136,7 +135,6 @@ class Select extends React.Component {
       open: open || defaultOpen,
       valueList: [],
       missValueList: [], // Contains the value not in the tree
-      // TODO: handle this
       selectorValueList: [], // Used for multiple selector
       valueEntities: {},
       keyEntities: {},
@@ -154,7 +152,6 @@ class Select extends React.Component {
   }
 
   getChildContext() {
-    // TODO: Handle this
     return {
       rcTreeSelect: {
         onSelectorFocus: this.onSelectorFocus,
@@ -633,7 +630,6 @@ class Select extends React.Component {
     this.setOpenState(open, true);
   };
 
-  // TODO: implement require
   onSearchInputChange = ({ target: { value } }) => {
     const { treeNodes } = this.state;
     const { onSearch, filterTreeNode, treeNodeFilterProp } = this.props;
@@ -846,7 +842,6 @@ class Select extends React.Component {
       ariaId: this.ariaId,
     };
 
-    // TODO: process the logic of mode diff
     const Popup = isMultiple ? MultiplePopup : SinglePopup;
     const $popup = (
       <Popup
