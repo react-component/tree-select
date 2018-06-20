@@ -1,4 +1,4 @@
-/* eslint-disable no-undef, react/no-multi-comp */
+/* eslint-disable no-undef, react/no-multi-comp, no-console */
 import React from 'react';
 import { mount, render } from 'enzyme';
 import { renderToJson } from 'enzyme-to-json';
@@ -133,7 +133,7 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('allowClear', () => {
+  it.only('allowClear', () => {
     const handleChange = jest.fn();
 
     const wrapper = mount(createSelect({
@@ -600,7 +600,7 @@ describe('TreeSelect.props', () => {
 
   it('warning if use label', () => {
     const spy = jest.spyOn(global.console, 'error');
-    console.log('Follow Warning is for test purpose. Don\'t be scared :)');
+    console.log('>>> Follow Warning is for test purpose. Don\'t be scared :)');
     render(
       <TreeSelect treeData={[{ label: 'old school', value: 'hip hop' }]} />
     );
@@ -608,5 +608,120 @@ describe('TreeSelect.props', () => {
       'Warning: \'label\' in treeData is deprecated. Please use \'title\' instead.'
     );
     spy.mockRestore();
+  });
+
+  describe('onDeselect trigger', () => {
+    const nodeProps1 = {
+      title: 'bamboo',
+      value: 'smart',
+      customize: 'beautiful',
+    };
+
+    const nodeProps2 = {
+      title: 'day',
+      value: 'light',
+      customize: 'well',
+    };
+    const propList = [nodeProps1, nodeProps2];
+
+    const createDeselectWrapper = (props) => mount(
+      <TreeSelect open {...props}>
+        <SelectNode {...nodeProps1} />
+        <SelectNode {...nodeProps2} />
+      </TreeSelect>
+    );
+
+    const nodeMatcher = (index) => (
+      expect.objectContaining({
+        props: expect.objectContaining(propList[index]),
+      })
+    );
+
+    describe('single', () => {
+      it('click on tree', () => {
+        const onSelect = jest.fn();
+        const onDeselect = jest.fn();
+        const wrapper = createDeselectWrapper({ onSelect, onDeselect, defaultValue: 'smart' });
+        wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(0).simulate('click');
+        expect(onSelect).not.toBeCalled();
+        expect(onDeselect.mock.calls[0][0]).toEqual('smart');
+        expect(onDeselect.mock.calls[0][1]).toEqual(nodeMatcher(0));
+        expect(onDeselect.mock.calls[0][2]).toEqual({
+          event: 'select',
+          selected: false,
+          nativeEvent: expect.objectContaining({}), // Not check native event
+          node: nodeMatcher(0),
+          selectedNodes: [],
+        });
+      });
+    });
+
+    describe('multiple', () => {
+      [
+        {
+          props: { multiple: true },
+          match: { event: 'select', selected: false, selectedNodes: [nodeMatcher(1)] }
+        },
+        {
+          props: { treeCheckable: true },
+          match: {
+            event: 'check',
+            checked: false,
+            checkedNodes: [nodeMatcher(1)],
+            checkedNodesPositions: [ { node: nodeMatcher(1), pos: '0-1' } ],
+            halfCheckedKeys: [],
+          },
+          selectorSkip: ['halfCheckedKeys'],
+        },
+      ].forEach(({ props, match, selectorSkip = [] }) => {
+        it('click on tree', () => {
+          const onSelect = jest.fn();
+          const onDeselect = jest.fn();
+          const wrapper = createDeselectWrapper({
+            onSelect,
+            onDeselect,
+            defaultValue: ['smart', 'light'],
+            ...props
+          });
+          wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(0).simulate('click');
+          expect(onSelect).not.toBeCalled();
+          expect(onDeselect.mock.calls[0][0]).toEqual('smart');
+          expect(onDeselect.mock.calls[0][1]).toEqual(nodeMatcher(0));
+          expect(onDeselect.mock.calls[0][2]).toEqual({
+            nativeEvent: expect.objectContaining({}), // Not check native event
+            node: nodeMatcher(0),
+            ...match,
+          });
+        });
+
+        it('click on selector', () => {
+          const onSelect = jest.fn();
+          const onDeselect = jest.fn();
+          const wrapper = createDeselectWrapper({
+            onSelect,
+            onDeselect,
+            defaultValue: ['smart', 'light'],
+            ...props
+          });
+          wrapper.find('.rc-tree-select-selection__choice__remove').at(0).simulate('click');
+          expect(onSelect).not.toBeCalled();
+          expect(onDeselect.mock.calls[0][0]).toEqual('smart');
+          expect(onDeselect.mock.calls[0][1]).toEqual(nodeMatcher(0));
+
+          const tgtArg3 = {
+            nativeEvent: expect.objectContaining({}), // Not check native event
+            node: nodeMatcher(0),
+            ...match,
+          };
+
+          Object.keys(tgtArg3).forEach((key) => {
+            if (selectorSkip.includes(key)) return;
+
+            const tgtVal = tgtArg3[key];
+            expect(onDeselect.mock.calls[0][2][key]).toEqual(tgtVal);
+          });
+        });
+      });
+    });
   });
 });

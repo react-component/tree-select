@@ -402,6 +402,13 @@ class Select extends React.Component {
     }
   };
 
+  onDeselect = (wrappedValue, node, nodeEventInfo) => {
+    const { onDeselect } = this.props;
+    if (!onDeselect) return;
+
+    onDeselect(wrappedValue, node, nodeEventInfo);
+  }
+
   onSelectorClear = (event) => {
     const { disabled } = this.props;
     if (disabled) return;
@@ -423,7 +430,7 @@ class Select extends React.Component {
 
     const { valueList, missValueList, valueEntities } = this.state;
 
-    const { treeCheckable, treeCheckStrictly, disabled } = this.props;
+    const { treeCheckable, treeCheckStrictly, treeNodeLabelProp, disabled } = this.props;
     if (disabled) return;
 
     // Find trigger entity
@@ -443,24 +450,53 @@ class Select extends React.Component {
       }
     }
 
+    const triggerNode = triggerEntity ? triggerEntity.node : null;
+
     const extraInfo = {
       triggerValue: removeValue,
-      triggerNode: triggerEntity ? triggerEntity.node : null,
+      triggerNode,
+    };
+    const deselectInfo = {
+      node: triggerNode,
     };
 
     // [Legacy] Little hack on this to make same action as `onCheck` event.
     if (treeCheckable) {
       const filteredEntityList = newValueList.map(({ value }) => valueEntities[value]);
+
+      deselectInfo.event = 'check';
+      deselectInfo.checked = false;
+      deselectInfo.checkedNodes = filteredEntityList.map(({ node }) => node);
+      deselectInfo.checkedNodesPositions = filteredEntityList
+        .map(({ node, pos }) => ({ node, pos }));
+
       if (treeCheckStrictly) {
-        extraInfo.allCheckedNodes = filteredEntityList.map(({ node }) => node);
+        extraInfo.allCheckedNodes = deselectInfo.checkedNodes;
       } else {
+        // TODO: It's too expansive to get `halfCheckedKeys` in onDeselect. Not pass this.
         extraInfo.allCheckedNodes = flatToHierarchy(filteredEntityList)
           .map(({ node }) => node);
       }
+    } else {
+      deselectInfo.event = 'select';
+      deselectInfo.selected = false;
+      deselectInfo.selectedNodes = newValueList.map(({ value }) => (valueEntities[value] || {}).node);
     }
 
     // Some value user pass prop is not in the tree, we also need clean it
     const newMissValueList = missValueList.filter(({ value }) => value !== removeValue);
+
+    let wrappedValue;
+    if (this.isLabelInValue()) {
+      wrappedValue = {
+        label: triggerNode ? triggerNode.props[treeNodeLabelProp] : null,
+        value: removeValue,
+      };
+    } else {
+      wrappedValue = removeValue;
+    }
+
+    this.onDeselect(wrappedValue, triggerNode, deselectInfo);
 
     this.triggerChange(newMissValueList, newValueList, extraInfo);
   };
@@ -472,7 +508,7 @@ class Select extends React.Component {
     const { missValueList, valueEntities, keyEntities, treeNodes } = this.state;
     const {
       disabled, inputValue,
-      treeNodeLabelProp, onSelect, onDeselect,
+      treeNodeLabelProp, onSelect,
       treeCheckable, treeCheckStrictly, autoClearSearchValue,
     } = this.props;
     const label = node.props[treeNodeLabelProp];
@@ -495,8 +531,8 @@ class Select extends React.Component {
       if (onSelect) {
         onSelect(wrappedValue, node, nodeEventInfo);
       }
-    } else if (onDeselect) {
-      onDeselect(wrappedValue, node, nodeEventInfo);
+    } else {
+      this.onDeselect(wrappedValue, node, nodeEventInfo);
     }
 
     // Get wrapped value list.
@@ -734,10 +770,6 @@ class Select extends React.Component {
 
     // Format value by `treeCheckStrictly`
     const selectorValueList = formatSelectorValue(valueList, this.props, valueEntities);
-
-    // if (!this.isLabelInValue()) {
-    //   labelList = selectorValueList.map(({ label }) => label);
-    // }
 
     if (!('value' in this.props)) {
       this.setState({

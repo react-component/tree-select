@@ -7,18 +7,14 @@ import { TreeNode } from 'rc-tree';
  * Let's use SelectNode instead of TreeNode
  * since TreeNode is so confuse here.
  */
-class SelectNode extends React.Component {
-  static propTypes = {
-    ...TreeNode.propTypes,
-    value: PropTypes.string,
-  };
+const SelectNode = (props) => (
+  <TreeNode {...props} />
+);
 
-  placeholder = null; // TODO: Remove this
-
-  render() {
-    return <TreeNode {...this.props} />;
-  }
-}
+SelectNode.propTypes = {
+  ...TreeNode.propTypes,
+  value: PropTypes.string,
+};
 
 // Let Tree trade as TreeNode to reuse this for performance saving.
 SelectNode.isTreeNode = 1;
