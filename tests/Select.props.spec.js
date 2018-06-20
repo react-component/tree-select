@@ -133,13 +133,14 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it.only('allowClear', () => {
+  it('allowClear', () => {
     const handleChange = jest.fn();
 
     const wrapper = mount(createSelect({
       allowClear: true,
       onChange: handleChange,
       treeDefaultExpandAll: true,
+      open: true,
     }));
     wrapper.find('.rc-tree-select').simulate('click');
     expect(wrapper.render()).toMatchSnapshot();

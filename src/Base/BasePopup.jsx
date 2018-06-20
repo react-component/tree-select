@@ -136,7 +136,7 @@ class BasePopup extends React.Component {
 
     if (treeCheckable) {
       treeProps.checkedKeys = keyList;
-    } else if (multiple) {
+    } else {
       treeProps.selectedKeys = keyList;
     }
 
