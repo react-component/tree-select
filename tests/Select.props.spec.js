@@ -597,4 +597,16 @@ describe('TreeSelect.props', () => {
     const valueList = onChange.mock.calls[0][0];
     expect(valueList).toEqual(['not exist', 'exist']);
   });
+
+  it('warning if use label', () => {
+    const spy = jest.spyOn(global.console, 'error');
+    console.log('Follow Warning is for test purpose. Don\'t be scared :)');
+    render(
+      <TreeSelect treeData={[{ label: 'old school', value: 'hip hop' }]} />
+    );
+    expect(spy).toHaveBeenCalledWith(
+      'Warning: \'label\' in treeData is deprecated. Please use \'title\' instead.'
+    );
+    spy.mockRestore();
+  });
 });
