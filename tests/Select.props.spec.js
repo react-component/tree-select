@@ -267,11 +267,20 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('dropdownMatchSelectWidth', () => {
-    const wrapper = mount(createOpenSelect({
-      dropdownMatchSelectWidth: false,
-    }));
-    expect(wrapper.render()).toMatchSnapshot();
+  describe('dropdownMatchSelectWidth', () => {
+    it('default', () => {
+      const wrapper = mount(createOpenSelect());
+      expect(wrapper.render()).toMatchSnapshot();
+    });
+
+    [true, false].forEach((dropdownMatchSelectWidth) => {
+      it(String(dropdownMatchSelectWidth), () => {
+        const wrapper = mount(createOpenSelect({
+          dropdownMatchSelectWidth,
+        }));
+        expect(wrapper.render()).toMatchSnapshot();
+      });
+    });
   });
 
   it('dropdownClassName', () => {

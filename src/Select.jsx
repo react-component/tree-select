@@ -118,7 +118,6 @@ class Select extends React.Component {
     // dropdownMatchSelectWidth change the origin design, set to false now
     // ref: https://github.com/react-component/select/blob/4cad95e098a341a09de239ad6981067188842020/src/Select.jsx#L344
     // ref: https://github.com/react-component/select/pull/71
-    dropdownMatchSelectWidth: false,
     treeNodeFilterProp: 'value',
     treeNodeLabelProp: 'title',
     treeIcon: false,

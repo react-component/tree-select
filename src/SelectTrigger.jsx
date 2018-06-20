@@ -82,7 +82,12 @@ class SelectTrigger extends React.Component {
 
     // TODO: [Legacy] Use new action when trigger fixed: https://github.com/react-component/trigger/pull/86
 
-    // TODO: saveRef(this, 'trigger')
+    // When false do nothing with the width
+    // ref: https://github.com/ant-design/ant-design/issues/10927
+    let stretch;
+    if (dropdownMatchSelectWidth !== false) {
+      stretch = dropdownMatchSelectWidth ? 'width' : 'minWidth';
+    }
 
     return (
       <Trigger
@@ -97,7 +102,7 @@ class SelectTrigger extends React.Component {
         popup={popupElement}
         popupVisible={open}
         getPopupContainer={getPopupContainer}
-        stretch={dropdownMatchSelectWidth ? 'width' : 'minWidth'}
+        stretch={stretch}
         popupClassName={classNames(
           dropdownClassName,
           {
