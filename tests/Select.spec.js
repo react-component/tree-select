@@ -348,4 +348,21 @@ describe('TreeSelect.basic', () => {
     );
     expect(wrapper).toMatchSnapshot();
   });
+
+  describe('keyCode', () => {
+    [KeyCode.ENTER, KeyCode.DOWN].forEach((code) => {
+      it('open', () => {
+        const onFocus = jest.fn();
+
+        const wrapper = mount(
+          <TreeSelect onFocus={onFocus}>
+            <TreeNode title="0" value="0" />
+          </TreeSelect>
+        );
+
+        wrapper.find('.rc-tree-select').simulate('keyDown', { keyCode: code });
+        expect(wrapper.state('open')).toBe(true);
+      });
+    });
+  });
 });
