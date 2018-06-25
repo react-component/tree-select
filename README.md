@@ -67,7 +67,6 @@ online example: http://react-component.github.io/tree-select/
 |maxTagTextLength | max tag text length to show | number | - |
 |multiple | whether multiple select (true when enable treeCheckable) | bool | false |
 |disabled | whether disabled select | bool | false |
-|inputValue | [Deprecated] Please use `searchValue` instead. | string/null | '' |
 |searchValue | work with `onSearch` to make search value controlled. | string | '' |
 |defaultValue | initial selected treeNode(s) | same as value type | - |
 |value | current selected treeNode(s). | normal: String/Array<String>. labelInValue: {value:String,label:React.Node}/Array<{value,label}>. treeCheckStrictly(halfChecked default false): {value:String,label:React.Node, halfChecked}/Array<{value,label,halfChecked}>. | - |

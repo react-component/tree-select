@@ -27,7 +27,9 @@ class SinglePopup extends React.Component {
   renderPlaceholder = () => {
     const { searchPlaceholder, searchValue, prefixCls } = this.props;
 
-    if (!searchPlaceholder) return null;
+    if (!searchPlaceholder) {
+      return null;
+    }
 
     return (
       <span
@@ -64,7 +66,6 @@ class SinglePopup extends React.Component {
     return (
       <BasePopup
         {...this.props}
-
         renderSearch={this.renderSearch}
       />
     );

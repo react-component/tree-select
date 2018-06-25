@@ -123,7 +123,6 @@ class BasePopup extends React.Component {
       treeIcon, treeLine, treeCheckable, treeCheckStrictly, multiple,
       loadData,
       ariaId,
-
       renderSearch,
     } = this.props;
     const { rcTreeSelect: {
@@ -169,15 +168,11 @@ class BasePopup extends React.Component {
           checkStrictly={treeCheckStrictly}
           multiple={multiple}
           loadData={loadData}
-
           expandedKeys={expandedKeyList}
-
           filterTreeNode={this.filterTreeNode}
-
           onSelect={onTreeNodeSelect}
           onCheck={onTreeNodeCheck}
           onExpand={this.onTreeExpand}
-
           {...treeProps}
         >
           {$treeNodes}

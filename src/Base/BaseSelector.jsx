@@ -115,7 +115,9 @@ export default function (modeName) {
 
     renderArrow() {
       const { prefixCls, showArrow } = this.props;
-      if (!showArrow) return null;
+      if (!showArrow) {
+        return null;
+      }
 
       return (
         <span
@@ -148,27 +150,25 @@ export default function (modeName) {
         <span
           style={style}
           onClick={onClick}
-          className={classNames({
-            [className]: !!className,
-            [prefixCls]: 1,
-            [`${prefixCls}-open`]: open,
-            [`${prefixCls}-focused`]: open || focused,
-            [`${prefixCls}-disabled`]: disabled,
-            [`${prefixCls}-enabled`]: !disabled,
-            [`${prefixCls}-allow-clear`]: allowClear,
-          })}
-
+          className={classNames(
+            className,
+            prefixCls,
+            {
+              [`${prefixCls}-open`]: open,
+              [`${prefixCls}-focused`]: open || focused,
+              [`${prefixCls}-disabled`]: disabled,
+              [`${prefixCls}-enabled`]: !disabled,
+              [`${prefixCls}-allow-clear`]: allowClear,
+            }
+          )}
           ref={this.domRef}
-
           role="combobox"
           aria-expanded={open}
           aria-owns={open ? ariaId : undefined}
           aria-controls={open ? ariaId : undefined}
           aria-haspopup="listbox"
           aria-disabled={disabled}
-
           tabIndex={myTabIndex}
-
           onFocus={this.onFocus}
           onBlur={this.onBlur}
           onKeyDown={onSelectorKeyDown}
