@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>basic.js - example - rc-tree-select@1.12.13</title>
+  <title>basic.js - example - rc-tree-select@2.0.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-tree-select@1.12.13</h1>
+      <h1>rc-tree-select@2.0.0</h1>
 
       <p>tree-select ui component for react</p>
     </div>
@@ -272,13 +272,13 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0, no-alert: 0 */</span>
 
 <span class="hljs-keyword">import</span> <span class="hljs-string">'rc-tree-select/assets/index.css'</span>;
-<span class="hljs-keyword">import</span> <span class="hljs-string">'./demo.less'</span>;
 <span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">'rc-dialog/assets/index.css'</span>;
 <span class="hljs-keyword">import</span> Dialog <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-dialog'</span>;
 <span class="hljs-keyword">import</span> TreeSelect, { TreeNode, SHOW_PARENT } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-tree-select'</span>;
 <span class="hljs-keyword">import</span> { gData } <span class="hljs-keyword">from</span> <span class="hljs-string">'./util'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'./demo.less'</span>;
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isLeaf</span>(<span class="hljs-params">value</span>) </span>{
   <span class="hljs-keyword">if</span> (!value) {
@@ -326,14 +326,15 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   state = {
     tsOpen: <span class="hljs-literal">false</span>,
     visible: <span class="hljs-literal">false</span>,
-    inputValue: <span class="hljs-string">'0-0-0-label'</span>,
+    searchValue: <span class="hljs-string">'0-0-0-label'</span>,
     value: <span class="hljs-string">'0-0-0-value1'</span>,
     <span class="hljs-comment">// value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],</span>
     lv: { value: <span class="hljs-string">'0-0-0-value'</span>, label: <span class="hljs-string">'spe label'</span> },
     multipleValue: [],
+    simpleSearchValue: <span class="hljs-string">'test111'</span>,
     simpleTreeData: [
       { key: <span class="hljs-number">1</span>, pId: <span class="hljs-number">0</span>, label: <span class="hljs-string">'test1'</span>, value: <span class="hljs-string">'test1'</span> },
-      { key: <span class="hljs-number">121</span>, pId: <span class="hljs-number">0</span>, label: <span class="hljs-string">'test1'</span>, value: <span class="hljs-string">'test121'</span> },
+      { key: <span class="hljs-number">121</span>, pId: <span class="hljs-number">0</span>, label: <span class="hljs-string">'test2'</span>, value: <span class="hljs-string">'test2'</span> },
       { key: <span class="hljs-number">11</span>, pId: <span class="hljs-number">1</span>, label: <span class="hljs-string">'test11'</span>, value: <span class="hljs-string">'test11'</span> },
       { key: <span class="hljs-number">12</span>, pId: <span class="hljs-number">1</span>, label: <span class="hljs-string">'test12'</span>, value: <span class="hljs-string">'test12'</span> },
       { key: <span class="hljs-number">111</span>, pId: <span class="hljs-number">11</span>, label: <span class="hljs-string">'test111'</span>, value: <span class="hljs-string">'test111'</span> },
@@ -342,11 +343,6 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
       id: <span class="hljs-string">'key'</span>,
       rootPId: <span class="hljs-number">0</span>,
     },
-  }
-
-  componentDidMount() {
-    <span class="hljs-comment">// console.log(this.refs.mul.getInputDOMNode());</span>
-    <span class="hljs-comment">// this.refs.mul.getInputDOMNode().setAttribute('disabled', true);</span>
   }
 
   onClick = () =&gt; {
@@ -363,15 +359,17 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 
   onSearch = (value) =&gt; {
     <span class="hljs-built_in">console</span>.log(value, <span class="hljs-built_in">arguments</span>);
+    <span class="hljs-keyword">this</span>.setState({ searchValue: value });
   }
 
-  onChange = (value) =&gt; {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, <span class="hljs-built_in">arguments</span>);
+  onChange = (value, ...rest) =&gt; {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, value, ...rest);
     <span class="hljs-keyword">this</span>.setState({ value });
   }
 
-  onChangeChildren = (value) =&gt; {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChangeChildren'</span>, <span class="hljs-built_in">arguments</span>);
+  onChangeChildren = (...args) =&gt; {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChangeChildren'</span>, ...args);
+    <span class="hljs-keyword">const</span> value = args[<span class="hljs-number">0</span>];
     <span class="hljs-keyword">const</span> pre = value ? <span class="hljs-keyword">this</span>.state.value : <span class="hljs-literal">undefined</span>;
     <span class="hljs-keyword">this</span>.setState({ value: isLeaf(value) ? value : pre });
   }
@@ -400,7 +398,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <span class="hljs-built_in">console</span>.log(visible, <span class="hljs-keyword">this</span>.state.value, info);
     <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Array</span>.isArray(<span class="hljs-keyword">this</span>.state.value) &amp;&amp; <span class="hljs-keyword">this</span>.state.value.length &gt; <span class="hljs-number">1</span>
       &amp;&amp; <span class="hljs-keyword">this</span>.state.value.length &lt; <span class="hljs-number">3</span>) {
-      alert(<span class="hljs-string">'please select more than two item or less than one item.'</span>);
+      <span class="hljs-built_in">window</span>.alert(<span class="hljs-string">'please select more than two item or less than one item.'</span>);
       <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
@@ -452,15 +450,15 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
           searchPlaceholder="please search"
           showSearch allowClear treeLine
-          inputValue={this.state.inputValue}
+          searchValue={this.state.searchValue}
           value={this.state.value}
           treeData={gData}
           treeNodeFilterProp="label"
           filterTreeNode={false}
           onSearch={this.onSearch}
           open={this.state.tsOpen}
-          onChange={(value) =&gt; {
-            console.log('onChange', arguments);
+          onChange={(value, ...args) =&gt; {
+            console.log('onChange', value, ...args);
             if (value === '0-0-0-0-value') {
               this.setState({ tsOpen: true });
             } else {
@@ -474,6 +472,9 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
             if (info.documentClickClose &amp;&amp; this.state.value === '0-0-0-0-value') {
               return false;
             }
+            this.setState({
+              tsOpen: v,
+            });
             return true;
           } }
           onSelect={this.onSelect}
@@ -496,7 +497,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         /&gt;
 
         <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>multiple select<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> <span class="hljs-attribute">ref</span>=<span class="hljs-value">"mul"</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
           <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}
           <span class="hljs-attribute">transitionName</span>=<span class="hljs-value">"rc-tree-select-dropdown-slide-up"</span>
           <span class="hljs-attribute">choiceTransitionName</span>=<span class="hljs-value">"rc-tree-select-selection__choice-zoom"</span>
@@ -524,7 +525,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           searchPlaceholder="please search"
           treeLine maxTagTextLength={10}
           value={this.state.value}
-          inputValue={null}
+          autoClearSearchValue
           treeData={gData}
           treeNodeFilterProp="title"
           treeCheckable showCheckedStrategy={SHOW_PARENT}
@@ -555,7 +556,10 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
           searchPlaceholder="please search"
           treeLine maxTagTextLength={10}
-          inputValue={'test111'}
+          searchValue={this.state.simpleSearchValue}
+          onSearch={(simpleSearchValue) =&gt; {
+            this.setState({ simpleSearchValue });
+          }}
           value={this.state.value}
           treeData={this.state.simpleTreeData}
           treeNodeFilterProp="title"
@@ -569,7 +573,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
           <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">200</span> }}
           <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>' }}
-          <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">{'leaf1'}</span> <span class="hljs-attribute">multiple</span> <span class="hljs-attribute">treeCheckable</span> <span class="hljs-attribute">showCheckedStrategy</span>=<span class="hljs-value">{SHOW_PARENT}</span>
+          <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">"leaf1"</span> <span class="hljs-attribute">multiple</span> <span class="hljs-attribute">treeCheckable</span> <span class="hljs-attribute">showCheckedStrategy</span>=<span class="hljs-value">{SHOW_PARENT}</span>
           <span class="hljs-attribute">treeDefaultExpandAll</span>
           <span class="hljs-attribute">treeData</span>=<span class="hljs-value">{[</span>
             { <span class="hljs-attribute">key:</span> '', <span class="hljs-attribute">value:</span> '', <span class="hljs-attribute">label:</span> '<span class="hljs-attribute">empty</span> <span class="hljs-attribute">value</span>', <span class="hljs-attribute">children:</span> [] },
@@ -580,18 +584,18 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
               ],
             },
           ]}
-          <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{(val)</span> =&gt;</span> console.log(val, arguments)}
+          <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{(val,</span> <span class="hljs-attribute">...args</span>) =&gt;</span> console.log(val, ...args)}
         /&gt;
 
         <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>use TreeNode Component (not recommend)<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
           <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">200</span> }}
           <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>' }}
-          <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">{'leaf1'}</span>
+          <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">"leaf1"</span>
           <span class="hljs-attribute">treeDefaultExpandAll</span>
           <span class="hljs-attribute">treeNodeFilterProp</span>=<span class="hljs-value">"title"</span>
           <span class="hljs-attribute">filterTreeNode</span>=<span class="hljs-value">{this.filterTreeNode}</span>
-          <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{(val)</span> =&gt;</span> console.log(val, arguments)}
+          <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{(val,</span> <span class="hljs-attribute">...args</span>) =&gt;</span> console.log(val, ...args)}
         &gt;
           <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">""</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"parent 1"</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">""</span>&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"parent 1-0"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"parent 1-0"</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"0-1-0"</span>&gt;</span>

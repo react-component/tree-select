@@ -63,6 +63,10 @@
 .rc-tree-select-enabled .rc-tree-select-selection:active {
   border-color: #2db7f5;
 }
+.rc-tree-select-enabled.rc-tree-select-focused .rc-tree-select-selection {
+  border-color: #7700fa;
+  box-shadow: 0 0 2px rgba(45, 183, 245, 0.8);
+}
 .rc-tree-select-selection--single {
   height: 28px;
   cursor: pointer;
@@ -103,6 +107,7 @@
   position: relative;
 }
 .rc-tree-select-search__field__placeholder {
+  display: block;
   position: absolute;
   top: 0;
   left: 3px;
@@ -461,7 +466,7 @@ li.rc-tree-select-dropdown-menu-item-divider {
 .rc-tree-select-tree li.drag-over-gap-bottom > a[draggable] {
   border-bottom: 2px blue solid;
 }
-.rc-tree-select-tree li.filter-node > a {
+.rc-tree-select-tree li.filter-node > .rc-tree-select-tree-node-content-wrapper {
   color: #a60000!important;
   font-weight: bold!important;
 }

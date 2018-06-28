@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-tree-select@1.12.13 - tree-select ui component for react</title>
+  <title>rc-tree-select@2.0.0 - tree-select ui component for react</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-tree-select@1.12.13</h1>
+  <h1>rc-tree-select@2.0.0</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -822,9 +822,9 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 </tr>
 <tr>
 <td>dropdownMatchSelectWidth</td>
-<td>whether dropdown&#39;s with is same with select</td>
+<td>whether dropdown&#39;s with is same with select. Default set <code>min-width</code> same as input</td>
 <td>bool</td>
-<td>true</td>
+<td>-</td>
 </tr>
 <tr>
 <td>dropdownClassName</td>
@@ -887,9 +887,9 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <td>false</td>
 </tr>
 <tr>
-<td>inputValue</td>
-<td>if enable search, you can set default input&#39;s value, if set to null, auto clear input value when finish select/unselect operation</td>
-<td>string/null</td>
+<td>searchValue</td>
+<td>work with <code>onSearch</code> to make search value controlled.</td>
+<td>string</td>
 <td>&#39;&#39;</td>
 </tr>
 <tr>
@@ -1011,6 +1011,12 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <td>container which popup select menu rendered into</td>
 <td>function(trigger:Node):Node</td>
 <td>function(){return document.body;}</td>
+</tr>
+<tr>
+<td>autoClearSearchValue</td>
+<td>auto clear search input value when multiple select is selected/deselected</td>
+<td>boolean</td>
+<td>true</td>
 </tr>
 </tbody>
 </table>

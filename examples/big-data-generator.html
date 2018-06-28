@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>big-data-generator.js - example - rc-tree-select@1.12.13</title>
+  <title>big-data-generator.js - example - rc-tree-select@2.0.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-tree-select@1.12.13</h1>
+      <h1>rc-tree-select@2.0.0</h1>
 
       <p>tree-select ui component for react</p>
     </div>
@@ -272,6 +272,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <div class="highlight"><pre><code language="js"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> PropTypes <span class="hljs-keyword">from</span> <span class="hljs-string">'prop-types'</span>;
 <span class="hljs-keyword">import</span> { generateData, calcTotal } <span class="hljs-keyword">from</span> <span class="hljs-string">'./util'</span>;
+<span class="hljs-keyword">import</span> { createRef } <span class="hljs-keyword">from</span> <span class="hljs-string">'../src/util'</span>;
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Gen</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   static propTypes = {
@@ -287,6 +288,13 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     y: <span class="hljs-number">18</span>,
     z: <span class="hljs-number">1</span>,
   };
+
+  constructor() {
+    <span class="hljs-keyword">super</span>();
+    <span class="hljs-keyword">this</span>.xRef = createRef();
+    <span class="hljs-keyword">this</span>.yRef = createRef();
+    <span class="hljs-keyword">this</span>.zRef = createRef();
+  }
 
   state = {
     nums: <span class="hljs-string">''</span>,
@@ -308,9 +316,9 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 
   getVals = () =&gt; {
     <span class="hljs-keyword">return</span> {
-      x: <span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.refs.x.value, <span class="hljs-number">10</span>),
-      y: <span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.refs.y.value, <span class="hljs-number">10</span>),
-      z: <span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.refs.z.value, <span class="hljs-number">10</span>),
+      x: <span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.xRef.current.value, <span class="hljs-number">10</span>),
+      y: <span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.yRef.current.value, <span class="hljs-number">10</span>),
+      z: <span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.zRef.current.value, <span class="hljs-number">10</span>),
     };
   };
 
@@ -320,13 +328,13 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
       <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>big data generator<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">form</span> <span class="hljs-attribute">onSubmit</span>=<span class="hljs-value">{this.onGen}</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">marginRight:</span> <span class="hljs-attribute">10</span> }}&gt;</span>
-          x: <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">ref</span>=<span class="hljs-value">"x"</span> <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">{x}</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"number"</span> <span class="hljs-attribute">min</span>=<span class="hljs-value">"1"</span> <span class="hljs-attribute">required</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">50</span> }} /&gt;</span>
+          x: <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">ref</span>=<span class="hljs-value">{this.xRef}</span> <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">{x}</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"number"</span> <span class="hljs-attribute">min</span>=<span class="hljs-value">"1"</span> <span class="hljs-attribute">required</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">50</span> }} /&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">marginRight:</span> <span class="hljs-attribute">10</span> }}&gt;</span>
-          y: <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">ref</span>=<span class="hljs-value">"y"</span> <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">{y}</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"number"</span> <span class="hljs-attribute">min</span>=<span class="hljs-value">"1"</span> <span class="hljs-attribute">required</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">50</span> }} /&gt;</span>
+          y: <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">ref</span>=<span class="hljs-value">{this.yRef}</span> <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">{y}</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"number"</span> <span class="hljs-attribute">min</span>=<span class="hljs-value">"1"</span> <span class="hljs-attribute">required</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">50</span> }} /&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">marginRight:</span> <span class="hljs-attribute">10</span> }}&gt;</span>
-          z: <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">ref</span>=<span class="hljs-value">"z"</span> <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">{z}</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"number"</span> <span class="hljs-attribute">min</span>=<span class="hljs-value">"1"</span> <span class="hljs-attribute">required</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">50</span> }} /&gt;</span>
+          z: <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">ref</span>=<span class="hljs-value">{this.zRef}</span> <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">{z}</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"number"</span> <span class="hljs-attribute">min</span>=<span class="hljs-value">"1"</span> <span class="hljs-attribute">required</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">50</span> }} /&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"submit"</span>&gt;</span>Generate<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>total nodes: {this.state.nums || calcTotal(x, y, z)}<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>form.js - example - rc-tree-select@1.12.13</title>
+  <title>form.js - example - rc-tree-select@2.0.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-tree-select@1.12.13</h1>
+      <h1>rc-tree-select@2.0.0</h1>
 
       <p>tree-select ui component for react</p>
     </div>
@@ -277,17 +277,17 @@ import ReactDOM from 'react-dom';
 import TreeSelect from 'rc-tree-select';
 import Select from 'rc-select';
 import { createForm } from 'rc-form';
-import { regionStyle, errorStyle } from './styles';
-import { gData } from './util';
 import 'rc-select/assets/index.css';
 import 'rc-tree-select/assets/index.css';
+import { regionStyle, errorStyle } from './styles';
+import { gData } from './util';
 import './demo.less';
 
 const { Option } = Select;
 
 class TreeSelectInput extends Component {
-  onChange(value) {
-    console.log(value, arguments);
+  onChange = (value, ...args) =&gt; {
+    console.log(value, ...args);
     const props = this.props;
     if (props.onChange) {
       props.onChange(value);
@@ -295,7 +295,7 @@ class TreeSelectInput extends Component {
   }
   render() {
     return (
-      &lt;TreeSelect {...this.props} onChange={this.onChange.bind(this)} /&gt;
+      &lt;TreeSelect {...this.props} onChange={this.onChange} /&gt;
     );
   }
 }
@@ -335,17 +335,17 @@ class Form extends Component {
         &lt;div style={regionStyle}&gt;
           &lt;div&gt;
             &lt;p style={{ color: 'blue' }}&gt;no onChange&lt;/p&gt;
-              {getFieldDecorator('tree-select', {
-                initialValue: ['0-0-0-value'],
-                rules: [
-                  { required: true, type: 'array', message: 'tree-select 需要必填' },
-                ],
-              })(
-                &lt;TreeSelect
-                  {...tProps}
-                  style={{ width: 300 }}
-                /&gt;
-              )}
+            {getFieldDecorator('tree-select', {
+              initialValue: ['0-0-0-value'],
+              rules: [
+                { required: true, type: 'array', message: 'tree-select 需要必填' },
+              ],
+            })(
+              &lt;TreeSelect
+                {...tProps}
+                style={{ width: 300 }}
+              /&gt;
+            )}
           &lt;/div&gt;
           &lt;p style={errorStyle}&gt;
             {(getFieldError('tree-select')) ? getFieldError('tree-select').join(',') : null}
