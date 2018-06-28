@@ -19,7 +19,10 @@ class BasePopup extends React.Component {
     treeIcon: PropTypes.bool,
     treeLine: PropTypes.bool,
     treeNodeFilterProp: PropTypes.string,
-    treeCheckable: PropTypes.bool,
+    treeCheckable: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.node,
+    ]),
     treeCheckStrictly: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
     treeDefaultExpandedKeys: PropTypes.array,

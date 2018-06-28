@@ -77,7 +77,10 @@ class Select extends React.Component {
     treeDataSimpleMode: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
     treeNodeFilterProp: PropTypes.string,
     treeNodeLabelProp: PropTypes.string,
-    treeCheckable: PropTypes.bool,
+    treeCheckable: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.node,
+    ]),
     treeCheckStrictly: PropTypes.bool,
     treeIcon: PropTypes.bool,
     treeLine: PropTypes.bool,
