@@ -1,13 +1,17 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef react/no-multi-comp */
 import React from 'react';
 import { render, mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
-import TreeSelect from '../src';
+import TreeSelect, { TreeNode } from '../src';
+import { resetAriaId } from '../src/util';
 import focusTest from './shared/focusTest';
 
-const { TreeNode } = TreeSelect;
-
 describe('TreeSelect.basic', () => {
+  beforeEach(() => {
+    resetAriaId();
+    jest.useFakeTimers();
+  });
+
   beforeAll(() => {
     jest.useFakeTimers();
   });
@@ -20,11 +24,11 @@ describe('TreeSelect.basic', () => {
 
   describe('render', () => {
     let treeData = [
-      { key: '0', value: '0', label: '0 label' },
+      { key: '0', value: '0', title: '0 label' },
       {
-        key: '1', value: '1', label: '1 label', children: [
-          { key: '10', value: '10', label: '10 label' },
-          { key: '11', value: '11', label: '11 label' },
+        key: '1', value: '1', title: '1 label', children: [
+          { key: '10', value: '10', title: '10 label' },
+          { key: '11', value: '11', title: '11 label' },
         ],
       },
     ];
@@ -94,11 +98,13 @@ describe('TreeSelect.basic', () => {
 
     it('renders treeDataSimpleMode correctly', () => {
       treeData = [
-        { id: '0', value: '0', label: 'label0' },
-        { id: '1', value: '1', label: 'label1', pId: '0' },
+        { id: '0', value: '0', title: 'label0' },
+        { id: '1', value: '1', title: 'label1', pId: '0' },
       ];
       const wrapper = render(
-        <TreeSelect treeData={treeData} />
+        <div>
+          <TreeSelect treeData={treeData} treeDataSimpleMode treeDefaultExpandAll open />
+        </div>
       );
       expect(wrapper).toMatchSnapshot();
     });
@@ -106,7 +112,7 @@ describe('TreeSelect.basic', () => {
 
   it('sets default value', () => {
     const treeData = [
-      { key: '0', value: '0', label: 'label0' },
+      { key: '0', value: '0', title: 'label0' },
     ];
     const wrapper = mount(
       <TreeSelect defaultValue="0" treeData={treeData} />
@@ -118,8 +124,8 @@ describe('TreeSelect.basic', () => {
 
   it('can be controlled by value', () => {
     const treeData = [
-      { key: '0', value: '0', label: 'label0' },
-      { key: '1', value: '1', label: 'label1' },
+      { key: '0', value: '0', title: 'label0' },
+      { key: '1', value: '1', title: 'label1' },
     ];
     const wrapper = mount(
       <TreeSelect value="0" treeData={treeData} />
@@ -133,8 +139,8 @@ describe('TreeSelect.basic', () => {
 
   describe('select', () => {
     const treeData = [
-      { key: '0', value: '0', label: 'label0' },
-      { key: '1', value: '1', label: 'label1' },
+      { key: '0', value: '0', title: 'label0' },
+      { key: '1', value: '1', title: 'label1' },
     ];
     const createSelect = (props) => (
       <TreeSelect
@@ -175,8 +181,8 @@ describe('TreeSelect.basic', () => {
 
   describe('search nodes', () => {
     const treeData = [
-      { key: 'a', value: 'a', label: 'labela' },
-      { key: 'b', value: 'b', label: 'labelb' },
+      { key: 'a', value: 'a', title: 'labela' },
+      { key: 'b', value: 'b', title: 'labelb' },
     ];
     const createSelect = (props) => (
       <TreeSelect
@@ -199,6 +205,18 @@ describe('TreeSelect.basic', () => {
       expect(onSearch).toBeCalledWith('a');
     });
 
+    it('check tree changed by filter', () => {
+      const Wrapper = (props) => (
+        <div>
+          {createSelect(props)}
+        </div>
+      );
+      const wrapper = mount(<Wrapper searchValue="a" treeDefaultExpandAll open />);
+      expect(wrapper.render()).toMatchSnapshot();
+      wrapper.setProps({ searchValue: '' });
+      expect(wrapper.render()).toMatchSnapshot();
+    });
+
     it('search nodes by filterTreeNode', () => {
       const filter = (value, node) => node.props.value.toLowerCase() === value.toLowerCase();
       const wrapper = mount(createSelect({ filterTreeNode: filter }));
@@ -208,10 +226,24 @@ describe('TreeSelect.basic', () => {
     });
 
     it('search nodes by treeNodeFilterProp', () => {
-      const wrapper = mount(createSelect({ treeNodeFilterProp: 'label' }));
+      const wrapper = mount(createSelect({ treeNodeFilterProp: 'title' }));
       wrapper.find('input').simulate('change', { target: { value: 'labela' } });
       expect(wrapper.find('TreeNode')).toHaveLength(1);
       expect(wrapper.find('TreeNode').prop('value')).toBe('a');
+    });
+
+    it('filter node but not remove then', () => {
+      const wrapper = mount(
+        <div>
+          {createSelect({
+            searchValue: 'a',
+            open: true,
+            treeDefaultExpandAll: true,
+            filterTreeNode: false,
+          })}
+        </div>
+      );
+      expect(wrapper.render()).toMatchSnapshot();
     });
   });
 
@@ -241,9 +273,11 @@ describe('TreeSelect.basic', () => {
     const wrapper = mount(
       <TreeSelect open treeCheckable treeData={[]} />
     );
-    wrapper.setProps({ treeData: [{ key: '0', value: '0', label: 'label0' }] });
+    wrapper.setProps({ treeData: [{ key: '0', value: '0', title: 'label0' }] });
     wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
-    expect(wrapper.state().value).toEqual([{ value: '0', label: 'label0' }]);
+    expect(wrapper.state().valueList).toEqual(
+      [{ value: '0', label: 'label0' }]
+    );
   });
 
   it('expands tree nodes by treeDefaultExpandedKeys', () => {
@@ -256,6 +290,7 @@ describe('TreeSelect.basic', () => {
         </TreeNode>
       </TreeSelect>
     );
+
     const node = wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(1);
     expect(node.hasClass('rc-tree-select-tree-node-content-wrapper-open')).toBe(true);
   });
@@ -270,7 +305,7 @@ describe('TreeSelect.basic', () => {
       wrapper.openSelect();
       wrapper.find('.rc-tree-select-tree-title').simulate('click');
       wrapper.find('.rc-tree-select-selection__clear').simulate('click');
-      expect(wrapper.state().value).toEqual([]);
+      expect(wrapper.state().valueList).toEqual([]);
     });
 
     it('has inputValue prop', () => {
@@ -301,69 +336,33 @@ describe('TreeSelect.basic', () => {
       wrapper.openSelect();
       wrapper.selectNode(0);
       wrapper.find('.rc-tree-select-selection__clear').simulate('click');
-      expect(wrapper.find(TreeSelect).instance().state.value).toEqual([]);
+      expect(wrapper.find(TreeSelect).instance().state.valueList).toEqual([]);
     });
   });
 
-  describe('propTypes', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  it('check title when label is a object', () => {
+    const wrapper = render(
+      <TreeSelect defaultValue="0">
+        <TreeNode title={<span>Do not show</span>} value="0" key="0" />
+      </TreeSelect>
+    );
+    expect(wrapper).toMatchSnapshot();
+  });
 
-    afterEach(() => {
-      spy.mockReset();
-    });
+  describe('keyCode', () => {
+    [KeyCode.ENTER, KeyCode.DOWN].forEach((code) => {
+      it('open', () => {
+        const onFocus = jest.fn();
 
-    afterAll(() => {
-      spy.mockRestore();
-    });
+        const wrapper = mount(
+          <TreeSelect onFocus={onFocus}>
+            <TreeNode title="0" value="0" />
+          </TreeSelect>
+        );
 
-    it('warns on invalid value when labelInValue', () => {
-      mount(
-        <TreeSelect
-          labelInValue
-          value="foo"
-        />
-      );
-      expect(spy.mock.calls[0][0]).toMatch(
-        'Invalid prop `value` supplied to `Select`, when `labelInValue` ' +
-        'is `true`, `value` should in shape of `{ value: string, label?: string }`'
-      );
-    });
-
-    it('warns on invalid value when treeCheckable and treeCheckStrictly', () => {
-      mount(
-        <TreeSelect
-          treeCheckable
-          treeCheckStrictly
-          value="foo"
-        />
-      );
-      expect(spy.mock.calls[0][0]).toMatch(
-        'Invalid prop `value` supplied to `Select`, when `treeCheckable` ' +
-        'and `treeCheckStrictly` are `true`, `value` should in shape of ' +
-        '`{ value: string, label?: string }`'
-      );
-    });
-
-    it('warns on invalid value when multiple', () => {
-      mount(
-        <TreeSelect
-          multiple
-          value=""
-        />
-      );
-      expect(spy.mock.calls[0][0]).toMatch(
-        'Invalid prop `value` of type `string` supplied to `Select`, ' +
-        'expected `array` when `multiple` is `true`'
-      );
-    });
-
-    it('check title when label is a object', () => {
-      const wrapper = render(
-        <TreeSelect defaultValue="0">
-          <TreeNode title={<span>Do not show</span>} value="0" key="0" />
-        </TreeSelect>
-      );
-      expect(wrapper).toMatchSnapshot();
+        wrapper.find('.rc-tree-select').simulate('keyDown', { keyCode: code });
+        expect(wrapper.state('open')).toBe(true);
+      });
     });
   });
 });

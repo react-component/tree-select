@@ -56,7 +56,7 @@ online example: http://react-component.github.io/tree-select/
 |animation | dropdown animation name. only support slide-up now | String | '' |
 |transitionName | dropdown css animation name | String | '' |
 |choiceTransitionName | css animation name for selected items at multiple mode | String | '' |
-|dropdownMatchSelectWidth | whether dropdown's with is same with select | bool | true |
+|dropdownMatchSelectWidth | whether dropdown's with is same with select. Default set `min-width` same as input | bool | - |
 |dropdownClassName | additional className applied to dropdown | String | - |
 |dropdownStyle | additional style applied to dropdown | Object | {} |
 |dropdownPopupAlign | specify alignment for dropdown (alignConfig of [dom-align](https://github.com/yiminghe/dom-align)) | Object | - |
@@ -67,7 +67,7 @@ online example: http://react-component.github.io/tree-select/
 |maxTagTextLength | max tag text length to show | number | - |
 |multiple | whether multiple select (true when enable treeCheckable) | bool | false |
 |disabled | whether disabled select | bool | false |
-|inputValue | if enable search, you can set default input's value, if set to null, auto clear input value when finish select/unselect operation | string/null | '' |
+|searchValue | work with `onSearch` to make search value controlled. | string | '' |
 |defaultValue | initial selected treeNode(s) | same as value type | - |
 |value | current selected treeNode(s). | normal: String/Array<String>. labelInValue: {value:String,label:React.Node}/Array<{value,label}>. treeCheckStrictly(halfChecked default false): {value:String,label:React.Node, halfChecked}/Array<{value,label,halfChecked}>. | - |
 |labelInValue| whether to embed label in value, see above value type | Bool | false |
@@ -88,6 +88,7 @@ online example: http://react-component.github.io/tree-select/
 |treeDataSimpleMode | enable simple mode of treeData.(treeData should be like this: [{id:1, pId:0, value:'1', label:"test1",...},...], `pId` is parent node's id) | bool/object{id:'id', pId:'pId', rootPId:null} | false |
 |loadData | load data asynchronously | function(node) | - |
 |getPopupContainer | container which popup select menu rendered into | function(trigger:Node):Node | function(){return document.body;} |
+|autoClearSearchValue | auto clear search input value when multiple select is selected/deselected | boolean | true |
 
 ### TreeNode props
 > note: you'd better to use `treeData` instead of using TreeNode.

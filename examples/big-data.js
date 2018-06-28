@@ -1,11 +1,11 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import 'rc-tree-select/assets/index.less';
-import './demo.less';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TreeSelect, { SHOW_PARENT } from 'rc-tree-select';
 import Gen from './big-data-generator';
+import './demo.less';
 
 class Demo extends React.Component {
   state = {

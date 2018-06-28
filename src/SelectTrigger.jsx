@@ -1,17 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
-import classnames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import Trigger from 'rc-trigger';
-import Tree, { TreeNode } from 'rc-tree';
-import {
-  loopAllChildren,
-  flatToHierarchy,
-  getValuePropValue,
-  labelCompatible,
-  saveRef,
-} from './util';
-import toArray from 'rc-util/lib/Children/toArray';
+import classNames from 'classnames';
+
+import { createRef } from './util';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -32,310 +25,99 @@ const BUILT_IN_PLACEMENTS = {
   },
 };
 
-class SelectTrigger extends Component {
+class SelectTrigger extends React.Component {
   static propTypes = {
-    dropdownMatchSelectWidth: PropTypes.bool,
-    dropdownPopupAlign: PropTypes.object,
-    visible: PropTypes.bool,
-    filterTreeNode: PropTypes.any,
-    treeNodes: PropTypes.any,
-    inputValue: PropTypes.string,
+    // Pass by outside user props
+    disabled: PropTypes.bool,
+    showSearch: PropTypes.bool,
     prefixCls: PropTypes.string,
-    popupClassName: PropTypes.string,
-    children: PropTypes.any,
+    dropdownPopupAlign: PropTypes.object,
+    dropdownClassName: PropTypes.string,
+    dropdownStyle: PropTypes.object,
+    transitionName: PropTypes.string,
+    animation: PropTypes.string,
+    getPopupContainer: PropTypes.func,
+    children: PropTypes.node,
+
+    dropdownMatchSelectWidth: PropTypes.bool,
+
+    // Pass by Select
+    isMultiple: PropTypes.bool,
+    dropdownPrefixCls: PropTypes.string,
+    onDropdownVisibleChange: PropTypes.func,
+    popupElement: PropTypes.node,
+    open: PropTypes.bool,
   };
 
-  state = {
-    _expandedKeys: [],
-    fireOnExpand: false,
-    dropdownWidth: null,
-  };
+  constructor() {
+    super();
 
-  componentDidMount() {
-    this.setDropdownWidth();
+    this.triggerRef = createRef();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.inputValue && nextProps.inputValue !== this.props.inputValue) {
-      // set autoExpandParent to true
-      this.setState({
-        _expandedKeys: [],
-        fireOnExpand: false,
-      });
-    }
-  }
-
-  componentDidUpdate() {
-    this.setDropdownWidth();
-  }
-
-  onExpand = (expandedKeys) => {
-    // rerender
-    this.setState({
-      _expandedKeys: expandedKeys,
-      fireOnExpand: true,
-    }, () => {
-      // Fix https://github.com/ant-design/ant-design/issues/5689
-      if (this.trigger && this.trigger.forcePopupAlign) {
-        this.trigger.forcePopupAlign();
-      }
-    });
-  }
-
-  setDropdownWidth() {
-    const width = ReactDOM.findDOMNode(this).offsetWidth;
-    if (width !== this.state.dropdownWidth) {
-      this.setState({ dropdownWidth: width });
-    }
-  }
-
-  getPopupEleRefs() {
-    return this.popupEle;
-  }
-
-  getPopupDOMNode() {
-    return this.trigger.getPopupDomNode();
-  }
-
-  getDropdownTransitionName() {
-    const props = this.props;
-    let transitionName = props.transitionName;
-    if (!transitionName && props.animation) {
-      transitionName = `${this.getDropdownPrefixCls()}-${props.animation}`;
+  getDropdownTransitionName = () => {
+    const { transitionName, animation, dropdownPrefixCls } = this.props;
+    if (!transitionName && animation) {
+      return `${dropdownPrefixCls}-${animation}`;
     }
     return transitionName;
-  }
+  };
 
-  getDropdownPrefixCls() {
-    return `${this.props.prefixCls}-dropdown`;
-  }
+  forcePopupAlign = () => {
+    const $trigger = this.triggerRef.current;
 
-  highlightTreeNode = (treeNode) => {
-    const props = this.props;
-    const filterVal = treeNode.props[labelCompatible(props.treeNodeFilterProp)];
-    if (typeof filterVal === 'string') {
-      return props.inputValue && filterVal.indexOf(props.inputValue) > -1;
+    if ($trigger) {
+      $trigger.forcePopupAlign();
     }
-    return false;
-  }
-
-  filterTreeNode = (input, child) => {
-    if (!input) {
-      return true;
-    }
-    const filterTreeNode = this.props.filterTreeNode;
-    if (!filterTreeNode) {
-      return true;
-    }
-    if (child.props.disabled) {
-      return false;
-    }
-    return filterTreeNode.call(this, input, child);
-  }
-
-  processTreeNode(treeNodes) {
-    const filterPoss = [];
-    this._expandedKeys = [];
-    loopAllChildren(treeNodes, (child, index, pos) => {
-      if (this.filterTreeNode(this.props.inputValue, child)) {
-        filterPoss.push(pos);
-        this._expandedKeys.push(child.key);
-      }
-    });
-
-    // Include the filtered nodes's ancestral nodes.
-    const processedPoss = [];
-    filterPoss.forEach(pos => {
-      const arr = pos.split('-');
-      arr.reduce((pre, cur) => {
-        const res = `${pre}-${cur}`;
-        if (processedPoss.indexOf(res) < 0) {
-          processedPoss.push(res);
-        }
-        return res;
-      });
-    });
-    const filterNodesPositions = [];
-    loopAllChildren(treeNodes, (child, index, pos) => {
-      if (processedPoss.indexOf(pos) > -1) {
-        filterNodesPositions.push({ node: child, pos });
-      }
-    });
-
-    const hierarchyNodes = flatToHierarchy(filterNodesPositions);
-
-    const recursive = children => {
-      return children.map(child => {
-        if (child.children) {
-          return React.cloneElement(child.node, {}, recursive(child.children));
-        }
-        return child.node;
-      });
-    };
-    return recursive(hierarchyNodes);
-  }
-
-  renderTree(keys, halfCheckedKeys, newTreeNodes, multiple) {
-    const props = this.props;
-
-    const trProps = {
-      multiple,
-      prefixCls: `${props.prefixCls}-tree`,
-      showIcon: props.treeIcon,
-      showLine: props.treeLine,
-      defaultExpandAll: props.treeDefaultExpandAll,
-      defaultExpandedKeys: props.treeDefaultExpandedKeys,
-      filterTreeNode: this.highlightTreeNode,
-    };
-
-    if (props.treeCheckable) {
-      trProps.selectable = false;
-      trProps.checkable = props.treeCheckable;
-      trProps.onCheck = props.onSelect;
-      trProps.checkStrictly = props.treeCheckStrictly;
-      if (props.inputValue) {
-        // enable checkStrictly when search tree.
-        trProps.checkStrictly = true;
-      } else {
-        trProps._treeNodesStates = props._treeNodesStates;
-      }
-      if (trProps.treeCheckStrictly && halfCheckedKeys.length) {
-        trProps.checkedKeys = { checked: keys, halfChecked: halfCheckedKeys };
-      } else {
-        trProps.checkedKeys = keys;
-      }
-    } else {
-      trProps.selectedKeys = keys;
-      trProps.onSelect = props.onSelect;
-    }
-
-    // expand keys
-    if (!trProps.defaultExpandAll && !trProps.defaultExpandedKeys && !props.loadData) {
-      trProps.expandedKeys = keys;
-    }
-    trProps.autoExpandParent = true;
-    trProps.onExpand = this.onExpand;
-    if (this._expandedKeys && this._expandedKeys.length) {
-      trProps.expandedKeys = this._expandedKeys;
-    }
-    if (this.state.fireOnExpand) {
-      trProps.expandedKeys = this.state._expandedKeys;
-      trProps.autoExpandParent = false;
-    }
-
-    // async loadData
-    if (props.loadData) {
-      trProps.loadData = props.loadData;
-    }
-
-    return (
-      <Tree ref={saveRef(this, 'popupEle')} {...trProps}>
-        {newTreeNodes}
-      </Tree>
-    );
-  }
+  };
 
   render() {
-    const props = this.props;
-    const multiple = props.multiple;
-    const dropdownPrefixCls = this.getDropdownPrefixCls();
-    const popupClassName = {
-      [props.dropdownClassName]: !!props.dropdownClassName,
-      [`${dropdownPrefixCls}--${multiple ? 'multiple' : 'single'}`]: 1,
-    };
-    let visible = props.visible;
-    const search = multiple || !props.showSearch ? null : (
-      <span className={`${dropdownPrefixCls}-search`}>{props.inputElement}</span>
-    );
+    const {
+      disabled, isMultiple,
+      dropdownPopupAlign, dropdownMatchSelectWidth, dropdownClassName,
+      dropdownStyle, onDropdownVisibleChange, getPopupContainer,
+      dropdownPrefixCls, popupElement, open,
+      children,
+    } = this.props;
 
-    const recursive = children => {
-      // Note: if use `React.Children.map`, the node's key will be modified.
-      return toArray(children).map(function handler(child) { // eslint-disable-line
-        if (!child) {
-          return null;
-        }
-        if (child && child.props.children) {
-          // null or String has no Prop
-          return (
-            <TreeNode {...child.props} key={child.key}>
-              {recursive(child.props.children) }
-            </TreeNode>
-          );
-        }
-        return <TreeNode {...child.props} key={child.key} />;
-      });
-    };
-    // const s = Date.now();
-    let treeNodes;
-    if (props._cachetreeData && this.treeNodes) {
-      treeNodes = this.treeNodes;
-    } else {
-      treeNodes = recursive(props.treeData || props.treeNodes);
-      this.treeNodes = treeNodes;
-    }
-    // console.log(Date.now()-s);
+    // TODO: [Legacy] Use new action when trigger fixed: https://github.com/react-component/trigger/pull/86
 
-    if (props.inputValue) {
-      treeNodes = this.processTreeNode(treeNodes);
-    }
-
-    const keys = [];
-    const halfCheckedKeys = [];
-    loopAllChildren(treeNodes, (child) => {
-      if (props.value.some(item => item.value === getValuePropValue(child))) {
-        keys.push(child.key);
-      }
-      if (props.halfCheckedValues &&
-        props.halfCheckedValues.some(item => item.value === getValuePropValue(child))) {
-        halfCheckedKeys.push(child.key);
-      }
-    });
-
-    let notFoundContent;
-    if (!treeNodes.length) {
-      if (props.notFoundContent) {
-        notFoundContent = (
-          <span className={`${props.prefixCls}-not-found`}>
-            {props.notFoundContent}
-          </span>
-        );
-      } else if (!search) {
-        visible = false;
-      }
-    }
-    const popupElement = (
-      <div>
-        {search}
-        {notFoundContent || this.renderTree(keys, halfCheckedKeys, treeNodes, multiple)}
-      </div>
-    );
-
-    const popupStyle = { ...props.dropdownStyle };
-    const widthProp = props.dropdownMatchSelectWidth ? 'width' : 'minWidth';
-    if (this.state.dropdownWidth) {
-      popupStyle[widthProp] = `${this.state.dropdownWidth}px`;
+    // When false do nothing with the width
+    // ref: https://github.com/ant-design/ant-design/issues/10927
+    let stretch;
+    if (dropdownMatchSelectWidth !== false) {
+      stretch = dropdownMatchSelectWidth ? 'width' : 'minWidth';
     }
 
     return (
       <Trigger
-        action={props.disabled ? [] : ['click']}
-        ref={saveRef(this, 'trigger')}
+        ref={this.triggerRef}
+        action={disabled ? [] : ['click']}
         popupPlacement="bottomLeft"
         builtinPlacements={BUILT_IN_PLACEMENTS}
-        popupAlign={props.dropdownPopupAlign}
+        popupAlign={dropdownPopupAlign}
         prefixCls={dropdownPrefixCls}
         popupTransitionName={this.getDropdownTransitionName()}
-        onPopupVisibleChange={props.onDropdownVisibleChange}
+        onPopupVisibleChange={onDropdownVisibleChange}
         popup={popupElement}
-        popupVisible={visible}
-        getPopupContainer={props.getPopupContainer}
-        popupClassName={classnames(popupClassName)}
-        popupStyle={popupStyle}
+        popupVisible={open}
+        getPopupContainer={getPopupContainer}
+        stretch={stretch}
+        popupClassName={classNames(
+          dropdownClassName,
+          {
+            [`${dropdownPrefixCls}--multiple`]: isMultiple,
+            [`${dropdownPrefixCls}--single`]: !isMultiple,
+          },
+        )}
+        popupStyle={dropdownStyle}
       >
-        {this.props.children}
+        {children}
       </Trigger>
     );
   }
 }
+
+polyfill(SelectTrigger);
 
 export default SelectTrigger;

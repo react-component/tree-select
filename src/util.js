@@ -1,6 +1,15 @@
-/* eslint no-loop-func: 0*/
 import React from 'react';
+import warning from 'warning';
+import SelectNode from './SelectNode';
+import { SHOW_CHILD, SHOW_PARENT } from './strategies';
 
+// When treeNode not provide key, and we will use value as key.
+// Some time value is empty, we should pass it instead.
+const KEY_OF_VALUE_EMPTY = 'RC_TREE_SELECT_KEY_OF_VALUE_EMPTY';
+
+let warnDeprecatedLabel = false;
+
+// =================== MISC ====================
 export function toTitle(title) {
   if (typeof title === 'string') {
     return title;
@@ -8,42 +17,21 @@ export function toTitle(title) {
   return null;
 }
 
-export function getValuePropValue(child) {
-  const props = child.props;
-  if ('value' in props) {
-    return props.value;
-  }
-  if (child.key) {
-    return child.key;
-  }
-  throw new Error(`no key or value for ${child}`);
+export function toArray(data) {
+  if (!data) return [];
+
+  return Array.isArray(data) ? data : [data];
 }
 
-export function getPropValue(child, prop) {
-  if (prop === 'value') {
-    return getValuePropValue(child);
-  }
-  return child.props[prop];
+// Shallow copy of React 16.3 createRef api
+export function createRef() {
+  const func = function setRef(node) {
+    func.current = node;
+  };
+  return func;
 }
 
-export function isMultiple(props) {
-  return !!(props.multiple || props.treeCheckable);
-}
-
-export function toArray(value) {
-  let ret = value;
-  if (value === undefined) {
-    ret = [];
-  } else if (!Array.isArray(value)) {
-    ret = [value];
-  }
-  return ret;
-}
-
-export function preventDefaultEvent(e) {
-  e.preventDefault();
-}
-
+// =============== Legacy ===============
 export const UNSELECTABLE_STYLE = {
   userSelect: 'none',
   WebkitUserSelect: 'none',
@@ -53,491 +41,381 @@ export const UNSELECTABLE_ATTRIBUTE = {
   unselectable: 'unselectable',
 };
 
-
-export function labelCompatible(prop) {
-  let newProp = prop;
-  if (newProp === 'label') {
-    newProp = 'title';
+/**
+ * Convert position list to hierarchy structure.
+ * This is little hack since use '-' to split the position.
+ */
+export function flatToHierarchy(positionList) {
+  if (!positionList.length) {
+    return [];
   }
-  return newProp;
-}
 
+  const entrances = {};
 
-export function isInclude(smallArray, bigArray) {
-  // attention: [0,0,1] [0,0,10]
-  return smallArray.every((ii, i) => {
-    return ii === bigArray[i];
-  });
-}
-
-export function isPositionPrefix(smallPos, bigPos) {
-  if (!bigPos || !smallPos) {
-    // console.log(smallPos, bigPos);
-    return false;
-  }
-  if (bigPos.length < smallPos.length) {
-    return false;
-  }
-  // attention: "0-0-1" "0-0-10"
-  if ((bigPos.length > smallPos.length) && (bigPos.charAt(smallPos.length) !== '-')) {
-    return false;
-  }
-  return bigPos.substr(0, smallPos.length) === smallPos;
-}
-
-/*
-export function getCheckedKeys(node, checkedKeys, allCheckedNodesKeys) {
-  const nodeKey = node.props.eventKey;
-  let newCks = [...checkedKeys];
-  let nodePos;
-  const unCheck = allCheckedNodesKeys.some(item => {
-    if (item.key === nodeKey) {
-      nodePos = item.pos;
-      return true;
-    }
-  });
-  if (unCheck) {
-    newCks = [];
-    allCheckedNodesKeys.forEach(item => {
-      if (isPositionPrefix(item.pos, nodePos) || isPositionPrefix(nodePos, item.pos)) {
-        return;
-      }
-      newCks.push(item.key);
-    });
-  } else {
-    newCks.push(nodeKey);
-  }
-  return newCks;
-}
-*/
-
-function getChildrenlength(children) {
-  let len = 1;
-  if (Array.isArray(children)) {
-    len = children.length;
-  }
-  return len;
-}
-
-function getSiblingPosition(index, len, siblingPosition) {
-  if (len === 1) {
-    siblingPosition.first = true;
-    siblingPosition.last = true;
-  } else {
-    siblingPosition.first = index === 0;
-    siblingPosition.last = index === len - 1;
-  }
-  return siblingPosition;
-}
-
-export function loopAllChildren(childs, callback, parent) {
-  const loop = (children, level, _parent) => {
-    const len = getChildrenlength(children);
-    React.Children.forEach(children, function handler(item, index) { // eslint-disable-line
-      const pos = `${level}-${index}`;
-      if (item && item.props.children && item.type) {
-        loop(item.props.children, pos, { node: item, pos });
-      }
-      if (item) {
-        callback(item, index, pos, item.key || pos, getSiblingPosition(index, len, {}), _parent);
-      }
-    });
-  };
-  loop(childs, 0, parent);
-}
-
-// export function loopAllChildren(childs, callback) {
-//   const loop = (children, level) => {
-//     React.Children.forEach(children, (item, index) => {
-//       const pos = `${level}-${index}`;
-//       if (item && item.props.children) {
-//         loop(item.props.children, pos);
-//       }
-//       if (item) {
-//         callback(item, index, pos, getValuePropValue(item));
-//       }
-//     });
-//   };
-//   loop(childs, 0);
-// }
-
-// TODO: Here has the side effect. Update node children data affect.
-export function flatToHierarchy(arr) {
-  if (!arr.length) {
-    return arr;
-  }
-  const hierarchyNodes = [];
-  const levelObj = {};
-  arr.forEach((item) => {
-    if (!item.pos) {
-      return;
-    }
-    const posLen = item.pos.split('-').length;
-    if (!levelObj[posLen]) {
-      levelObj[posLen] = [];
-    }
-    levelObj[posLen].push(item);
-  });
-  const levelArr = Object.keys(levelObj).sort((a, b) => b - a);
-  // const s = Date.now();
-  // todo: there are performance issues!
-  levelArr.reduce((pre, cur) => {
-    if (cur && cur !== pre) {
-      levelObj[pre].forEach((item) => {
-        let haveParent = false;
-        levelObj[cur].forEach((ii) => {
-          if (isPositionPrefix(ii.pos, item.pos)) {
-            haveParent = true;
-            if (!ii.children) {
-              ii.children = [];
-            }
-            ii.children.push(item);
-          }
-        });
-        if (!haveParent) {
-          hierarchyNodes.push(item);
-        }
-      });
-    }
-    return cur;
-  });
-  // console.log(Date.now() - s);
-  return levelObj[levelArr[levelArr.length - 1]].concat(hierarchyNodes);
-}
-
-
-// arr.length === 628, use time: ~20ms
-export function filterParentPosition(arr) {
-  const levelObj = {};
-  arr.forEach((item) => {
-    const posLen = item.split('-').length;
-    if (!levelObj[posLen]) {
-      levelObj[posLen] = [];
-    }
-    levelObj[posLen].push(item);
-  });
-  const levelArr = Object.keys(levelObj).sort();
-  for (let i = 0; i < levelArr.length; i++) {
-    if (levelArr[i + 1]) {
-      levelObj[levelArr[i]].forEach(ii => {
-        for (let j = i + 1; j < levelArr.length; j++) {
-          levelObj[levelArr[j]].forEach((_i, index) => {
-            if (isPositionPrefix(ii, _i)) {
-              levelObj[levelArr[j]][index] = null;
-            }
-          });
-          levelObj[levelArr[j]] = levelObj[levelArr[j]].filter(p => p);
-        }
-      });
-    }
-  }
-  let nArr = [];
-  levelArr.forEach(i => {
-    nArr = nArr.concat(levelObj[i]);
-  });
-  return nArr;
-}
-// console.log(filterParentPosition(
-// ['0-2', '0-3-3', '0-10', '0-10-0', '0-0-1', '0-0', '0-1-1', '0-1']
-// ));
-
-function stripTail(str) {
-  const arr = str.match(/(.+)(-[^-]+)$/);
-  let st = '';
-  if (arr && arr.length === 3) {
-    st = arr[1];
-  }
-  return st;
-}
-function splitPosition(pos) {
-  return pos.split('-');
-}
-
-// todo: do optimization.
-export function handleCheckState(obj, checkedPositionArr, checkIt) {
-  // console.log(stripTail('0-101-000'));
-  // let s = Date.now();
-  let objKeys = Object.keys(obj);
-
-  objKeys.forEach((i, index) => {
-    const iArr = splitPosition(i);
-    let saved = false;
-    checkedPositionArr.forEach((_pos) => {
-      const _posArr = splitPosition(_pos);
-      if (iArr.length > _posArr.length && isInclude(_posArr, iArr)) {
-        obj[i].halfChecked = false;
-        obj[i].checked = checkIt;
-        objKeys[index] = null;
-      }
-      if (iArr[0] === _posArr[0] && iArr[1] === _posArr[1]) {
-        saved = true;
-      }
-    });
-    if (!saved) {
-      objKeys[index] = null;
-    }
-  });
-  objKeys = objKeys.filter(i => i); // filter non null;
-
-  for (let pIndex = 0; pIndex < checkedPositionArr.length; pIndex++) {
-    // loop to set ancestral nodes's `checked` or `halfChecked`
-    const loop = (__pos) => {
-      const _posLen = splitPosition(__pos).length;
-      if (_posLen <= 2) { // e.g. '0-0', '0-1'
-        return;
-      }
-      let sibling = 0;
-      let siblingChecked = 0;
-      const parentPosition = stripTail(__pos);
-      objKeys.forEach((i /* , index*/) => {
-        const iArr = splitPosition(i);
-        if (iArr.length === _posLen && isInclude(splitPosition(parentPosition), iArr)) {
-          sibling++;
-          if (obj[i].checked) {
-            siblingChecked++;
-            const _i = checkedPositionArr.indexOf(i);
-            if (_i > -1) {
-              checkedPositionArr.splice(_i, 1);
-              if (_i <= pIndex) {
-                pIndex--;
-              }
-            }
-          } else if (obj[i].halfChecked) {
-            siblingChecked += 0.5;
-          }
-          // objKeys[index] = null;
-        }
-      });
-      // objKeys = objKeys.filter(i => i); // filter non null;
-      const parent = obj[parentPosition];
-      // not check, checked, halfChecked
-      if (siblingChecked === 0) {
-        parent.checked = false;
-        parent.halfChecked = false;
-      } else if (siblingChecked === sibling) {
-        parent.checked = true;
-        parent.halfChecked = false;
-      } else {
-        parent.halfChecked = true;
-        parent.checked = false;
-      }
-      loop(parentPosition);
+  // Prepare the position map
+  const posMap = {};
+  const parsedList = positionList.slice().map(entity => {
+    const clone = {
+      ...entity,
+      fields: entity.pos.split('-'),
     };
-    loop(checkedPositionArr[pIndex], pIndex);
-  }
-  // console.log(Date.now()-s, objKeys.length, checkIt);
+    delete clone.children;
+    return clone;
+  });
+
+  parsedList.forEach((entity) => {
+    posMap[entity.pos] = entity;
+  });
+
+  parsedList.sort((a, b) => {
+    return a.fields.length - b.fields.length;
+  });
+
+  // Create the hierarchy
+  parsedList.forEach((entity) => {
+    const parentPos = entity.fields.slice(0, -1).join('-');
+    const parentEntity = posMap[parentPos];
+
+    if (!parentEntity) {
+      entrances[entity.pos] = entity;
+    } else {
+      parentEntity.children = parentEntity.children || [];
+      parentEntity.children.push(entity);
+    }
+
+    // Some time position list provide `key`, we don't need it
+    delete entity.key;
+    delete entity.fields;
+  });
+
+  return Object.keys(entrances).map(key => entrances[key]);
 }
 
-function getCheck(treeNodesStates, checkedPositions) {
-  const halfCheckedKeys = [];
-  const checkedKeys = [];
-  const checkedNodes = [];
-  Object.keys(treeNodesStates).forEach((item) => {
-    const itemObj = treeNodesStates[item];
-    if (itemObj.checked) {
-      checkedKeys.push(itemObj.key);
-      // checkedNodes.push(getValuePropValue(itemObj.node));
-      checkedNodes.push({ ...itemObj, pos: item });
-    } else if (itemObj.halfChecked) {
-      halfCheckedKeys.push(itemObj.key);
+// =============== Accessibility ===============
+let ariaId = 0;
+
+export function resetAriaId() {
+  ariaId = 0;
+}
+
+export function generateAriaId(prefix) {
+  ariaId += 1;
+  return `${prefix}_${ariaId}`;
+}
+
+export function isLabelInValue(props) {
+  const { treeCheckable, treeCheckStrictly, labelInValue } = props;
+  if (treeCheckable && treeCheckStrictly) {
+    return true;
+  }
+  return labelInValue || false;
+}
+
+// =================== Tree ====================
+export function parseSimpleTreeData(treeData, { id, pId, rootPId }) {
+  const keyNodes = {};
+  const rootNodeList = [];
+
+  // Fill in the map
+  const nodeList = treeData.map((node) => {
+    const clone = { ...node };
+    const key = clone[id];
+    keyNodes[key] = clone;
+    return clone;
+  });
+
+  // Connect tree
+  nodeList.forEach((node) => {
+    const parentKey = node[pId];
+    const parent = keyNodes[parentKey];
+
+    // Fill parent
+    if (parent) {
+      parent.children = parent.children || [];
+      parent.children.push(node);
+    }
+
+    // Fill root tree node
+    if (parentKey === rootPId || (!parent && rootPId === null)) {
+      rootNodeList.push(node);
     }
   });
+
+  return rootNodeList;
+}
+
+/**
+ * `Tree` use `key` to track state but it will changed by React.
+ * We need convert it back to the data and re-generate by `key`.
+ * This is will cause performance issue.
+ */
+export function convertTreeToData(treeNodes) {
+  return React.Children.map(treeNodes || [], (node) => {
+    if (!React.isValidElement(node) || !node.type || !node.type.isTreeNode) {
+      return null;
+    }
+
+    const { key, props } = node;
+
+    return {
+      ...props,
+      key,
+      children: convertTreeToData(props.children),
+    };
+  }).filter(data => data);
+}
+
+/**
+ * Convert `treeData` to TreeNode List contains the mapping data.
+ */
+export function convertDataToEntities(treeData) {
+  const list = toArray(treeData);
+
+  const valueEntities = {};
+  const keyEntities = {};
+  const posEntities = {};
+
+  function traverse(subTreeData, parentPos) {
+    const subList = toArray(subTreeData);
+
+    return subList.map(({ key, title, label, value, children ,...nodeProps }, index) => {
+      const pos = `${parentPos}-${index}`;
+
+      const entity = { key, value, pos };
+
+      // This may cause some side effect, need additional check
+      entity.key = entity.key || value;
+      if (!entity.key && entity.key !== 0) {
+        entity.key = KEY_OF_VALUE_EMPTY;
+      }
+
+      // Fill children
+      entity.parent = posEntities[parentPos];
+      if (entity.parent) {
+        entity.parent.children = entity.parent.children || [];
+        entity.parent.children.push(entity);
+      }
+
+      // Fill entities
+      valueEntities[value] = entity;
+      keyEntities[entity.key] = entity;
+      posEntities[pos] = entity;
+
+      // Warning user not to use deprecated label prop.
+      if ((!title && label) && !warnDeprecatedLabel) {
+        warning(
+          false,
+          '\'label\' in treeData is deprecated. Please use \'title\' instead.'
+        );
+        warnDeprecatedLabel = true;
+      }
+
+      const node = (
+        <SelectNode key={entity.key} {...nodeProps} title={title || label} label={label} value={value}>
+          {traverse(children, pos)}
+        </SelectNode>
+      );
+
+      entity.node = node;
+
+      return node;
+    });
+  }
+
+  const treeNodes = traverse(list, '0');
+
   return {
-    halfCheckedKeys, checkedKeys, checkedNodes, treeNodesStates, checkedPositions,
+    treeNodes,
+
+    valueEntities,
+    keyEntities,
+    posEntities,
   };
 }
 
-export function getTreeNodesStates(children, values) {
-  const checkedPositions = [];
-  const treeNodesStates = {};
-  loopAllChildren(children, (item, index, pos, keyOrPos, siblingPosition) => {
-    treeNodesStates[pos] = {
-      node: item,
-      key: keyOrPos,
-      checked: false,
-      halfChecked: false,
-      siblingPosition,
-    };
-    if (values.indexOf(getValuePropValue(item)) !== -1) {
-      treeNodesStates[pos].checked = true;
-      checkedPositions.push(pos);
+/**
+ * Detect if position has relation.
+ * e.g. 1-2 related with 1-2-3
+ * e.g. 1-3-2 related with 1
+ * e.g. 1-2 not related with 1-21
+ */
+export function isPosRelated(pos1, pos2) {
+  const fields1 = pos1.split('-');
+  const fields2 = pos2.split('-');
+
+  const minLen = Math.min(fields1.length, fields2.length);
+  for (let i = 0; i < minLen; i += 1) {
+    if (fields1[i] !== fields2[i]) {
+      return false;
     }
-  });
-
-  handleCheckState(treeNodesStates, filterParentPosition(checkedPositions.sort()), true);
-
-  return getCheck(treeNodesStates, checkedPositions);
+  }
+  return true;
 }
 
-// can add extra prop to every node.
-export function recursiveCloneChildren(children, cb = ch => ch) {
-  // return React.Children.map(children, child => {
-  return Array.from(children).map(child => {
-    const newChild = cb(child);
-    if (newChild && newChild.props && newChild.props.children) {
-      return React.cloneElement(newChild, {}, recursiveCloneChildren(newChild.props.children, cb));
-    }
-    return newChild;
-  });
-}
-// const newChildren = recursiveCloneChildren(children, child => {
-//   const extraProps = {};
-//   if (child && child.type && child.type.xxx) {
-//     extraProps._prop = true;
-//     return React.cloneElement(child, extraProps);
-//   }
-//   return child;
-// });
-
-
-function recursiveGen(children, level = 0) {
-  return React.Children.map(children, (child, index) => {
-    const pos = `${level}-${index}`;
-    const { title, label, value, children: subChildren, ...rest } = child.props;
-    const o = {
-      ...rest,
-      title,
-      label: label || title,
-      value,
-      key: child.key,
-      _pos: pos,
-    };
-    if (subChildren) {
-      o.children = recursiveGen(subChildren, pos);
-    }
-    return o;
-  });
-}
-
-function recursive(children, cb) {
-  children.forEach(item => {
-    cb(item);
-    if (item.children) {
-      recursive(item.children, cb);
-    }
-  });
-}
-
-// Get the tree's checkedNodes (todo: can merge to the `handleCheckState` function)
-// If one node checked, it's all children nodes checked.
-// If sibling nodes all checked, the parent checked.
-export function filterAllCheckedData(vs, treeNodes) {
-  const vals = [...vs];
-  if (!vals.length) {
-    return vals;
+/**
+ * Get a filtered TreeNode list by provided treeNodes.
+ * [Legacy] Since `Tree` use `key` as map but `key` will changed by React,
+ * we have to convert `treeNodes > data > treeNodes` to keep the key.
+ * Such performance hungry!
+ */
+export function getFilterTree(treeNodes, searchValue, filterFunc) {
+  if (!searchValue) {
+    return null;
   }
 
-  const data = recursiveGen(treeNodes);
-  const checkedNodesPositions = [];
+  function mapFilteredNodeToData(node) {
+    if (!node) return null;
 
-  function checkChildren(children) {
-    children.forEach(item => {
-      if (item.__checked) {
-        return;
+    let match = false;
+    if (filterFunc(searchValue, node)) {
+      match = true;
+    }
+
+    const children = (React.Children.map(node.props.children, mapFilteredNodeToData) || []).filter(n => n);
+
+    if (children.length || match) {
+      return {
+        ...node.props,
+        key: node.key,
+        children,
+      };
+    }
+
+    return null;
+  }
+
+  return convertDataToEntities(
+    treeNodes.map(mapFilteredNodeToData).filter(node => node)
+  ).treeNodes;
+}
+
+// =================== Value ===================
+/**
+ * Convert value to array format to make logic simplify.
+ */
+export function formatInternalValue(value, props) {
+  const valueList = toArray(value);
+
+  // Parse label in value
+  if (isLabelInValue(props)) {
+    return valueList.map((val) => {
+      if (typeof val !== 'object' || !val) {
+        return {
+          value: '',
+          label: '',
+        };
       }
-      const ci = vals.indexOf(item.value);
-      const childs = item.children;
-      if (ci > -1) {
-        item.__checked = true;
-        checkedNodesPositions.push({ node: item, pos: item._pos });
-        vals.splice(ci, 1);
-        if (childs) {
-          recursive(childs, child => {
-            child.__checked = true;
-            checkedNodesPositions.push({ node: child, pos: child._pos });
+
+      return val;
+    });
+  }
+
+  return valueList.map(val => ({
+    value: val,
+  }));
+}
+
+export function getLabel(wrappedValue, entity, treeNodeLabelProp) {
+  if (wrappedValue.label) {
+    return wrappedValue.label;
+  }
+
+  if (entity && entity.node.props) {
+    return entity.node.props[treeNodeLabelProp];
+  }
+
+  return wrappedValue.value;
+}
+
+/**
+ * Convert internal state `valueList` to user needed value list.
+ * This will return an array list. You need check if is not multiple when return.
+ *
+ * `allCheckedNodes` is used for `treeCheckStrictly`
+ */
+export function formatSelectorValue(valueList, props, valueEntities) {
+  const {
+    treeNodeLabelProp,
+    treeCheckable, treeCheckStrictly, showCheckedStrategy,
+  } = props;
+
+
+  // Will hide some value if `showCheckedStrategy` is set
+  if (treeCheckable && !treeCheckStrictly) {
+    const values = {};
+    valueList.forEach((wrappedValue) => {
+      values[wrappedValue.value] = wrappedValue;
+    });
+    const hierarchyList = flatToHierarchy(valueList.map(({ value }) => valueEntities[value]));
+
+    if (showCheckedStrategy === SHOW_PARENT) {
+      // Only get the parent checked value
+      return hierarchyList.map(({ node: { props: { value } } }) => ({
+        label: getLabel(values[value], valueEntities[value], treeNodeLabelProp),
+        value,
+      }));
+
+    } else if (showCheckedStrategy === SHOW_CHILD) {
+      // Only get the children checked value
+      const targetValueList = [];
+
+      // Find the leaf children
+      const traverse = ({ node: { props: { value } }, children }) => {
+        if (!children || children.length === 0) {
+          targetValueList.push({
+            label: getLabel(values[value], valueEntities[value], treeNodeLabelProp),
+            value,
           });
+          return;
         }
-      } else {
-        if (childs) {
-          checkChildren(childs);
-        }
-      }
+
+        children.forEach((entity) => {
+          traverse(entity);
+        });
+      };
+
+      hierarchyList.forEach((entity) => {
+        traverse(entity);
+      });
+
+      return targetValueList;
+    }
+  }
+
+  return valueList.map(wrappedValue => ({
+    label: getLabel(wrappedValue, valueEntities[wrappedValue.value], treeNodeLabelProp),
+    value: wrappedValue.value,
+  }));
+}
+
+/**
+ * When user search the tree, will not get correct tree checked status.
+ * For checked key, use the `rc-tree` `calcCheckStateConduct` function.
+ * For unchecked key, we need the calculate ourselves.
+ */
+export function calcUncheckConduct(keyList, uncheckedKey, keyEntities) {
+  let myKeyList = keyList.slice();
+
+  function conductUp(conductKey) {
+    myKeyList = myKeyList.filter(key => key !== conductKey);
+
+    // Check if need conduct
+    const parentEntity = keyEntities[conductKey].parent;
+    if (parentEntity && myKeyList.some(key => key === parentEntity.key)) {
+      conductUp(parentEntity.key);
+    }
+  }
+
+  function conductDown(conductKey) {
+    myKeyList = myKeyList.filter(key => key !== conductKey);
+
+    (keyEntities[conductKey].children || []).forEach((childEntity) => {
+      conductDown(childEntity.key);
     });
   }
 
-  function checkParent(children, parent = { root: true }) {
-    let siblingChecked = 0;
-    children.forEach(item => {
-      const childs = item.children;
-      if (childs && !item.__checked && !item.__halfChecked) {
-        const p = checkParent(childs, item);
-        if (p.__checked) {
-          siblingChecked++;
-        } else if (p.__halfChecked) {
-          siblingChecked += 0.5;
-        }
-      } else if (item.__checked) {
-        siblingChecked++;
-      } else if (item.__halfChecked) {
-        siblingChecked += 0.5;
-      }
-    });
-    const len = children.length;
-    if (siblingChecked === len) {
-      parent.__checked = true;
-      checkedNodesPositions.push({ node: parent, pos: parent._pos });
-    } else if (siblingChecked < len && siblingChecked > 0) {
-      parent.__halfChecked = true;
-    }
-    if (parent.root) {
-      return children;
-    }
-    return parent;
-  }
-  checkChildren(data);
-  checkParent(data);
+  conductUp(uncheckedKey);
+  conductDown(uncheckedKey);
 
-  checkedNodesPositions.forEach((i, index) => {
-    // clear private metadata
-    delete checkedNodesPositions[index].node.__checked;
-    delete checkedNodesPositions[index].node._pos;
-    // create the same structure of `onCheck`'s return.
-    checkedNodesPositions[index].node.props = {
-      title: checkedNodesPositions[index].node.title,
-      label: checkedNodesPositions[index].node.label || checkedNodesPositions[index].node.title,
-      value: checkedNodesPositions[index].node.value,
-    };
-    if (checkedNodesPositions[index].node.children) {
-      checkedNodesPositions[index].node.props.children = checkedNodesPositions[index].node.children;
-    }
-    delete checkedNodesPositions[index].node.title;
-    delete checkedNodesPositions[index].node.label;
-    delete checkedNodesPositions[index].node.value;
-    delete checkedNodesPositions[index].node.children;
-  });
-  return checkedNodesPositions;
-}
-
-export function processSimpleTreeData(treeData, format) {
-  function unflatten2(array, parent = { [format.id]: format.rootPId }) {
-    const children = [];
-    for (let i = 0; i < array.length; i++) {
-      array[i] = { ...array[i] }; // copy, can not corrupts original data
-      if (array[i][format.pId] === parent[format.id]) {
-        array[i].key = array[i][format.id];
-        children.push(array[i]);
-        array.splice(i--, 1);
-      }
-    }
-    if (children.length) {
-      parent.children = children;
-      children.forEach(child => unflatten2(array, child));
-    }
-    if (parent[format.id] === format.rootPId) {
-      return children;
-    }
-  }
-  return unflatten2(treeData);
-}
-
-export function saveRef(instance, name) {
-  if (!instance.saveRefs) {
-    instance.saveRefs = {};
-  }
-  if (!instance.saveRefs[name]) {
-    instance.saveRefs[name] = (node) => {
-      instance[name] = node;
-    };
-  }
-  return instance.saveRefs[name];
+  return myKeyList;
 }

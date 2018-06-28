@@ -2,15 +2,16 @@
 import React from 'react';
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
-import TreeSelect from '../src';
+import TreeSelect, { TreeNode } from '../src';
+import { resetAriaId } from '../src/util';
 import focusTest from './shared/focusTest';
 
 describe('TreeSelect.multiple', () => {
   focusTest('multiple');
 
   const treeData = [
-    { key: '0', value: '0', label: 'label0' },
-    { key: '1', value: '1', label: 'label1' },
+    { key: '0', value: '0', title: 'label0' },
+    { key: '1', value: '1', title: 'label1' },
   ];
   const createSelect = (props) => (
     <TreeSelect
@@ -22,6 +23,10 @@ describe('TreeSelect.multiple', () => {
   const select = (wrapper, index = 0) => {
     wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(index).simulate('click');
   };
+
+  beforeEach(() => {
+    resetAriaId();
+  });
 
   it('select multiple nodes', () => {
     const wrapper = mount(createSelect({ open: true }));
@@ -79,19 +84,20 @@ describe('TreeSelect.multiple', () => {
     expect(choice.prop('children')).toBe('label0');
   });
 
+  // TODO: Check preVal, it's not correct
   it('click X to delete select', () => {
-    const treeDataWithProps = [
-      { key: '0', value: '0', label: 'label0', foo: 0 },
-      { key: '1', value: '1', label: 'label1', foo: 1 },
-    ];
-
     const handleChange = jest.fn();
+    const children = [
+      <TreeNode key="0" value="0" title="label0" foo={0} />,
+      <TreeNode key="1" value="1" title="label1" foo={1} />,
+    ];
     const wrapper = mount(createSelect({
       open: true,
       value: ['0', '1'],
       onChange: handleChange,
       treeCheckable: true,
-      treeData: treeDataWithProps,
+      treeData: null,
+      children,
     }));
 
     const $remove = wrapper
@@ -103,21 +109,11 @@ describe('TreeSelect.multiple', () => {
     $remove.simulate('click');
 
     expect(handleChange).toBeCalledWith(['0'], ['label0'], expect.objectContaining({
-      allCheckedNodes: [{
-        node: {
-          disabled: false,
-          isLeaf: undefined,
-          key: '0',
-          foo: 0,
-          selectable: false,
-          props: {
-            label: 'label0',
-            title: 'label0',
-            value: '0',
-          },
-        },
-        pos: '0-0',
-      }],
+      allCheckedNodes: [
+        expect.objectContaining({
+          props: expect.objectContaining(children[0].props),
+        })
+      ],
     }));
   });
 
@@ -147,6 +143,6 @@ describe('TreeSelect.multiple', () => {
     wrapper.setState({ open: false });
     wrapper.find('.rc-tree-select-selection__choice__remove').at(0).simulate('click');
     expect(wrapper.state('open')).toBe(false);
-    expect(wrapper.state('value')).toEqual([{ label: 'label1', value: '1' }]);
+    expect(wrapper.state('valueList')).toEqual([{ label: 'label1', value: '1' }]);
   });
 });

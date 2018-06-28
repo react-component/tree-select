@@ -1,16 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TreeSelect.basic propTypes check title when label is a object 1`] = `
+exports[`TreeSelect.basic check title when label is a object 1`] = `
 <span
+  aria-haspopup="listbox"
   class="rc-tree-select rc-tree-select-enabled"
+  role="combobox"
+  tabindex="0"
 >
   <span
-    aria-autocomplete="list"
-    aria-haspopup="true"
-    class="rc-tree-select-selection
-            rc-tree-select-selection--single"
-    role="combobox"
-    tabindex="0"
+    class="rc-tree-select-selection rc-tree-select-selection--single"
   >
     <span
       class="rc-tree-select-selection__rendered"
@@ -35,15 +33,13 @@ exports[`TreeSelect.basic propTypes check title when label is a object 1`] = `
 
 exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
 <span
+  aria-haspopup="listbox"
   class="rc-tree-select rc-tree-select-enabled"
+  role="combobox"
+  tabindex="0"
 >
   <span
-    aria-autocomplete="list"
-    aria-haspopup="true"
-    class="rc-tree-select-selection
-            rc-tree-select-selection--single"
-    role="combobox"
-    tabindex="0"
+    class="rc-tree-select-selection rc-tree-select-selection--single"
   >
     <span
       class="rc-tree-select-selection__rendered"
@@ -64,15 +60,13 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
 
 exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`] = `
 <span
+  aria-haspopup="listbox"
   class="rc-tree-select rc-tree-select-enabled"
+  role="combobox"
+  tabindex="0"
 >
   <span
-    aria-autocomplete="list"
-    aria-haspopup="true"
-    class="rc-tree-select-selection
-            rc-tree-select-selection--single"
-    role="combobox"
-    tabindex="0"
+    class="rc-tree-select-selection rc-tree-select-selection--single"
   >
     <span
       class="rc-tree-select-selection__rendered"
@@ -93,18 +87,18 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
 
 exports[`TreeSelect.basic render renders correctly 1`] = `
 <span
+  aria-haspopup="listbox"
   class="forTest awesome awesome-enabled"
+  role="combobox"
   style="width:300px"
+  tabindex="-1"
 >
   <span
-    aria-autocomplete="list"
-    aria-haspopup="true"
-    class="awesome-selection
-            awesome-selection--multiple"
-    role="combobox"
+    class="awesome-selection awesome-selection--multiple"
   >
     <ul
       class="awesome-selection__rendered"
+      role="menubar"
     >
       <li
         class="awesome-search awesome-search--inline"
@@ -113,8 +107,11 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
           class="awesome-search__field__wrap"
         >
           <input
+            aria-autocomplete="list"
+            aria-label="filter select"
+            aria-multiline="false"
             class="awesome-search__field"
-            role="textbox"
+            type="text"
             value=""
           />
           <span
@@ -131,15 +128,13 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
 
 exports[`TreeSelect.basic render renders disabled correctly 1`] = `
 <span
+  aria-disabled="true"
+  aria-haspopup="listbox"
   class="rc-tree-select rc-tree-select-disabled"
+  role="combobox"
 >
   <span
-    aria-autocomplete="list"
-    aria-haspopup="true"
-    class="rc-tree-select-selection
-            rc-tree-select-selection--single"
-    role="combobox"
-    tabindex="0"
+    class="rc-tree-select-selection rc-tree-select-selection--single"
   >
     <span
       class="rc-tree-select-selection__rendered"
@@ -160,17 +155,17 @@ exports[`TreeSelect.basic render renders disabled correctly 1`] = `
 
 exports[`TreeSelect.basic render renders tree correctly 1`] = `
 <span
+  aria-haspopup="listbox"
   class="rc-tree-select rc-tree-select-enabled"
+  role="combobox"
+  tabindex="-1"
 >
   <span
-    aria-autocomplete="list"
-    aria-haspopup="true"
-    class="rc-tree-select-selection
-            rc-tree-select-selection--multiple"
-    role="combobox"
+    class="rc-tree-select-selection rc-tree-select-selection--multiple"
   >
     <ul
       class="rc-tree-select-selection__rendered"
+      role="menubar"
     >
       <li
         class="rc-tree-select-search rc-tree-select-search--inline"
@@ -179,8 +174,11 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
           class="rc-tree-select-search__field__wrap"
         >
           <input
+            aria-autocomplete="list"
+            aria-label="filter select"
+            aria-multiline="false"
             class="rc-tree-select-search__field"
-            role="textbox"
+            type="text"
             value=""
           />
           <span
@@ -196,47 +194,437 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
 `;
 
 exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
-<span
-  class="rc-tree-select rc-tree-select-enabled"
->
+<div>
   <span
-    aria-autocomplete="list"
-    aria-haspopup="true"
-    class="rc-tree-select-selection
-            rc-tree-select-selection--single"
+    aria-controls="rc-tree-select-list_1"
+    aria-expanded="true"
+    aria-haspopup="listbox"
+    aria-owns="rc-tree-select-list_1"
+    class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
     role="combobox"
     tabindex="0"
   >
     <span
-      class="rc-tree-select-selection__rendered"
+      class="rc-tree-select-selection rc-tree-select-selection--single"
     >
       <span
-        class="rc-tree-select-selection__placeholder"
-      />
-    </span>
-    <span
-      class="rc-tree-select-arrow"
-      style="outline:none"
-    >
-      <b />
+        class="rc-tree-select-selection__rendered"
+      >
+        <span
+          class="rc-tree-select-selection__placeholder"
+        />
+      </span>
+      <span
+        class="rc-tree-select-arrow"
+        style="outline:none"
+      >
+        <b />
+      </span>
     </span>
   </span>
-</span>
+  <div>
+    <div
+      class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
+      style="visibility:hidden"
+    >
+      <div
+        id="rc-tree-select-list_1"
+        role="listbox"
+        tabindex="-1"
+      >
+        <span
+          class="rc-tree-select-dropdown-search"
+        >
+          <span
+            class="rc-tree-select-search__field__wrap"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-controls="rc-tree-select-list_1"
+              aria-label="filter select"
+              aria-multiline="false"
+              class="rc-tree-select-search__field"
+              type="text"
+              value=""
+            />
+            <span
+              class="rc-tree-select-search__field__mirror"
+            >
+               
+            </span>
+          </span>
+        </span>
+        <ul
+          class="rc-tree-select-tree"
+          role="tree-node"
+          unselectable="on"
+        >
+          <li
+            class="rc-tree-select-tree-treenode-switcher-open"
+          >
+            <span
+              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+            />
+            <span
+              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+              title="label0"
+            >
+              <span
+                class="rc-tree-select-tree-title"
+              >
+                label0
+              </span>
+            </span>
+            <ul
+              class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
+              data-expanded="true"
+            >
+              <li
+                class="rc-tree-select-tree-treenode-switcher-open"
+              >
+                <span
+                  class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                />
+                <span
+                  class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                  title="label1"
+                >
+                  <span
+                    class="rc-tree-select-tree-title"
+                  >
+                    label1
+                  </span>
+                </span>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
+<div>
+  <span
+    aria-controls="rc-tree-select-list_1"
+    aria-expanded="true"
+    aria-haspopup="listbox"
+    aria-owns="rc-tree-select-list_1"
+    class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
+    role="combobox"
+    style=""
+    tabindex="0"
+  >
+    <span
+      class="rc-tree-select-selection rc-tree-select-selection--single"
+    >
+      <span
+        class="rc-tree-select-selection__rendered"
+      >
+        <span
+          class="rc-tree-select-selection__placeholder"
+        />
+      </span>
+      <span
+        class="rc-tree-select-arrow"
+        style="outline: none;"
+      >
+        <b />
+      </span>
+    </span>
+  </span>
+  <div>
+    <div
+      class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
+      style="left: -999px; top: -995px; min-width: 0;"
+    >
+      <div
+        id="rc-tree-select-list_1"
+        role="listbox"
+        tabindex="-1"
+      >
+        <span
+          class="rc-tree-select-dropdown-search"
+        >
+          <span
+            class="rc-tree-select-search__field__wrap"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-controls="rc-tree-select-list_1"
+              aria-label="filter select"
+              aria-multiline="false"
+              class="rc-tree-select-search__field"
+              type="text"
+              value="a"
+            />
+            <span
+              class="rc-tree-select-search__field__mirror"
+            >
+              a 
+            </span>
+          </span>
+        </span>
+        <ul
+          class="rc-tree-select-tree"
+          role="tree-node"
+          unselectable="on"
+        >
+          <li
+            class="rc-tree-select-tree-treenode-switcher-open filter-node"
+          >
+            <span
+              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+            />
+            <span
+              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+              title="labela"
+            >
+              <span
+                class="rc-tree-select-tree-title"
+              >
+                labela
+              </span>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
+<div>
+  <span
+    aria-controls="rc-tree-select-list_1"
+    aria-expanded="true"
+    aria-haspopup="listbox"
+    aria-owns="rc-tree-select-list_1"
+    class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
+    role="combobox"
+    style=""
+    tabindex="0"
+  >
+    <span
+      class="rc-tree-select-selection rc-tree-select-selection--single"
+    >
+      <span
+        class="rc-tree-select-selection__rendered"
+      >
+        <span
+          class="rc-tree-select-selection__placeholder"
+        />
+      </span>
+      <span
+        class="rc-tree-select-arrow"
+        style="outline: none;"
+      >
+        <b />
+      </span>
+    </span>
+  </span>
+  <div>
+    <div
+      class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
+      style="left: -999px; top: -995px; min-width: 0;"
+    >
+      <div
+        id="rc-tree-select-list_1"
+        role="listbox"
+        tabindex="-1"
+      >
+        <span
+          class="rc-tree-select-dropdown-search"
+        >
+          <span
+            class="rc-tree-select-search__field__wrap"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-controls="rc-tree-select-list_1"
+              aria-label="filter select"
+              aria-multiline="false"
+              class="rc-tree-select-search__field"
+              type="text"
+              value=""
+            />
+            <span
+              class="rc-tree-select-search__field__mirror"
+            >
+               
+            </span>
+          </span>
+        </span>
+        <ul
+          class="rc-tree-select-tree"
+          role="tree-node"
+          unselectable="on"
+        >
+          <li
+            class="rc-tree-select-tree-treenode-switcher-open"
+          >
+            <span
+              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+            />
+            <span
+              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+              title="labela"
+            >
+              <span
+                class="rc-tree-select-tree-title"
+              >
+                labela
+              </span>
+            </span>
+          </li>
+          <li
+            class="rc-tree-select-tree-treenode-switcher-close"
+          >
+            <span
+              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+            />
+            <span
+              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+              title="labelb"
+            >
+              <span
+                class="rc-tree-select-tree-title"
+              >
+                labelb
+              </span>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
+<div>
+  <span
+    aria-controls="rc-tree-select-list_1"
+    aria-expanded="true"
+    aria-haspopup="listbox"
+    aria-owns="rc-tree-select-list_1"
+    class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
+    role="combobox"
+    style=""
+    tabindex="0"
+  >
+    <span
+      class="rc-tree-select-selection rc-tree-select-selection--single"
+    >
+      <span
+        class="rc-tree-select-selection__rendered"
+      >
+        <span
+          class="rc-tree-select-selection__placeholder"
+        />
+      </span>
+      <span
+        class="rc-tree-select-arrow"
+        style="outline: none;"
+      >
+        <b />
+      </span>
+    </span>
+  </span>
+  <div>
+    <div
+      class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
+      style="left: -999px; top: -995px; min-width: 0;"
+    >
+      <div
+        id="rc-tree-select-list_1"
+        role="listbox"
+        tabindex="-1"
+      >
+        <span
+          class="rc-tree-select-dropdown-search"
+        >
+          <span
+            class="rc-tree-select-search__field__wrap"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-controls="rc-tree-select-list_1"
+              aria-label="filter select"
+              aria-multiline="false"
+              class="rc-tree-select-search__field"
+              type="text"
+              value="a"
+            />
+            <span
+              class="rc-tree-select-search__field__mirror"
+            >
+              a 
+            </span>
+          </span>
+        </span>
+        <ul
+          class="rc-tree-select-tree"
+          role="tree-node"
+          unselectable="on"
+        >
+          <li
+            class="rc-tree-select-tree-treenode-switcher-open filter-node"
+          >
+            <span
+              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+            />
+            <span
+              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+              title="labela"
+            >
+              <span
+                class="rc-tree-select-tree-title"
+              >
+                labela
+              </span>
+            </span>
+          </li>
+          <li
+            class="rc-tree-select-tree-treenode-switcher-open"
+          >
+            <span
+              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+            />
+            <span
+              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+              title="labelb"
+            >
+              <span
+                class="rc-tree-select-tree-title"
+              >
+                labelb
+              </span>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`TreeSelect.basic search nodes renders search input 1`] = `
 Array [
   <span
+    aria-controls="rc-tree-select-list_1"
+    aria-expanded="true"
+    aria-haspopup="listbox"
+    aria-owns="rc-tree-select-list_1"
     class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
+    role="combobox"
+    tabindex="0"
   >
     <span
-      aria-autocomplete="list"
-      aria-expanded="true"
-      aria-haspopup="true"
-      class="rc-tree-select-selection
-            rc-tree-select-selection--single"
-      role="combobox"
-      tabindex="0"
+      class="rc-tree-select-selection rc-tree-select-selection--single"
     >
       <span
         class="rc-tree-select-selection__rendered"
@@ -256,8 +644,13 @@ Array [
   <div>
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
+      style="visibility:hidden"
     >
-      <div>
+      <div
+        id="rc-tree-select-list_1"
+        role="listbox"
+        tabindex="-1"
+      >
         <span
           class="rc-tree-select-dropdown-search"
         >
@@ -265,8 +658,12 @@ Array [
             class="rc-tree-select-search__field__wrap"
           >
             <input
+              aria-autocomplete="list"
+              aria-controls="rc-tree-select-list_1"
+              aria-label="filter select"
+              aria-multiline="false"
               class="rc-tree-select-search__field"
-              role="textbox"
+              type="text"
               value=""
             />
             <span
@@ -282,7 +679,7 @@ Array [
           unselectable="on"
         >
           <li
-            class=""
+            class="rc-tree-select-tree-treenode-switcher-close"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -299,7 +696,7 @@ Array [
             </span>
           </li>
           <li
-            class=""
+            class="rc-tree-select-tree-treenode-switcher-close"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"

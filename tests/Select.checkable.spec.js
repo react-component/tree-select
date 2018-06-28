@@ -1,9 +1,14 @@
 /* eslint-disable no-undef, react/no-multi-comp */
 import React from 'react';
 import { mount } from 'enzyme';
-import TreeSelect, { SHOW_PARENT } from '../src';
+import TreeSelect, { SHOW_PARENT, SHOW_ALL, TreeNode } from '../src';
+import { resetAriaId } from '../src/util';
 
 describe('TreeSelect.checkable', () => {
+  beforeEach(() => {
+    resetAriaId();
+  });
+
   beforeAll(() => {
     jest.useFakeTimers();
   });
@@ -17,12 +22,12 @@ describe('TreeSelect.checkable', () => {
       {
         key: '0',
         value: '0',
-        label: 'label0',
+        title: 'label0',
         children: [
           {
             key: '1',
             value: '1',
-            label: 'label1',
+            title: 'label1',
           },
         ],
       },
@@ -63,28 +68,28 @@ describe('TreeSelect.checkable', () => {
   // https://github.com/ant-design/ant-design/issues/6731
   it('clear all should clear cache at the same time', () => {
     const treeData = [{
-      label: 'Node1',
+      title: 'Node1',
       value: '0-0',
       key: '0-0',
       children: [{
-        label: 'Child Node1',
+        title: 'Child Node1',
         value: '0-0-0',
         key: '0-0-0',
       }],
     }, {
-      label: 'Node2',
+      title: 'Node2',
       value: '0-1',
       key: '0-1',
       children: [{
-        label: 'Child Node3',
+        title: 'Child Node3',
         value: '0-1-0',
         key: '0-1-0',
       }, {
-        label: 'Child Node4',
+        title: 'Child Node4',
         value: '0-1-1',
         key: '0-1-1',
       }, {
-        label: 'Child Node5',
+        title: 'Child Node5',
         value: '0-1-2',
         key: '0-1-2',
       }],
@@ -103,18 +108,20 @@ describe('TreeSelect.checkable', () => {
         this.setState({ disabled: checked });
       }
       render() {
-        return (<div>
-          <TreeSelect
-            treeData={treeData}
-            treeCheckable
-            allowClear
-            multiple
-            showCheckedStrategy={SHOW_PARENT}
-            value={this.state.value}
-            onChange={this.handleChange}
-            disabled={this.state.disabled}
-          />
-          <input type="checkbox" onChange={e => this.switch(e.target.checked)} id="checkbox"/> 禁用
+        return (
+          <div>
+            <TreeSelect
+              treeData={treeData}
+              treeCheckable
+              allowClear
+              multiple
+              showCheckedStrategy={SHOW_PARENT}
+              treeDefaultExpandAll
+              value={this.state.value}
+              onChange={this.handleChange}
+              disabled={this.state.disabled}
+            />
+            <input type="checkbox" onChange={e => this.switch(e.target.checked)} id="checkbox"/> 禁用
           </div>
         );
       }
@@ -137,12 +144,12 @@ describe('TreeSelect.checkable', () => {
   // Fix https://github.com/ant-design/ant-design/issues/7312#issuecomment-324865971
   it('should be checkable when treeCheckStrictly is true', () => {
     const treeData = [
-      { label: '1-1', value: '1-1', children: [] },
-      { label: '1-2', value: '1-2', children: [] },
+      { title: '1-1', value: '1-1', children: [] },
+      { title: '1-2', value: '1-2', children: [] },
       {
-        label: '1-3', value: '1-3', children: [
-          { label: '2-1', value: '2-1', children: [] },
-          { label: '2-2', value: '2-2', children: [] },
+        title: '1-3', value: '1-3', children: [
+          { title: '2-1', value: '2-1', children: [] },
+          { title: '2-2', value: '2-2', children: [] },
         ],
       },
     ];
@@ -152,6 +159,7 @@ describe('TreeSelect.checkable', () => {
         treeData={treeData}
         treeCheckable
         treeCheckStrictly
+        treeDefaultExpandAll
         multiple
         onChange={handleChange}
       />
@@ -170,12 +178,12 @@ describe('TreeSelect.checkable', () => {
   // Fix https://github.com/ant-design/ant-design/issues/8581
   it('Label should be click when treeCheckable is true', () => {
     const treeData = [
-      { label: '1-1', value: '1-1', children: [] },
-      { label: '1-2', value: '1-2', children: [] },
+      { title: '1-1', value: '1-1', children: [] },
+      { title: '1-2', value: '1-2', children: [] },
       {
-        label: '1-3', value: '1-3', children: [
-          { label: '2-1', value: '2-1', children: [] },
-          { label: '2-2', value: '2-2', children: [] },
+        title: '1-3', value: '1-3', children: [
+          { title: '2-1', value: '2-1', children: [] },
+          { title: '2-2', value: '2-2', children: [] },
         ],
       },
     ];
@@ -185,6 +193,7 @@ describe('TreeSelect.checkable', () => {
         treeData={treeData}
         treeCheckable
         treeCheckStrictly
+        treeDefaultExpandAll
         multiple
         onChange={handleChange}
       />
@@ -192,7 +201,6 @@ describe('TreeSelect.checkable', () => {
     // open
     wrapper.find('.rc-tree-select').simulate('click');
     jest.runAllTimers();
-    wrapper.update();
     // select
     wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(0).simulate('click');
     expect(handleChange).toBeCalled();
@@ -208,7 +216,7 @@ describe('TreeSelect.checkable', () => {
       {
         key: '0',
         value: '0',
-        label: 'label0',
+        title: 'label0',
       },
     ];
 
@@ -216,6 +224,7 @@ describe('TreeSelect.checkable', () => {
       <TreeSelect
         treeData={treeData}
         treeCheckable
+        treeDefaultExpandAll
         allowClear
         showCheckedStrategy={SHOW_PARENT}
       />
@@ -224,7 +233,74 @@ describe('TreeSelect.checkable', () => {
     wrapper.find('.rc-tree-select-tree-checkbox').at(0).simulate('click');
     wrapper.find('input').simulate('change', { target: { value: 'foo' } });
     wrapper.find('.rc-tree-select-selection__clear').simulate('click');
-    expect(wrapper.state().value).toEqual([]);
-    expect(wrapper.state().inputValue).toBe('');
+    expect(wrapper.state().valueList).toEqual([]);
+    expect(wrapper.state().searchValue).toBe('');
+  });
+
+  describe('uncheck', () => {
+    const createSelect = (props) => (
+      mount(
+        <div>
+          <TreeSelect
+            defaultValue={['0']}
+            showCheckedStrategy={SHOW_ALL}
+            treeCheckable
+            treeDefaultExpandAll
+            open
+            {...props}
+          >
+            <TreeNode title="0" value="0">
+              <TreeNode title="0-0" value="0-0">
+                <TreeNode title="0-0-0" value="0-0-0" />
+              </TreeNode>
+            </TreeNode>
+          </TreeSelect>
+        </div>
+      )
+    );
+
+    describe('remove by selector', () => {
+      it('not treeCheckStrictly', () => {
+        const wrapper = createSelect();
+        expect(wrapper.render()).toMatchSnapshot();
+
+        wrapper.find('.rc-tree-select-selection__choice__remove').at(1).simulate('click');
+        expect(wrapper.render()).toMatchSnapshot();
+      });
+
+      it('treeCheckStrictly', () => {
+        const val = (value) => ({ label: value, value });
+        const onChange = jest.fn();
+        const wrapper = createSelect({
+          treeCheckStrictly: true,
+          defaultValue: [val('0'), val('0-0'), val('0-0-0')],
+          onChange,
+        });
+        wrapper.find('.rc-tree-select-selection__choice__remove').at(1).simulate('click');
+
+        expect(onChange.mock.calls[0][0]).toEqual(
+          [{ label: '0', value: '0' }, { label: '0-0-0', value: '0-0-0' }]
+        );
+        expect(onChange.mock.calls[0][1]).toEqual(null);
+
+        const getProps = (index) => {
+          const node = onChange.mock.calls[0][2].allCheckedNodes[index];
+          return {
+            title: node.props.title,
+            value: node.props.value,
+          };
+        }
+        expect(getProps(0)).toEqual({ title: '0', value: '0' });
+        expect(getProps(1)).toEqual({ title: '0-0-0', value: '0-0-0' });
+      });
+    });
+
+    it ('remove by tree check', () => {
+      const wrapper = createSelect({ searchValue: '0' });
+      expect(wrapper.render()).toMatchSnapshot();
+
+      wrapper.find('.rc-tree-select-tree-checkbox').at(1).simulate('click');
+      expect(wrapper.render()).toMatchSnapshot();
+    });
   });
 });

@@ -73,15 +73,27 @@
     }
   }
 
-  &-enabled &-selection {
-    &:hover {
-      border-color: #23c0fa;
-      box-shadow: 0 0 2px fadeout(#2db7f5, 20%);
+  &-enabled {
+    .@{selectPrefixCls}-selection {
+      &:hover {
+        border-color: #23c0fa;
+        box-shadow: 0 0 2px fadeout(#2db7f5, 20%);
+      }
+      &:active {
+        border-color: #2db7f5;
+      }
     }
-    &:active {
-      border-color: #2db7f5;
+
+    &.@{selectPrefixCls}-focused {
+      .@{selectPrefixCls}-selection {
+        //border-color: #23c0fa;
+        border-color: #7700fa;
+        box-shadow: 0 0 2px fadeout(#2db7f5, 20%);
+      }
     }
   }
+
+
 
   &-selection--single {
     height: 28px;
@@ -130,6 +142,7 @@
   }
 
   &-search__field__placeholder {
+    display: block;
     position: absolute;
     top: 0;
     left: 3px;

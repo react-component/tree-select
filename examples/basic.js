@@ -1,13 +1,13 @@
 /* eslint react/no-multi-comp:0, no-console:0, no-alert: 0 */
 
 import 'rc-tree-select/assets/index.less';
-import './demo.less';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'rc-dialog/assets/index.css';
 import Dialog from 'rc-dialog';
 import TreeSelect, { TreeNode, SHOW_PARENT } from 'rc-tree-select';
 import { gData } from './util';
+import './demo.less';
 
 function isLeaf(value) {
   if (!value) {
@@ -55,14 +55,15 @@ class Demo extends React.Component {
   state = {
     tsOpen: false,
     visible: false,
-    inputValue: '0-0-0-label',
+    searchValue: '0-0-0-label',
     value: '0-0-0-value1',
     // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
     lv: { value: '0-0-0-value', label: 'spe label' },
     multipleValue: [],
+    simpleSearchValue: 'test111',
     simpleTreeData: [
       { key: 1, pId: 0, label: 'test1', value: 'test1' },
-      { key: 121, pId: 0, label: 'test1', value: 'test121' },
+      { key: 121, pId: 0, label: 'test2', value: 'test2' },
       { key: 11, pId: 1, label: 'test11', value: 'test11' },
       { key: 12, pId: 1, label: 'test12', value: 'test12' },
       { key: 111, pId: 11, label: 'test111', value: 'test111' },
@@ -71,11 +72,6 @@ class Demo extends React.Component {
       id: 'key',
       rootPId: 0,
     },
-  }
-
-  componentDidMount() {
-    // console.log(this.refs.mul.getInputDOMNode());
-    // this.refs.mul.getInputDOMNode().setAttribute('disabled', true);
   }
 
   onClick = () => {
@@ -92,15 +88,17 @@ class Demo extends React.Component {
 
   onSearch = (value) => {
     console.log(value, arguments);
+    this.setState({ searchValue: value });
   }
 
-  onChange = (value) => {
-    console.log('onChange', arguments);
+  onChange = (value, ...rest) => {
+    console.log('onChange', value, ...rest);
     this.setState({ value });
   }
 
-  onChangeChildren = (value) => {
-    console.log('onChangeChildren', arguments);
+  onChangeChildren = (...args) => {
+    console.log('onChangeChildren', ...args);
+    const value = args[0];
     const pre = value ? this.state.value : undefined;
     this.setState({ value: isLeaf(value) ? value : pre });
   }
@@ -129,7 +127,7 @@ class Demo extends React.Component {
     console.log(visible, this.state.value, info);
     if (Array.isArray(this.state.value) && this.state.value.length > 1
       && this.state.value.length < 3) {
-      alert('please select more than two item or less than one item.');
+      window.alert('please select more than two item or less than one item.');
       return false;
     }
     return true;
@@ -181,15 +179,15 @@ class Demo extends React.Component {
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           showSearch allowClear treeLine
-          inputValue={this.state.inputValue}
+          searchValue={this.state.searchValue}
           value={this.state.value}
           treeData={gData}
           treeNodeFilterProp="label"
           filterTreeNode={false}
           onSearch={this.onSearch}
           open={this.state.tsOpen}
-          onChange={(value) => {
-            console.log('onChange', arguments);
+          onChange={(value, ...args) => {
+            console.log('onChange', value, ...args);
             if (value === '0-0-0-0-value') {
               this.setState({ tsOpen: true });
             } else {
@@ -203,6 +201,9 @@ class Demo extends React.Component {
             if (info.documentClickClose && this.state.value === '0-0-0-0-value') {
               return false;
             }
+            this.setState({
+              tsOpen: v,
+            });
             return true;
           } }
           onSelect={this.onSelect}
@@ -225,7 +226,7 @@ class Demo extends React.Component {
         />
 
         <h2>multiple select</h2>
-        <TreeSelect ref="mul"
+        <TreeSelect
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
@@ -253,7 +254,7 @@ class Demo extends React.Component {
           searchPlaceholder="please search"
           treeLine maxTagTextLength={10}
           value={this.state.value}
-          inputValue={null}
+          autoClearSearchValue
           treeData={gData}
           treeNodeFilterProp="title"
           treeCheckable showCheckedStrategy={SHOW_PARENT}
@@ -284,7 +285,10 @@ class Demo extends React.Component {
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           treeLine maxTagTextLength={10}
-          inputValue={'test111'}
+          searchValue={this.state.simpleSearchValue}
+          onSearch={(simpleSearchValue) => {
+            this.setState({ simpleSearchValue });
+          }}
           value={this.state.value}
           treeData={this.state.simpleTreeData}
           treeNodeFilterProp="title"
@@ -298,7 +302,7 @@ class Demo extends React.Component {
         <TreeSelect
           style={{ width: 200 }}
           dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
-          defaultValue={'leaf1'} multiple treeCheckable showCheckedStrategy={SHOW_PARENT}
+          defaultValue="leaf1" multiple treeCheckable showCheckedStrategy={SHOW_PARENT}
           treeDefaultExpandAll
           treeData={[
             { key: '', value: '', label: 'empty value', children: [] },
@@ -309,18 +313,18 @@ class Demo extends React.Component {
               ],
             },
           ]}
-          onChange={(val) => console.log(val, arguments)}
+          onChange={(val, ...args) => console.log(val, ...args)}
         />
 
         <h2>use TreeNode Component (not recommend)</h2>
         <TreeSelect
           style={{ width: 200 }}
           dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
-          defaultValue={'leaf1'}
+          defaultValue="leaf1"
           treeDefaultExpandAll
           treeNodeFilterProp="title"
           filterTreeNode={this.filterTreeNode}
-          onChange={(val) => console.log(val, arguments)}
+          onChange={(val, ...args) => console.log(val, ...args)}
         >
           <TreeNode value="" title="parent 1" key="">
             <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-0">

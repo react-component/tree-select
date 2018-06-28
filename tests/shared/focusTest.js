@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import TreeSelect from '../../src/Select';
 import { mount } from 'enzyme';
+import TreeSelect from '../../src/Select';
 
 export default function focusTest(mode) {
   let container;
@@ -18,7 +18,7 @@ export default function focusTest(mode) {
   it('focus()', () => {
     const handleFocus = jest.fn();
     const treeData = [
-      { key: '0', value: '0', label: '0 label' },
+      { key: '0', value: '0', title: '0 label' },
     ];
     const wrapper = mount(
       <TreeSelect
@@ -37,7 +37,7 @@ export default function focusTest(mode) {
   it('blur()', () => {
     const handleBlur = jest.fn();
     const treeData = [
-      { key: '0', value: '0', label: '0 label' },
+      { key: '0', value: '0', title: '0 label' },
     ];
     const wrapper = mount(
       <TreeSelect
@@ -55,7 +55,7 @@ export default function focusTest(mode) {
   it('autoFocus', () => {
     const handleFocus = jest.fn();
     const treeData = [
-      { key: '0', value: '0', label: '0 label' },
+      { key: '0', value: '0', title: '0 label' },
     ];
     mount(
       <TreeSelect
