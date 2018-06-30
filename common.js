@@ -5270,7 +5270,7 @@ var BasePopup = function (_React$Component) {
 
 BasePopup.propTypes = {
   prefixCls: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.string,
-  searchValue: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.string,
+  upperSearchValue: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.string,
   valueList: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.array,
   valueEntities: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.object,
   keyEntities: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.object,
@@ -5306,13 +5306,13 @@ var _initialiseProps = function _initialiseProps() {
 
   this.filterTreeNode = function (treeNode) {
     var _props2 = _this2.props,
-        searchValue = _props2.searchValue,
+        upperSearchValue = _props2.upperSearchValue,
         treeNodeFilterProp = _props2.treeNodeFilterProp;
 
 
     var filterVal = treeNode.props[treeNodeFilterProp];
     if (typeof filterVal === 'string') {
-      return searchValue && filterVal.indexOf(searchValue) !== -1;
+      return upperSearchValue && filterVal.toUpperCase().indexOf(upperSearchValue) !== -1;
     }
 
     return false;
@@ -29758,6 +29758,7 @@ var Select = function (_React$Component) {
       valueEntities: valueEntities,
       keyEntities: keyEntities,
       searchValue: searchValue,
+      upperSearchValue: (searchValue || '').toUpperCase(), // Perf save
       open: open,
       focused: focused,
       dropdownPrefixCls: prefixCls + '-dropdown',
