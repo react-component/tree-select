@@ -839,6 +839,7 @@ class Select extends React.Component {
       valueEntities,
       keyEntities,
       searchValue,
+      upperSearchValue: (searchValue || '').toUpperCase(), // Perf save
       open,
       focused,
       dropdownPrefixCls: `${prefixCls}-dropdown`,

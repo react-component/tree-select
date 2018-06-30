@@ -12,7 +12,7 @@ export const popupContextTypes = {
 class BasePopup extends React.Component {
   static propTypes = {
     prefixCls: PropTypes.string,
-    searchValue: PropTypes.string,
+    upperSearchValue: PropTypes.string,
     valueList: PropTypes.array,
     valueEntities: PropTypes.object,
     keyEntities: PropTypes.object,
@@ -98,11 +98,11 @@ class BasePopup extends React.Component {
    * in TreeNode > li
    */
   filterTreeNode = (treeNode) => {
-    const { searchValue, treeNodeFilterProp } = this.props;
+    const { upperSearchValue, treeNodeFilterProp } = this.props;
 
     const filterVal = treeNode.props[treeNodeFilterProp];
     if (typeof filterVal === 'string') {
-      return searchValue && filterVal.indexOf(searchValue) !== -1;
+      return upperSearchValue && (filterVal).toUpperCase().indexOf(upperSearchValue) !== -1;
     }
 
     return false;
