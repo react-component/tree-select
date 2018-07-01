@@ -67,6 +67,7 @@ class Select extends React.Component {
     searchPlaceholder: PropTypes.node, // [Legacy] Confuse with placeholder
     disabled: PropTypes.bool,
     children: PropTypes.node,
+    maxTagCount: PropTypes.number,
     maxTagTextLength: PropTypes.number,
     showCheckedStrategy: PropTypes.oneOf([
       SHOW_ALL, SHOW_PARENT, SHOW_CHILD,
@@ -265,20 +266,24 @@ class Select extends React.Component {
     if (valueRefresh) {
       // Find out that value not exist in the tree
       const missValueList = [];
+      const filteredValueList = [];
+      const keyList = [];
 
       // Get key by value
-      const keyList = (newState.valueList || prevState.valueList)
-        .map((wrapperValue) => {
+      (newState.valueList || prevState.valueList)
+        .forEach((wrapperValue) => {
           const { value } = wrapperValue;
           const entity = (newState.valueEntities || prevState.valueEntities)[value];
 
-          if (entity) return entity.key;
+          if (entity) {
+            keyList.push(entity.key);
+            filteredValueList.push(wrapperValue);
+            return;
+          }
 
           // If not match, it may caused by ajax load. We need keep this
           missValueList.push(wrapperValue);
-          return null;
-        })
-        .filter(key => key);
+        });
 
       // We need calculate the value when tree is checked tree
       if (treeCheckable && !treeCheckStrictly) {
@@ -295,6 +300,8 @@ class Select extends React.Component {
 
         // Format value list again for internal usage
         newState.valueList = formatInternalValue(valueList, nextProps);
+      } else {
+        newState.valueList = filteredValueList;
       }
 
       // Fill the missValueList, we still need display in the selector
@@ -302,7 +309,7 @@ class Select extends React.Component {
 
       // Calculate the value list for `Selector` usage
       newState.selectorValueList = formatSelectorValue(
-        newState.valueList || prevState.valueList,
+        newState.valueList,
         nextProps,
         newState.valueEntities || prevState.valueEntities,
       );

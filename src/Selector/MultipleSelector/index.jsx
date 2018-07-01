@@ -19,6 +19,7 @@ class MultipleSelector extends React.Component {
     selectorValueList: PropTypes.array,
     disabled: PropTypes.bool,
     searchValue: PropTypes.string,
+    maxTagCount: PropTypes.number,
 
     onChoiceAnimationLeave: PropTypes.func,
   };
@@ -80,10 +81,18 @@ class MultipleSelector extends React.Component {
     const {
       selectorValueList, choiceTransitionName, prefixCls,
       onChoiceAnimationLeave,
+      maxTagCount,
     } = this.props;
     const { rcTreeSelect: { onMultipleSelectorRemove } } = this.context;
 
-    const selectedValueNodes = selectorValueList.map(({ label, value }) => (
+    // Check if `maxTagCount` is set
+    let myValueList = selectorValueList;
+    if (maxTagCount > 0) {
+      myValueList = selectorValueList.slice(0, maxTagCount);
+    }
+
+    // Selector node list
+    const selectedValueNodes = myValueList.map(({ label, value }) => (
       <Selection
         {...this.props}
         key={value}
@@ -92,6 +101,20 @@ class MultipleSelector extends React.Component {
         onRemove={onMultipleSelectorRemove}
       />
     ));
+
+    // Rest node count
+    if (maxTagCount > 0 && maxTagCount < selectorValueList.length) {
+      const restNodeSelect = (
+        <Selection
+          {...this.props}
+          key="rc-tree-select-internal-max-tag-counter"
+          label={`+ ${selectorValueList.length - maxTagCount} ...`}
+          value={null}
+        />
+      );
+
+      selectedValueNodes.push(restNodeSelect);
+    }
 
     selectedValueNodes.push(<li
       className={`${prefixCls}-search ${prefixCls}-search--inline`}

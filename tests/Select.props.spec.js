@@ -220,6 +220,9 @@ describe('TreeSelect.props', () => {
       }));
 
       expect(wrapper.find(TreeSelect).instance().state.valueList).toEqual(
+        []
+      );
+      expect(wrapper.find(TreeSelect).instance().state.missValueList).toEqual(
         [{ label: '', value: '' }]
       );
     });

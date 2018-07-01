@@ -23,7 +23,7 @@ class Selection extends React.Component {
   render() {
     const {
       prefixCls, maxTagTextLength,
-      label, value,
+      label, value, onRemove,
     } = this.props;
 
     let content = label || value;
@@ -40,10 +40,12 @@ class Selection extends React.Component {
         className={`${prefixCls}-selection__choice`}
         title={toTitle(label)}
       >
-        <span
-          className={`${prefixCls}-selection__choice__remove`}
-          onClick={this.onRemove}
-        />
+        {onRemove &&
+          <span
+            className={`${prefixCls}-selection__choice__remove`}
+            onClick={this.onRemove}
+          />
+        }
         <span className={`${prefixCls}-selection__choice__content`}>
           {content}
         </span>

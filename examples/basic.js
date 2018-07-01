@@ -260,6 +260,7 @@ class Demo extends React.Component {
           treeCheckable showCheckedStrategy={SHOW_PARENT}
           onChange={this.onChange}
           onSelect={this.onSelect}
+          maxTagCount={2}
         />
 
         <h2>labelInValue & show path</h2>

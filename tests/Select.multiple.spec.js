@@ -145,4 +145,24 @@ describe('TreeSelect.multiple', () => {
     expect(wrapper.state('open')).toBe(false);
     expect(wrapper.state('valueList')).toEqual([{ label: 'label1', value: '1' }]);
   });
+
+  describe('maxTagCount', () => {
+    it('legal', () => {
+      const wrapper = render(createSelect({
+        maxTagCount: 1,
+        value: ['0', '1'],
+      }));
+
+      expect(wrapper.find('.rc-tree-select-selection')).toMatchSnapshot();
+    });
+
+    it('illegal', () => {
+      const wrapper = render(createSelect({
+        maxTagCount: 1,
+        value: ['0', 'not exist'],
+      }));
+
+      expect(wrapper.find('.rc-tree-select-selection')).toMatchSnapshot();
+    });
+  });
 });
