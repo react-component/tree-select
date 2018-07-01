@@ -3,7 +3,7 @@ import React from 'react';
 import { render, mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import TreeSelect, { TreeNode } from '../src';
-import { resetAriaId } from '../src/util';
+import { resetAriaId, getLabel } from '../src/util';
 import focusTest from './shared/focusTest';
 
 describe('TreeSelect.basic', () => {
@@ -363,6 +363,12 @@ describe('TreeSelect.basic', () => {
         wrapper.find('.rc-tree-select').simulate('keyDown', { keyCode: code });
         expect(wrapper.state('open')).toBe(true);
       });
+    });
+  });
+
+  describe('util', () => {
+    it('getLabel never reach', () => {
+      expect(getLabel({ value: 'newValue' })).toBe('newValue');
     });
   });
 });

@@ -324,6 +324,8 @@ export function getLabel(wrappedValue, entity, treeNodeLabelProp) {
     return entity.node.props[treeNodeLabelProp];
   }
 
+  // Since value without entity will be in missValueList.
+  // This code will never reached, but we still need this in case.
   return wrappedValue.value;
 }
 
