@@ -261,6 +261,10 @@ class Demo extends React.Component {
           onChange={this.onChange}
           onSelect={this.onSelect}
           maxTagCount={2}
+          maxTagPlaceholder={(valueList) => {
+            console.log('Max Tag Rest Value:', valueList);
+            return `${valueList.length} rest...`
+          }}
         />
 
         <h2>labelInValue & show path</h2>

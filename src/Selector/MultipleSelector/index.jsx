@@ -19,7 +19,12 @@ class MultipleSelector extends React.Component {
     selectorValueList: PropTypes.array,
     disabled: PropTypes.bool,
     searchValue: PropTypes.string,
+    labelInValue: PropTypes.bool,
     maxTagCount: PropTypes.number,
+    maxTagPlaceholder: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.func,
+    ]),
 
     onChoiceAnimationLeave: PropTypes.func,
   };
@@ -67,8 +72,6 @@ class MultipleSelector extends React.Component {
         style={{
           display: hidden ? 'none' : 'block',
         }}
-        // role="button"
-        // tabIndex={-1}
         onClick={this.onPlaceholderClick}
         className={`${prefixCls}-search__field__placeholder`}
       >
@@ -81,7 +84,7 @@ class MultipleSelector extends React.Component {
     const {
       selectorValueList, choiceTransitionName, prefixCls,
       onChoiceAnimationLeave,
-      maxTagCount,
+      labelInValue, maxTagCount, maxTagPlaceholder,
     } = this.props;
     const { rcTreeSelect: { onMultipleSelectorRemove } } = this.context;
 
@@ -104,11 +107,21 @@ class MultipleSelector extends React.Component {
 
     // Rest node count
     if (maxTagCount > 0 && maxTagCount < selectorValueList.length) {
+      let content = `+ ${selectorValueList.length - maxTagCount} ...`;
+      if (typeof maxTagPlaceholder === 'string') {
+        content = maxTagPlaceholder;
+      } else if (typeof maxTagPlaceholder === 'function') {
+        const restValueList = selectorValueList.slice(maxTagCount);
+        content = maxTagPlaceholder(
+          labelInValue ? restValueList : restValueList.map(({ value }) => value)
+        );
+      }
+
       const restNodeSelect = (
         <Selection
           {...this.props}
           key="rc-tree-select-internal-max-tag-counter"
-          label={`+ ${selectorValueList.length - maxTagCount} ...`}
+          label={content}
           value={null}
         />
       );

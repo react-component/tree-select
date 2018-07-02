@@ -67,7 +67,12 @@ class Select extends React.Component {
     searchPlaceholder: PropTypes.node, // [Legacy] Confuse with placeholder
     disabled: PropTypes.bool,
     children: PropTypes.node,
+    labelInValue: PropTypes.bool,
     maxTagCount: PropTypes.number,
+    maxTagPlaceholder: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.func,
+    ]),
     maxTagTextLength: PropTypes.number,
     showCheckedStrategy: PropTypes.oneOf([
       SHOW_ALL, SHOW_PARENT, SHOW_CHILD,
