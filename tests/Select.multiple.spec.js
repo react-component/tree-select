@@ -164,5 +164,27 @@ describe('TreeSelect.multiple', () => {
 
       expect(wrapper.find('.rc-tree-select-selection')).toMatchSnapshot();
     });
+
+    describe('maxTagPlaceholder', () => {
+      it('string', () => {
+        const wrapper = render(createSelect({
+          maxTagCount: 1,
+          value: ['0', '1'],
+          maxTagPlaceholder: 'bamboo',
+        }));
+
+        expect(wrapper.find('.rc-tree-select-selection')).toMatchSnapshot();
+      });
+
+      it('function', () => {
+        const wrapper = render(createSelect({
+          maxTagCount: 1,
+          value: ['0', '1'],
+          maxTagPlaceholder: list => `${list.length} bamboo...`,
+        }));
+
+        expect(wrapper.find('.rc-tree-select-selection')).toMatchSnapshot();
+      });
+    });
   });
 });
