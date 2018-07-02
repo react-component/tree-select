@@ -65,6 +65,8 @@ online example: http://react-component.github.io/tree-select/
 |showSearch | whether show search input in single mode | bool | true |
 |allowClear | whether allowClear | bool | false |
 |maxTagTextLength | max tag text length to show | number | - |
+|maxTagCount | max tag count to show | number | - |
+|maxTagPlaceholder | placeholder for omitted values | ReactNode/function(omittedValues) | - |
 |multiple | whether multiple select (true when enable treeCheckable) | bool | false |
 |disabled | whether disabled select | bool | false |
 |searchValue | work with `onSearch` to make search value controlled. | string | '' |
