@@ -577,7 +577,7 @@ var Demo = function (_React$Component) {
             __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
               __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */],
               { value: 'same value1', title: 'same txtle', key: '0-1-1-1' },
-              __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */], { value: 'same value10', title: 'same titlexd', key: '0-1-1-1-0' })
+              __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */], { value: 'same value10', title: 'same titlexd', key: '0-1-1-1-0', style: { color: 'red', background: 'green' } })
             )
           )
         ),
