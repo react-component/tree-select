@@ -16,8 +16,6 @@ class Selection extends React.Component {
   };
 
   onRemove = (event) => {
-    event.preventDefault();
-
     const { onRemove, value } = this.props;
     onRemove(event, value);
 
