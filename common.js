@@ -586,6 +586,7 @@ $exports.store = store;
 /* harmony export (immutable) */ __webpack_exports__["f"] = createRef;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return UNSELECTABLE_STYLE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UNSELECTABLE_ATTRIBUTE; });
+/* harmony export (immutable) */ __webpack_exports__["o"] = preventDefaultEvent;
 /* harmony export (immutable) */ __webpack_exports__["g"] = flatToHierarchy;
 /* unused harmony export resetAriaId */
 /* harmony export (immutable) */ __webpack_exports__["j"] = generateAriaId;
@@ -653,6 +654,10 @@ var UNSELECTABLE_STYLE = {
 var UNSELECTABLE_ATTRIBUTE = {
   unselectable: 'unselectable'
 };
+
+function preventDefaultEvent(e) {
+  e.preventDefault();
+}
 
 /**
  * Convert position list to hierarchy structure.
@@ -955,6 +960,8 @@ function getLabel(wrappedValue, entity, treeNodeLabelProp) {
     return entity.node.props[treeNodeLabelProp];
   }
 
+  // Since value without entity will be in missValueList.
+  // This code will never reached, but we still need this in case.
   return wrappedValue.value;
 }
 
@@ -29586,20 +29593,23 @@ var Select = function (_React$Component) {
     if (valueRefresh) {
       // Find out that value not exist in the tree
       var missValueList = [];
+      var filteredValueList = [];
+      var keyList = [];
 
       // Get key by value
-      var keyList = (newState.valueList || prevState.valueList).map(function (wrapperValue) {
+      (newState.valueList || prevState.valueList).forEach(function (wrapperValue) {
         var value = wrapperValue.value;
 
         var entity = (newState.valueEntities || prevState.valueEntities)[value];
 
-        if (entity) return entity.key;
+        if (entity) {
+          keyList.push(entity.key);
+          filteredValueList.push(wrapperValue);
+          return;
+        }
 
         // If not match, it may caused by ajax load. We need keep this
         missValueList.push(wrapperValue);
-        return null;
-      }).filter(function (key) {
-        return key;
       });
 
       // We need calculate the value when tree is checked tree
@@ -29617,13 +29627,15 @@ var Select = function (_React$Component) {
 
         // Format value list again for internal usage
         newState.valueList = Object(__WEBPACK_IMPORTED_MODULE_18__util__["h" /* formatInternalValue */])(valueList, nextProps);
+      } else {
+        newState.valueList = filteredValueList;
       }
 
       // Fill the missValueList, we still need display in the selector
       newState.missValueList = missValueList;
 
       // Calculate the value list for `Selector` usage
-      newState.selectorValueList = Object(__WEBPACK_IMPORTED_MODULE_18__util__["i" /* formatSelectorValue */])(newState.valueList || prevState.valueList, nextProps, newState.valueEntities || prevState.valueEntities);
+      newState.selectorValueList = Object(__WEBPACK_IMPORTED_MODULE_18__util__["i" /* formatSelectorValue */])(newState.valueList, nextProps, newState.valueEntities || prevState.valueEntities);
     }
 
     // [Legacy] To align with `Select` component,
@@ -29814,6 +29826,7 @@ Select.propTypes = {
   searchPlaceholder: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.node, // [Legacy] Confuse with placeholder
   disabled: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.bool,
   children: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.node,
+  maxTagCount: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.number,
   maxTagTextLength: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.number,
   showCheckedStrategy: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.oneOf([__WEBPACK_IMPORTED_MODULE_17__strategies__["a" /* SHOW_ALL */], __WEBPACK_IMPORTED_MODULE_17__strategies__["c" /* SHOW_PARENT */], __WEBPACK_IMPORTED_MODULE_17__strategies__["b" /* SHOW_CHILD */]]),
 
@@ -34199,11 +34212,19 @@ var MultipleSelector = function (_React$Component) {
           selectorValueList = _this$props2.selectorValueList,
           choiceTransitionName = _this$props2.choiceTransitionName,
           prefixCls = _this$props2.prefixCls,
-          onChoiceAnimationLeave = _this$props2.onChoiceAnimationLeave;
+          onChoiceAnimationLeave = _this$props2.onChoiceAnimationLeave,
+          maxTagCount = _this$props2.maxTagCount;
       var onMultipleSelectorRemove = _this.context.rcTreeSelect.onMultipleSelectorRemove;
 
+      // Check if `maxTagCount` is set
 
-      var selectedValueNodes = selectorValueList.map(function (_ref) {
+      var myValueList = selectorValueList;
+      if (maxTagCount > 0) {
+        myValueList = selectorValueList.slice(0, maxTagCount);
+      }
+
+      // Selector node list
+      var selectedValueNodes = myValueList.map(function (_ref) {
         var label = _ref.label,
             value = _ref.value;
         return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__Selection__["a" /* default */], __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, _this.props, {
@@ -34213,6 +34234,17 @@ var MultipleSelector = function (_React$Component) {
           onRemove: onMultipleSelectorRemove
         }));
       });
+
+      // Rest node count
+      if (maxTagCount > 0 && maxTagCount < selectorValueList.length) {
+        var restNodeSelect = __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__Selection__["a" /* default */], __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, _this.props, {
+          key: 'rc-tree-select-internal-max-tag-counter',
+          label: '+ ' + (selectorValueList.length - maxTagCount) + ' ...',
+          value: null
+        }));
+
+        selectedValueNodes.push(restNodeSelect);
+      }
 
       selectedValueNodes.push(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
         'li',
@@ -34262,6 +34294,7 @@ MultipleSelector.propTypes = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_e
   selectorValueList: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.array,
   disabled: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.bool,
   searchValue: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.string,
+  maxTagCount: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.number,
 
   onChoiceAnimationLeave: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.func
 });
@@ -34327,7 +34360,8 @@ var Selection = function (_React$Component) {
         prefixCls = _props.prefixCls,
         maxTagTextLength = _props.maxTagTextLength,
         label = _props.label,
-        value = _props.value;
+        value = _props.value,
+        onRemove = _props.onRemove;
 
 
     var content = label || value;
@@ -34341,11 +34375,11 @@ var Selection = function (_React$Component) {
         style: __WEBPACK_IMPORTED_MODULE_6__util__["b" /* UNSELECTABLE_STYLE */]
       }, __WEBPACK_IMPORTED_MODULE_6__util__["a" /* UNSELECTABLE_ATTRIBUTE */], {
         role: 'menuitem',
-        onMouseDown: __WEBPACK_IMPORTED_MODULE_6__util__["preventDefaultEvent"],
+        onMouseDown: __WEBPACK_IMPORTED_MODULE_6__util__["o" /* preventDefaultEvent */],
         className: prefixCls + '-selection__choice',
         title: Object(__WEBPACK_IMPORTED_MODULE_6__util__["p" /* toTitle */])(label)
       }),
-      __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('span', {
+      onRemove && __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('span', {
         className: prefixCls + '-selection__choice__remove',
         onClick: this.onRemove
       }),
