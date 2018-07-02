@@ -452,7 +452,11 @@ var Demo = function (_React$Component) {
         treeCheckable: true, showCheckedStrategy: __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["a" /* SHOW_PARENT */],
         onChange: this.onChange,
         onSelect: this.onSelect,
-        maxTagCount: 2
+        maxTagCount: 2,
+        maxTagPlaceholder: function maxTagPlaceholder(valueList) {
+          console.log('Max Tag Rest Value:', valueList);
+          return valueList.length + ' rest...';
+        }
       }),
       __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
         'h2',

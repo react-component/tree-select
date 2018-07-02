@@ -581,12 +581,11 @@ $exports.store = store;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["p"] = toTitle;
+/* harmony export (immutable) */ __webpack_exports__["o"] = toTitle;
 /* unused harmony export toArray */
 /* harmony export (immutable) */ __webpack_exports__["f"] = createRef;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return UNSELECTABLE_STYLE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UNSELECTABLE_ATTRIBUTE; });
-/* harmony export (immutable) */ __webpack_exports__["o"] = preventDefaultEvent;
 /* harmony export (immutable) */ __webpack_exports__["g"] = flatToHierarchy;
 /* unused harmony export resetAriaId */
 /* harmony export (immutable) */ __webpack_exports__["j"] = generateAriaId;
@@ -654,10 +653,6 @@ var UNSELECTABLE_STYLE = {
 var UNSELECTABLE_ATTRIBUTE = {
   unselectable: 'unselectable'
 };
-
-function preventDefaultEvent(e) {
-  e.preventDefault();
-}
 
 /**
  * Convert position list to hierarchy structure.
@@ -29826,7 +29821,9 @@ Select.propTypes = {
   searchPlaceholder: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.node, // [Legacy] Confuse with placeholder
   disabled: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.bool,
   children: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.node,
+  labelInValue: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.bool,
   maxTagCount: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.number,
+  maxTagPlaceholder: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.node, __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.func]),
   maxTagTextLength: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.number,
   showCheckedStrategy: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.oneOf([__WEBPACK_IMPORTED_MODULE_17__strategies__["a" /* SHOW_ALL */], __WEBPACK_IMPORTED_MODULE_17__strategies__["c" /* SHOW_PARENT */], __WEBPACK_IMPORTED_MODULE_17__strategies__["b" /* SHOW_CHILD */]]),
 
@@ -34072,7 +34069,7 @@ var SingleSelector = function (_React$Component) {
           'span',
           {
             key: 'value',
-            title: Object(__WEBPACK_IMPORTED_MODULE_6__util__["p" /* toTitle */])(label),
+            title: Object(__WEBPACK_IMPORTED_MODULE_6__util__["o" /* toTitle */])(label),
             className: prefixCls + '-selection-selected-value'
           },
           label || value
@@ -34197,10 +34194,8 @@ var MultipleSelector = function (_React$Component) {
         {
           style: {
             display: hidden ? 'none' : 'block'
-          }
-          // role="button"
-          // tabIndex={-1}
-          , onClick: _this.onPlaceholderClick,
+          },
+          onClick: _this.onPlaceholderClick,
           className: prefixCls + '-search__field__placeholder'
         },
         currentPlaceholder
@@ -34213,7 +34208,9 @@ var MultipleSelector = function (_React$Component) {
           choiceTransitionName = _this$props2.choiceTransitionName,
           prefixCls = _this$props2.prefixCls,
           onChoiceAnimationLeave = _this$props2.onChoiceAnimationLeave,
-          maxTagCount = _this$props2.maxTagCount;
+          labelInValue = _this$props2.labelInValue,
+          maxTagCount = _this$props2.maxTagCount,
+          maxTagPlaceholder = _this$props2.maxTagPlaceholder;
       var onMultipleSelectorRemove = _this.context.rcTreeSelect.onMultipleSelectorRemove;
 
       // Check if `maxTagCount` is set
@@ -34237,9 +34234,20 @@ var MultipleSelector = function (_React$Component) {
 
       // Rest node count
       if (maxTagCount > 0 && maxTagCount < selectorValueList.length) {
+        var content = '+ ' + (selectorValueList.length - maxTagCount) + ' ...';
+        if (typeof maxTagPlaceholder === 'string') {
+          content = maxTagPlaceholder;
+        } else if (typeof maxTagPlaceholder === 'function') {
+          var restValueList = selectorValueList.slice(maxTagCount);
+          content = maxTagPlaceholder(labelInValue ? restValueList : restValueList.map(function (_ref2) {
+            var value = _ref2.value;
+            return value;
+          }));
+        }
+
         var restNodeSelect = __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__Selection__["a" /* default */], __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, _this.props, {
           key: 'rc-tree-select-internal-max-tag-counter',
-          label: '+ ' + (selectorValueList.length - maxTagCount) + ' ...',
+          label: content,
           value: null
         }));
 
@@ -34294,7 +34302,9 @@ MultipleSelector.propTypes = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_e
   selectorValueList: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.array,
   disabled: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.bool,
   searchValue: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.string,
+  labelInValue: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.bool,
   maxTagCount: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.number,
+  maxTagPlaceholder: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.node, __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.func]),
 
   onChoiceAnimationLeave: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.func
 });
@@ -34352,6 +34362,8 @@ var Selection = function (_React$Component) {
           value = _this$props.value;
 
       onRemove(event, value);
+
+      event.stopPropagation();
     }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
@@ -34375,9 +34387,8 @@ var Selection = function (_React$Component) {
         style: __WEBPACK_IMPORTED_MODULE_6__util__["b" /* UNSELECTABLE_STYLE */]
       }, __WEBPACK_IMPORTED_MODULE_6__util__["a" /* UNSELECTABLE_ATTRIBUTE */], {
         role: 'menuitem',
-        onMouseDown: __WEBPACK_IMPORTED_MODULE_6__util__["o" /* preventDefaultEvent */],
         className: prefixCls + '-selection__choice',
-        title: Object(__WEBPACK_IMPORTED_MODULE_6__util__["p" /* toTitle */])(label)
+        title: Object(__WEBPACK_IMPORTED_MODULE_6__util__["o" /* toTitle */])(label)
       }),
       onRemove && __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('span', {
         className: prefixCls + '-selection__choice__remove',
