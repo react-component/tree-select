@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  preventDefaultEvent, toTitle,
+  toTitle,
   UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
 } from '../../util';
 
@@ -18,6 +18,8 @@ class Selection extends React.Component {
   onRemove = (event) => {
     const { onRemove, value } = this.props;
     onRemove(event, value);
+
+    event.stopPropagation();
   };
 
   render() {
@@ -36,7 +38,6 @@ class Selection extends React.Component {
         style={UNSELECTABLE_STYLE}
         {...UNSELECTABLE_ATTRIBUTE}
         role="menuitem"
-        onMouseDown={preventDefaultEvent}
         className={`${prefixCls}-selection__choice`}
         title={toTitle(label)}
       >
