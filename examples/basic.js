@@ -341,7 +341,7 @@ class Demo extends React.Component {
                 title={<span style={{ color: 'red' }}>sss</span>} key="random3"
               />
               <TreeNode value="same value1" title="same txtle" key="0-1-1-1">
-                <TreeNode value="same value10" title="same titlexd" key="0-1-1-1-0" />
+                <TreeNode value="same value10" title="same titlexd" key="0-1-1-1-0" style={{ color: 'red', background: 'green' }} />
               </TreeNode>
             </TreeNode>
           </TreeNode>
