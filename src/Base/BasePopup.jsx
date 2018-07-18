@@ -37,6 +37,7 @@ class BasePopup extends React.Component {
 
     // HOC
     renderSearch: PropTypes.func,
+    onTreeExpanded: PropTypes.func,
   };
 
   static contextTypes = {
@@ -90,7 +91,8 @@ class BasePopup extends React.Component {
   }
 
   onTreeExpand = (expandedKeyList) => {
-    this.setState({ expandedKeyList });
+    const { onTreeExpanded } = this.props;
+    this.setState({ expandedKeyList }, onTreeExpanded);
   };
 
   /**

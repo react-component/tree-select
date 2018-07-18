@@ -25,6 +25,7 @@ import { polyfill } from 'react-lifecycles-compat';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { calcCheckStateConduct } from 'rc-tree/lib/util';
 import shallowEqual from 'shallowequal';
+import raf from 'raf';
 
 import SelectTrigger from './SelectTrigger';
 import { selectorContextTypes } from './Base/BaseSelector';
@@ -762,6 +763,10 @@ class Select extends React.Component {
     }
   };
 
+  delayForcePopupAlign = () => {
+    raf(this.forcePopupAlign);
+  };
+
   /**
    * 1. Update state valueList.
    * 2. Fire `onChange` event to user.
@@ -862,6 +867,7 @@ class Select extends React.Component {
     const $popup = (
       <Popup
         {...passProps}
+        onTreeExpanded={this.delayForcePopupAlign}
         treeNodes={treeNodes}
         filteredTreeNodes={filteredTreeNodes}
       />

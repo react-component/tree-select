@@ -14,6 +14,7 @@ const BUILT_IN_PLACEMENTS = {
       adjustX: 0,
       adjustY: 1,
     },
+    ignoreShake: true,
   },
   topLeft: {
     points: ['bl', 'tl'],
@@ -22,6 +23,7 @@ const BUILT_IN_PLACEMENTS = {
       adjustX: 0,
       adjustY: 1,
     },
+    ignoreShake: true,
   },
 };
 
