@@ -615,6 +615,8 @@ class Select extends React.Component {
       checked: isAdd,
     };
 
+    let checkedNodeList = checkedNodes;
+
     // [Legacy] Check event provide `allCheckedNodes`.
     // When `treeCheckStrictly` or internal `searchValue` is set, TreeNode will be unrelated:
     // - Related: Show the top checked nodes and has children prop.
@@ -627,17 +629,31 @@ class Select extends React.Component {
         .map(({ value }) => valueEntities[value])
         .filter(entity => entity)
         .map(({ key }) => key);
-      const keyList = calcUncheckConduct(
-        oriKeyList,
-        nodeEventInfo.node.props.eventKey,
-        keyEntities,
-      );
+
+      let keyList;
+      if (isAdd) {
+        keyList = Array.from(
+          new Set([
+            ...oriKeyList,
+            checkedNodeList.map(({ props: { value } }) => valueEntities[value].key),
+          ]),
+        );
+
+        checkedNodeList = keyList.map(key => keyEntities[key].node);
+      } else {
+        keyList = calcUncheckConduct(
+          oriKeyList,
+          nodeEventInfo.node.props.eventKey,
+          keyEntities,
+        );
+      }
+
       extraInfo.allCheckedNodes = keyList.map(key => keyEntities[key].node);
     } else {
       extraInfo.allCheckedNodes = flatToHierarchy(checkedNodesPositions);
     }
 
-    this.onValueTrigger(isAdd, checkedNodes, nodeEventInfo, extraInfo);
+    this.onValueTrigger(isAdd, checkedNodeList, nodeEventInfo, extraInfo);
   };
 
   // ==================== Trigger =====================

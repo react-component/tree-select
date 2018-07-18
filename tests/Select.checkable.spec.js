@@ -302,5 +302,45 @@ describe('TreeSelect.checkable', () => {
       wrapper.find('.rc-tree-select-tree-checkbox').at(1).simulate('click');
       expect(wrapper.render()).toMatchSnapshot();
     });
+
+    it('check in filter', () => {
+      const treeData = [{
+        key: 'P001',
+        title: 'P001',
+        value: 'P001',
+        children: [{
+          key: '0020',
+          title: '0020',
+          value: '0020',
+          children: [{key: '9459', title: '9459', value: '9459'}]
+        }]
+      }, {
+        key: 'P002',
+        title: 'P002',
+        value: 'P002',
+        children: [{
+          key: '0021',
+          title: '0021',
+          value: '0021',
+          children: [{key: '9458', title: '9458', value: '9458'}]
+        }]
+      }];
+
+      const wrapper = mount(
+        <TreeSelect
+          treeCheckable
+          treeData={treeData}
+          open
+        />
+      );
+
+      wrapper.find('.rc-tree-select-search__field').simulate('change', { target: { value: '58' } });
+      wrapper.find(TreeNode).at(2).find('.rc-tree-select-tree-checkbox').simulate('click');
+      expect(wrapper.state().valueList.length).toBe(3);
+
+      wrapper.find('.rc-tree-select-search__field').simulate('change', { target: { value: '59' } });
+      wrapper.find(TreeNode).at(2).find('.rc-tree-select-tree-checkbox').simulate('click');
+      expect(wrapper.state().valueList.length).toBe(6);
+    });
   });
 });
