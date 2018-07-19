@@ -1,4 +1,4 @@
-webpackJsonp([6],{
+webpackJsonp([3],{
 
 /***/ 10:
 /***/ (function(module, exports) {
@@ -14,15 +14,15 @@ webpackJsonp([6],{
 
 /***/ }),
 
-/***/ 348:
+/***/ 354:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(349);
+module.exports = __webpack_require__(355);
 
 
 /***/ }),
 
-/***/ 349:
+/***/ 355:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -56,6 +56,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+var SHOW_PARENT = __WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["c" /* default */].SHOW_PARENT;
+
+var treeData = [{
+  label: 'Node1',
+  value: '0-0',
+  key: '0-0',
+  children: [{
+    label: 'Child Node1',
+    value: '0-0-0',
+    key: '0-0-0'
+  }]
+}, {
+  label: 'Node2',
+  value: '0-1',
+  key: '0-1',
+  children: [{
+    label: 'Child Node3',
+    value: '0-1-0',
+    key: '0-1-0'
+  }, {
+    label: 'Child Node4',
+    value: '0-1-1',
+    key: '0-1-1'
+  }, {
+    label: 'Child Node5',
+    value: '0-1-2',
+    key: '0-1-2'
+  }]
+}];
+
 var Demo = function (_React$Component) {
   __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_inherits___default()(Demo, _React$Component);
 
@@ -68,59 +98,28 @@ var Demo = function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.onChange = function (value, label, extra) {
-      console.log('>>>', value, label, extra);
+    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
+      value: []
+    }, _this.onChange = function (value) {
+      console.log('onChange ', value);
+      _this.setState({ value: value });
     }, _temp), __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
   Demo.prototype.render = function render() {
-    return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-      'div',
-      { style: { margin: 20 } },
-      __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["c" /* default */],
-        {
-          style: { width: 500 },
-          treeDefaultExpandAll: true
-          // defaultValue="same value3"
-          , onChange: this.onChange,
-          showCheckedStrategy: __WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["a" /* SHOW_PARENT */],
-          treeCheckable: true
-        },
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["b" /* TreeNode */],
-          { value: 'p1', title: 'parent 1', key: '' },
-          __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["b" /* TreeNode */],
-            { value: 'parent 1-0', title: 'parent 1-0', key: '0-1-0' },
-            __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["b" /* TreeNode */], { value: 'leaf1', title: 'my leaf', key: 'random' }),
-            __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["b" /* TreeNode */], { value: 'leaf2', title: 'your leaf', key: 'random1', disabled: true })
-          ),
-          __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["b" /* TreeNode */],
-            { value: 'parent 1-1', title: 'parent 1-1', key: '0-1-1' },
-            __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["b" /* TreeNode */], { value: 'sss',
-              title: __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-                'span',
-                { style: { color: 'red' } },
-                'sss'
-              ), key: 'random3'
-            }),
-            __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-              __WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["b" /* TreeNode */],
-              { value: 'same value1', title: 'same txtle', key: '0-1-1-1' },
-              __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["b" /* TreeNode */], { value: 'same value10', title: 'same titlexd', key: '0-1-1-1-0', style: { color: 'red', background: 'green' } })
-            )
-          )
-        ),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["b" /* TreeNode */],
-          { value: 'same value2', title: 'same title', key: '0-2' },
-          __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["b" /* TreeNode */], { value: '2same value', title: '2same title', key: '0-2-0' })
-        ),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["b" /* TreeNode */], { value: 'same value3', title: 'same title', key: '0-3' })
-      )
-    );
+    var tProps = {
+      treeData: treeData,
+      value: this.state.value,
+      onChange: this.onChange,
+      treeCheckable: true,
+      labelInValue: true,
+      showCheckedStrategy: SHOW_PARENT,
+      searchPlaceholder: 'Please select',
+      style: {
+        width: 300
+      }
+    };
+    return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["c" /* default */], tProps);
   };
 
   return Demo;
@@ -130,5 +129,5 @@ __WEBPACK_IMPORTED_MODULE_5_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ })
 
-},[348]);
-//# sourceMappingURL=~debug.js.map
+},[354]);
+//# sourceMappingURL=~debug4.js.map

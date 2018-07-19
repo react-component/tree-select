@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>disable.js - example - rc-tree-select@2.0.10</title>
+  <title>~debug4.js - example - rc-tree-select@2.0.10</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     document.writeln('<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');
   }
   </script>
-  <link rel="stylesheet" href="../common.css" />
+  <link rel="stylesheet" href="../common.css" /><link rel="stylesheet" href="~debug4.css" />
 </head>
 
 <body>
@@ -269,11 +269,15 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     </div>
     <div class="example" id="__react-content"></div>
 
-    <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
+    <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0, no-alert: 0 */</span>
+
 <span class="hljs-keyword">import</span> <span class="hljs-string">'rc-tree-select/assets/index.css'</span>;
-<span class="hljs-keyword">import</span> TreeSelect <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-tree-select'</span>;
 <span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-dialog/assets/index.css'</span>;
+<span class="hljs-keyword">import</span> TreeSelect <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-tree-select'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'./demo.less'</span>;
+
 
 <span class="hljs-keyword">const</span> SHOW_PARENT = TreeSelect.SHOW_PARENT;
 
@@ -307,37 +311,26 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   state = {
-    value: [<span class="hljs-string">'0-0-0'</span>],
-    disabled: <span class="hljs-literal">false</span>,
+    value: [],
   }
   onChange = (value) =&gt; {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange '</span>, value, <span class="hljs-built_in">arguments</span>);
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange '</span>, value);
     <span class="hljs-keyword">this</span>.setState({ value });
-  }
-  <span class="hljs-keyword">switch</span> = (checked) =&gt; {
-    <span class="hljs-keyword">this</span>.setState({ disabled: checked });
   }
   render() {
     <span class="hljs-keyword">const</span> tProps = {
       treeData,
-      disabled: <span class="hljs-keyword">this</span>.state.disabled,
       value: <span class="hljs-keyword">this</span>.state.value,
       onChange: <span class="hljs-keyword">this</span>.onChange,
-      multiple: <span class="hljs-literal">true</span>,
-      allowClear: <span class="hljs-literal">true</span>,
       treeCheckable: <span class="hljs-literal">true</span>,
+      labelInValue: <span class="hljs-literal">true</span>,
       showCheckedStrategy: SHOW_PARENT,
       searchPlaceholder: <span class="hljs-string">'Please select'</span>,
       style: {
         width: <span class="hljs-number">300</span>,
       },
     };
-    <span class="hljs-keyword">return</span> (
-      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> {<span class="hljs-attribute">...tProps</span>} /&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"checkbox"</span> <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{e</span> =&gt;</span> this.switch(e.target.checked)}/&gt; 禁用
-      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-    )</span>;
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span> {<span class="hljs-attribute">...tProps</span>} /&gt;</span>;</span>
   }
 }
 
@@ -352,7 +345,7 @@ ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-t
   </a>
   <script>FastClick.attach(document.body);</script>
   <script src="../common.js?nowrap"></script>
-  <script src="disable.js?nowrap"></script>
+  <script src="~debug4.js?nowrap"></script>
 </body>
 
 </html>
