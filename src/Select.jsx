@@ -43,6 +43,7 @@ import {
   parseSimpleTreeData, convertDataToEntities, convertTreeToData,
   calcUncheckConduct, flatToHierarchy,
   isPosRelated, isLabelInValue, getFilterTree,
+  cleanEntity,
 } from './util';
 import { valueProp } from './propTypes';
 import SelectNode from './SelectNode';
@@ -645,7 +646,8 @@ class Select extends React.Component {
         );
       }
 
-      extraInfo.allCheckedNodes = keyList.map(key => keyEntities[key].node);
+      // Let's follow as not `treeCheckStrictly` format
+      extraInfo.allCheckedNodes = keyList.map(key => cleanEntity(keyEntities[key]));
     } else {
       extraInfo.allCheckedNodes = flatToHierarchy(checkedNodesPositions);
     }

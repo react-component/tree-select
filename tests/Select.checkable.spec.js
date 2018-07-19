@@ -362,4 +362,40 @@ describe('TreeSelect.checkable', () => {
       value: '0-0',
     }]);
   });
+
+  it('extra.allCheckedNodes', () => {
+    const onChange = jest.fn();
+
+    const wrapper = mount(
+      <TreeSelect
+        open
+        multiple
+        treeCheckable
+        onChange={onChange}
+      >
+        <TreeNode key="0-0" value="0-0" title="0-0" />
+      </TreeSelect>
+    );
+
+    // Just click
+    wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
+    expect(onChange.mock.calls[0][2].allCheckedNodes).toEqual([
+      expect.objectContaining({
+        pos: '0-0',
+      })
+    ]);
+
+    wrapper.find('.rc-tree-select-selection__choice__remove').simulate('click');
+    onChange.mockReset();
+
+
+    // By search
+    wrapper.find('input').simulate('change', { target: { value: '0' } });
+    wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
+    expect(onChange.mock.calls[0][2].allCheckedNodes).toEqual([
+      expect.objectContaining({
+        pos: '0-0',
+      })
+    ]);
+  });
 });

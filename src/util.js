@@ -253,6 +253,25 @@ export function isPosRelated(pos1, pos2) {
 }
 
 /**
+ * This function is only used on treeNode check (none treeCheckStrictly but has searchInput).
+ * We convert entity to { node, pos, children } format.
+ * This is legacy bug but we still need to do with it.
+ * @param entity
+ */
+export function cleanEntity({ node, pos, children }) {
+  const instance = {
+    node,
+    pos,
+  };
+
+  if (children) {
+    instance.children = children.map(cleanEntity);
+  }
+
+  return instance;
+}
+
+/**
  * Get a filtered TreeNode list by provided treeNodes.
  * [Legacy] Since `Tree` use `key` as map but `key` will changed by React,
  * we have to convert `treeNodes > data > treeNodes` to keep the key.
