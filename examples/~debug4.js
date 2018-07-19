@@ -59,30 +59,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var SHOW_PARENT = __WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["c" /* default */].SHOW_PARENT;
 
 var treeData = [{
-  label: 'Node1',
-  value: '0-0',
-  key: '0-0',
+  label: "Node1",
+  value: "Node1",
+  key: "Node1",
+  foo: 1,
   children: [{
-    label: 'Child Node1',
-    value: '0-0-0',
-    key: '0-0-0'
+    label: "Child Node1",
+    value: "Child Node1",
+    key: "Child Node1",
+    foo: 1
   }]
 }, {
-  label: 'Node2',
-  value: '0-1',
-  key: '0-1',
+  label: "Node2",
+  value: "Node2",
+  key: "Node2",
+  foo: 1,
   children: [{
-    label: 'Child Node3',
-    value: '0-1-0',
-    key: '0-1-0'
+    label: "Child Node3",
+    value: "Child Node3",
+    key: "Child Node3",
+    foo: 1
   }, {
-    label: 'Child Node4',
-    value: '0-1-1',
-    key: '0-1-1'
+    label: "Child Node4",
+    value: "Child Node4",
+    key: "Child Node4",
+    foo: 1
   }, {
-    label: 'Child Node5',
-    value: '0-1-2',
-    key: '0-1-2'
+    label: "Child Node5",
+    value: "Child Node5",
+    key: "Child Node5",
+    foo: 1
   }]
 }];
 
@@ -99,9 +105,9 @@ var Demo = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
-      value: []
-    }, _this.onChange = function (value) {
-      console.log('onChange ', value);
+      value: undefined
+    }, _this.onChange = function (value, label, extra) {
+      if (extra.allCheckedNodes[0]) console.log(">>>", extra.allCheckedNodes[0]);
       _this.setState({ value: value });
     }, _temp), __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
@@ -112,9 +118,8 @@ var Demo = function (_React$Component) {
       value: this.state.value,
       onChange: this.onChange,
       treeCheckable: true,
-      labelInValue: true,
       showCheckedStrategy: SHOW_PARENT,
-      searchPlaceholder: 'Please select',
+      searchPlaceholder: "Please select",
       style: {
         width: 300
       }

@@ -605,23 +605,24 @@ $exports.store = store;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["o"] = toTitle;
+/* harmony export (immutable) */ __webpack_exports__["p"] = toTitle;
 /* unused harmony export toArray */
-/* harmony export (immutable) */ __webpack_exports__["f"] = createRef;
+/* harmony export (immutable) */ __webpack_exports__["g"] = createRef;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return UNSELECTABLE_STYLE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UNSELECTABLE_ATTRIBUTE; });
-/* harmony export (immutable) */ __webpack_exports__["g"] = flatToHierarchy;
+/* harmony export (immutable) */ __webpack_exports__["h"] = flatToHierarchy;
 /* unused harmony export resetAriaId */
-/* harmony export (immutable) */ __webpack_exports__["j"] = generateAriaId;
-/* harmony export (immutable) */ __webpack_exports__["l"] = isLabelInValue;
-/* harmony export (immutable) */ __webpack_exports__["n"] = parseSimpleTreeData;
-/* harmony export (immutable) */ __webpack_exports__["e"] = convertTreeToData;
-/* harmony export (immutable) */ __webpack_exports__["d"] = convertDataToEntities;
-/* harmony export (immutable) */ __webpack_exports__["m"] = isPosRelated;
-/* harmony export (immutable) */ __webpack_exports__["k"] = getFilterTree;
-/* harmony export (immutable) */ __webpack_exports__["h"] = formatInternalValue;
+/* harmony export (immutable) */ __webpack_exports__["k"] = generateAriaId;
+/* harmony export (immutable) */ __webpack_exports__["m"] = isLabelInValue;
+/* harmony export (immutable) */ __webpack_exports__["o"] = parseSimpleTreeData;
+/* harmony export (immutable) */ __webpack_exports__["f"] = convertTreeToData;
+/* harmony export (immutable) */ __webpack_exports__["e"] = convertDataToEntities;
+/* harmony export (immutable) */ __webpack_exports__["n"] = isPosRelated;
+/* harmony export (immutable) */ __webpack_exports__["d"] = cleanEntity;
+/* harmony export (immutable) */ __webpack_exports__["l"] = getFilterTree;
+/* harmony export (immutable) */ __webpack_exports__["i"] = formatInternalValue;
 /* unused harmony export getLabel */
-/* harmony export (immutable) */ __webpack_exports__["i"] = formatSelectorValue;
+/* harmony export (immutable) */ __webpack_exports__["j"] = formatSelectorValue;
 /* harmony export (immutable) */ __webpack_exports__["c"] = calcUncheckConduct;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_objectWithoutProperties__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_objectWithoutProperties___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_objectWithoutProperties__);
@@ -905,6 +906,29 @@ function isPosRelated(pos1, pos2) {
 }
 
 /**
+ * This function is only used on treeNode check (none treeCheckStrictly but has searchInput).
+ * We convert entity to { node, pos, children } format.
+ * This is legacy bug but we still need to do with it.
+ * @param entity
+ */
+function cleanEntity(_ref3) {
+  var node = _ref3.node,
+      pos = _ref3.pos,
+      children = _ref3.children;
+
+  var instance = {
+    node: node,
+    pos: pos
+  };
+
+  if (children) {
+    instance.children = children.map(cleanEntity);
+  }
+
+  return instance;
+}
+
+/**
  * Get a filtered TreeNode list by provided treeNodes.
  * [Legacy] Since `Tree` use `key` as map but `key` will changed by React,
  * we have to convert `treeNodes > data > treeNodes` to keep the key.
@@ -1003,15 +1027,15 @@ function formatSelectorValue(valueList, props, valueEntities) {
     valueList.forEach(function (wrappedValue) {
       values[wrappedValue.value] = wrappedValue;
     });
-    var hierarchyList = flatToHierarchy(valueList.map(function (_ref3) {
-      var value = _ref3.value;
+    var hierarchyList = flatToHierarchy(valueList.map(function (_ref4) {
+      var value = _ref4.value;
       return valueEntities[value];
     }));
 
     if (showCheckedStrategy === __WEBPACK_IMPORTED_MODULE_5__strategies__["c" /* SHOW_PARENT */]) {
       // Only get the parent checked value
-      return hierarchyList.map(function (_ref4) {
-        var value = _ref4.node.props.value;
+      return hierarchyList.map(function (_ref5) {
+        var value = _ref5.node.props.value;
         return {
           label: getLabel(values[value], valueEntities[value], treeNodeLabelProp),
           value: value
@@ -1022,9 +1046,9 @@ function formatSelectorValue(valueList, props, valueEntities) {
       var targetValueList = [];
 
       // Find the leaf children
-      var traverse = function traverse(_ref5) {
-        var value = _ref5.node.props.value,
-            children = _ref5.children;
+      var traverse = function traverse(_ref6) {
+        var value = _ref6.node.props.value,
+            children = _ref6.children;
 
         if (!children || children.length === 0) {
           targetValueList.push({
@@ -5040,7 +5064,7 @@ var selectorContextTypes = {
         _this.domRef.current.focus();
       };
 
-      _this.domRef = Object(__WEBPACK_IMPORTED_MODULE_8__util__["f" /* createRef */])();
+      _this.domRef = Object(__WEBPACK_IMPORTED_MODULE_8__util__["g" /* createRef */])();
       return _this;
     }
 
@@ -7867,8 +7891,8 @@ var SearchInput = function (_React$Component) {
       }
     };
 
-    _this.inputRef = Object(__WEBPACK_IMPORTED_MODULE_7__util__["f" /* createRef */])();
-    _this.mirrorInputRef = Object(__WEBPACK_IMPORTED_MODULE_7__util__["f" /* createRef */])();
+    _this.inputRef = Object(__WEBPACK_IMPORTED_MODULE_7__util__["g" /* createRef */])();
+    _this.mirrorInputRef = Object(__WEBPACK_IMPORTED_MODULE_7__util__["g" /* createRef */])();
     return _this;
   }
 
@@ -29480,12 +29504,12 @@ var Select = function (_React$Component) {
       init: true
     };
 
-    _this.selectorRef = Object(__WEBPACK_IMPORTED_MODULE_19__util__["f" /* createRef */])();
-    _this.selectTriggerRef = Object(__WEBPACK_IMPORTED_MODULE_19__util__["f" /* createRef */])();
+    _this.selectorRef = Object(__WEBPACK_IMPORTED_MODULE_19__util__["g" /* createRef */])();
+    _this.selectTriggerRef = Object(__WEBPACK_IMPORTED_MODULE_19__util__["g" /* createRef */])();
 
     // ARIA need `aria-controls` props mapping
     // Since this need user input. Let's generate ourselves
-    _this.ariaId = Object(__WEBPACK_IMPORTED_MODULE_19__util__["j" /* generateAriaId */])(prefixAria + '-list');
+    _this.ariaId = Object(__WEBPACK_IMPORTED_MODULE_19__util__["k" /* generateAriaId */])(prefixAria + '-list');
     return _this;
   }
 
@@ -29565,19 +29589,19 @@ var Select = function (_React$Component) {
         pId: 'pId',
         rootPId: null
       }, treeDataSimpleMode !== true ? treeDataSimpleMode : {});
-      treeData = Object(__WEBPACK_IMPORTED_MODULE_19__util__["n" /* parseSimpleTreeData */])(nextProps.treeData, simpleMapper);
+      treeData = Object(__WEBPACK_IMPORTED_MODULE_19__util__["o" /* parseSimpleTreeData */])(nextProps.treeData, simpleMapper);
     }
 
     // If `treeData` not provide, use children TreeNodes
     if (!nextProps.treeData) {
       processState('children', function (propValue) {
-        treeData = Object(__WEBPACK_IMPORTED_MODULE_19__util__["e" /* convertTreeToData */])(propValue);
+        treeData = Object(__WEBPACK_IMPORTED_MODULE_19__util__["f" /* convertTreeToData */])(propValue);
       });
     }
 
     // Convert `treeData` to entities
     if (treeData) {
-      var _convertDataToEntitie = Object(__WEBPACK_IMPORTED_MODULE_19__util__["d" /* convertDataToEntities */])(treeData),
+      var _convertDataToEntitie = Object(__WEBPACK_IMPORTED_MODULE_19__util__["e" /* convertDataToEntities */])(treeData),
           treeNodes = _convertDataToEntitie.treeNodes,
           valueEntities = _convertDataToEntitie.valueEntities,
           keyEntities = _convertDataToEntitie.keyEntities;
@@ -29591,13 +29615,13 @@ var Select = function (_React$Component) {
     // Value List
     if (prevState.init) {
       processState('defaultValue', function (propValue) {
-        newState.valueList = Object(__WEBPACK_IMPORTED_MODULE_19__util__["h" /* formatInternalValue */])(propValue, nextProps);
+        newState.valueList = Object(__WEBPACK_IMPORTED_MODULE_19__util__["i" /* formatInternalValue */])(propValue, nextProps);
         valueRefresh = true;
       });
     }
 
     processState('value', function (propValue) {
-      newState.valueList = Object(__WEBPACK_IMPORTED_MODULE_19__util__["h" /* formatInternalValue */])(propValue, nextProps);
+      newState.valueList = Object(__WEBPACK_IMPORTED_MODULE_19__util__["i" /* formatInternalValue */])(propValue, nextProps);
       valueRefresh = true;
     });
 
@@ -29646,7 +29670,7 @@ var Select = function (_React$Component) {
       newState.missValueList = missValueList;
 
       // Calculate the value list for `Selector` usage
-      newState.selectorValueList = Object(__WEBPACK_IMPORTED_MODULE_19__util__["i" /* formatSelectorValue */])(newState.valueList, nextProps, newState.valueEntities || prevState.valueEntities);
+      newState.selectorValueList = Object(__WEBPACK_IMPORTED_MODULE_19__util__["j" /* formatSelectorValue */])(newState.valueList, nextProps, newState.valueEntities || prevState.valueEntities);
     }
 
     // [Legacy] To align with `Select` component,
@@ -29681,12 +29705,12 @@ var Select = function (_React$Component) {
         };
       }
 
-      newState.filteredTreeNodes = Object(__WEBPACK_IMPORTED_MODULE_19__util__["k" /* getFilterTree */])(newState.treeNodes || prevState.treeNodes, newState.searchValue, filterTreeNodeFn);
+      newState.filteredTreeNodes = Object(__WEBPACK_IMPORTED_MODULE_19__util__["l" /* getFilterTree */])(newState.treeNodes || prevState.treeNodes, newState.searchValue, filterTreeNodeFn);
     }
 
     // Checked Strategy
     processState('showCheckedStrategy', function () {
-      newState.selectorValueList = newState.selectorValueList || Object(__WEBPACK_IMPORTED_MODULE_19__util__["i" /* formatSelectorValue */])(newState.valueList || prevState.valueList, nextProps, newState.valueEntities || prevState.valueEntities);
+      newState.selectorValueList = newState.selectorValueList || Object(__WEBPACK_IMPORTED_MODULE_19__util__["j" /* formatSelectorValue */])(newState.valueList || prevState.valueList, nextProps, newState.valueEntities || prevState.valueEntities);
     });
 
     return newState;
@@ -29973,7 +29997,7 @@ var _initialiseProps = function _initialiseProps() {
           var value = _ref.value;
 
           var entity = valueEntities[value];
-          return !Object(__WEBPACK_IMPORTED_MODULE_19__util__["m" /* isPosRelated */])(entity.pos, triggerEntity.pos);
+          return !Object(__WEBPACK_IMPORTED_MODULE_19__util__["n" /* isPosRelated */])(entity.pos, triggerEntity.pos);
         });
       } else {
         newValueList = valueList.filter(function (_ref2) {
@@ -30016,7 +30040,7 @@ var _initialiseProps = function _initialiseProps() {
         extraInfo.allCheckedNodes = deselectInfo.checkedNodes;
       } else {
         // TODO: It's too expansive to get `halfCheckedKeys` in onDeselect. Not pass this.
-        extraInfo.allCheckedNodes = Object(__WEBPACK_IMPORTED_MODULE_19__util__["g" /* flatToHierarchy */])(filteredEntityList).map(function (_ref6) {
+        extraInfo.allCheckedNodes = Object(__WEBPACK_IMPORTED_MODULE_19__util__["h" /* flatToHierarchy */])(filteredEntityList).map(function (_ref6) {
           var node = _ref6.node;
           return node;
         });
@@ -30208,11 +30232,12 @@ var _initialiseProps = function _initialiseProps() {
         keyList = Object(__WEBPACK_IMPORTED_MODULE_19__util__["c" /* calcUncheckConduct */])(oriKeyList, nodeEventInfo.node.props.eventKey, keyEntities);
       }
 
+      // Let's follow as not `treeCheckStrictly` format
       extraInfo.allCheckedNodes = keyList.map(function (key) {
-        return keyEntities[key].node;
+        return Object(__WEBPACK_IMPORTED_MODULE_19__util__["d" /* cleanEntity */])(keyEntities[key]);
       });
     } else {
-      extraInfo.allCheckedNodes = Object(__WEBPACK_IMPORTED_MODULE_19__util__["g" /* flatToHierarchy */])(checkedNodesPositions);
+      extraInfo.allCheckedNodes = Object(__WEBPACK_IMPORTED_MODULE_19__util__["h" /* flatToHierarchy */])(checkedNodesPositions);
     }
 
     _this2.onValueTrigger(isAdd, checkedNodeList, nodeEventInfo, extraInfo);
@@ -30257,7 +30282,7 @@ var _initialiseProps = function _initialiseProps() {
       }
 
       _this2.setState({
-        filteredTreeNodes: Object(__WEBPACK_IMPORTED_MODULE_19__util__["k" /* getFilterTree */])(treeNodes, value, filterTreeNodeFn)
+        filteredTreeNodes: Object(__WEBPACK_IMPORTED_MODULE_19__util__["l" /* getFilterTree */])(treeNodes, value, filterTreeNodeFn)
       });
     }
   };
@@ -30314,7 +30339,7 @@ var _initialiseProps = function _initialiseProps() {
   };
 
   this.isLabelInValue = function () {
-    return Object(__WEBPACK_IMPORTED_MODULE_19__util__["l" /* isLabelInValue */])(_this2.props);
+    return Object(__WEBPACK_IMPORTED_MODULE_19__util__["m" /* isLabelInValue */])(_this2.props);
   };
 
   this.isSearchValueControlled = function () {
@@ -30357,7 +30382,7 @@ var _initialiseProps = function _initialiseProps() {
     }, extraInfo);
 
     // Format value by `treeCheckStrictly`
-    var selectorValueList = Object(__WEBPACK_IMPORTED_MODULE_19__util__["i" /* formatSelectorValue */])(valueList, _this2.props, valueEntities);
+    var selectorValueList = Object(__WEBPACK_IMPORTED_MODULE_19__util__["j" /* formatSelectorValue */])(valueList, _this2.props, valueEntities);
 
     if (!('value' in _this2.props)) {
       _this2.setState({
@@ -30542,7 +30567,7 @@ var SelectTrigger = function (_React$Component) {
       }
     };
 
-    _this.triggerRef = Object(__WEBPACK_IMPORTED_MODULE_8__util__["f" /* createRef */])();
+    _this.triggerRef = Object(__WEBPACK_IMPORTED_MODULE_8__util__["g" /* createRef */])();
     return _this;
   }
 
@@ -34101,7 +34126,7 @@ var SingleSelector = function (_React$Component) {
           'span',
           {
             key: 'value',
-            title: Object(__WEBPACK_IMPORTED_MODULE_6__util__["o" /* toTitle */])(label),
+            title: Object(__WEBPACK_IMPORTED_MODULE_6__util__["p" /* toTitle */])(label),
             className: prefixCls + '-selection-selected-value'
           },
           label || value
@@ -34124,7 +34149,7 @@ var SingleSelector = function (_React$Component) {
       );
     };
 
-    _this.selectorRef = Object(__WEBPACK_IMPORTED_MODULE_6__util__["f" /* createRef */])();
+    _this.selectorRef = Object(__WEBPACK_IMPORTED_MODULE_6__util__["g" /* createRef */])();
     return _this;
   }
 
@@ -34314,7 +34339,7 @@ var MultipleSelector = function (_React$Component) {
       );
     };
 
-    _this.inputRef = Object(__WEBPACK_IMPORTED_MODULE_10__util__["f" /* createRef */])();
+    _this.inputRef = Object(__WEBPACK_IMPORTED_MODULE_10__util__["g" /* createRef */])();
     return _this;
   }
 
@@ -34420,7 +34445,7 @@ var Selection = function (_React$Component) {
       }, __WEBPACK_IMPORTED_MODULE_6__util__["a" /* UNSELECTABLE_ATTRIBUTE */], {
         role: 'menuitem',
         className: prefixCls + '-selection__choice',
-        title: Object(__WEBPACK_IMPORTED_MODULE_6__util__["o" /* toTitle */])(label)
+        title: Object(__WEBPACK_IMPORTED_MODULE_6__util__["p" /* toTitle */])(label)
       }),
       onRemove && __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('span', {
         className: prefixCls + '-selection__choice__remove',
@@ -34535,7 +34560,7 @@ var SinglePopup = function (_React$Component) {
       );
     };
 
-    _this.inputRef = Object(__WEBPACK_IMPORTED_MODULE_8__util__["f" /* createRef */])();
+    _this.inputRef = Object(__WEBPACK_IMPORTED_MODULE_8__util__["g" /* createRef */])();
     return _this;
   }
 
@@ -34601,7 +34626,7 @@ function valueProp() {
       Component = args[2];
 
 
-  if (Object(__WEBPACK_IMPORTED_MODULE_1__util__["l" /* isLabelInValue */])(props)) {
+  if (Object(__WEBPACK_IMPORTED_MODULE_1__util__["m" /* isLabelInValue */])(props)) {
     var _err = genArrProps(__WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.shape({
       label: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.node,
       value: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string

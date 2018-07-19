@@ -376,9 +376,9 @@ var Gen = function (_React$Component) {
       };
     };
 
-    _this.xRef = Object(__WEBPACK_IMPORTED_MODULE_6__src_util__["f" /* createRef */])();
-    _this.yRef = Object(__WEBPACK_IMPORTED_MODULE_6__src_util__["f" /* createRef */])();
-    _this.zRef = Object(__WEBPACK_IMPORTED_MODULE_6__src_util__["f" /* createRef */])();
+    _this.xRef = Object(__WEBPACK_IMPORTED_MODULE_6__src_util__["g" /* createRef */])();
+    _this.yRef = Object(__WEBPACK_IMPORTED_MODULE_6__src_util__["g" /* createRef */])();
+    _this.zRef = Object(__WEBPACK_IMPORTED_MODULE_6__src_util__["g" /* createRef */])();
     return _this;
   }
 
