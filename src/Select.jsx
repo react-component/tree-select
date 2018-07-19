@@ -299,13 +299,10 @@ class Select extends React.Component {
           keyList,
         );
 
-        // Convert key back to value
-        const valueList = checkedKeys.map(key => (
-          (newState.keyEntities || prevState.keyEntities)[key].value
-        ));
-
         // Format value list again for internal usage
-        newState.valueList = formatInternalValue(valueList, nextProps);
+        newState.valueList = checkedKeys.map(key => ({
+          value: (newState.keyEntities || prevState.keyEntities)[key].value,
+        }));
       } else {
         newState.valueList = filteredValueList;
       }

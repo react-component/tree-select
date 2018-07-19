@@ -343,4 +343,23 @@ describe('TreeSelect.checkable', () => {
       expect(wrapper.state().valueList.length).toBe(6);
     });
   });
+
+  it('labelInValue', () => {
+    const wrapper = mount(
+      <TreeSelect
+        checkable
+        labelInValue
+        value={[{ value: '0-0' }]}
+      >
+        <TreeNode key="0-0" value="0-0" title="0-0">
+          <TreeNode key="0-0-0" value="0-0-0" title="0-0-0" />
+        </TreeNode>
+      </TreeSelect>
+    );
+
+    expect(wrapper.state().selectorValueList).toEqual([{
+      label: '0-0',
+      value: '0-0',
+    }]);
+  });
 });
