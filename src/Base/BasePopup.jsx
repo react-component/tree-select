@@ -63,11 +63,12 @@ class BasePopup extends React.Component {
     this.state = {
       keyList: [],
       expandedKeyList,
+      loadedKeys: [],
     };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { prevProps = {} } = prevState || {};
+    const { prevProps = {}, loadedKeys } = prevState || {};
     const { valueList, valueEntities, keyEntities, filteredTreeNodes } = nextProps;
 
     const newState = {
@@ -87,12 +88,21 @@ class BasePopup extends React.Component {
       newState.expandedKeyList = Object.keys(keyEntities);
     }
 
+    // Clean loadedKeys if key not exist in keyEntities anymore
+    if (nextProps.loadData) {
+      newState.loadedKeys = loadedKeys.filter(key => key in keyEntities);
+    }
+
     return newState;
   }
 
   onTreeExpand = (expandedKeyList) => {
     const { onTreeExpanded } = this.props;
     this.setState({ expandedKeyList }, onTreeExpanded);
+  };
+
+  onLoad = (loadedKeys) => {
+    this.setState({ loadedKeys });
   };
 
   /**
@@ -121,7 +131,7 @@ class BasePopup extends React.Component {
   };
 
   render() {
-    const { keyList, expandedKeyList } = this.state;
+    const { keyList, expandedKeyList, loadedKeys } = this.state;
     const {
       prefixCls,
       treeNodes, filteredTreeNodes,
@@ -173,11 +183,13 @@ class BasePopup extends React.Component {
           checkStrictly={treeCheckStrictly}
           multiple={multiple}
           loadData={loadData}
+          loadedKeys={loadedKeys}
           expandedKeys={expandedKeyList}
           filterTreeNode={this.filterTreeNode}
           onSelect={onTreeNodeSelect}
           onCheck={onTreeNodeCheck}
           onExpand={this.onTreeExpand}
+          onLoad={this.onLoad}
           {...treeProps}
         >
           {$treeNodes}
