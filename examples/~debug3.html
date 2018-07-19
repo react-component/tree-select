@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>~debug.js - example - rc-tree-select@2.0.9</title>
+  <title>~debug3.js - example - rc-tree-select@2.0.9</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     document.writeln('<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');
   }
   </script>
-  <link rel="stylesheet" href="../common.css" /><link rel="stylesheet" href="~debug.css" />
+  <link rel="stylesheet" href="../common.css" /><link rel="stylesheet" href="~debug3.css" />
 </head>
 
 <body>
@@ -275,43 +275,90 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">'rc-dialog/assets/index.css'</span>;
-<span class="hljs-keyword">import</span> TreeSelect, { TreeNode, SHOW_PARENT } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-tree-select'</span>;
+<span class="hljs-keyword">import</span> TreeSelect <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-tree-select'</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">'./demo.less'</span>;
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
-  onChange = (value, label, extra) =&gt; {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'&gt;&gt;&gt;'</span>, value, label, extra);
-  };
+<span class="hljs-keyword">const</span> TreeNode = TreeSelect.TreeNode;
 
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  state = {
+    value: <span class="hljs-literal">undefined</span>,
+    treeData: [],
+  }
+
+  componentWillMount = () =&gt; {
+    <span class="hljs-keyword">this</span>.onChangeData({ target: { value: <span class="hljs-string">'1'</span> } })
+  }
+
+  onChangeData = ({ target: { value } }) =&gt; {
+    <span class="hljs-keyword">if</span> (value === <span class="hljs-string">'1'</span>) {
+      <span class="hljs-keyword">this</span>.setState({
+        treeData: [
+          { title: <span class="hljs-string">'load 0'</span>, key: <span class="hljs-string">'0'</span> },
+          { title: <span class="hljs-string">'load 1'</span>, key: <span class="hljs-string">'1'</span> },
+        ]
+      })
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">this</span>.setState({
+        treeData: [
+          { title: <span class="hljs-string">'load a'</span>, key: <span class="hljs-string">'a'</span> },
+          { title: <span class="hljs-string">'load b'</span>, key: <span class="hljs-string">'b'</span> },
+        ]
+      })
+    }
+  }
+  onChange = ({ target: { value } }) =&gt; {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">arguments</span>);
+    <span class="hljs-keyword">this</span>.setState({ value });
+  }
+  onLoadData = (treeNode) =&gt; {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>((resolve) =&gt; {
+      <span class="hljs-keyword">if</span> (treeNode.props.loaded) {
+        resolve();
+        <span class="hljs-keyword">return</span>;
+      }
+      setTimeout(() =&gt; {
+        treeNode.props.dataRef.children = [
+          { title: <span class="hljs-string">'Child Node'</span>, key: <span class="hljs-string">`<span class="hljs-subst">${treeNode.props.eventKey}</span>-0`</span> },
+          { title: <span class="hljs-string">'Child Node'</span>, key: <span class="hljs-string">`<span class="hljs-subst">${treeNode.props.eventKey}</span>-1`</span> },
+        ];
+        <span class="hljs-keyword">this</span>.setState({
+          treeData: [...this.state.treeData],
+        });
+        resolve();
+      }, <span class="hljs-number">1000</span>);
+    });
+  }
+  renderTreeNodes = (data) =&gt; {
+    <span class="hljs-keyword">return</span> data.map((item) =&gt; {
+      <span class="hljs-keyword">if</span> (item.children) {
+        <span class="hljs-keyword">return</span> (
+          <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">{item.title}</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{item.key}</span> <span class="hljs-attribute">dataRef</span>=<span class="hljs-value">{item}</span>&gt;</span>
+            {this.renderTreeNodes(item.children)}
+          <span class="hljs-tag">&lt;/<span class="hljs-title">TreeNode</span>&gt;</span>
+        )</span>;
+      }
+      <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> {<span class="hljs-attribute">...item</span>} <span class="hljs-attribute">dataRef</span>=<span class="hljs-value">{item}</span> /&gt;</span>;</span>
+    });
+  }
   render() {
     <span class="hljs-keyword">return</span> (
-      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">margin:</span> <span class="hljs-attribute">20</span> }}&gt;</span>
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">select</span> <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">"1"</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">120</span> }} <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChangeData}</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">'1'</span>&gt;</span>数据1<span class="hljs-tag">&lt;/<span class="hljs-title">option</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">'2'</span>&gt;</span>数据2<span class="hljs-tag">&lt;/<span class="hljs-title">option</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">select</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">br</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">br</span>/&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
-          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">500</span> }}
-          <span class="hljs-attribute">treeDefaultExpandAll</span>
-          // <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">"same value3"</span>
+          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}
+          <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span>
+          <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">maxHeight:</span> <span class="hljs-attribute">400</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>' }}
+          <span class="hljs-attribute">loadData</span>=<span class="hljs-value">{this.onLoadData}</span>
+          <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"Please select"</span>
           <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
-          <span class="hljs-attribute">showCheckedStrategy</span>=<span class="hljs-value">{SHOW_PARENT}</span>
-          <span class="hljs-attribute">treeCheckable</span>
         &gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"p1"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"parent 1"</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">""</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"parent 1-0"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"parent 1-0"</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"0-1-0"</span>&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"leaf1"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"my leaf"</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"random"</span> /&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"leaf2"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"your leaf"</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"random1"</span> <span class="hljs-attribute">disabled</span> /&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-title">TreeNode</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"parent 1-1"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"parent 1-1"</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"0-1-1"</span>&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"sss"</span>
-                <span class="hljs-attribute">title</span>=<span class="hljs-value">{&lt;span</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">color:</span> '<span class="hljs-attribute">red</span>' }}&gt;</span>sss<span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>} key="random3"
-              /&gt;
-              <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"same value1"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"same txtle"</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"0-1-1-1"</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"same value10"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"same titlexd"</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"0-1-1-1-0"</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">color:</span> '<span class="hljs-attribute">red</span>', <span class="hljs-attribute">background:</span> '<span class="hljs-attribute">green</span>' }} /&gt;</span>
-              <span class="hljs-tag">&lt;/<span class="hljs-title">TreeNode</span>&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-title">TreeNode</span>&gt;</span>
-          <span class="hljs-tag">&lt;/<span class="hljs-title">TreeNode</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"same value2"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"same title"</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"0-2"</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"2same value"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"2same title"</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"0-2-0"</span> /&gt;</span>
-          <span class="hljs-tag">&lt;/<span class="hljs-title">TreeNode</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"same value3"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"same title"</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"0-3"</span> /&gt;</span>
+          {this.renderTreeNodes(this.state.treeData)}
         <span class="hljs-tag">&lt;/<span class="hljs-title">TreeSelect</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     )</span>;
@@ -329,7 +376,7 @@ ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-t
   </a>
   <script>FastClick.attach(document.body);</script>
   <script src="../common.js?nowrap"></script>
-  <script src="~debug.js?nowrap"></script>
+  <script src="~debug3.js?nowrap"></script>
 </body>
 
 </html>
