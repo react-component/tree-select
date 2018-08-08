@@ -344,6 +344,56 @@ describe('TreeSelect.checkable', () => {
     });
   });
 
+  // https://github.com/ant-design/ant-design/issues/11561
+  it('remove in filtered tree', () => {
+    const onChange = jest.fn();
+
+    const treeData = [{
+      title: 'Node1',
+      value: '0-0',
+      key: '0-0',
+      children: [{
+        title: 'Child Node1',
+        value: '0-0-0',
+        key: '0-0-0',
+      }],
+    }, {
+      title: 'Node2',
+      value: '0-1',
+      key: '0-1',
+      children: [{
+        title: 'Child Node3',
+        value: '0-1-0',
+        key: '0-1-0',
+      }, {
+        title: 'Child Node4',
+        value: '0-1-1',
+        key: '0-1-1',
+      }, {
+        title: 'Child Node5',
+        value: '0-1-2',
+        key: '0-1-2',
+      }],
+    }];
+
+    const wrapper = mount(
+      <TreeSelect
+        treeCheckable
+        treeData={treeData}
+        onChange={onChange}
+        showCheckedStrategy={SHOW_PARENT}
+        defaultValue={['0-0', '0-1-0', '0-1-2']}
+        open
+      />
+    );
+
+    wrapper.find('.rc-tree-select-search__field').simulate('change', { target: { value: '0-0' } });
+    wrapper.find('.rc-tree-select-tree-checkbox').at(0).simulate('click');
+    const keyList = onChange.mock.calls[0][0];
+
+    expect(keyList.sort()).toEqual(['0-1-0', '0-1-2'].sort());
+  });
+
   it('labelInValue', () => {
     const wrapper = mount(
       <TreeSelect
