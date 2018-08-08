@@ -30738,13 +30738,13 @@ var _initialiseProps = function _initialiseProps() {
           var value = _ref13.props.value;
           return valueEntities[value].key;
         })))));
-
-        checkedNodeList = keyList.map(function (key) {
-          return keyEntities[key].node;
-        });
       } else {
         keyList = Object(__WEBPACK_IMPORTED_MODULE_21__util__["c" /* calcUncheckConduct */])(oriKeyList, nodeEventInfo.node.props.eventKey, keyEntities);
       }
+
+      checkedNodeList = keyList.map(function (key) {
+        return keyEntities[key].node;
+      });
 
       // Let's follow as not `treeCheckStrictly` format
       extraInfo.allCheckedNodes = keyList.map(function (key) {
