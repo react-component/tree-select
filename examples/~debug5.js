@@ -1,4 +1,4 @@
-webpackJsonp([4],{
+webpackJsonp([3],{
 
 /***/ 10:
 /***/ (function(module, exports) {
@@ -14,15 +14,15 @@ webpackJsonp([4],{
 
 /***/ }),
 
-/***/ 357:
+/***/ 359:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(358);
+module.exports = __webpack_require__(360);
 
 
 /***/ }),
 
-/***/ 358:
+/***/ 360:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -62,36 +62,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var SHOW_PARENT = __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["c" /* default */].SHOW_PARENT;
 
 var treeData = [{
-  label: "Node1",
-  value: "Node1",
-  key: "Node1",
-  foo: 1,
+  title: 'Node1',
+  value: '0-0',
+  key: '0-0',
   children: [{
-    label: "Child Node1",
-    value: "Child Node1",
-    key: "Child Node1",
-    foo: 1
+    title: 'Child Node1',
+    value: '0-0-0',
+    key: '0-0-0'
   }]
 }, {
-  label: "Node2",
-  value: "Node2",
-  key: "Node2",
-  foo: 1,
+  title: 'Node2',
+  value: '0-1',
+  key: '0-1',
   children: [{
-    label: "Child Node3",
-    value: "Child Node3",
-    key: "Child Node3",
-    foo: 1
+    title: 'Child Node3',
+    value: '0-1-0',
+    key: '0-1-0'
   }, {
-    label: "Child Node4",
-    value: "Child Node4",
-    key: "Child Node4",
-    foo: 1
+    title: 'Child Node4',
+    value: '0-1-1',
+    key: '0-1-1'
   }, {
-    label: "Child Node5",
-    value: "Child Node5",
-    key: "Child Node5",
-    foo: 1
+    title: 'Child Node5',
+    value: '0-1-2',
+    key: '0-1-2'
   }]
 }];
 
@@ -110,9 +104,9 @@ var Demo = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Demo.__proto__ || Object.getPrototypeOf(Demo)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      value: undefined
-    }, _this.onChange = function (value, label, extra) {
-      if (extra.allCheckedNodes[0]) console.log(">>>", extra.allCheckedNodes[0]);
+      value: ['0-0-0']
+    }, _this.onChange = function (value) {
+      console.log('onChange ', value);
       _this.setState({ value: value });
     }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
@@ -126,7 +120,7 @@ var Demo = function (_React$Component) {
         onChange: this.onChange,
         treeCheckable: true,
         showCheckedStrategy: SHOW_PARENT,
-        searchPlaceholder: "Please select",
+        searchPlaceholder: 'Please select',
         style: {
           width: 300
         }
@@ -142,5 +136,5 @@ __WEBPACK_IMPORTED_MODULE_6_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ })
 
-},[357]);
-//# sourceMappingURL=~debug4.js.map
+},[359]);
+//# sourceMappingURL=~debug5.js.map
