@@ -636,8 +636,6 @@ class Select extends React.Component {
             ...checkedNodeList.map(({ props: { value } }) => valueEntities[value].key),
           ]),
         );
-
-        checkedNodeList = keyList.map(key => keyEntities[key].node);
       } else {
         keyList = calcUncheckConduct(
           oriKeyList,
@@ -645,6 +643,8 @@ class Select extends React.Component {
           keyEntities,
         );
       }
+
+      checkedNodeList = keyList.map(key => keyEntities[key].node);
 
       // Let's follow as not `treeCheckStrictly` format
       extraInfo.allCheckedNodes = keyList.map(key => cleanEntity(keyEntities[key]));
