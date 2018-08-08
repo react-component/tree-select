@@ -633,7 +633,7 @@ class Select extends React.Component {
         keyList = Array.from(
           new Set([
             ...oriKeyList,
-            checkedNodeList.map(({ props: { value } }) => valueEntities[value].key),
+            ...checkedNodeList.map(({ props: { value } }) => valueEntities[value].key),
           ]),
         );
 

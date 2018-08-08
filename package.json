@@ -61,7 +61,8 @@
     ],
     "transform": {
       "\\.jsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js"
-    }
+    },
+    "testURL": "http://localhost"
   },
   "devDependencies": {
     "enzyme": "^3.1.1",
@@ -84,7 +85,7 @@
     "classnames": "^2.2.1",
     "prop-types": "^15.5.8",
     "raf": "^3.4.0",
-    "rc-animate": "^3.0.0-rc.1",
+    "rc-animate": "^3.0.0-rc.4",
     "rc-tree": "~1.12.2",
     "rc-trigger": "^3.0.0-rc.2",
     "rc-util": "^4.5.0",
