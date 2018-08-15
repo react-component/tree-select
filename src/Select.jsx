@@ -334,8 +334,11 @@ class Select extends React.Component {
     });
 
     // Do the search logic
-    if (newState.searchValue !== undefined) {
-      const upperSearchValue = String(newState.searchValue).toUpperCase();
+    if (
+      newState.searchValue !== undefined ||
+      (prevState.searchValue && treeData)
+    ) {
+      const upperSearchValue = String(newState.searchValue || prevState.searchValue).toUpperCase();
 
       let filterTreeNodeFn = filterTreeNode;
       if (filterTreeNode === false) {
