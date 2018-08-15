@@ -189,6 +189,30 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
+  // https://github.com/ant-design/ant-design/issues/11746
+  it('async update treeData when has searchInput', () => {
+    const treeData = [{ title: 'aaa', value: '111' }];
+    const Wrapper = (props) => (
+      <div>
+        <TreeSelect
+          treeData={treeData}
+          searchValue="111"
+          open
+          {...props}
+        />
+      </div>
+    );
+    const wrapper = mount(<Wrapper />);
+
+    expect(wrapper.render()).toMatchSnapshot();
+
+    wrapper.setProps({
+      treeData: [{ title: 'bbb', value: '222' }],
+    });
+
+    expect(wrapper.render()).toMatchSnapshot();
+  });
+
   describe('labelInValue', () => {
     it('basic', () => {
       const handleChange = jest.fn();
