@@ -1,5 +1,9 @@
 import React from 'react';
 import warning from 'warning';
+import {
+  convertDataToTree as rcConvertDataToTree,
+  convertTreeToEntities as rcConvertTreeToEntities,
+} from 'rc-tree/lib/util';
 import SelectNode from './SelectNode';
 import { SHOW_CHILD, SHOW_PARENT } from './strategies';
 
@@ -168,6 +172,7 @@ export function convertTreeToData(treeNodes) {
 /**
  * Convert `treeData` to TreeNode List contains the mapping data.
  */
+// TODO: Remove this
 export function convertDataToEntities(treeData) {
   const list = toArray(treeData);
 
@@ -409,34 +414,48 @@ export function formatSelectorValue(valueList, props, valueEntities) {
   }));
 }
 
-/**
- * When user search the tree, will not get correct tree checked status.
- * For checked key, use the `rc-tree` `calcCheckStateConduct` function.
- * For unchecked key, we need the calculate ourselves.
- */
-export function calcUncheckConduct(keyList, uncheckedKey, keyEntities) {
-  let myKeyList = keyList.slice();
+// Parse rc-tree convertDataToTree
+function processProps(props) {
+  const { label } = props;
 
-  function conductUp(conductKey) {
-    myKeyList = myKeyList.filter(key => key !== conductKey);
+  // Warning user not to use deprecated label prop.
+  if (label) {
+    return {
+      ...props,
+      title: label,
+    };
 
-    // Check if need conduct
-    const parentEntity = keyEntities[conductKey].parent;
-    if (parentEntity && myKeyList.some(key => key === parentEntity.key)) {
-      conductUp(parentEntity.key);
+    if (!warnDeprecatedLabel) {
+      warning(
+        false,
+        '\'label\' in treeData is deprecated. Please use \'title\' instead.'
+      );
+      warnDeprecatedLabel = true;
     }
   }
 
-  function conductDown(conductKey) {
-    myKeyList = myKeyList.filter(key => key !== conductKey);
+  return props;
+}
 
-    (keyEntities[conductKey].children || []).forEach((childEntity) => {
-      conductDown(childEntity.key);
-    });
-  }
+export function convertDataToTree(treeData) {
+  return rcConvertDataToTree(treeData, { processProps });
+}
 
-  conductUp(uncheckedKey);
-  conductDown(uncheckedKey);
+// Use rc-tree convertTreeToEntities for entities calculation
+function initWrapper(wrapper) {
+  return {
+    ...wrapper,
+    valueEntities: {},
+  };
+}
 
-  return myKeyList;
+function processEntity(entity, wrapper) {
+  wrapper.valueEntities[entity.node.props.value] = entity;
+}
+
+export function convertTreeToEntities(treeNodes) {
+  return rcConvertTreeToEntities(treeNodes, {
+    initWrapper,
+    processEntity,
+  });
 }

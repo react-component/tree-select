@@ -23,7 +23,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import KeyCode from 'rc-util/lib/KeyCode';
-import { calcCheckStateConduct } from 'rc-tree/lib/util';
 import shallowEqual from 'shallowequal';
 import raf from 'raf';
 
@@ -40,8 +39,8 @@ import { SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './strategies';
 import {
   createRef, generateAriaId,
   formatInternalValue, formatSelectorValue,
-  parseSimpleTreeData, convertDataToEntities, convertTreeToData,
-  calcUncheckConduct, flatToHierarchy,
+  parseSimpleTreeData, convertDataToTree, convertTreeToEntities,
+  flatToHierarchy,
   isPosRelated, isLabelInValue, getFilterTree,
   cleanEntity,
 } from './util';
@@ -210,11 +209,11 @@ class Select extends React.Component {
     });
 
     // Tree Nodes
-    let treeData;
+    let treeNodes;
     let treeDataChanged = false;
     let treeDataModeChanged = false;
     processState('treeData', (propValue) => {
-      treeData = propValue;
+      treeNodes = convertDataToTree(propValue);
       treeDataChanged = true;
     });
 
@@ -237,22 +236,30 @@ class Select extends React.Component {
         rootPId: null,
         ...(treeDataSimpleMode !== true ? treeDataSimpleMode : {}),
       };
-      treeData = parseSimpleTreeData(nextProps.treeData, simpleMapper);
+      treeNodes = convertDataToTree(
+        parseSimpleTreeData(nextProps.treeData, simpleMapper)
+      );
     }
 
     // If `treeData` not provide, use children TreeNodes
     if (!nextProps.treeData) {
       processState('children', (propValue) => {
-        treeData = convertTreeToData(propValue);
+        treeNodes = propValue;
       });
     }
 
     // Convert `treeData` to entities
-    if (treeData) {
-      const { treeNodes, valueEntities, keyEntities } = convertDataToEntities(treeData);
+    if (treeNodes) {
+      // const { treeNodes, valueEntities, keyEntities } = convertDataToEntities(treeData);
+      // newState.treeNodes = treeNodes;
+      // newState.valueEntities = valueEntities;
+      // newState.keyEntities = keyEntities;
+
+      const entitiesMap = convertTreeToEntities(treeNodes);
       newState.treeNodes = treeNodes;
-      newState.valueEntities = valueEntities;
-      newState.keyEntities = keyEntities;
+      newState.posEntities = entitiesMap.posEntities;
+      newState.keyEntities = entitiesMap.keyEntities;
+
       valueRefresh = true;
     }
 
