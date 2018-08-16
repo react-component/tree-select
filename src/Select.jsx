@@ -39,7 +39,8 @@ import { SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './strategies';
 import {
   createRef, generateAriaId,
   formatInternalValue, formatSelectorValue,
-  parseSimpleTreeData, convertDataToTree, convertTreeToEntities,
+  parseSimpleTreeData,
+  convertDataToTree, convertTreeToEntities, conductCheck,
   flatToHierarchy,
   isPosRelated, isLabelInValue, getFilterTree,
   cleanEntity,
@@ -250,14 +251,10 @@ class Select extends React.Component {
 
     // Convert `treeData` to entities
     if (treeNodes) {
-      // const { treeNodes, valueEntities, keyEntities } = convertDataToEntities(treeData);
-      // newState.treeNodes = treeNodes;
-      // newState.valueEntities = valueEntities;
-      // newState.keyEntities = keyEntities;
-
       const entitiesMap = convertTreeToEntities(treeNodes);
       newState.treeNodes = treeNodes;
       newState.posEntities = entitiesMap.posEntities;
+      newState.valueEntities = entitiesMap.valueEntities;
       newState.keyEntities = entitiesMap.keyEntities;
 
       valueRefresh = true;
@@ -302,9 +299,10 @@ class Select extends React.Component {
       // We need calculate the value when tree is checked tree
       if (treeCheckable && !treeCheckStrictly) {
         // Calculate the keys need to be checked
-        const { checkedKeys } = calcCheckStateConduct(
-          newState.treeNodes || prevState.treeNodes,
+        const { checkedKeys } = conductCheck(
           keyList,
+          true,
+          newState.keyEntities || prevState.keyEntities,
         );
 
         // Format value list again for internal usage
@@ -343,7 +341,7 @@ class Select extends React.Component {
     // Do the search logic
     if (
       newState.searchValue !== undefined ||
-      (prevState.searchValue && treeData)
+      (prevState.searchValue && treeNodes)
     ) {
       const searchValue = newState.searchValue !== undefined ? newState.searchValue : prevState.searchValue;
       const upperSearchValue = String(searchValue).toUpperCase();

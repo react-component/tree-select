@@ -3,6 +3,7 @@ import warning from 'warning';
 import {
   convertDataToTree as rcConvertDataToTree,
   convertTreeToEntities as rcConvertTreeToEntities,
+  conductCheck as rcConductCheck,
 } from 'rc-tree/lib/util';
 import SelectNode from './SelectNode';
 import { SHOW_CHILD, SHOW_PARENT } from './strategies';
@@ -414,7 +415,10 @@ export function formatSelectorValue(valueList, props, valueEntities) {
   }));
 }
 
-// Parse rc-tree convertDataToTree
+/**
+ * Use `rc-tree` convertDataToTree to convert treeData to TreeNodes.
+ * This will change the label to title value
+ */
 function processProps(props) {
   const { label } = props;
 
@@ -441,7 +445,10 @@ export function convertDataToTree(treeData) {
   return rcConvertDataToTree(treeData, { processProps });
 }
 
-// Use rc-tree convertTreeToEntities for entities calculation
+/**
+ * Use `rc-tree` convertTreeToEntities for entities calculation.
+ * We have additional entities of `valueEntities`
+ */
 function initWrapper(wrapper) {
   return {
     ...wrapper,
@@ -459,3 +466,6 @@ export function convertTreeToEntities(treeNodes) {
     processEntity,
   });
 }
+
+export const conductCheck = rcConductCheck;
+// export function calcCheckStateConduct() {}
