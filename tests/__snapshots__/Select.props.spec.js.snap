@@ -555,6 +555,170 @@ exports[`TreeSelect.props animation 1`] = `
 </div>
 `;
 
+exports[`TreeSelect.props async update treeData when has searchInput 1`] = `
+<div>
+  <span
+    aria-controls="rc-tree-select-list_1"
+    aria-expanded="true"
+    aria-haspopup="listbox"
+    aria-owns="rc-tree-select-list_1"
+    class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
+    role="combobox"
+    style=""
+    tabindex="0"
+  >
+    <span
+      class="rc-tree-select-selection rc-tree-select-selection--single"
+    >
+      <span
+        class="rc-tree-select-selection__rendered"
+      >
+        <span
+          class="rc-tree-select-selection__placeholder"
+        />
+      </span>
+      <span
+        class="rc-tree-select-arrow"
+        style="outline: none;"
+      >
+        <b />
+      </span>
+    </span>
+  </span>
+  <div>
+    <div
+      class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
+      style="left: -999px; top: -995px; min-width: 0;"
+    >
+      <div
+        id="rc-tree-select-list_1"
+        role="listbox"
+        tabindex="-1"
+      >
+        <span
+          class="rc-tree-select-dropdown-search"
+        >
+          <span
+            class="rc-tree-select-search__field__wrap"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-controls="rc-tree-select-list_1"
+              aria-label="filter select"
+              aria-multiline="false"
+              class="rc-tree-select-search__field"
+              type="text"
+              value="111"
+            />
+            <span
+              class="rc-tree-select-search__field__mirror"
+            >
+              111 
+            </span>
+          </span>
+        </span>
+        <ul
+          class="rc-tree-select-tree"
+          role="tree-node"
+          unselectable="on"
+        >
+          <li
+            class="rc-tree-select-tree-treenode-switcher-open filter-node"
+          >
+            <span
+              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+            />
+            <span
+              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+              title="aaa"
+            >
+              <span
+                class="rc-tree-select-tree-title"
+              >
+                aaa
+              </span>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`TreeSelect.props async update treeData when has searchInput 2`] = `
+<div>
+  <span
+    aria-controls="rc-tree-select-list_1"
+    aria-expanded="true"
+    aria-haspopup="listbox"
+    aria-owns="rc-tree-select-list_1"
+    class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
+    role="combobox"
+    style=""
+    tabindex="0"
+  >
+    <span
+      class="rc-tree-select-selection rc-tree-select-selection--single"
+    >
+      <span
+        class="rc-tree-select-selection__rendered"
+      >
+        <span
+          class="rc-tree-select-selection__placeholder"
+        />
+      </span>
+      <span
+        class="rc-tree-select-arrow"
+        style="outline: none;"
+      >
+        <b />
+      </span>
+    </span>
+  </span>
+  <div>
+    <div
+      class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
+      style="left: -999px; top: -995px; min-width: 0;"
+    >
+      <div
+        id="rc-tree-select-list_1"
+        role="listbox"
+        tabindex="-1"
+      >
+        <span
+          class="rc-tree-select-dropdown-search"
+        >
+          <span
+            class="rc-tree-select-search__field__wrap"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-controls="rc-tree-select-list_1"
+              aria-label="filter select"
+              aria-multiline="false"
+              class="rc-tree-select-search__field"
+              type="text"
+              value="111"
+            />
+            <span
+              class="rc-tree-select-search__field__mirror"
+            >
+              111 
+            </span>
+          </span>
+        </span>
+        <span
+          class="rc-tree-select-not-found"
+        >
+          Not Found
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`TreeSelect.props basic 1`] = `
 <div>
   <span
