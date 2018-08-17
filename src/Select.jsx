@@ -358,7 +358,6 @@ class Select extends React.Component {
         };
       }
 
-      console.log('>>>', newState.treeNodes, prevState.treeNodes);
       newState.filteredTreeNodes = getFilterTree(
         newState.treeNodes || prevState.treeNodes,
         searchValue,
