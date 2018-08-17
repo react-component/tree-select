@@ -457,7 +457,9 @@ function initWrapper(wrapper) {
 }
 
 function processEntity(entity, wrapper) {
-  wrapper.valueEntities[entity.node.props.value] = entity;
+  const value = entity.node.props.value;
+  entity.value = value;
+  wrapper.valueEntities[value] = entity;
 }
 
 export function convertTreeToEntities(treeNodes) {

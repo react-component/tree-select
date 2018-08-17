@@ -567,9 +567,18 @@ class Select extends React.Component {
     if (treeCheckable && !treeCheckStrictly) {
       let keyList = newValueList.map(({ value: val }) => valueEntities[val].key);
       if (isAdd) {
-        keyList = calcCheckStateConduct(treeNodes, keyList).checkedKeys;
+        keyList = conductCheck(
+          keyList,
+          true,
+          keyEntities,
+        ).checkedKeys;
       } else {
-        keyList = calcUncheckConduct(keyList, valueEntities[value].key, keyEntities);
+        keyList = conductCheck(
+          [valueEntities[value].key],
+          false,
+          keyEntities,
+          { checkedKeys: keyList },
+        ).checkedKeys;
       }
       newValueList = keyList.map(key => {
         const { node: { props } } = keyEntities[key];
@@ -646,11 +655,12 @@ class Select extends React.Component {
           ]),
         );
       } else {
-        keyList = calcUncheckConduct(
-          oriKeyList,
-          nodeEventInfo.node.props.eventKey,
+        keyList = conductCheck(
+          [nodeEventInfo.node.props.eventKey],
+          false,
           keyEntities,
-        );
+          { checkedKeys: oriKeyList },
+        ).checkedKeys;
       }
 
       checkedNodeList = keyList.map(key => keyEntities[key].node);
