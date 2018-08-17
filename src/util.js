@@ -126,6 +126,7 @@ export function parseSimpleTreeData(treeData, { id, pId, rootPId }) {
     const clone = { ...node };
     const key = clone[id];
     keyNodes[key] = clone;
+    clone.key = clone.key || key;
     return clone;
   });
 

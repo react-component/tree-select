@@ -23,7 +23,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import KeyCode from 'rc-util/lib/KeyCode';
-import toArray from 'rc-util/lib/Children/toArray';
 import shallowEqual from 'shallowequal';
 import raf from 'raf';
 
@@ -246,7 +245,7 @@ class Select extends React.Component {
     // If `treeData` not provide, use children TreeNodes
     if (!nextProps.treeData) {
       processState('children', (propValue) => {
-        treeNodes = toArray(propValue);
+        treeNodes = Array.isArray(propValue) ? propValue : [propValue];
       });
     }
 
