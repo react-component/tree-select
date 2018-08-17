@@ -37,7 +37,7 @@
     top: 1px;
     right: 1px;
     width: 20px;
-    b {
+    &-icon {
       border-color: #999999 transparent transparent transparent;
       border-style: solid;
       border-width: 5px 4px 0 4px;
@@ -66,10 +66,6 @@
     &__clear {
       font-weight: bold;
       position: absolute;
-
-      &:after {
-        content: '×'
-      }
     }
   }
 
@@ -117,6 +113,9 @@
     .@{selectPrefixCls}-selection__clear {
       top: 5px;
       right: 20px;
+      &-icon {
+        font-style: normal;
+      }
     }
   }
 
@@ -213,6 +212,9 @@
     .@{selectPrefixCls}-selection__clear {
        top: 5px;
        right: 8px;
+       &-icon {
+         font-style: normal;
+       }
      }
   }
 
@@ -301,8 +303,9 @@
       top: 0;
       right: 2px;
       transition: opacity .3s, transform .3s;
-      &:before {
-        content: '×'
+
+      &-icon {
+        font-style: normal;
       }
 
       &:hover {

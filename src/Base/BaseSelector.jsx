@@ -27,6 +27,8 @@ export const selectorPropTypes = {
 
   // Pass by component
   ariaId: PropTypes.string,
+  inputIcon: PropTypes.node,
+  clearIcon: PropTypes.node,
 };
 
 export const selectorContextTypes = {
@@ -97,7 +99,7 @@ export default function (modeName) {
     }
 
     renderClear() {
-      const { prefixCls, allowClear, valueList } = this.props;
+      const { prefixCls, allowClear, valueList, clearIcon } = this.props;
       const { rcTreeSelect: { onSelectorClear } } = this.context;
 
       if (!allowClear || !valueList.length || !valueList[0].value) {
@@ -109,12 +111,12 @@ export default function (modeName) {
           key="clear"
           className={`${prefixCls}-selection__clear`}
           onClick={onSelectorClear}
-        />
+        >{clearIcon || <i className={`${prefixCls}-selection__clear-icon`}>×</i>}</span>
       );
     }
 
     renderArrow() {
-      const { prefixCls, showArrow } = this.props;
+      const { prefixCls, showArrow, inputIcon } = this.props;
       if (!showArrow) {
         return null;
       }
@@ -125,7 +127,7 @@ export default function (modeName) {
           className={`${prefixCls}-arrow`}
           style={{ outline: 'none' }}
         >
-          <b />
+          {inputIcon || <i className={`${prefixCls}-arrow-icon`} />}
         </span>
       );
     }

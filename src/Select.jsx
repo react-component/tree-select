@@ -104,6 +104,11 @@ class Select extends React.Component {
     onDeselect: PropTypes.func,
     onChange: PropTypes.func,
     onDropdownVisibleChange: PropTypes.func,
+
+    inputIcon: PropTypes.node,
+    clearIcon: PropTypes.node,
+    removeIcon: PropTypes.node,
+    switcherIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   };
 
   static childContextTypes = {

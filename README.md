@@ -91,6 +91,10 @@ online example: http://react-component.github.io/tree-select/
 |loadData | load data asynchronously | function(node) | - |
 |getPopupContainer | container which popup select menu rendered into | function(trigger:Node):Node | function(){return document.body;} |
 |autoClearSearchValue | auto clear search input value when multiple select is selected/deselected | boolean | true |
+| inputIcon | specific the select arrow icon | ReactNode | - |
+| clearIcon | specific the clear icon | ReactNode | - |
+| removeIcon | specific the remove icon | ReactNode | - |
+
 
 ### TreeNode props
 > note: you'd better to use `treeData` instead of using TreeNode.
