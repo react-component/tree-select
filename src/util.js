@@ -5,6 +5,7 @@ import {
   convertTreeToEntities as rcConvertTreeToEntities,
   conductCheck as rcConductCheck,
 } from 'rc-tree/lib/util';
+import toNodeArray from 'rc-util/lib/Children/toArray';
 import SelectNode from './SelectNode';
 import { SHOW_CHILD, SHOW_PARENT } from './strategies';
 
@@ -155,7 +156,7 @@ export function parseSimpleTreeData(treeData, { id, pId, rootPId }) {
  * This is will cause performance issue.
  */
 export function convertTreeToData(treeNodes) {
-  return React.Children.map(treeNodes || [], (node) => {
+  return toNodeArray(treeNodes).map((node) => {
     if (!React.isValidElement(node) || !node.type || !node.type.isTreeNode) {
       return null;
     }
@@ -310,7 +311,7 @@ export function getFilterTree(treeNodes, searchValue, filterFunc) {
   }
 
   return convertDataToEntities(
-    treeNodes.map(mapFilteredNodeToData).filter(node => node)
+    toNodeArray(treeNodes).map(mapFilteredNodeToData).filter(node => node)
   ).treeNodes;
 }
 
@@ -424,11 +425,6 @@ function processProps(props) {
 
   // Warning user not to use deprecated label prop.
   if (label) {
-    return {
-      ...props,
-      title: label,
-    };
-
     if (!warnDeprecatedLabel) {
       warning(
         false,
@@ -436,6 +432,11 @@ function processProps(props) {
       );
       warnDeprecatedLabel = true;
     }
+
+    return {
+      ...props,
+      title: label,
+    };
   }
 
   return props;
@@ -470,4 +471,3 @@ export function convertTreeToEntities(treeNodes) {
 }
 
 export const conductCheck = rcConductCheck;
-// export function calcCheckStateConduct() {}

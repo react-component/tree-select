@@ -358,6 +358,7 @@ class Select extends React.Component {
         };
       }
 
+      console.log('>>>', newState.treeNodes, prevState.treeNodes);
       newState.filteredTreeNodes = getFilterTree(
         newState.treeNodes || prevState.treeNodes,
         searchValue,
@@ -525,7 +526,7 @@ class Select extends React.Component {
   onValueTrigger = (isAdd, nodeList, nodeEventInfo, nodeExtraInfo) => {
     const { node } = nodeEventInfo;
     const { value } = node.props;
-    const { missValueList, valueEntities, keyEntities, treeNodes } = this.state;
+    const { missValueList, valueEntities, keyEntities } = this.state;
     const {
       disabled, inputValue,
       treeNodeLabelProp, onSelect,
