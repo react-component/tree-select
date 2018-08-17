@@ -303,6 +303,7 @@ describe('TreeSelect.basic', () => {
         </TreeSelect>
       );
       wrapper.openSelect();
+
       wrapper.find('.rc-tree-select-tree-title').simulate('click');
       wrapper.find('.rc-tree-select-selection__clear').simulate('click');
       expect(wrapper.state().valueList).toEqual([]);

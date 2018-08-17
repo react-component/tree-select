@@ -5,7 +5,6 @@ import {
   convertTreeToEntities as rcConvertTreeToEntities,
   conductCheck as rcConductCheck,
 } from 'rc-tree/lib/util';
-import toNodeArray from 'rc-util/lib/Children/toArray';
 import SelectNode from './SelectNode';
 import { SHOW_CHILD, SHOW_PARENT } from './strategies';
 
@@ -156,7 +155,7 @@ export function parseSimpleTreeData(treeData, { id, pId, rootPId }) {
  * This is will cause performance issue.
  */
 export function convertTreeToData(treeNodes) {
-  return toNodeArray(treeNodes).map((node) => {
+  return treeNodes.map((node) => {
     if (!React.isValidElement(node) || !node.type || !node.type.isTreeNode) {
       return null;
     }
@@ -311,7 +310,7 @@ export function getFilterTree(treeNodes, searchValue, filterFunc) {
   }
 
   return convertDataToEntities(
-    toNodeArray(treeNodes).map(mapFilteredNodeToData).filter(node => node)
+    treeNodes.map(mapFilteredNodeToData).filter(node => node)
   ).treeNodes;
 }
 
