@@ -362,6 +362,7 @@ class Select extends React.Component {
         newState.treeNodes || prevState.treeNodes,
         searchValue,
         filterTreeNodeFn,
+        newState.valueEntities || prevState.valueEntities,
       );
     }
 
@@ -681,7 +682,7 @@ class Select extends React.Component {
   };
 
   onSearchInputChange = ({ target: { value } }) => {
-    const { treeNodes } = this.state;
+    const { treeNodes, valueEntities } = this.state;
     const { onSearch, filterTreeNode, treeNodeFilterProp } = this.props;
 
     if (onSearch) {
@@ -710,7 +711,7 @@ class Select extends React.Component {
       }
 
       this.setState({
-        filteredTreeNodes: getFilterTree(treeNodes, value, filterTreeNodeFn),
+        filteredTreeNodes: getFilterTree(treeNodes, value, filterTreeNodeFn, valueEntities),
       });
     }
   };

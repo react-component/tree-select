@@ -640,7 +640,7 @@ exports[`TreeSelect.props async update treeData when has searchInput 1`] = `
           unselectable="on"
         >
           <li
-            class="rc-tree-select-tree-treenode-switcher-close filter-node"
+            class="rc-tree-select-tree-treenode-switcher-open filter-node"
             role="treeitem"
           >
             <span

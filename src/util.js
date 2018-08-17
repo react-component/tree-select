@@ -284,7 +284,7 @@ export function cleanEntity({ node, pos, children }) {
  * we have to convert `treeNodes > data > treeNodes` to keep the key.
  * Such performance hungry!
  */
-export function getFilterTree(treeNodes, searchValue, filterFunc) {
+export function getFilterTree(treeNodes, searchValue, filterFunc, valueEntities) {
   if (!searchValue) {
     return null;
   }
@@ -302,7 +302,7 @@ export function getFilterTree(treeNodes, searchValue, filterFunc) {
     if (children.length || match) {
       return {
         ...node.props,
-        key: node.key,
+        key: valueEntities[node.props.value].key,
         children,
       };
     }
@@ -421,7 +421,8 @@ export function formatSelectorValue(valueList, props, valueEntities) {
  * This will change the label to title value
  */
 function processProps(props) {
-  const { label } = props;
+  const { label, key, value } = props;
+  const cloneProps = { ...props };
 
   // Warning user not to use deprecated label prop.
   if (label) {
@@ -433,13 +434,14 @@ function processProps(props) {
       warnDeprecatedLabel = true;
     }
 
-    return {
-      ...props,
-      title: label,
-    };
+    cloneProps.title = label;
   }
 
-  return props;
+  if (!key) {
+    cloneProps.key = value;
+  }
+
+  return cloneProps;
 }
 
 export function convertDataToTree(treeData) {
