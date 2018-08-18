@@ -5,12 +5,9 @@ import {
   convertTreeToEntities as rcConvertTreeToEntities,
   conductCheck as rcConductCheck,
 } from 'rc-tree/lib/util';
+import toNodeArray from 'rc-util/lib/Children/toArray';
 import SelectNode from './SelectNode';
 import { SHOW_CHILD, SHOW_PARENT } from './strategies';
-
-// When treeNode not provide key, and we will use value as key.
-// Some time value is empty, we should pass it instead.
-const KEY_OF_VALUE_EMPTY = 'RC_TREE_SELECT_KEY_OF_VALUE_EMPTY';
 
 let warnDeprecatedLabel = false;
 
@@ -151,66 +148,6 @@ export function parseSimpleTreeData(treeData, { id, pId, rootPId }) {
 }
 
 /**
- * Convert `treeData` to TreeNode List contains the mapping data.
- */
-// TODO: Remove this
-export function convertDataToEntities(treeData) {
-  const list = toArray(treeData);
-
-  const valueEntities = {};
-  const keyEntities = {};
-  const posEntities = {};
-
-  function traverse(subTreeData, parentPos) {
-    const subList = toArray(subTreeData);
-
-    return subList.map(({ key, title, label, value, children ,...nodeProps }, index) => {
-      const pos = `${parentPos}-${index}`;
-
-      const entity = { key, value, pos };
-
-      // This may cause some side effect, need additional check
-      entity.key = entity.key || value;
-      if (!entity.key && entity.key !== 0) {
-        entity.key = KEY_OF_VALUE_EMPTY;
-      }
-
-      // Fill children
-      entity.parent = posEntities[parentPos];
-      if (entity.parent) {
-        entity.parent.children = entity.parent.children || [];
-        entity.parent.children.push(entity);
-      }
-
-      // Fill entities
-      valueEntities[value] = entity;
-      keyEntities[entity.key] = entity;
-      posEntities[pos] = entity;
-
-      const node = (
-        <SelectNode key={entity.key} {...nodeProps} title={title || label} label={label} value={value}>
-          {traverse(children, pos)}
-        </SelectNode>
-      );
-
-      entity.node = node;
-
-      return node;
-    });
-  }
-
-  const treeNodes = traverse(list, '0');
-
-  return {
-    treeNodes,
-
-    valueEntities,
-    keyEntities,
-    posEntities,
-  };
-}
-
-/**
  * Detect if position has relation.
  * e.g. 1-2 related with 1-2-3
  * e.g. 1-3-2 related with 1
@@ -267,22 +204,23 @@ export function getFilterTree(treeNodes, searchValue, filterFunc, valueEntities)
       match = true;
     }
 
-    const children = (React.Children.map(node.props.children, mapFilteredNodeToData) || []).filter(n => n);
+    const children = toNodeArray(node.props.children).map(mapFilteredNodeToData).filter(n => n);
 
     if (children.length || match) {
-      return {
-        ...node.props,
-        key: valueEntities[node.props.value].key,
-        children,
-      };
+      return (
+        <SelectNode
+          {...node.props}
+          key={valueEntities[node.props.value].key}
+        >
+          {children}
+        </SelectNode>
+      );
     }
 
     return null;
   }
 
-  return convertDataToEntities(
-    treeNodes.map(mapFilteredNodeToData).filter(node => node)
-  ).treeNodes;
+  return treeNodes.map(mapFilteredNodeToData).filter(node => node);
 }
 
 // =================== Value ===================
