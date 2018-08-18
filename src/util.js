@@ -151,27 +151,6 @@ export function parseSimpleTreeData(treeData, { id, pId, rootPId }) {
 }
 
 /**
- * `Tree` use `key` to track state but it will changed by React.
- * We need convert it back to the data and re-generate by `key`.
- * This is will cause performance issue.
- */
-export function convertTreeToData(treeNodes) {
-  return treeNodes.map((node) => {
-    if (!React.isValidElement(node) || !node.type || !node.type.isTreeNode) {
-      return null;
-    }
-
-    const { key, props } = node;
-
-    return {
-      ...props,
-      key,
-      children: convertTreeToData(props.children),
-    };
-  }).filter(data => data);
-}
-
-/**
  * Convert `treeData` to TreeNode List contains the mapping data.
  */
 // TODO: Remove this
@@ -207,15 +186,6 @@ export function convertDataToEntities(treeData) {
       valueEntities[value] = entity;
       keyEntities[entity.key] = entity;
       posEntities[pos] = entity;
-
-      // Warning user not to use deprecated label prop.
-      if ((!title && label) && !warnDeprecatedLabel) {
-        warning(
-          false,
-          '\'label\' in treeData is deprecated. Please use \'title\' instead.'
-        );
-        warnDeprecatedLabel = true;
-      }
 
       const node = (
         <SelectNode key={entity.key} {...nodeProps} title={title || label} label={label} value={value}>
@@ -421,11 +391,11 @@ export function formatSelectorValue(valueList, props, valueEntities) {
  * This will change the label to title value
  */
 function processProps(props) {
-  const { label, key, value } = props;
+  const { title, label, key, value } = props;
   const cloneProps = { ...props };
 
   // Warning user not to use deprecated label prop.
-  if (label) {
+  if (label && !title) {
     if (!warnDeprecatedLabel) {
       warning(
         false,
