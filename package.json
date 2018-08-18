@@ -86,7 +86,7 @@
     "prop-types": "^15.5.8",
     "raf": "^3.4.0",
     "rc-animate": "^3.0.0-rc.4",
-    "rc-tree": "~1.12.2",
+    "rc-tree": "~1.14.3",
     "rc-trigger": "^3.0.0-rc.2",
     "rc-util": "^4.5.0",
     "react-lifecycles-compat": "^3.0.4",

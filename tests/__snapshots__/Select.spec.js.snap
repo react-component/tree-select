@@ -256,11 +256,12 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -278,9 +279,11 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -369,11 +372,12 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open filter-node"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -460,11 +464,12 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -482,6 +487,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-close"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -568,11 +574,12 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open filter-node"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -590,6 +597,7 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -675,11 +683,12 @@ Array [
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-close"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -697,6 +706,7 @@ Array [
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-close"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
