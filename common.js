@@ -765,14 +765,14 @@ function polyfill(Component) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src__ = __webpack_require__(85);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__src__["c"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__src__["b"]; });
 /* unused harmony reexport SHOW_ALL */
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__src__["b"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__src__["a"]; });
 /* unused harmony reexport SHOW_CHILD */
 // export this package's api
 
 
-/* harmony default export */ __webpack_exports__["c"] = (__WEBPACK_IMPORTED_MODULE_0__src__["d" /* default */]);
+/* harmony default export */ __webpack_exports__["c"] = (__WEBPACK_IMPORTED_MODULE_0__src__["c" /* default */]);
 
 
 
@@ -3977,20 +3977,20 @@ Portal.propTypes = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return TreeNode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return TreeNode; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Select__ = __webpack_require__(216);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SelectNode__ = __webpack_require__(91);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__strategies__ = __webpack_require__(92);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_2__strategies__["a"]; });
+/* unused harmony reexport SHOW_ALL */
 /* unused harmony reexport SHOW_CHILD */
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__strategies__["c"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_2__strategies__["c"]; });
 
 
 
 
 var TreeNode = __WEBPACK_IMPORTED_MODULE_1__SelectNode__["a" /* default */];
 
-/* harmony default export */ __webpack_exports__["d"] = (__WEBPACK_IMPORTED_MODULE_0__Select__["a" /* default */]);
+/* harmony default export */ __webpack_exports__["c"] = (__WEBPACK_IMPORTED_MODULE_0__Select__["a" /* default */]);
 
 /***/ }),
 /* 86 */
@@ -29745,8 +29745,15 @@ var Select = function (_React$Component) {
         var filteredValueList = [];
         var keyList = [];
 
+        // Get latest value list
+        var latestValueList = newState.valueList;
+        if (!latestValueList) {
+          // Also need add prev missValueList to avoid new treeNodes contains the value
+          latestValueList = [].concat(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_toConsumableArray___default()(prevState.valueList), __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_toConsumableArray___default()(prevState.missValueList));
+        }
+
         // Get key by value
-        (newState.valueList || prevState.valueList).forEach(function (wrapperValue) {
+        latestValueList.forEach(function (wrapperValue) {
           var value = wrapperValue.value;
 
           var entity = (newState.valueEntities || prevState.valueEntities)[value];
