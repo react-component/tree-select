@@ -120,11 +120,12 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
       >
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -145,9 +146,11 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -168,9 +171,11 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
                 <ul
                   class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
                   data-expanded="true"
+                  role="group"
                 >
                   <li
                     class="rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked"
+                    role="treeitem"
                   >
                     <span
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -257,11 +262,12 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
       >
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -282,9 +288,11 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -305,9 +313,11 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
                 <ul
                   class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
                   data-expanded="true"
+                  role="group"
                 >
                   <li
                     class="rc-tree-select-tree-treenode-switcher-open"
+                    role="treeitem"
                   >
                     <span
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -457,11 +467,12 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
       >
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked filter-node"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -482,9 +493,11 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked filter-node"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -505,9 +518,11 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
                 <ul
                   class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
                   data-expanded="true"
+                  role="group"
                 >
                   <li
                     class="rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked filter-node"
+                    role="treeitem"
                   >
                     <span
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -594,11 +609,12 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
       >
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open filter-node"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -619,9 +635,11 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open filter-node"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -642,9 +660,11 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
                 <ul
                   class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
                   data-expanded="true"
+                  role="group"
                 >
                   <li
                     class="rc-tree-select-tree-treenode-switcher-open filter-node"
+                    role="treeitem"
                   >
                     <span
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"

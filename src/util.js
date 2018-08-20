@@ -1,11 +1,13 @@
 import React from 'react';
 import warning from 'warning';
+import {
+  convertDataToTree as rcConvertDataToTree,
+  convertTreeToEntities as rcConvertTreeToEntities,
+  conductCheck as rcConductCheck,
+} from 'rc-tree/lib/util';
+import toNodeArray from 'rc-util/lib/Children/toArray';
 import SelectNode from './SelectNode';
 import { SHOW_CHILD, SHOW_PARENT } from './strategies';
-
-// When treeNode not provide key, and we will use value as key.
-// Some time value is empty, we should pass it instead.
-const KEY_OF_VALUE_EMPTY = 'RC_TREE_SELECT_KEY_OF_VALUE_EMPTY';
 
 let warnDeprecatedLabel = false;
 
@@ -121,6 +123,7 @@ export function parseSimpleTreeData(treeData, { id, pId, rootPId }) {
     const clone = { ...node };
     const key = clone[id];
     keyNodes[key] = clone;
+    clone.key = clone.key || key;
     return clone;
   });
 
@@ -142,95 +145,6 @@ export function parseSimpleTreeData(treeData, { id, pId, rootPId }) {
   });
 
   return rootNodeList;
-}
-
-/**
- * `Tree` use `key` to track state but it will changed by React.
- * We need convert it back to the data and re-generate by `key`.
- * This is will cause performance issue.
- */
-export function convertTreeToData(treeNodes) {
-  return React.Children.map(treeNodes || [], (node) => {
-    if (!React.isValidElement(node) || !node.type || !node.type.isTreeNode) {
-      return null;
-    }
-
-    const { key, props } = node;
-
-    return {
-      ...props,
-      key,
-      children: convertTreeToData(props.children),
-    };
-  }).filter(data => data);
-}
-
-/**
- * Convert `treeData` to TreeNode List contains the mapping data.
- */
-export function convertDataToEntities(treeData) {
-  const list = toArray(treeData);
-
-  const valueEntities = {};
-  const keyEntities = {};
-  const posEntities = {};
-
-  function traverse(subTreeData, parentPos) {
-    const subList = toArray(subTreeData);
-
-    return subList.map(({ key, title, label, value, children ,...nodeProps }, index) => {
-      const pos = `${parentPos}-${index}`;
-
-      const entity = { key, value, pos };
-
-      // This may cause some side effect, need additional check
-      entity.key = entity.key || value;
-      if (!entity.key && entity.key !== 0) {
-        entity.key = KEY_OF_VALUE_EMPTY;
-      }
-
-      // Fill children
-      entity.parent = posEntities[parentPos];
-      if (entity.parent) {
-        entity.parent.children = entity.parent.children || [];
-        entity.parent.children.push(entity);
-      }
-
-      // Fill entities
-      valueEntities[value] = entity;
-      keyEntities[entity.key] = entity;
-      posEntities[pos] = entity;
-
-      // Warning user not to use deprecated label prop.
-      if ((!title && label) && !warnDeprecatedLabel) {
-        warning(
-          false,
-          '\'label\' in treeData is deprecated. Please use \'title\' instead.'
-        );
-        warnDeprecatedLabel = true;
-      }
-
-      const node = (
-        <SelectNode key={entity.key} {...nodeProps} title={title || label} label={label} value={value}>
-          {traverse(children, pos)}
-        </SelectNode>
-      );
-
-      entity.node = node;
-
-      return node;
-    });
-  }
-
-  const treeNodes = traverse(list, '0');
-
-  return {
-    treeNodes,
-
-    valueEntities,
-    keyEntities,
-    posEntities,
-  };
 }
 
 /**
@@ -277,7 +191,7 @@ export function cleanEntity({ node, pos, children }) {
  * we have to convert `treeNodes > data > treeNodes` to keep the key.
  * Such performance hungry!
  */
-export function getFilterTree(treeNodes, searchValue, filterFunc) {
+export function getFilterTree(treeNodes, searchValue, filterFunc, valueEntities) {
   if (!searchValue) {
     return null;
   }
@@ -290,22 +204,23 @@ export function getFilterTree(treeNodes, searchValue, filterFunc) {
       match = true;
     }
 
-    const children = (React.Children.map(node.props.children, mapFilteredNodeToData) || []).filter(n => n);
+    const children = toNodeArray(node.props.children).map(mapFilteredNodeToData).filter(n => n);
 
     if (children.length || match) {
-      return {
-        ...node.props,
-        key: node.key,
-        children,
-      };
+      return (
+        <SelectNode
+          {...node.props}
+          key={valueEntities[node.props.value].key}
+        >
+          {children}
+        </SelectNode>
+      );
     }
 
     return null;
   }
 
-  return convertDataToEntities(
-    treeNodes.map(mapFilteredNodeToData).filter(node => node)
-  ).treeNodes;
+  return treeNodes.map(mapFilteredNodeToData).filter(node => node);
 }
 
 // =================== Value ===================
@@ -410,33 +325,59 @@ export function formatSelectorValue(valueList, props, valueEntities) {
 }
 
 /**
- * When user search the tree, will not get correct tree checked status.
- * For checked key, use the `rc-tree` `calcCheckStateConduct` function.
- * For unchecked key, we need the calculate ourselves.
+ * Use `rc-tree` convertDataToTree to convert treeData to TreeNodes.
+ * This will change the label to title value
  */
-export function calcUncheckConduct(keyList, uncheckedKey, keyEntities) {
-  let myKeyList = keyList.slice();
+function processProps(props) {
+  const { title, label, key, value } = props;
+  const cloneProps = { ...props };
 
-  function conductUp(conductKey) {
-    myKeyList = myKeyList.filter(key => key !== conductKey);
-
-    // Check if need conduct
-    const parentEntity = keyEntities[conductKey].parent;
-    if (parentEntity && myKeyList.some(key => key === parentEntity.key)) {
-      conductUp(parentEntity.key);
+  // Warning user not to use deprecated label prop.
+  if (label && !title) {
+    if (!warnDeprecatedLabel) {
+      warning(
+        false,
+        '\'label\' in treeData is deprecated. Please use \'title\' instead.'
+      );
+      warnDeprecatedLabel = true;
     }
+
+    cloneProps.title = label;
   }
 
-  function conductDown(conductKey) {
-    myKeyList = myKeyList.filter(key => key !== conductKey);
-
-    (keyEntities[conductKey].children || []).forEach((childEntity) => {
-      conductDown(childEntity.key);
-    });
+  if (!key) {
+    cloneProps.key = value;
   }
 
-  conductUp(uncheckedKey);
-  conductDown(uncheckedKey);
-
-  return myKeyList;
+  return cloneProps;
 }
+
+export function convertDataToTree(treeData) {
+  return rcConvertDataToTree(treeData, { processProps });
+}
+
+/**
+ * Use `rc-tree` convertTreeToEntities for entities calculation.
+ * We have additional entities of `valueEntities`
+ */
+function initWrapper(wrapper) {
+  return {
+    ...wrapper,
+    valueEntities: {},
+  };
+}
+
+function processEntity(entity, wrapper) {
+  const value = entity.node.props.value;
+  entity.value = value;
+  wrapper.valueEntities[value] = entity;
+}
+
+export function convertTreeToEntities(treeNodes) {
+  return rcConvertTreeToEntities(treeNodes, {
+    initWrapper,
+    processEntity,
+  });
+}
+
+export const conductCheck = rcConductCheck;

@@ -66,11 +66,12 @@ exports[`TreeSelect.props allowClear 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -88,9 +89,11 @@ exports[`TreeSelect.props allowClear 1`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -108,6 +111,7 @@ exports[`TreeSelect.props allowClear 1`] = `
               </li>
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -127,6 +131,7 @@ exports[`TreeSelect.props allowClear 1`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -227,11 +232,12 @@ exports[`TreeSelect.props allowClear 2`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -249,9 +255,11 @@ exports[`TreeSelect.props allowClear 2`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -269,6 +277,7 @@ exports[`TreeSelect.props allowClear 2`] = `
               </li>
               <li
                 class="rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-selected"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -288,6 +297,7 @@ exports[`TreeSelect.props allowClear 2`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -376,11 +386,12 @@ exports[`TreeSelect.props allowClear 3`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -398,9 +409,11 @@ exports[`TreeSelect.props allowClear 3`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -418,6 +431,7 @@ exports[`TreeSelect.props allowClear 3`] = `
               </li>
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -437,6 +451,7 @@ exports[`TreeSelect.props allowClear 3`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -525,11 +540,12 @@ exports[`TreeSelect.props animation 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-close"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_close"
@@ -547,6 +563,7 @@ exports[`TreeSelect.props animation 1`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-close"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -635,11 +652,12 @@ exports[`TreeSelect.props async update treeData when has searchInput 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open filter-node"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -834,11 +852,12 @@ exports[`TreeSelect.props basic 2`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-close"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_close"
@@ -856,6 +875,7 @@ exports[`TreeSelect.props basic 2`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-close"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1049,11 +1069,12 @@ exports[`TreeSelect.props className 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -1071,9 +1092,11 @@ exports[`TreeSelect.props className 1`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1091,6 +1114,7 @@ exports[`TreeSelect.props className 1`] = `
               </li>
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1110,6 +1134,7 @@ exports[`TreeSelect.props className 1`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1232,11 +1257,12 @@ exports[`TreeSelect.props dropdownClassName 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -1254,9 +1280,11 @@ exports[`TreeSelect.props dropdownClassName 1`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1274,6 +1302,7 @@ exports[`TreeSelect.props dropdownClassName 1`] = `
               </li>
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1293,6 +1322,7 @@ exports[`TreeSelect.props dropdownClassName 1`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1381,11 +1411,12 @@ exports[`TreeSelect.props dropdownMatchSelectWidth default 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -1403,9 +1434,11 @@ exports[`TreeSelect.props dropdownMatchSelectWidth default 1`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1423,6 +1456,7 @@ exports[`TreeSelect.props dropdownMatchSelectWidth default 1`] = `
               </li>
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1442,6 +1476,7 @@ exports[`TreeSelect.props dropdownMatchSelectWidth default 1`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1530,11 +1565,12 @@ exports[`TreeSelect.props dropdownMatchSelectWidth false 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -1552,9 +1588,11 @@ exports[`TreeSelect.props dropdownMatchSelectWidth false 1`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1572,6 +1610,7 @@ exports[`TreeSelect.props dropdownMatchSelectWidth false 1`] = `
               </li>
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1591,6 +1630,7 @@ exports[`TreeSelect.props dropdownMatchSelectWidth false 1`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1679,11 +1719,12 @@ exports[`TreeSelect.props dropdownMatchSelectWidth true 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -1701,9 +1742,11 @@ exports[`TreeSelect.props dropdownMatchSelectWidth true 1`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1721,6 +1764,7 @@ exports[`TreeSelect.props dropdownMatchSelectWidth true 1`] = `
               </li>
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1740,6 +1784,7 @@ exports[`TreeSelect.props dropdownMatchSelectWidth true 1`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1828,11 +1873,12 @@ exports[`TreeSelect.props dropdownStyle 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -1850,9 +1896,11 @@ exports[`TreeSelect.props dropdownStyle 1`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1870,6 +1918,7 @@ exports[`TreeSelect.props dropdownStyle 1`] = `
               </li>
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1889,6 +1938,7 @@ exports[`TreeSelect.props dropdownStyle 1`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1977,11 +2027,12 @@ exports[`TreeSelect.props filterTreeNode 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -2070,11 +2121,12 @@ exports[`TreeSelect.props filterTreeNode 2`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -2092,9 +2144,11 @@ exports[`TreeSelect.props filterTreeNode 2`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open filter-node"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -2432,11 +2486,12 @@ exports[`TreeSelect.props prefixCls 1`] = `
         </span>
         <ul
           class="another-cls-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="another-cls-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="another-cls-tree-switcher another-cls-tree-switcher_open"
@@ -2454,9 +2509,11 @@ exports[`TreeSelect.props prefixCls 1`] = `
             <ul
               class="another-cls-tree-child-tree another-cls-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="another-cls-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="another-cls-tree-switcher another-cls-tree-switcher-noop"
@@ -2474,6 +2531,7 @@ exports[`TreeSelect.props prefixCls 1`] = `
               </li>
               <li
                 class="another-cls-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="another-cls-tree-switcher another-cls-tree-switcher-noop"
@@ -2493,6 +2551,7 @@ exports[`TreeSelect.props prefixCls 1`] = `
           </li>
           <li
             class="another-cls-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="another-cls-tree-switcher another-cls-tree-switcher-noop"
@@ -2587,11 +2646,12 @@ exports[`TreeSelect.props searchPlaceholder 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -2609,9 +2669,11 @@ exports[`TreeSelect.props searchPlaceholder 1`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -2629,6 +2691,7 @@ exports[`TreeSelect.props searchPlaceholder 1`] = `
               </li>
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -2648,6 +2711,7 @@ exports[`TreeSelect.props searchPlaceholder 1`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -2728,11 +2792,12 @@ exports[`TreeSelect.props showArrow 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -2750,9 +2815,11 @@ exports[`TreeSelect.props showArrow 1`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -2770,6 +2837,7 @@ exports[`TreeSelect.props showArrow 1`] = `
               </li>
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -2789,6 +2857,7 @@ exports[`TreeSelect.props showArrow 1`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -2855,11 +2924,12 @@ exports[`TreeSelect.props showSearch 1`] = `
       >
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -2877,9 +2947,11 @@ exports[`TreeSelect.props showSearch 1`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -2897,6 +2969,7 @@ exports[`TreeSelect.props showSearch 1`] = `
               </li>
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -2916,6 +2989,7 @@ exports[`TreeSelect.props showSearch 1`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -3004,11 +3078,12 @@ exports[`TreeSelect.props transitionName 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-close"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_close"
@@ -3026,6 +3101,7 @@ exports[`TreeSelect.props transitionName 1`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-close"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -3114,11 +3190,12 @@ exports[`TreeSelect.props treeDefaultExpandAll 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -3136,9 +3213,11 @@ exports[`TreeSelect.props treeDefaultExpandAll 1`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -3156,6 +3235,7 @@ exports[`TreeSelect.props treeDefaultExpandAll 1`] = `
               </li>
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -3175,6 +3255,7 @@ exports[`TreeSelect.props treeDefaultExpandAll 1`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -3263,11 +3344,12 @@ exports[`TreeSelect.props treeDefaultExpandAll 2`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-close"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_close"
@@ -3285,6 +3367,7 @@ exports[`TreeSelect.props treeDefaultExpandAll 2`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-close"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -3373,11 +3456,12 @@ exports[`TreeSelect.props treeIcon 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -3398,9 +3482,11 @@ exports[`TreeSelect.props treeIcon 1`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -3421,6 +3507,7 @@ exports[`TreeSelect.props treeIcon 1`] = `
               </li>
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -3443,6 +3530,7 @@ exports[`TreeSelect.props treeIcon 1`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -3534,11 +3622,12 @@ exports[`TreeSelect.props treeLine 1`] = `
         </span>
         <ul
           class="rc-tree-select-tree rc-tree-select-tree-show-line"
-          role="tree-node"
+          role="tree"
           unselectable="on"
         >
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -3556,9 +3645,11 @@ exports[`TreeSelect.props treeLine 1`] = `
             <ul
               class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
               data-expanded="true"
+              role="group"
             >
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -3576,6 +3667,7 @@ exports[`TreeSelect.props treeLine 1`] = `
               </li>
               <li
                 class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
               >
                 <span
                   class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -3595,6 +3687,7 @@ exports[`TreeSelect.props treeLine 1`] = `
           </li>
           <li
             class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
           >
             <span
               class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
