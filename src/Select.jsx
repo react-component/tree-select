@@ -280,8 +280,15 @@ class Select extends React.Component {
       const filteredValueList = [];
       const keyList = [];
 
+      // Get latest value list
+      let latestValueList = newState.valueList;
+      if (!latestValueList) {
+        // Also need add prev missValueList to avoid new treeNodes contains the value
+        latestValueList = [...prevState.valueList, ...prevState.missValueList];
+      }
+
       // Get key by value
-      (newState.valueList || prevState.valueList)
+      latestValueList
         .forEach((wrapperValue) => {
           const { value } = wrapperValue;
           const entity = (newState.valueEntities || prevState.valueEntities)[value];
