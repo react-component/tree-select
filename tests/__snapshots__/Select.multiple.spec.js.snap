@@ -16,13 +16,7 @@ exports[`TreeSelect.multiple maxTagCount illegal 1`] = `
     >
       <span
         class="rc-tree-select-selection__choice__remove"
-      >
-        <i
-          class="rc-tree-select-selection__choice__remove-icon"
-        >
-          ×
-        </i>
-      </span>
+      />
       <span
         class="rc-tree-select-selection__choice__content"
       >
@@ -84,13 +78,7 @@ exports[`TreeSelect.multiple maxTagCount legal 1`] = `
     >
       <span
         class="rc-tree-select-selection__choice__remove"
-      >
-        <i
-          class="rc-tree-select-selection__choice__remove-icon"
-        >
-          ×
-        </i>
-      </span>
+      />
       <span
         class="rc-tree-select-selection__choice__content"
       >
@@ -152,13 +140,7 @@ exports[`TreeSelect.multiple maxTagCount maxTagPlaceholder function 1`] = `
     >
       <span
         class="rc-tree-select-selection__choice__remove"
-      >
-        <i
-          class="rc-tree-select-selection__choice__remove-icon"
-        >
-          ×
-        </i>
-      </span>
+      />
       <span
         class="rc-tree-select-selection__choice__content"
       >
@@ -220,13 +202,7 @@ exports[`TreeSelect.multiple maxTagCount maxTagPlaceholder string 1`] = `
     >
       <span
         class="rc-tree-select-selection__choice__remove"
-      >
-        <i
-          class="rc-tree-select-selection__choice__remove-icon"
-        >
-          ×
-        </i>
-      </span>
+      />
       <span
         class="rc-tree-select-selection__choice__content"
       >

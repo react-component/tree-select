@@ -208,7 +208,7 @@ class Demo extends React.Component {
 
   render() {
     return (
-      <div style={{ margin: 20 }}>
+      <div style={{ margin: 20 }} className="custom-icon-demo">
         <h2>tree-select in dialog</h2>
         <button className="btn btn-primary" onClick={this.onClick}>show dialog</button>
         {this.state.visible ? <Dialog

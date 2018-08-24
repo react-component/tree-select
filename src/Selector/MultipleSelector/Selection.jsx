@@ -34,14 +34,6 @@ class Selection extends React.Component {
       content = `${content.slice(0, maxTagTextLength)}...`;
     }
 
-    let icon = null;
-    if (removeIcon) {
-      icon = removeIcon;
-      if (typeof removeIcon === 'function') {
-        icon = React.createElement(removeIcon, this.props);
-      }
-    }
-
     return (
       <li
         style={UNSELECTABLE_STYLE}
@@ -55,8 +47,8 @@ class Selection extends React.Component {
             className={`${prefixCls}-selection__choice__remove`}
             onClick={this.onRemove}
           >
-            {icon ||
-              <i className={`${prefixCls}-selection__choice__remove-icon`}>×</i>}
+            {typeof removeIcon === 'function' ?
+              React.createElement(removeIcon, { ...this.props }) : removeIcon}
           </span>
         }
         <span className={`${prefixCls}-selection__choice__content`}>

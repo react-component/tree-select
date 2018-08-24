@@ -106,20 +106,15 @@ export default function (modeName) {
         return null;
       }
 
-      let icon = null;
-      if (clearIcon) {
-        icon = clearIcon;
-        if (typeof clearIcon === 'function') {
-          icon = React.createElement(clearIcon, this.props);
-        }
-      }
-
       return (
         <span
           key="clear"
           className={`${prefixCls}-selection__clear`}
           onClick={onSelectorClear}
-        >{icon || <i className={`${prefixCls}-selection__clear-icon`}>×</i>}</span>
+        >
+          {typeof clearIcon === 'function' ?
+            React.createElement(clearIcon, { ...this.props }) : clearIcon}
+        </span>
       );
     }
 
@@ -129,21 +124,14 @@ export default function (modeName) {
         return null;
       }
 
-      let icon = null;
-      if (inputIcon) {
-        icon = inputIcon;
-        if (typeof inputIcon === 'function') {
-          icon = React.createElement(inputIcon, this.props);
-        }
-      }
-
       return (
         <span
           key="arrow"
           className={`${prefixCls}-arrow`}
           style={{ outline: 'none' }}
         >
-          {icon || <i className={`${prefixCls}-arrow-icon`} />}
+          {typeof inputIcon === 'function' ?
+            React.createElement(inputIcon, { ...this.props }) : inputIcon}
         </span>
       );
     }

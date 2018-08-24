@@ -27,13 +27,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
         >
           <span
             class="rc-tree-select-selection__choice__remove"
-          >
-            <i
-              class="rc-tree-select-selection__choice__remove-icon"
-            >
-              ×
-            </i>
-          </span>
+          />
           <span
             class="rc-tree-select-selection__choice__content"
           >
@@ -48,13 +42,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
         >
           <span
             class="rc-tree-select-selection__choice__remove"
-          >
-            <i
-              class="rc-tree-select-selection__choice__remove-icon"
-            >
-              ×
-            </i>
-          </span>
+          />
           <span
             class="rc-tree-select-selection__choice__content"
           >
@@ -69,13 +57,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
         >
           <span
             class="rc-tree-select-selection__choice__remove"
-          >
-            <i
-              class="rc-tree-select-selection__choice__remove-icon"
-            >
-              ×
-            </i>
-          </span>
+          />
           <span
             class="rc-tree-select-selection__choice__content"
           >
@@ -374,13 +356,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
         >
           <span
             class="rc-tree-select-selection__choice__remove"
-          >
-            <i
-              class="rc-tree-select-selection__choice__remove-icon"
-            >
-              ×
-            </i>
-          </span>
+          />
           <span
             class="rc-tree-select-selection__choice__content"
           >
@@ -395,13 +371,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
         >
           <span
             class="rc-tree-select-selection__choice__remove"
-          >
-            <i
-              class="rc-tree-select-selection__choice__remove-icon"
-            >
-              ×
-            </i>
-          </span>
+          />
           <span
             class="rc-tree-select-selection__choice__content"
           >
@@ -416,13 +386,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
         >
           <span
             class="rc-tree-select-selection__choice__remove"
-          >
-            <i
-              class="rc-tree-select-selection__choice__remove-icon"
-            >
-              ×
-            </i>
-          </span>
+          />
           <span
             class="rc-tree-select-selection__choice__content"
           >
