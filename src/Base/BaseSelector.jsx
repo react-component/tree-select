@@ -27,8 +27,8 @@ export const selectorPropTypes = {
 
   // Pass by component
   ariaId: PropTypes.string,
-  inputIcon: PropTypes.node,
-  clearIcon: PropTypes.node,
+  inputIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  clearIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 };
 
 export const selectorContextTypes = {
@@ -106,12 +106,20 @@ export default function (modeName) {
         return null;
       }
 
+      let icon = null;
+      if (clearIcon) {
+        icon = clearIcon;
+        if (typeof clearIcon === 'function') {
+          icon = React.createElement(clearIcon, this.props);
+        }
+      }
+
       return (
         <span
           key="clear"
           className={`${prefixCls}-selection__clear`}
           onClick={onSelectorClear}
-        >{clearIcon || <i className={`${prefixCls}-selection__clear-icon`}>×</i>}</span>
+        >{icon || <i className={`${prefixCls}-selection__clear-icon`}>×</i>}</span>
       );
     }
 
@@ -121,13 +129,21 @@ export default function (modeName) {
         return null;
       }
 
+      let icon = null;
+      if (inputIcon) {
+        icon = inputIcon;
+        if (typeof inputIcon === 'function') {
+          icon = React.createElement(inputIcon, this.props);
+        }
+      }
+
       return (
         <span
           key="arrow"
           className={`${prefixCls}-arrow`}
           style={{ outline: 'none' }}
         >
-          {inputIcon || <i className={`${prefixCls}-arrow-icon`} />}
+          {icon || <i className={`${prefixCls}-arrow-icon`} />}
         </span>
       );
     }

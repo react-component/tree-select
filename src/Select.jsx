@@ -105,9 +105,9 @@ class Select extends React.Component {
     onChange: PropTypes.func,
     onDropdownVisibleChange: PropTypes.func,
 
-    inputIcon: PropTypes.node,
-    clearIcon: PropTypes.node,
-    removeIcon: PropTypes.node,
+    inputIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+    clearIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+    removeIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     switcherIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   };
 

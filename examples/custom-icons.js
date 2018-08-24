@@ -71,6 +71,13 @@ const iconProps = {
   switcherIcon,
 };
 
+const iconPropsFunction = {
+  inputIcon: () => inputIcon,
+  clearIcon: () => clearIcon,
+  removeIcon: () => removeIcon,
+  switcherIcon,
+};
+
 function isLeaf(value) {
   if (!value) {
     return false;
@@ -271,6 +278,46 @@ class Demo extends React.Component {
           }}
           onSelect={this.onSelect}
           {...iconProps}
+        />
+
+        <h2>single select with function icon</h2>
+        <TreeSelect
+          style={{ width: 300 }}
+          transitionName="rc-tree-select-dropdown-slide-up"
+          choiceTransitionName="rc-tree-select-selection__choice-zoom"
+          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+          placeholder={<i>请下拉选择</i>}
+          searchPlaceholder="please search"
+          showSearch allowClear treeLine
+          searchValue={this.state.searchValue}
+          value={this.state.value}
+          treeData={gData}
+          treeNodeFilterProp="label"
+          filterTreeNode={false}
+          onSearch={this.onSearch}
+          open={this.state.tsOpen}
+          onChange={(value, ...args) => {
+            console.log('onChange', value, ...args);
+            if (value === '0-0-0-0-value') {
+              this.setState({ tsOpen: true });
+            } else {
+              this.setState({ tsOpen: false });
+            }
+            this.setState({ value });
+          }}
+          onDropdownVisibleChange={(v, info) => {
+            console.log('single onDropdownVisibleChange', v, info);
+            // document clicked
+            if (info.documentClickClose && this.state.value === '0-0-0-0-value') {
+              return false;
+            }
+            this.setState({
+              tsOpen: v,
+            });
+            return true;
+          }}
+          onSelect={this.onSelect}
+          {...iconPropsFunction}
         />
 
         <h2>single select (just select children)</h2>

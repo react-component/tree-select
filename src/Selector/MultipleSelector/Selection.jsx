@@ -13,7 +13,7 @@ class Selection extends React.Component {
 
     label: PropTypes.node,
     value: PropTypes.string,
-    removeIcon: PropTypes.node,
+    removeIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   };
 
   onRemove = (event) => {
@@ -34,6 +34,14 @@ class Selection extends React.Component {
       content = `${content.slice(0, maxTagTextLength)}...`;
     }
 
+    let icon = null;
+    if (removeIcon) {
+      icon = removeIcon;
+      if (typeof removeIcon === 'function') {
+        icon = React.createElement(removeIcon, this.props);
+      }
+    }
+
     return (
       <li
         style={UNSELECTABLE_STYLE}
@@ -47,7 +55,7 @@ class Selection extends React.Component {
             className={`${prefixCls}-selection__choice__remove`}
             onClick={this.onRemove}
           >
-            {removeIcon ||
+            {icon ||
               <i className={`${prefixCls}-selection__choice__remove-icon`}>×</i>}
           </span>
         }
