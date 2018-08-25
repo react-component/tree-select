@@ -34,6 +34,7 @@ class BasePopup extends React.Component {
     notFoundContent: PropTypes.string,
 
     ariaId: PropTypes.string,
+    switcherIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 
     // HOC
     renderSearch: PropTypes.func,
@@ -139,6 +140,7 @@ class BasePopup extends React.Component {
       loadData,
       ariaId,
       renderSearch,
+      switcherIcon,
     } = this.props;
     const { rcTreeSelect: {
       onPopupKeyDown,
@@ -190,6 +192,7 @@ class BasePopup extends React.Component {
           onCheck={onTreeNodeCheck}
           onExpand={this.onTreeExpand}
           onLoad={this.onLoad}
+          switcherIcon={switcherIcon}
           {...treeProps}
         >
           {$treeNodes}

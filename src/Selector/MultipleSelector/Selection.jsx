@@ -13,6 +13,7 @@ class Selection extends React.Component {
 
     label: PropTypes.node,
     value: PropTypes.string,
+    removeIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   };
 
   onRemove = (event) => {
@@ -25,7 +26,7 @@ class Selection extends React.Component {
   render() {
     const {
       prefixCls, maxTagTextLength,
-      label, value, onRemove,
+      label, value, onRemove, removeIcon,
     } = this.props;
 
     let content = label || value;
@@ -45,7 +46,10 @@ class Selection extends React.Component {
           <span
             className={`${prefixCls}-selection__choice__remove`}
             onClick={this.onRemove}
-          />
+          >
+            {typeof removeIcon === 'function' ?
+              React.createElement(removeIcon, { ...this.props }) : removeIcon}
+          </span>
         }
         <span className={`${prefixCls}-selection__choice__content`}>
           {content}

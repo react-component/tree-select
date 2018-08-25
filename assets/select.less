@@ -37,7 +37,8 @@
     top: 1px;
     right: 1px;
     width: 20px;
-    b {
+    &:after {
+      content: '';
       border-color: #999999 transparent transparent transparent;
       border-style: solid;
       border-width: 5px 4px 0 4px;
@@ -66,10 +67,6 @@
     &__clear {
       font-weight: bold;
       position: absolute;
-
-      &:after {
-        content: '×'
-      }
     }
   }
 
@@ -117,6 +114,9 @@
     .@{selectPrefixCls}-selection__clear {
       top: 5px;
       right: 20px;
+      &:after {
+        content: '×';
+      }
     }
   }
 
@@ -129,7 +129,7 @@
       cursor: not-allowed;
       color: #ccc;
 
-      &:hover {
+      &:hover{
         cursor: not-allowed;
         color: #ccc;
       }
@@ -301,6 +301,7 @@
       top: 0;
       right: 2px;
       transition: opacity .3s, transform .3s;
+
       &:before {
         content: '×'
       }
@@ -500,7 +501,7 @@
   }
 
   &-open {
-    .@{selectPrefixCls}-arrow b {
+    .@{selectPrefixCls}-arrow:after {
       border-color: transparent transparent #888 transparent;
       border-width: 0 4px 5px 4px;
     }
@@ -509,5 +510,27 @@
   &-not-found {
     display: inline-block;
     padding: 8px;
+  }
+}
+
+.custom-icon-demo {
+  .@{selectPrefixCls} {
+    &-selection__choice__remove {
+      &:before {
+        content: '';
+      }
+    }
+
+    &-arrow {
+      &:after {
+        display: none;
+      }
+    }
+
+    &-selection__clear {
+      &:after {
+        content: '';
+      }
+    }
   }
 }

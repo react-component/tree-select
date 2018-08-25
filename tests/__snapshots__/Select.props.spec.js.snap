@@ -25,9 +25,7 @@ exports[`TreeSelect.props allowClear 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -183,9 +181,7 @@ exports[`TreeSelect.props allowClear 2`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -335,9 +331,7 @@ exports[`TreeSelect.props allowClear 3`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -487,9 +481,7 @@ exports[`TreeSelect.props animation 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -597,9 +589,7 @@ exports[`TreeSelect.props async update treeData when has searchInput 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -689,9 +679,7 @@ exports[`TreeSelect.props async update treeData when has searchInput 2`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -758,9 +746,7 @@ exports[`TreeSelect.props basic 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
 </div>
@@ -791,9 +777,7 @@ exports[`TreeSelect.props basic 2`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -1000,9 +984,7 @@ exports[`TreeSelect.props className 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -1151,9 +1133,7 @@ exports[`TreeSelect.props defaultValue 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
 </div>
@@ -1184,9 +1164,7 @@ exports[`TreeSelect.props dropdownClassName 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -1336,9 +1314,7 @@ exports[`TreeSelect.props dropdownMatchSelectWidth default 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -1488,9 +1464,7 @@ exports[`TreeSelect.props dropdownMatchSelectWidth false 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -1640,9 +1614,7 @@ exports[`TreeSelect.props dropdownMatchSelectWidth true 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -1792,9 +1764,7 @@ exports[`TreeSelect.props dropdownStyle 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -1944,9 +1914,7 @@ exports[`TreeSelect.props filterTreeNode 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -2036,9 +2004,7 @@ exports[`TreeSelect.props filterTreeNode 2`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -2151,9 +2117,7 @@ exports[`TreeSelect.props loadData 1`] = `
     <span
       class="rc-tree-select-arrow"
       style="outline: none;"
-    >
-      <b />
-    </span>
+    />
   </span>
 </span>
 `;
@@ -2271,9 +2235,7 @@ exports[`TreeSelect.props notFoundContent 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -2342,9 +2304,7 @@ exports[`TreeSelect.props placeholder 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline:none"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
 </div>
@@ -2375,9 +2335,7 @@ exports[`TreeSelect.props prefixCls 1`] = `
       <span
         class="another-cls-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -2527,9 +2485,7 @@ exports[`TreeSelect.props searchPlaceholder 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -2831,9 +2787,7 @@ exports[`TreeSelect.props showSearch 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -2961,9 +2915,7 @@ exports[`TreeSelect.props transitionName 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -3071,9 +3023,7 @@ exports[`TreeSelect.props treeDefaultExpandAll 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -3223,9 +3173,7 @@ exports[`TreeSelect.props treeDefaultExpandAll 2`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -3333,9 +3281,7 @@ exports[`TreeSelect.props treeIcon 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
@@ -3497,9 +3443,7 @@ exports[`TreeSelect.props treeLine 1`] = `
       <span
         class="rc-tree-select-arrow"
         style="outline: none;"
-      >
-        <b />
-      </span>
+      />
     </span>
   </span>
   <div>
