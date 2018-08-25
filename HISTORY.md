@@ -1,6 +1,18 @@
 # History
 ---
 
+## 2.2.0
+
+- Allow custom icon (#120)
+
+## 2.1.0
+
+- upgrade rc-tree to 1.14.x (#121)
+
+## 2.0.0
+
+- Refactor TreeSelect. [#113](https://github.com/react-component/tree-select/pull/113)
+
 ## 1.12.0 / 2017-11-15
 
 - Add `focus()` `blur()` `onFocus` `onBlur` and `autoFocus`.
