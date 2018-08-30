@@ -247,4 +247,50 @@ exports[`TreeSelect.multiple maxTagCount maxTagPlaceholder string 1`] = `
 </span>
 `;
 
+exports[`TreeSelect.multiple maxTagCount zero 1`] = `
+<span
+  class="rc-tree-select-selection rc-tree-select-selection--multiple"
+>
+  <ul
+    class="rc-tree-select-selection__rendered"
+    role="menubar"
+  >
+    <li
+      class="rc-tree-select-selection__choice"
+      role="menuitem"
+      style="user-select:none;-webkit-user-select:none"
+      title="+ 2 ..."
+      unselectable="unselectable"
+    >
+      <span
+        class="rc-tree-select-selection__choice__content"
+      >
+        + 2 ...
+      </span>
+    </li>
+    <li
+      class="rc-tree-select-search rc-tree-select-search--inline"
+    >
+      <span
+        class="rc-tree-select-search__field__wrap"
+      >
+        <input
+          aria-autocomplete="list"
+          aria-label="filter select"
+          aria-multiline="false"
+          class="rc-tree-select-search__field"
+          type="text"
+          value=""
+        />
+        <span
+          class="rc-tree-select-search__field__mirror"
+        >
+           
+        </span>
+      </span>
+    </li>
+  </ul>
+</span>
+`;
+
 exports[`TreeSelect.multiple renders clear button 1`] = `null`;
