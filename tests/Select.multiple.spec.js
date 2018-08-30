@@ -165,6 +165,15 @@ describe('TreeSelect.multiple', () => {
       expect(wrapper.find('.rc-tree-select-selection')).toMatchSnapshot();
     });
 
+    it('zero', () => {
+      const wrapper = render(createSelect({
+        maxTagCount: 0,
+        value: ['0', '1'],
+      }));
+
+      expect(wrapper.find('.rc-tree-select-selection')).toMatchSnapshot();
+    });
+
     describe('maxTagPlaceholder', () => {
       it('string', () => {
         const wrapper = render(createSelect({

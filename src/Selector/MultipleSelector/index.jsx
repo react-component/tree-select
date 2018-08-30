@@ -90,7 +90,7 @@ class MultipleSelector extends React.Component {
 
     // Check if `maxTagCount` is set
     let myValueList = selectorValueList;
-    if (maxTagCount > 0) {
+    if (maxTagCount >= 0) {
       myValueList = selectorValueList.slice(0, maxTagCount);
     }
 
@@ -106,7 +106,7 @@ class MultipleSelector extends React.Component {
     ));
 
     // Rest node count
-    if (maxTagCount > 0 && maxTagCount < selectorValueList.length) {
+    if (maxTagCount >= 0 && maxTagCount < selectorValueList.length) {
       let content = `+ ${selectorValueList.length - maxTagCount} ...`;
       if (typeof maxTagPlaceholder === 'string') {
         content = maxTagPlaceholder;
