@@ -12,7 +12,7 @@ class Selection extends React.Component {
     onRemove: PropTypes.func,
 
     label: PropTypes.node,
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     removeIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   };
 

@@ -1,6 +1,11 @@
 import PropTypes from 'prop-types';
 import { isLabelInValue } from './util';
 
+const internalValProp = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.number,
+]);
+
 export function genArrProps(propType) {
   return PropTypes.oneOfType([
     propType,
@@ -19,18 +24,18 @@ export function valueProp(...args) {
   if (isLabelInValue(props)) {
     const err = genArrProps(PropTypes.shape({
       label: PropTypes.node,
-      value: PropTypes.string,
+      value: internalValProp,
     }))(...args);
     if (err) {
       return new Error(
         `Invalid prop \`${propName}\` supplied to \`${Component}\`. ` +
-        `You should use { label: string, value: string } or [{ label: string, value: string }] instead.`
+        `You should use { label: string, value: string | number } or [{ label: string, value: string | number }] instead.`
       );
     }
     return null;
   }
 
-  const err = genArrProps(PropTypes.string)(...args);
+  const err = genArrProps(internalValProp)(...args);
   if (err) {
     return new Error(
       `Invalid prop \`${propName}\` supplied to \`${Component}\`. ` +

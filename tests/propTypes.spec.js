@@ -10,7 +10,7 @@ describe('TreeSelect.propTypes', () => {
       value: 'foo',
     }, 'value', 'TreeSelect', '', '', ReactPropTypesSecret);
     expect(error.message).toBe(
-      'Invalid prop `value` supplied to `TreeSelect`. You should use { label: string, value: string } or [{ label: string, value: string }] instead.'
+      'Invalid prop `value` supplied to `TreeSelect`. You should use { label: string, value: string | number } or [{ label: string, value: string | number }] instead.'
     );
   });
 
@@ -21,7 +21,7 @@ describe('TreeSelect.propTypes', () => {
       value: 'foo',
     }, 'value', 'TreeSelect', '', '', ReactPropTypesSecret);
     expect(error.message).toBe(
-      'Invalid prop `value` supplied to `TreeSelect`. You should use { label: string, value: string } or [{ label: string, value: string }] instead.'
+      'Invalid prop `value` supplied to `TreeSelect`. You should use { label: string, value: string | number } or [{ label: string, value: string | number }] instead.'
     );
   });
 

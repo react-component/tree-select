@@ -196,4 +196,31 @@ describe('TreeSelect.multiple', () => {
       });
     });
   });
+
+  it('number types', () => {
+    const myTreeData = [
+      { key: 0, value: 0, title: 0 },
+      { key: 1, value: 1, title: 1, children: [
+        { key: 2, value: 2, title: 2 },
+        { key: 3, value: 3, title: 3 },
+      ]},
+      { key: 4, value: 4, title: 4 },
+    ];
+
+    const onChange = jest.fn();
+
+    const wrapper = mount(createSelect({
+      open: true,
+      treeCheckable: true,
+      defaultValue: [4],
+      treeData: myTreeData,
+      onChange,
+    }));
+
+    select(wrapper, 0);
+    select(wrapper, 1);
+
+    expect(onChange.mock.calls[0][0]).toEqual([0, 4]);
+    expect(onChange.mock.calls[1][0]).toEqual([0, 2, 3, 4]);
+  });
 });
