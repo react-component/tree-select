@@ -811,7 +811,11 @@ class Select extends React.Component {
   };
 
   delayForcePopupAlign = () => {
-    raf(this.forcePopupAlign);
+    // Wait 2 frame to avoid dom update & dom algin in the same time
+    // https://github.com/ant-design/ant-design/issues/12031
+    raf(() => {
+      raf(this.forcePopupAlign);
+    });
   };
 
   /**
@@ -925,7 +929,6 @@ class Select extends React.Component {
       <Selector
         {...passProps}
         ref={this.selectorRef}
-        onChoiceAnimationLeave={this.forcePopupAlign}
       />
     );
 
