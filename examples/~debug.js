@@ -188,17 +188,22 @@ var Demo = function (_React$Component) {
         });
       };
       return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["c" /* default */],
-        {
-          showSearch: true,
-          style: { width: 300 },
-          dropdownStyle: { maxHeight: 400, overflow: "auto" },
-          placeholder: 'Please select',
-          allowClear: true,
-          multiple: true,
-          treeNodeFilterProp: 'title'
-        },
-        loop(dataSource.categoryList)
+        'div',
+        { style: { paddingTop: 600 } },
+        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+          __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["c" /* default */],
+          {
+            showSearch: true,
+            style: { width: 300 },
+            dropdownStyle: { maxHeight: 400, overflow: "auto" },
+            treeDefaultExpandAll: true,
+            placeholder: 'Please select',
+            allowClear: true,
+            multiple: true,
+            treeNodeFilterProp: 'title'
+          },
+          loop(dataSource.categoryList)
+        )
       );
     }
   }]);

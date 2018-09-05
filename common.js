@@ -28961,8 +28961,7 @@ var Select = function (_React$Component) {
 
       var Selector = isMultiple ? __WEBPACK_IMPORTED_MODULE_16__Selector_MultipleSelector__["a" /* default */] : __WEBPACK_IMPORTED_MODULE_15__Selector_SingleSelector__["a" /* default */];
       var $selector = __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(Selector, __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({}, passProps, {
-        ref: this.selectorRef,
-        onChoiceAnimationLeave: this.forcePopupAlign
+        ref: this.selectorRef
       }));
 
       return __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(
@@ -29696,7 +29695,11 @@ var _initialiseProps = function _initialiseProps() {
   };
 
   this.delayForcePopupAlign = function () {
-    __WEBPACK_IMPORTED_MODULE_11_raf___default()(_this2.forcePopupAlign);
+    // Wait 2 frame to avoid dom update & dom algin in the same time
+    // https://github.com/ant-design/ant-design/issues/12031
+    __WEBPACK_IMPORTED_MODULE_11_raf___default()(function () {
+      __WEBPACK_IMPORTED_MODULE_11_raf___default()(_this2.forcePopupAlign);
+    });
   };
 
   this.triggerChange = function (missValueList, valueList) {
