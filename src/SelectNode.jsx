@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { TreeNode } from 'rc-tree';
+import { valueProp } from './propTypes';
 
 /**
  * SelectNode wrapped the tree node.
@@ -13,7 +13,7 @@ const SelectNode = (props) => (
 
 SelectNode.propTypes = {
   ...TreeNode.propTypes,
-  value: PropTypes.string,
+  value: valueProp,
 };
 
 // Let Tree trade as TreeNode to reuse this for performance saving.
