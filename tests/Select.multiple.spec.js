@@ -223,4 +223,32 @@ describe('TreeSelect.multiple', () => {
     expect(onChange.mock.calls[0][0]).toEqual([0, 4]);
     expect(onChange.mock.calls[1][0]).toEqual([0, 2, 3, 4]);
   });
+
+  // https://github.com/ant-design/ant-design/issues/12315
+  it('select searched node', () => {
+    const onChange = jest.fn();
+
+    const wrapper = mount(
+      <TreeSelect
+        showSearch
+        value={['leaf1']}
+        multiple
+        onChange={onChange}
+      >
+        <TreeNode value="parent 1" title="parent 1" key="0-1">
+          <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
+            <TreeNode value="leaf1" title="my leaf" key="random" />
+          </TreeNode>
+          <TreeNode value="parent 1-1" title="parent 1-1" key="random2">
+            <TreeNode value="sss" title="sss" key="random3" />
+          </TreeNode>
+        </TreeNode>
+      </TreeSelect>
+    );
+
+    wrapper.find('.rc-tree-select-search__field').simulate('change', { target: { value: 'sss' } });
+    wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(2).simulate('click');
+
+    expect(onChange.mock.calls[0][0]).toEqual(['leaf1', 'sss']);
+  });
 });

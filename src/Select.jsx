@@ -621,6 +621,7 @@ class Select extends React.Component {
   };
 
   onTreeNodeSelect = (_, nodeEventInfo) => {
+    const { valueList, valueEntities } = this.state;
     const { treeCheckable, multiple } = this.props;
     if (treeCheckable) return;
 
@@ -628,8 +629,19 @@ class Select extends React.Component {
       this.setOpenState(false);
     }
 
-    const { selectedNodes } = nodeEventInfo;
     const isAdd = nodeEventInfo.selected;
+    const { props: { value: selectedValue } } = nodeEventInfo.node;
+
+    const newValueList = valueList.filter(({ value }) => value !== selectedValue);
+    if (isAdd) {
+      newValueList.push({ value: selectedValue });
+    }
+
+    const selectedNodes = newValueList
+      .map(({ value }) => valueEntities[value])
+      .filter(entity => entity)
+      .map(({ node }) => node);
+
     this.onValueTrigger(isAdd, selectedNodes, nodeEventInfo, { selected: isAdd });
   };
 
