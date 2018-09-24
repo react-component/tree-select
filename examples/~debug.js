@@ -76,7 +76,7 @@ var Demo = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Demo.__proto__ || Object.getPrototypeOf(Demo)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      value: ["leaf1"]
+      value: undefined
     }, _this.onChange = function (value) {
       console.log(value);
       _this.setState({ value: value });
@@ -92,11 +92,10 @@ var Demo = function (_React$Component) {
           showSearch: true,
           style: { width: 300 },
           value: this.state.value,
-          dropdownStyle: { maxHeight: 400, overflow: "auto" },
+          dropdownStyle: { maxHeight: 400, overflow: 'auto' },
           placeholder: 'Please select',
-          allowClear: true
-          // treeCheckable
-          , multiple: true,
+          allowClear: true,
+          treeDefaultExpandAll: true,
           onChange: this.onChange
         },
         __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
@@ -111,15 +110,11 @@ var Demo = function (_React$Component) {
           __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */],
             { value: 'parent 1-1', title: 'parent 1-1', key: 'random2' },
-            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */], {
-              value: 'sss',
-              title: __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */], { value: 'sss', title: __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                 'b',
-                { style: { color: "#08c" } },
+                { style: { color: '#08c' } },
                 'sss'
-              ),
-              key: 'random3'
-            })
+              ), key: 'random3' })
           )
         )
       );

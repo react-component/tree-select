@@ -31083,12 +31083,18 @@ var _initialiseProps = function _initialiseProps() {
     var selectedValue = nodeEventInfo.node.props.value;
 
 
-    var newValueList = valueList.filter(function (_ref11) {
-      var value = _ref11.value;
-      return value !== selectedValue;
-    });
-    if (isAdd) {
-      newValueList.push({ value: selectedValue });
+    var newValueList = void 0;
+
+    if (!multiple) {
+      newValueList = [{ value: selectedValue }];
+    } else {
+      newValueList = valueList.filter(function (_ref11) {
+        var value = _ref11.value;
+        return value !== selectedValue;
+      });
+      if (isAdd) {
+        newValueList.push({ value: selectedValue });
+      }
     }
 
     var selectedNodes = newValueList.map(function (_ref12) {
