@@ -122,6 +122,22 @@ describe('TreeSelect.basic', () => {
     ).toBe('label0');
   });
 
+  it('select value twice', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <TreeSelect onChange={onChange}>
+        <TreeNode key="0" value="0" title="0 label"/>
+        <TreeNode key="1" value="1" title="1 label"/>
+      </TreeSelect>
+    );
+    wrapper.openSelect();
+    wrapper.find('.rc-tree-select-tree-title').at(0).simulate('click');
+    expect(onChange.mock.calls[0][0]).toEqual('0');
+    wrapper.openSelect();
+    wrapper.find('.rc-tree-select-tree-title').at(1).simulate('click');
+    expect(onChange.mock.calls[1][0]).toEqual('1');
+  });
+
   it('can be controlled by value', () => {
     const treeData = [
       { key: '0', value: '0', title: 'label0' },

@@ -632,9 +632,15 @@ class Select extends React.Component {
     const isAdd = nodeEventInfo.selected;
     const { props: { value: selectedValue } } = nodeEventInfo.node;
 
-    const newValueList = valueList.filter(({ value }) => value !== selectedValue);
-    if (isAdd) {
-      newValueList.push({ value: selectedValue });
+    let newValueList;
+
+    if (!multiple) {
+      newValueList = [{ value: selectedValue }];
+    } else {
+      newValueList = valueList.filter(({ value }) => value !== selectedValue);
+      if (isAdd) {
+        newValueList.push({ value: selectedValue });
+      }
     }
 
     const selectedNodes = newValueList
