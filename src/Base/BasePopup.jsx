@@ -26,8 +26,10 @@ class BasePopup extends React.Component {
     treeCheckStrictly: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
     treeDefaultExpandedKeys: PropTypes.array,
+    treeExpandedKeys: PropTypes.array,
     loadData: PropTypes.func,
     multiple: PropTypes.bool,
+    onTreeExpand: PropTypes.func,
 
     treeNodes: PropTypes.node,
     filteredTreeNodes: PropTypes.node,
@@ -89,6 +91,11 @@ class BasePopup extends React.Component {
       newState.expandedKeyList = Object.keys(keyEntities);
     }
 
+    // Use expandedKeys if provided
+    if (prevProps.treeExpandedKeys !== nextProps.treeExpandedKeys) {
+      newState.expandedKeyList = nextProps.treeExpandedKeys;
+    }
+
     // Clean loadedKeys if key not exist in keyEntities anymore
     if (nextProps.loadData) {
       newState.loadedKeys = loadedKeys.filter(key => key in keyEntities);
@@ -98,8 +105,16 @@ class BasePopup extends React.Component {
   }
 
   onTreeExpand = (expandedKeyList) => {
-    const { onTreeExpanded } = this.props;
-    this.setState({ expandedKeyList }, onTreeExpanded);
+    const { treeExpandedKeys, onTreeExpand, onTreeExpanded } = this.props;
+
+    // Set uncontrolled state
+    if (!treeExpandedKeys) {
+      this.setState({ expandedKeyList }, onTreeExpanded);
+    }
+
+    if (onTreeExpand) {
+      onTreeExpand(expandedKeyList);
+    }
   };
 
   onLoad = (loadedKeys) => {
