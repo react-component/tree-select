@@ -94,6 +94,7 @@ class Select extends React.Component {
     treeLine: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
     treeDefaultExpandedKeys: PropTypes.array,
+    treeExpandedKeys: PropTypes.array,
     loadData: PropTypes.func,
     filterTreeNode: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 
@@ -104,6 +105,8 @@ class Select extends React.Component {
     onDeselect: PropTypes.func,
     onChange: PropTypes.func,
     onDropdownVisibleChange: PropTypes.func,
+
+    onTreeExpand: PropTypes.func,
 
     inputIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     clearIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
@@ -914,7 +917,7 @@ class Select extends React.Component {
       open, focused,
       treeNodes, filteredTreeNodes,
     } = this.state;
-    const { prefixCls } = this.props;
+    const { prefixCls, treeExpandedKeys, onTreeExpand } = this.props;
     const isMultiple = this.isMultiple();
 
     const passProps = {
@@ -939,6 +942,9 @@ class Select extends React.Component {
         onTreeExpanded={this.delayForcePopupAlign}
         treeNodes={treeNodes}
         filteredTreeNodes={filteredTreeNodes}
+        // Tree expanded control
+        treeExpandedKeys={treeExpandedKeys}
+        onTreeExpand={onTreeExpand}
       />
     );
 
