@@ -1,6 +1,11 @@
 # History
 ---
 
+## 2.3.0
+
+- Add `treeExpandedKeys`
+- Add `onTreeExpand`
+
 ## 2.2.0
 
 - Allow custom icon (#120)
