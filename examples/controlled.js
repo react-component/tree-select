@@ -1,4 +1,4 @@
-webpackJsonp([5],{
+webpackJsonp([9],{
 
 /***/ 10:
 /***/ (function(module, exports) {
@@ -14,15 +14,15 @@ webpackJsonp([5],{
 
 /***/ }),
 
-/***/ 361:
+/***/ 243:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(362);
+module.exports = __webpack_require__(244);
 
 
 /***/ }),
 
-/***/ 362:
+/***/ 244:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -59,42 +59,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-var SHOW_PARENT = __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["c" /* default */].SHOW_PARENT;
-
-var treeData = [{
-  label: "Node1",
-  value: "Node1",
-  key: "Node1",
-  foo: 1,
-  children: [{
-    label: "Child Node1",
-    value: "Child Node1",
-    key: "Child Node1",
-    foo: 1
-  }]
-}, {
-  label: "Node2",
-  value: "Node2",
-  key: "Node2",
-  foo: 1,
-  children: [{
-    label: "Child Node3",
-    value: "Child Node3",
-    key: "Child Node3",
-    foo: 1
-  }, {
-    label: "Child Node4",
-    value: "Child Node4",
-    key: "Child Node4",
-    foo: 1
-  }, {
-    label: "Child Node5",
-    value: "Child Node5",
-    key: "Child Node5",
-    foo: 1
-  }]
-}];
-
 var Demo = function (_React$Component) {
   __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default()(Demo, _React$Component);
 
@@ -110,28 +74,79 @@ var Demo = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Demo.__proto__ || Object.getPrototypeOf(Demo)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      value: undefined
-    }, _this.onChange = function (value, label, extra) {
-      if (extra.allCheckedNodes[0]) console.log(">>>", extra.allCheckedNodes[0]);
-      _this.setState({ value: value });
+      treeExpandedKeys: []
+    }, _this.onTreeExpand = function (treeExpandedKeys) {
+      _this.setState({
+        treeExpandedKeys: treeExpandedKeys
+      });
+    }, _this.treeExpandedKeys = function () {
+      _this.setState({
+        treeExpandedKeys: ['000', '0-1-0']
+      });
     }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
   __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(Demo, [{
     key: 'render',
     value: function render() {
-      var tProps = {
-        treeData: treeData,
-        value: this.state.value,
-        onChange: this.onChange,
-        treeCheckable: true,
-        showCheckedStrategy: SHOW_PARENT,
-        searchPlaceholder: "Please select",
-        style: {
-          width: 300
-        }
-      };
-      return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["c" /* default */], tProps);
+      var treeExpandedKeys = this.state.treeExpandedKeys;
+
+
+      return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+        'div',
+        null,
+        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+          'h2',
+          null,
+          'Conrolled treeExpandedKeys'
+        ),
+        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+          __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["c" /* default */],
+          {
+            style: { width: 200 },
+            dropdownStyle: { maxHeight: 200, overflow: 'auto' },
+            treeExpandedKeys: treeExpandedKeys,
+            onTreeExpand: this.onTreeExpand
+          },
+          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */],
+            { value: '', title: 'parent 1', key: '000' },
+            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+              __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */],
+              { value: 'parent 1-0', title: 'parent 1-0', key: '0-1-0' },
+              __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */], { value: 'leaf1', title: 'my leaf', key: 'random' }),
+              __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */], { value: 'leaf2', title: 'your leaf', key: 'random1', disabled: true })
+            ),
+            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+              __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */],
+              { value: 'parent 1-1', title: 'parent 1-1', key: '0-1-1' },
+              __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */], { value: 'sss',
+                title: __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                  'span',
+                  { style: { color: 'red' } },
+                  'sss'
+                ), key: 'random3'
+              }),
+              __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */],
+                { value: 'same value1', title: 'same txtle', key: '0-1-1-1' },
+                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */], { value: 'same value10', title: 'same titlexd', key: '0-1-1-1-0', style: { color: 'red', background: 'green' } })
+              )
+            )
+          ),
+          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */],
+            { value: 'same value2', title: 'same title', key: '0-2' },
+            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */], { value: '2same value', title: '2same title', key: '0-2-0' })
+          ),
+          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */], { value: 'same value3', title: 'same title', key: '0-3' })
+        ),
+        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+          'button',
+          { onClick: this.treeExpandedKeys },
+          'Set treeExpandedKeys'
+        )
+      );
     }
   }]);
 
@@ -142,5 +157,5 @@ __WEBPACK_IMPORTED_MODULE_6_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ })
 
-},[361]);
-//# sourceMappingURL=~debug4.js.map
+},[243]);
+//# sourceMappingURL=controlled.js.map
