@@ -1304,7 +1304,6 @@ function getScrollBarSize(fresh) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__AnimateChild__ = __webpack_require__(75);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__CSSMotion__ = __webpack_require__(78);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__util_animate__ = __webpack_require__(44);
-/* unused harmony reexport CSSMotion */
 
 
 
@@ -1333,8 +1332,6 @@ function getChildrenFromProps(props) {
 }
 
 function noop() {}
-
-
 
 var Animate = function (_React$Component) {
   __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits___default()(Animate, _React$Component);

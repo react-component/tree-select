@@ -4996,7 +4996,7 @@ var BasePopup = function (_React$Component) {
       }
 
       // Show all when tree is in filter mode
-      if (filteredTreeNodes && filteredTreeNodes.length && filteredTreeNodes !== prevProps.filteredTreeNodes) {
+      if (!nextProps.treeExpandedKeys && filteredTreeNodes && filteredTreeNodes.length && filteredTreeNodes !== prevProps.filteredTreeNodes) {
         newState.expandedKeyList = Object.keys(keyEntities);
       }
 
