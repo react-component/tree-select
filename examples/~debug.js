@@ -1,18 +1,4 @@
-webpackJsonp([8],{
-
-/***/ 10:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 11:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
+webpackJsonp([11],{
 
 /***/ 355:
 /***/ (function(module, exports, __webpack_require__) {
@@ -35,26 +21,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rc_tree_select_assets_index_less__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rc_tree_select_assets_index_less__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rc_tree_select_assets_index_less___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rc_tree_select_assets_index_less__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_dom__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rc_dialog_assets_index_css__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rc_dialog_assets_index_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rc_dialog_assets_index_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__demo_less__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__demo_less___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__demo_less__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rc_tree_select__ = __webpack_require__(16);
 
 
 
 
-/* eslint-disable */
-
-
-
+/* eslint react/no-multi-comp:0, no-console:0 */
 
 
 
@@ -76,48 +54,35 @@ var Demo = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Demo.__proto__ || Object.getPrototypeOf(Demo)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      value: undefined
-    }, _this.onChange = function (value) {
-      console.log(value);
-      _this.setState({ value: value });
+      treeData: [{
+        title: "demo1",
+        key: "demo1",
+        value: "demo1",
+        children: [{
+          title: "demo2",
+          key: "demo2",
+          value: "demo3"
+        }]
+      }]
+    }, _this.loadData = function (treeNode) {
+      console.error("Call loadData:", treeNode);
+      return new Promise(function (resolve) {
+        // console.error(2);
+        resolve();
+      });
     }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
   __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(Demo, [{
     key: 'render',
     value: function render() {
-      return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["c" /* default */],
-        {
-          showSearch: true,
-          style: { width: 300 },
-          value: this.state.value,
-          dropdownStyle: { maxHeight: 400, overflow: 'auto' },
-          placeholder: 'Please select',
-          allowClear: true,
-          treeDefaultExpandAll: true,
-          onChange: this.onChange
-        },
-        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */],
-          { value: 'parent 1', title: 'parent 1', key: '0-1' },
-          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */],
-            { value: 'parent 1-0', title: 'parent 1-0', key: '0-1-1' },
-            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */], { value: 'leaf1', title: 'my leaf', key: 'random' }),
-            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */], { value: 'leaf2', title: 'your leaf', key: 'random1' })
-          ),
-          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */],
-            { value: 'parent 1-1', title: 'parent 1-1', key: 'random2' },
-            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_rc_tree_select__["b" /* TreeNode */], { value: 'sss', title: __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                'b',
-                { style: { color: '#08c' } },
-                'sss'
-              ), key: 'random3' })
-          )
-        )
-      );
+      var treeData = this.state.treeData;
+
+      return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["c" /* default */], {
+        style: { width: 200 },
+        treeData: treeData,
+        loadData: this.loadData
+      });
     }
   }]);
 
