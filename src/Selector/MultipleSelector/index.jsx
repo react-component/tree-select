@@ -7,6 +7,8 @@ import SearchInput from '../../SearchInput';
 import Selection from './Selection';
 import { createRef } from '../../util';
 
+const TREE_SELECT_EMPTY_VALUE_KEY = 'RC_TREE_SELECT_EMPTY_VALUE_KEY';
+
 const Selector = generateSelector('multiple');
 
 export const multipleSelectorContextTypes = {
@@ -98,7 +100,7 @@ class MultipleSelector extends React.Component {
     const selectedValueNodes = myValueList.map(({ label, value }) => (
       <Selection
         {...this.props}
-        key={value}
+        key={value || TREE_SELECT_EMPTY_VALUE_KEY}
         label={label}
         value={value}
         onRemove={onMultipleSelectorRemove}

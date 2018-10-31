@@ -3,6 +3,7 @@ import React from 'react';
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import TreeSelect, { TreeNode } from '../src';
+import Selection from '../src/Selector/MultipleSelector/Selection';
 import { resetAriaId } from '../src/util';
 import focusTest from './shared/focusTest';
 
@@ -250,5 +251,15 @@ describe('TreeSelect.multiple', () => {
     wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(2).simulate('click');
 
     expect(onChange.mock.calls[0][0]).toEqual(['leaf1', 'sss']);
+  });
+
+  it('do not crash when value has empty string', () => {
+    const wrapper = mount(
+      <TreeSelect multiple value={['']}>
+        <TreeNode value="" title="empty str" key="empty str" />
+      </TreeSelect>
+    );
+
+    expect(wrapper.find(Selection).length).toEqual(1);
   });
 });
