@@ -96,8 +96,9 @@ class BasePopup extends React.Component {
       newState.expandedKeyList = Object.keys(keyEntities);
     }
 
-    // do not expand tree after clear the input
+    // do not expand tree after clear the input 
     if (
+      nextProps.loadData &&
       prevProps.filteredTreeNodes &&
       prevProps.filteredTreeNodes.length &&
       filteredTreeNodes === null
