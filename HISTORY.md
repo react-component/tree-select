@@ -1,6 +1,12 @@
 # History
 ---
 
+## 2.4.0
+
+- `onSearch` will also trigger when user select item makes searchValue auto clear
+- `treeExpandedKeys` will be restore when TreeSelect exit filter mode.
+- `loadData` will not trigger when in filter mode.
+
 ## 2.3.0
 
 - Add `treeExpandedKeys`
