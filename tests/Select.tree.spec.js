@@ -1,6 +1,6 @@
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, render } from 'enzyme';
 import TreeSelect, { TreeNode as SelectNode } from '../src';
 import { resetAriaId } from '../src/util';
 import { setMock } from './__mocks__/rc-animate';
@@ -19,14 +19,14 @@ describe('TreeSelect.tree', () => {
 
   const createSelect = (props) => (
     <TreeSelect {...props}>
-      <SelectNode key="0-0">
-        <SelectNode key="0-0-0">
-          <SelectNode key="0-0-0-0" />
+      <SelectNode key="0-0" value="0-0">
+        <SelectNode key="0-0-0" value="0-0-0">
+          <SelectNode key="0-0-0-0" value="0-0-0-0" />
           <SelectNode key="0-0-0-1" />
         </SelectNode>
-        <SelectNode key="0-0-1">
-          <SelectNode key="0-0-1-0" />
-          <SelectNode key="0-0-1-1" />
+        <SelectNode key="0-0-1" value="0-0-1">
+          <SelectNode key="0-0-1-0" value="0-0-1-0" />
+          <SelectNode key="0-0-1-1" value="0-0-1-1" />
         </SelectNode>
       </SelectNode>
     </TreeSelect>
@@ -76,5 +76,22 @@ describe('TreeSelect.tree', () => {
 
     wrapper.find('button.reset').simulate('click');
     expect(wrapper.find('Tree').instance().state.expandedKeys).toEqual([]);
+  });
+
+  it('warning if node has same value', () => {
+    const spy = jest.spyOn(global.console, 'error');
+    console.log('>>> Follow Warning is for test purpose. Don\'t be scared :)');
+    render(
+      <TreeSelect
+        treeData={[
+          { title: 'little', value: 'ttt', key: 'little' },
+          { title: 'bamboo', value: 'ttt', key: 'bamboo' },
+        ]}
+      />
+    );
+    expect(spy).toHaveBeenCalledWith(
+      'Warning: Conflict! value of node \'bamboo\' (ttt) has already used by node \'little\'.'
+    );
+    spy.mockRestore();
   });
 });

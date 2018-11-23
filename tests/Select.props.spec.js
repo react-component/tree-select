@@ -591,7 +591,7 @@ describe('TreeSelect.props', () => {
       render() {
         return (
           <TreeSelect loadData={this.loadData} open>
-            <TreeNode key="0-0">
+            <TreeNode key="0-0" value="0-0">
               {this.state.loaded ? <TreeNode key="0-0-0" /> : null}
             </TreeNode>
           </TreeSelect>

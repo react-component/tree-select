@@ -370,6 +370,15 @@ function initWrapper(wrapper) {
 function processEntity(entity, wrapper) {
   const value = entity.node.props.value;
   entity.value = value;
+
+  // This should be empty, or will get error message.
+  const currentEntity = wrapper.valueEntities[value];
+  if (currentEntity) {
+    warning(
+      false,
+      `Conflict! value of node '${entity.key}' (${value}) has already used by node '${currentEntity.key}'.`
+    );
+  }
   wrapper.valueEntities[value] = entity;
 }
 
