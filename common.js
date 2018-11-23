@@ -1262,6 +1262,12 @@ function initWrapper(wrapper) {
 function processEntity(entity, wrapper) {
   var value = entity.node.props.value;
   entity.value = value;
+
+  // This should be empty, or will get error message.
+  var currentEntity = wrapper.valueEntities[value];
+  if (currentEntity) {
+    __WEBPACK_IMPORTED_MODULE_2_warning___default()(false, 'Conflict! value of node \'' + entity.key + '\' (' + value + ') has already used by node \'' + currentEntity.key + '\'.');
+  }
   wrapper.valueEntities[value] = entity;
 }
 
