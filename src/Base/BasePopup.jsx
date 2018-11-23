@@ -66,13 +66,18 @@ class BasePopup extends React.Component {
     this.state = {
       keyList: [],
       expandedKeyList,
+      // Cache `expandedKeyList` when tree is in filter. This is used in `getDerivedStateFromProps`
+      cachedExpandedKeyList: [], // eslint-disable-line react/no-unused-state
       loadedKeys: [],
     };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { prevProps = {}, loadedKeys } = prevState || {};
-    const { valueList, valueEntities, keyEntities, filteredTreeNodes } = nextProps;
+    const { prevProps = {}, loadedKeys, expandedKeyList, cachedExpandedKeyList } = prevState || {};
+    const {
+      valueList, valueEntities, keyEntities,
+      treeExpandedKeys, filteredTreeNodes, searchValue
+    } = nextProps;
 
     const newState = {
       prevProps: nextProps,
@@ -88,7 +93,7 @@ class BasePopup extends React.Component {
 
     // Show all when tree is in filter mode
     if (
-      !nextProps.treeExpandedKeys &&
+      !treeExpandedKeys &&
       filteredTreeNodes &&
       filteredTreeNodes.length &&
       filteredTreeNodes !== prevProps.filteredTreeNodes
@@ -96,9 +101,17 @@ class BasePopup extends React.Component {
       newState.expandedKeyList = Object.keys(keyEntities);
     }
 
+    // Cache `expandedKeyList` when filter set
+    if (searchValue && !prevProps.searchValue) {
+      newState.cachedExpandedKeyList = expandedKeyList;
+    } else if (!searchValue && prevProps.searchValue && !treeExpandedKeys) {
+      newState.expandedKeyList = cachedExpandedKeyList || [];
+      newState.cachedExpandedKeyList = [];
+    }
+
     // Use expandedKeys if provided
-    if (prevProps.treeExpandedKeys !== nextProps.treeExpandedKeys) {
-      newState.expandedKeyList = nextProps.treeExpandedKeys;
+    if (prevProps.treeExpandedKeys !== treeExpandedKeys) {
+      newState.expandedKeyList = treeExpandedKeys;
     }
 
     // Clean loadedKeys if key not exist in keyEntities anymore
