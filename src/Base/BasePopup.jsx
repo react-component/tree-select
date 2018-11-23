@@ -127,6 +127,15 @@ class BasePopup extends React.Component {
   };
 
   /**
+   * Not pass `loadData` when searching. To avoid loop ajax call makes browser crash.
+   */
+  getLoadData = () => {
+    const { loadData, searchValue } = this.props;
+    if (searchValue) return null;
+    return loadData;
+  };
+
+  /**
    * This method pass to Tree component which is used for add filtered class
    * in TreeNode > li
    */
@@ -157,7 +166,6 @@ class BasePopup extends React.Component {
       prefixCls,
       treeNodes, filteredTreeNodes,
       treeIcon, treeLine, treeCheckable, treeCheckStrictly, multiple,
-      loadData,
       ariaId,
       renderSearch,
       switcherIcon,
@@ -167,6 +175,8 @@ class BasePopup extends React.Component {
       onTreeNodeSelect,
       onTreeNodeCheck,
     } } = this.context;
+
+    const loadData = this.getLoadData();
 
     const treeProps = {};
 
