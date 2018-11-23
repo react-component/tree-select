@@ -87,7 +87,7 @@ class Demo extends React.Component {
   }
 
   onSearch = (value) => {
-    console.log(value, arguments);
+    console.log('Do Search:', value, arguments);
     this.setState({ searchValue: value });
   }
 

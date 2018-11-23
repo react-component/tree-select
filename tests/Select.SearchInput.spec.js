@@ -59,4 +59,21 @@ describe('TreeSelect.SearchInput', () => {
       }, 10);
     });
   });
+
+  it('select item will clean searchInput', () => {
+    const onSearch = jest.fn();
+
+    const wrapper = mount(
+      <TreeSelect onSearch={onSearch} open>
+        <TreeNode value="test" />
+      </TreeSelect>
+    );
+
+    wrapper.find('.rc-tree-select-search__field').simulate('change', { target: { value: 'test' } });
+    expect(onSearch).toBeCalledWith('test');
+    onSearch.mockReset();
+
+    wrapper.find('.rc-tree-select-tree-node-content-wrapper').simulate('click');
+    expect(onSearch).toBeCalledWith('');
+  });
 });
