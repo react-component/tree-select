@@ -541,10 +541,10 @@ class Select extends React.Component {
   onValueTrigger = (isAdd, nodeList, nodeEventInfo, nodeExtraInfo) => {
     const { node } = nodeEventInfo;
     const { value } = node.props;
-    const { missValueList, valueEntities, keyEntities } = this.state;
+    const { missValueList, valueEntities, keyEntities, searchValue } = this.state;
     const {
       disabled, inputValue,
-      treeNodeLabelProp, onSelect,
+      treeNodeLabelProp, onSelect, onSearch,
       treeCheckable, treeCheckStrictly, autoClearSearchValue,
     } = this.props;
     const label = node.props[treeNodeLabelProp];
@@ -606,11 +606,21 @@ class Select extends React.Component {
     }
 
     // Clean up `searchValue` when this prop is set
-    if (!this.isSearchValueControlled() && (autoClearSearchValue || inputValue === null)) {
-      this.setUncontrolledState({
-        searchValue: '',
-        filteredTreeNodes: null,
-      });
+    if (autoClearSearchValue || inputValue === null) {
+      // Clean state `searchValue` if uncontrolled
+      if (!this.isSearchValueControlled()) {
+        this.setUncontrolledState({
+          searchValue: '',
+          filteredTreeNodes: null,
+        });
+      }
+
+      // Trigger onSearch if `searchValue` to be empty.
+      // We should also trigger onSearch with empty string here
+      // since if user use `treeExpandedKeys`, it need user have the ability to reset it.
+      if (onSearch && searchValue && searchValue.length) {
+        onSearch('');
+      }
     }
 
     // [Legacy] Provide extra info

@@ -472,7 +472,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
             </span>
           </li>
           <li
-            class="rc-tree-select-tree-treenode-switcher-close"
+            class="rc-tree-select-tree-treenode-switcher-open"
             role="treeitem"
           >
             <span
