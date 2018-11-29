@@ -394,6 +394,86 @@ describe('TreeSelect.checkable', () => {
     expect(keyList.sort()).toEqual(['0-1-0', '0-1-2'].sort());
   });
 
+  // https://github.com/ant-design/ant-design/issues/13328
+  describe('update half checked status', () => {
+    const treeData = [{
+      value: '0-0',
+      key: '0-0',
+      children: [{
+        value: '0-0-0',
+        key: '0-0-0',
+      }, {
+        value: '0-0-1',
+        key: '0-0-1',
+      }],
+    }];
+
+    it('uncontrolled', () => {
+      const onChange = jest.fn();
+
+      const wrapper = mount(
+        <TreeSelect
+          treeCheckable
+          treeData={treeData}
+          open
+          autoClearSearchValue={false}
+          onChange={onChange}
+        />
+      );
+
+      wrapper.find('.rc-tree-select-search__field').simulate('change', { target: { value: '0-0-1' } });
+      wrapper.find('.rc-tree-select-tree-checkbox').at(1).simulate('click');
+
+      expect(onChange.mock.calls[0][0]).toEqual(['0-0-1']);
+      expect(
+        wrapper.find('.rc-tree-select-tree-checkbox').at(0).hasClass('rc-tree-select-tree-checkbox-indeterminate')
+      ).toBe(true);
+    });
+
+    it('controlled', () => {
+      const onChange = jest.fn();
+
+      class Test extends React.Component {
+        state = {
+          value: [],
+        };
+
+        onChange = (value) => {
+          this.setState({ value });
+          expect(value).toEqual(['0-0-1']);
+          onChange();
+        };
+
+        render() {
+          return (
+            <TreeSelect
+              value={this.state.value}
+              onChange={this.onChange}
+              treeCheckable
+              treeData={treeData}
+              open
+              autoClearSearchValue={false}
+            />
+          );
+        }
+      }
+
+      const wrapper = mount(<Test />);
+
+      wrapper.find('.rc-tree-select-search__field').simulate('change', { target: { value: '0-0-1' } });
+      wrapper.find('.rc-tree-select-tree-checkbox').at(1).simulate('click');
+
+      expect(onChange).toBeCalled();
+
+      expect(
+        wrapper.find('.rc-tree-select-tree-checkbox').at(0).hasClass('rc-tree-select-tree-checkbox-indeterminate')
+      ).toBe(true);
+    });
+    
+
+    
+  });
+
   it('labelInValue', () => {
     const wrapper = mount(
       <TreeSelect

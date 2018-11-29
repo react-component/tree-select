@@ -389,4 +389,34 @@ export function convertTreeToEntities(treeNodes) {
   });
 }
 
+/**
+ * https://github.com/ant-design/ant-design/issues/13328
+ * We need calculate the half check key when searchValue is set.
+ */
+// TODO: This logic may better move to rc-tree
+export function getHalfCheckedKeys(valueList, valueEntities) {
+  const values = {};
+
+  // Fill checked keys
+  valueList.forEach(({ value }) => {
+    values[value] = false;
+  });
+
+  // Fill half checked keys
+  valueList.forEach(({ value }) => {
+    let current = valueEntities[value];
+
+    while (current && current.parent) {
+      const parentValue = current.parent.value;
+      if (parentValue in values) break;
+      values[parentValue] = true;
+
+      current = current.parent;
+    }
+  });
+
+  // Get half keys
+  return Object.keys(values).filter(value => values[value]).map(value => valueEntities[value].key);
+}
+
 export const conductCheck = rcConductCheck;

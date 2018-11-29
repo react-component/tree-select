@@ -41,6 +41,7 @@ import {
   formatInternalValue, formatSelectorValue,
   parseSimpleTreeData,
   convertDataToTree, convertTreeToEntities, conductCheck,
+  getHalfCheckedKeys,
   flatToHierarchy,
   isPosRelated, isLabelInValue, getFilterTree,
   cleanEntity,
@@ -153,6 +154,7 @@ class Select extends React.Component {
     this.state = {
       open: open || defaultOpen,
       valueList: [],
+      searchHalfCheckedKeys: [],
       missValueList: [], // Contains the value not in the tree
       selectorValueList: [], // Used for multiple selector
       valueEntities: {},
@@ -377,6 +379,17 @@ class Select extends React.Component {
         newState.treeNodes || prevState.treeNodes,
         searchValue,
         filterTreeNodeFn,
+        newState.valueEntities || prevState.valueEntities,
+      );
+    }
+
+    // We should re-calculate the halfCheckedKeys when in search mode
+    if (
+      valueRefresh && treeCheckable && !treeCheckStrictly &&
+       (newState.searchValue || prevState.searchValue)
+    ) {
+      newState.searchHalfCheckedKeys = getHalfCheckedKeys(
+        newState.valueList,
         newState.valueEntities || prevState.valueEntities,
       );
     }
@@ -854,8 +867,8 @@ class Select extends React.Component {
    * 2. Fire `onChange` event to user.
    */
   triggerChange = (missValueList, valueList, extraInfo = {}) => {
-    const { valueEntities } = this.state;
-    const { onChange, disabled } = this.props;
+    const { valueEntities, searchValue } = this.state;
+    const { onChange, disabled, treeCheckable, treeCheckStrictly } = this.props;
 
     if (disabled) return;
 
@@ -870,11 +883,20 @@ class Select extends React.Component {
     const selectorValueList = formatSelectorValue(valueList, this.props, valueEntities);
 
     if (!('value' in this.props)) {
-      this.setState({
+      const newState = {
         missValueList,
         valueList,
         selectorValueList,
-      });
+      };
+
+      if (searchValue && treeCheckable && !treeCheckStrictly) {
+        newState.searchHalfCheckedKeys = getHalfCheckedKeys(
+          valueList,
+          valueEntities,
+        );
+      }
+
+      this.setState(newState);
     }
 
     // Only do the logic when `onChange` function provided
@@ -922,6 +944,7 @@ class Select extends React.Component {
   render() {
     const {
       valueList, missValueList, selectorValueList,
+      searchHalfCheckedKeys,
       valueEntities, keyEntities,
       searchValue,
       open, focused,
@@ -934,6 +957,7 @@ class Select extends React.Component {
       ...this.props,
       isMultiple,
       valueList,
+      searchHalfCheckedKeys,
       selectorValueList: [...missValueList, ...selectorValueList],
       valueEntities,
       keyEntities,

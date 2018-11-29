@@ -14,6 +14,7 @@ class BasePopup extends React.Component {
     prefixCls: PropTypes.string,
     upperSearchValue: PropTypes.string,
     valueList: PropTypes.array,
+    searchHalfCheckedKeys: PropTypes.array,
     valueEntities: PropTypes.object,
     keyEntities: PropTypes.object,
     treeIcon: PropTypes.bool,
@@ -182,6 +183,7 @@ class BasePopup extends React.Component {
       ariaId,
       renderSearch,
       switcherIcon,
+      searchHalfCheckedKeys,
     } = this.props;
     const { rcTreeSelect: {
       onPopupKeyDown,
@@ -205,6 +207,14 @@ class BasePopup extends React.Component {
       if (filteredTreeNodes.length) {
         treeProps.checkStrictly = true;
         $treeNodes = filteredTreeNodes;
+
+        // Fill halfCheckedKeys
+        if (treeCheckable && !treeCheckStrictly) {
+          treeProps.checkedKeys = {
+            checked: keyList,
+            halfChecked: searchHalfCheckedKeys,
+          };
+        }
       } else {
         $notFound = this.renderNotFound();
       }
