@@ -7,22 +7,22 @@ webpackJsonp([1],{
 
 /***/ }),
 
-/***/ 14:
+/***/ 13:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 147:
+/***/ 145:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(148);
+module.exports = __webpack_require__(146);
 
 
 /***/ }),
 
-/***/ 148:
+/***/ 146:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37,17 +37,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_toConsumableArray__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_toConsumableArray___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_toConsumableArray__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rc_tree_select_assets_index_less__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rc_tree_select_assets_index_less__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rc_tree_select_assets_index_less___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rc_tree_select_assets_index_less__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_dom__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rc_dialog_assets_index_css__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rc_dialog_assets_index_css__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rc_dialog_assets_index_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rc_dialog_assets_index_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rc_dialog__ = __webpack_require__(199);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rc_tree_select__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__util__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rc_dialog__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rc_tree_select__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__util__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__demo_less__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__demo_less___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__demo_less__);
 
@@ -551,7 +551,7 @@ __WEBPACK_IMPORTED_MODULE_7_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ }),
 
-/***/ 18:
+/***/ 17:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -720,7 +720,7 @@ function getFilterValue(val, sVal, delVal) {
 
 /***/ }),
 
-/***/ 199:
+/***/ 197:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -736,9 +736,9 @@ function getFilterValue(val, sVal, delVal) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_dom__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Dialog__ = __webpack_require__(204);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rc_util_es_ContainerRender__ = __webpack_require__(81);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rc_util_es_Portal__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Dialog__ = __webpack_require__(202);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rc_util_es_ContainerRender__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rc_util_es_Portal__ = __webpack_require__(79);
 
 
 
@@ -839,7 +839,7 @@ DialogWrap.defaultProps = {
 
 /***/ }),
 
-/***/ 204:
+/***/ 202:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -857,9 +857,9 @@ DialogWrap.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rc_util_es_KeyCode__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rc_util_es_Dom_contains__ = __webpack_require__(73);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rc_animate__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__LazyRenderBox__ = __webpack_require__(208);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rc_util_es_getScrollBarSize__ = __webpack_require__(209);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rc_animate__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__LazyRenderBox__ = __webpack_require__(205);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rc_util_es_getScrollBarSize__ = __webpack_require__(206);
 
 
 
@@ -1182,7 +1182,7 @@ Dialog.defaultProps = {
 
 /***/ }),
 
-/***/ 208:
+/***/ 205:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1234,7 +1234,7 @@ var LazyRenderBox = function (_React$Component) {
 
 /***/ }),
 
-/***/ 209:
+/***/ 206:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1280,13 +1280,13 @@ function getScrollBarSize(fresh) {
 
 /***/ }),
 
-/***/ 43:
+/***/ 42:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_classCallCheck__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_classCallCheck__);
@@ -1302,9 +1302,7 @@ function getScrollBarSize(fresh) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ChildrenUtils__ = __webpack_require__(74);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__AnimateChild__ = __webpack_require__(75);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__CSSMotion__ = __webpack_require__(78);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__util_animate__ = __webpack_require__(44);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__util_animate__ = __webpack_require__(43);
 
 
 
@@ -1336,6 +1334,8 @@ function noop() {}
 var Animate = function (_React$Component) {
   __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits___default()(Animate, _React$Component);
 
+  // eslint-disable-line
+
   function Animate(props) {
     __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_classCallCheck___default()(this, Animate);
 
@@ -1353,7 +1353,7 @@ var Animate = function (_React$Component) {
 
     _this.childrenRefs = {};
     return _this;
-  } // eslint-disable-line
+  }
 
   __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_createClass___default()(Animate, [{
     key: 'componentDidMount',
@@ -1547,7 +1547,6 @@ var Animate = function (_React$Component) {
 }(__WEBPACK_IMPORTED_MODULE_6_react___default.a.Component);
 
 Animate.isAnimate = true;
-Animate.CSSMotion = __WEBPACK_IMPORTED_MODULE_10__CSSMotion__["a" /* default */];
 Animate.propTypes = {
   component: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.any,
   componentProps: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.object,
@@ -1607,11 +1606,11 @@ var _initialiseProps = function _initialiseProps() {
       // exclusive will not need this
       _this5.performLeave(key);
     } else if (type === 'appear') {
-      if (__WEBPACK_IMPORTED_MODULE_11__util_animate__["a" /* default */].allowAppearCallback(props)) {
+      if (__WEBPACK_IMPORTED_MODULE_10__util_animate__["a" /* default */].allowAppearCallback(props)) {
         props.onAppear(key);
         props.onEnd(key, true);
       }
-    } else if (__WEBPACK_IMPORTED_MODULE_11__util_animate__["a" /* default */].allowEnterCallback(props)) {
+    } else if (__WEBPACK_IMPORTED_MODULE_10__util_animate__["a" /* default */].allowEnterCallback(props)) {
       props.onEnter(key);
       props.onEnd(key, true);
     }
@@ -1638,7 +1637,7 @@ var _initialiseProps = function _initialiseProps() {
       _this5.performEnter(key);
     } else {
       var end = function end() {
-        if (__WEBPACK_IMPORTED_MODULE_11__util_animate__["a" /* default */].allowLeaveCallback(props)) {
+        if (__WEBPACK_IMPORTED_MODULE_10__util_animate__["a" /* default */].allowLeaveCallback(props)) {
           props.onLeave(key);
           props.onEnd(key, false);
         }
@@ -1658,7 +1657,7 @@ var _initialiseProps = function _initialiseProps() {
 
 /***/ }),
 
-/***/ 44:
+/***/ 43:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1821,7 +1820,7 @@ function mergeChildren(prev, next) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_prop_types__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_css_animation__ = __webpack_require__(76);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__util_animate__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__util_animate__ = __webpack_require__(43);
 
 
 
@@ -1944,7 +1943,7 @@ AnimateChild.propTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Event__ = __webpack_require__(77);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_component_classes__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_component_classes__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_component_classes___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_component_classes__);
 
 
@@ -2258,423 +2257,7 @@ var TransitionEvents = {
 
 /* harmony default export */ __webpack_exports__["a"] = (TransitionEvents);
 
-/***/ }),
-
-/***/ 78:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export genCSSMotion */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_classCallCheck__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_classCallCheck__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_createClass__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_createClass__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_possibleConstructorReturn__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_dom__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_prop_types__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_react_lifecycles_compat__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_classnames__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_classnames__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_raf__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_raf___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_raf__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__util_motion__ = __webpack_require__(80);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var STATUS_NONE = 'none';
-var STATUS_APPEAR = 'appear';
-var STATUS_ENTER = 'enter';
-var STATUS_LEAVE = 'leave';
-
-/**
- * `transitionSupport` is used for none transition test case.
- * Default we use browser transition event support check.
- */
-function genCSSMotion(transitionSupport) {
-  function isSupportTransition(props) {
-    return !!(props.motionName && transitionSupport);
-  }
-
-  var CSSMotion = function (_React$Component) {
-    __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits___default()(CSSMotion, _React$Component);
-
-    function CSSMotion() {
-      __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_classCallCheck___default()(this, CSSMotion);
-
-      var _this = __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_possibleConstructorReturn___default()(this, (CSSMotion.__proto__ || Object.getPrototypeOf(CSSMotion)).call(this));
-
-      _this.onDomUpdate = function () {
-        var _this$state = _this.state,
-            status = _this$state.status,
-            newStatus = _this$state.newStatus;
-        var _this$props = _this.props,
-            onAppearStart = _this$props.onAppearStart,
-            onEnterStart = _this$props.onEnterStart,
-            onLeaveStart = _this$props.onLeaveStart,
-            onAppearActive = _this$props.onAppearActive,
-            onEnterActive = _this$props.onEnterActive,
-            onLeaveActive = _this$props.onLeaveActive,
-            motionAppear = _this$props.motionAppear,
-            motionEnter = _this$props.motionEnter,
-            motionLeave = _this$props.motionLeave;
-
-
-        if (!isSupportTransition(_this.props)) {
-          return;
-        }
-
-        // Event injection
-        var $ele = __WEBPACK_IMPORTED_MODULE_7_react_dom___default.a.findDOMNode(_this);
-        if (_this.$ele !== $ele) {
-          _this.removeEventListener(_this.$ele);
-          _this.addEventListener($ele);
-          _this.$ele = $ele;
-        }
-
-        // Init status
-        if (newStatus && status === STATUS_APPEAR && motionAppear) {
-          _this.updateStatus(onAppearStart, null, null, function () {
-            _this.updateActiveStatus(onAppearActive, STATUS_APPEAR);
-          });
-        } else if (newStatus && status === STATUS_ENTER && motionEnter) {
-          _this.updateStatus(onEnterStart, null, null, function () {
-            _this.updateActiveStatus(onEnterActive, STATUS_ENTER);
-          });
-        } else if (newStatus && status === STATUS_LEAVE && motionLeave) {
-          _this.updateStatus(onLeaveStart, null, null, function () {
-            _this.updateActiveStatus(onLeaveActive, STATUS_LEAVE);
-          });
-        }
-      };
-
-      _this.onMotionEnd = function (event) {
-        var _this$state2 = _this.state,
-            status = _this$state2.status,
-            statusActive = _this$state2.statusActive;
-        var _this$props2 = _this.props,
-            onAppearEnd = _this$props2.onAppearEnd,
-            onEnterEnd = _this$props2.onEnterEnd,
-            onLeaveEnd = _this$props2.onLeaveEnd;
-
-        if (status === STATUS_APPEAR && statusActive) {
-          _this.updateStatus(onAppearEnd, { status: STATUS_NONE }, event);
-        } else if (status === STATUS_ENTER && statusActive) {
-          _this.updateStatus(onEnterEnd, { status: STATUS_NONE }, event);
-        } else if (status === STATUS_LEAVE && statusActive) {
-          _this.updateStatus(onLeaveEnd, { status: STATUS_NONE }, event);
-        }
-      };
-
-      _this.addEventListener = function ($ele) {
-        if (!$ele) return;
-
-        $ele.addEventListener(__WEBPACK_IMPORTED_MODULE_12__util_motion__["d" /* transitionEndName */], _this.onMotionEnd);
-        $ele.addEventListener(__WEBPACK_IMPORTED_MODULE_12__util_motion__["a" /* animationEndName */], _this.onMotionEnd);
-      };
-
-      _this.removeEventListener = function ($ele) {
-        if (!$ele) return;
-
-        $ele.removeEventListener(__WEBPACK_IMPORTED_MODULE_12__util_motion__["d" /* transitionEndName */], _this.onMotionEnd);
-        $ele.removeEventListener(__WEBPACK_IMPORTED_MODULE_12__util_motion__["a" /* animationEndName */], _this.onMotionEnd);
-      };
-
-      _this.updateStatus = function (styleFunc, additionalState, event, callback) {
-        var statusStyle = styleFunc ? styleFunc(__WEBPACK_IMPORTED_MODULE_7_react_dom___default.a.findDOMNode(_this), event) : null;
-
-        if (statusStyle === false || _this._destroyed) return;
-
-        var nextStep = void 0;
-        if (callback) {
-          nextStep = function nextStep() {
-            _this.nextFrame(callback);
-          };
-        }
-
-        _this.setState(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({
-          statusStyle: typeof statusStyle === 'object' ? statusStyle : null,
-          newStatus: false
-        }, additionalState), nextStep); // Trigger before next frame & after `componentDidMount`
-      };
-
-      _this.updateActiveStatus = function (styleFunc, currentStatus) {
-        // `setState` use `postMessage` to trigger at the end of frame.
-        // Let's use requestAnimationFrame to update new state in next frame.
-        _this.nextFrame(function () {
-          var status = _this.state.status;
-
-          if (status !== currentStatus) return;
-
-          _this.updateStatus(styleFunc, { statusActive: true });
-        });
-      };
-
-      _this.nextFrame = function (func) {
-        _this.cancelNextFrame();
-        _this.raf = __WEBPACK_IMPORTED_MODULE_11_raf___default()(func);
-      };
-
-      _this.cancelNextFrame = function () {
-        if (_this.raf) {
-          __WEBPACK_IMPORTED_MODULE_11_raf___default.a.cancel(_this.raf);
-          _this.raf = null;
-        }
-      };
-
-      _this.state = {
-        status: STATUS_NONE,
-        statusActive: false,
-        newStatus: false,
-        statusStyle: null
-      };
-      _this.$ele = null;
-      _this.raf = null;
-      return _this;
-    }
-
-    __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_createClass___default()(CSSMotion, [{
-      key: 'componentDidMount',
-      value: function componentDidMount() {
-        this.onDomUpdate();
-      }
-    }, {
-      key: 'componentDidUpdate',
-      value: function componentDidUpdate() {
-        this.onDomUpdate();
-      }
-    }, {
-      key: 'componentWillUnmount',
-      value: function componentWillUnmount() {
-        this._destroyed = true;
-        this.removeEventListener(this.$ele);
-        this.cancelNextFrame();
-      }
-    }, {
-      key: 'render',
-      value: function render() {
-        var _classNames;
-
-        var _state = this.state,
-            status = _state.status,
-            statusActive = _state.statusActive,
-            statusStyle = _state.statusStyle;
-        var _props = this.props,
-            children = _props.children,
-            motionName = _props.motionName,
-            visible = _props.visible,
-            removeOnLeave = _props.removeOnLeave;
-
-
-        if (!children) return null;
-
-        if (status === STATUS_NONE || !isSupportTransition(this.props)) {
-          return visible || !removeOnLeave ? children({}) : null;
-        }
-
-        return children({
-          className: __WEBPACK_IMPORTED_MODULE_10_classnames___default()((_classNames = {}, __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_classNames, Object(__WEBPACK_IMPORTED_MODULE_12__util_motion__["b" /* getTransitionName */])(motionName, status), status !== STATUS_NONE), __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_classNames, Object(__WEBPACK_IMPORTED_MODULE_12__util_motion__["b" /* getTransitionName */])(motionName, status + '-active'), status !== STATUS_NONE && statusActive), __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_classNames, motionName, typeof motionName === 'string'), _classNames)),
-          style: statusStyle
-        });
-      }
-    }], [{
-      key: 'getDerivedStateFromProps',
-      value: function getDerivedStateFromProps(props, _ref) {
-        var prevProps = _ref.prevProps;
-
-        if (!isSupportTransition(props)) return {};
-
-        var visible = props.visible,
-            motionAppear = props.motionAppear,
-            motionEnter = props.motionEnter,
-            motionLeave = props.motionLeave,
-            motionLeaveImmediately = props.motionLeaveImmediately;
-
-        var newState = {
-          prevProps: props
-        };
-
-        // Appear
-        if (!prevProps && visible && motionAppear) {
-          newState.status = STATUS_APPEAR;
-          newState.statusActive = false;
-          newState.newStatus = true;
-        }
-
-        // Enter
-        if (prevProps && !prevProps.visible && visible && motionEnter) {
-          newState.status = STATUS_ENTER;
-          newState.statusActive = false;
-          newState.newStatus = true;
-        }
-
-        // Leave
-        if (prevProps && prevProps.visible && !visible && motionLeave || !prevProps && motionLeaveImmediately && !visible && motionLeave) {
-          newState.status = STATUS_LEAVE;
-          newState.statusActive = false;
-          newState.newStatus = true;
-        }
-
-        return newState;
-      }
-    }]);
-
-    return CSSMotion;
-  }(__WEBPACK_IMPORTED_MODULE_6_react___default.a.Component);
-
-  CSSMotion.propTypes = {
-    visible: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool,
-    children: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func,
-    motionName: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.string, __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.object]),
-    motionAppear: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool,
-    motionEnter: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool,
-    motionLeave: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool,
-    motionLeaveImmediately: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool, // Trigger leave motion immediately
-    removeOnLeave: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool,
-    onAppearStart: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func,
-    onAppearActive: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func,
-    onAppearEnd: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func,
-    onEnterStart: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func,
-    onEnterActive: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func,
-    onEnterEnd: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func,
-    onLeaveStart: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func,
-    onLeaveActive: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func,
-    onLeaveEnd: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func
-  };
-  CSSMotion.defaultProps = {
-    visible: true,
-    motionEnter: true,
-    motionAppear: true,
-    motionLeave: true,
-    removeOnLeave: true
-  };
-
-
-  Object(__WEBPACK_IMPORTED_MODULE_9_react_lifecycles_compat__["polyfill"])(CSSMotion);
-
-  return CSSMotion;
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (genCSSMotion(__WEBPACK_IMPORTED_MODULE_12__util_motion__["c" /* supportTransition */]));
-
-/***/ }),
-
-/***/ 80:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export getVendorPrefixes */
-/* unused harmony export getVendorPrefixedEventName */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return animationEndName; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return transitionEndName; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return supportTransition; });
-/* harmony export (immutable) */ __webpack_exports__["b"] = getTransitionName;
-var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
-
-// ================= Transition =================
-// Event wrapper. Copy from react source code
-function makePrefixMap(styleProp, eventName) {
-  var prefixes = {};
-
-  prefixes[styleProp.toLowerCase()] = eventName.toLowerCase();
-  prefixes['Webkit' + styleProp] = 'webkit' + eventName;
-  prefixes['Moz' + styleProp] = 'moz' + eventName;
-  prefixes['ms' + styleProp] = 'MS' + eventName;
-  prefixes['O' + styleProp] = 'o' + eventName.toLowerCase();
-
-  return prefixes;
-}
-
-function getVendorPrefixes(domSupport, win) {
-  var prefixes = {
-    animationend: makePrefixMap('Animation', 'AnimationEnd'),
-    transitionend: makePrefixMap('Transition', 'TransitionEnd')
-  };
-
-  if (domSupport) {
-    if (!('AnimationEvent' in win)) {
-      delete prefixes.animationend.animation;
-    }
-
-    if (!('TransitionEvent' in win)) {
-      delete prefixes.transitionend.transition;
-    }
-  }
-
-  return prefixes;
-}
-
-var vendorPrefixes = getVendorPrefixes(canUseDOM, typeof window !== 'undefined' ? window : {});
-
-var style = {};
-
-if (canUseDOM) {
-  style = document.createElement('div').style;
-}
-
-var prefixedEventNames = {};
-
-function getVendorPrefixedEventName(eventName) {
-  if (prefixedEventNames[eventName]) {
-    return prefixedEventNames[eventName];
-  }
-
-  var prefixMap = vendorPrefixes[eventName];
-
-  if (prefixMap) {
-    var stylePropList = Object.keys(prefixMap);
-    var len = stylePropList.length;
-    for (var i = 0; i < len; i += 1) {
-      var styleProp = stylePropList[i];
-      if (Object.prototype.hasOwnProperty.call(prefixMap, styleProp) && styleProp in style) {
-        prefixedEventNames[eventName] = prefixMap[styleProp];
-        return prefixedEventNames[eventName];
-      }
-    }
-  }
-
-  return '';
-}
-
-var animationEndName = getVendorPrefixedEventName('animationend');
-var transitionEndName = getVendorPrefixedEventName('transitionend');
-var supportTransition = !!(animationEndName && transitionEndName);
-
-function getTransitionName(transitionName, transitionType) {
-  if (!transitionName) return null;
-
-  if (typeof transitionName === 'object') {
-    var type = transitionType.replace(/-\w/g, function (match) {
-      return match[1].toUpperCase();
-    });
-    return transitionName[type];
-  }
-
-  return transitionName + '-' + transitionType;
-}
-
 /***/ })
 
-},[147]);
+},[145]);
 //# sourceMappingURL=basic.js.map
