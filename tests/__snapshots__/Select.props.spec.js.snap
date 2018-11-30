@@ -3151,10 +3151,10 @@ exports[`TreeSelect.props treeDefaultExpandAll 1`] = `
 exports[`TreeSelect.props treeDefaultExpandAll 2`] = `
 <div>
   <span
-    aria-controls="rc-tree-select-list_2"
+    aria-controls="rc-tree-select-list_1"
     aria-expanded="true"
     aria-haspopup="listbox"
-    aria-owns="rc-tree-select-list_2"
+    aria-owns="rc-tree-select-list_1"
     class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
     role="combobox"
     style=""
@@ -3182,7 +3182,7 @@ exports[`TreeSelect.props treeDefaultExpandAll 2`] = `
       style="left: -999px; top: -995px; min-width: 0;"
     >
       <div
-        id="rc-tree-select-list_2"
+        id="rc-tree-select-list_1"
         role="listbox"
         tabindex="-1"
       >
@@ -3194,7 +3194,7 @@ exports[`TreeSelect.props treeDefaultExpandAll 2`] = `
           >
             <input
               aria-autocomplete="list"
-              aria-controls="rc-tree-select-list_2"
+              aria-controls="rc-tree-select-list_1"
               aria-label="filter select"
               aria-multiline="false"
               class="rc-tree-select-search__field"

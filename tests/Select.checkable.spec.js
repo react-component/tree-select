@@ -2,12 +2,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import TreeSelect, { SHOW_PARENT, SHOW_ALL, TreeNode } from '../src';
-import { resetAriaId } from '../src/util';
 
 describe('TreeSelect.checkable', () => {
-  beforeEach(() => {
-    resetAriaId();
-  });
 
   beforeAll(() => {
     jest.useFakeTimers();

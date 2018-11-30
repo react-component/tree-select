@@ -2,12 +2,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import TreeSelect, { TreeNode } from '../src';
-import { resetAriaId } from '../src/util';
 
 describe('TreeSelect.SearchInput', () => {
-  beforeEach(() => {
-    resetAriaId();
-  });
 
   const createSelect = (props) => {
     return mount(

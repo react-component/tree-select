@@ -5,7 +5,6 @@ import { renderToJson } from 'enzyme-to-json';
 import Tree, { TreeNode } from 'rc-tree';
 import Trigger from 'rc-trigger';
 import TreeSelect, { SHOW_ALL, SHOW_CHILD, SHOW_PARENT, TreeNode as SelectNode } from '../src';
-import { resetAriaId } from '../src/util';
 import { setMock } from './__mocks__/rc-animate';
 
 // Promisify timeout to let jest catch works
@@ -18,7 +17,6 @@ function timeoutPromise(delay = 0) {
 describe('TreeSelect.props', () => {
   beforeEach(() => {
     jest.useFakeTimers();
-    resetAriaId();
   });
 
   afterEach(() => {

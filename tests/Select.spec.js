@@ -3,12 +3,11 @@ import React from 'react';
 import { render, mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import TreeSelect, { TreeNode } from '../src';
-import { resetAriaId, getLabel } from '../src/util';
+import { getLabel } from '../src/util';
 import focusTest from './shared/focusTest';
 
 describe('TreeSelect.basic', () => {
   beforeEach(() => {
-    resetAriaId();
     jest.useFakeTimers();
   });
 

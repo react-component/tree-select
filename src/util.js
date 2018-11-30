@@ -96,11 +96,10 @@ export function flatToHierarchy(positionList) {
 // =============== Accessibility ===============
 let ariaId = 0;
 
-export function resetAriaId() {
-  ariaId = 0;
-}
-
 export function generateAriaId(prefix) {
+  if (process.env.NODE_ENV === 'test') {
+    return `${prefix}_${1}`;
+  }
   ariaId += 1;
   return `${prefix}_${ariaId}`;
 }
