@@ -33029,10 +33029,7 @@ var _initialiseProps = function _initialiseProps() {
     // When `treeCheckStrictly` or internal `searchValue` is set, TreeNode will be unrelated:
     // - Related: Show the top checked nodes and has children prop.
     // - Unrelated: Show all the checked nodes.
-
-    if (treeCheckStrictly) {
-      extraInfo.allCheckedNodes = nodeEventInfo.checkedNodes;
-    } else if (searchValue) {
+    if (searchValue) {
       var oriKeyList = valueList.map(function (_ref14) {
         var value = _ref14.value;
         return valueEntities[value];
@@ -33061,6 +33058,8 @@ var _initialiseProps = function _initialiseProps() {
       extraInfo.allCheckedNodes = keyList.map(function (key) {
         return Object(__WEBPACK_IMPORTED_MODULE_20__util__["c" /* cleanEntity */])(keyEntities[key]);
       });
+    } else if (treeCheckStrictly) {
+      extraInfo.allCheckedNodes = nodeEventInfo.checkedNodes;
     } else {
       extraInfo.allCheckedNodes = Object(__WEBPACK_IMPORTED_MODULE_20__util__["h" /* flatToHierarchy */])(checkedNodesPositions);
     }

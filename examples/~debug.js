@@ -40,25 +40,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 var treeData = [{
-  key: "key-deepzhuanhuametric",
-  title: "title-deepzhuanhuametric",
+  label: "Node1",
+  value: "0-0",
+  key: "0-0",
   children: [{
-    key: "childkey-2182",
-    value: 2182,
-    title: "childtitle-2182",
-    selectable: true
-  }],
-  selectable: false
+    label: "Child Node1",
+    value: "0-0-0",
+    key: "0-0-0"
+  }]
 }, {
-  key: "key-INSTANCE",
-  title: "title-INSTANCE",
+  label: "Node2",
+  value: "0-1",
+  key: "0-1",
   children: [{
-    key: "childkey-2531",
-    value: 2531,
-    title: "childtitle-2531",
-    selectable: true
-  }],
-  selectable: false
+    label: "Child Node3",
+    value: "0-1-0",
+    key: "0-1-0"
+  }, {
+    label: "Child Node4",
+    value: "0-1-1",
+    key: "0-1-1"
+  }, {
+    label: "Child Node5",
+    value: "0-1-2",
+    key: "0-1-2"
+  }]
 }];
 
 var Demo = function (_React$Component) {
@@ -76,9 +82,9 @@ var Demo = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Demo.__proto__ || Object.getPrototypeOf(Demo)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      value: undefined
+      value: []
     }, _this.onChange = function (value) {
-      console.log(value);
+      console.log("onChange ", value);
       _this.setState({ value: value });
     }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
@@ -86,19 +92,19 @@ var Demo = function (_React$Component) {
   __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(Demo, [{
     key: 'render',
     value: function render() {
-      return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["c" /* default */], {
-        showSearch: true,
-        style: { width: 300 },
-        value: this.state.value,
-        dropdownStyle: { maxHeight: 400, overflow: 'auto' },
-        placeholder: 'Please select',
-        allowClear: true,
-        multiple: true,
-        treeDefaultExpandAll: true,
-        onChange: this.onChange,
+      var tProps = {
         treeData: treeData,
-        treeNodeFilterProp: 'title'
-      });
+        value: this.state.value,
+        onChange: this.onChange,
+        treeCheckable: true,
+        searchPlaceholder: "Please select",
+        autoClearSearchValue: false,
+        treeCheckStrictly: true,
+        style: {
+          width: 300
+        }
+      };
+      return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["c" /* default */], tProps);
     }
   }]);
 
