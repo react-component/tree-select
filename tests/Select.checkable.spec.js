@@ -528,4 +528,66 @@ describe('TreeSelect.checkable', () => {
       })
     ]);
   });
+
+  // https://github.com/ant-design/ant-design/issues/13365
+  it('treeCheckStrictly not miss value', () => {
+    const treeData = [
+      {
+        title: "Node1",
+        value: "0-0",
+        key: "0-0",
+        children: [
+          {
+            title: "Child Node1",
+            value: "0-0-0",
+            key: "0-0-0"
+          }
+        ]
+      },
+      {
+        title: "Node2",
+        value: "0-1",
+        key: "0-1",
+        children: [
+          {
+            title: "Child Node3",
+            value: "0-1-0",
+            key: "0-1-0"
+          },
+          {
+            title: "Child Node4",
+            value: "0-1-1",
+            key: "0-1-1"
+          },
+          {
+            title: "Child Node5",
+            value: "0-1-2",
+            key: "0-1-2"
+          }
+        ]
+      }
+    ];
+
+    const onChange = jest.fn();
+
+    const wrapper = mount(
+      <TreeSelect
+        open
+        defaultValue={[{ value: "0-1" }]}
+        treeData={treeData}
+        style={{ width: 300 }}
+        treeCheckable
+        treeCheckStrictly
+        onChange={onChange}
+      />
+    );
+
+    wrapper.find('.rc-tree-select-search__field').simulate('change', { target: { value: '0-0-0' } });
+    wrapper.find(TreeNode).at(1).find('.rc-tree-select-tree-checkbox').simulate('click');
+
+    expect(onChange.mock.calls[0][0]).toEqual([
+      { label: 'Node2', value: '0-1' },
+      { label: 'Child Node1', value: '0-0-0' },
+    ]);
+  });
 });

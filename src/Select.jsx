@@ -694,10 +694,7 @@ class Select extends React.Component {
     // When `treeCheckStrictly` or internal `searchValue` is set, TreeNode will be unrelated:
     // - Related: Show the top checked nodes and has children prop.
     // - Unrelated: Show all the checked nodes.
-
-    if (treeCheckStrictly) {
-      extraInfo.allCheckedNodes = nodeEventInfo.checkedNodes;
-    } else if (searchValue) {
+    if (searchValue) {
       const oriKeyList = valueList
         .map(({ value }) => valueEntities[value])
         .filter(entity => entity)
@@ -724,6 +721,8 @@ class Select extends React.Component {
 
       // Let's follow as not `treeCheckStrictly` format
       extraInfo.allCheckedNodes = keyList.map(key => cleanEntity(keyEntities[key]));
+    } else if (treeCheckStrictly) {
+      extraInfo.allCheckedNodes = nodeEventInfo.checkedNodes;
     } else {
       extraInfo.allCheckedNodes = flatToHierarchy(checkedNodesPositions);
     }
