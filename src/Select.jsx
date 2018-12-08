@@ -787,6 +787,10 @@ class Select extends React.Component {
     }
   }
 
+  onChoiceAnimationLeave = () => {
+    this.forcePopupAlign();
+  }
+
   /**
    * Only update the value which is not in props
    */
@@ -964,6 +968,7 @@ class Select extends React.Component {
       upperSearchValue: (searchValue || '').toUpperCase(), // Perf save
       open,
       focused,
+      onChoiceAnimationLeave: this.onChoiceAnimationLeave,
       dropdownPrefixCls: `${prefixCls}-dropdown`,
       ariaId: this.ariaId,
     };
