@@ -848,7 +848,6 @@ class Select extends React.Component {
     return ('inputValue' in this.props) && inputValue !== null;
   };
 
-  // TODO: onChoiceAnimationLeave
   forcePopupAlign = () => {
     const $trigger = this.selectTriggerRef.current;
 
