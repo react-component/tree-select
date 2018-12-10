@@ -32333,9 +32333,6 @@ var Select = function (_React$Component) {
     // Add this method the check if is controlled
 
 
-    // TODO: onChoiceAnimationLeave
-
-
     /**
      * 1. Update state valueList.
      * 2. Fire `onChange` event to user.
@@ -32387,6 +32384,7 @@ var Select = function (_React$Component) {
         upperSearchValue: (searchValue || '').toUpperCase(), // Perf save
         open: open,
         focused: focused,
+        onChoiceAnimationLeave: this.onChoiceAnimationLeave,
         dropdownPrefixCls: prefixCls + '-dropdown',
         ariaId: this.ariaId
       });
@@ -33124,6 +33122,10 @@ var _initialiseProps = function _initialiseProps() {
       var lastValue = valueList[valueList.length - 1].value;
       _this2.onMultipleSelectorRemove(event, lastValue);
     }
+  };
+
+  this.onChoiceAnimationLeave = function () {
+    _this2.forcePopupAlign();
   };
 
   this.setUncontrolledState = function (state) {
