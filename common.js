@@ -5098,7 +5098,7 @@ BasePopup.propTypes = {
 
   treeNodes: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.node,
   filteredTreeNodes: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.node,
-  notFoundContent: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.string,
+  notFoundContent: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.node,
 
   ariaId: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.string,
   switcherIcon: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.node, __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.func]),
@@ -32659,7 +32659,7 @@ Select.propTypes = {
   loadData: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.func,
   filterTreeNode: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.func, __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.bool]),
 
-  notFoundContent: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.string,
+  notFoundContent: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.node,
 
   onSearch: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.func,
   onSelect: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.func,
