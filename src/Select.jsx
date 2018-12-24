@@ -99,7 +99,7 @@ class Select extends React.Component {
     loadData: PropTypes.func,
     filterTreeNode: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 
-    notFoundContent: PropTypes.string,
+    notFoundContent: PropTypes.node,
 
     onSearch: PropTypes.func,
     onSelect: PropTypes.func,

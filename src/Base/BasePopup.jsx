@@ -34,7 +34,7 @@ class BasePopup extends React.Component {
 
     treeNodes: PropTypes.node,
     filteredTreeNodes: PropTypes.node,
-    notFoundContent: PropTypes.string,
+    notFoundContent: PropTypes.node,
 
     ariaId: PropTypes.string,
     switcherIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
