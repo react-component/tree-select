@@ -39,29 +39,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+var SHOW_PARENT = __WEBPACK_IMPORTED_MODULE_7_rc_tree_select__["c" /* default */].SHOW_PARENT;
+
 var treeData = [{
-  label: "Node1",
+  title: "Node1",
   value: "0-0",
   key: "0-0",
   children: [{
-    label: "Child Node1",
+    title: "Child Node1",
     value: "0-0-0",
     key: "0-0-0"
   }]
 }, {
-  label: "Node2",
+  title: "Node2",
   value: "0-1",
   key: "0-1",
   children: [{
-    label: "Child Node3",
+    title: "Child Node3",
     value: "0-1-0",
     key: "0-1-0"
   }, {
-    label: "Child Node4",
+    title: "Child Node4",
     value: "0-1-1",
     key: "0-1-1"
   }, {
-    label: "Child Node5",
+    title: "Child Node5",
     value: "0-1-2",
     key: "0-1-2"
   }]
@@ -82,10 +84,12 @@ var Demo = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Demo.__proto__ || Object.getPrototypeOf(Demo)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      value: []
+      value: ["0-0-0"]
     }, _this.onChange = function (value) {
       console.log("onChange ", value);
       _this.setState({ value: value });
+    }, _this.onSearch = function (value) {
+      console.log(value);
     }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
@@ -96,10 +100,11 @@ var Demo = function (_React$Component) {
         treeData: treeData,
         value: this.state.value,
         onChange: this.onChange,
+        onSearch: this.onSearch,
+        filterTreeNode: false,
         treeCheckable: true,
+        showCheckedStrategy: SHOW_PARENT,
         searchPlaceholder: "Please select",
-        autoClearSearchValue: false,
-        treeCheckStrictly: true,
         style: {
           width: 300
         }
