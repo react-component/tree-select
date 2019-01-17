@@ -758,7 +758,9 @@ class Select extends React.Component {
       const upperSearchValue = String(value).toUpperCase();
 
       let filterTreeNodeFn = filterTreeNode;
-      if (!filterTreeNodeFn) {
+      if (filterTreeNode === false) {
+        filterTreeNodeFn = () => true;
+      } else if (!filterTreeNodeFn) {
         filterTreeNodeFn = (_, node) => {
           const nodeValue = String(node.props[treeNodeFilterProp]).toUpperCase();
           return nodeValue.indexOf(upperSearchValue) !== -1;

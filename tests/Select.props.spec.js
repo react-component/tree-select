@@ -116,16 +116,24 @@ describe('TreeSelect.props', () => {
     setMock(false);
   });
 
-  it('filterTreeNode', () => {
-    function filterTreeNode(input, child) {
-      return String(child.props.title).indexOf(input) !== -1;
-    }
-    const wrapper = mount(createOpenSelect({ filterTreeNode }));
-    wrapper.find('input').simulate('change', { target: { value: 'Title 1' } });
-    expect(wrapper.render()).toMatchSnapshot();
-
-    wrapper.find('input').simulate('change', { target: { value: '0-0' } });
-    expect(wrapper.render()).toMatchSnapshot();
+  describe('filterTreeNode', () => {
+    it('function', () => {
+      function filterTreeNode(input, child) {
+        return String(child.props.title).indexOf(input) !== -1;
+      }
+      const wrapper = mount(createOpenSelect({ filterTreeNode }));
+      wrapper.find('input').simulate('change', { target: { value: 'Title 1' } });
+      expect(wrapper.render()).toMatchSnapshot();
+  
+      wrapper.find('input').simulate('change', { target: { value: '0-0' } });
+      expect(wrapper.render()).toMatchSnapshot();
+    });
+    
+    it('false', () => {
+      const wrapper = mount(createOpenSelect({ filterTreeNode: false }));
+      wrapper.find('input').simulate('change', { target: { value: 'Title 1' } });
+      expect(wrapper.render()).toMatchSnapshot();
+    });
   });
 
   it('showSearch', () => {

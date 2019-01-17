@@ -1889,7 +1889,157 @@ exports[`TreeSelect.props dropdownStyle 1`] = `
 </div>
 `;
 
-exports[`TreeSelect.props filterTreeNode 1`] = `
+exports[`TreeSelect.props filterTreeNode false 1`] = `
+<div>
+  <span
+    aria-controls="rc-tree-select-list_1"
+    aria-expanded="true"
+    aria-haspopup="listbox"
+    aria-owns="rc-tree-select-list_1"
+    class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
+    role="combobox"
+    style=""
+    tabindex="0"
+  >
+    <span
+      class="rc-tree-select-selection rc-tree-select-selection--single"
+    >
+      <span
+        class="rc-tree-select-selection__rendered"
+      >
+        <span
+          class="rc-tree-select-selection__placeholder"
+        />
+      </span>
+      <span
+        class="rc-tree-select-arrow"
+        style="outline: none;"
+      />
+    </span>
+  </span>
+  <div>
+    <div
+      class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
+      style="left: -999px; top: -995px; min-width: 0;"
+    >
+      <div
+        id="rc-tree-select-list_1"
+        role="listbox"
+        tabindex="-1"
+      >
+        <span
+          class="rc-tree-select-dropdown-search"
+        >
+          <span
+            class="rc-tree-select-search__field__wrap"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-controls="rc-tree-select-list_1"
+              aria-label="filter select"
+              aria-multiline="false"
+              class="rc-tree-select-search__field"
+              type="text"
+              value="Title 1"
+            />
+            <span
+              class="rc-tree-select-search__field__mirror"
+            >
+              Title 1 
+            </span>
+          </span>
+        </span>
+        <ul
+          class="rc-tree-select-tree"
+          role="tree"
+          unselectable="on"
+        >
+          <li
+            class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
+          >
+            <span
+              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+            />
+            <span
+              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+              title="Title 0"
+            >
+              <span
+                class="rc-tree-select-tree-title"
+              >
+                Title 0
+              </span>
+            </span>
+            <ul
+              class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
+              data-expanded="true"
+              role="group"
+            >
+              <li
+                class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
+              >
+                <span
+                  class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                />
+                <span
+                  class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                  title="Title 0-0"
+                >
+                  <span
+                    class="rc-tree-select-tree-title"
+                  >
+                    Title 0-0
+                  </span>
+                </span>
+              </li>
+              <li
+                class="rc-tree-select-tree-treenode-switcher-open"
+                role="treeitem"
+              >
+                <span
+                  class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                />
+                <span
+                  class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                  title="Title 0-1"
+                >
+                  <span
+                    class="rc-tree-select-tree-title"
+                  >
+                    Title 0-1
+                  </span>
+                </span>
+              </li>
+            </ul>
+          </li>
+          <li
+            class="rc-tree-select-tree-treenode-switcher-open"
+            role="treeitem"
+          >
+            <span
+              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+            />
+            <span
+              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+              title="Title 1"
+            >
+              <span
+                class="rc-tree-select-tree-title"
+              >
+                Title 1
+              </span>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`TreeSelect.props filterTreeNode function 1`] = `
 <div>
   <span
     aria-controls="rc-tree-select-list_1"
@@ -1979,7 +2129,7 @@ exports[`TreeSelect.props filterTreeNode 1`] = `
 </div>
 `;
 
-exports[`TreeSelect.props filterTreeNode 2`] = `
+exports[`TreeSelect.props filterTreeNode function 2`] = `
 <div>
   <span
     aria-controls="rc-tree-select-list_1"

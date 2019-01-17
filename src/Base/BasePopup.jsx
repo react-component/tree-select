@@ -77,7 +77,7 @@ class BasePopup extends React.Component {
     const { prevProps = {}, loadedKeys, expandedKeyList, cachedExpandedKeyList } = prevState || {};
     const {
       valueList, valueEntities, keyEntities,
-      treeExpandedKeys, filteredTreeNodes, searchValue
+      treeExpandedKeys, filteredTreeNodes, upperSearchValue
     } = nextProps;
 
     const newState = {
@@ -103,9 +103,9 @@ class BasePopup extends React.Component {
     }
 
     // Cache `expandedKeyList` when filter set
-    if (searchValue && !prevProps.searchValue) {
+    if (upperSearchValue && !prevProps.upperSearchValue) {
       newState.cachedExpandedKeyList = expandedKeyList;
-    } else if (!searchValue && prevProps.searchValue && !treeExpandedKeys) {
+    } else if (!upperSearchValue && prevProps.upperSearchValue && !treeExpandedKeys) {
       newState.expandedKeyList = cachedExpandedKeyList || [];
       newState.cachedExpandedKeyList = [];
     }
@@ -144,8 +144,8 @@ class BasePopup extends React.Component {
    * Not pass `loadData` when searching. To avoid loop ajax call makes browser crash.
    */
   getLoadData = () => {
-    const { loadData, searchValue } = this.props;
-    if (searchValue) return null;
+    const { loadData, upperSearchValue } = this.props;
+    if (upperSearchValue) return null;
     return loadData;
   };
 
