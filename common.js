@@ -4631,7 +4631,7 @@ var selectorPropTypes = {
   className: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.string,
   style: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.object,
   open: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.bool,
-  valueList: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.array, // Name as valueList to diff the single value
+  selectorValueList: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.array,
   allowClear: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.bool,
   showArrow: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.bool,
   onClick: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.func,
@@ -4708,12 +4708,12 @@ var selectorContextTypes = {
         var _props = this.props,
             prefixCls = _props.prefixCls,
             allowClear = _props.allowClear,
-            valueList = _props.valueList,
+            selectorValueList = _props.selectorValueList,
             clearIcon = _props.clearIcon;
         var onSelectorClear = this.context.rcTreeSelect.onSelectorClear;
 
 
-        if (!allowClear || !valueList.length || !valueList[0].value) {
+        if (!allowClear || !selectorValueList.length || !selectorValueList[0].value) {
           return null;
         }
 

@@ -84,7 +84,7 @@ var Demo = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Demo.__proto__ || Object.getPrototypeOf(Demo)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      value: ["0-0-0"]
+      value: 'not-exist-2333'
     }, _this.onChange = function (value) {
       console.log("onChange ", value);
       _this.setState({ value: value });
@@ -102,7 +102,8 @@ var Demo = function (_React$Component) {
         onChange: this.onChange,
         onSearch: this.onSearch,
         filterTreeNode: false,
-        treeCheckable: true,
+        // treeCheckable: true,
+        allowClear: true,
         showCheckedStrategy: SHOW_PARENT,
         searchPlaceholder: "Please select",
         style: {
