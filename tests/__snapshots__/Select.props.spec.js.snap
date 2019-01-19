@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TreeSelect.props allowClear 1`] = `
+exports[`TreeSelect.props allowClear functional works 1`] = `
 <div>
   <span
     aria-controls="rc-tree-select-list_1"
@@ -150,7 +150,7 @@ exports[`TreeSelect.props allowClear 1`] = `
 </div>
 `;
 
-exports[`TreeSelect.props allowClear 2`] = `
+exports[`TreeSelect.props allowClear functional works 2`] = `
 <div>
   <span
     aria-controls="rc-tree-select-list_1"
@@ -306,7 +306,7 @@ exports[`TreeSelect.props allowClear 2`] = `
 </div>
 `;
 
-exports[`TreeSelect.props allowClear 3`] = `
+exports[`TreeSelect.props allowClear functional works 3`] = `
 <div>
   <span
     aria-controls="rc-tree-select-list_1"

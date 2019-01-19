@@ -17,7 +17,7 @@ export const selectorPropTypes = {
   className: PropTypes.string,
   style: PropTypes.object,
   open: PropTypes.bool,
-  valueList: PropTypes.array, // Name as valueList to diff the single value
+  selectorValueList: PropTypes.array,
   allowClear: PropTypes.bool,
   showArrow: PropTypes.bool,
   onClick: PropTypes.func,
@@ -99,10 +99,10 @@ export default function (modeName) {
     }
 
     renderClear() {
-      const { prefixCls, allowClear, valueList, clearIcon } = this.props;
+      const { prefixCls, allowClear, selectorValueList, clearIcon } = this.props;
       const { rcTreeSelect: { onSelectorClear } } = this.context;
 
-      if (!allowClear || !valueList.length || !valueList[0].value) {
+      if (!allowClear || !selectorValueList.length || !selectorValueList[0].value) {
         return null;
       }
 

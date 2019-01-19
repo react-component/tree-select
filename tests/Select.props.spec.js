@@ -141,46 +141,58 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('allowClear', () => {
-    const handleChange = jest.fn();
+  describe('allowClear', () => {
+    it('functional works', () => {
+      const handleChange = jest.fn();
 
-    const wrapper = mount(createSelect({
-      allowClear: true,
-      onChange: handleChange,
-      treeDefaultExpandAll: true,
-      open: true,
-    }));
-    wrapper.find('.rc-tree-select').simulate('click');
-    expect(wrapper.render()).toMatchSnapshot();
+      const wrapper = mount(createSelect({
+        allowClear: true,
+        onChange: handleChange,
+        treeDefaultExpandAll: true,
+        open: true,
+      }));
+      wrapper.find('.rc-tree-select').simulate('click');
+      expect(wrapper.render()).toMatchSnapshot();
 
-    // Click node 0-1
-    const $node = wrapper.find(TreeNode).at(2);
-    $node.find('.rc-tree-select-tree-node-content-wrapper').simulate('click');
+      // Click node 0-1
+      const $node = wrapper.find(TreeNode).at(2);
+      $node.find('.rc-tree-select-tree-node-content-wrapper').simulate('click');
 
-    expect(wrapper.render()).toMatchSnapshot();
-    expect(handleChange).toBeCalledWith(
-      'Value 0-1',
-      ['Title 0-1'],
-      {
-        preValue: [],
-        selected: true,
-        triggerValue: 'Value 0-1',
-        triggerNode: $node.instance(),
-      },
-    );
-    handleChange.mockReset();
+      expect(wrapper.render()).toMatchSnapshot();
+      expect(handleChange).toBeCalledWith(
+        'Value 0-1',
+        ['Title 0-1'],
+        {
+          preValue: [],
+          selected: true,
+          triggerValue: 'Value 0-1',
+          triggerNode: $node.instance(),
+        },
+      );
+      handleChange.mockReset();
 
-    // Click to clear
-    wrapper.find('.rc-tree-select-selection__clear').simulate('click');
+      // Click to clear
+      wrapper.find('.rc-tree-select-selection__clear').simulate('click');
 
-    expect(wrapper.render()).toMatchSnapshot();
-    expect(handleChange).toBeCalledWith(
-      undefined,
-      [],
-      {
-        preValue: [{ label: 'Title 0-1', value: 'Value 0-1' }],
-      },
-    );
+      expect(wrapper.render()).toMatchSnapshot();
+      expect(handleChange).toBeCalledWith(
+        undefined,
+        [],
+        {
+          preValue: [{ label: 'Title 0-1', value: 'Value 0-1' }],
+        },
+      );
+    });
+
+    it('value not in tree should also display allow clear', () => {
+      const wrapper = mount(createSelect({
+        allowClear: true,
+        value: 'not-exist-in-tree',
+      }));
+      expect(
+        wrapper.find('.rc-tree-select-selection__clear').length
+      ).toBeTruthy();
+    });
   });
 
   it('placeholder', () => {
