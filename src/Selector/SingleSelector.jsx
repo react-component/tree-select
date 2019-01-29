@@ -17,6 +17,7 @@ class SingleSelector extends React.Component {
   focus = () => {
     this.selectorRef.current.focus();
   };
+
   blur = () => {
     this.selectorRef.current.blur();
   };
@@ -39,29 +40,18 @@ class SingleSelector extends React.Component {
       );
     } else {
       innerNode = (
-        <span
-          key="placeholder"
-          className={`${prefixCls}-selection__placeholder`}
-        >
+        <span key="placeholder" className={`${prefixCls}-selection__placeholder`}>
           {placeholder}
         </span>
       );
     }
 
-    return (
-      <span className={`${prefixCls}-selection__rendered`}>
-        {innerNode}
-      </span>
-    );
+    return <span className={`${prefixCls}-selection__rendered`}>{innerNode}</span>;
   };
 
   render() {
     return (
-      <Selector
-        {...this.props}
-        ref={this.selectorRef}
-        renderSelection={this.renderSelection}
-      />
+      <Selector {...this.props} ref={this.selectorRef} renderSelection={this.renderSelection} />
     );
   }
 }
