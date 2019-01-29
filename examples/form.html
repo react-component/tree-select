@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>form.js - example - rc-tree-select@2.5.2</title>
+  <title>form.js - example - rc-tree-select@2.5.3</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-tree-select@2.5.2</h1>
+      <h1>rc-tree-select@2.5.3</h1>
 
       <p>tree-select ui component for react</p>
     </div>
@@ -292,11 +292,10 @@ class TreeSelectInput extends Component {
     if (props.onChange) {
       props.onChange(value);
     }
-  }
+  };
+
   render() {
-    return (
-      &lt;TreeSelect {...this.props} onChange={this.onChange} /&gt;
-    );
+    return &lt;TreeSelect {...this.props} onChange={this.onChange} /&gt;;
   }
 }
 
@@ -305,10 +304,12 @@ class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
   };
-  onSubmit = (e) =&gt; {
+
+  onSubmit = e =&gt; {
+    const { form } = this.props;
     console.log('submit');
     e.preventDefault();
-    this.props.form.validateFields((error, values) =&gt; {
+    form.validateFields((error, values) =&gt; {
       if (!error) {
         console.log('ok', values);
       } else {
@@ -316,10 +317,13 @@ class Form extends Component {
       }
     });
   };
-  reset = (e) =&gt; {
+
+  reset = e =&gt; {
+    const { form } = this.props;
     e.preventDefault();
-    this.props.form.resetFields();
+    form.resetFields();
   };
+
   render() {
     const { form } = this.props;
     const { getFieldDecorator, getFieldError } = form;
@@ -329,79 +333,65 @@ class Form extends Component {
       treeCheckable: true,
       // treeDefaultExpandAll: true,
     };
-    return (&lt;div style={{ margin: 20 }}&gt;
-      &lt;h2&gt;validity&lt;/h2&gt;
-      &lt;form onSubmit={this.onSubmit}&gt;
-        &lt;div style={regionStyle}&gt;
-          &lt;div&gt;
-            &lt;p style={{ color: 'blue' }}&gt;no onChange&lt;/p&gt;
-            {getFieldDecorator('tree-select', {
-              initialValue: ['0-0-0-value'],
-              rules: [
-                { required: true, type: 'array', message: 'tree-select 需要必填' },
-              ],
-            })(
-              &lt;TreeSelect
-                {...tProps}
-                style={{ width: 300 }}
-              /&gt;
-            )}
+    return (
+      &lt;div style={{ margin: 20 }}&gt;
+        &lt;h2&gt;validity&lt;/h2&gt;
+        &lt;form onSubmit={this.onSubmit}&gt;
+          &lt;div style={regionStyle}&gt;
+            &lt;div&gt;
+              &lt;p style={{ color: 'blue' }}&gt;no onChange&lt;/p&gt;
+              {getFieldDecorator('tree-select', {
+                initialValue: ['0-0-0-value'],
+                rules: [{ required: true, type: 'array', message: 'tree-select 需要必填' }],
+              })(&lt;TreeSelect {...tProps} style={{ width: 300 }} /&gt;)}
+            &lt;/div&gt;
+            &lt;p style={errorStyle}&gt;
+              {getFieldError('tree-select') ? getFieldError('tree-select').join(',') : null}
+            &lt;/p&gt;
           &lt;/div&gt;
-          &lt;p style={errorStyle}&gt;
-            {(getFieldError('tree-select')) ? getFieldError('tree-select').join(',') : null}
-          &lt;/p&gt;
-        &lt;/div&gt;
 
-        &lt;div style={regionStyle}&gt;
-          &lt;div&gt;
-            &lt;p style={{ color: 'blue' }}&gt;custom onChange&lt;/p&gt;
-            {getFieldDecorator('tree-select1', {
-              initialValue: ['0-0-0-value'],
-              rules: [
-                { required: true, type: 'array', message: 'tree-select1 需要必填' },
-              ],
-            })(
-              &lt;TreeSelectInput
-                {...tProps}
-                style={{ width: 300 }}
-                treeData={gData}
-              /&gt;
-            )}
+          &lt;div style={regionStyle}&gt;
+            &lt;div&gt;
+              &lt;p style={{ color: 'blue' }}&gt;custom onChange&lt;/p&gt;
+              {getFieldDecorator('tree-select1', {
+                initialValue: ['0-0-0-value'],
+                rules: [{ required: true, type: 'array', message: 'tree-select1 需要必填' }],
+              })(&lt;TreeSelectInput {...tProps} style={{ width: 300 }} treeData={gData} /&gt;)}
+            &lt;/div&gt;
+            &lt;p style={errorStyle}&gt;
+              {getFieldError('tree-select1') ? getFieldError('tree-select1').join(',') : null}
+            &lt;/p&gt;
           &lt;/div&gt;
-          &lt;p style={errorStyle}&gt;
-            {(getFieldError('tree-select1')) ? getFieldError('tree-select1').join(',') : null}
-          &lt;/p&gt;
-        &lt;/div&gt;
 
-        &lt;div style={regionStyle}&gt;
-          {getFieldDecorator('select', {
-            initialValue: 'jack',
-            rules: [
-              { required: true, type: 'array', message: 'select 需要必填' },
-            ],
-          })(
-            &lt;Select
-              style={{ width: 200 }} allowClear multiple
+          &lt;div style={regionStyle}&gt;
+            {getFieldDecorator('select', {
+              initialValue: 'jack',
+              rules: [{ required: true, type: 'array', message: 'select 需要必填' }],
+            })(
+              &lt;Select style={{ width: 200 }} allowClear multiple&gt;
+                &lt;Option value="jack"&gt;jack&lt;/Option&gt;
+                &lt;Option value="lucy"&gt;lucy&lt;/Option&gt;
+                &lt;Option value="disabled" disabled&gt;
+                  disabled
+                &lt;/Option&gt;
+                &lt;Option value="yiminghe"&gt;yiminghe&lt;/Option&gt;
+              &lt;/Select&gt;,
+            )}
+            &lt;p style={errorStyle}&gt;
+              {getFieldError('select') ? getFieldError('select').join(',') : null}
+            &lt;/p&gt;
+          &lt;/div&gt;
 
-            &gt;
-              &lt;Option value="jack"&gt;jack&lt;/Option&gt;
-              &lt;Option value="lucy"&gt;lucy&lt;/Option&gt;
-              &lt;Option value="disabled" disabled&gt;disabled&lt;/Option&gt;
-              &lt;Option value="yiminghe"&gt;yiminghe&lt;/Option&gt;
-            &lt;/Select&gt;
-          )}
-          &lt;p style={errorStyle}&gt;
-            {(getFieldError('select')) ? getFieldError('select').join(',') : null}
-          &lt;/p&gt;
-        &lt;/div&gt;
-
-        &lt;div style={regionStyle}&gt;
-          &lt;button onClick={this.reset}&gt;reset&lt;/button&gt;
-          &amp;nbsp;
-          &lt;input type="submit" value="submit"/&gt;
-        &lt;/div&gt;
-      &lt;/form&gt;
-    &lt;/div&gt;);
+          &lt;div style={regionStyle}&gt;
+            &lt;button type="button" onClick={this.reset}&gt;
+              reset
+            &lt;/button&gt;
+            &amp;nbsp;
+            &lt;input type="submit" value="submit" /&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    );
   }
 }
 

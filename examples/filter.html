@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>filter.js - example - rc-tree-select@2.5.2</title>
+  <title>filter.js - example - rc-tree-select@2.5.3</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-tree-select@2.5.2</h1>
+      <h1>rc-tree-select@2.5.3</h1>
 
       <p>tree-select ui component for react</p>
     </div>
@@ -294,23 +294,25 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
       id: <span class="hljs-string">'key'</span>,
       rootPId: <span class="hljs-number">0</span>,
     },
-  }
+  };
 
-  onChange = (value) =&gt; {
+  onChange = value =&gt; {
+    <span class="hljs-keyword">const</span> { simpleTreeData } = <span class="hljs-keyword">this</span>.state;
     <span class="hljs-keyword">if</span> (value.length === <span class="hljs-number">1</span>) {
       <span class="hljs-comment">// return;</span>
     }
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, <span class="hljs-built_in">arguments</span>, <span class="hljs-keyword">this</span>.state.simpleTreeData);
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, value, simpleTreeData);
     <span class="hljs-keyword">this</span>.setState({ value });
-  }
+  };
 
   onSelect = () =&gt; {
     <span class="hljs-comment">// use onChange instead</span>
     <span class="hljs-comment">// console.log(arguments);</span>
-  }
+  };
 
   onDataChange = () =&gt; {
-    <span class="hljs-keyword">const</span> data = [...this.state.simpleTreeData];
+    <span class="hljs-keyword">const</span> { simpleTreeData } = <span class="hljs-keyword">this</span>.state;
+    <span class="hljs-keyword">const</span> data = simpleTreeData.slice();
     data.forEach(i =&gt; {
       <span class="hljs-keyword">if</span> (i.key === <span class="hljs-number">11</span>) {
         <span class="hljs-keyword">delete</span> i.disabled;
@@ -320,9 +322,10 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
       }
     });
     <span class="hljs-keyword">this</span>.setState({ simpleTreeData: data });
-  }
+  };
 
   render() {
+    <span class="hljs-keyword">const</span> { value, simpleTreeData, treeDataSimpleMode } = <span class="hljs-keyword">this</span>.state;
     <span class="hljs-keyword">return</span> (
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">margin:</span> <span class="hljs-attribute">20</span> }}&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>check select<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
@@ -334,8 +337,9 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           <span class="hljs-attribute">dropdownPopupAlign</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">overflow:</span> { <span class="hljs-attribute">adjustY:</span> <span class="hljs-attribute">0</span>, <span class="hljs-attribute">adjustX:</span> <span class="hljs-attribute">0</span> }, <span class="hljs-attribute">offset:</span> [<span class="hljs-attribute">0</span>, <span class="hljs-attribute">2</span>] }}
           <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
           searchPlaceholder="please search"
-          treeLine maxTagTextLength={10}
-          value={this.state.value}
+          treeLine
+          maxTagTextLength={10}
+          value={value}
           treeData={gData}
           treeNodeFilterProp="title"
           treeCheckable
@@ -349,18 +353,22 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>' }}
           <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
           searchPlaceholder="please search"
-          treeLine maxTagTextLength={10}
+          treeLine
+          maxTagTextLength={10}
           inputValue={null}
-          value={this.state.value}
-          treeData={this.state.simpleTreeData}
+          value={value}
+          treeData={simpleTreeData}
           treeDefaultExpandAll
           treeNodeFilterProp="title"
-          treeDataSimpleMode={this.state.treeDataSimpleMode}
-          treeCheckable showCheckedStrategy={SHOW_PARENT}
+          treeDataSimpleMode={treeDataSimpleMode}
+          treeCheckable
+          showCheckedStrategy={SHOW_PARENT}
           onChange={this.onChange}
           onSelect={this.onSelect}
         /&gt;
-        <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.onDataChange}</span>&gt;</span>change data<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"button"</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.onDataChange}</span>&gt;</span>
+          change data
+        <span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     )</span>;
   }

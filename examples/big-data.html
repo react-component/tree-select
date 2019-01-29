@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>big-data.js - example - rc-tree-select@2.5.2</title>
+  <title>big-data.js - example - rc-tree-select@2.5.3</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,13 +257,13 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     document.writeln('<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');
   }
   </script>
-  <link rel="stylesheet" href="../common.css" /><link rel="stylesheet" href="big-data.css" />
+  <link rel="stylesheet" href="../common.css" />
 </head>
 
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-tree-select@2.5.2</h1>
+      <h1>rc-tree-select@2.5.3</h1>
 
       <p>tree-select ui component for react</p>
     </div>
@@ -284,23 +284,23 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     gData1: [],
     value: <span class="hljs-string">''</span>,
     value1: <span class="hljs-string">''</span>,
-  }
+  };
 
-  onChange = (value) =&gt; {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, <span class="hljs-built_in">arguments</span>);
+  onChange = value =&gt; {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, value);
     <span class="hljs-keyword">this</span>.setState({ value });
-  }
+  };
 
-  onChangeStrictly = (value1) =&gt; {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChangeStrictly'</span>, <span class="hljs-built_in">arguments</span>);
+  onChangeStrictly = value1 =&gt; {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChangeStrictly'</span>, value1);
     <span class="hljs-keyword">const</span> ind = <span class="hljs-built_in">parseInt</span>(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">3</span>, <span class="hljs-number">10</span>);
     value1.push({ value: <span class="hljs-string">`0-0-0-<span class="hljs-subst">${ind}</span>-value`</span>, label: <span class="hljs-string">`0-0-0-<span class="hljs-subst">${ind}</span>-label`</span>, halfChecked: <span class="hljs-literal">true</span> });
     <span class="hljs-keyword">this</span>.setState({
       value1,
     });
-  }
+  };
 
-  onGen = (data) =&gt; {
+  onGen = data =&gt; {
     <span class="hljs-keyword">this</span>.setState({
       gData: data,
       gData1: [...data],
@@ -311,41 +311,46 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
       ],
       <span class="hljs-comment">// value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],</span>
     });
-  }
+  };
 
   render() {
-    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">padding:</span> '<span class="hljs-attribute">0</span> <span class="hljs-attribute">20px</span>' }}&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">Gen</span> <span class="hljs-attribute">onGen</span>=<span class="hljs-value">{this.onGen}</span> /&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">display:</span> '<span class="hljs-attribute">flex</span>' }}&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">marginRight:</span> <span class="hljs-attribute">20</span> }}&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">h3</span>&gt;</span>normal check<span class="hljs-tag">&lt;/<span class="hljs-title">h3</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
-            <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}
-            <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>' }}
-            <span class="hljs-attribute">treeData</span>=<span class="hljs-value">{this.state.gData}</span> <span class="hljs-attribute">treeLine</span>
-            <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span>
-            <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
-            treeCheckable
-            showCheckedStrategy={SHOW_PARENT}
-            onChange={this.onChange}
-          /&gt;
-        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">h3</span>&gt;</span>checkStrictly<span class="hljs-tag">&lt;/<span class="hljs-title">h3</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
-            <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}
-            <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>' }}
-            <span class="hljs-attribute">treeData</span>=<span class="hljs-value">{this.state.gData1}</span> <span class="hljs-attribute">treeLine</span>
-            <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value1}</span>
-            <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
-            treeCheckable
-            treeCheckStrictly
-            showCheckedStrategy={SHOW_PARENT}
-            onChange={this.onChangeStrictly}
-          /&gt;
+    <span class="hljs-keyword">const</span> { value1, gData1, value, gData } = <span class="hljs-keyword">this</span>.state;
+    <span class="hljs-keyword">return</span> (
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">padding:</span> '<span class="hljs-attribute">0</span> <span class="hljs-attribute">20px</span>' }}&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">Gen</span> <span class="hljs-attribute">onGen</span>=<span class="hljs-value">{this.onGen}</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">display:</span> '<span class="hljs-attribute">flex</span>' }}&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">marginRight:</span> <span class="hljs-attribute">20</span> }}&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">h3</span>&gt;</span>normal check<span class="hljs-tag">&lt;/<span class="hljs-title">h3</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
+              <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}
+              <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>' }}
+              <span class="hljs-attribute">treeData</span>=<span class="hljs-value">{gData}</span>
+              <span class="hljs-attribute">treeLine</span>
+              <span class="hljs-attribute">value</span>=<span class="hljs-value">{value}</span>
+              <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
+              treeCheckable
+              showCheckedStrategy={SHOW_PARENT}
+              onChange={this.onChange}
+            /&gt;
+          <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">h3</span>&gt;</span>checkStrictly<span class="hljs-tag">&lt;/<span class="hljs-title">h3</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">TreeSelect</span>
+              <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}
+              <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>' }}
+              <span class="hljs-attribute">treeData</span>=<span class="hljs-value">{gData1}</span>
+              <span class="hljs-attribute">treeLine</span>
+              <span class="hljs-attribute">value</span>=<span class="hljs-value">{value1}</span>
+              <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
+              treeCheckable
+              treeCheckStrictly
+              showCheckedStrategy={SHOW_PARENT}
+              onChange={this.onChangeStrictly}
+            /&gt;
+          <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
+    )</span>;
   }
 }
 

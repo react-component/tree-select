@@ -87,7 +87,7 @@
   right: 20px;
 }
 .rc-tree-select-selection--single .rc-tree-select-selection__clear:after {
-  content: '\D7';
+  content: '×';
 }
 .rc-tree-select-disabled {
   color: #ccc;
@@ -175,7 +175,8 @@
 }
 .rc-tree-select-enabled .rc-tree-select-selection__choice:hover .rc-tree-select-selection__choice__remove {
   opacity: 1;
-  transform: scale(1);
+  -webkit-transform: scale(1);
+          transform: scale(1);
 }
 .rc-tree-select-enabled .rc-tree-select-selection__choice:hover .rc-tree-select-selection__choice__remove + .rc-tree-select-selection__choice__content {
   margin-left: -8px;
@@ -199,39 +200,71 @@
 .rc-tree-select .rc-tree-select-selection__choice-zoom-enter,
 .rc-tree-select .rc-tree-select-selection__choice-zoom-appear,
 .rc-tree-select .rc-tree-select-selection__choice-zoom-leave {
-  animation-duration: .3s;
-  animation-fill-mode: both;
-  transform-origin: 0 0;
+  -webkit-animation-duration: 0.3s;
+          animation-duration: 0.3s;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
   opacity: 0;
-  animation-play-state: paused;
-  animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -webkit-animation-play-state: paused;
+          animation-play-state: paused;
+  -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .rc-tree-select .rc-tree-select-selection__choice-zoom-leave {
   opacity: 1;
-  animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  -webkit-animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+          animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
 }
 .rc-tree-select .rc-tree-select-selection__choice-zoom-enter.rc-tree-select-selection__choice-zoom-enter-active,
 .rc-tree-select .rc-tree-select-selection__choice-zoom-appear.rc-tree-select-selection__choice-zoom-appear-active {
-  animation-play-state: running;
-  animation-name: rcSelectChoiceZoomIn;
+  -webkit-animation-play-state: running;
+          animation-play-state: running;
+  -webkit-animation-name: rcSelectChoiceZoomIn;
+          animation-name: rcSelectChoiceZoomIn;
 }
 .rc-tree-select .rc-tree-select-selection__choice-zoom-leave.rc-tree-select-selection__choice-zoom-leave-active {
-  animation-play-state: running;
-  animation-name: rcSelectChoiceZoomOut;
+  -webkit-animation-play-state: running;
+          animation-play-state: running;
+  -webkit-animation-name: rcSelectChoiceZoomOut;
+          animation-name: rcSelectChoiceZoomOut;
 }
-@keyframes rcSelectChoiceZoomIn {
+@-webkit-keyframes rcSelectChoiceZoomIn {
   0% {
-    transform: scale(0.6);
+    -webkit-transform: scale(0.6);
+            transform: scale(0.6);
     opacity: 0;
   }
   100% {
-    transform: scale(1);
+    -webkit-transform: scale(1);
+            transform: scale(1);
     opacity: 1;
+  }
+}
+@keyframes rcSelectChoiceZoomIn {
+  0% {
+    -webkit-transform: scale(0.6);
+            transform: scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes rcSelectChoiceZoomOut {
+  to {
+    -webkit-transform: scale(0);
+            transform: scale(0);
+    opacity: 0;
   }
 }
 @keyframes rcSelectChoiceZoomOut {
   to {
-    transform: scale(0);
+    -webkit-transform: scale(0);
+            transform: scale(0);
     opacity: 0;
   }
 }
@@ -242,13 +275,16 @@
   padding: 0 0 0 8px;
   position: absolute;
   opacity: 0;
-  transform: scale(0);
+  -webkit-transform: scale(0);
+          transform: scale(0);
   top: 0;
   right: 2px;
-  transition: opacity .3s, transform .3s;
+  transition: opacity 0.3s, -webkit-transform 0.3s;
+  transition: opacity 0.3s, transform 0.3s;
+  transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s;
 }
 .rc-tree-select .rc-tree-select-selection__choice__remove:before {
-  content: '\D7';
+  content: '×';
 }
 .rc-tree-select .rc-tree-select-selection__choice__remove:hover {
   color: #333;
@@ -322,85 +358,183 @@ li.rc-tree-select-dropdown-menu-item-divider {
 }
 .rc-tree-select-dropdown-slide-up-enter,
 .rc-tree-select-dropdown-slide-up-appear {
-  animation-duration: .3s;
-  animation-fill-mode: both;
-  transform-origin: 0 0;
+  -webkit-animation-duration: 0.3s;
+          animation-duration: 0.3s;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
   opacity: 0;
-  animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
-  animation-play-state: paused;
+  -webkit-animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
+          animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
+  -webkit-animation-play-state: paused;
+          animation-play-state: paused;
 }
 .rc-tree-select-dropdown-slide-up-leave {
-  animation-duration: .3s;
-  animation-fill-mode: both;
-  transform-origin: 0 0;
+  -webkit-animation-duration: 0.3s;
+          animation-duration: 0.3s;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
   opacity: 1;
-  animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);
-  animation-play-state: paused;
+  -webkit-animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);
+          animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);
+  -webkit-animation-play-state: paused;
+          animation-play-state: paused;
 }
 .rc-tree-select-dropdown-slide-up-enter.rc-tree-select-dropdown-slide-up-enter-active.rc-tree-select-dropdown-placement-bottomLeft,
 .rc-tree-select-dropdown-slide-up-appear.rc-tree-select-dropdown-slide-up-appear-active.rc-tree-select-dropdown-placement-bottomLeft {
-  animation-name: rcSelectDropdownSlideUpIn;
-  animation-play-state: running;
+  -webkit-animation-name: rcSelectDropdownSlideUpIn;
+          animation-name: rcSelectDropdownSlideUpIn;
+  -webkit-animation-play-state: running;
+          animation-play-state: running;
 }
 .rc-tree-select-dropdown-slide-up-leave.rc-tree-select-dropdown-slide-up-leave-active.rc-tree-select-dropdown-placement-bottomLeft {
-  animation-name: rcSelectDropdownSlideUpOut;
-  animation-play-state: running;
+  -webkit-animation-name: rcSelectDropdownSlideUpOut;
+          animation-name: rcSelectDropdownSlideUpOut;
+  -webkit-animation-play-state: running;
+          animation-play-state: running;
 }
 .rc-tree-select-dropdown-slide-up-enter.rc-tree-select-dropdown-slide-up-enter-active.rc-tree-select-dropdown-placement-topLeft,
 .rc-tree-select-dropdown-slide-up-appear.rc-tree-select-dropdown-slide-up-appear-active.rc-tree-select-dropdown-placement-topLeft {
-  animation-name: rcSelectDropdownSlideDownIn;
-  animation-play-state: running;
+  -webkit-animation-name: rcSelectDropdownSlideDownIn;
+          animation-name: rcSelectDropdownSlideDownIn;
+  -webkit-animation-play-state: running;
+          animation-play-state: running;
 }
 .rc-tree-select-dropdown-slide-up-leave.rc-tree-select-dropdown-slide-up-leave-active.rc-tree-select-dropdown-placement-topLeft {
-  animation-name: rcSelectDropdownSlideDownOut;
-  animation-play-state: running;
+  -webkit-animation-name: rcSelectDropdownSlideDownOut;
+          animation-name: rcSelectDropdownSlideDownOut;
+  -webkit-animation-play-state: running;
+          animation-play-state: running;
+}
+@-webkit-keyframes rcSelectDropdownSlideUpIn {
+  0% {
+    opacity: 0;
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+  }
 }
 @keyframes rcSelectDropdownSlideUpIn {
   0% {
     opacity: 0;
-    transform-origin: 0% 0%;
-    transform: scaleY(0);
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
   }
   100% {
     opacity: 1;
-    transform-origin: 0% 0%;
-    transform: scaleY(1);
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+  }
+}
+@-webkit-keyframes rcSelectDropdownSlideUpOut {
+  0% {
+    opacity: 1;
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
   }
 }
 @keyframes rcSelectDropdownSlideUpOut {
   0% {
     opacity: 1;
-    transform-origin: 0% 0%;
-    transform: scaleY(1);
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
   }
   100% {
     opacity: 0;
-    transform-origin: 0% 0%;
-    transform: scaleY(0);
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
+  }
+}
+@-webkit-keyframes rcSelectDropdownSlideDownIn {
+  0% {
+    opacity: 0;
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
   }
 }
 @keyframes rcSelectDropdownSlideDownIn {
   0% {
     opacity: 0;
-    transform-origin: 0% 100%;
-    transform: scaleY(0);
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
   }
   100% {
     opacity: 1;
-    transform-origin: 0% 100%;
-    transform: scaleY(1);
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+  }
+}
+@-webkit-keyframes rcSelectDropdownSlideDownOut {
+  0% {
+    opacity: 1;
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
   }
 }
 @keyframes rcSelectDropdownSlideDownOut {
   0% {
     opacity: 1;
-    transform-origin: 0% 100%;
-    transform: scaleY(1);
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
   }
   100% {
     opacity: 0;
-    transform-origin: 0% 100%;
-    transform: scaleY(0);
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
   }
 }
 .rc-tree-select-dropdown-search {
@@ -477,7 +611,7 @@ li.rc-tree-select-dropdown-menu-item-divider {
   border-bottom: 2px blue solid;
 }
 .rc-tree-select-tree li.filter-node > .rc-tree-select-tree-node-content-wrapper {
-  color: #a60000!important;
+  color: #a60000 !important;
   font-weight: bold!important;
 }
 .rc-tree-select-tree li ul {
@@ -591,5 +725,260 @@ li.rc-tree-select-dropdown-menu-item-divider {
   background-position: -110px 0;
   vertical-align: top;
 }
+
+.rc-dialog {
+  position: relative;
+  width: auto;
+  margin: 10px;
+}
+.rc-dialog-wrap {
+  position: fixed;
+  overflow: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}
+.rc-dialog-title {
+  margin: 0;
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: bold;
+}
+.rc-dialog-content {
+  position: relative;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 6px 6px;
+  background-clip: padding-box;
+}
+.rc-dialog-close {
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  font-size: 21px;
+  position: absolute;
+  right: 20px;
+  top: 12px;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  filter: alpha(opacity=20);
+  opacity: .2;
+  text-decoration: none;
+}
+.rc-dialog-close-x:after {
+  content: '×';
+}
+.rc-dialog-close:hover {
+  opacity: 1;
+  filter: alpha(opacity=100);
+  text-decoration: none;
+}
+.rc-dialog-header {
+  padding: 13px 20px 14px 20px;
+  border-radius: 5px 5px 0 0;
+  background: #fff;
+  color: #666;
+  border-bottom: 1px solid #e9e9e9;
+}
+.rc-dialog-body {
+  padding: 20px;
+}
+.rc-dialog-footer {
+  border-top: 1px solid #e9e9e9;
+  padding: 10px 20px;
+  text-align: right;
+  border-radius: 0 0 5px 5px;
+}
+.rc-dialog-zoom-enter,
+.rc-dialog-zoom-appear {
+  opacity: 0;
+  -webkit-animation-duration: 0.3s;
+          animation-duration: 0.3s;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
+          animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
+  -webkit-animation-play-state: paused;
+          animation-play-state: paused;
+}
+.rc-dialog-zoom-leave {
+  -webkit-animation-duration: 0.3s;
+          animation-duration: 0.3s;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);
+          animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);
+  -webkit-animation-play-state: paused;
+          animation-play-state: paused;
+}
+.rc-dialog-zoom-enter.rc-dialog-zoom-enter-active,
+.rc-dialog-zoom-appear.rc-dialog-zoom-appear-active {
+  -webkit-animation-name: rcDialogZoomIn;
+          animation-name: rcDialogZoomIn;
+  -webkit-animation-play-state: running;
+          animation-play-state: running;
+}
+.rc-dialog-zoom-leave.rc-dialog-zoom-leave-active {
+  -webkit-animation-name: rcDialogZoomOut;
+          animation-name: rcDialogZoomOut;
+  -webkit-animation-play-state: running;
+          animation-play-state: running;
+}
+@-webkit-keyframes rcDialogZoomIn {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0, 0);
+            transform: scale(0, 0);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: scale(1, 1);
+            transform: scale(1, 1);
+  }
+}
+@keyframes rcDialogZoomIn {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0, 0);
+            transform: scale(0, 0);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: scale(1, 1);
+            transform: scale(1, 1);
+  }
+}
+@-webkit-keyframes rcDialogZoomOut {
+  0% {
+    -webkit-transform: scale(1, 1);
+            transform: scale(1, 1);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: scale(0, 0);
+            transform: scale(0, 0);
+  }
+}
+@keyframes rcDialogZoomOut {
+  0% {
+    -webkit-transform: scale(1, 1);
+            transform: scale(1, 1);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: scale(0, 0);
+            transform: scale(0, 0);
+  }
+}
+@media (min-width: 768px) {
+  .rc-dialog {
+    width: 600px;
+    margin: 30px auto;
+  }
+}
+.rc-dialog-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: #373737;
+  background-color: rgba(55, 55, 55, 0.6);
+  height: 100%;
+  filter: alpha(opacity=50);
+  z-index: 1050;
+}
+.rc-dialog-mask-hidden {
+  display: none;
+}
+.rc-dialog-fade-enter,
+.rc-dialog-fade-appear {
+  opacity: 0;
+  -webkit-animation-duration: 0.3s;
+          animation-duration: 0.3s;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
+          animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
+  -webkit-animation-play-state: paused;
+          animation-play-state: paused;
+}
+.rc-dialog-fade-leave {
+  -webkit-animation-duration: 0.3s;
+          animation-duration: 0.3s;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
+          animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
+  -webkit-animation-play-state: paused;
+          animation-play-state: paused;
+}
+.rc-dialog-fade-enter.rc-dialog-fade-enter-active,
+.rc-dialog-fade-appear.rc-dialog-fade-appear-active {
+  -webkit-animation-name: rcDialogFadeIn;
+          animation-name: rcDialogFadeIn;
+  -webkit-animation-play-state: running;
+          animation-play-state: running;
+}
+.rc-dialog-fade-leave.rc-dialog-fade-leave-active {
+  -webkit-animation-name: rcDialogFadeOut;
+          animation-name: rcDialogFadeOut;
+  -webkit-animation-play-state: running;
+          animation-play-state: running;
+}
+@-webkit-keyframes rcDialogFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes rcDialogFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes rcDialogFadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes rcDialogFadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.rc-tree-select-selection--multiple {
+  max-height: 50px;
+  overflow-y: scroll;
+}
+.rc-tree-select-dropdown {
+  max-height: 350px;
+  overflow-y: scroll;
+}
+.check-select {
+  width: 300px;
+}
+.check-select .rc-tree-select-selection--multiple {
+  min-height: 50px;
+}
+
 
 /*# sourceMappingURL=common.css.map*/
