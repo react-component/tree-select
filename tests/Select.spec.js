@@ -368,4 +368,20 @@ describe('TreeSelect.basic', () => {
       expect(getLabel({ value: 'newValue' })).toBe('newValue');
     });
   });
+
+  describe('forceAlign', () => {
+    it('onChoiceAnimationLeave trigger', () => {
+      const wrapper = mount(
+        <TreeSelect open>
+          <TreeNode title="0" value="0" />
+        </TreeSelect>,
+      );
+
+      const instance = wrapper.instance();
+      instance.forcePopupAlign = jest.fn();
+      instance.onChoiceAnimationLeave();
+
+      expect(instance.forcePopupAlign).toBeCalled();
+    });
+  });
 });
