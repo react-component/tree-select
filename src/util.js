@@ -20,7 +20,7 @@ export function toTitle(title) {
 }
 
 export function toArray(data) {
-  if (!data) return [];
+  if (data === undefined || data === null) return [];
 
   return Array.isArray(data) ? data : [data];
 }
@@ -65,7 +65,7 @@ export function flatToHierarchy(positionList) {
     return clone;
   });
 
-  parsedList.forEach((entity) => {
+  parsedList.forEach(entity => {
     posMap[entity.pos] = entity;
   });
 
@@ -74,7 +74,7 @@ export function flatToHierarchy(positionList) {
   });
 
   // Create the hierarchy
-  parsedList.forEach((entity) => {
+  parsedList.forEach(entity => {
     const parentPos = entity.fields.slice(0, -1).join('-');
     const parentEntity = posMap[parentPos];
 
@@ -119,7 +119,7 @@ export function parseSimpleTreeData(treeData, { id, pId, rootPId }) {
   const rootNodeList = [];
 
   // Fill in the map
-  const nodeList = treeData.map((node) => {
+  const nodeList = treeData.map(node => {
     const clone = { ...node };
     const key = clone[id];
     keyNodes[key] = clone;
@@ -128,7 +128,7 @@ export function parseSimpleTreeData(treeData, { id, pId, rootPId }) {
   });
 
   // Connect tree
-  nodeList.forEach((node) => {
+  nodeList.forEach(node => {
     const parentKey = node[pId];
     const parent = keyNodes[parentKey];
 
@@ -204,14 +204,13 @@ export function getFilterTree(treeNodes, searchValue, filterFunc, valueEntities)
       match = true;
     }
 
-    const children = toNodeArray(node.props.children).map(mapFilteredNodeToData).filter(n => n);
+    const children = toNodeArray(node.props.children)
+      .map(mapFilteredNodeToData)
+      .filter(n => n);
 
     if (children.length || match) {
       return (
-        <SelectNode
-          {...node.props}
-          key={valueEntities[node.props.value].key}
-        >
+        <SelectNode {...node.props} key={valueEntities[node.props.value].key}>
           {children}
         </SelectNode>
       );
@@ -232,7 +231,7 @@ export function formatInternalValue(value, props) {
 
   // Parse label in value
   if (isLabelInValue(props)) {
-    return valueList.map((val) => {
+    return valueList.map(val => {
       if (typeof val !== 'object' || !val) {
         return {
           value: '',
@@ -270,16 +269,12 @@ export function getLabel(wrappedValue, entity, treeNodeLabelProp) {
  * `allCheckedNodes` is used for `treeCheckStrictly`
  */
 export function formatSelectorValue(valueList, props, valueEntities) {
-  const {
-    treeNodeLabelProp,
-    treeCheckable, treeCheckStrictly, showCheckedStrategy,
-  } = props;
-
+  const { treeNodeLabelProp, treeCheckable, treeCheckStrictly, showCheckedStrategy } = props;
 
   // Will hide some value if `showCheckedStrategy` is set
   if (treeCheckable && !treeCheckStrictly) {
     const values = {};
-    valueList.forEach((wrappedValue) => {
+    valueList.forEach(wrappedValue => {
       values[wrappedValue.value] = wrappedValue;
     });
     const hierarchyList = flatToHierarchy(valueList.map(({ value }) => valueEntities[value]));
@@ -290,13 +285,19 @@ export function formatSelectorValue(valueList, props, valueEntities) {
         label: getLabel(values[value], valueEntities[value], treeNodeLabelProp),
         value,
       }));
+    }
 
-    } else if (showCheckedStrategy === SHOW_CHILD) {
+    if (showCheckedStrategy === SHOW_CHILD) {
       // Only get the children checked value
       const targetValueList = [];
 
       // Find the leaf children
-      const traverse = ({ node: { props: { value } }, children }) => {
+      const traverse = ({
+        node: {
+          props: { value },
+        },
+        children,
+      }) => {
         if (!children || children.length === 0) {
           targetValueList.push({
             label: getLabel(values[value], valueEntities[value], treeNodeLabelProp),
@@ -305,12 +306,12 @@ export function formatSelectorValue(valueList, props, valueEntities) {
           return;
         }
 
-        children.forEach((entity) => {
+        children.forEach(entity => {
           traverse(entity);
         });
       };
 
-      hierarchyList.forEach((entity) => {
+      hierarchyList.forEach(entity => {
         traverse(entity);
       });
 
@@ -335,10 +336,7 @@ function processProps(props) {
   // Warning user not to use deprecated label prop.
   if (label && !title) {
     if (!warnDeprecatedLabel) {
-      warning(
-        false,
-        '\'label\' in treeData is deprecated. Please use \'title\' instead.'
-      );
+      warning(false, "'label' in treeData is deprecated. Please use 'title' instead.");
       warnDeprecatedLabel = true;
     }
 
@@ -376,7 +374,9 @@ function processEntity(entity, wrapper) {
   if (currentEntity) {
     warning(
       false,
-      `Conflict! value of node '${entity.key}' (${value}) has already used by node '${currentEntity.key}'.`
+      `Conflict! value of node '${entity.key}' (${value}) has already used by node '${
+        currentEntity.key
+      }'.`,
     );
   }
   wrapper.valueEntities[value] = entity;
@@ -416,7 +416,9 @@ export function getHalfCheckedKeys(valueList, valueEntities) {
   });
 
   // Get half keys
-  return Object.keys(values).filter(value => values[value]).map(value => valueEntities[value].key);
+  return Object.keys(values)
+    .filter(value => values[value])
+    .map(value => valueEntities[value].key);
 }
 
 export const conductCheck = rcConductCheck;
