@@ -23,10 +23,7 @@ class MultipleSelector extends React.Component {
     searchValue: PropTypes.string,
     labelInValue: PropTypes.bool,
     maxTagCount: PropTypes.number,
-    maxTagPlaceholder: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.func,
-    ]),
+    maxTagPlaceholder: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 
     onChoiceAnimationLeave: PropTypes.func,
   };
@@ -46,11 +43,12 @@ class MultipleSelector extends React.Component {
 
   onPlaceholderClick = () => {
     this.inputRef.current.focus();
-  }
+  };
 
   focus = () => {
     this.inputRef.current.focus();
   };
+
   blur = () => {
     this.inputRef.current.blur();
   };
@@ -58,8 +56,10 @@ class MultipleSelector extends React.Component {
   renderPlaceholder = () => {
     const {
       prefixCls,
-      placeholder, searchPlaceholder,
-      searchValue, selectorValueList,
+      placeholder,
+      searchPlaceholder,
+      searchValue,
+      selectorValueList,
     } = this.props;
 
     const currentPlaceholder = placeholder || searchPlaceholder;
@@ -80,15 +80,21 @@ class MultipleSelector extends React.Component {
         {currentPlaceholder}
       </span>
     );
-  }
+  };
 
   renderSelection = () => {
     const {
-      selectorValueList, choiceTransitionName, prefixCls,
+      selectorValueList,
+      choiceTransitionName,
+      prefixCls,
       onChoiceAnimationLeave,
-      labelInValue, maxTagCount, maxTagPlaceholder,
+      labelInValue,
+      maxTagCount,
+      maxTagPlaceholder,
     } = this.props;
-    const { rcTreeSelect: { onMultipleSelectorRemove } } = this.context;
+    const {
+      rcTreeSelect: { onMultipleSelectorRemove },
+    } = this.context;
 
     // Check if `maxTagCount` is set
     let myValueList = selectorValueList;
@@ -115,7 +121,7 @@ class MultipleSelector extends React.Component {
       } else if (typeof maxTagPlaceholder === 'function') {
         const restValueList = selectorValueList.slice(maxTagCount);
         content = maxTagPlaceholder(
-          labelInValue ? restValueList : restValueList.map(({ value }) => value)
+          labelInValue ? restValueList : restValueList.map(({ value }) => value),
         );
       }
 
@@ -131,29 +137,30 @@ class MultipleSelector extends React.Component {
       selectedValueNodes.push(restNodeSelect);
     }
 
-    selectedValueNodes.push(<li
-      className={`${prefixCls}-search ${prefixCls}-search--inline`}
-      key="__input"
-    >
-      <SearchInput {...this.props} ref={this.inputRef} needAlign />
-    </li>);
+    selectedValueNodes.push(
+      <li className={`${prefixCls}-search ${prefixCls}-search--inline`} key="__input">
+        <SearchInput {...this.props} ref={this.inputRef} needAlign />
+      </li>,
+    );
     const className = `${prefixCls}-selection__rendered`;
     if (choiceTransitionName) {
-      return (<Animate
-        className={className}
-        component="ul"
-        transitionName={choiceTransitionName}
-        onLeave={onChoiceAnimationLeave}
-      >
-        {selectedValueNodes}
-      </Animate>);
+      return (
+        <Animate
+          className={className}
+          component="ul"
+          transitionName={choiceTransitionName}
+          onLeave={onChoiceAnimationLeave}
+        >
+          {selectedValueNodes}
+        </Animate>
+      );
     }
     return (
       <ul className={className} role="menubar">
         {selectedValueNodes}
       </ul>
     );
-  }
+  };
 
   render() {
     return (

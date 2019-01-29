@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TreeSelect.tree empty string is also a value 1`] = `
+<span
+  aria-haspopup="listbox"
+  class="rc-tree-select rc-tree-select-enabled"
+  role="combobox"
+  tabindex="0"
+>
+  <span
+    class="rc-tree-select-selection rc-tree-select-selection--single"
+  >
+    <span
+      class="rc-tree-select-selection__rendered"
+    >
+      <span
+        class="rc-tree-select-selection-selected-value"
+        title="empty string"
+      >
+        empty string
+      </span>
+    </span>
+    <span
+      class="rc-tree-select-arrow"
+      style="outline: none;"
+    />
+  </span>
+</span>
+`;

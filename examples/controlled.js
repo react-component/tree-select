@@ -12,7 +12,7 @@ class Demo extends React.Component {
     treeExpandedKeys: [],
   };
 
-  onTreeExpand = (treeExpandedKeys) => {
+  onTreeExpand = treeExpandedKeys => {
     this.setState({
       treeExpandedKeys,
     });
@@ -25,7 +25,7 @@ class Demo extends React.Component {
   };
 
   render() {
-    const {treeExpandedKeys} = this.state;
+    const { treeExpandedKeys } = this.state;
 
     return (
       <div>
@@ -42,11 +42,18 @@ class Demo extends React.Component {
               <TreeNode value="leaf2" title="your leaf" key="random1" disabled />
             </TreeNode>
             <TreeNode value="parent 1-1" title="parent 1-1" key="0-1-1">
-              <TreeNode value="sss"
-                title={<span style={{ color: 'red' }}>sss</span>} key="random3"
+              <TreeNode
+                value="sss"
+                title={<span style={{ color: 'red' }}>sss</span>}
+                key="random3"
               />
               <TreeNode value="same value1" title="same txtle" key="0-1-1-1">
-                <TreeNode value="same value10" title="same titlexd" key="0-1-1-1-0" style={{ color: 'red', background: 'green' }} />
+                <TreeNode
+                  value="same value10"
+                  title="same titlexd"
+                  key="0-1-1-1-0"
+                  style={{ color: 'red', background: 'green' }}
+                />
               </TreeNode>
             </TreeNode>
           </TreeNode>
@@ -55,7 +62,7 @@ class Demo extends React.Component {
           </TreeNode>
           <TreeNode value="same value3" title="same title" key="0-3" />
         </TreeSelect>
-        <button onClick={this.treeExpandedKeys}>
+        <button type="button" onClick={this.treeExpandedKeys}>
           Set treeExpandedKeys
         </button>
       </div>

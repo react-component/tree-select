@@ -14,15 +14,12 @@ describe('TreeSelect.multiple', () => {
     { key: '0', value: '0', title: 'label0' },
     { key: '1', value: '1', title: 'label1' },
   ];
-  const createSelect = (props) => (
-    <TreeSelect
-      treeData={treeData}
-      multiple
-      {...props}
-    />
-  );
+  const createSelect = props => <TreeSelect treeData={treeData} multiple {...props} />;
   const select = (wrapper, index = 0) => {
-    wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(index).simulate('click');
+    wrapper
+      .find('.rc-tree-select-tree-node-content-wrapper')
+      .at(index)
+      .simulate('click');
   };
 
   beforeEach(() => {
@@ -42,7 +39,10 @@ describe('TreeSelect.multiple', () => {
 
   it('remove selected node', () => {
     const wrapper = mount(createSelect({ defaultValue: ['0', '1'] }));
-    wrapper.find('.rc-tree-select-selection__choice__remove').first().simulate('click');
+    wrapper
+      .find('.rc-tree-select-selection__choice__remove')
+      .first()
+      .simulate('click');
     const choice = wrapper.find('ul .rc-tree-select-selection__choice__content');
     expect(choice).toHaveLength(1);
     expect(choice.prop('children')).toBe('label1');
@@ -61,16 +61,17 @@ describe('TreeSelect.multiple', () => {
     class App extends React.Component {
       state = {
         value: ['0', '1'],
-      }
+      };
 
-      handleChange = (value) => {
+      handleChange = value => {
         this.setState({ value });
-      }
+      };
 
       render() {
+        const { value } = this.state;
         return createSelect({
           open: true,
-          value: this.state.value,
+          value,
           onChange: this.handleChange,
           treeCheckable: true,
         });
@@ -78,7 +79,10 @@ describe('TreeSelect.multiple', () => {
     }
     const wrapper = mount(<App />);
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.BACKSPACE });
-    wrapper.find('.rc-tree-select-tree-checkbox').at(1).simulate('click');
+    wrapper
+      .find('.rc-tree-select-tree-checkbox')
+      .at(1)
+      .simulate('click');
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.BACKSPACE });
     const choice = wrapper.find('ul .rc-tree-select-selection__choice__content');
     expect(choice).toHaveLength(1);
@@ -92,14 +96,16 @@ describe('TreeSelect.multiple', () => {
       <TreeNode key="0" value="0" title="label0" foo={0} />,
       <TreeNode key="1" value="1" title="label1" foo={1} />,
     ];
-    const wrapper = mount(createSelect({
-      open: true,
-      value: ['0', '1'],
-      onChange: handleChange,
-      treeCheckable: true,
-      treeData: null,
-      children,
-    }));
+    const wrapper = mount(
+      createSelect({
+        open: true,
+        value: ['0', '1'],
+        onChange: handleChange,
+        treeCheckable: true,
+        treeData: null,
+        children,
+      }),
+    );
 
     const $remove = wrapper
       .find('.rc-tree-select-selection__rendered')
@@ -109,13 +115,17 @@ describe('TreeSelect.multiple', () => {
 
     $remove.simulate('click');
 
-    expect(handleChange).toBeCalledWith(['0'], ['label0'], expect.objectContaining({
-      allCheckedNodes: [
-        expect.objectContaining({
-          props: expect.objectContaining(children[0].props),
-        })
-      ],
-    }));
+    expect(handleChange).toBeCalledWith(
+      ['0'],
+      ['label0'],
+      expect.objectContaining({
+        allCheckedNodes: [
+          expect.objectContaining({
+            props: expect.objectContaining(children[0].props),
+          }),
+        ],
+      }),
+    );
   });
 
   it('renders clear button', () => {
@@ -132,7 +142,7 @@ describe('TreeSelect.multiple', () => {
     expect(wrapper.find('input').getDOMNode().value).toBe('');
     wrapper.find('input').simulate('change', { target: { value: '0' } });
     expect(wrapper.find('input').getDOMNode().value).toBe('0');
-    select(wrapper, 0);  // unselect
+    select(wrapper, 0); // unselect
     expect(wrapper.find('input').getDOMNode().value).toBe('');
   });
 
@@ -142,56 +152,69 @@ describe('TreeSelect.multiple', () => {
     select(wrapper, 0);
     select(wrapper, 1);
     wrapper.setState({ open: false });
-    wrapper.find('.rc-tree-select-selection__choice__remove').at(0).simulate('click');
+    wrapper
+      .find('.rc-tree-select-selection__choice__remove')
+      .at(0)
+      .simulate('click');
     expect(wrapper.state('open')).toBe(false);
     expect(wrapper.state('valueList')).toEqual([{ label: 'label1', value: '1' }]);
   });
 
   describe('maxTagCount', () => {
     it('legal', () => {
-      const wrapper = render(createSelect({
-        maxTagCount: 1,
-        value: ['0', '1'],
-      }));
+      const wrapper = render(
+        createSelect({
+          maxTagCount: 1,
+          value: ['0', '1'],
+        }),
+      );
 
       expect(wrapper.find('.rc-tree-select-selection')).toMatchSnapshot();
     });
 
     it('illegal', () => {
-      const wrapper = render(createSelect({
-        maxTagCount: 1,
-        value: ['0', 'not exist'],
-      }));
+      const wrapper = render(
+        createSelect({
+          maxTagCount: 1,
+          value: ['0', 'not exist'],
+        }),
+      );
 
       expect(wrapper.find('.rc-tree-select-selection')).toMatchSnapshot();
     });
 
     it('zero', () => {
-      const wrapper = render(createSelect({
-        maxTagCount: 0,
-        value: ['0', '1'],
-      }));
+      const wrapper = render(
+        createSelect({
+          maxTagCount: 0,
+          value: ['0', '1'],
+        }),
+      );
 
       expect(wrapper.find('.rc-tree-select-selection')).toMatchSnapshot();
     });
 
     describe('maxTagPlaceholder', () => {
       it('string', () => {
-        const wrapper = render(createSelect({
-          maxTagCount: 1,
-          value: ['0', '1'],
-          maxTagPlaceholder: 'bamboo',
-        }));
+        const wrapper = render(
+          createSelect({
+            maxTagCount: 1,
+            value: ['0', '1'],
+            maxTagPlaceholder: 'bamboo',
+          }),
+        );
 
         expect(wrapper.find('.rc-tree-select-selection')).toMatchSnapshot();
       });
 
       it('function', () => {
-        const wrapper = render(createSelect({
-          maxTagCount: 1,
-          value: ['0', '1'],
-          maxTagPlaceholder: list => `${list.length} bamboo...`,
-        }));
+        const wrapper = render(
+          createSelect({
+            maxTagCount: 1,
+            value: ['0', '1'],
+            maxTagPlaceholder: list => `${list.length} bamboo...`,
+          }),
+        );
 
         expect(wrapper.find('.rc-tree-select-selection')).toMatchSnapshot();
       });
@@ -201,22 +224,26 @@ describe('TreeSelect.multiple', () => {
   it('number types', () => {
     const myTreeData = [
       { key: 0, value: 0, title: 0 },
-      { key: 1, value: 1, title: 1, children: [
-        { key: 2, value: 2, title: 2 },
-        { key: 3, value: 3, title: 3 },
-      ]},
+      {
+        key: 1,
+        value: 1,
+        title: 1,
+        children: [{ key: 2, value: 2, title: 2 }, { key: 3, value: 3, title: 3 }],
+      },
       { key: 4, value: 4, title: 4 },
     ];
 
     const onChange = jest.fn();
 
-    const wrapper = mount(createSelect({
-      open: true,
-      treeCheckable: true,
-      defaultValue: [4],
-      treeData: myTreeData,
-      onChange,
-    }));
+    const wrapper = mount(
+      createSelect({
+        open: true,
+        treeCheckable: true,
+        defaultValue: [4],
+        treeData: myTreeData,
+        onChange,
+      }),
+    );
 
     select(wrapper, 0);
     select(wrapper, 1);
@@ -230,12 +257,7 @@ describe('TreeSelect.multiple', () => {
     const onChange = jest.fn();
 
     const wrapper = mount(
-      <TreeSelect
-        showSearch
-        value={['leaf1']}
-        multiple
-        onChange={onChange}
-      >
+      <TreeSelect showSearch value={['leaf1']} multiple onChange={onChange}>
         <TreeNode value="parent 1" title="parent 1" key="0-1">
           <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
             <TreeNode value="leaf1" title="my leaf" key="random" />
@@ -244,11 +266,14 @@ describe('TreeSelect.multiple', () => {
             <TreeNode value="sss" title="sss" key="random3" />
           </TreeNode>
         </TreeNode>
-      </TreeSelect>
+      </TreeSelect>,
     );
 
     wrapper.find('.rc-tree-select-search__field').simulate('change', { target: { value: 'sss' } });
-    wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(2).simulate('click');
+    wrapper
+      .find('.rc-tree-select-tree-node-content-wrapper')
+      .at(2)
+      .simulate('click');
 
     expect(onChange.mock.calls[0][0]).toEqual(['leaf1', 'sss']);
   });
@@ -257,7 +282,7 @@ describe('TreeSelect.multiple', () => {
     const wrapper = mount(
       <TreeSelect multiple value={['']}>
         <TreeNode value="" title="empty str" key="empty str" />
-      </TreeSelect>
+      </TreeSelect>,
     );
 
     expect(wrapper.find(Selection).length).toEqual(1);
