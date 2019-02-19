@@ -40,7 +40,7 @@
   "scripts": {
     "build": "rc-tools run build",
     "compile": "rc-tools run compile --babel-runtime",
-    "gh-pages": "rc-tools run gh-pages",
+    "gh-pages": "npm run build && rc-tools run storybook-gh-pages",
     "start": "rc-tools run storybook",
     "pub": "rc-tools run pub",
     "lint": "rc-tools run lint",
