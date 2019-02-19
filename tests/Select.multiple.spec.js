@@ -4,7 +4,6 @@ import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import TreeSelect, { TreeNode } from '../src';
 import Selection from '../src/Selector/MultipleSelector/Selection';
-import { resetAriaId } from '../src/util';
 import focusTest from './shared/focusTest';
 
 describe('TreeSelect.multiple', () => {
@@ -21,10 +20,6 @@ describe('TreeSelect.multiple', () => {
       .at(index)
       .simulate('click');
   };
-
-  beforeEach(() => {
-    resetAriaId();
-  });
 
   it('select multiple nodes', () => {
     const wrapper = mount(createSelect({ open: true }));

@@ -2,13 +2,11 @@
 import React from 'react';
 import { mount, render } from 'enzyme';
 import TreeSelect, { TreeNode as SelectNode } from '../src';
-import { resetAriaId } from '../src/util';
 import { setMock } from './__mocks__/rc-animate';
 
 describe('TreeSelect.tree', () => {
   beforeEach(() => {
     jest.useFakeTimers();
-    resetAriaId();
     setMock(true);
   });
 

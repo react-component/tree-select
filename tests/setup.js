@@ -1,7 +1,8 @@
-
-global.requestAnimationFrame = global.requestAnimationFrame || function requestAnimationFrame(cb) {
-  return setTimeout(cb, 0);
-};
+global.requestAnimationFrame =
+  global.requestAnimationFrame ||
+  function requestAnimationFrame(cb) {
+    return setTimeout(cb, 0);
+  };
 
 const Enzyme = require('enzyme');
 const Adapter = require('enzyme-adapter-react-16');
@@ -15,6 +16,8 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
     this.update();
   },
   selectNode(index) {
-    this.find('.rc-tree-select-tree-node-content-wrapper').at(index).simulate('click');
+    this.find('.rc-tree-select-tree-node-content-wrapper')
+      .at(index)
+      .simulate('click');
   },
 });

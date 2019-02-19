@@ -11,6 +11,4 @@ export function setMock(useTransitionMock) {
 const MockAnimateChild = genAnimateChild(true);
 const MockAnimate = genAnimate(MockAnimateChild);
 
-export default (props) => (
-  mockTransition ? <MockAnimate {...props} /> : <Animate {...props} />
-);
+export default props => (mockTransition ? <MockAnimate {...props} /> : <Animate {...props} />);

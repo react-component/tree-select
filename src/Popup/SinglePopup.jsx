@@ -22,7 +22,7 @@ class SinglePopup extends React.Component {
 
   onPlaceholderClick = () => {
     this.inputRef.current.focus();
-  }
+  };
 
   renderPlaceholder = () => {
     const { searchPlaceholder, searchValue, prefixCls } = this.props;
@@ -63,12 +63,7 @@ class SinglePopup extends React.Component {
   };
 
   render() {
-    return (
-      <BasePopup
-        {...this.props}
-        renderSearch={this.renderSearch}
-      />
-    );
+    return <BasePopup {...this.props} renderSearch={this.renderSearch} />;
   }
 }
 

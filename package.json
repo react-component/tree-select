@@ -47,7 +47,8 @@
     "test": "rc-tools run test",
     "coverage": "rc-tools run test --coverage",
     "pre-commit": "rc-tools run pre-commit",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "prettier": "rc-tools run prettier"
   },
   "dependencies": {
     "classnames": "^2.2.1",

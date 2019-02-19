@@ -56,7 +56,6 @@ class SearchInput extends React.Component {
       this.focus();
     }
 
-
     if (needAlign && searchValue !== prevProps.searchValue) {
       this.alignInputWidth();
     }
@@ -67,14 +66,13 @@ class SearchInput extends React.Component {
    * ref: https://github.com/react-component/tree-select/issues/65
    */
   alignInputWidth = () => {
-    this.inputRef.current.style.width =
-      `${this.mirrorInputRef.current.clientWidth}px`;
+    this.inputRef.current.style.width = `${this.mirrorInputRef.current.clientWidth}px`;
   };
 
   /**
    * Need additional timeout for focus cause parent dom is not ready when didMount trigger
    */
-  focus = (isDidMount) => {
+  focus = isDidMount => {
     if (this.inputRef.current) {
       this.inputRef.current.focus();
       if (isDidMount) {
@@ -93,9 +91,9 @@ class SearchInput extends React.Component {
 
   render() {
     const { searchValue, prefixCls, disabled, renderPlaceholder, open, ariaId } = this.props;
-    const { rcTreeSelect: {
-      onSearchInputChange, onSearchInputKeyDown,
-    } } = this.context;
+    const {
+      rcTreeSelect: { onSearchInputChange, onSearchInputKeyDown },
+    } = this.context;
 
     return (
       <span className={`${prefixCls}-search__field__wrap`}>
@@ -107,16 +105,12 @@ class SearchInput extends React.Component {
           value={searchValue}
           disabled={disabled}
           className={`${prefixCls}-search__field`}
-
           aria-label="filter select"
           aria-autocomplete="list"
           aria-controls={open ? ariaId : undefined}
           aria-multiline="false"
         />
-        <span
-          ref={this.mirrorInputRef}
-          className={`${prefixCls}-search__field__mirror`}
-        >
+        <span ref={this.mirrorInputRef} className={`${prefixCls}-search__field__mirror`}>
           {searchValue}&nbsp;
         </span>
 
