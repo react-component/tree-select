@@ -14,7 +14,8 @@ function isLeaf(value) {
     return false;
   }
   let queues = [...gData];
-  while (queues.length) { // BFS
+  while (queues.length) {
+    // BFS
     const item = queues.shift();
     if (item.value === value) {
       if (!item.children) {
@@ -72,104 +73,125 @@ class Demo extends React.Component {
       id: 'key',
       rootPId: 0,
     },
-  }
+  };
 
   onClick = () => {
     this.setState({
       visible: true,
     });
-  }
+  };
 
   onClose = () => {
     this.setState({
       visible: false,
     });
-  }
+  };
 
-  onSearch = (value) => {
-    console.log('Do Search:', value, arguments);
+  onSearch = (value, ...args) => {
+    console.log('Do Search:', value, ...args);
     this.setState({ searchValue: value });
-  }
+  };
 
   onChange = (value, ...rest) => {
     console.log('onChange', value, ...rest);
     this.setState({ value });
-  }
+  };
 
   onChangeChildren = (...args) => {
+    const { value: preValue } = this.state;
     console.log('onChangeChildren', ...args);
     const value = args[0];
-    const pre = value ? this.state.value : undefined;
+    const pre = value ? preValue : undefined;
     this.setState({ value: isLeaf(value) ? value : pre });
-  }
+  };
 
-  onChangeLV = (value) => {
-    console.log('labelInValue', arguments);
+  onChangeLV = (value, ...args) => {
+    console.log('labelInValue', value, ...args);
     if (!value) {
       this.setState({ lv: undefined });
       return;
     }
-    const path = findPath(value.value, gData).map(i => i.label).reverse().join(' > ');
+    const path = findPath(value.value, gData)
+      .map(i => i.label)
+      .reverse()
+      .join(' > ');
     this.setState({ lv: { value: value.value, label: path } });
-  }
+  };
 
-  onMultipleChange = (value) => {
-    console.log('onMultipleChange', arguments);
+  onMultipleChange = value => {
+    console.log('onMultipleChange', value);
     this.setState({ multipleValue: value });
-  }
+  };
 
-  onSelect = () => {
+  onSelect = (...args) => {
     // use onChange instead
-    console.log(arguments);
-  }
+    console.log(args);
+  };
 
   onDropdownVisibleChange = (visible, info) => {
-    console.log(visible, this.state.value, info);
-    if (Array.isArray(this.state.value) && this.state.value.length > 1
-      && this.state.value.length < 3) {
+    const { value } = this.state;
+    console.log(visible, value, info);
+    if (Array.isArray(value) && value.length > 1 && value.length < 3) {
       window.alert('please select more than two item or less than one item.');
       return false;
     }
     return true;
-  }
+  };
 
   filterTreeNode = (input, child) => {
     return String(child.props.title).indexOf(input) === 0;
-  }
+  };
 
   render() {
+    const {
+      visible,
+      value,
+      searchValue,
+      tsOpen,
+      multipleValue,
+      lv,
+      simpleTreeData,
+      simpleSearchValue,
+      treeDataSimpleMode,
+    } = this.state;
     return (
       <div style={{ margin: 20 }}>
         <h2>tree-select in dialog</h2>
-        <button className="btn btn-primary" onClick={this.onClick}>show dialog</button>
-        {this.state.visible ? <Dialog
-          visible={this.state.visible}
-          animation="zoom"
-          maskAnimation="fade"
-          onClose={this.onClose}
-          style={{ width: 600, height: 400, overflow: 'auto' }}
-          id="area"
-        >
-          <div style={{ height: 600, paddingTop: 100 }}>
-            <TreeSelect
-              getPopupContainer={(triggerNode) => triggerNode.parentNode}
-              style={{ width: 300 }}
-              transitionName="rc-tree-select-dropdown-slide-up"
-              choiceTransitionName="rc-tree-select-selection__choice-zoom"
-              dropdownStyle={{ maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
-              placeholder={<i>请下拉选择</i>}
-              searchPlaceholder="please search"
-              showSearch allowClear treeLine
-              value={this.state.value}
-              treeData={gData}
-              treeNodeFilterProp="label"
-              filterTreeNode={false}
-              onSearch={this.onSearch}
-              onChange={this.onChange}
-              onSelect={this.onSelect}
-            />
-          </div>
-        </Dialog> : null}
+        <button type="button" className="btn btn-primary" onClick={this.onClick}>
+          show dialog
+        </button>
+        {visible ? (
+          <Dialog
+            visible={visible}
+            animation="zoom"
+            maskAnimation="fade"
+            onClose={this.onClose}
+            style={{ width: 600, height: 400, overflow: 'auto' }}
+            id="area"
+          >
+            <div style={{ height: 600, paddingTop: 100 }}>
+              <TreeSelect
+                getPopupContainer={triggerNode => triggerNode.parentNode}
+                style={{ width: 300 }}
+                transitionName="rc-tree-select-dropdown-slide-up"
+                choiceTransitionName="rc-tree-select-selection__choice-zoom"
+                dropdownStyle={{ maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
+                placeholder={<i>请下拉选择</i>}
+                searchPlaceholder="please search"
+                showSearch
+                allowClear
+                treeLine
+                value={value}
+                treeData={gData}
+                treeNodeFilterProp="label"
+                filterTreeNode={false}
+                onSearch={this.onSearch}
+                onChange={this.onChange}
+                onSelect={this.onSelect}
+              />
+            </div>
+          </Dialog>
+        ) : null}
         <h2>single select</h2>
         <TreeSelect
           style={{ width: 300 }}
@@ -178,34 +200,36 @@ class Demo extends React.Component {
           dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
-          showSearch allowClear treeLine
-          searchValue={this.state.searchValue}
-          value={this.state.value}
+          showSearch
+          allowClear
+          treeLine
+          searchValue={searchValue}
+          value={value}
           treeData={gData}
           treeNodeFilterProp="label"
           filterTreeNode={false}
           onSearch={this.onSearch}
-          open={this.state.tsOpen}
-          onChange={(value, ...args) => {
-            console.log('onChange', value, ...args);
-            if (value === '0-0-0-0-value') {
+          open={tsOpen}
+          onChange={(val, ...args) => {
+            console.log('onChange', val, ...args);
+            if (val === '0-0-0-0-value') {
               this.setState({ tsOpen: true });
             } else {
               this.setState({ tsOpen: false });
             }
-            this.setState({ value });
-          } }
+            this.setState({ value: val });
+          }}
           onDropdownVisibleChange={(v, info) => {
             console.log('single onDropdownVisibleChange', v, info);
             // document clicked
-            if (info.documentClickClose && this.state.value === '0-0-0-0-value') {
+            if (info.documentClickClose && value === '0-0-0-0-value') {
               return false;
             }
             this.setState({
               tsOpen: v,
             });
             return true;
-          } }
+          }}
           onSelect={this.onSelect}
         />
 
@@ -217,8 +241,10 @@ class Demo extends React.Component {
           dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
-          showSearch allowClear treeLine
-          value={this.state.value}
+          showSearch
+          allowClear
+          treeLine
+          value={value}
           treeData={gData}
           treeNodeFilterProp="label"
           filterTreeNode={false}
@@ -234,7 +260,7 @@ class Demo extends React.Component {
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           multiple
-          value={this.state.multipleValue}
+          value={multipleValue}
           treeData={gData}
           treeNodeFilterProp="title"
           onChange={this.onMultipleChange}
@@ -252,18 +278,20 @@ class Demo extends React.Component {
           onDropdownVisibleChange={this.onDropdownVisibleChange}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
-          treeLine maxTagTextLength={10}
-          value={this.state.value}
+          treeLine
+          maxTagTextLength={10}
+          value={value}
           autoClearSearchValue
           treeData={gData}
           treeNodeFilterProp="title"
-          treeCheckable showCheckedStrategy={SHOW_PARENT}
+          treeCheckable
+          showCheckedStrategy={SHOW_PARENT}
           onChange={this.onChange}
           onSelect={this.onSelect}
           maxTagCount={2}
-          maxTagPlaceholder={(valueList) => {
+          maxTagPlaceholder={valueList => {
             console.log('Max Tag Rest Value:', valueList);
-            return `${valueList.length} rest...`
+            return `${valueList.length} rest...`;
           }}
         />
 
@@ -275,8 +303,11 @@ class Demo extends React.Component {
           dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
-          showSearch allowClear treeLine
-          value={this.state.lv} labelInValue
+          showSearch
+          allowClear
+          treeLine
+          value={lv}
+          labelInValue
           treeData={gData}
           treeNodeFilterProp="label"
           filterTreeNode={false}
@@ -289,16 +320,18 @@ class Demo extends React.Component {
           dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
-          treeLine maxTagTextLength={10}
-          searchValue={this.state.simpleSearchValue}
-          onSearch={(simpleSearchValue) => {
-            this.setState({ simpleSearchValue });
+          treeLine
+          maxTagTextLength={10}
+          searchValue={simpleSearchValue}
+          onSearch={val => {
+            this.setState({ simpleSearchValue: val });
           }}
-          value={this.state.value}
-          treeData={this.state.simpleTreeData}
+          value={value}
+          treeData={simpleTreeData}
           treeNodeFilterProp="title"
-          treeDataSimpleMode={this.state.treeDataSimpleMode}
-          treeCheckable showCheckedStrategy={SHOW_PARENT}
+          treeDataSimpleMode={treeDataSimpleMode}
+          treeCheckable
+          showCheckedStrategy={SHOW_PARENT}
           onChange={this.onChange}
           onSelect={this.onSelect}
         />
@@ -307,12 +340,18 @@ class Demo extends React.Component {
         <TreeSelect
           style={{ width: 200 }}
           dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
-          defaultValue="leaf1" multiple treeCheckable showCheckedStrategy={SHOW_PARENT}
+          defaultValue="leaf1"
+          multiple
+          treeCheckable
+          showCheckedStrategy={SHOW_PARENT}
           treeDefaultExpandAll
           treeData={[
             { key: '', value: '', label: 'empty value', children: [] },
             {
-              key: '0', value: '0', label: '0 label', children: [
+              key: '0',
+              value: '0',
+              label: '0 label',
+              children: [
                 { key: '00', value: '00', label: '00 label', children: [] },
                 { key: '01', value: '01', label: '01 label', children: [] },
               ],
@@ -337,11 +376,18 @@ class Demo extends React.Component {
               <TreeNode value="leaf2" title="your leaf" key="random1" disabled />
             </TreeNode>
             <TreeNode value="parent 1-1" title="parent 1-1" key="0-1-1">
-              <TreeNode value="sss"
-                title={<span style={{ color: 'red' }}>sss</span>} key="random3"
+              <TreeNode
+                value="sss"
+                title={<span style={{ color: 'red' }}>sss</span>}
+                key="random3"
               />
               <TreeNode value="same value1" title="same txtle" key="0-1-1-1">
-                <TreeNode value="same value10" title="same titlexd" key="0-1-1-1-0" style={{ color: 'red', background: 'green' }} />
+                <TreeNode
+                  value="same value10"
+                  title="same titlexd"
+                  key="0-1-1-1-0"
+                  style={{ color: 'red', background: 'green' }}
+                />
               </TreeNode>
             </TreeNode>
           </TreeNode>

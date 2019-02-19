@@ -25,7 +25,10 @@ describe('TreeSelect.basic', () => {
     let treeData = [
       { key: '0', value: '0', title: '0 label' },
       {
-        key: '1', value: '1', title: '1 label', children: [
+        key: '1',
+        value: '1',
+        title: '1 label',
+        children: [
           { key: '10', value: '10', title: '10 label' },
           { key: '11', value: '11', title: '11 label' },
         ],
@@ -42,7 +45,7 @@ describe('TreeSelect.basic', () => {
           treeCheckable
           treeDefaultExpandAll
           treeData={treeData}
-        />
+        />,
       );
       expect(wrapper).toMatchSnapshot();
     });
@@ -56,27 +59,25 @@ describe('TreeSelect.basic', () => {
           treeCheckable
           treeDefaultExpandAll
           treeData={treeData}
-        />
+        />,
       );
       expect(wrapper).toMatchSnapshot();
     });
 
     it('renders disabled correctly', () => {
-      const wrapper = render(
-        <TreeSelect disabled treeData={treeData} />
-      );
+      const wrapper = render(<TreeSelect disabled treeData={treeData} />);
       expect(wrapper).toMatchSnapshot();
     });
 
     it('renders TreeNode correctly', () => {
       const wrapper = render(
         <TreeSelect treeDefaultExpandAll>
-          <TreeNode key="0" value="0" title="0 label"/>
+          <TreeNode key="0" value="0" title="0 label" />
           <TreeNode key="1" value="1" title="1 label">
-            <TreeNode key="10" value="10" title="10 label"/>
-            <TreeNode key="11" value="11" title="11 label"/>
+            <TreeNode key="10" value="10" title="10 label" />
+            <TreeNode key="11" value="11" title="11 label" />
           </TreeNode>
-        </TreeSelect>
+        </TreeSelect>,
       );
       expect(wrapper).toMatchSnapshot();
     });
@@ -84,13 +85,13 @@ describe('TreeSelect.basic', () => {
     it('renders TreeNode correctly with falsy child', () => {
       const wrapper = render(
         <TreeSelect treeDefaultExpandAll>
-          <TreeNode key="0" value="0" title="0 label"/>
+          <TreeNode key="0" value="0" title="0 label" />
           <TreeNode key="1" value="1" title="1 label">
-            <TreeNode key="10" value="10" title="10 label"/>
-            <TreeNode key="11" value="11" title="11 label"/>
+            <TreeNode key="10" value="10" title="10 label" />
+            <TreeNode key="11" value="11" title="11 label" />
             {null}
           </TreeNode>
-        </TreeSelect>
+        </TreeSelect>,
       );
       expect(wrapper).toMatchSnapshot();
     });
@@ -103,37 +104,39 @@ describe('TreeSelect.basic', () => {
       const wrapper = render(
         <div>
           <TreeSelect treeData={treeData} treeDataSimpleMode treeDefaultExpandAll open />
-        </div>
+        </div>,
       );
       expect(wrapper).toMatchSnapshot();
     });
   });
 
   it('sets default value', () => {
-    const treeData = [
-      { key: '0', value: '0', title: 'label0' },
-    ];
-    const wrapper = mount(
-      <TreeSelect defaultValue="0" treeData={treeData} />
+    const treeData = [{ key: '0', value: '0', title: 'label0' }];
+    const wrapper = mount(<TreeSelect defaultValue="0" treeData={treeData} />);
+    expect(wrapper.find('.rc-tree-select-selection__rendered > span').props().children).toBe(
+      'label0',
     );
-    expect(
-      wrapper.find('.rc-tree-select-selection__rendered > span').props().children
-    ).toBe('label0');
   });
 
   it('select value twice', () => {
     const onChange = jest.fn();
     const wrapper = mount(
       <TreeSelect onChange={onChange}>
-        <TreeNode key="0" value="0" title="0 label"/>
-        <TreeNode key="1" value="1" title="1 label"/>
-      </TreeSelect>
+        <TreeNode key="0" value="0" title="0 label" />
+        <TreeNode key="1" value="1" title="1 label" />
+      </TreeSelect>,
     );
     wrapper.openSelect();
-    wrapper.find('.rc-tree-select-tree-title').at(0).simulate('click');
+    wrapper
+      .find('.rc-tree-select-tree-title')
+      .at(0)
+      .simulate('click');
     expect(onChange.mock.calls[0][0]).toEqual('0');
     wrapper.openSelect();
-    wrapper.find('.rc-tree-select-tree-title').at(1).simulate('click');
+    wrapper
+      .find('.rc-tree-select-tree-title')
+      .at(1)
+      .simulate('click');
     expect(onChange.mock.calls[1][0]).toEqual('1');
   });
 
@@ -142,9 +145,7 @@ describe('TreeSelect.basic', () => {
       { key: '0', value: '0', title: 'label0' },
       { key: '1', value: '1', title: 'label1' },
     ];
-    const wrapper = mount(
-      <TreeSelect value="0" treeData={treeData} />
-    );
+    const wrapper = mount(<TreeSelect value="0" treeData={treeData} />);
     let choice = wrapper.find('.rc-tree-select-selection__rendered > span');
     expect(choice.prop('children')).toBe('label0');
     wrapper.setProps({ value: '1' });
@@ -157,20 +158,17 @@ describe('TreeSelect.basic', () => {
       { key: '0', value: '0', title: 'label0' },
       { key: '1', value: '1', title: 'label1' },
     ];
-    const createSelect = (props) => (
-      <TreeSelect
-        open
-        treeData={treeData}
-        {...props}
-      />
-    );
+    const createSelect = props => <TreeSelect open treeData={treeData} {...props} />;
 
     it('fires change and select event', () => {
       const onChange = jest.fn();
       const onSelect = jest.fn();
       const wrapper = mount(createSelect({ onChange, onSelect }));
       wrapper.selectNode(0);
-      const selectedNode = wrapper.find('TreeNode').first().instance();
+      const selectedNode = wrapper
+        .find('TreeNode')
+        .first()
+        .instance();
 
       expect(onChange).toBeCalledWith('0', ['label0'], {
         preValue: [],
@@ -199,14 +197,7 @@ describe('TreeSelect.basic', () => {
       { key: 'a', value: 'a', title: 'labela' },
       { key: 'b', value: 'b', title: 'labelb' },
     ];
-    const createSelect = (props) => (
-      <TreeSelect
-        open
-        showSearch
-        treeData={treeData}
-        {...props}
-      />
-    );
+    const createSelect = props => <TreeSelect open showSearch treeData={treeData} {...props} />;
 
     it('renders search input', () => {
       const wrapper = render(createSelect());
@@ -221,11 +212,7 @@ describe('TreeSelect.basic', () => {
     });
 
     it('check tree changed by filter', () => {
-      const Wrapper = (props) => (
-        <div>
-          {createSelect(props)}
-        </div>
-      );
+      const Wrapper = props => <div>{createSelect(props)}</div>;
       const wrapper = mount(<Wrapper searchValue="a" treeDefaultExpandAll open />);
       expect(wrapper.render()).toMatchSnapshot();
       wrapper.setProps({ searchValue: '' });
@@ -256,7 +243,7 @@ describe('TreeSelect.basic', () => {
             treeDefaultExpandAll: true,
             filterTreeNode: false,
           })}
-        </div>
+        </div>,
       );
       expect(wrapper.render()).toMatchSnapshot();
     });
@@ -265,8 +252,8 @@ describe('TreeSelect.basic', () => {
   it('open tree when click on select', () => {
     const wrapper = mount(
       <TreeSelect>
-        <TreeNode key="a" value="a" title="labela"/>
-      </TreeSelect>
+        <TreeNode key="a" value="a" title="labela" />
+      </TreeSelect>,
     );
     wrapper.openSelect();
     expect(wrapper.state('open')).toBe(true);
@@ -275,8 +262,8 @@ describe('TreeSelect.basic', () => {
   it('close tree when press ESC', () => {
     const wrapper = mount(
       <TreeSelect>
-        <TreeNode key="a" value="a" title="labela"/>
-      </TreeSelect>
+        <TreeNode key="a" value="a" title="labela" />
+      </TreeSelect>,
     );
     wrapper.setState({ open: true });
     wrapper.find('.rc-tree-select-search__field').simulate('keyDown', { keyCode: KeyCode.ESC });
@@ -285,25 +272,21 @@ describe('TreeSelect.basic', () => {
 
   // https://github.com/ant-design/ant-design/issues/4084
   it('checks node correctly after treeData updated', () => {
-    const wrapper = mount(
-      <TreeSelect open treeCheckable treeData={[]} />
-    );
+    const wrapper = mount(<TreeSelect open treeCheckable treeData={[]} />);
     wrapper.setProps({ treeData: [{ key: '0', value: '0', title: 'label0' }] });
     wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
-    expect(wrapper.state().valueList).toEqual(
-      [{ value: '0', label: 'label0' }]
-    );
+    expect(wrapper.state().valueList).toEqual([{ value: '0', label: 'label0' }]);
   });
 
   it('expands tree nodes by treeDefaultExpandedKeys', () => {
     const wrapper = mount(
       <TreeSelect open treeDefaultExpandedKeys={['1']}>
-        <TreeNode key="0" value="0" title="0 label"/>
+        <TreeNode key="0" value="0" title="0 label" />
         <TreeNode key="1" value="1" title="1 label">
-          <TreeNode key="10" value="10" title="10 label"/>
-          <TreeNode key="11" value="11" title="11 label"/>
+          <TreeNode key="10" value="10" title="10 label" />
+          <TreeNode key="11" value="11" title="11 label" />
         </TreeNode>
-      </TreeSelect>
+      </TreeSelect>,
     );
 
     const node = wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(1);
@@ -314,8 +297,8 @@ describe('TreeSelect.basic', () => {
     it('not inputValue prop', () => {
       const wrapper = mount(
         <TreeSelect allowClear>
-          <TreeNode key="0" value="0" title="0 label"/>
-        </TreeSelect>
+          <TreeNode key="0" value="0" title="0 label" />
+        </TreeSelect>,
       );
       wrapper.openSelect();
 
@@ -328,21 +311,18 @@ describe('TreeSelect.basic', () => {
       class App extends React.Component {
         state = {
           inputValue: '0',
-        }
+        };
 
-        handleSearch = (inputValue) => {
+        handleSearch = inputValue => {
           this.setState({ inputValue });
-        }
+        };
 
         render() {
+          const { inputValue } = this.state;
           return (
             <div>
-              <TreeSelect
-                allowClear
-                inputValue={this.state.inputValue}
-                onSearch={this.handleSearch}
-              >
-                <TreeNode key="0" value="0" title="0 label"/>
+              <TreeSelect allowClear inputValue={inputValue} onSearch={this.handleSearch}>
+                <TreeNode key="0" value="0" title="0 label" />
               </TreeSelect>
             </div>
           );
@@ -360,20 +340,20 @@ describe('TreeSelect.basic', () => {
     const wrapper = render(
       <TreeSelect defaultValue="0">
         <TreeNode title={<span>Do not show</span>} value="0" key="0" />
-      </TreeSelect>
+      </TreeSelect>,
     );
     expect(wrapper).toMatchSnapshot();
   });
 
   describe('keyCode', () => {
-    [KeyCode.ENTER, KeyCode.DOWN].forEach((code) => {
+    [KeyCode.ENTER, KeyCode.DOWN].forEach(code => {
       it('open', () => {
         const onFocus = jest.fn();
 
         const wrapper = mount(
           <TreeSelect onFocus={onFocus}>
             <TreeNode title="0" value="0" />
-          </TreeSelect>
+          </TreeSelect>,
         );
 
         wrapper.find('.rc-tree-select').simulate('keyDown', { keyCode: code });
@@ -385,6 +365,22 @@ describe('TreeSelect.basic', () => {
   describe('util', () => {
     it('getLabel never reach', () => {
       expect(getLabel({ value: 'newValue' })).toBe('newValue');
+    });
+  });
+
+  describe('forceAlign', () => {
+    it('onChoiceAnimationLeave trigger', () => {
+      const wrapper = mount(
+        <TreeSelect open>
+          <TreeNode title="0" value="0" />
+        </TreeSelect>,
+      );
+
+      const instance = wrapper.instance();
+      instance.forcePopupAlign = jest.fn();
+      instance.onChoiceAnimationLeave();
+
+      expect(instance.forcePopupAlign).toBeCalled();
     });
   });
 });

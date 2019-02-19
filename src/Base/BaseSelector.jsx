@@ -17,7 +17,7 @@ export const selectorPropTypes = {
   className: PropTypes.string,
   style: PropTypes.object,
   open: PropTypes.bool,
-  valueList: PropTypes.array, // Name as valueList to diff the single value
+  selectorValueList: PropTypes.array,
   allowClear: PropTypes.bool,
   showArrow: PropTypes.bool,
   onClick: PropTypes.func,
@@ -38,7 +38,7 @@ export const selectorContextTypes = {
   onSelectorClear: PropTypes.func.isRequired,
 };
 
-export default function (modeName) {
+export default function(modeName) {
   class BaseSelector extends React.Component {
     static propTypes = {
       ...selectorPropTypes,
@@ -57,7 +57,7 @@ export default function (modeName) {
 
     static defaultProps = {
       tabIndex: 0,
-    }
+    };
 
     constructor() {
       super();
@@ -67,7 +67,9 @@ export default function (modeName) {
 
     onFocus = (...args) => {
       const { onFocus, focused } = this.props;
-      const { rcTreeSelect: { onSelectorFocus } } = this.context;
+      const {
+        rcTreeSelect: { onSelectorFocus },
+      } = this.context;
 
       if (!focused) {
         onSelectorFocus();
@@ -80,7 +82,9 @@ export default function (modeName) {
 
     onBlur = (...args) => {
       const { onBlur } = this.props;
-      const { rcTreeSelect: { onSelectorBlur } } = this.context;
+      const {
+        rcTreeSelect: { onSelectorBlur },
+      } = this.context;
 
       // TODO: Not trigger when is inner component get focused
       onSelectorBlur();
@@ -92,28 +96,27 @@ export default function (modeName) {
 
     focus = () => {
       this.domRef.current.focus();
-    }
+    };
 
     blur = () => {
       this.domRef.current.focus();
-    }
+    };
 
     renderClear() {
-      const { prefixCls, allowClear, valueList, clearIcon } = this.props;
-      const { rcTreeSelect: { onSelectorClear } } = this.context;
+      const { prefixCls, allowClear, selectorValueList, clearIcon } = this.props;
+      const {
+        rcTreeSelect: { onSelectorClear },
+      } = this.context;
 
-      if (!allowClear || !valueList.length || !valueList[0].value) {
+      if (!allowClear || !selectorValueList.length || !selectorValueList[0].value) {
         return null;
       }
 
       return (
-        <span
-          key="clear"
-          className={`${prefixCls}-selection__clear`}
-          onClick={onSelectorClear}
-        >
-          {typeof clearIcon === 'function' ?
-            React.createElement(clearIcon, { ...this.props }) : clearIcon}
+        <span key="clear" className={`${prefixCls}-selection__clear`} onClick={onSelectorClear}>
+          {typeof clearIcon === 'function'
+            ? React.createElement(clearIcon, { ...this.props })
+            : clearIcon}
         </span>
       );
     }
@@ -125,27 +128,32 @@ export default function (modeName) {
       }
 
       return (
-        <span
-          key="arrow"
-          className={`${prefixCls}-arrow`}
-          style={{ outline: 'none' }}
-        >
-          {typeof inputIcon === 'function' ?
-            React.createElement(inputIcon, { ...this.props }) : inputIcon}
+        <span key="arrow" className={`${prefixCls}-arrow`} style={{ outline: 'none' }}>
+          {typeof inputIcon === 'function'
+            ? React.createElement(inputIcon, { ...this.props })
+            : inputIcon}
         </span>
       );
     }
 
     render() {
       const {
-        prefixCls, className, style,
-        open, focused, disabled, allowClear,
+        prefixCls,
+        className,
+        style,
+        open,
+        focused,
+        disabled,
+        allowClear,
         onClick,
         ariaId,
-        renderSelection, renderPlaceholder,
+        renderSelection,
+        renderPlaceholder,
         tabIndex,
       } = this.props;
-      const { rcTreeSelect: { onSelectorKeyDown } } = this.context;
+      const {
+        rcTreeSelect: { onSelectorKeyDown },
+      } = this.context;
 
       let myTabIndex = tabIndex;
       if (disabled) {
@@ -156,17 +164,13 @@ export default function (modeName) {
         <span
           style={style}
           onClick={onClick}
-          className={classNames(
-            className,
-            prefixCls,
-            {
-              [`${prefixCls}-open`]: open,
-              [`${prefixCls}-focused`]: open || focused,
-              [`${prefixCls}-disabled`]: disabled,
-              [`${prefixCls}-enabled`]: !disabled,
-              [`${prefixCls}-allow-clear`]: allowClear,
-            }
-          )}
+          className={classNames(className, prefixCls, {
+            [`${prefixCls}-open`]: open,
+            [`${prefixCls}-focused`]: open || focused,
+            [`${prefixCls}-disabled`]: disabled,
+            [`${prefixCls}-enabled`]: !disabled,
+            [`${prefixCls}-allow-clear`]: allowClear,
+          })}
           ref={this.domRef}
           role="combobox"
           aria-expanded={open}
@@ -181,10 +185,7 @@ export default function (modeName) {
         >
           <span
             key="selection"
-            className={classNames(
-              `${prefixCls}-selection`,
-              `${prefixCls}-selection--${modeName}`
-            )}
+            className={classNames(`${prefixCls}-selection`, `${prefixCls}-selection--${modeName}`)}
           >
             {renderSelection()}
             {this.renderClear()}

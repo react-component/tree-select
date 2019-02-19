@@ -21,11 +21,10 @@ class TreeSelectInput extends Component {
     if (props.onChange) {
       props.onChange(value);
     }
-  }
+  };
+
   render() {
-    return (
-      <TreeSelect {...this.props} onChange={this.onChange} />
-    );
+    return <TreeSelect {...this.props} onChange={this.onChange} />;
   }
 }
 
@@ -34,10 +33,12 @@ class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
   };
-  onSubmit = (e) => {
+
+  onSubmit = e => {
+    const { form } = this.props;
     console.log('submit');
     e.preventDefault();
-    this.props.form.validateFields((error, values) => {
+    form.validateFields((error, values) => {
       if (!error) {
         console.log('ok', values);
       } else {
@@ -45,10 +46,13 @@ class Form extends Component {
       }
     });
   };
-  reset = (e) => {
+
+  reset = e => {
+    const { form } = this.props;
     e.preventDefault();
-    this.props.form.resetFields();
+    form.resetFields();
   };
+
   render() {
     const { form } = this.props;
     const { getFieldDecorator, getFieldError } = form;
@@ -58,79 +62,65 @@ class Form extends Component {
       treeCheckable: true,
       // treeDefaultExpandAll: true,
     };
-    return (<div style={{ margin: 20 }}>
-      <h2>validity</h2>
-      <form onSubmit={this.onSubmit}>
-        <div style={regionStyle}>
-          <div>
-            <p style={{ color: 'blue' }}>no onChange</p>
-            {getFieldDecorator('tree-select', {
-              initialValue: ['0-0-0-value'],
-              rules: [
-                { required: true, type: 'array', message: 'tree-select 需要必填' },
-              ],
-            })(
-              <TreeSelect
-                {...tProps}
-                style={{ width: 300 }}
-              />
-            )}
+    return (
+      <div style={{ margin: 20 }}>
+        <h2>validity</h2>
+        <form onSubmit={this.onSubmit}>
+          <div style={regionStyle}>
+            <div>
+              <p style={{ color: 'blue' }}>no onChange</p>
+              {getFieldDecorator('tree-select', {
+                initialValue: ['0-0-0-value'],
+                rules: [{ required: true, type: 'array', message: 'tree-select 需要必填' }],
+              })(<TreeSelect {...tProps} style={{ width: 300 }} />)}
+            </div>
+            <p style={errorStyle}>
+              {getFieldError('tree-select') ? getFieldError('tree-select').join(',') : null}
+            </p>
           </div>
-          <p style={errorStyle}>
-            {(getFieldError('tree-select')) ? getFieldError('tree-select').join(',') : null}
-          </p>
-        </div>
 
-        <div style={regionStyle}>
-          <div>
-            <p style={{ color: 'blue' }}>custom onChange</p>
-            {getFieldDecorator('tree-select1', {
-              initialValue: ['0-0-0-value'],
-              rules: [
-                { required: true, type: 'array', message: 'tree-select1 需要必填' },
-              ],
-            })(
-              <TreeSelectInput
-                {...tProps}
-                style={{ width: 300 }}
-                treeData={gData}
-              />
-            )}
+          <div style={regionStyle}>
+            <div>
+              <p style={{ color: 'blue' }}>custom onChange</p>
+              {getFieldDecorator('tree-select1', {
+                initialValue: ['0-0-0-value'],
+                rules: [{ required: true, type: 'array', message: 'tree-select1 需要必填' }],
+              })(<TreeSelectInput {...tProps} style={{ width: 300 }} treeData={gData} />)}
+            </div>
+            <p style={errorStyle}>
+              {getFieldError('tree-select1') ? getFieldError('tree-select1').join(',') : null}
+            </p>
           </div>
-          <p style={errorStyle}>
-            {(getFieldError('tree-select1')) ? getFieldError('tree-select1').join(',') : null}
-          </p>
-        </div>
 
-        <div style={regionStyle}>
-          {getFieldDecorator('select', {
-            initialValue: 'jack',
-            rules: [
-              { required: true, type: 'array', message: 'select 需要必填' },
-            ],
-          })(
-            <Select
-              style={{ width: 200 }} allowClear multiple
+          <div style={regionStyle}>
+            {getFieldDecorator('select', {
+              initialValue: 'jack',
+              rules: [{ required: true, type: 'array', message: 'select 需要必填' }],
+            })(
+              <Select style={{ width: 200 }} allowClear multiple>
+                <Option value="jack">jack</Option>
+                <Option value="lucy">lucy</Option>
+                <Option value="disabled" disabled>
+                  disabled
+                </Option>
+                <Option value="yiminghe">yiminghe</Option>
+              </Select>,
+            )}
+            <p style={errorStyle}>
+              {getFieldError('select') ? getFieldError('select').join(',') : null}
+            </p>
+          </div>
 
-            >
-              <Option value="jack">jack</Option>
-              <Option value="lucy">lucy</Option>
-              <Option value="disabled" disabled>disabled</Option>
-              <Option value="yiminghe">yiminghe</Option>
-            </Select>
-          )}
-          <p style={errorStyle}>
-            {(getFieldError('select')) ? getFieldError('select').join(',') : null}
-          </p>
-        </div>
-
-        <div style={regionStyle}>
-          <button onClick={this.reset}>reset</button>
-          &nbsp;
-          <input type="submit" value="submit"/>
-        </div>
-      </form>
-    </div>);
+          <div style={regionStyle}>
+            <button type="button" onClick={this.reset}>
+              reset
+            </button>
+            &nbsp;
+            <input type="submit" value="submit" />
+          </div>
+        </form>
+      </div>
+    );
   }
 }
 

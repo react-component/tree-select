@@ -19,18 +19,19 @@ class Demo extends React.Component {
     value: { value: '0-0-0-value', label: '0-0-0-label' },
   };
 
-  onChange = (value) => {
+  onChange = value => {
     console.log(value);
     this.setState({
       value,
     });
   };
 
-  onLoadData = (treeNode) => {
+  onLoadData = treeNode => {
     console.log(treeNode);
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       setTimeout(() => {
-        const treeData = [...this.state.treeData];
+        let { treeData } = this.state;
+        treeData = treeData.slice();
         getNewTreeData(treeData, treeNode.props.eventKey, generateTreeNodes(treeNode), 2);
         this.setState({ treeData });
         resolve();
@@ -39,14 +40,15 @@ class Demo extends React.Component {
   };
 
   render() {
+    const { treeData, value } = this.state;
     return (
       <div style={{ padding: '10px 30px' }}>
         <h2>dynamic render</h2>
         <TreeSelect
           style={{ width: 300 }}
-          treeData={this.state.treeData}
+          treeData={treeData}
           labelInValue
-          value={this.state.value}
+          value={value}
           onChange={this.onChange}
           loadData={this.onLoadData}
         />

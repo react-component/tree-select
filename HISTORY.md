@@ -1,6 +1,11 @@
 # History
 ---
 
+## 2.5.0
+
+- `notFoundContent` type change to `PropTypes.node`
+
+
 ## 2.4.0
 
 - `onSearch` will also trigger when user select item makes searchValue auto clear

@@ -15,7 +15,7 @@ describe('TreeSelect.tree', () => {
     setMock(false);
   });
 
-  const createSelect = (props) => (
+  const createSelect = props => (
     <TreeSelect {...props}>
       <SelectNode key="0-0" value="0-0">
         <SelectNode key="0-0-0" value="0-0-0">
@@ -36,7 +36,7 @@ describe('TreeSelect.tree', () => {
         treeExpandedKeys: [],
       };
 
-      onTreeExpand = (treeExpandedKeys) => {
+      onTreeExpand = treeExpandedKeys => {
         this.setState({
           treeExpandedKeys,
         });
@@ -49,14 +49,15 @@ describe('TreeSelect.tree', () => {
       };
 
       render() {
+        const { treeExpandedKeys } = this.state;
         return (
           <div>
             {createSelect({
               open: true,
-              treeExpandedKeys: this.state.treeExpandedKeys,
+              treeExpandedKeys,
               onTreeExpand: this.onTreeExpand,
             })}
-            <button onClick={this.onReset} className="reset">
+            <button type="button" onClick={this.onReset} className="reset">
               Reset
             </button>
           </div>
@@ -69,7 +70,10 @@ describe('TreeSelect.tree', () => {
     wrapper.find('.rc-tree-select-tree-switcher').simulate('click');
     expect(wrapper.state().treeExpandedKeys).toEqual(['0-0']);
 
-    wrapper.find('.rc-tree-select-tree-switcher').at(2).simulate('click');
+    wrapper
+      .find('.rc-tree-select-tree-switcher')
+      .at(2)
+      .simulate('click');
     expect(wrapper.state().treeExpandedKeys).toEqual(['0-0', '0-0-1']);
 
     wrapper.find('button.reset').simulate('click');
@@ -78,18 +82,29 @@ describe('TreeSelect.tree', () => {
 
   it('warning if node has same value', () => {
     const spy = jest.spyOn(global.console, 'error');
-    console.log('>>> Follow Warning is for test purpose. Don\'t be scared :)');
+    console.log(">>> Follow Warning is for test purpose. Don't be scared :)");
     render(
       <TreeSelect
         treeData={[
           { title: 'little', value: 'ttt', key: 'little' },
           { title: 'bamboo', value: 'ttt', key: 'bamboo' },
         ]}
-      />
+      />,
     );
     expect(spy).toHaveBeenCalledWith(
-      'Warning: Conflict! value of node \'bamboo\' (ttt) has already used by node \'little\'.'
+      "Warning: Conflict! value of node 'bamboo' (ttt) has already used by node 'little'.",
     );
     spy.mockRestore();
+  });
+
+  // https://github.com/ant-design/ant-design/issues/14597
+  it('empty string is also a value', () => {
+    const wrapper = mount(
+      <TreeSelect placeholder="Please select" value="">
+        <SelectNode key="" value="" title="empty string" />
+      </TreeSelect>,
+    );
+
+    expect(wrapper.render()).toMatchSnapshot();
   });
 });

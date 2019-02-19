@@ -23,23 +23,25 @@ class Demo extends React.Component {
       id: 'key',
       rootPId: 0,
     },
-  }
+  };
 
-  onChange = (value) => {
+  onChange = value => {
+    const { simpleTreeData } = this.state;
     if (value.length === 1) {
       // return;
     }
-    console.log('onChange', arguments, this.state.simpleTreeData);
+    console.log('onChange', value, simpleTreeData);
     this.setState({ value });
-  }
+  };
 
   onSelect = () => {
     // use onChange instead
     // console.log(arguments);
-  }
+  };
 
   onDataChange = () => {
-    const data = [...this.state.simpleTreeData];
+    const { simpleTreeData } = this.state;
+    const data = simpleTreeData.slice();
     data.forEach(i => {
       if (i.key === 11) {
         delete i.disabled;
@@ -49,9 +51,10 @@ class Demo extends React.Component {
       }
     });
     this.setState({ simpleTreeData: data });
-  }
+  };
 
   render() {
+    const { value, simpleTreeData, treeDataSimpleMode } = this.state;
     return (
       <div style={{ margin: 20 }}>
         <h2>check select</h2>
@@ -63,8 +66,9 @@ class Demo extends React.Component {
           dropdownPopupAlign={{ overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 2] }}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
-          treeLine maxTagTextLength={10}
-          value={this.state.value}
+          treeLine
+          maxTagTextLength={10}
+          value={value}
           treeData={gData}
           treeNodeFilterProp="title"
           treeCheckable
@@ -78,18 +82,22 @@ class Demo extends React.Component {
           dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
-          treeLine maxTagTextLength={10}
+          treeLine
+          maxTagTextLength={10}
           inputValue={null}
-          value={this.state.value}
-          treeData={this.state.simpleTreeData}
+          value={value}
+          treeData={simpleTreeData}
           treeDefaultExpandAll
           treeNodeFilterProp="title"
-          treeDataSimpleMode={this.state.treeDataSimpleMode}
-          treeCheckable showCheckedStrategy={SHOW_PARENT}
+          treeDataSimpleMode={treeDataSimpleMode}
+          treeCheckable
+          showCheckedStrategy={SHOW_PARENT}
           onChange={this.onChange}
           onSelect={this.onSelect}
         />
-        <button onClick={this.onDataChange}>change data</button>
+        <button type="button" onClick={this.onDataChange}>
+          change data
+        </button>
       </div>
     );
   }

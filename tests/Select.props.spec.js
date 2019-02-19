@@ -36,9 +36,8 @@ describe('TreeSelect.props', () => {
     </div>
   );
 
-  const createOpenSelect = (props = {}) => (
-    createSelect({ open: true, treeDefaultExpandAll: true, ...props })
-  );
+  const createOpenSelect = (props = {}) =>
+    createSelect({ open: true, treeDefaultExpandAll: true, ...props });
 
   it('basic', () => {
     const wrapper = mount(createSelect());
@@ -60,9 +59,11 @@ describe('TreeSelect.props', () => {
 
   it('animation', () => {
     setMock(true);
-    const wrapper = mount(createSelect({
-      animation: 'test-animation',
-    }));
+    const wrapper = mount(
+      createSelect({
+        animation: 'test-animation',
+      }),
+    );
     wrapper.find('.rc-tree-select').simulate('click');
     expect(wrapper.render()).toMatchSnapshot();
     setMock(false);
@@ -70,9 +71,11 @@ describe('TreeSelect.props', () => {
 
   it('transitionName', () => {
     setMock(true);
-    const wrapper = mount(createSelect({
-      transitionName: 'test-transitionName',
-    }));
+    const wrapper = mount(
+      createSelect({
+        transitionName: 'test-transitionName',
+      }),
+    );
     wrapper.find('.rc-tree-select').simulate('click');
     expect(wrapper.render()).toMatchSnapshot();
     setMock(false);
@@ -92,13 +95,10 @@ describe('TreeSelect.props', () => {
       };
 
       render() {
+        const { value } = this.state;
         return (
           <div>
-            <TreeSelect
-              choiceTransitionName="test-choiceTransitionName"
-              value={this.state.value}
-              multiple
-            >
+            <TreeSelect choiceTransitionName="test-choiceTransitionName" value={value} multiple>
               <SelectNode value="Value 0" title="Title 0" key="key 0" />
             </TreeSelect>
           </div>
@@ -114,16 +114,24 @@ describe('TreeSelect.props', () => {
     setMock(false);
   });
 
-  it('filterTreeNode', () => {
-    function filterTreeNode(input, child) {
-      return String(child.props.title).indexOf(input) !== -1;
-    }
-    const wrapper = mount(createOpenSelect({ filterTreeNode }));
-    wrapper.find('input').simulate('change', { target: { value: 'Title 1' } });
-    expect(wrapper.render()).toMatchSnapshot();
+  describe('filterTreeNode', () => {
+    it('function', () => {
+      function filterTreeNode(input, child) {
+        return String(child.props.title).indexOf(input) !== -1;
+      }
+      const wrapper = mount(createOpenSelect({ filterTreeNode }));
+      wrapper.find('input').simulate('change', { target: { value: 'Title 1' } });
+      expect(wrapper.render()).toMatchSnapshot();
 
-    wrapper.find('input').simulate('change', { target: { value: '0-0' } });
-    expect(wrapper.render()).toMatchSnapshot();
+      wrapper.find('input').simulate('change', { target: { value: '0-0' } });
+      expect(wrapper.render()).toMatchSnapshot();
+    });
+
+    it('false', () => {
+      const wrapper = mount(createOpenSelect({ filterTreeNode: false }));
+      wrapper.find('input').simulate('change', { target: { value: 'Title 1' } });
+      expect(wrapper.render()).toMatchSnapshot();
+    });
   });
 
   it('showSearch', () => {
@@ -131,73 +139,78 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('allowClear', () => {
-    const handleChange = jest.fn();
+  describe('allowClear', () => {
+    it('functional works', () => {
+      const handleChange = jest.fn();
 
-    const wrapper = mount(createSelect({
-      allowClear: true,
-      onChange: handleChange,
-      treeDefaultExpandAll: true,
-      open: true,
-    }));
-    wrapper.find('.rc-tree-select').simulate('click');
-    expect(wrapper.render()).toMatchSnapshot();
+      const wrapper = mount(
+        createSelect({
+          allowClear: true,
+          onChange: handleChange,
+          treeDefaultExpandAll: true,
+          open: true,
+        }),
+      );
+      wrapper.find('.rc-tree-select').simulate('click');
+      expect(wrapper.render()).toMatchSnapshot();
 
-    // Click node 0-1
-    const $node = wrapper.find(TreeNode).at(2);
-    $node.find('.rc-tree-select-tree-node-content-wrapper').simulate('click');
+      // Click node 0-1
+      const $node = wrapper.find(TreeNode).at(2);
+      $node.find('.rc-tree-select-tree-node-content-wrapper').simulate('click');
 
-    expect(wrapper.render()).toMatchSnapshot();
-    expect(handleChange).toBeCalledWith(
-      'Value 0-1',
-      ['Title 0-1'],
-      {
+      expect(wrapper.render()).toMatchSnapshot();
+      expect(handleChange).toBeCalledWith('Value 0-1', ['Title 0-1'], {
         preValue: [],
         selected: true,
         triggerValue: 'Value 0-1',
         triggerNode: $node.instance(),
-      },
-    );
-    handleChange.mockReset();
+      });
+      handleChange.mockReset();
 
-    // Click to clear
-    wrapper.find('.rc-tree-select-selection__clear').simulate('click');
+      // Click to clear
+      wrapper.find('.rc-tree-select-selection__clear').simulate('click');
 
-    expect(wrapper.render()).toMatchSnapshot();
-    expect(handleChange).toBeCalledWith(
-      undefined,
-      [],
-      {
+      expect(wrapper.render()).toMatchSnapshot();
+      expect(handleChange).toBeCalledWith(undefined, [], {
         preValue: [{ label: 'Title 0-1', value: 'Value 0-1' }],
-      },
-    );
+      });
+    });
+
+    it('value not in tree should also display allow clear', () => {
+      const wrapper = mount(
+        createSelect({
+          allowClear: true,
+          value: 'not-exist-in-tree',
+        }),
+      );
+      expect(wrapper.find('.rc-tree-select-selection__clear').length).toBeTruthy();
+    });
   });
 
   it('placeholder', () => {
-    const wrapper = render(createSelect({
-      placeholder: 'RC Component',
-    }));
+    const wrapper = render(
+      createSelect({
+        placeholder: 'RC Component',
+      }),
+    );
     expect(renderToJson(wrapper)).toMatchSnapshot();
   });
 
   it('searchPlaceholder', () => {
-    const wrapper = mount(createOpenSelect({
-      searchPlaceholder: 'RC Component',
-    }));
+    const wrapper = mount(
+      createOpenSelect({
+        searchPlaceholder: 'RC Component',
+      }),
+    );
     expect(wrapper.render()).toMatchSnapshot();
   });
 
   // https://github.com/ant-design/ant-design/issues/11746
   it('async update treeData when has searchInput', () => {
     const treeData = [{ title: 'aaa', value: '111' }];
-    const Wrapper = (props) => (
+    const Wrapper = props => (
       <div>
-        <TreeSelect
-          treeData={treeData}
-          searchValue="111"
-          open
-          {...props}
-        />
+        <TreeSelect treeData={treeData} searchValue="111" open {...props} />
       </div>
     );
     const wrapper = mount(<Wrapper />);
@@ -214,48 +227,48 @@ describe('TreeSelect.props', () => {
   describe('labelInValue', () => {
     it('basic', () => {
       const handleChange = jest.fn();
-      const wrapper = mount(createOpenSelect({
-        labelInValue: true,
-        onChange: handleChange,
-      }));
+      const wrapper = mount(
+        createOpenSelect({
+          labelInValue: true,
+          onChange: handleChange,
+        }),
+      );
 
       // Click node 0-1
       const $node = wrapper.find(TreeNode).at(2);
       $node.find('.rc-tree-select-tree-node-content-wrapper').simulate('click');
 
-      expect(handleChange).toBeCalledWith(
-        { label: 'Title 0-1', value: 'Value 0-1' },
-        null,
-        {
-          preValue: [],
-          selected: true,
-          triggerValue: 'Value 0-1',
-          triggerNode: $node.instance(),
-        },
-      );
+      expect(handleChange).toBeCalledWith({ label: 'Title 0-1', value: 'Value 0-1' }, null, {
+        preValue: [],
+        selected: true,
+        triggerValue: 'Value 0-1',
+        triggerNode: $node.instance(),
+      });
     });
 
     it('set illegal value', () => {
-      const wrapper = mount(createSelect({
-        labelInValue: true,
-        value: [null],
-      }));
+      const wrapper = mount(
+        createSelect({
+          labelInValue: true,
+          value: [null],
+        }),
+      );
 
-      expect(wrapper.find(TreeSelect).instance().state.valueList).toEqual(
-        []
-      );
-      expect(wrapper.find(TreeSelect).instance().state.missValueList).toEqual(
-        [{ label: '', value: '' }]
-      );
+      expect(wrapper.find(TreeSelect).instance().state.valueList).toEqual([]);
+      expect(wrapper.find(TreeSelect).instance().state.missValueList).toEqual([
+        { label: '', value: '' },
+      ]);
     });
   });
 
   it('onClick', () => {
     const handleClick = jest.fn();
-    const wrapper = mount(createSelect({
-      labelInValue: true,
-      onClick: handleClick,
-    }));
+    const wrapper = mount(
+      createSelect({
+        labelInValue: true,
+        onClick: handleClick,
+      }),
+    );
 
     // `onClick` depends on origin event trigger. Need't test args
     wrapper.find('.rc-tree-select').simulate('click');
@@ -266,26 +279,24 @@ describe('TreeSelect.props', () => {
 
   it('onSelect', () => {
     const handleSelect = jest.fn();
-    const wrapper = mount(createOpenSelect({
-      onSelect: handleSelect,
-    }));
+    const wrapper = mount(
+      createOpenSelect({
+        onSelect: handleSelect,
+      }),
+    );
 
     const $paren = wrapper.find(TreeNode).at(0);
     const $node = wrapper.find(TreeNode).at(2);
     $node.find('.rc-tree-select-tree-node-content-wrapper').simulate('click');
 
     // TreeNode use cloneElement so that the node is not the same
-    expect(handleSelect).toBeCalledWith(
-      'Value 0-1',
-      $node.instance(),
-      {
-        event: 'select',
-        node: $node.instance(),
-        selected: true,
-        selectedNodes: [$paren.props().children[1]],
-        nativeEvent: expect.objectContaining({}), // Native event object
-      },
-    );
+    expect(handleSelect).toBeCalledWith('Value 0-1', $node.instance(), {
+      event: 'select',
+      node: $node.instance(),
+      selected: true,
+      selectedNodes: [$paren.props().children[1]],
+      nativeEvent: expect.objectContaining({}), // Native event object
+    });
   });
 
   // TODO: `onDeselect` is copy from `Select` component and not implement complete.
@@ -293,9 +304,11 @@ describe('TreeSelect.props', () => {
 
   it('onSearch', () => {
     const handleSearch = jest.fn();
-    const wrapper = mount(createOpenSelect({
-      onSearch: handleSearch,
-    }));
+    const wrapper = mount(
+      createOpenSelect({
+        onSearch: handleSearch,
+      }),
+    );
 
     wrapper.find('input').simulate('change', { target: { value: 'Search changed' } });
     expect(handleSearch).toBeCalledWith('Search changed');
@@ -312,29 +325,35 @@ describe('TreeSelect.props', () => {
       expect(wrapper.render()).toMatchSnapshot();
     });
 
-    [true, false].forEach((dropdownMatchSelectWidth) => {
+    [true, false].forEach(dropdownMatchSelectWidth => {
       it(String(dropdownMatchSelectWidth), () => {
-        const wrapper = mount(createOpenSelect({
-          dropdownMatchSelectWidth,
-        }));
+        const wrapper = mount(
+          createOpenSelect({
+            dropdownMatchSelectWidth,
+          }),
+        );
         expect(wrapper.render()).toMatchSnapshot();
       });
     });
   });
 
   it('dropdownClassName', () => {
-    const wrapper = mount(createOpenSelect({
-      dropdownClassName: 'test-dropdownClassName',
-    }));
+    const wrapper = mount(
+      createOpenSelect({
+        dropdownClassName: 'test-dropdownClassName',
+      }),
+    );
     expect(wrapper.render()).toMatchSnapshot();
   });
 
   it('dropdownStyle', () => {
-    const wrapper = mount(createOpenSelect({
-      dropdownStyle: {
-        background: 'red',
-      },
-    }));
+    const wrapper = mount(
+      createOpenSelect({
+        dropdownStyle: {
+          background: 'red',
+        },
+      }),
+    );
     expect(wrapper.render()).toMatchSnapshot();
   });
 
@@ -352,27 +371,26 @@ describe('TreeSelect.props', () => {
     let canProcess = true;
 
     const handleDropdownVisibleChange = jest.fn();
-    const wrapper = mount(createSelect({
-      onDropdownVisibleChange: (...args) => {
-        handleDropdownVisibleChange(...args);
-        return canProcess;
-      },
-    }));
+    const wrapper = mount(
+      createSelect({
+        onDropdownVisibleChange: (...args) => {
+          handleDropdownVisibleChange(...args);
+          return canProcess;
+        },
+      }),
+    );
 
     const $select = wrapper.find('.rc-tree-select');
 
     // Simulate when can process
     $select.simulate('click');
-    expect(handleDropdownVisibleChange).toBeCalledWith(
-      true, { documentClickClose: false });
+    expect(handleDropdownVisibleChange).toBeCalledWith(true, { documentClickClose: false });
     handleDropdownVisibleChange.mockReset();
 
     // https://github.com/ant-design/ant-design/issues/9857
     // Both use blur to hide. click not affect this.
     $select.simulate('click');
-    expect(handleDropdownVisibleChange).toBeCalledWith(
-      false, { documentClickClose: true }
-    );
+    expect(handleDropdownVisibleChange).toBeCalledWith(false, { documentClickClose: true });
     handleDropdownVisibleChange.mockReset();
 
     $select.simulate('blur');
@@ -384,13 +402,11 @@ describe('TreeSelect.props', () => {
     canProcess = false;
 
     $select.simulate('click');
-    expect(handleDropdownVisibleChange).toBeCalledWith(
-      true, { documentClickClose: false });
+    expect(handleDropdownVisibleChange).toBeCalledWith(true, { documentClickClose: false });
     handleDropdownVisibleChange.mockReset();
 
     $select.simulate('click');
-    expect(handleDropdownVisibleChange).toBeCalledWith(
-      true, { documentClickClose: false });
+    expect(handleDropdownVisibleChange).toBeCalledWith(true, { documentClickClose: false });
     handleDropdownVisibleChange.mockReset();
 
     $select.simulate('blur');
@@ -399,10 +415,12 @@ describe('TreeSelect.props', () => {
   });
 
   it('notFoundContent', () => {
-    const wrapper = mount(createOpenSelect({
-      notFoundContent: 'Noting Matched!',
-      treeData: [],
-    }));
+    const wrapper = mount(
+      createOpenSelect({
+        notFoundContent: 'Noting Matched!',
+        treeData: [],
+      }),
+    );
     expect(wrapper.render()).toMatchSnapshot();
   });
 
@@ -416,14 +434,16 @@ describe('TreeSelect.props', () => {
           const children = $node.props().children;
 
           return {
-            allCheckedNodes: [{
-              node: $oriNode,
-              pos: '0-0',
-              children: [
-                { node: children[0], pos: '0-0-0' },
-                { node: children[1], pos: '0-0-1' },
-              ],
-            }],
+            allCheckedNodes: [
+              {
+                node: $oriNode,
+                pos: '0-0',
+                children: [
+                  { node: children[0], pos: '0-0-0' },
+                  { node: children[1], pos: '0-0-1' },
+                ],
+              },
+            ],
             checked: true,
             preValue: [],
             triggerNode: $node.instance(),
@@ -439,14 +459,16 @@ describe('TreeSelect.props', () => {
           const children = $node.props().children;
 
           return {
-            allCheckedNodes: [{
-              node: $oriNode,
-              pos: '0-0',
-              children: [
-                { node: children[0], pos: '0-0-0' },
-                { node: children[1], pos: '0-0-1' },
-              ],
-            }],
+            allCheckedNodes: [
+              {
+                node: $oriNode,
+                pos: '0-0',
+                children: [
+                  { node: children[0], pos: '0-0-0' },
+                  { node: children[1], pos: '0-0-1' },
+                ],
+              },
+            ],
             checked: true,
             preValue: [],
             triggerNode: $node.instance(),
@@ -462,14 +484,16 @@ describe('TreeSelect.props', () => {
           const children = $node.props().children;
 
           return {
-            allCheckedNodes: [{
-              node: $oriNode,
-              pos: '0-0',
-              children: [
-                { node: children[0], pos: '0-0-0' },
-                { node: children[1], pos: '0-0-1' },
-              ],
-            }],
+            allCheckedNodes: [
+              {
+                node: $oriNode,
+                pos: '0-0',
+                children: [
+                  { node: children[0], pos: '0-0-0' },
+                  { node: children[1], pos: '0-0-1' },
+                ],
+              },
+            ],
             checked: true,
             preValue: [],
             triggerNode: $node.instance(),
@@ -483,12 +507,13 @@ describe('TreeSelect.props', () => {
       it(strategy, () => {
         const handleChange = jest.fn();
 
-        const wrapper = mount(createOpenSelect({
-          treeCheckable: true,
-          showCheckedStrategy: strategy,
-          onChange: handleChange,
-        }));
-
+        const wrapper = mount(
+          createOpenSelect({
+            treeCheckable: true,
+            showCheckedStrategy: strategy,
+            onChange: handleChange,
+          }),
+        );
 
         // TreeSelect will convert SelectNode to TreeNode.
         // Transitional node should get before click event
@@ -498,7 +523,10 @@ describe('TreeSelect.props', () => {
         const $oriNode = $tree.props().children[0];
 
         const $node = wrapper.find(TreeNode).at(0);
-        $node.find('.rc-tree-select-tree-checkbox').first().simulate('click');
+        $node
+          .find('.rc-tree-select-tree-checkbox')
+          .first()
+          .simulate('click');
 
         expect(handleChange).toBeCalledWith(arg1, arg2, arg3($node, $oriNode));
       });
@@ -508,30 +536,38 @@ describe('TreeSelect.props', () => {
   // treeCheckStrictly - already tested in Select.checkable.spec.js
 
   it('treeIcon', () => {
-    const wrapper = mount(createOpenSelect({
-      treeIcon: true,
-    }));
+    const wrapper = mount(
+      createOpenSelect({
+        treeIcon: true,
+      }),
+    );
     expect(wrapper.render()).toMatchSnapshot();
   });
 
   it('treeLine', () => {
-    const wrapper = mount(createOpenSelect({
-      treeLine: true,
-    }));
+    const wrapper = mount(
+      createOpenSelect({
+        treeLine: true,
+      }),
+    );
     expect(wrapper.render()).toMatchSnapshot();
   });
 
   // treeDataSimpleMode - already tested in Select.spec.js
 
   it('treeDefaultExpandAll', () => {
-    const expandWrapper = mount(createOpenSelect({
-      treeDefaultExpandAll: true,
-    }));
+    const expandWrapper = mount(
+      createOpenSelect({
+        treeDefaultExpandAll: true,
+      }),
+    );
     expect(expandWrapper.render()).toMatchSnapshot();
 
-    const unexpandWrapper = mount(createOpenSelect({
-      treeDefaultExpandAll: false,
-    }));
+    const unexpandWrapper = mount(
+      createOpenSelect({
+        treeDefaultExpandAll: false,
+      }),
+    );
     expect(unexpandWrapper.render()).toMatchSnapshot();
   });
 
@@ -541,11 +577,13 @@ describe('TreeSelect.props', () => {
   // treeNodeLabelProp - already tested in Select.spec.js
 
   it('maxTagTextLength', () => {
-    const wrapper = mount(createSelect({
-      multiple: true,
-      maxTagTextLength: 2,
-      value: ['Value 0-0', 'Value 1', 'Value 0-1'],
-    }));
+    const wrapper = mount(
+      createSelect({
+        multiple: true,
+        maxTagTextLength: 2,
+        value: ['Value 0-0', 'Value 1', 'Value 0-1'],
+      }),
+    );
     expect(wrapper.render()).toMatchSnapshot();
   });
 
@@ -553,9 +591,11 @@ describe('TreeSelect.props', () => {
   // inputValue - already tested in Select.spec.js
 
   it('defaultValue', () => {
-    const wrapper = mount(createSelect({
-      defaultValue: 'Value 0-0',
-    }));
+    const wrapper = mount(
+      createSelect({
+        defaultValue: 'Value 0-0',
+      }),
+    );
     expect(wrapper.render()).toMatchSnapshot();
   });
 
@@ -587,10 +627,11 @@ describe('TreeSelect.props', () => {
       };
 
       render() {
+        const { loaded } = this.state;
         return (
           <TreeSelect loadData={this.loadData} open>
             <TreeNode key="0-0" value="0-0">
-              {this.state.loaded ? <TreeNode key="0-0-0" /> : null}
+              {loaded ? <TreeNode key="0-0-0" /> : null}
             </TreeNode>
           </TreeSelect>
         );
@@ -613,7 +654,7 @@ describe('TreeSelect.props', () => {
   });
 
   it('getPopupContainer', () => {
-    const getPopupContainer = (trigger) => trigger.parentNode;
+    const getPopupContainer = trigger => trigger.parentNode;
 
     const wrapper = mount(createOpenSelect({ getPopupContainer }));
 
@@ -628,7 +669,7 @@ describe('TreeSelect.props', () => {
         <TreeSelect value={['not exist']} onChange={onChange} treeCheckable open>
           <SelectNode title="exist" value="exist" />
         </TreeSelect>
-      </div>
+      </div>,
     );
 
     wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
@@ -639,12 +680,10 @@ describe('TreeSelect.props', () => {
 
   it('warning if use label', () => {
     const spy = jest.spyOn(global.console, 'error');
-    console.log('>>> Follow Warning is for test purpose. Don\'t be scared :)');
-    render(
-      <TreeSelect treeData={[{ label: 'old school', value: 'hip hop' }]} />
-    );
+    console.log(">>> Follow Warning is for test purpose. Don't be scared :)");
+    render(<TreeSelect treeData={[{ label: 'old school', value: 'hip hop' }]} />);
     expect(spy).toHaveBeenCalledWith(
-      'Warning: \'label\' in treeData is deprecated. Please use \'title\' instead.'
+      "Warning: 'label' in treeData is deprecated. Please use 'title' instead.",
     );
     spy.mockRestore();
   });
@@ -663,25 +702,28 @@ describe('TreeSelect.props', () => {
     };
     const propList = [nodeProps1, nodeProps2];
 
-    const createDeselectWrapper = (props) => mount(
-      <TreeSelect open {...props}>
-        <SelectNode {...nodeProps1} />
-        <SelectNode {...nodeProps2} />
-      </TreeSelect>
-    );
+    const createDeselectWrapper = props =>
+      mount(
+        <TreeSelect open {...props}>
+          <SelectNode {...nodeProps1} />
+          <SelectNode {...nodeProps2} />
+        </TreeSelect>,
+      );
 
-    const nodeMatcher = (index) => (
+    const nodeMatcher = index =>
       expect.objectContaining({
         props: expect.objectContaining(propList[index]),
-      })
-    );
+      });
 
     describe('single', () => {
       it('click on tree', () => {
         const onSelect = jest.fn();
         const onDeselect = jest.fn();
         const wrapper = createDeselectWrapper({ onSelect, onDeselect, defaultValue: 'smart' });
-        wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(0).simulate('click');
+        wrapper
+          .find('.rc-tree-select-tree-node-content-wrapper')
+          .at(0)
+          .simulate('click');
         expect(onSelect).not.toBeCalled();
         expect(onDeselect.mock.calls[0][0]).toEqual('smart');
         expect(onDeselect.mock.calls[0][1]).toEqual(nodeMatcher(0));
@@ -699,7 +741,7 @@ describe('TreeSelect.props', () => {
       [
         {
           props: { multiple: true },
-          match: { event: 'select', selected: false, selectedNodes: [nodeMatcher(1)] }
+          match: { event: 'select', selected: false, selectedNodes: [nodeMatcher(1)] },
         },
         {
           props: { treeCheckable: true },
@@ -707,7 +749,7 @@ describe('TreeSelect.props', () => {
             event: 'check',
             checked: false,
             checkedNodes: [nodeMatcher(1)],
-            checkedNodesPositions: [ { node: nodeMatcher(1), pos: '0-1' } ],
+            checkedNodesPositions: [{ node: nodeMatcher(1), pos: '0-1' }],
             halfCheckedKeys: [],
           },
           selectorSkip: ['halfCheckedKeys'],
@@ -720,9 +762,12 @@ describe('TreeSelect.props', () => {
             onSelect,
             onDeselect,
             defaultValue: ['smart', 'light'],
-            ...props
+            ...props,
           });
-          wrapper.find('.rc-tree-select-tree-node-content-wrapper').at(0).simulate('click');
+          wrapper
+            .find('.rc-tree-select-tree-node-content-wrapper')
+            .at(0)
+            .simulate('click');
           expect(onSelect).not.toBeCalled();
           expect(onDeselect.mock.calls[0][0]).toEqual('smart');
           expect(onDeselect.mock.calls[0][1]).toEqual(nodeMatcher(0));
@@ -740,9 +785,12 @@ describe('TreeSelect.props', () => {
             onSelect,
             onDeselect,
             defaultValue: ['smart', 'light'],
-            ...props
+            ...props,
           });
-          wrapper.find('.rc-tree-select-selection__choice__remove').at(0).simulate('click');
+          wrapper
+            .find('.rc-tree-select-selection__choice__remove')
+            .at(0)
+            .simulate('click');
           expect(onSelect).not.toBeCalled();
           expect(onDeselect.mock.calls[0][0]).toEqual('smart');
           expect(onDeselect.mock.calls[0][1]).toEqual(nodeMatcher(0));
@@ -753,7 +801,7 @@ describe('TreeSelect.props', () => {
             ...match,
           };
 
-          Object.keys(tgtArg3).forEach((key) => {
+          Object.keys(tgtArg3).forEach(key => {
             if (selectorSkip.includes(key)) return;
 
             const tgtVal = tgtArg3[key];

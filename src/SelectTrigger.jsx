@@ -75,10 +75,17 @@ class SelectTrigger extends React.Component {
 
   render() {
     const {
-      disabled, isMultiple,
-      dropdownPopupAlign, dropdownMatchSelectWidth, dropdownClassName,
-      dropdownStyle, onDropdownVisibleChange, getPopupContainer,
-      dropdownPrefixCls, popupElement, open,
+      disabled,
+      isMultiple,
+      dropdownPopupAlign,
+      dropdownMatchSelectWidth,
+      dropdownClassName,
+      dropdownStyle,
+      onDropdownVisibleChange,
+      getPopupContainer,
+      dropdownPrefixCls,
+      popupElement,
+      open,
       children,
     } = this.props;
 
@@ -105,13 +112,10 @@ class SelectTrigger extends React.Component {
         popupVisible={open}
         getPopupContainer={getPopupContainer}
         stretch={stretch}
-        popupClassName={classNames(
-          dropdownClassName,
-          {
-            [`${dropdownPrefixCls}--multiple`]: isMultiple,
-            [`${dropdownPrefixCls}--single`]: !isMultiple,
-          },
-        )}
+        popupClassName={classNames(dropdownClassName, {
+          [`${dropdownPrefixCls}--multiple`]: isMultiple,
+          [`${dropdownPrefixCls}--single`]: !isMultiple,
+        })}
         popupStyle={dropdownStyle}
       >
         {children}

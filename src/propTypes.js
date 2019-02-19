@@ -1,16 +1,10 @@
 import PropTypes from 'prop-types';
 import { isLabelInValue } from './util';
 
-const internalValProp = PropTypes.oneOfType([
-  PropTypes.string,
-  PropTypes.number,
-]);
+const internalValProp = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
 
 export function genArrProps(propType) {
-  return PropTypes.oneOfType([
-    propType,
-    PropTypes.arrayOf(propType),
-  ]);
+  return PropTypes.oneOfType([propType, PropTypes.arrayOf(propType)]);
 }
 
 /**
@@ -22,14 +16,16 @@ export function valueProp(...args) {
   const [props, propName, Component] = args;
 
   if (isLabelInValue(props)) {
-    const err = genArrProps(PropTypes.shape({
-      label: PropTypes.node,
-      value: internalValProp,
-    }))(...args);
+    const err = genArrProps(
+      PropTypes.shape({
+        label: PropTypes.node,
+        value: internalValProp,
+      }),
+    )(...args);
     if (err) {
       return new Error(
         `Invalid prop \`${propName}\` supplied to \`${Component}\`. ` +
-        `You should use { label: string, value: string | number } or [{ label: string, value: string | number }] instead.`
+          `You should use { label: string, value: string | number } or [{ label: string, value: string | number }] instead.`,
       );
     }
     return null;
@@ -39,7 +35,7 @@ export function valueProp(...args) {
   if (err) {
     return new Error(
       `Invalid prop \`${propName}\` supplied to \`${Component}\`. ` +
-      `You should use string or [string] instead.`
+        `You should use string or [string] instead.`,
     );
   }
   return null;
