@@ -1,19 +1,19 @@
-import React from 'react';
-import warning from 'warning';
+import React from "react";
+import warning from "warning";
 import {
   convertDataToTree as rcConvertDataToTree,
   convertTreeToEntities as rcConvertTreeToEntities,
-  conductCheck as rcConductCheck,
-} from 'rc-tree/lib/util';
-import toNodeArray from 'rc-util/lib/Children/toArray';
-import SelectNode from './SelectNode';
-import { SHOW_CHILD, SHOW_PARENT } from './strategies';
+  conductCheck as rcConductCheck
+} from "rc-tree/lib/util";
+import toNodeArray from "rc-util/lib/Children/toArray";
+import SelectNode from "./SelectNode";
+import { SHOW_CHILD, SHOW_PARENT } from "./strategies";
 
 let warnDeprecatedLabel = false;
 
 // =================== MISC ====================
 export function toTitle(title) {
-  if (typeof title === 'string') {
+  if (typeof title === "string") {
     return title;
   }
   return null;
@@ -35,12 +35,12 @@ export function createRef() {
 
 // =============== Legacy ===============
 export const UNSELECTABLE_STYLE = {
-  userSelect: 'none',
-  WebkitUserSelect: 'none',
+  userSelect: "none",
+  WebkitUserSelect: "none"
 };
 
 export const UNSELECTABLE_ATTRIBUTE = {
-  unselectable: 'unselectable',
+  unselectable: "unselectable"
 };
 
 /**
@@ -59,13 +59,13 @@ export function flatToHierarchy(positionList) {
   const parsedList = positionList.slice().map(entity => {
     const clone = {
       ...entity,
-      fields: entity.pos.split('-'),
+      fields: entity.pos.split("-")
     };
     delete clone.children;
     return clone;
   });
 
-  parsedList.forEach((entity) => {
+  parsedList.forEach(entity => {
     posMap[entity.pos] = entity;
   });
 
@@ -74,8 +74,8 @@ export function flatToHierarchy(positionList) {
   });
 
   // Create the hierarchy
-  parsedList.forEach((entity) => {
-    const parentPos = entity.fields.slice(0, -1).join('-');
+  parsedList.forEach(entity => {
+    const parentPos = entity.fields.slice(0, -1).join("-");
     const parentEntity = posMap[parentPos];
 
     if (!parentEntity) {
@@ -97,8 +97,8 @@ export function flatToHierarchy(positionList) {
 let ariaId = 0;
 
 export function generateAriaId(prefix) {
-  if (process.env.NODE_ENV === 'test') {
-    return `${prefix}_${1}`;
+  if (process.env.NODE_ENV === "test") {
+    return `test_id`;
   }
   ariaId += 1;
   return `${prefix}_${ariaId}`;
@@ -118,7 +118,7 @@ export function parseSimpleTreeData(treeData, { id, pId, rootPId }) {
   const rootNodeList = [];
 
   // Fill in the map
-  const nodeList = treeData.map((node) => {
+  const nodeList = treeData.map(node => {
     const clone = { ...node };
     const key = clone[id];
     keyNodes[key] = clone;
@@ -127,7 +127,7 @@ export function parseSimpleTreeData(treeData, { id, pId, rootPId }) {
   });
 
   // Connect tree
-  nodeList.forEach((node) => {
+  nodeList.forEach(node => {
     const parentKey = node[pId];
     const parent = keyNodes[parentKey];
 
@@ -153,8 +153,8 @@ export function parseSimpleTreeData(treeData, { id, pId, rootPId }) {
  * e.g. 1-2 not related with 1-21
  */
 export function isPosRelated(pos1, pos2) {
-  const fields1 = pos1.split('-');
-  const fields2 = pos2.split('-');
+  const fields1 = pos1.split("-");
+  const fields2 = pos2.split("-");
 
   const minLen = Math.min(fields1.length, fields2.length);
   for (let i = 0; i < minLen; i += 1) {
@@ -174,7 +174,7 @@ export function isPosRelated(pos1, pos2) {
 export function cleanEntity({ node, pos, children }) {
   const instance = {
     node,
-    pos,
+    pos
   };
 
   if (children) {
@@ -190,7 +190,12 @@ export function cleanEntity({ node, pos, children }) {
  * we have to convert `treeNodes > data > treeNodes` to keep the key.
  * Such performance hungry!
  */
-export function getFilterTree(treeNodes, searchValue, filterFunc, valueEntities) {
+export function getFilterTree(
+  treeNodes,
+  searchValue,
+  filterFunc,
+  valueEntities
+) {
   if (!searchValue) {
     return null;
   }
@@ -203,14 +208,13 @@ export function getFilterTree(treeNodes, searchValue, filterFunc, valueEntities)
       match = true;
     }
 
-    const children = toNodeArray(node.props.children).map(mapFilteredNodeToData).filter(n => n);
+    const children = toNodeArray(node.props.children)
+      .map(mapFilteredNodeToData)
+      .filter(n => n);
 
     if (children.length || match) {
       return (
-        <SelectNode
-          {...node.props}
-          key={valueEntities[node.props.value].key}
-        >
+        <SelectNode {...node.props} key={valueEntities[node.props.value].key}>
           {children}
         </SelectNode>
       );
@@ -231,11 +235,11 @@ export function formatInternalValue(value, props) {
 
   // Parse label in value
   if (isLabelInValue(props)) {
-    return valueList.map((val) => {
-      if (typeof val !== 'object' || !val) {
+    return valueList.map(val => {
+      if (typeof val !== "object" || !val) {
         return {
-          value: '',
-          label: '',
+          value: "",
+          label: ""
         };
       }
 
@@ -244,7 +248,7 @@ export function formatInternalValue(value, props) {
   }
 
   return valueList.map(val => ({
-    value: val,
+    value: val
   }));
 }
 
@@ -271,45 +275,56 @@ export function getLabel(wrappedValue, entity, treeNodeLabelProp) {
 export function formatSelectorValue(valueList, props, valueEntities) {
   const {
     treeNodeLabelProp,
-    treeCheckable, treeCheckStrictly, showCheckedStrategy,
+    treeCheckable,
+    treeCheckStrictly,
+    showCheckedStrategy
   } = props;
-
 
   // Will hide some value if `showCheckedStrategy` is set
   if (treeCheckable && !treeCheckStrictly) {
     const values = {};
-    valueList.forEach((wrappedValue) => {
+    valueList.forEach(wrappedValue => {
       values[wrappedValue.value] = wrappedValue;
     });
-    const hierarchyList = flatToHierarchy(valueList.map(({ value }) => valueEntities[value]));
+    const hierarchyList = flatToHierarchy(
+      valueList.map(({ value }) => valueEntities[value])
+    );
 
     if (showCheckedStrategy === SHOW_PARENT) {
       // Only get the parent checked value
       return hierarchyList.map(({ node: { props: { value } } }) => ({
         label: getLabel(values[value], valueEntities[value], treeNodeLabelProp),
-        value,
+        value
       }));
-
     } else if (showCheckedStrategy === SHOW_CHILD) {
       // Only get the children checked value
       const targetValueList = [];
 
       // Find the leaf children
-      const traverse = ({ node: { props: { value } }, children }) => {
+      const traverse = ({
+        node: {
+          props: { value }
+        },
+        children
+      }) => {
         if (!children || children.length === 0) {
           targetValueList.push({
-            label: getLabel(values[value], valueEntities[value], treeNodeLabelProp),
-            value,
+            label: getLabel(
+              values[value],
+              valueEntities[value],
+              treeNodeLabelProp
+            ),
+            value
           });
           return;
         }
 
-        children.forEach((entity) => {
+        children.forEach(entity => {
           traverse(entity);
         });
       };
 
-      hierarchyList.forEach((entity) => {
+      hierarchyList.forEach(entity => {
         traverse(entity);
       });
 
@@ -318,8 +333,12 @@ export function formatSelectorValue(valueList, props, valueEntities) {
   }
 
   return valueList.map(wrappedValue => ({
-    label: getLabel(wrappedValue, valueEntities[wrappedValue.value], treeNodeLabelProp),
-    value: wrappedValue.value,
+    label: getLabel(
+      wrappedValue,
+      valueEntities[wrappedValue.value],
+      treeNodeLabelProp
+    ),
+    value: wrappedValue.value
   }));
 }
 
@@ -336,7 +355,7 @@ function processProps(props) {
     if (!warnDeprecatedLabel) {
       warning(
         false,
-        '\'label\' in treeData is deprecated. Please use \'title\' instead.'
+        "'label' in treeData is deprecated. Please use 'title' instead."
       );
       warnDeprecatedLabel = true;
     }
@@ -362,7 +381,7 @@ export function convertDataToTree(treeData) {
 function initWrapper(wrapper) {
   return {
     ...wrapper,
-    valueEntities: {},
+    valueEntities: {}
   };
 }
 
@@ -375,7 +394,9 @@ function processEntity(entity, wrapper) {
   if (currentEntity) {
     warning(
       false,
-      `Conflict! value of node '${entity.key}' (${value}) has already used by node '${currentEntity.key}'.`
+      `Conflict! value of node '${
+        entity.key
+      }' (${value}) has already used by node '${currentEntity.key}'.`
     );
   }
   wrapper.valueEntities[value] = entity;
@@ -384,7 +405,7 @@ function processEntity(entity, wrapper) {
 export function convertTreeToEntities(treeNodes) {
   return rcConvertTreeToEntities(treeNodes, {
     initWrapper,
-    processEntity,
+    processEntity
   });
 }
 
@@ -415,7 +436,9 @@ export function getHalfCheckedKeys(valueList, valueEntities) {
   });
 
   // Get half keys
-  return Object.keys(values).filter(value => values[value]).map(value => valueEntities[value].key);
+  return Object.keys(values)
+    .filter(value => values[value])
+    .map(value => valueEntities[value].key);
 }
 
 export const conductCheck = rcConductCheck;
