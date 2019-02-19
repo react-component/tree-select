@@ -2,7 +2,6 @@
 
 import 'rc-tree-select/assets/index.less';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import TreeSelect from 'rc-tree-select';
 import { getNewTreeData, generateTreeNodes } from './util';
 
@@ -57,4 +56,4 @@ class Demo extends React.Component {
   }
 }
 
-ReactDOM.render(<Demo />, document.getElementById('__react-content'));
+export default () => <Demo />;

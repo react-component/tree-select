@@ -41,13 +41,15 @@
     "build": "rc-tools run build",
     "compile": "rc-tools run compile --babel-runtime",
     "gh-pages": "rc-tools run gh-pages",
-    "start": "rc-tools run server",
+    "start": "rc-tools run storybook",
     "pub": "rc-tools run pub",
     "lint": "rc-tools run lint",
+    "init-lint": "rc-tools run gen-lint-config",
     "test": "rc-tools run test",
     "coverage": "rc-tools run test --coverage",
     "pre-commit": "rc-tools run pre-commit",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "genStorybook": "rc-tools run genStorybook"
   },
   "dependencies": {
     "classnames": "^2.2.1",
@@ -65,9 +67,9 @@
     "lint-staged": "^8.1.1",
     "pre-commit": "1.x",
     "rc-dialog": "^7.0.0",
-    "rc-form": "^1.3.1",
+    "rc-form": "^2.4.2",
     "rc-select": "^8.8.3",
-    "rc-tools": "^9.3.5",
+    "rc-tools": "^9.3.11",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
   },

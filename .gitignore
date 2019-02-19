@@ -26,3 +26,7 @@ lib
 coverage
 yarn.lock
 es/
+.prettierrc
+.eslintrc.js
+tslint.json
+tsconfig.json
