@@ -2,7 +2,6 @@
 import 'rc-tree-select/assets/index.less';
 import TreeSelect from 'rc-tree-select';
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 const SHOW_PARENT = TreeSelect.SHOW_PARENT;
 
@@ -83,4 +82,4 @@ class Demo extends React.Component {
   }
 }
 
-ReactDOM.render(<Demo />, document.getElementById('__react-content'));
+export default () => <Demo />;

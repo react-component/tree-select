@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 import TreeSelect from 'rc-tree-select';
 import Select from 'rc-select';
 import { createForm } from 'rc-form';
@@ -126,4 +125,4 @@ class Form extends Component {
 
 // ReactDOM.render(<Form />, document.getElementById('__react-content'));
 const NewForm = createForm()(Form);
-ReactDOM.render(<NewForm />, document.getElementById('__react-content'));
+export default () => <NewForm />;

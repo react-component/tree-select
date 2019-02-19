@@ -2,7 +2,6 @@
 
 import 'rc-tree-select/assets/index.less';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import 'rc-dialog/assets/index.css';
 import TreeSelect, { TreeNode } from 'rc-tree-select';
 import './demo.less';
@@ -70,4 +69,4 @@ class Demo extends React.Component {
   }
 }
 
-ReactDOM.render(<Demo />, document.getElementById('__react-content'));
+export default () => <Demo />;

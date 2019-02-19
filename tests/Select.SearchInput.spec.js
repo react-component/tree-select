@@ -9,28 +9,27 @@ describe('TreeSelect.SearchInput', () => {
     resetAriaId();
   });
 
-  const createSelect = (props) => {
+  const createSelect = props => {
     return mount(
       <div>
         <input className="pre-focus" />
-        <TreeSelect
-          searchPlaceholder="ZOMBIE HERE"
-          open
-          {...props}
-        >
+        <TreeSelect searchPlaceholder="ZOMBIE HERE" open {...props}>
           <TreeNode />
         </TreeSelect>
-      </div>
+      </div>,
     );
-  }
+  };
 
   describe('click placeholder to get focus', () => {
-    it('single', (done) => {
+    it('single', done => {
       const wrapper = createSelect({ showSearch: true });
 
       setTimeout(() => {
         // Focus outside
-        wrapper.find('.pre-focus').instance().focus();
+        wrapper
+          .find('.pre-focus')
+          .instance()
+          .focus();
 
         // Click placeholder
         wrapper.find('.rc-tree-select-search__field__placeholder').simulate('click');
@@ -42,12 +41,15 @@ describe('TreeSelect.SearchInput', () => {
       }, 10);
     });
 
-    it('multiple', (done) => {
+    it('multiple', done => {
       const wrapper = createSelect({ multiple: true });
 
       setTimeout(() => {
         // Focus outside
-        wrapper.find('.pre-focus').instance().focus();
+        wrapper
+          .find('.pre-focus')
+          .instance()
+          .focus();
 
         // Click placeholder
         wrapper.find('.rc-tree-select-search__field__placeholder').simulate('click');
@@ -66,7 +68,7 @@ describe('TreeSelect.SearchInput', () => {
     const wrapper = mount(
       <TreeSelect onSearch={onSearch} open>
         <TreeNode value="test" />
-      </TreeSelect>
+      </TreeSelect>,
     );
 
     wrapper.find('.rc-tree-select-search__field').simulate('change', { target: { value: 'test' } });
