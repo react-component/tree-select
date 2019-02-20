@@ -919,6 +919,7 @@ exports[`TreeSelect.props choiceTransitionName 2`] = `
         <li
           class="rc-tree-select-selection__choice test-choiceTransitionName-enter"
           role="menuitem"
+          style="user-select: none;"
           title="Title 0"
           unselectable="unselectable"
         >
@@ -2290,6 +2291,7 @@ exports[`TreeSelect.props maxTagTextLength 1`] = `
         <li
           class="rc-tree-select-selection__choice"
           role="menuitem"
+          style="user-select: none;"
           title="Title 0-0"
           unselectable="unselectable"
         >
@@ -2305,6 +2307,7 @@ exports[`TreeSelect.props maxTagTextLength 1`] = `
         <li
           class="rc-tree-select-selection__choice"
           role="menuitem"
+          style="user-select: none;"
           title="Title 1"
           unselectable="unselectable"
         >
@@ -2320,6 +2323,7 @@ exports[`TreeSelect.props maxTagTextLength 1`] = `
         <li
           class="rc-tree-select-selection__choice"
           role="menuitem"
+          style="user-select: none;"
           title="Title 0-1"
           unselectable="unselectable"
         >
