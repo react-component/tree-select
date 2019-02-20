@@ -559,6 +559,7 @@ class Select extends React.Component {
       treeNodeLabelProp,
       onSelect,
       onSearch,
+      multiple,
       treeCheckable,
       treeCheckStrictly,
       autoClearSearchValue,
@@ -619,7 +620,7 @@ class Select extends React.Component {
     // Clean up `searchValue` when this prop is set
     if (autoClearSearchValue || inputValue === null) {
       // Clean state `searchValue` if uncontrolled
-      if (!this.isSearchValueControlled()) {
+      if (!this.isSearchValueControlled() && (multiple || treeCheckable)) {
         this.setUncontrolledState({
           searchValue: '',
           filteredTreeNodes: null,
@@ -730,6 +731,18 @@ class Select extends React.Component {
   // ==================== Trigger =====================
 
   onDropdownVisibleChange = open => {
+    const { multiple, treeCheckable } = this.props;
+    const { searchValue } = this.state;
+
+    // When set open success and single mode,
+    // we will reset the input content.
+    if (open && !multiple && !treeCheckable && searchValue) {
+      this.setUncontrolledState({
+        searchValue: '',
+        filteredTreeNodes: null,
+      });
+    }
+
     this.setOpenState(open, true);
   };
 
