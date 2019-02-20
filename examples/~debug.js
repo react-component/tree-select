@@ -238,11 +238,16 @@ function (_React$Component) {
     value: function render() {
       var tProps = {
         value: this.state.value,
-        // onChange: this.onChange,
+        onChange: this.onChange,
         // onSearch: this.onSearch,
         placeholder: "Please select",
+        // treeDefaultExpandAll: true,
         style: {
           width: 300
+        },
+        dropdownStyle: {
+          height: 100,
+          overflowY: 'auto'
         },
         showSearch: true
       };
@@ -274,6 +279,26 @@ function (_React$Component) {
           }
         }, "sss"),
         key: "sss"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(TreeNode, {
+        value: "111",
+        title: "111",
+        key: "111"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(TreeNode, {
+        value: "222",
+        title: "222",
+        key: "222"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(TreeNode, {
+        value: "333",
+        title: "333",
+        key: "333"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(TreeNode, {
+        value: "444",
+        title: "444",
+        key: "444"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(TreeNode, {
+        value: "555",
+        title: "555",
+        key: "555"
       }))));
     }
   }]);

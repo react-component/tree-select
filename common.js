@@ -5096,6 +5096,610 @@ mix(utils, domUtils);
 
 /***/ }),
 
+/***/ "./node_modules/_dom-scroll-into-view@1.2.1@dom-scroll-into-view/lib/dom-scroll-into-view.js":
+/*!***************************************************************************************************!*\
+  !*** ./node_modules/_dom-scroll-into-view@1.2.1@dom-scroll-into-view/lib/dom-scroll-into-view.js ***!
+  \***************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var util = __webpack_require__(/*! ./util */ "./node_modules/_dom-scroll-into-view@1.2.1@dom-scroll-into-view/lib/util.js");
+
+function scrollIntoView(elem, container, config) {
+  config = config || {};
+  // document 归一化到 window
+  if (container.nodeType === 9) {
+    container = util.getWindow(container);
+  }
+
+  var allowHorizontalScroll = config.allowHorizontalScroll;
+  var onlyScrollIfNeeded = config.onlyScrollIfNeeded;
+  var alignWithTop = config.alignWithTop;
+  var alignWithLeft = config.alignWithLeft;
+  var offsetTop = config.offsetTop || 0;
+  var offsetLeft = config.offsetLeft || 0;
+  var offsetBottom = config.offsetBottom || 0;
+  var offsetRight = config.offsetRight || 0;
+
+  allowHorizontalScroll = allowHorizontalScroll === undefined ? true : allowHorizontalScroll;
+
+  var isWin = util.isWindow(container);
+  var elemOffset = util.offset(elem);
+  var eh = util.outerHeight(elem);
+  var ew = util.outerWidth(elem);
+  var containerOffset = undefined;
+  var ch = undefined;
+  var cw = undefined;
+  var containerScroll = undefined;
+  var diffTop = undefined;
+  var diffBottom = undefined;
+  var win = undefined;
+  var winScroll = undefined;
+  var ww = undefined;
+  var wh = undefined;
+
+  if (isWin) {
+    win = container;
+    wh = util.height(win);
+    ww = util.width(win);
+    winScroll = {
+      left: util.scrollLeft(win),
+      top: util.scrollTop(win)
+    };
+    // elem 相对 container 可视视窗的距离
+    diffTop = {
+      left: elemOffset.left - winScroll.left - offsetLeft,
+      top: elemOffset.top - winScroll.top - offsetTop
+    };
+    diffBottom = {
+      left: elemOffset.left + ew - (winScroll.left + ww) + offsetRight,
+      top: elemOffset.top + eh - (winScroll.top + wh) + offsetBottom
+    };
+    containerScroll = winScroll;
+  } else {
+    containerOffset = util.offset(container);
+    ch = container.clientHeight;
+    cw = container.clientWidth;
+    containerScroll = {
+      left: container.scrollLeft,
+      top: container.scrollTop
+    };
+    // elem 相对 container 可视视窗的距离
+    // 注意边框, offset 是边框到根节点
+    diffTop = {
+      left: elemOffset.left - (containerOffset.left + (parseFloat(util.css(container, 'borderLeftWidth')) || 0)) - offsetLeft,
+      top: elemOffset.top - (containerOffset.top + (parseFloat(util.css(container, 'borderTopWidth')) || 0)) - offsetTop
+    };
+    diffBottom = {
+      left: elemOffset.left + ew - (containerOffset.left + cw + (parseFloat(util.css(container, 'borderRightWidth')) || 0)) + offsetRight,
+      top: elemOffset.top + eh - (containerOffset.top + ch + (parseFloat(util.css(container, 'borderBottomWidth')) || 0)) + offsetBottom
+    };
+  }
+
+  if (diffTop.top < 0 || diffBottom.top > 0) {
+    // 强制向上
+    if (alignWithTop === true) {
+      util.scrollTop(container, containerScroll.top + diffTop.top);
+    } else if (alignWithTop === false) {
+      util.scrollTop(container, containerScroll.top + diffBottom.top);
+    } else {
+      // 自动调整
+      if (diffTop.top < 0) {
+        util.scrollTop(container, containerScroll.top + diffTop.top);
+      } else {
+        util.scrollTop(container, containerScroll.top + diffBottom.top);
+      }
+    }
+  } else {
+    if (!onlyScrollIfNeeded) {
+      alignWithTop = alignWithTop === undefined ? true : !!alignWithTop;
+      if (alignWithTop) {
+        util.scrollTop(container, containerScroll.top + diffTop.top);
+      } else {
+        util.scrollTop(container, containerScroll.top + diffBottom.top);
+      }
+    }
+  }
+
+  if (allowHorizontalScroll) {
+    if (diffTop.left < 0 || diffBottom.left > 0) {
+      // 强制向上
+      if (alignWithLeft === true) {
+        util.scrollLeft(container, containerScroll.left + diffTop.left);
+      } else if (alignWithLeft === false) {
+        util.scrollLeft(container, containerScroll.left + diffBottom.left);
+      } else {
+        // 自动调整
+        if (diffTop.left < 0) {
+          util.scrollLeft(container, containerScroll.left + diffTop.left);
+        } else {
+          util.scrollLeft(container, containerScroll.left + diffBottom.left);
+        }
+      }
+    } else {
+      if (!onlyScrollIfNeeded) {
+        alignWithLeft = alignWithLeft === undefined ? true : !!alignWithLeft;
+        if (alignWithLeft) {
+          util.scrollLeft(container, containerScroll.left + diffTop.left);
+        } else {
+          util.scrollLeft(container, containerScroll.left + diffBottom.left);
+        }
+      }
+    }
+  }
+}
+
+module.exports = scrollIntoView;
+
+/***/ }),
+
+/***/ "./node_modules/_dom-scroll-into-view@1.2.1@dom-scroll-into-view/lib/index.js":
+/*!************************************************************************************!*\
+  !*** ./node_modules/_dom-scroll-into-view@1.2.1@dom-scroll-into-view/lib/index.js ***!
+  \************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = __webpack_require__(/*! ./dom-scroll-into-view */ "./node_modules/_dom-scroll-into-view@1.2.1@dom-scroll-into-view/lib/dom-scroll-into-view.js");
+
+/***/ }),
+
+/***/ "./node_modules/_dom-scroll-into-view@1.2.1@dom-scroll-into-view/lib/util.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/_dom-scroll-into-view@1.2.1@dom-scroll-into-view/lib/util.js ***!
+  \***********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var RE_NUM = /[\-+]?(?:\d*\.|)\d+(?:[eE][\-+]?\d+|)/.source;
+
+function getClientPosition(elem) {
+  var box = undefined;
+  var x = undefined;
+  var y = undefined;
+  var doc = elem.ownerDocument;
+  var body = doc.body;
+  var docElem = doc && doc.documentElement;
+  // 根据 GBS 最新数据，A-Grade Browsers 都已支持 getBoundingClientRect 方法，不用再考虑传统的实现方式
+  box = elem.getBoundingClientRect();
+
+  // 注：jQuery 还考虑减去 docElem.clientLeft/clientTop
+  // 但测试发现，这样反而会导致当 html 和 body 有边距/边框样式时，获取的值不正确
+  // 此外，ie6 会忽略 html 的 margin 值，幸运地是没有谁会去设置 html 的 margin
+
+  x = box.left;
+  y = box.top;
+
+  // In IE, most of the time, 2 extra pixels are added to the top and left
+  // due to the implicit 2-pixel inset border.  In IE6/7 quirks mode and
+  // IE6 standards mode, this border can be overridden by setting the
+  // document element's border to zero -- thus, we cannot rely on the
+  // offset always being 2 pixels.
+
+  // In quirks mode, the offset can be determined by querying the body's
+  // clientLeft/clientTop, but in standards mode, it is found by querying
+  // the document element's clientLeft/clientTop.  Since we already called
+  // getClientBoundingRect we have already forced a reflow, so it is not
+  // too expensive just to query them all.
+
+  // ie 下应该减去窗口的边框吧，毕竟默认 absolute 都是相对窗口定位的
+  // 窗口边框标准是设 documentElement ,quirks 时设置 body
+  // 最好禁止在 body 和 html 上边框 ，但 ie < 9 html 默认有 2px ，减去
+  // 但是非 ie 不可能设置窗口边框，body html 也不是窗口 ,ie 可以通过 html,body 设置
+  // 标准 ie 下 docElem.clientTop 就是 border-top
+  // ie7 html 即窗口边框改变不了。永远为 2
+  // 但标准 firefox/chrome/ie9 下 docElem.clientTop 是窗口边框，即使设了 border-top 也为 0
+
+  x -= docElem.clientLeft || body.clientLeft || 0;
+  y -= docElem.clientTop || body.clientTop || 0;
+
+  return {
+    left: x,
+    top: y
+  };
+}
+
+function getScroll(w, top) {
+  var ret = w['page' + (top ? 'Y' : 'X') + 'Offset'];
+  var method = 'scroll' + (top ? 'Top' : 'Left');
+  if (typeof ret !== 'number') {
+    var d = w.document;
+    // ie6,7,8 standard mode
+    ret = d.documentElement[method];
+    if (typeof ret !== 'number') {
+      // quirks mode
+      ret = d.body[method];
+    }
+  }
+  return ret;
+}
+
+function getScrollLeft(w) {
+  return getScroll(w);
+}
+
+function getScrollTop(w) {
+  return getScroll(w, true);
+}
+
+function getOffset(el) {
+  var pos = getClientPosition(el);
+  var doc = el.ownerDocument;
+  var w = doc.defaultView || doc.parentWindow;
+  pos.left += getScrollLeft(w);
+  pos.top += getScrollTop(w);
+  return pos;
+}
+function _getComputedStyle(elem, name, computedStyle_) {
+  var val = '';
+  var d = elem.ownerDocument;
+  var computedStyle = computedStyle_ || d.defaultView.getComputedStyle(elem, null);
+
+  // https://github.com/kissyteam/kissy/issues/61
+  if (computedStyle) {
+    val = computedStyle.getPropertyValue(name) || computedStyle[name];
+  }
+
+  return val;
+}
+
+var _RE_NUM_NO_PX = new RegExp('^(' + RE_NUM + ')(?!px)[a-z%]+$', 'i');
+var RE_POS = /^(top|right|bottom|left)$/;
+var CURRENT_STYLE = 'currentStyle';
+var RUNTIME_STYLE = 'runtimeStyle';
+var LEFT = 'left';
+var PX = 'px';
+
+function _getComputedStyleIE(elem, name) {
+  // currentStyle maybe null
+  // http://msdn.microsoft.com/en-us/library/ms535231.aspx
+  var ret = elem[CURRENT_STYLE] && elem[CURRENT_STYLE][name];
+
+  // 当 width/height 设置为百分比时，通过 pixelLeft 方式转换的 width/height 值
+  // 一开始就处理了! CUSTOM_STYLE.height,CUSTOM_STYLE.width ,cssHook 解决@2011-08-19
+  // 在 ie 下不对，需要直接用 offset 方式
+  // borderWidth 等值也有问题，但考虑到 borderWidth 设为百分比的概率很小，这里就不考虑了
+
+  // From the awesome hack by Dean Edwards
+  // http://erik.eae.net/archives/2007/07/27/18.54.15/#comment-102291
+  // If we're not dealing with a regular pixel number
+  // but a number that has a weird ending, we need to convert it to pixels
+  // exclude left right for relativity
+  if (_RE_NUM_NO_PX.test(ret) && !RE_POS.test(name)) {
+    // Remember the original values
+    var style = elem.style;
+    var left = style[LEFT];
+    var rsLeft = elem[RUNTIME_STYLE][LEFT];
+
+    // prevent flashing of content
+    elem[RUNTIME_STYLE][LEFT] = elem[CURRENT_STYLE][LEFT];
+
+    // Put in the new values to get a computed value out
+    style[LEFT] = name === 'fontSize' ? '1em' : ret || 0;
+    ret = style.pixelLeft + PX;
+
+    // Revert the changed values
+    style[LEFT] = left;
+
+    elem[RUNTIME_STYLE][LEFT] = rsLeft;
+  }
+  return ret === '' ? 'auto' : ret;
+}
+
+var getComputedStyleX = undefined;
+if (typeof window !== 'undefined') {
+  getComputedStyleX = window.getComputedStyle ? _getComputedStyle : _getComputedStyleIE;
+}
+
+function each(arr, fn) {
+  for (var i = 0; i < arr.length; i++) {
+    fn(arr[i]);
+  }
+}
+
+function isBorderBoxFn(elem) {
+  return getComputedStyleX(elem, 'boxSizing') === 'border-box';
+}
+
+var BOX_MODELS = ['margin', 'border', 'padding'];
+var CONTENT_INDEX = -1;
+var PADDING_INDEX = 2;
+var BORDER_INDEX = 1;
+var MARGIN_INDEX = 0;
+
+function swap(elem, options, callback) {
+  var old = {};
+  var style = elem.style;
+  var name = undefined;
+
+  // Remember the old values, and insert the new ones
+  for (name in options) {
+    if (options.hasOwnProperty(name)) {
+      old[name] = style[name];
+      style[name] = options[name];
+    }
+  }
+
+  callback.call(elem);
+
+  // Revert the old values
+  for (name in options) {
+    if (options.hasOwnProperty(name)) {
+      style[name] = old[name];
+    }
+  }
+}
+
+function getPBMWidth(elem, props, which) {
+  var value = 0;
+  var prop = undefined;
+  var j = undefined;
+  var i = undefined;
+  for (j = 0; j < props.length; j++) {
+    prop = props[j];
+    if (prop) {
+      for (i = 0; i < which.length; i++) {
+        var cssProp = undefined;
+        if (prop === 'border') {
+          cssProp = prop + which[i] + 'Width';
+        } else {
+          cssProp = prop + which[i];
+        }
+        value += parseFloat(getComputedStyleX(elem, cssProp)) || 0;
+      }
+    }
+  }
+  return value;
+}
+
+/**
+ * A crude way of determining if an object is a window
+ * @member util
+ */
+function isWindow(obj) {
+  // must use == for ie8
+  /* eslint eqeqeq:0 */
+  return obj != null && obj == obj.window;
+}
+
+var domUtils = {};
+
+each(['Width', 'Height'], function (name) {
+  domUtils['doc' + name] = function (refWin) {
+    var d = refWin.document;
+    return Math.max(
+    // firefox chrome documentElement.scrollHeight< body.scrollHeight
+    // ie standard mode : documentElement.scrollHeight> body.scrollHeight
+    d.documentElement['scroll' + name],
+    // quirks : documentElement.scrollHeight 最大等于可视窗口多一点？
+    d.body['scroll' + name], domUtils['viewport' + name](d));
+  };
+
+  domUtils['viewport' + name] = function (win) {
+    // pc browser includes scrollbar in window.innerWidth
+    var prop = 'client' + name;
+    var doc = win.document;
+    var body = doc.body;
+    var documentElement = doc.documentElement;
+    var documentElementProp = documentElement[prop];
+    // 标准模式取 documentElement
+    // backcompat 取 body
+    return doc.compatMode === 'CSS1Compat' && documentElementProp || body && body[prop] || documentElementProp;
+  };
+});
+
+/*
+ 得到元素的大小信息
+ @param elem
+ @param name
+ @param {String} [extra]  'padding' : (css width) + padding
+ 'border' : (css width) + padding + border
+ 'margin' : (css width) + padding + border + margin
+ */
+function getWH(elem, name, extra) {
+  if (isWindow(elem)) {
+    return name === 'width' ? domUtils.viewportWidth(elem) : domUtils.viewportHeight(elem);
+  } else if (elem.nodeType === 9) {
+    return name === 'width' ? domUtils.docWidth(elem) : domUtils.docHeight(elem);
+  }
+  var which = name === 'width' ? ['Left', 'Right'] : ['Top', 'Bottom'];
+  var borderBoxValue = name === 'width' ? elem.offsetWidth : elem.offsetHeight;
+  var computedStyle = getComputedStyleX(elem);
+  var isBorderBox = isBorderBoxFn(elem, computedStyle);
+  var cssBoxValue = 0;
+  if (borderBoxValue == null || borderBoxValue <= 0) {
+    borderBoxValue = undefined;
+    // Fall back to computed then un computed css if necessary
+    cssBoxValue = getComputedStyleX(elem, name);
+    if (cssBoxValue == null || Number(cssBoxValue) < 0) {
+      cssBoxValue = elem.style[name] || 0;
+    }
+    // Normalize '', auto, and prepare for extra
+    cssBoxValue = parseFloat(cssBoxValue) || 0;
+  }
+  if (extra === undefined) {
+    extra = isBorderBox ? BORDER_INDEX : CONTENT_INDEX;
+  }
+  var borderBoxValueOrIsBorderBox = borderBoxValue !== undefined || isBorderBox;
+  var val = borderBoxValue || cssBoxValue;
+  if (extra === CONTENT_INDEX) {
+    if (borderBoxValueOrIsBorderBox) {
+      return val - getPBMWidth(elem, ['border', 'padding'], which, computedStyle);
+    }
+    return cssBoxValue;
+  }
+  if (borderBoxValueOrIsBorderBox) {
+    var padding = extra === PADDING_INDEX ? -getPBMWidth(elem, ['border'], which, computedStyle) : getPBMWidth(elem, ['margin'], which, computedStyle);
+    return val + (extra === BORDER_INDEX ? 0 : padding);
+  }
+  return cssBoxValue + getPBMWidth(elem, BOX_MODELS.slice(extra), which, computedStyle);
+}
+
+var cssShow = {
+  position: 'absolute',
+  visibility: 'hidden',
+  display: 'block'
+};
+
+// fix #119 : https://github.com/kissyteam/kissy/issues/119
+function getWHIgnoreDisplay(elem) {
+  var val = undefined;
+  var args = arguments;
+  // in case elem is window
+  // elem.offsetWidth === undefined
+  if (elem.offsetWidth !== 0) {
+    val = getWH.apply(undefined, args);
+  } else {
+    swap(elem, cssShow, function () {
+      val = getWH.apply(undefined, args);
+    });
+  }
+  return val;
+}
+
+function css(el, name, v) {
+  var value = v;
+  if ((typeof name === 'undefined' ? 'undefined' : _typeof(name)) === 'object') {
+    for (var i in name) {
+      if (name.hasOwnProperty(i)) {
+        css(el, i, name[i]);
+      }
+    }
+    return undefined;
+  }
+  if (typeof value !== 'undefined') {
+    if (typeof value === 'number') {
+      value += 'px';
+    }
+    el.style[name] = value;
+    return undefined;
+  }
+  return getComputedStyleX(el, name);
+}
+
+each(['width', 'height'], function (name) {
+  var first = name.charAt(0).toUpperCase() + name.slice(1);
+  domUtils['outer' + first] = function (el, includeMargin) {
+    return el && getWHIgnoreDisplay(el, name, includeMargin ? MARGIN_INDEX : BORDER_INDEX);
+  };
+  var which = name === 'width' ? ['Left', 'Right'] : ['Top', 'Bottom'];
+
+  domUtils[name] = function (elem, val) {
+    if (val !== undefined) {
+      if (elem) {
+        var computedStyle = getComputedStyleX(elem);
+        var isBorderBox = isBorderBoxFn(elem);
+        if (isBorderBox) {
+          val += getPBMWidth(elem, ['padding', 'border'], which, computedStyle);
+        }
+        return css(elem, name, val);
+      }
+      return undefined;
+    }
+    return elem && getWHIgnoreDisplay(elem, name, CONTENT_INDEX);
+  };
+});
+
+// 设置 elem 相对 elem.ownerDocument 的坐标
+function setOffset(elem, offset) {
+  // set position first, in-case top/left are set even on static elem
+  if (css(elem, 'position') === 'static') {
+    elem.style.position = 'relative';
+  }
+
+  var old = getOffset(elem);
+  var ret = {};
+  var current = undefined;
+  var key = undefined;
+
+  for (key in offset) {
+    if (offset.hasOwnProperty(key)) {
+      current = parseFloat(css(elem, key)) || 0;
+      ret[key] = current + offset[key] - old[key];
+    }
+  }
+  css(elem, ret);
+}
+
+module.exports = _extends({
+  getWindow: function getWindow(node) {
+    var doc = node.ownerDocument || node;
+    return doc.defaultView || doc.parentWindow;
+  },
+  offset: function offset(el, value) {
+    if (typeof value !== 'undefined') {
+      setOffset(el, value);
+    } else {
+      return getOffset(el);
+    }
+  },
+
+  isWindow: isWindow,
+  each: each,
+  css: css,
+  clone: function clone(obj) {
+    var ret = {};
+    for (var i in obj) {
+      if (obj.hasOwnProperty(i)) {
+        ret[i] = obj[i];
+      }
+    }
+    var overflow = obj.overflow;
+    if (overflow) {
+      for (var i in obj) {
+        if (obj.hasOwnProperty(i)) {
+          ret.overflow[i] = obj.overflow[i];
+        }
+      }
+    }
+    return ret;
+  },
+  scrollLeft: function scrollLeft(w, v) {
+    if (isWindow(w)) {
+      if (v === undefined) {
+        return getScrollLeft(w);
+      }
+      window.scrollTo(v, getScrollTop(w));
+    } else {
+      if (v === undefined) {
+        return w.scrollLeft;
+      }
+      w.scrollLeft = v;
+    }
+  },
+  scrollTop: function scrollTop(w, v) {
+    if (isWindow(w)) {
+      if (v === undefined) {
+        return getScrollTop(w);
+      }
+      window.scrollTo(getScrollLeft(w), v);
+    } else {
+      if (v === undefined) {
+        return w.scrollTop;
+      }
+      w.scrollTop = v;
+    }
+  },
+
+  viewportWidth: 0,
+  viewportHeight: 0
+}, domUtils);
+
+/***/ }),
+
 /***/ "./node_modules/_fbjs@0.8.17@fbjs/lib/ExecutionEnvironment.js":
 /*!********************************************************************!*\
   !*** ./node_modules/_fbjs@0.8.17@fbjs/lib/ExecutionEnvironment.js ***!
@@ -8738,9 +9342,9 @@ function getTransitionName(transitionName, transitionType) {
 
 /***/ }),
 
-/***/ "./node_modules/_rc-tree@1.14.9@rc-tree/es/Tree.js":
+/***/ "./node_modules/_rc-tree@1.15.0@rc-tree/es/Tree.js":
 /*!*********************************************************!*\
-  !*** ./node_modules/_rc-tree@1.14.9@rc-tree/es/Tree.js ***!
+  !*** ./node_modules/_rc-tree@1.15.0@rc-tree/es/Tree.js ***!
   \*********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -8769,8 +9373,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var warning__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(warning__WEBPACK_IMPORTED_MODULE_9__);
 /* harmony import */ var rc_util_es_Children_toArray__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rc-util/es/Children/toArray */ "./node_modules/_rc-util@4.6.0@rc-util/es/Children/toArray.js");
 /* harmony import */ var react_lifecycles_compat__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-lifecycles-compat */ "./node_modules/_react-lifecycles-compat@3.0.4@react-lifecycles-compat/react-lifecycles-compat.es.js");
-/* harmony import */ var _contextTypes__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./contextTypes */ "./node_modules/_rc-tree@1.14.9@rc-tree/es/contextTypes.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./util */ "./node_modules/_rc-tree@1.14.9@rc-tree/es/util.js");
+/* harmony import */ var _contextTypes__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./contextTypes */ "./node_modules/_rc-tree@1.15.0@rc-tree/es/contextTypes.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./util */ "./node_modules/_rc-tree@1.15.0@rc-tree/es/util.js");
 
 
 
@@ -8790,30 +9394,12 @@ __webpack_require__.r(__webpack_exports__);
 var Tree = function (_React$Component) {
   babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_5___default()(Tree, _React$Component);
 
-  function Tree() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
+  function Tree(props) {
     babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default()(this, Tree);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+    var _this = babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4___default()(this, (Tree.__proto__ || Object.getPrototypeOf(Tree)).call(this, props));
 
-    return _ret = (_temp = (_this = babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4___default()(this, (_ref = Tree.__proto__ || Object.getPrototypeOf(Tree)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      // TODO: Remove this eslint
-      posEntities: {}, // eslint-disable-line react/no-unused-state
-      keyEntities: {},
-
-      selectedKeys: [],
-      checkedKeys: [],
-      halfCheckedKeys: [],
-      loadedKeys: [],
-      loadingKeys: [],
-
-      treeNode: []
-    }, _this.onNodeDragStart = function (event, node) {
+    _this.onNodeDragStart = function (event, node) {
       var expandedKeys = _this.state.expandedKeys;
       var onDragStart = _this.props.onDragStart;
       var _node$props = node.props,
@@ -8831,7 +9417,9 @@ var Tree = function (_React$Component) {
       if (onDragStart) {
         onDragStart({ event: event, node: node });
       }
-    }, _this.onNodeDragEnter = function (event, node) {
+    };
+
+    _this.onNodeDragEnter = function (event, node) {
       var expandedKeys = _this.state.expandedKeys;
       var onDragEnter = _this.props.onDragEnter;
       var _node$props2 = node.props,
@@ -8884,7 +9472,9 @@ var Tree = function (_React$Component) {
           }
         }, 400);
       }, 0);
-    }, _this.onNodeDragOver = function (event, node) {
+    };
+
+    _this.onNodeDragOver = function (event, node) {
       var onDragOver = _this.props.onDragOver;
       var eventKey = node.props.eventKey;
 
@@ -8903,7 +9493,9 @@ var Tree = function (_React$Component) {
       if (onDragOver) {
         onDragOver({ event: event, node: node });
       }
-    }, _this.onNodeDragLeave = function (event, node) {
+    };
+
+    _this.onNodeDragLeave = function (event, node) {
       var onDragLeave = _this.props.onDragLeave;
 
 
@@ -8914,7 +9506,9 @@ var Tree = function (_React$Component) {
       if (onDragLeave) {
         onDragLeave({ event: event, node: node });
       }
-    }, _this.onNodeDragEnd = function (event, node) {
+    };
+
+    _this.onNodeDragEnd = function (event, node) {
       var onDragEnd = _this.props.onDragEnd;
 
       _this.setState({
@@ -8925,7 +9519,9 @@ var Tree = function (_React$Component) {
       }
 
       _this.dragNode = null;
-    }, _this.onNodeDrop = function (event, node) {
+    };
+
+    _this.onNodeDrop = function (event, node) {
       var _this$state = _this.state,
           _this$state$dragNodes = _this$state.dragNodesKeys,
           dragNodesKeys = _this$state$dragNodes === undefined ? [] : _this$state$dragNodes,
@@ -8964,19 +9560,25 @@ var Tree = function (_React$Component) {
       }
 
       _this.dragNode = null;
-    }, _this.onNodeClick = function (e, treeNode) {
+    };
+
+    _this.onNodeClick = function (e, treeNode) {
       var onClick = _this.props.onClick;
 
       if (onClick) {
         onClick(e, treeNode);
       }
-    }, _this.onNodeDoubleClick = function (e, treeNode) {
+    };
+
+    _this.onNodeDoubleClick = function (e, treeNode) {
       var onDoubleClick = _this.props.onDoubleClick;
 
       if (onDoubleClick) {
         onDoubleClick(e, treeNode);
       }
-    }, _this.onNodeSelect = function (e, treeNode) {
+    };
+
+    _this.onNodeSelect = function (e, treeNode) {
       var selectedKeys = _this.state.selectedKeys;
       var keyEntities = _this.state.keyEntities;
       var _this$props = _this.props,
@@ -9019,7 +9621,9 @@ var Tree = function (_React$Component) {
         };
         onSelect(selectedKeys, eventObj);
       }
-    }, _this.onNodeCheck = function (e, treeNode, checked) {
+    };
+
+    _this.onNodeCheck = function (e, treeNode, checked) {
       var _this$state2 = _this.state,
           keyEntities = _this$state2.keyEntities,
           oriCheckedKeys = _this$state2.checkedKeys,
@@ -9088,14 +9692,16 @@ var Tree = function (_React$Component) {
       if (onCheck) {
         onCheck(checkedObj, eventObj);
       }
-    }, _this.onNodeLoad = function (treeNode) {
+    };
+
+    _this.onNodeLoad = function (treeNode) {
       return new Promise(function (resolve) {
         // We need to get the latest state of loading/loaded keys
-        _this.setState(function (_ref2) {
-          var _ref2$loadedKeys = _ref2.loadedKeys,
-              loadedKeys = _ref2$loadedKeys === undefined ? [] : _ref2$loadedKeys,
-              _ref2$loadingKeys = _ref2.loadingKeys,
-              loadingKeys = _ref2$loadingKeys === undefined ? [] : _ref2$loadingKeys;
+        _this.setState(function (_ref) {
+          var _ref$loadedKeys = _ref.loadedKeys,
+              loadedKeys = _ref$loadedKeys === undefined ? [] : _ref$loadedKeys,
+              _ref$loadingKeys = _ref.loadingKeys,
+              loadingKeys = _ref$loadingKeys === undefined ? [] : _ref$loadingKeys;
           var _this$props3 = _this.props,
               loadData = _this$props3.loadData,
               onLoad = _this$props3.onLoad;
@@ -9138,7 +9744,9 @@ var Tree = function (_React$Component) {
           };
         });
       });
-    }, _this.onNodeExpand = function (e, treeNode) {
+    };
+
+    _this.onNodeExpand = function (e, treeNode) {
       var expandedKeys = _this.state.expandedKeys;
       var _this$props4 = _this.props,
           onExpand = _this$props4.onExpand,
@@ -9180,26 +9788,34 @@ var Tree = function (_React$Component) {
       }
 
       return null;
-    }, _this.onNodeMouseEnter = function (event, node) {
+    };
+
+    _this.onNodeMouseEnter = function (event, node) {
       var onMouseEnter = _this.props.onMouseEnter;
 
       if (onMouseEnter) {
         onMouseEnter({ event: event, node: node });
       }
-    }, _this.onNodeMouseLeave = function (event, node) {
+    };
+
+    _this.onNodeMouseLeave = function (event, node) {
       var onMouseLeave = _this.props.onMouseLeave;
 
       if (onMouseLeave) {
         onMouseLeave({ event: event, node: node });
       }
-    }, _this.onNodeContextMenu = function (event, node) {
+    };
+
+    _this.onNodeContextMenu = function (event, node) {
       var onRightClick = _this.props.onRightClick;
 
       if (onRightClick) {
         event.preventDefault();
         onRightClick({ event: event, node: node });
       }
-    }, _this.setUncontrolledState = function (state) {
+    };
+
+    _this.setUncontrolledState = function (state) {
       var needSync = false;
       var newState = {};
 
@@ -9213,12 +9829,24 @@ var Tree = function (_React$Component) {
       if (needSync) {
         _this.setState(newState);
       }
-    }, _this.isKeyChecked = function (key) {
+    };
+
+    _this.registerTreeNode = function (key, node) {
+      if (node) {
+        _this.domTreeNodes[key] = node;
+      } else {
+        delete _this.domTreeNodes[key];
+      }
+    };
+
+    _this.isKeyChecked = function (key) {
       var _this$state$checkedKe = _this.state.checkedKeys,
           checkedKeys = _this$state$checkedKe === undefined ? [] : _this$state$checkedKe;
 
       return checkedKeys.indexOf(key) !== -1;
-    }, _this.renderTreeNode = function (child, index) {
+    };
+
+    _this.renderTreeNode = function (child, index) {
       var level = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
       var _this$state3 = _this.state,
           keyEntities = _this$state3.keyEntities,
@@ -9259,7 +9887,25 @@ var Tree = function (_React$Component) {
         dragOverGapTop: dragOverNodeKey === key && dropPosition === -1,
         dragOverGapBottom: dragOverNodeKey === key && dropPosition === 1
       });
-    }, _temp), babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4___default()(_this, _ret);
+    };
+
+    _this.state = {
+      // TODO: Remove this eslint
+      posEntities: {}, // eslint-disable-line react/no-unused-state
+      keyEntities: {},
+
+      selectedKeys: [],
+      checkedKeys: [],
+      halfCheckedKeys: [],
+      loadedKeys: [],
+      loadingKeys: [],
+
+      treeNode: []
+    };
+
+    // Internal usage for `rc-tree-select`, we don't promise it will not change.
+    _this.domTreeNodes = {};
+    return _this;
   }
 
   babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default()(Tree, [{
@@ -9316,7 +9962,9 @@ var Tree = function (_React$Component) {
           onNodeDragOver: this.onNodeDragOver,
           onNodeDragLeave: this.onNodeDragLeave,
           onNodeDragEnd: this.onNodeDragEnd,
-          onNodeDrop: this.onNodeDrop
+          onNodeDrop: this.onNodeDrop,
+
+          registerTreeNode: this.registerTreeNode
         }
       };
     }
@@ -9546,9 +10194,9 @@ Object(react_lifecycles_compat__WEBPACK_IMPORTED_MODULE_11__["polyfill"])(Tree);
 
 /***/ }),
 
-/***/ "./node_modules/_rc-tree@1.14.9@rc-tree/es/TreeNode.js":
+/***/ "./node_modules/_rc-tree@1.15.0@rc-tree/es/TreeNode.js":
 /*!*************************************************************!*\
-  !*** ./node_modules/_rc-tree@1.14.9@rc-tree/es/TreeNode.js ***!
+  !*** ./node_modules/_rc-tree@1.15.0@rc-tree/es/TreeNode.js ***!
   \*************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -9578,8 +10226,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rc_animate__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rc-animate */ "./node_modules/_rc-animate@3.0.0-rc.6@rc-animate/es/index.js");
 /* harmony import */ var rc_util_es_Children_toArray__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! rc-util/es/Children/toArray */ "./node_modules/_rc-util@4.6.0@rc-util/es/Children/toArray.js");
 /* harmony import */ var react_lifecycles_compat__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-lifecycles-compat */ "./node_modules/_react-lifecycles-compat@3.0.4@react-lifecycles-compat/react-lifecycles-compat.es.js");
-/* harmony import */ var _contextTypes__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./contextTypes */ "./node_modules/_rc-tree@1.14.9@rc-tree/es/contextTypes.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./util */ "./node_modules/_rc-tree@1.14.9@rc-tree/es/util.js");
+/* harmony import */ var _contextTypes__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./contextTypes */ "./node_modules/_rc-tree@1.15.0@rc-tree/es/contextTypes.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./util */ "./node_modules/_rc-tree@1.15.0@rc-tree/es/util.js");
 
 
 
@@ -9632,12 +10280,26 @@ var TreeNode = function (_React$Component) {
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
+      var eventKey = this.props.eventKey;
+      var registerTreeNode = this.context.rcTree.registerTreeNode;
+
+
       this.syncLoadData(this.props);
+
+      registerTreeNode(eventKey, this);
     }
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
       this.syncLoadData(this.props);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      var eventKey = this.props.eventKey;
+      var registerTreeNode = this.context.rcTree.registerTreeNode;
+
+      registerTreeNode(eventKey, null);
     }
 
     // Disabled item still can be switch
@@ -10171,9 +10833,9 @@ Object(react_lifecycles_compat__WEBPACK_IMPORTED_MODULE_12__["polyfill"])(TreeNo
 
 /***/ }),
 
-/***/ "./node_modules/_rc-tree@1.14.9@rc-tree/es/contextTypes.js":
+/***/ "./node_modules/_rc-tree@1.15.0@rc-tree/es/contextTypes.js":
 /*!*****************************************************************!*\
-  !*** ./node_modules/_rc-tree@1.14.9@rc-tree/es/contextTypes.js ***!
+  !*** ./node_modules/_rc-tree@1.15.0@rc-tree/es/contextTypes.js ***!
   \*****************************************************************/
 /*! exports provided: treeContextTypes, nodeContextTypes */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -10252,17 +10914,17 @@ var nodeContextTypes = babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0_
 
 /***/ }),
 
-/***/ "./node_modules/_rc-tree@1.14.9@rc-tree/es/index.js":
+/***/ "./node_modules/_rc-tree@1.15.0@rc-tree/es/index.js":
 /*!**********************************************************!*\
-  !*** ./node_modules/_rc-tree@1.14.9@rc-tree/es/index.js ***!
+  !*** ./node_modules/_rc-tree@1.15.0@rc-tree/es/index.js ***!
   \**********************************************************/
 /*! exports provided: TreeNode, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Tree__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Tree */ "./node_modules/_rc-tree@1.14.9@rc-tree/es/Tree.js");
-/* harmony import */ var _TreeNode__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TreeNode */ "./node_modules/_rc-tree@1.14.9@rc-tree/es/TreeNode.js");
+/* harmony import */ var _Tree__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Tree */ "./node_modules/_rc-tree@1.15.0@rc-tree/es/Tree.js");
+/* harmony import */ var _TreeNode__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TreeNode */ "./node_modules/_rc-tree@1.15.0@rc-tree/es/TreeNode.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TreeNode", function() { return _TreeNode__WEBPACK_IMPORTED_MODULE_1__["default"]; });
 
 
@@ -10275,9 +10937,9 @@ _Tree__WEBPACK_IMPORTED_MODULE_0__["default"].TreeNode = _TreeNode__WEBPACK_IMPO
 
 /***/ }),
 
-/***/ "./node_modules/_rc-tree@1.14.9@rc-tree/es/util.js":
+/***/ "./node_modules/_rc-tree@1.15.0@rc-tree/es/util.js":
 /*!*********************************************************!*\
-  !*** ./node_modules/_rc-tree@1.14.9@rc-tree/es/util.js ***!
+  !*** ./node_modules/_rc-tree@1.15.0@rc-tree/es/util.js ***!
   \*********************************************************/
 /*! exports provided: warnOnlyTreeNode, arrDel, arrAdd, posToArr, getPosition, isTreeNode, getNodeChildren, isCheckDisabled, traverseTreeNodes, mapChildren, getDragNodesKeys, calcDropPosition, calcSelectedKeys, convertDataToTree, convertTreeToEntities, parseCheckedKeys, conductCheck, conductExpandParent, getDataAndAria */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -10310,7 +10972,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rc_util_es_Children_toArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rc-util/es/Children/toArray */ "./node_modules/_rc-util@4.6.0@rc-util/es/Children/toArray.js");
 /* harmony import */ var warning__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! warning */ "./node_modules/_warning@3.0.0@warning/browser.js");
 /* harmony import */ var warning__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(warning__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _TreeNode__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./TreeNode */ "./node_modules/_rc-tree@1.14.9@rc-tree/es/TreeNode.js");
+/* harmony import */ var _TreeNode__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./TreeNode */ "./node_modules/_rc-tree@1.15.0@rc-tree/es/TreeNode.js");
 
 
 
@@ -12245,6 +12907,49 @@ function addEventListenerWrap(target, eventType, cb, option) {
     react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.unstable_batchedUpdates(cb, e);
   } : cb;
   return add_dom_event_listener__WEBPACK_IMPORTED_MODULE_0___default()(target, eventType, callback, option);
+}
+
+/***/ }),
+
+/***/ "./node_modules/_rc-util@4.6.0@rc-util/es/Dom/class.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/_rc-util@4.6.0@rc-util/es/Dom/class.js ***!
+  \*************************************************************/
+/*! exports provided: hasClass, addClass, removeClass */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hasClass", function() { return hasClass; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addClass", function() { return addClass; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeClass", function() { return removeClass; });
+function hasClass(node, className) {
+  if (node.classList) {
+    return node.classList.contains(className);
+  }
+  var originClass = node.className;
+  return (' ' + originClass + ' ').indexOf(' ' + className + ' ') > -1;
+}
+
+function addClass(node, className) {
+  if (node.classList) {
+    node.classList.add(className);
+  } else {
+    if (!hasClass(node, className)) {
+      node.className = node.className + ' ' + className;
+    }
+  }
+}
+
+function removeClass(node, className) {
+  if (node.classList) {
+    node.classList.remove(className);
+  } else {
+    if (hasClass(node, className)) {
+      var originClass = node.className;
+      node.className = (' ' + originClass + ' ').replace(' ' + className + ' ', ' ');
+    }
+  }
 }
 
 /***/ }),
@@ -37814,7 +38519,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/_prop-types@15.7.2@prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_lifecycles_compat__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-lifecycles-compat */ "./node_modules/_react-lifecycles-compat@3.0.4@react-lifecycles-compat/react-lifecycles-compat.es.js");
-/* harmony import */ var rc_tree__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rc-tree */ "./node_modules/_rc-tree@1.14.9@rc-tree/es/index.js");
+/* harmony import */ var rc_tree__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rc-tree */ "./node_modules/_rc-tree@1.15.0@rc-tree/es/index.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../util */ "./src/util.js");
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -37836,6 +38542,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -37880,6 +38587,10 @@ function (_React$Component) {
       _this.setState({
         loadedKeys: loadedKeys
       });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "getTree", function () {
+      return _this.treeRef.current;
     });
 
     _defineProperty(_assertThisInitialized(_this), "getLoadData", function () {
@@ -37930,6 +38641,7 @@ function (_React$Component) {
       // eslint-disable-line react/no-unused-state
       loadedKeys: []
     };
+    _this.treeRef = Object(_util__WEBPACK_IMPORTED_MODULE_4__["createRef"])();
     return _this;
   }
 
@@ -37995,6 +38707,7 @@ function (_React$Component) {
         $tree = $notFound;
       } else {
         $tree = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(rc_tree__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({
+          ref: this.treeRef,
           prefixCls: "".concat(prefixCls, "-tree"),
           showIcon: treeIcon,
           showLine: treeLine,
@@ -38433,6 +39146,10 @@ function (_React$Component) {
       _this.inputRef.current.focus();
     });
 
+    _defineProperty(_assertThisInitialized(_this), "getTree", function () {
+      return _this.popupRef.current && _this.popupRef.current.getTree();
+    });
+
     _defineProperty(_assertThisInitialized(_this), "renderPlaceholder", function () {
       var _this$props = _this.props,
           searchPlaceholder = _this$props.searchPlaceholder,
@@ -38462,6 +39179,7 @@ function (_React$Component) {
       }
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        ref: _this.searchRef,
         className: "".concat(dropdownPrefixCls, "-search")
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SearchInput__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({}, _this.props, {
         ref: _this.inputRef,
@@ -38470,13 +39188,17 @@ function (_React$Component) {
     });
 
     _this.inputRef = Object(_util__WEBPACK_IMPORTED_MODULE_4__["createRef"])();
+    _this.searchRef = Object(_util__WEBPACK_IMPORTED_MODULE_4__["createRef"])();
+    _this.popupRef = Object(_util__WEBPACK_IMPORTED_MODULE_4__["createRef"])();
     return _this;
   }
 
   _createClass(SinglePopup, [{
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Base_BasePopup__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, this.props, {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Base_BasePopup__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
+        ref: this.popupRef
+      }, this.props, {
         renderSearch: this.renderSearch
       }));
     }
@@ -38689,25 +39411,29 @@ Object(react_lifecycles_compat__WEBPACK_IMPORTED_MODULE_2__["polyfill"])(SearchI
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/_react@16.8.2@react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/_prop-types@15.7.2@prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_lifecycles_compat__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-lifecycles-compat */ "./node_modules/_react-lifecycles-compat@3.0.4@react-lifecycles-compat/react-lifecycles-compat.es.js");
-/* harmony import */ var rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rc-util/es/KeyCode */ "./node_modules/_rc-util@4.6.0@rc-util/es/KeyCode.js");
-/* harmony import */ var shallowequal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! shallowequal */ "./node_modules/_shallowequal@1.1.0@shallowequal/index.js");
-/* harmony import */ var shallowequal__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(shallowequal__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var raf__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! raf */ "./node_modules/_raf@3.4.1@raf/index.js");
-/* harmony import */ var raf__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(raf__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _SelectTrigger__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./SelectTrigger */ "./src/SelectTrigger.jsx");
-/* harmony import */ var _Base_BaseSelector__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Base/BaseSelector */ "./src/Base/BaseSelector.jsx");
-/* harmony import */ var _Base_BasePopup__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Base/BasePopup */ "./src/Base/BasePopup.jsx");
-/* harmony import */ var _Selector_SingleSelector__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Selector/SingleSelector */ "./src/Selector/SingleSelector.jsx");
-/* harmony import */ var _Selector_MultipleSelector__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Selector/MultipleSelector */ "./src/Selector/MultipleSelector/index.jsx");
-/* harmony import */ var _Popup_SinglePopup__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Popup/SinglePopup */ "./src/Popup/SinglePopup.jsx");
-/* harmony import */ var _Popup_MultiplePopup__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./Popup/MultiplePopup */ "./src/Popup/MultiplePopup.jsx");
-/* harmony import */ var _strategies__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./strategies */ "./src/strategies.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./util */ "./src/util.js");
-/* harmony import */ var _propTypes__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./propTypes */ "./src/propTypes.js");
-/* harmony import */ var _SelectNode__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./SelectNode */ "./src/SelectNode.jsx");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/_react-dom@16.8.2@react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/_prop-types@15.7.2@prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_lifecycles_compat__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-lifecycles-compat */ "./node_modules/_react-lifecycles-compat@3.0.4@react-lifecycles-compat/react-lifecycles-compat.es.js");
+/* harmony import */ var rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rc-util/es/KeyCode */ "./node_modules/_rc-util@4.6.0@rc-util/es/KeyCode.js");
+/* harmony import */ var shallowequal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! shallowequal */ "./node_modules/_shallowequal@1.1.0@shallowequal/index.js");
+/* harmony import */ var shallowequal__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(shallowequal__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var raf__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! raf */ "./node_modules/_raf@3.4.1@raf/index.js");
+/* harmony import */ var raf__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(raf__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var dom_scroll_into_view__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! dom-scroll-into-view */ "./node_modules/_dom-scroll-into-view@1.2.1@dom-scroll-into-view/lib/index.js");
+/* harmony import */ var dom_scroll_into_view__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(dom_scroll_into_view__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _SelectTrigger__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./SelectTrigger */ "./src/SelectTrigger.jsx");
+/* harmony import */ var _Base_BaseSelector__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Base/BaseSelector */ "./src/Base/BaseSelector.jsx");
+/* harmony import */ var _Base_BasePopup__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Base/BasePopup */ "./src/Base/BasePopup.jsx");
+/* harmony import */ var _Selector_SingleSelector__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Selector/SingleSelector */ "./src/Selector/SingleSelector.jsx");
+/* harmony import */ var _Selector_MultipleSelector__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./Selector/MultipleSelector */ "./src/Selector/MultipleSelector/index.jsx");
+/* harmony import */ var _Popup_SinglePopup__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./Popup/SinglePopup */ "./src/Popup/SinglePopup.jsx");
+/* harmony import */ var _Popup_MultiplePopup__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./Popup/MultiplePopup */ "./src/Popup/MultiplePopup.jsx");
+/* harmony import */ var _strategies__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./strategies */ "./src/strategies.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./util */ "./src/util.js");
+/* harmony import */ var _propTypes__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./propTypes */ "./src/propTypes.js");
+/* harmony import */ var _SelectNode__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./SelectNode */ "./src/SelectNode.jsx");
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
@@ -38776,6 +39502,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
+
 var Select =
 /*#__PURE__*/
 function (_React$Component) {
@@ -38807,12 +39535,12 @@ function (_React$Component) {
       var keyCode = event.keyCode;
 
       if (!open) {
-        if ([rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_3__["default"].ENTER, rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_3__["default"].DOWN].indexOf(keyCode) !== -1) {
+        if ([rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_4__["default"].ENTER, rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_4__["default"].DOWN].indexOf(keyCode) !== -1) {
           _this.setOpenState(true);
         }
-      } else if (rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_3__["default"].ESC === keyCode) {
+      } else if (rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_4__["default"].ESC === keyCode) {
         _this.setOpenState(false);
-      } else if ([rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_3__["default"].UP, rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_3__["default"].DOWN, rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_3__["default"].LEFT, rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_3__["default"].RIGHT].indexOf(keyCode) !== -1) {
+      } else if ([rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_4__["default"].UP, rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_4__["default"].DOWN, rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_4__["default"].LEFT, rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_4__["default"].RIGHT].indexOf(keyCode) !== -1) {
         // TODO: Handle `open` state
         event.stopPropagation();
       }
@@ -38863,7 +39591,7 @@ function (_React$Component) {
           newValueList = valueList.filter(function (_ref) {
             var value = _ref.value;
             var entity = valueEntities[value];
-            return !Object(_util__WEBPACK_IMPORTED_MODULE_14__["isPosRelated"])(entity.pos, triggerEntity.pos);
+            return !Object(_util__WEBPACK_IMPORTED_MODULE_16__["isPosRelated"])(entity.pos, triggerEntity.pos);
           });
         } else {
           newValueList = valueList.filter(function (_ref2) {
@@ -38906,7 +39634,7 @@ function (_React$Component) {
           extraInfo.allCheckedNodes = deselectInfo.checkedNodes;
         } else {
           // TODO: It's too expansive to get `halfCheckedKeys` in onDeselect. Not pass this.
-          extraInfo.allCheckedNodes = Object(_util__WEBPACK_IMPORTED_MODULE_14__["flatToHierarchy"])(filteredEntityList).map(function (_ref6) {
+          extraInfo.allCheckedNodes = Object(_util__WEBPACK_IMPORTED_MODULE_16__["flatToHierarchy"])(filteredEntityList).map(function (_ref6) {
             var node = _ref6.node;
             return node;
           });
@@ -39000,9 +39728,9 @@ function (_React$Component) {
         });
 
         if (isAdd) {
-          keyList = Object(_util__WEBPACK_IMPORTED_MODULE_14__["conductCheck"])(keyList, true, keyEntities).checkedKeys;
+          keyList = Object(_util__WEBPACK_IMPORTED_MODULE_16__["conductCheck"])(keyList, true, keyEntities).checkedKeys;
         } else {
-          keyList = Object(_util__WEBPACK_IMPORTED_MODULE_14__["conductCheck"])([valueEntities[value].key], false, keyEntities, {
+          keyList = Object(_util__WEBPACK_IMPORTED_MODULE_16__["conductCheck"])([valueEntities[value].key], false, keyEntities, {
             checkedKeys: keyList
           }).checkedKeys;
         }
@@ -39128,7 +39856,7 @@ function (_React$Component) {
             return valueEntities[value].key;
           })))));
         } else {
-          keyList = Object(_util__WEBPACK_IMPORTED_MODULE_14__["conductCheck"])([nodeEventInfo.node.props.eventKey], false, keyEntities, {
+          keyList = Object(_util__WEBPACK_IMPORTED_MODULE_16__["conductCheck"])([nodeEventInfo.node.props.eventKey], false, keyEntities, {
             checkedKeys: oriKeyList
           }).checkedKeys;
         }
@@ -39138,12 +39866,12 @@ function (_React$Component) {
         }); // Let's follow as not `treeCheckStrictly` format
 
         extraInfo.allCheckedNodes = keyList.map(function (key) {
-          return Object(_util__WEBPACK_IMPORTED_MODULE_14__["cleanEntity"])(keyEntities[key]);
+          return Object(_util__WEBPACK_IMPORTED_MODULE_16__["cleanEntity"])(keyEntities[key]);
         });
       } else if (treeCheckStrictly) {
         extraInfo.allCheckedNodes = nodeEventInfo.checkedNodes;
       } else {
-        extraInfo.allCheckedNodes = Object(_util__WEBPACK_IMPORTED_MODULE_14__["flatToHierarchy"])(checkedNodesPositions);
+        extraInfo.allCheckedNodes = Object(_util__WEBPACK_IMPORTED_MODULE_16__["flatToHierarchy"])(checkedNodesPositions);
       }
 
       _this.onValueTrigger(isAdd, checkedNodeList, nodeEventInfo, extraInfo);
@@ -39207,7 +39935,7 @@ function (_React$Component) {
         }
 
         _this.setState({
-          filteredTreeNodes: Object(_util__WEBPACK_IMPORTED_MODULE_14__["getFilterTree"])(treeNodes, value, filterTreeNodeFn, valueEntities)
+          filteredTreeNodes: Object(_util__WEBPACK_IMPORTED_MODULE_16__["getFilterTree"])(treeNodes, value, filterTreeNodeFn, valueEntities)
         });
       }
     });
@@ -39218,7 +39946,7 @@ function (_React$Component) {
           valueList = _this$state6.valueList;
       var keyCode = event.keyCode;
 
-      if (rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_3__["default"].BACKSPACE === keyCode && _this.isMultiple() && !searchValue && valueList.length) {
+      if (rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_4__["default"].BACKSPACE === keyCode && _this.isMultiple() && !searchValue && valueList.length) {
         var lastValue = valueList[valueList.length - 1].value;
 
         _this.onMultipleSelectorRemove(event, lastValue);
@@ -39227,6 +39955,10 @@ function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_this), "onChoiceAnimationLeave", function () {
       _this.forcePopupAlign();
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "setPopupRef", function (popup) {
+      _this.popup = popup;
     });
 
     _defineProperty(_assertThisInitialized(_this), "setUncontrolledState", function (state) {
@@ -39268,7 +40000,7 @@ function (_React$Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "isLabelInValue", function () {
-      return Object(_util__WEBPACK_IMPORTED_MODULE_14__["isLabelInValue"])(_this.props);
+      return Object(_util__WEBPACK_IMPORTED_MODULE_16__["isLabelInValue"])(_this.props);
     });
 
     _defineProperty(_assertThisInitialized(_this), "isSearchValueControlled", function () {
@@ -39288,8 +40020,8 @@ function (_React$Component) {
     _defineProperty(_assertThisInitialized(_this), "delayForcePopupAlign", function () {
       // Wait 2 frame to avoid dom update & dom algin in the same time
       // https://github.com/ant-design/ant-design/issues/12031
-      raf__WEBPACK_IMPORTED_MODULE_5___default()(function () {
-        raf__WEBPACK_IMPORTED_MODULE_5___default()(_this.forcePopupAlign);
+      raf__WEBPACK_IMPORTED_MODULE_6___default()(function () {
+        raf__WEBPACK_IMPORTED_MODULE_6___default()(_this.forcePopupAlign);
       });
     });
 
@@ -39319,7 +40051,7 @@ function (_React$Component) {
       }, extraInfo); // Format value by `treeCheckStrictly`
 
 
-      var selectorValueList = Object(_util__WEBPACK_IMPORTED_MODULE_14__["formatSelectorValue"])(valueList, _this.props, valueEntities);
+      var selectorValueList = Object(_util__WEBPACK_IMPORTED_MODULE_16__["formatSelectorValue"])(valueList, _this.props, valueEntities);
 
       if (!('value' in _this.props)) {
         var newState = {
@@ -39329,7 +40061,7 @@ function (_React$Component) {
         };
 
         if (searchValue && treeCheckable && !treeCheckStrictly) {
-          newState.searchHalfCheckedKeys = Object(_util__WEBPACK_IMPORTED_MODULE_14__["getHalfCheckedKeys"])(valueList, valueEntities);
+          newState.searchHalfCheckedKeys = Object(_util__WEBPACK_IMPORTED_MODULE_16__["getHalfCheckedKeys"])(valueList, valueEntities);
         }
 
         _this.setState(newState);
@@ -39391,11 +40123,11 @@ function (_React$Component) {
       searchValue: '',
       init: true
     };
-    _this.selectorRef = Object(_util__WEBPACK_IMPORTED_MODULE_14__["createRef"])();
-    _this.selectTriggerRef = Object(_util__WEBPACK_IMPORTED_MODULE_14__["createRef"])(); // ARIA need `aria-controls` props mapping
+    _this.selectorRef = Object(_util__WEBPACK_IMPORTED_MODULE_16__["createRef"])();
+    _this.selectTriggerRef = Object(_util__WEBPACK_IMPORTED_MODULE_16__["createRef"])(); // ARIA need `aria-controls` props mapping
     // Since this need user input. Let's generate ourselves
 
-    _this.ariaId = Object(_util__WEBPACK_IMPORTED_MODULE_14__["generateAriaId"])("".concat(prefixAria, "-list"));
+    _this.ariaId = Object(_util__WEBPACK_IMPORTED_MODULE_16__["generateAriaId"])("".concat(prefixAria, "-list"));
     return _this;
   }
 
@@ -39431,10 +40163,46 @@ function (_React$Component) {
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(_, prevState) {
-      var valueList = this.state.valueList;
+      var _this2 = this;
+
+      var prefixCls = this.props.prefixCls;
+      var _this$state8 = this.state,
+          valueList = _this$state8.valueList,
+          open = _this$state8.open,
+          selectorValueList = _this$state8.selectorValueList,
+          valueEntities = _this$state8.valueEntities;
+      var isMultiple = this.isMultiple();
 
       if (prevState.valueList !== valueList) {
         this.forcePopupAlign();
+      } // Scroll to value position, only need sync on single mode
+
+
+      if (!isMultiple && selectorValueList.length && !prevState.open && open && this.popup) {
+        var value = selectorValueList[0].value;
+
+        var _this$popup$getTree = this.popup.getTree(),
+            domTreeNodes = _this$popup$getTree.domTreeNodes;
+
+        var _ref21 = valueEntities[value] || {},
+            key = _ref21.key;
+
+        var treeNode = domTreeNodes[key];
+
+        if (treeNode) {
+          var domNode = Object(react_dom__WEBPACK_IMPORTED_MODULE_1__["findDOMNode"])(treeNode);
+          raf__WEBPACK_IMPORTED_MODULE_6___default()(function () {
+            var popupNode = Object(react_dom__WEBPACK_IMPORTED_MODULE_1__["findDOMNode"])(_this2.popup);
+            var triggerContainer = Object(_util__WEBPACK_IMPORTED_MODULE_16__["findPopupContainer"])(popupNode, "".concat(prefixCls, "-dropdown"));
+
+            if (domNode && triggerContainer) {
+              dom_scroll_into_view__WEBPACK_IMPORTED_MODULE_7___default()(domNode, triggerContainer, {
+                onlyScrollIfNeeded: true,
+                offsetTop: _this2.popup.searchRef.current.offsetHeight
+              });
+            }
+          });
+        }
       }
     } // ==================== Selector ====================
 
@@ -39452,18 +40220,18 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this$state8 = this.state,
-          valueList = _this$state8.valueList,
-          missValueList = _this$state8.missValueList,
-          selectorValueList = _this$state8.selectorValueList,
-          searchHalfCheckedKeys = _this$state8.searchHalfCheckedKeys,
-          valueEntities = _this$state8.valueEntities,
-          keyEntities = _this$state8.keyEntities,
-          searchValue = _this$state8.searchValue,
-          open = _this$state8.open,
-          focused = _this$state8.focused,
-          treeNodes = _this$state8.treeNodes,
-          filteredTreeNodes = _this$state8.filteredTreeNodes;
+      var _this$state9 = this.state,
+          valueList = _this$state9.valueList,
+          missValueList = _this$state9.missValueList,
+          selectorValueList = _this$state9.selectorValueList,
+          searchHalfCheckedKeys = _this$state9.searchHalfCheckedKeys,
+          valueEntities = _this$state9.valueEntities,
+          keyEntities = _this$state9.keyEntities,
+          searchValue = _this$state9.searchValue,
+          open = _this$state9.open,
+          focused = _this$state9.focused,
+          treeNodes = _this$state9.treeNodes,
+          filteredTreeNodes = _this$state9.filteredTreeNodes;
       var _this$props9 = this.props,
           prefixCls = _this$props9.prefixCls,
           treeExpandedKeys = _this$props9.treeExpandedKeys,
@@ -39487,8 +40255,10 @@ function (_React$Component) {
         ariaId: this.ariaId
       });
 
-      var Popup = isMultiple ? _Popup_MultiplePopup__WEBPACK_IMPORTED_MODULE_12__["default"] : _Popup_SinglePopup__WEBPACK_IMPORTED_MODULE_11__["default"];
-      var $popup = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Popup, _extends({}, passProps, {
+      var Popup = isMultiple ? _Popup_MultiplePopup__WEBPACK_IMPORTED_MODULE_14__["default"] : _Popup_SinglePopup__WEBPACK_IMPORTED_MODULE_13__["default"];
+      var $popup = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Popup, _extends({
+        ref: this.setPopupRef
+      }, passProps, {
         onTreeExpanded: this.delayForcePopupAlign,
         treeNodes: treeNodes,
         filteredTreeNodes: filteredTreeNodes // Tree expanded control
@@ -39496,11 +40266,11 @@ function (_React$Component) {
         treeExpandedKeys: treeExpandedKeys,
         onTreeExpand: onTreeExpand
       }));
-      var Selector = isMultiple ? _Selector_MultipleSelector__WEBPACK_IMPORTED_MODULE_10__["default"] : _Selector_SingleSelector__WEBPACK_IMPORTED_MODULE_9__["default"];
+      var Selector = isMultiple ? _Selector_MultipleSelector__WEBPACK_IMPORTED_MODULE_12__["default"] : _Selector_SingleSelector__WEBPACK_IMPORTED_MODULE_11__["default"];
       var $selector = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Selector, _extends({}, passProps, {
         ref: this.selectorRef
       }));
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SelectTrigger__WEBPACK_IMPORTED_MODULE_6__["default"], _extends({}, passProps, {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SelectTrigger__WEBPACK_IMPORTED_MODULE_8__["default"], _extends({}, passProps, {
         ref: this.selectTriggerRef,
         popupElement: $popup,
         onKeyDown: this.onKeyDown,
@@ -39541,14 +40311,14 @@ function (_React$Component) {
       var treeDataChanged = false;
       var treeDataModeChanged = false;
       processState('treeData', function (propValue) {
-        treeNodes = Object(_util__WEBPACK_IMPORTED_MODULE_14__["convertDataToTree"])(propValue);
+        treeNodes = Object(_util__WEBPACK_IMPORTED_MODULE_16__["convertDataToTree"])(propValue);
         treeDataChanged = true;
       });
       processState('treeDataSimpleMode', function (propValue, prevValue) {
         if (!propValue) return;
         var prev = !prevValue || prevValue === true ? {} : prevValue; // Shallow equal to avoid dynamic prop object
 
-        if (!shallowequal__WEBPACK_IMPORTED_MODULE_4___default()(propValue, prev)) {
+        if (!shallowequal__WEBPACK_IMPORTED_MODULE_5___default()(propValue, prev)) {
           treeDataModeChanged = true;
         }
       }); // Parse by `treeDataSimpleMode`
@@ -39560,7 +40330,7 @@ function (_React$Component) {
           rootPId: null
         }, treeDataSimpleMode !== true ? treeDataSimpleMode : {});
 
-        treeNodes = Object(_util__WEBPACK_IMPORTED_MODULE_14__["convertDataToTree"])(Object(_util__WEBPACK_IMPORTED_MODULE_14__["parseSimpleTreeData"])(nextProps.treeData, simpleMapper));
+        treeNodes = Object(_util__WEBPACK_IMPORTED_MODULE_16__["convertDataToTree"])(Object(_util__WEBPACK_IMPORTED_MODULE_16__["parseSimpleTreeData"])(nextProps.treeData, simpleMapper));
       } // If `treeData` not provide, use children TreeNodes
 
 
@@ -39572,7 +40342,7 @@ function (_React$Component) {
 
 
       if (treeNodes) {
-        var entitiesMap = Object(_util__WEBPACK_IMPORTED_MODULE_14__["convertTreeToEntities"])(treeNodes);
+        var entitiesMap = Object(_util__WEBPACK_IMPORTED_MODULE_16__["convertTreeToEntities"])(treeNodes);
         newState.treeNodes = treeNodes;
         newState.posEntities = entitiesMap.posEntities;
         newState.valueEntities = entitiesMap.valueEntities;
@@ -39583,13 +40353,13 @@ function (_React$Component) {
 
       if (prevState.init) {
         processState('defaultValue', function (propValue) {
-          newState.valueList = Object(_util__WEBPACK_IMPORTED_MODULE_14__["formatInternalValue"])(propValue, nextProps);
+          newState.valueList = Object(_util__WEBPACK_IMPORTED_MODULE_16__["formatInternalValue"])(propValue, nextProps);
           valueRefresh = true;
         });
       }
 
       processState('value', function (propValue) {
-        newState.valueList = Object(_util__WEBPACK_IMPORTED_MODULE_14__["formatInternalValue"])(propValue, nextProps);
+        newState.valueList = Object(_util__WEBPACK_IMPORTED_MODULE_16__["formatInternalValue"])(propValue, nextProps);
         valueRefresh = true;
       }); // Selector Value List
 
@@ -39623,7 +40393,7 @@ function (_React$Component) {
 
         if (treeCheckable && !treeCheckStrictly) {
           // Calculate the keys need to be checked
-          var _conductCheck = Object(_util__WEBPACK_IMPORTED_MODULE_14__["conductCheck"])(keyList, true, newState.keyEntities || prevState.keyEntities),
+          var _conductCheck = Object(_util__WEBPACK_IMPORTED_MODULE_16__["conductCheck"])(keyList, true, newState.keyEntities || prevState.keyEntities),
               checkedKeys = _conductCheck.checkedKeys; // Format value list again for internal usage
 
 
@@ -39639,7 +40409,7 @@ function (_React$Component) {
 
         newState.missValueList = missValueList; // Calculate the value list for `Selector` usage
 
-        newState.selectorValueList = Object(_util__WEBPACK_IMPORTED_MODULE_14__["formatSelectorValue"])(newState.valueList, nextProps, newState.valueEntities || prevState.valueEntities);
+        newState.selectorValueList = Object(_util__WEBPACK_IMPORTED_MODULE_16__["formatSelectorValue"])(newState.valueList, nextProps, newState.valueEntities || prevState.valueEntities);
       } // [Legacy] To align with `Select` component,
       // We use `searchValue` instead of `inputValue` but still keep the api
       // `inputValue` support `null` to work as `autoClearSearchValue`
@@ -39673,17 +40443,17 @@ function (_React$Component) {
           };
         }
 
-        newState.filteredTreeNodes = Object(_util__WEBPACK_IMPORTED_MODULE_14__["getFilterTree"])(newState.treeNodes || prevState.treeNodes, searchValue, filterTreeNodeFn, newState.valueEntities || prevState.valueEntities);
+        newState.filteredTreeNodes = Object(_util__WEBPACK_IMPORTED_MODULE_16__["getFilterTree"])(newState.treeNodes || prevState.treeNodes, searchValue, filterTreeNodeFn, newState.valueEntities || prevState.valueEntities);
       } // We should re-calculate the halfCheckedKeys when in search mode
 
 
       if (valueRefresh && treeCheckable && !treeCheckStrictly && (newState.searchValue || prevState.searchValue)) {
-        newState.searchHalfCheckedKeys = Object(_util__WEBPACK_IMPORTED_MODULE_14__["getHalfCheckedKeys"])(newState.valueList, newState.valueEntities || prevState.valueEntities);
+        newState.searchHalfCheckedKeys = Object(_util__WEBPACK_IMPORTED_MODULE_16__["getHalfCheckedKeys"])(newState.valueList, newState.valueEntities || prevState.valueEntities);
       } // Checked Strategy
 
 
       processState('showCheckedStrategy', function () {
-        newState.selectorValueList = newState.selectorValueList || Object(_util__WEBPACK_IMPORTED_MODULE_14__["formatSelectorValue"])(newState.valueList || prevState.valueList, nextProps, newState.valueEntities || prevState.valueEntities);
+        newState.selectorValueList = newState.selectorValueList || Object(_util__WEBPACK_IMPORTED_MODULE_16__["formatSelectorValue"])(newState.valueList || prevState.valueList, nextProps, newState.valueEntities || prevState.valueEntities);
       });
       return newState;
     }
@@ -39693,61 +40463,61 @@ function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
 _defineProperty(Select, "propTypes", {
-  prefixCls: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-  prefixAria: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-  multiple: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-  showArrow: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-  open: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-  value: _propTypes__WEBPACK_IMPORTED_MODULE_15__["valueProp"],
-  autoFocus: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-  defaultOpen: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-  defaultValue: _propTypes__WEBPACK_IMPORTED_MODULE_15__["valueProp"],
-  showSearch: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-  placeholder: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.node,
-  inputValue: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+  prefixCls: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
+  prefixAria: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
+  multiple: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  showArrow: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  open: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  value: _propTypes__WEBPACK_IMPORTED_MODULE_17__["valueProp"],
+  autoFocus: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  defaultOpen: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  defaultValue: _propTypes__WEBPACK_IMPORTED_MODULE_17__["valueProp"],
+  showSearch: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  placeholder: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.node,
+  inputValue: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
   // [Legacy] Deprecated. Use `searchValue` instead.
-  searchValue: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-  autoClearSearchValue: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-  searchPlaceholder: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.node,
+  searchValue: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
+  autoClearSearchValue: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  searchPlaceholder: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.node,
   // [Legacy] Confuse with placeholder
-  disabled: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-  children: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.node,
-  labelInValue: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-  maxTagCount: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
-  maxTagPlaceholder: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.node, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func]),
-  maxTagTextLength: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
-  showCheckedStrategy: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOf([_strategies__WEBPACK_IMPORTED_MODULE_13__["SHOW_ALL"], _strategies__WEBPACK_IMPORTED_MODULE_13__["SHOW_PARENT"], _strategies__WEBPACK_IMPORTED_MODULE_13__["SHOW_CHILD"]]),
-  dropdownMatchSelectWidth: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-  treeData: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array,
-  treeDataSimpleMode: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object]),
-  treeNodeFilterProp: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-  treeNodeLabelProp: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-  treeCheckable: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.node]),
-  treeCheckStrictly: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-  treeIcon: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-  treeLine: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-  treeDefaultExpandAll: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-  treeDefaultExpandedKeys: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array,
-  treeExpandedKeys: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array,
-  loadData: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
-  filterTreeNode: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool]),
-  notFoundContent: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.node,
-  onSearch: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
-  onSelect: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
-  onDeselect: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
-  onChange: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
-  onDropdownVisibleChange: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
-  onTreeExpand: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
-  inputIcon: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.node, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func]),
-  clearIcon: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.node, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func]),
-  removeIcon: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.node, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func]),
-  switcherIcon: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.node, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func])
+  disabled: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  children: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.node,
+  labelInValue: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  maxTagCount: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.number,
+  maxTagPlaceholder: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.node, prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func]),
+  maxTagTextLength: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.number,
+  showCheckedStrategy: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.oneOf([_strategies__WEBPACK_IMPORTED_MODULE_15__["SHOW_ALL"], _strategies__WEBPACK_IMPORTED_MODULE_15__["SHOW_PARENT"], _strategies__WEBPACK_IMPORTED_MODULE_15__["SHOW_CHILD"]]),
+  dropdownMatchSelectWidth: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  treeData: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.array,
+  treeDataSimpleMode: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool, prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object]),
+  treeNodeFilterProp: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
+  treeNodeLabelProp: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
+  treeCheckable: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool, prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.node]),
+  treeCheckStrictly: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  treeIcon: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  treeLine: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  treeDefaultExpandAll: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  treeDefaultExpandedKeys: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.array,
+  treeExpandedKeys: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.array,
+  loadData: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
+  filterTreeNode: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func, prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool]),
+  notFoundContent: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.node,
+  onSearch: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
+  onSelect: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
+  onDeselect: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
+  onChange: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
+  onDropdownVisibleChange: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
+  onTreeExpand: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
+  inputIcon: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.node, prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func]),
+  clearIcon: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.node, prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func]),
+  removeIcon: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.node, prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func]),
+  switcherIcon: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.node, prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func])
 });
 
 _defineProperty(Select, "childContextTypes", {
-  rcTreeSelect: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.shape(_objectSpread({}, _Base_BaseSelector__WEBPACK_IMPORTED_MODULE_7__["selectorContextTypes"], _Selector_MultipleSelector__WEBPACK_IMPORTED_MODULE_10__["multipleSelectorContextTypes"], _Base_BasePopup__WEBPACK_IMPORTED_MODULE_8__["popupContextTypes"], {
-    onSearchInputChange: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
-    onSearchInputKeyDown: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func
+  rcTreeSelect: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.shape(_objectSpread({}, _Base_BaseSelector__WEBPACK_IMPORTED_MODULE_9__["selectorContextTypes"], _Selector_MultipleSelector__WEBPACK_IMPORTED_MODULE_12__["multipleSelectorContextTypes"], _Base_BasePopup__WEBPACK_IMPORTED_MODULE_10__["popupContextTypes"], {
+    onSearchInputChange: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
+    onSearchInputKeyDown: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func
   }))
 });
 
@@ -39757,7 +40527,7 @@ _defineProperty(Select, "defaultProps", {
   showArrow: true,
   showSearch: true,
   autoClearSearchValue: true,
-  showCheckedStrategy: _strategies__WEBPACK_IMPORTED_MODULE_13__["SHOW_CHILD"],
+  showCheckedStrategy: _strategies__WEBPACK_IMPORTED_MODULE_15__["SHOW_CHILD"],
   // dropdownMatchSelectWidth change the origin design, set to false now
   // ref: https://github.com/react-component/select/blob/4cad95e098a341a09de239ad6981067188842020/src/Select.jsx#L344
   // ref: https://github.com/react-component/select/pull/71
@@ -39767,13 +40537,13 @@ _defineProperty(Select, "defaultProps", {
   notFoundContent: 'Not Found'
 });
 
-Select.TreeNode = _SelectNode__WEBPACK_IMPORTED_MODULE_16__["default"];
-Select.SHOW_ALL = _strategies__WEBPACK_IMPORTED_MODULE_13__["SHOW_ALL"];
-Select.SHOW_PARENT = _strategies__WEBPACK_IMPORTED_MODULE_13__["SHOW_PARENT"];
-Select.SHOW_CHILD = _strategies__WEBPACK_IMPORTED_MODULE_13__["SHOW_CHILD"]; // Let warning show correct component name
+Select.TreeNode = _SelectNode__WEBPACK_IMPORTED_MODULE_18__["default"];
+Select.SHOW_ALL = _strategies__WEBPACK_IMPORTED_MODULE_15__["SHOW_ALL"];
+Select.SHOW_PARENT = _strategies__WEBPACK_IMPORTED_MODULE_15__["SHOW_PARENT"];
+Select.SHOW_CHILD = _strategies__WEBPACK_IMPORTED_MODULE_15__["SHOW_CHILD"]; // Let warning show correct component name
 
 Select.displayName = 'TreeSelect';
-Object(react_lifecycles_compat__WEBPACK_IMPORTED_MODULE_2__["polyfill"])(Select);
+Object(react_lifecycles_compat__WEBPACK_IMPORTED_MODULE_3__["polyfill"])(Select);
 /* harmony default export */ __webpack_exports__["default"] = (Select);
 
 /***/ }),
@@ -39789,7 +40559,7 @@ Object(react_lifecycles_compat__WEBPACK_IMPORTED_MODULE_2__["polyfill"])(Select)
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/_react@16.8.2@react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var rc_tree__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rc-tree */ "./node_modules/_rc-tree@1.14.9@rc-tree/es/index.js");
+/* harmony import */ var rc_tree__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rc-tree */ "./node_modules/_rc-tree@1.15.0@rc-tree/es/index.js");
 /* harmony import */ var _propTypes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./propTypes */ "./src/propTypes.js");
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
@@ -40538,11 +41308,12 @@ var SHOW_CHILD = 'SHOW_CHILD';
 /*!*********************!*\
   !*** ./src/util.js ***!
   \*********************/
-/*! exports provided: toTitle, toArray, createRef, UNSELECTABLE_STYLE, UNSELECTABLE_ATTRIBUTE, flatToHierarchy, resetAriaId, generateAriaId, isLabelInValue, parseSimpleTreeData, isPosRelated, cleanEntity, getFilterTree, formatInternalValue, getLabel, formatSelectorValue, convertDataToTree, convertTreeToEntities, getHalfCheckedKeys, conductCheck */
+/*! exports provided: findPopupContainer, toTitle, toArray, createRef, UNSELECTABLE_STYLE, UNSELECTABLE_ATTRIBUTE, flatToHierarchy, resetAriaId, generateAriaId, isLabelInValue, parseSimpleTreeData, isPosRelated, cleanEntity, getFilterTree, formatInternalValue, getLabel, formatSelectorValue, convertDataToTree, convertTreeToEntities, getHalfCheckedKeys, conductCheck */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "findPopupContainer", function() { return findPopupContainer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toTitle", function() { return toTitle; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toArray", function() { return toArray; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createRef", function() { return createRef; });
@@ -40567,10 +41338,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var warning__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! warning */ "./node_modules/_warning@4.0.3@warning/warning.js");
 /* harmony import */ var warning__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(warning__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var rc_tree_es_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rc-tree/es/util */ "./node_modules/_rc-tree@1.14.9@rc-tree/es/util.js");
+/* harmony import */ var rc_tree_es_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rc-tree/es/util */ "./node_modules/_rc-tree@1.15.0@rc-tree/es/util.js");
 /* harmony import */ var rc_util_es_Children_toArray__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rc-util/es/Children/toArray */ "./node_modules/_rc-util@4.6.0@rc-util/es/Children/toArray.js");
-/* harmony import */ var _SelectNode__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./SelectNode */ "./src/SelectNode.jsx");
-/* harmony import */ var _strategies__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./strategies */ "./src/strategies.js");
+/* harmony import */ var rc_util_es_Dom_class__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rc-util/es/Dom/class */ "./node_modules/_rc-util@4.6.0@rc-util/es/Dom/class.js");
+/* harmony import */ var _SelectNode__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SelectNode */ "./src/SelectNode.jsx");
+/* harmony import */ var _strategies__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./strategies */ "./src/strategies.js");
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
@@ -40583,7 +41355,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-var warnDeprecatedLabel = false; // =================== MISC ====================
+
+var warnDeprecatedLabel = false; // =================== DOM =====================
+
+function findPopupContainer(node, prefixClass) {
+  var current = node;
+
+  while (current) {
+    if (Object(rc_util_es_Dom_class__WEBPACK_IMPORTED_MODULE_4__["hasClass"])(current, prefixClass)) {
+      return current;
+    }
+
+    current = current.parentNode;
+  }
+
+  return null;
+} // =================== MISC ====================
 
 function toTitle(title) {
   if (typeof title === 'string') {
@@ -40779,7 +41566,7 @@ function getFilterTree(treeNodes, searchValue, filterFunc, valueEntities) {
     });
 
     if (children.length || match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SelectNode__WEBPACK_IMPORTED_MODULE_4__["default"], _extends({}, node.props, {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SelectNode__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({}, node.props, {
         key: valueEntities[node.props.value].key
       }), children);
     }
@@ -40854,7 +41641,7 @@ function formatSelectorValue(valueList, props, valueEntities) {
       return valueEntities[value];
     }));
 
-    if (showCheckedStrategy === _strategies__WEBPACK_IMPORTED_MODULE_5__["SHOW_PARENT"]) {
+    if (showCheckedStrategy === _strategies__WEBPACK_IMPORTED_MODULE_6__["SHOW_PARENT"]) {
       // Only get the parent checked value
       return hierarchyList.map(function (_ref4) {
         var value = _ref4.node.props.value;
@@ -40865,7 +41652,7 @@ function formatSelectorValue(valueList, props, valueEntities) {
       });
     }
 
-    if (showCheckedStrategy === _strategies__WEBPACK_IMPORTED_MODULE_5__["SHOW_CHILD"]) {
+    if (showCheckedStrategy === _strategies__WEBPACK_IMPORTED_MODULE_6__["SHOW_CHILD"]) {
       // Only get the children checked value
       var targetValueList = []; // Find the leaf children
 
