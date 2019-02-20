@@ -6,10 +6,24 @@ import {
   conductCheck as rcConductCheck,
 } from 'rc-tree/lib/util';
 import toNodeArray from 'rc-util/lib/Children/toArray';
+import { hasClass } from 'rc-util/lib/Dom/class';
 import SelectNode from './SelectNode';
 import { SHOW_CHILD, SHOW_PARENT } from './strategies';
 
 let warnDeprecatedLabel = false;
+
+// =================== DOM =====================
+export function findPopupContainer(node, prefixClass) {
+  let current = node;
+  while (current) {
+    if (hasClass(current, prefixClass)) {
+      return current;
+    }
+    current = current.parentNode;
+  }
+
+  return null;
+}
 
 // =================== MISC ====================
 export function toTitle(title) {

@@ -22,6 +22,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
         <li
           class="rc-tree-select-selection__choice"
           role="menuitem"
+          style="user-select: none;"
           title="0"
           unselectable="unselectable"
         >
@@ -37,6 +38,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
         <li
           class="rc-tree-select-selection__choice"
           role="menuitem"
+          style="user-select: none;"
           title="0-0"
           unselectable="unselectable"
         >
@@ -52,6 +54,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
         <li
           class="rc-tree-select-selection__choice"
           role="menuitem"
+          style="user-select: none;"
           title="0-0-0"
           unselectable="unselectable"
         >
@@ -351,6 +354,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
         <li
           class="rc-tree-select-selection__choice"
           role="menuitem"
+          style="user-select: none;"
           title="0"
           unselectable="unselectable"
         >
@@ -366,6 +370,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
         <li
           class="rc-tree-select-selection__choice"
           role="menuitem"
+          style="user-select: none;"
           title="0-0"
           unselectable="unselectable"
         >
@@ -381,6 +386,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
         <li
           class="rc-tree-select-selection__choice"
           role="menuitem"
+          style="user-select: none;"
           title="0-0-0"
           unselectable="unselectable"
         >

@@ -18,11 +18,17 @@ class SinglePopup extends React.Component {
     super();
 
     this.inputRef = createRef();
+    this.searchRef = createRef();
+    this.popupRef = createRef();
   }
 
   onPlaceholderClick = () => {
     this.inputRef.current.focus();
-  }
+  };
+
+  getTree = () => {
+    return this.popupRef.current && this.popupRef.current.getTree();
+  };
 
   renderPlaceholder = () => {
     const { searchPlaceholder, searchValue, prefixCls } = this.props;
@@ -52,7 +58,7 @@ class SinglePopup extends React.Component {
     }
 
     return (
-      <span className={`${dropdownPrefixCls}-search`}>
+      <span ref={this.searchRef} className={`${dropdownPrefixCls}-search`}>
         <SearchInput
           {...this.props}
           ref={this.inputRef}
@@ -63,12 +69,7 @@ class SinglePopup extends React.Component {
   };
 
   render() {
-    return (
-      <BasePopup
-        {...this.props}
-        renderSearch={this.renderSearch}
-      />
-    );
+    return <BasePopup ref={this.popupRef} {...this.props} renderSearch={this.renderSearch} />;
   }
 }
 

@@ -20,11 +20,13 @@
  */
 
 import React from 'react';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import KeyCode from 'rc-util/lib/KeyCode';
 import shallowEqual from 'shallowequal';
 import raf from 'raf';
+import scrollIntoView from 'dom-scroll-into-view';
 
 import SelectTrigger from './SelectTrigger';
 import { selectorContextTypes } from './Base/BaseSelector';
@@ -51,6 +53,7 @@ import {
   isLabelInValue,
   getFilterTree,
   cleanEntity,
+  findPopupContainer,
 } from './util';
 import { valueProp } from './propTypes';
 import SelectNode from './SelectNode';
@@ -411,9 +414,35 @@ class Select extends React.Component {
   }
 
   componentDidUpdate(_, prevState) {
-    const { valueList } = this.state;
+    const { prefixCls } = this.props;
+    const { valueList, open, selectorValueList, valueEntities } = this.state;
+    const isMultiple = this.isMultiple();
+
     if (prevState.valueList !== valueList) {
       this.forcePopupAlign();
+    }
+
+    // Scroll to value position, only need sync on single mode
+    if (!isMultiple && selectorValueList.length && !prevState.open && open && this.popup) {
+      const { value } = selectorValueList[0];
+      const { domTreeNodes } = this.popup.getTree();
+      const { key } = valueEntities[value] || {};
+      const treeNode = domTreeNodes[key];
+
+      if (treeNode) {
+        const domNode = findDOMNode(treeNode);
+        raf(() => {
+          const popupNode = findDOMNode(this.popup);
+          const triggerContainer = findPopupContainer(popupNode, `${prefixCls}-dropdown`);
+
+          if (domNode && triggerContainer) {
+            scrollIntoView(domNode, triggerContainer, {
+              onlyScrollIfNeeded: true,
+              offsetTop: this.popup.searchRef.current.offsetHeight,
+            });
+          }
+        });
+      }
     }
   }
 
@@ -798,6 +827,10 @@ class Select extends React.Component {
     this.forcePopupAlign();
   };
 
+  setPopupRef = popup => {
+    this.popup = popup;
+  };
+
   /**
    * Only update the value which is not in props
    */
@@ -984,6 +1017,7 @@ class Select extends React.Component {
     const Popup = isMultiple ? MultiplePopup : SinglePopup;
     const $popup = (
       <Popup
+        ref={this.setPopupRef}
         {...passProps}
         onTreeExpanded={this.delayForcePopupAlign}
         treeNodes={treeNodes}

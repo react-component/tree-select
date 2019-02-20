@@ -2,6 +2,7 @@
 import React from 'react';
 import { render, mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
+import raf from 'raf';
 import TreeSelect, { TreeNode } from '../src';
 import { resetAriaId, getLabel } from '../src/util';
 import focusTest from './shared/focusTest';
@@ -382,6 +383,23 @@ describe('TreeSelect.basic', () => {
       instance.onChoiceAnimationLeave();
 
       expect(instance.forcePopupAlign).toBeCalled();
+    });
+  });
+
+  describe('scroll to view', () => {
+    it('single mode should trigger scroll', done => {
+      const wrapper = mount(
+        <TreeSelect value="0">
+          <TreeNode title="0" value="0" />
+        </TreeSelect>,
+      );
+
+      wrapper.openSelect();
+
+      raf(() => {
+        done();
+      });
+      jest.runAllTimers();
     });
   });
 });
