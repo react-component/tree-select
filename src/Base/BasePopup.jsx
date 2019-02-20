@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
+
 import Tree from 'rc-tree';
+import { createRef } from '../util';
 
 export const popupContextTypes = {
   onPopupKeyDown: PropTypes.func.isRequired,
@@ -20,10 +22,7 @@ class BasePopup extends React.Component {
     treeIcon: PropTypes.bool,
     treeLine: PropTypes.bool,
     treeNodeFilterProp: PropTypes.string,
-    treeCheckable: PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.node,
-    ]),
+    treeCheckable: PropTypes.oneOfType([PropTypes.bool, PropTypes.node]),
     treeCheckStrictly: PropTypes.bool,
     treeDefaultExpandAll: PropTypes.bool,
     treeDefaultExpandedKeys: PropTypes.array,
@@ -53,10 +52,7 @@ class BasePopup extends React.Component {
   constructor(props) {
     super();
 
-    const {
-      treeDefaultExpandAll, treeDefaultExpandedKeys,
-      keyEntities,
-    } = props;
+    const { treeDefaultExpandAll, treeDefaultExpandedKeys, keyEntities } = props;
 
     // TODO: make `expandedKeyList` control
     let expandedKeyList = treeDefaultExpandedKeys;
@@ -71,13 +67,19 @@ class BasePopup extends React.Component {
       cachedExpandedKeyList: [], // eslint-disable-line react/no-unused-state
       loadedKeys: [],
     };
+
+    this.treeRef = createRef();
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { prevProps = {}, loadedKeys, expandedKeyList, cachedExpandedKeyList } = prevState || {};
     const {
-      valueList, valueEntities, keyEntities,
-      treeExpandedKeys, filteredTreeNodes, upperSearchValue
+      valueList,
+      valueEntities,
+      keyEntities,
+      treeExpandedKeys,
+      filteredTreeNodes,
+      upperSearchValue,
     } = nextProps;
 
     const newState = {
@@ -123,7 +125,7 @@ class BasePopup extends React.Component {
     return newState;
   }
 
-  onTreeExpand = (expandedKeyList) => {
+  onTreeExpand = expandedKeyList => {
     const { treeExpandedKeys, onTreeExpand, onTreeExpanded } = this.props;
 
     // Set uncontrolled state
@@ -136,8 +138,12 @@ class BasePopup extends React.Component {
     }
   };
 
-  onLoad = (loadedKeys) => {
+  onLoad = loadedKeys => {
     this.setState({ loadedKeys });
+  };
+
+  getTree = () => {
+    return this.treeRef.current;
   };
 
   /**
@@ -153,12 +159,12 @@ class BasePopup extends React.Component {
    * This method pass to Tree component which is used for add filtered class
    * in TreeNode > li
    */
-  filterTreeNode = (treeNode) => {
+  filterTreeNode = treeNode => {
     const { upperSearchValue, treeNodeFilterProp } = this.props;
 
     const filterVal = treeNode.props[treeNodeFilterProp];
     if (typeof filterVal === 'string') {
-      return upperSearchValue && (filterVal).toUpperCase().indexOf(upperSearchValue) !== -1;
+      return upperSearchValue && filterVal.toUpperCase().indexOf(upperSearchValue) !== -1;
     }
 
     return false;
@@ -167,29 +173,28 @@ class BasePopup extends React.Component {
   renderNotFound = () => {
     const { prefixCls, notFoundContent } = this.props;
 
-    return (
-      <span className={`${prefixCls}-not-found`}>
-        {notFoundContent}
-      </span>
-    );
+    return <span className={`${prefixCls}-not-found`}>{notFoundContent}</span>;
   };
 
   render() {
     const { keyList, expandedKeyList, loadedKeys } = this.state;
     const {
       prefixCls,
-      treeNodes, filteredTreeNodes,
-      treeIcon, treeLine, treeCheckable, treeCheckStrictly, multiple,
+      treeNodes,
+      filteredTreeNodes,
+      treeIcon,
+      treeLine,
+      treeCheckable,
+      treeCheckStrictly,
+      multiple,
       ariaId,
       renderSearch,
       switcherIcon,
       searchHalfCheckedKeys,
     } = this.props;
-    const { rcTreeSelect: {
-      onPopupKeyDown,
-      onTreeNodeSelect,
-      onTreeNodeCheck,
-    } } = this.context;
+    const {
+      rcTreeSelect: { onPopupKeyDown, onTreeNodeSelect, onTreeNodeCheck },
+    } = this.context;
 
     const loadData = this.getLoadData();
 
@@ -230,6 +235,7 @@ class BasePopup extends React.Component {
     } else {
       $tree = (
         <Tree
+          ref={this.treeRef}
           prefixCls={`${prefixCls}-tree`}
           showIcon={treeIcon}
           showLine={treeLine}
@@ -254,12 +260,7 @@ class BasePopup extends React.Component {
     }
 
     return (
-      <div
-        role="listbox"
-        id={ariaId}
-        onKeyDown={onPopupKeyDown}
-        tabIndex={-1}
-      >
+      <div role="listbox" id={ariaId} onKeyDown={onPopupKeyDown} tabIndex={-1}>
         {renderSearch ? renderSearch() : null}
         {$tree}
       </div>
