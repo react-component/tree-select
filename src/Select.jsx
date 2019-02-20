@@ -435,7 +435,7 @@ class Select extends React.Component {
           const popupNode = findDOMNode(this.popup);
           const triggerContainer = findPopupContainer(popupNode, `${prefixCls}-dropdown`);
 
-          if (triggerContainer) {
+          if (domNode && triggerContainer) {
             scrollIntoView(domNode, triggerContainer, {
               onlyScrollIfNeeded: true,
               offsetTop: this.popup.searchRef.current.offsetHeight,
