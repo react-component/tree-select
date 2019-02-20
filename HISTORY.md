@@ -1,10 +1,13 @@
 # History
 ---
 
+## 2.6.0
+
+- selected value will always display in popup.
+
 ## 2.5.0
 
 - `notFoundContent` type change to `PropTypes.node`
-
 
 ## 2.4.0
 
