@@ -67,7 +67,7 @@
     "pre-commit": "1.x",
     "rc-dialog": "^7.0.0",
     "rc-form": "^2.4.2",
-    "rc-select": "^8.8.3",
+    "rc-select": "^9.0.2",
     "rc-tools": "^9.3.5",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
