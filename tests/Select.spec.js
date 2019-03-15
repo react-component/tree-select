@@ -66,6 +66,10 @@ describe('TreeSelect.basic', () => {
       expect(wrapper).toMatchSnapshot();
     });
 
+    it('not crash if no children', () => {
+      render(<TreeSelect open />);
+    });
+
     it('renders disabled correctly', () => {
       const wrapper = render(<TreeSelect disabled treeData={treeData} />);
       expect(wrapper).toMatchSnapshot();

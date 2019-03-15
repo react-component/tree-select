@@ -223,7 +223,7 @@ class BasePopup extends React.Component {
       } else {
         $notFound = this.renderNotFound();
       }
-    } else if (!treeNodes.length) {
+    } else if (!treeNodes || !treeNodes.length) {
       $notFound = this.renderNotFound();
     } else {
       $treeNodes = treeNodes;
