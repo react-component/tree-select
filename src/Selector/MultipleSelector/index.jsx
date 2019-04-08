@@ -91,6 +91,7 @@ class MultipleSelector extends React.Component {
       labelInValue,
       maxTagCount,
       maxTagPlaceholder,
+      showSearch,
     } = this.props;
     const {
       rcTreeSelect: { onMultipleSelectorRemove },
@@ -137,11 +138,14 @@ class MultipleSelector extends React.Component {
       selectedValueNodes.push(restNodeSelect);
     }
 
-    selectedValueNodes.push(
-      <li className={`${prefixCls}-search ${prefixCls}-search--inline`} key="__input">
-        <SearchInput {...this.props} ref={this.inputRef} needAlign />
-      </li>,
-    );
+    if (showSearch !== false) {
+      selectedValueNodes.push(
+        <li className={`${prefixCls}-search ${prefixCls}-search--inline`} key="__input">
+          <SearchInput {...this.props} ref={this.inputRef} needAlign />
+        </li>,
+      );
+    }
+
     const className = `${prefixCls}-selection__rendered`;
     if (choiceTransitionName) {
       return (
