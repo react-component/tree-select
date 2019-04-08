@@ -1,5 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TreeSelect.multiple can hide search box by showSearch = false 1`] = `
+<span
+  aria-haspopup="listbox"
+  class="rc-tree-select rc-tree-select-enabled"
+  role="combobox"
+  tabindex="-1"
+>
+  <span
+    class="rc-tree-select-selection rc-tree-select-selection--multiple"
+  >
+    <ul
+      class="rc-tree-select-selection__rendered"
+      role="menubar"
+    />
+  </span>
+</span>
+`;
+
 exports[`TreeSelect.multiple maxTagCount illegal 1`] = `
 <span
   class="rc-tree-select-selection rc-tree-select-selection--multiple"

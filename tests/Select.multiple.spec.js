@@ -257,7 +257,7 @@ describe('TreeSelect.multiple', () => {
     const onChange = jest.fn();
 
     const wrapper = mount(
-      <TreeSelect showSearch value={['leaf1']} multiple onChange={onChange}>
+      <TreeSelect value={['leaf1']} multiple onChange={onChange}>
         <TreeNode value="parent 1" title="parent 1" key="0-1">
           <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
             <TreeNode value="leaf1" title="my leaf" key="random" />
@@ -286,5 +286,11 @@ describe('TreeSelect.multiple', () => {
     );
 
     expect(wrapper.find(Selection).length).toEqual(1);
+  });
+
+  it('can hide search box by showSearch = false', () => {
+    const wrapper = render(<TreeSelect multiple showSearch={false} />);
+
+    expect(wrapper).toMatchSnapshot();
   });
 });
