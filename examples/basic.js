@@ -169,9 +169,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/_react-dom@16.8.6@react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var rc_dialog_assets_index_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rc-dialog/assets/index.css */ "./node_modules/_rc-dialog@7.3.0@rc-dialog/assets/index.css");
+/* harmony import */ var rc_dialog_assets_index_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rc-dialog/assets/index.css */ "./node_modules/_rc-dialog@7.3.1@rc-dialog/assets/index.css");
 /* harmony import */ var rc_dialog_assets_index_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(rc_dialog_assets_index_css__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var rc_dialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rc-dialog */ "./node_modules/_rc-dialog@7.3.0@rc-dialog/es/DialogWrap.js");
+/* harmony import */ var rc_dialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rc-dialog */ "./node_modules/_rc-dialog@7.3.1@rc-dialog/es/DialogWrap.js");
 /* harmony import */ var rc_tree_select__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rc-tree-select */ "./index.js");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./util */ "./examples/util.js");
 /* harmony import */ var _demo_less__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./demo.less */ "./examples/demo.less");
@@ -823,9 +823,9 @@ react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_
 
 /***/ }),
 
-/***/ "./node_modules/_rc-dialog@7.3.0@rc-dialog/es/Dialog.js":
+/***/ "./node_modules/_rc-dialog@7.3.1@rc-dialog/es/Dialog.js":
 /*!**************************************************************!*\
-  !*** ./node_modules/_rc-dialog@7.3.0@rc-dialog/es/Dialog.js ***!
+  !*** ./node_modules/_rc-dialog@7.3.1@rc-dialog/es/Dialog.js ***!
   \**************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -847,7 +847,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rc-util/es/KeyCode */ "./node_modules/_rc-util@4.6.0@rc-util/es/KeyCode.js");
 /* harmony import */ var rc_util_es_Dom_contains__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rc-util/es/Dom/contains */ "./node_modules/_rc-util@4.6.0@rc-util/es/Dom/contains.js");
 /* harmony import */ var rc_animate__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rc-animate */ "./node_modules/_rc-animate@2.6.0@rc-animate/es/Animate.js");
-/* harmony import */ var _LazyRenderBox__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./LazyRenderBox */ "./node_modules/_rc-dialog@7.3.0@rc-dialog/es/LazyRenderBox.js");
+/* harmony import */ var _LazyRenderBox__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./LazyRenderBox */ "./node_modules/_rc-dialog@7.3.1@rc-dialog/es/LazyRenderBox.js");
 /* harmony import */ var rc_util_es_getScrollBarSize__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rc-util/es/getScrollBarSize */ "./node_modules/_rc-util@4.6.0@rc-util/es/getScrollBarSize.js");
 
 
@@ -917,12 +917,22 @@ var Dialog = function (_React$Component) {
                 afterClose();
             }
         };
+        _this.onDialogMouseDown = function () {
+            _this.dialogMouseDown = true;
+        };
+        _this.onMaskMouseUp = function () {
+            if (_this.dialogMouseDown) {
+                _this.timeoutId = setTimeout(function () {
+                    _this.dialogMouseDown = false;
+                }, 0);
+            }
+        };
         _this.onMaskClick = function (e) {
             // android trigger click on open (fastclick??)
             if (Date.now() - _this.openTime < 300) {
                 return;
             }
-            if (e.target === e.currentTarget) {
+            if (e.target === e.currentTarget && !_this.dialogMouseDown) {
                 _this.close(e);
             }
         };
@@ -974,7 +984,7 @@ var Dialog = function (_React$Component) {
             var style = babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, props.style, dest);
             var sentinelStyle = { width: 0, height: 0, overflow: 'hidden' };
             var transitionName = _this.getTransitionName();
-            var dialogElement = react__WEBPACK_IMPORTED_MODULE_4__["createElement"](_LazyRenderBox__WEBPACK_IMPORTED_MODULE_9__["default"], { key: "dialog-element", role: "document", ref: _this.saveRef('dialog'), style: style, className: prefixCls + ' ' + (props.className || ''), visible: props.visible }, react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", { tabIndex: 0, ref: _this.saveRef('sentinelStart'), style: sentinelStyle }, "sentinelStart"), react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", { className: prefixCls + '-content' }, closer, header, react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({ className: prefixCls + '-body', style: props.bodyStyle, ref: _this.saveRef('body') }, props.bodyProps), props.children), footer), react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", { tabIndex: 0, ref: _this.saveRef('sentinelEnd'), style: sentinelStyle }, "sentinelEnd"));
+            var dialogElement = react__WEBPACK_IMPORTED_MODULE_4__["createElement"](_LazyRenderBox__WEBPACK_IMPORTED_MODULE_9__["default"], { key: "dialog-element", role: "document", ref: _this.saveRef('dialog'), style: style, className: prefixCls + ' ' + (props.className || ''), visible: props.visible, onMouseDown: _this.onDialogMouseDown }, react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", { tabIndex: 0, ref: _this.saveRef('sentinelStart'), style: sentinelStyle }, "sentinelStart"), react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", { className: prefixCls + '-content' }, closer, header, react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({ className: prefixCls + '-body', style: props.bodyStyle, ref: _this.saveRef('body') }, props.bodyProps), props.children), footer), react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", { tabIndex: 0, ref: _this.saveRef('sentinelEnd'), style: sentinelStyle }, "sentinelEnd"));
             return react__WEBPACK_IMPORTED_MODULE_4__["createElement"](rc_animate__WEBPACK_IMPORTED_MODULE_8__["default"], { key: "dialog", showProp: "visible", onLeave: _this.onAnimateLeave, transitionName: transitionName, component: "", transitionAppear: true }, props.visible || !props.destroyOnClose ? dialogElement : null);
         };
         _this.getZIndexStyle = function () {
@@ -1134,6 +1144,7 @@ var Dialog = function (_React$Component) {
         if (this.props.visible || this.inTransition) {
             this.removeScrollingEffect();
         }
+        clearTimeout(this.timeoutId);
     };
 
     Dialog.prototype.tryFocus = function tryFocus() {
@@ -1154,7 +1165,7 @@ var Dialog = function (_React$Component) {
         if (props.visible) {
             style.display = null;
         }
-        return react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", null, this.getMaskElement(), react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({ tabIndex: -1, onKeyDown: this.onKeyDown, className: prefixCls + '-wrap ' + (props.wrapClassName || ''), ref: this.saveRef('wrap'), onClick: maskClosable ? this.onMaskClick : undefined, role: "dialog", "aria-labelledby": props.title ? this.titleId : null, style: style }, props.wrapProps), this.getDialogElement()));
+        return react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", null, this.getMaskElement(), react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({ tabIndex: -1, onKeyDown: this.onKeyDown, className: prefixCls + '-wrap ' + (props.wrapClassName || ''), ref: this.saveRef('wrap'), onClick: maskClosable ? this.onMaskClick : null, onMouseUp: maskClosable ? this.onMaskMouseUp : null, role: "dialog", "aria-labelledby": props.title ? this.titleId : null, style: style }, props.wrapProps), this.getDialogElement()));
     };
 
     return Dialog;
@@ -1175,9 +1186,9 @@ Dialog.defaultProps = {
 
 /***/ }),
 
-/***/ "./node_modules/_rc-dialog@7.3.0@rc-dialog/es/DialogWrap.js":
+/***/ "./node_modules/_rc-dialog@7.3.1@rc-dialog/es/DialogWrap.js":
 /*!******************************************************************!*\
-  !*** ./node_modules/_rc-dialog@7.3.0@rc-dialog/es/DialogWrap.js ***!
+  !*** ./node_modules/_rc-dialog@7.3.1@rc-dialog/es/DialogWrap.js ***!
   \******************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -1196,7 +1207,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-dom */ "./node_modules/_react-dom@16.8.6@react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _Dialog__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Dialog */ "./node_modules/_rc-dialog@7.3.0@rc-dialog/es/Dialog.js");
+/* harmony import */ var _Dialog__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Dialog */ "./node_modules/_rc-dialog@7.3.1@rc-dialog/es/Dialog.js");
 /* harmony import */ var rc_util_es_ContainerRender__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rc-util/es/ContainerRender */ "./node_modules/_rc-util@4.6.0@rc-util/es/ContainerRender.js");
 /* harmony import */ var rc_util_es_Portal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rc-util/es/Portal */ "./node_modules/_rc-util@4.6.0@rc-util/es/Portal.js");
 
@@ -1303,9 +1314,9 @@ DialogWrap.defaultProps = {
 
 /***/ }),
 
-/***/ "./node_modules/_rc-dialog@7.3.0@rc-dialog/es/LazyRenderBox.js":
+/***/ "./node_modules/_rc-dialog@7.3.1@rc-dialog/es/LazyRenderBox.js":
 /*!*********************************************************************!*\
-  !*** ./node_modules/_rc-dialog@7.3.0@rc-dialog/es/LazyRenderBox.js ***!
+  !*** ./node_modules/_rc-dialog@7.3.1@rc-dialog/es/LazyRenderBox.js ***!
   \*********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {

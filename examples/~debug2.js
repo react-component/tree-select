@@ -56,7 +56,7 @@
 /******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 	// Promise = chunk loading, 0 = chunk loaded
 /******/ 	var installedChunks = {
-/******/ 		"examples/controlled": 0
+/******/ 		"examples/~debug2": 0
 /******/ 	};
 /******/
 /******/ 	var deferredModules = [];
@@ -147,17 +147,17 @@
 /******/
 /******/
 /******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push([2,"common"]);
+/******/ 	deferredModules.push([9,"common"]);
 /******/ 	// run deferred modules when ready
 /******/ 	return checkDeferredModules();
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./examples/controlled.js":
-/*!********************************!*\
-  !*** ./examples/controlled.js ***!
-  \********************************/
+/***/ "./examples/~debug2.js":
+/*!*****************************!*\
+  !*** ./examples/~debug2.js ***!
+  \*****************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -192,13 +192,55 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-/* eslint react/no-multi-comp:0, no-console:0, no-alert: 0 */
+/* eslint-disable */
 
 
 
 
 
 
+var treeData = [{
+  "key": "P001",
+  "title": "P001",
+  "value": 111,
+  "children": [{
+    "key": "0020",
+    "title": "0020",
+    "value": 222,
+    "children": [{
+      "key": "9459",
+      "title": "9459",
+      "value": 333
+    }]
+  }]
+}, {
+  "key": "P002",
+  "title": "P002",
+  "value": 444,
+  "children": [{
+    "key": "0021",
+    "title": "0021",
+    "value": 555,
+    "children": [{
+      "key": "9458",
+      "title": "9458",
+      "value": 666
+    }, {
+      "key": 777,
+      "title": 777,
+      "value": 777
+    }, // {"key": 888, "title": 888, "value": 888},
+    {
+      "key": '888',
+      "title": 'string 888',
+      "value": '888'
+    }]
+  }]
+}];
+
+function onChange(valueList) {
+  console.log('onChange:', valueList);
+}
 
 var Demo =
 /*#__PURE__*/
@@ -219,18 +261,14 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Demo)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "state", {
-      treeExpandedKeys: []
+      value: []
     });
 
-    _defineProperty(_assertThisInitialized(_this), "onTreeExpand", function (treeExpandedKeys) {
-      _this.setState({
-        treeExpandedKeys: treeExpandedKeys
-      });
-    });
+    _defineProperty(_assertThisInitialized(_this), "onChange", function (value) {
+      console.log('onChange:', value);
 
-    _defineProperty(_assertThisInitialized(_this), "treeExpandedKeys", function () {
       _this.setState({
-        treeExpandedKeys: ['000', '0-1-0']
+        value: value
       });
     });
 
@@ -240,74 +278,16 @@ function (_React$Component) {
   _createClass(Demo, [{
     key: "render",
     value: function render() {
-      var treeExpandedKeys = this.state.treeExpandedKeys;
-      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", null, "Conrolled treeExpandedKeys"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(rc_tree_select__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(rc_tree_select__WEBPACK_IMPORTED_MODULE_4__["default"], {
         style: {
-          width: 200
+          width: 500
         },
-        dropdownStyle: {
-          maxHeight: 200,
-          overflow: 'auto'
-        },
-        treeExpandedKeys: treeExpandedKeys,
-        onTreeExpand: this.onTreeExpand
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(rc_tree_select__WEBPACK_IMPORTED_MODULE_4__["TreeNode"], {
-        value: "",
-        title: "parent 1",
-        key: "000"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(rc_tree_select__WEBPACK_IMPORTED_MODULE_4__["TreeNode"], {
-        value: "parent 1-0",
-        title: "parent 1-0",
-        key: "0-1-0"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(rc_tree_select__WEBPACK_IMPORTED_MODULE_4__["TreeNode"], {
-        value: "leaf1",
-        title: "my leaf",
-        key: "random"
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(rc_tree_select__WEBPACK_IMPORTED_MODULE_4__["TreeNode"], {
-        value: "leaf2",
-        title: "your leaf",
-        key: "random1",
-        disabled: true
-      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(rc_tree_select__WEBPACK_IMPORTED_MODULE_4__["TreeNode"], {
-        value: "parent 1-1",
-        title: "parent 1-1",
-        key: "0-1-1"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(rc_tree_select__WEBPACK_IMPORTED_MODULE_4__["TreeNode"], {
-        value: "sss",
-        title: react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
-          style: {
-            color: 'red'
-          }
-        }, "sss"),
-        key: "random3"
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(rc_tree_select__WEBPACK_IMPORTED_MODULE_4__["TreeNode"], {
-        value: "same value1",
-        title: "same txtle",
-        key: "0-1-1-1"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(rc_tree_select__WEBPACK_IMPORTED_MODULE_4__["TreeNode"], {
-        value: "same value10",
-        title: "same titlexd",
-        key: "0-1-1-1-0",
-        style: {
-          color: 'red',
-          background: 'green'
-        }
-      })))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(rc_tree_select__WEBPACK_IMPORTED_MODULE_4__["TreeNode"], {
-        value: "same value2",
-        title: "same title",
-        key: "0-2"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(rc_tree_select__WEBPACK_IMPORTED_MODULE_4__["TreeNode"], {
-        value: "2same value",
-        title: "2same title",
-        key: "0-2-0"
-      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(rc_tree_select__WEBPACK_IMPORTED_MODULE_4__["TreeNode"], {
-        value: "same value3",
-        title: "same title",
-        key: "0-3"
-      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-        type: "button",
-        onClick: this.treeExpandedKeys
-      }, "Set treeExpandedKeys"));
+        treeCheckable: true,
+        treeDefaultExpandAll: true,
+        treeData: treeData,
+        value: this.state.value,
+        onChange: this.onChange
+      });
     }
   }]);
 
@@ -318,17 +298,17 @@ react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_
 
 /***/ }),
 
-/***/ 2:
-/*!**************************************!*\
-  !*** multi ./examples/controlled.js ***!
-  \**************************************/
+/***/ 9:
+/*!***********************************!*\
+  !*** multi ./examples/~debug2.js ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! ./examples/controlled.js */"./examples/controlled.js");
+module.exports = __webpack_require__(/*! ./examples/~debug2.js */"./examples/~debug2.js");
 
 
 /***/ })
 
 /******/ });
-//# sourceMappingURL=controlled.js.map
+//# sourceMappingURL=~debug2.js.map

@@ -9341,9 +9341,9 @@ function getTransitionName(transitionName, transitionType) {
 
 /***/ }),
 
-/***/ "./node_modules/_rc-dialog@7.3.0@rc-dialog/assets/index.css":
+/***/ "./node_modules/_rc-dialog@7.3.1@rc-dialog/assets/index.css":
 /*!******************************************************************!*\
-  !*** ./node_modules/_rc-dialog@7.3.0@rc-dialog/assets/index.css ***!
+  !*** ./node_modules/_rc-dialog@7.3.1@rc-dialog/assets/index.css ***!
   \******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -41201,7 +41201,8 @@ function (_React$Component) {
           onChoiceAnimationLeave = _this$props2.onChoiceAnimationLeave,
           labelInValue = _this$props2.labelInValue,
           maxTagCount = _this$props2.maxTagCount,
-          maxTagPlaceholder = _this$props2.maxTagPlaceholder;
+          maxTagPlaceholder = _this$props2.maxTagPlaceholder,
+          showSearch = _this$props2.showSearch;
       var onMultipleSelectorRemove = _this.context.rcTreeSelect.onMultipleSelectorRemove; // Check if `maxTagCount` is set
 
       var myValueList = selectorValueList;
@@ -41243,13 +41244,16 @@ function (_React$Component) {
         selectedValueNodes.push(restNodeSelect);
       }
 
-      selectedValueNodes.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-        className: "".concat(prefixCls, "-search ").concat(prefixCls, "-search--inline"),
-        key: "__input"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SearchInput__WEBPACK_IMPORTED_MODULE_4__["default"], _extends({}, _this.props, {
-        ref: _this.inputRef,
-        needAlign: true
-      }))));
+      if (showSearch !== false) {
+        selectedValueNodes.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "".concat(prefixCls, "-search ").concat(prefixCls, "-search--inline"),
+          key: "__input"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SearchInput__WEBPACK_IMPORTED_MODULE_4__["default"], _extends({}, _this.props, {
+          ref: _this.inputRef,
+          needAlign: true
+        }))));
+      }
+
       var className = "".concat(prefixCls, "-selection__rendered");
 
       if (choiceTransitionName) {
