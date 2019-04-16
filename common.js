@@ -7069,7 +7069,7 @@ module.exports.polyfill = function(object) {
   object.cancelAnimationFrame = caf
 }
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../_webpack@4.29.6@webpack/buildin/global.js */ "./node_modules/_webpack@4.29.6@webpack/buildin/global.js")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../_webpack@4.30.0@webpack/buildin/global.js */ "./node_modules/_webpack@4.30.0@webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -38448,7 +38448,7 @@ exports.unstable_getFirstCallbackNode = unstable_getFirstCallbackNode;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../_webpack@4.29.6@webpack/buildin/global.js */ "./node_modules/_webpack@4.29.6@webpack/buildin/global.js")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../_webpack@4.30.0@webpack/buildin/global.js */ "./node_modules/_webpack@4.30.0@webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -38689,7 +38689,7 @@ module.exports = warning;
 
 /***/ }),
 
-/***/ "./node_modules/_webpack@4.29.6@webpack/buildin/global.js":
+/***/ "./node_modules/_webpack@4.30.0@webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
   \***********************************/
@@ -40782,6 +40782,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+/* eslint-disable import/no-cycle  */
 
 
 
@@ -41202,7 +41203,7 @@ function (_React$Component) {
           labelInValue = _this$props2.labelInValue,
           maxTagCount = _this$props2.maxTagCount,
           maxTagPlaceholder = _this$props2.maxTagPlaceholder,
-          showSearch = _this$props2.showSearch;
+          valueEntities = _this$props2.valueEntities;
       var onMultipleSelectorRemove = _this.context.rcTreeSelect.onMultipleSelectorRemove; // Check if `maxTagCount` is set
 
       var myValueList = selectorValueList;
@@ -41215,11 +41216,17 @@ function (_React$Component) {
       var selectedValueNodes = myValueList.map(function (_ref) {
         var label = _ref.label,
             value = _ref.value;
+
+        var _ref2 = (valueEntities[value] || {}).node || {},
+            _ref2$props = _ref2.props;
+
+        _ref2$props = _ref2$props === void 0 ? {} : _ref2$props;
+        var treeNodeDisabled = _ref2$props.disabled;
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Selection__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({}, _this.props, {
           key: value || TREE_SELECT_EMPTY_VALUE_KEY,
           label: label,
           value: value,
-          onRemove: onMultipleSelectorRemove
+          onRemove: treeNodeDisabled ? null : onMultipleSelectorRemove
         }));
       }); // Rest node count
 
@@ -41230,8 +41237,8 @@ function (_React$Component) {
           content = maxTagPlaceholder;
         } else if (typeof maxTagPlaceholder === 'function') {
           var restValueList = selectorValueList.slice(maxTagCount);
-          content = maxTagPlaceholder(labelInValue ? restValueList : restValueList.map(function (_ref2) {
-            var value = _ref2.value;
+          content = maxTagPlaceholder(labelInValue ? restValueList : restValueList.map(function (_ref3) {
+            var value = _ref3.value;
             return value;
           }));
         }
@@ -41244,16 +41251,13 @@ function (_React$Component) {
         selectedValueNodes.push(restNodeSelect);
       }
 
-      if (showSearch !== false) {
-        selectedValueNodes.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-          className: "".concat(prefixCls, "-search ").concat(prefixCls, "-search--inline"),
-          key: "__input"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SearchInput__WEBPACK_IMPORTED_MODULE_4__["default"], _extends({}, _this.props, {
-          ref: _this.inputRef,
-          needAlign: true
-        }))));
-      }
-
+      selectedValueNodes.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+        className: "".concat(prefixCls, "-search ").concat(prefixCls, "-search--inline"),
+        key: "__input"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SearchInput__WEBPACK_IMPORTED_MODULE_4__["default"], _extends({}, _this.props, {
+        ref: _this.inputRef,
+        needAlign: true
+      }))));
       var className = "".concat(prefixCls, "-selection__rendered");
 
       if (choiceTransitionName) {
@@ -41462,6 +41466,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! prop-types */ "./node_modules/_prop-types@15.7.2@prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.js");
+/* eslint-disable import/no-cycle  */
 
 
 var internalValProp = prop_types__WEBPACK_IMPORTED_MODULE_0___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_0___default.a.string, prop_types__WEBPACK_IMPORTED_MODULE_0___default.a.number]);
@@ -41570,6 +41575,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+/* eslint-disable import/no-cycle  */
 
 
 
