@@ -7,7 +7,6 @@ import {
 } from 'rc-tree/lib/util';
 import toNodeArray from 'rc-util/lib/Children/toArray';
 import { hasClass } from 'rc-util/lib/Dom/class';
-import SelectNode from './SelectNode';
 import { SHOW_CHILD, SHOW_PARENT } from './strategies';
 
 let warnDeprecatedLabel = false;
@@ -204,8 +203,10 @@ export function cleanEntity({ node, pos, children }) {
  * [Legacy] Since `Tree` use `key` as map but `key` will changed by React,
  * we have to convert `treeNodes > data > treeNodes` to keep the key.
  * Such performance hungry!
+ *
+ * We pass `Component` as argument is to fix eslint issue.
  */
-export function getFilterTree(treeNodes, searchValue, filterFunc, valueEntities) {
+export function getFilterTree(treeNodes, searchValue, filterFunc, valueEntities, Component) {
   if (!searchValue) {
     return null;
   }
@@ -224,9 +225,9 @@ export function getFilterTree(treeNodes, searchValue, filterFunc, valueEntities)
 
     if (children.length || match) {
       return (
-        <SelectNode {...node.props} key={valueEntities[node.props.value].key}>
+        <Component {...node.props} key={valueEntities[node.props.value].key}>
           {children}
-        </SelectNode>
+        </Component>
       );
     }
 

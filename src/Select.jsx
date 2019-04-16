@@ -375,6 +375,7 @@ class Select extends React.Component {
         searchValue,
         filterTreeNodeFn,
         newState.valueEntities || prevState.valueEntities,
+        SelectNode,
       );
     }
 
@@ -808,7 +809,13 @@ class Select extends React.Component {
       }
 
       this.setState({
-        filteredTreeNodes: getFilterTree(treeNodes, value, filterTreeNodeFn, valueEntities),
+        filteredTreeNodes: getFilterTree(
+          treeNodes,
+          value,
+          filterTreeNodeFn,
+          valueEntities,
+          SelectNode,
+        ),
       });
     }
   };
