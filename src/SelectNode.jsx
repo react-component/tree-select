@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle  */
 import React from 'react';
 import { TreeNode } from 'rc-tree';
 import { valueProp } from './propTypes';
@@ -7,9 +8,7 @@ import { valueProp } from './propTypes';
  * Let's use SelectNode instead of TreeNode
  * since TreeNode is so confuse here.
  */
-const SelectNode = (props) => (
-  <TreeNode {...props} />
-);
+const SelectNode = props => <TreeNode {...props} />;
 
 SelectNode.propTypes = {
   ...TreeNode.propTypes,
