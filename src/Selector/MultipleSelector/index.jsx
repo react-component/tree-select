@@ -91,6 +91,7 @@ class MultipleSelector extends React.Component {
       labelInValue,
       maxTagCount,
       maxTagPlaceholder,
+      valueEntities,
     } = this.props;
     const {
       rcTreeSelect: { onMultipleSelectorRemove },
@@ -103,15 +104,20 @@ class MultipleSelector extends React.Component {
     }
 
     // Selector node list
-    const selectedValueNodes = myValueList.map(({ label, value }) => (
-      <Selection
-        {...this.props}
-        key={value || TREE_SELECT_EMPTY_VALUE_KEY}
-        label={label}
-        value={value}
-        onRemove={onMultipleSelectorRemove}
-      />
-    ));
+    const selectedValueNodes = myValueList.map(({ label, value }) => {
+      const { props: { disabled: treeNodeDisabled } = {} } =
+        (valueEntities[value] || {}).node || {};
+
+      return (
+        <Selection
+          {...this.props}
+          key={value || TREE_SELECT_EMPTY_VALUE_KEY}
+          label={label}
+          value={value}
+          onRemove={treeNodeDisabled ? null : onMultipleSelectorRemove}
+        />
+      );
+    });
 
     // Rest node count
     if (maxTagCount >= 0 && maxTagCount < selectorValueList.length) {
