@@ -680,4 +680,21 @@ describe('TreeSelect.checkable', () => {
       { label: 'Child Node1', value: '0-0-0' },
     ]);
   });
+
+  it('can not remove when checked node is disabled', () => {
+    const treeData = [
+      {
+        title: 'Node1',
+        value: '0-0',
+        key: '0-0',
+        disabled: true,
+      },
+    ];
+
+    const wrapper = mount(<TreeSelect defaultValue={['0-0']} treeData={treeData} treeCheckable />);
+
+    const choiceNode = wrapper.find('.rc-tree-select-selection__choice');
+    expect(choiceNode.length).toBeTruthy();
+    expect(choiceNode.find('.rc-tree-select-selection__choice__remove').length).toBeFalsy();
+  });
 });
