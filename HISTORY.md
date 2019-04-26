@@ -1,6 +1,10 @@
 # History
 ---
 
+## 2.8.0 / 2019-04-26
+
+- Upgrade `rc-tree` deps version to `2.0.0`.
+
 ## 2.6.0
 
 - selected value will always display in popup.
