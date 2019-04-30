@@ -873,6 +873,7 @@ exports[`TreeSelect.props choiceTransitionName 1`] = `
     >
       <ul
         class="rc-tree-select-selection__rendered"
+        role="menubar"
       >
         <li
           class="rc-tree-select-search rc-tree-select-search--inline"
@@ -915,9 +916,10 @@ exports[`TreeSelect.props choiceTransitionName 2`] = `
     >
       <ul
         class="rc-tree-select-selection__rendered"
+        role="menubar"
       >
         <li
-          class="rc-tree-select-selection__choice test-choiceTransitionName-enter"
+          class="rc-tree-select-selection__choice test-choiceTransitionName-appear test-choiceTransitionName"
           role="menuitem"
           style="user-select: none;"
           title="Title 0"
