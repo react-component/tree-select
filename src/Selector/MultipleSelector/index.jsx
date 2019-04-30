@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Animate from 'rc-animate';
+import CSSMotionList from 'rc-animate/lib/CSSMotionList';
 
 import generateSelector, { selectorPropTypes } from '../../Base/BaseSelector';
 import SearchInput from '../../SearchInput';
-import Selection from './Selection';
 import { createRef } from '../../util';
+import Selection from './Selection';
+import SelectorList from './SelectorList';
 
 const TREE_SELECT_EMPTY_VALUE_KEY = 'RC_TREE_SELECT_EMPTY_VALUE_KEY';
 
@@ -23,7 +24,7 @@ class MultipleSelector extends React.Component {
     searchValue: PropTypes.string,
     labelInValue: PropTypes.bool,
     maxTagCount: PropTypes.number,
-    maxTagPlaceholder: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+    maxTagPlaceholder: PropTypes.oneOfType([ PropTypes.node, PropTypes.func ]),
 
     onChoiceAnimationLeave: PropTypes.func,
   };
@@ -94,9 +95,7 @@ class MultipleSelector extends React.Component {
       showSearch,
       valueEntities,
     } = this.props;
-    const {
-      rcTreeSelect: { onMultipleSelectorRemove },
-    } = this.context;
+    const { rcTreeSelect: { onMultipleSelectorRemove } } = this.context;
 
     // Check if `maxTagCount` is set
     let myValueList = selectorValueList;
@@ -104,72 +103,80 @@ class MultipleSelector extends React.Component {
       myValueList = selectorValueList.slice(0, maxTagCount);
     }
 
-    // Selector node list
-    const selectedValueNodes = myValueList.map(({ label, value }) => {
-      const { props: { disabled: treeNodeDisabled } = {} } =
-        (valueEntities[value] || {}).node || {};
-
-      return (
-        <Selection
-          {...this.props}
-          key={value || TREE_SELECT_EMPTY_VALUE_KEY}
-          label={label}
-          value={value}
-          onRemove={treeNodeDisabled ? null : onMultipleSelectorRemove}
-        />
-      );
-    });
-
-    // Rest node count
-    if (maxTagCount >= 0 && maxTagCount < selectorValueList.length) {
-      let content = `+ ${selectorValueList.length - maxTagCount} ...`;
-      if (typeof maxTagPlaceholder === 'string') {
-        content = maxTagPlaceholder;
-      } else if (typeof maxTagPlaceholder === 'function') {
-        const restValueList = selectorValueList.slice(maxTagCount);
-        content = maxTagPlaceholder(
-          labelInValue ? restValueList : restValueList.map(({ value }) => value),
-        );
-      }
-
-      const restNodeSelect = (
-        <Selection
-          {...this.props}
-          key="rc-tree-select-internal-max-tag-counter"
-          label={content}
-          value={null}
-        />
-      );
-
-      selectedValueNodes.push(restNodeSelect);
-    }
-
-    if (showSearch !== false) {
-      selectedValueNodes.push(
-        <li className={`${prefixCls}-search ${prefixCls}-search--inline`} key="__input">
-          <SearchInput {...this.props} ref={this.inputRef} needAlign />
-        </li>,
-      );
-    }
-
-    const className = `${prefixCls}-selection__rendered`;
-    if (choiceTransitionName) {
-      return (
-        <Animate
-          className={className}
-          component="ul"
-          transitionName={choiceTransitionName}
-          onLeave={onChoiceAnimationLeave}
-        >
-          {selectedValueNodes}
-        </Animate>
-      );
-    }
+    // Collect all the nodes in the input bar
     return (
-      <ul className={className} role="menubar">
-        {selectedValueNodes}
-      </ul>
+      <SelectorList
+        {...this.props}
+        onMultipleSelectorRemove={onMultipleSelectorRemove}
+        inputRef={this.inputRef}
+      />
     );
+
+    // const selectedValueNodes = myValueList.map(({ label, value }) => {
+    //   const { props: { disabled: treeNodeDisabled } = {} } =
+    //     (valueEntities[value] || {}).node || {};
+
+    //   return (
+    //     <Selection
+    //       {...this.props}
+    //       key={value || TREE_SELECT_EMPTY_VALUE_KEY}
+    //       label={label}
+    //       value={value}
+    //       onRemove={treeNodeDisabled ? null : onMultipleSelectorRemove}
+    //     />
+    //   );
+    // });
+
+    // // Rest node count
+    // if (maxTagCount >= 0 && maxTagCount < selectorValueList.length) {
+    //   let content = `+ ${selectorValueList.length - maxTagCount} ...`;
+    //   if (typeof maxTagPlaceholder === 'string') {
+    //     content = maxTagPlaceholder;
+    //   } else if (typeof maxTagPlaceholder === 'function') {
+    //     const restValueList = selectorValueList.slice(maxTagCount);
+    //     content = maxTagPlaceholder(
+    //       labelInValue ? restValueList : restValueList.map(({ value }) => value),
+    //     );
+    //   }
+
+    //   const restNodeSelect = (
+    //     <Selection
+    //       {...this.props}
+    //       key="rc-tree-select-internal-max-tag-counter"
+    //       label={content}
+    //       value={null}
+    //     />
+    //   );
+
+    //   selectedValueNodes.push(restNodeSelect);
+    // }
+
+    // if (showSearch !== false) {
+    //   selectedValueNodes.push(
+    //     <li className={`${prefixCls}-search ${prefixCls}-search--inline`} key="__input">
+    //       <SearchInput {...this.props} ref={this.inputRef} needAlign />
+    //     </li>,
+    //   );
+    // }
+
+    // const className = `${prefixCls}-selection__rendered`;
+    // if (choiceTransitionName) {
+    //   return (
+    //     <Animate
+    //       className={className}
+    //       component="ul"
+    //       transitionName={choiceTransitionName}
+    //       onLeave={onChoiceAnimationLeave}
+    //     >
+    //       {selectedValueNodes}
+    //     </Animate>
+    //   );
+    // }
+    // return (
+    //   <ul className={className} role="menubar">
+    //     {selectedValueNodes}
+    //   </ul>
+    // );
   };
 
   render() {
