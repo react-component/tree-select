@@ -32,7 +32,7 @@ describe('TreeSelect.multiple', () => {
     select(wrapper, 1);
     const result = wrapper.find('.rc-tree-select-selection__rendered');
     const choices = result.find('.rc-tree-select-selection__choice__content');
-    expect(result.is('ul')).toBe(true);
+    expect(result.last().is('ul')).toBe(true);
     expect(choices.at(0).prop('children')).toBe('label0');
     expect(choices.at(1).prop('children')).toBe('label1');
   });
