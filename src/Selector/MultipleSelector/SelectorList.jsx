@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CSSMotionList from 'rc-animate/lib/CSSMotionList';
 import Selection from './Selection';
 import SearchInput from '../../SearchInput';
@@ -7,7 +8,7 @@ const NODE_SELECTOR = 'selector';
 const NODE_SEARCH = 'search';
 const TREE_SELECT_EMPTY_VALUE_KEY = 'RC_TREE_SELECT_EMPTY_VALUE_KEY';
 
-const SelectorList = (props) => {
+const SelectorList = props => {
   const {
     selectorValueList,
     choiceTransitionName,
@@ -76,6 +77,8 @@ const SelectorList = (props) => {
       className={`${prefixCls}-selection__rendered`}
       component="ul"
       role="menubar"
+      motionName={choiceTransitionName}
+      onLeaveEnd={onChoiceAnimationLeave}
     >
       {({ type, label, value, disabled, className, style }) => {
         switch (type) {
@@ -83,6 +86,8 @@ const SelectorList = (props) => {
             return (
               <Selection
                 {...props}
+                className={className}
+                style={style}
                 key={value || TREE_SELECT_EMPTY_VALUE_KEY}
                 label={label}
                 value={value}
@@ -95,11 +100,27 @@ const SelectorList = (props) => {
                 <SearchInput {...props} ref={inputRef} needAlign />
               </li>
             );
+
+          default:
+            return null;
         }
-        return null;
       }}
     </CSSMotionList>
   );
+};
+
+SelectorList.propTypes = {
+  selectorValueList: PropTypes.array,
+  choiceTransitionName: PropTypes.string,
+  prefixCls: PropTypes.string,
+  onChoiceAnimationLeave: PropTypes.func,
+  labelInValue: PropTypes.bool,
+  showSearch: PropTypes.bool,
+  maxTagCount: PropTypes.number,
+  maxTagPlaceholder: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  valueEntities: PropTypes.object,
+  inputRef: PropTypes.func,
+  onMultipleSelectorRemove: PropTypes.func,
 };
 
 export default SelectorList;
