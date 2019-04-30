@@ -81,29 +81,24 @@ const SelectorList = props => {
       onLeaveEnd={onChoiceAnimationLeave}
     >
       {({ type, label, value, disabled, className, style }) => {
-        switch (type) {
-          case NODE_SELECTOR:
-            return (
-              <Selection
-                {...props}
-                className={className}
-                style={style}
-                key={value || TREE_SELECT_EMPTY_VALUE_KEY}
-                label={label}
-                value={value}
-                onRemove={disabled ? null : onMultipleSelectorRemove}
-              />
-            );
-          case NODE_SEARCH:
-            return (
-              <li className={`${prefixCls}-search ${prefixCls}-search--inline`}>
-                <SearchInput {...props} ref={inputRef} needAlign />
-              </li>
-            );
-
-          default:
-            return null;
+        if (type === NODE_SELECTOR) {
+          return (
+            <Selection
+              {...props}
+              className={className}
+              style={style}
+              key={value || TREE_SELECT_EMPTY_VALUE_KEY}
+              label={label}
+              value={value}
+              onRemove={disabled ? null : onMultipleSelectorRemove}
+            />
+          );
         }
+        return (
+          <li className={`${prefixCls}-search ${prefixCls}-search--inline`}>
+            <SearchInput {...props} ref={inputRef} needAlign />
+          </li>
+        );
       }}
     </CSSMotionList>
   );
