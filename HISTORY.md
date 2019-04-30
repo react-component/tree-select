@@ -1,6 +1,10 @@
 # History
 ---
 
+## 2.9.0 / 2019-04-30
+
+- Use CSSMotion of `rc-animate` to make motion pure.
+
 ## 2.8.0 / 2019-04-26
 
 - Upgrade `rc-tree` deps version to `2.0.0`.
