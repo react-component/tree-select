@@ -40874,7 +40874,9 @@ function (_React$Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "onChoiceAnimationLeave", function () {
-      _this.forcePopupAlign();
+      raf__WEBPACK_IMPORTED_MODULE_6___default()(function () {
+        _this.forcePopupAlign();
+      });
     });
 
     _defineProperty(_assertThisInitialized(_this), "setPopupRef", function (popup) {
