@@ -375,7 +375,7 @@ describe('TreeSelect.basic', () => {
   });
 
   describe('forceAlign', () => {
-    it('onChoiceAnimationLeave trigger', () => {
+    it('onChoiceAnimationLeave trigger', done => {
       const wrapper = mount(
         <TreeSelect open>
           <TreeNode title="0" value="0" />
@@ -384,9 +384,13 @@ describe('TreeSelect.basic', () => {
 
       const instance = wrapper.instance();
       instance.forcePopupAlign = jest.fn();
+
       instance.onChoiceAnimationLeave();
 
-      expect(instance.forcePopupAlign).toBeCalled();
+      raf(() => {
+        expect(instance.forcePopupAlign).toBeCalled();
+        done();
+      });
     });
   });
 

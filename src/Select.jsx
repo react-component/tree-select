@@ -832,7 +832,9 @@ class Select extends React.Component {
   };
 
   onChoiceAnimationLeave = () => {
-    this.forcePopupAlign();
+    raf(() => {
+      this.forcePopupAlign();
+    });
   };
 
   setPopupRef = popup => {
