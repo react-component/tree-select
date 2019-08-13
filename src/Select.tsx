@@ -19,7 +19,7 @@
  * In multiple mode, we should focus on the `input`
  */
 
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import KeyCode from 'rc-util/lib/KeyCode';
@@ -57,8 +57,84 @@ import {
 } from './util';
 import { valueProp } from './propTypes';
 import SelectNode from './SelectNode';
+import { DataNode, SimpleMode, Key, IconFunc, Value, InternalValue, Entity } from './interface';
 
-class Select extends React.Component {
+export interface SelectProps {
+  prefixCls?: string;
+  prefixAria?: string;
+  multiple?: boolean;
+  showArrow?: boolean;
+  open?: boolean;
+  value: Value;
+  autoFocus?: boolean;
+
+  defaultOpen?: boolean;
+  defaultValue: Value;
+
+  showSearch?: boolean;
+  placeholder?: React.ReactNode;
+  inputValue?: string; // [Legacy] Deprecated. Use `searchValue` instead.
+  searchValue?: string;
+  autoClearSearchValue?: boolean;
+  searchPlaceholder?: React.ReactNode; // [Legacy] Confuse with placeholder
+  disabled?: boolean;
+  children?: React.ReactNode;
+  labelInValue?: boolean;
+  maxTagCount?: number;
+  maxTagPlaceholder?: React.ReactNode | (() => React.ReactNode);
+  maxTagTextLength?: number;
+  showCheckedStrategy?: 'SHOW_ALL' | 'SHOW_PARENT' | 'SHOW_CHILD';
+
+  dropdownMatchSelectWidth?: boolean;
+  treeData?: DataNode[];
+  treeDataSimpleMode?: boolean | SimpleMode;
+  treeNodeFilterProp?: string;
+  treeNodeLabelProp?: string;
+  treeCheckable?: boolean | React.ReactNode;
+  treeCheckStrictly?: boolean;
+  treeIcon?: boolean;
+  treeLine?: boolean;
+  treeDefaultExpandAll?: boolean;
+  treeDefaultExpandedKeys?: Key[];
+  treeExpandedKeys?: Key[];
+  loadData?: () => Promise<void>;
+  filterTreeNode?: boolean | (() => boolean);
+
+  notFoundContent?: React.ReactNode;
+
+  onSearch?: () => void;
+  onSelect?: () => void;
+  onDeselect?: () => void;
+  onChange?: () => void;
+  onDropdownVisibleChange?: () => void;
+
+  onTreeExpand?: () => void;
+
+  inputIcon?: React.ReactNode | IconFunc;
+  clearIcon?: React.ReactNode | IconFunc;
+  removeIcon?: React.ReactNode | IconFunc;
+  switcherIcon?: React.ReactNode | IconFunc;
+}
+
+export interface SelectState {
+  prevProps?: SelectProps;
+
+  open: boolean;
+  valueList: InternalValue[];
+  searchHalfCheckedKeys: Key[];
+  missValueList: InternalValue[];
+  selectorValueList: InternalValue[];
+  valueEntities: Record<Key, Entity>;
+  keyEntities: Record<Key, Entity>;
+  posEntities: Record<string, Entity>;
+  searchValue: string;
+  init: boolean;
+  treeNodes: DataNode[];
+  filteredTreeNodes: React.ReactElement[];
+  focused: boolean;
+}
+
+class Select extends React.Component<SelectProps, SelectState> {
   static propTypes = {
     prefixCls: PropTypes.string,
     prefixAria: PropTypes.string,
@@ -144,6 +220,10 @@ class Select extends React.Component {
     notFoundContent: 'Not Found',
   };
 
+  selectorRef: React.Ref<any>;
+  selectTriggerRef: React.Ref<any>;
+  ariaId: string;
+
   constructor(props) {
     super(props);
 
@@ -189,7 +269,7 @@ class Select extends React.Component {
     };
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps: SelectProps, prevState: SelectState) {
     const { prevProps = {} } = prevState;
     const {
       treeCheckable,
@@ -198,7 +278,7 @@ class Select extends React.Component {
       treeNodeFilterProp,
       treeDataSimpleMode,
     } = nextProps;
-    const newState = {
+    const newState: Partial<SelectState> = {
       prevProps: nextProps,
       init: false,
     };
