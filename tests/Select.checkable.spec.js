@@ -3,6 +3,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import TreeSelect, { SHOW_PARENT, SHOW_ALL, TreeNode } from '../src';
 import { resetAriaId } from '../src/util';
+import { openSelect } from './shared/util';
 
 describe('TreeSelect.checkable', () => {
   beforeEach(() => {
@@ -58,7 +59,7 @@ describe('TreeSelect.checkable', () => {
     }
     const wrapper = mount(<App />);
     // open
-    wrapper.openSelect();
+    openSelect(wrapper);
     // select
     wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
     // clear
@@ -143,7 +144,7 @@ describe('TreeSelect.checkable', () => {
     const wrapper = mount(<App />);
     expect(wrapper.find('.rc-tree-select-selection__choice')).toHaveLength(1);
     // open
-    wrapper.openSelect();
+    openSelect(wrapper);
     // select
     wrapper
       .find('.rc-tree-select-tree-checkbox')
@@ -192,7 +193,7 @@ describe('TreeSelect.checkable', () => {
       .find('.rc-tree-select-tree-checkbox')
       .at(0)
       .simulate('click');
-    expect(handleChange).toBeCalled();
+    expect(handleChange).toHaveBeenCalled();
     expect(wrapper.find('.rc-tree-select-selection__choice__content').length).toBe(1);
     expect(
       wrapper
@@ -235,7 +236,7 @@ describe('TreeSelect.checkable', () => {
       .find('.rc-tree-select-tree-node-content-wrapper')
       .at(0)
       .simulate('click');
-    expect(handleChange).toBeCalled();
+    expect(handleChange).toHaveBeenCalled();
     expect(wrapper.find('.rc-tree-select-selection__choice__content').length).toBe(1);
     expect(
       wrapper
@@ -269,7 +270,7 @@ describe('TreeSelect.checkable', () => {
         showCheckedStrategy={SHOW_PARENT}
       />,
     );
-    wrapper.openSelect();
+    openSelect(wrapper);
     wrapper
       .find('.rc-tree-select-tree-checkbox')
       .at(0)
@@ -555,7 +556,7 @@ describe('TreeSelect.checkable', () => {
         .at(1)
         .simulate('click');
 
-      expect(onChange).toBeCalled();
+      expect(onChange).toHaveBeenCalled();
 
       expect(
         wrapper

@@ -6,6 +6,7 @@ import raf from 'raf';
 import TreeSelect, { TreeNode } from '../src';
 import { resetAriaId, getLabel } from '../src/util';
 import focusTest from './shared/focusTest';
+import { openSelect, selectNode } from './shared/util';
 
 describe('TreeSelect.basic', () => {
   beforeEach(() => {
@@ -132,13 +133,13 @@ describe('TreeSelect.basic', () => {
         <TreeNode key="1" value="1" title="1 label" />
       </TreeSelect>,
     );
-    wrapper.openSelect();
+    openSelect(wrapper);
     wrapper
       .find('.rc-tree-select-tree-title')
       .at(0)
       .simulate('click');
     expect(onChange.mock.calls[0][0]).toEqual('0');
-    wrapper.openSelect();
+    openSelect(wrapper);
     wrapper
       .find('.rc-tree-select-tree-title')
       .at(1)
@@ -170,13 +171,13 @@ describe('TreeSelect.basic', () => {
       const onChange = jest.fn();
       const onSelect = jest.fn();
       const wrapper = mount(createSelect({ onChange, onSelect }));
-      wrapper.selectNode(0);
+      selectNode(wrapper, 0);
       const selectedNode = wrapper
         .find('TreeNode')
         .first()
         .instance();
 
-      expect(onChange).toBeCalledWith('0', ['label0'], {
+      expect(onChange).toHaveBeenCalledWith('0', ['label0'], {
         preValue: [],
         selected: true,
         triggerNode: selectedNode,
@@ -193,7 +194,7 @@ describe('TreeSelect.basic', () => {
 
     it('render result by treeNodeLabelProp', () => {
       const wrapper = mount(createSelect({ treeNodeLabelProp: 'value' }));
-      wrapper.selectNode(0);
+      selectNode(wrapper, 0);
       expect(wrapper.find('.rc-tree-select-selection__rendered > span').prop('children')).toBe('0');
     });
   });
@@ -214,7 +215,7 @@ describe('TreeSelect.basic', () => {
       const onSearch = jest.fn();
       const wrapper = mount(createSelect({ onSearch }));
       wrapper.find('input').simulate('change', { target: { value: 'a' } });
-      expect(onSearch).toBeCalledWith('a');
+      expect(onSearch).toHaveBeenCalledWith('a');
     });
 
     it('check tree changed by filter', () => {
@@ -261,7 +262,7 @@ describe('TreeSelect.basic', () => {
         <TreeNode key="a" value="a" title="labela" />
       </TreeSelect>,
     );
-    wrapper.openSelect();
+    openSelect(wrapper);
     expect(wrapper.state('open')).toBe(true);
   });
 
@@ -306,7 +307,7 @@ describe('TreeSelect.basic', () => {
           <TreeNode key="0" value="0" title="0 label" />
         </TreeSelect>,
       );
-      wrapper.openSelect();
+      openSelect(wrapper);
 
       wrapper.find('.rc-tree-select-tree-title').simulate('click');
       wrapper.find('.rc-tree-select-selection__clear').simulate('click');
@@ -335,8 +336,8 @@ describe('TreeSelect.basic', () => {
         }
       }
       const wrapper = mount(<App />);
-      wrapper.openSelect();
-      wrapper.selectNode(0);
+      openSelect(wrapper);
+      selectNode(wrapper, 0);
       wrapper.find('.rc-tree-select-selection__clear').simulate('click');
       expect(wrapper.find(TreeSelect).instance().state.valueList).toEqual([]);
     });
@@ -388,7 +389,7 @@ describe('TreeSelect.basic', () => {
       instance.onChoiceAnimationLeave();
 
       raf(() => {
-        expect(instance.forcePopupAlign).toBeCalled();
+        expect(instance.forcePopupAlign).toHaveBeenCalled();
         done();
       });
     });
@@ -402,7 +403,7 @@ describe('TreeSelect.basic', () => {
         </TreeSelect>,
       );
 
-      wrapper.openSelect();
+      openSelect(wrapper);
 
       raf(() => {
         done();

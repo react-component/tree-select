@@ -7,7 +7,6 @@ module.exports = {
     'eslint-comments/disable-enable-pair': 0,
     'react/require-default-props': 0,
     'react/no-unused-prop-types': 1,
-    'jsx-a11y/label-has-for': 0,
-    'jsx-a11y/label-has-associated-control': 0,
+    'react/no-find-dom-node': 1,
   },
 };

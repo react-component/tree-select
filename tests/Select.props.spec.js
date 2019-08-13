@@ -59,31 +59,7 @@ describe('TreeSelect.props', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it.skip('animation', () => {
-    // setMock(true);
-    const wrapper = mount(
-      createSelect({
-        animation: 'test-animation',
-      }),
-    );
-    wrapper.find('.rc-tree-select').simulate('click');
-    expect(wrapper.render()).toMatchSnapshot();
-    // setMock(false);
-  });
-
-  it.skip('transitionName', () => {
-    // setMock(true);
-    const wrapper = mount(
-      createSelect({
-        transitionName: 'test-transitionName',
-      }),
-    );
-    wrapper.find('.rc-tree-select').simulate('click');
-    expect(wrapper.render()).toMatchSnapshot();
-    // setMock(false);
-  });
-
-  it.only('choiceTransitionName', () => {
+  it('choiceTransitionName', () => {
     setMock(true);
     class Wrapper extends React.Component {
       state = {
@@ -161,7 +137,7 @@ describe('TreeSelect.props', () => {
       $node.find('.rc-tree-select-tree-node-content-wrapper').simulate('click');
 
       expect(wrapper.render()).toMatchSnapshot();
-      expect(handleChange).toBeCalledWith('Value 0-1', ['Title 0-1'], {
+      expect(handleChange).toHaveBeenCalledWith('Value 0-1', ['Title 0-1'], {
         preValue: [],
         selected: true,
         triggerValue: 'Value 0-1',
@@ -173,7 +149,7 @@ describe('TreeSelect.props', () => {
       wrapper.find('.rc-tree-select-selection__clear').simulate('click');
 
       expect(wrapper.render()).toMatchSnapshot();
-      expect(handleChange).toBeCalledWith(undefined, [], {
+      expect(handleChange).toHaveBeenCalledWith(undefined, [], {
         preValue: [{ label: 'Title 0-1', value: 'Value 0-1' }],
       });
     });
@@ -240,7 +216,7 @@ describe('TreeSelect.props', () => {
       const $node = wrapper.find(TreeNode).at(2);
       $node.find('.rc-tree-select-tree-node-content-wrapper').simulate('click');
 
-      expect(handleChange).toBeCalledWith({ label: 'Title 0-1', value: 'Value 0-1' }, null, {
+      expect(handleChange).toHaveBeenCalledWith({ label: 'Title 0-1', value: 'Value 0-1' }, null, {
         preValue: [],
         selected: true,
         triggerValue: 'Value 0-1',
@@ -274,7 +250,7 @@ describe('TreeSelect.props', () => {
 
     // `onClick` depends on origin event trigger. Need't test args
     wrapper.find('.rc-tree-select').simulate('click');
-    expect(handleClick).toBeCalled();
+    expect(handleClick).toHaveBeenCalled();
   });
 
   // onChange - is already test above
@@ -292,7 +268,7 @@ describe('TreeSelect.props', () => {
     $node.find('.rc-tree-select-tree-node-content-wrapper').simulate('click');
 
     // TreeNode use cloneElement so that the node is not the same
-    expect(handleSelect).toBeCalledWith('Value 0-1', $node.instance(), {
+    expect(handleSelect).toHaveBeenCalledWith('Value 0-1', $node.instance(), {
       event: 'select',
       node: $node.instance(),
       selected: true,
@@ -313,7 +289,7 @@ describe('TreeSelect.props', () => {
     );
 
     wrapper.find('input').simulate('change', { target: { value: 'Search changed' } });
-    expect(handleSearch).toBeCalledWith('Search changed');
+    expect(handleSearch).toHaveBeenCalledWith('Search changed');
   });
 
   it('showArrow', () => {
@@ -386,34 +362,34 @@ describe('TreeSelect.props', () => {
 
     // Simulate when can process
     $select.simulate('click');
-    expect(handleDropdownVisibleChange).toBeCalledWith(true, { documentClickClose: false });
+    expect(handleDropdownVisibleChange).toHaveBeenCalledWith(true, { documentClickClose: false });
     handleDropdownVisibleChange.mockReset();
 
     // https://github.com/ant-design/ant-design/issues/9857
     // Both use blur to hide. click not affect this.
     $select.simulate('click');
-    expect(handleDropdownVisibleChange).toBeCalledWith(false, { documentClickClose: true });
+    expect(handleDropdownVisibleChange).toHaveBeenCalledWith(false, { documentClickClose: true });
     handleDropdownVisibleChange.mockReset();
 
     $select.simulate('blur');
     jest.runAllTimers();
-    expect(handleDropdownVisibleChange).not.toBeCalled();
+    expect(handleDropdownVisibleChange).not.toHaveBeenCalled();
     handleDropdownVisibleChange.mockReset();
 
     // Simulate when can't process
     canProcess = false;
 
     $select.simulate('click');
-    expect(handleDropdownVisibleChange).toBeCalledWith(true, { documentClickClose: false });
+    expect(handleDropdownVisibleChange).toHaveBeenCalledWith(true, { documentClickClose: false });
     handleDropdownVisibleChange.mockReset();
 
     $select.simulate('click');
-    expect(handleDropdownVisibleChange).toBeCalledWith(true, { documentClickClose: false });
+    expect(handleDropdownVisibleChange).toHaveBeenCalledWith(true, { documentClickClose: false });
     handleDropdownVisibleChange.mockReset();
 
     $select.simulate('blur');
     jest.runAllTimers();
-    expect(handleDropdownVisibleChange).not.toBeCalled();
+    expect(handleDropdownVisibleChange).not.toHaveBeenCalled();
   });
 
   it('notFoundContent', () => {
@@ -433,7 +409,7 @@ describe('TreeSelect.props', () => {
         arg1: ['Value 0', 'Value 0-0', 'Value 0-1'],
         arg2: ['Title 0', 'Title 0-0', 'Title 0-1'],
         arg3: ($node, $oriNode) => {
-          const children = $node.props().children;
+          const { children } = $node.props();
 
           return {
             allCheckedNodes: [
@@ -458,7 +434,7 @@ describe('TreeSelect.props', () => {
         arg1: ['Value 0-0', 'Value 0-1'],
         arg2: ['Title 0-0', 'Title 0-1'],
         arg3: ($node, $oriNode) => {
-          const children = $node.props().children;
+          const { children } = $node.props();
 
           return {
             allCheckedNodes: [
@@ -483,7 +459,7 @@ describe('TreeSelect.props', () => {
         arg1: ['Value 0'],
         arg2: ['Title 0'],
         arg3: ($node, $oriNode) => {
-          const children = $node.props().children;
+          const { children } = $node.props();
 
           return {
             allCheckedNodes: [
@@ -530,7 +506,7 @@ describe('TreeSelect.props', () => {
           .first()
           .simulate('click');
 
-        expect(handleChange).toBeCalledWith(arg1, arg2, arg3($node, $oriNode));
+        expect(handleChange).toHaveBeenCalledWith(arg1, arg2, arg3($node, $oriNode));
       });
     });
   });
@@ -642,14 +618,14 @@ describe('TreeSelect.props', () => {
 
     const wrapper = mount(<Demo />);
 
-    expect(handleLoadData).not.toBeCalled();
+    expect(handleLoadData).not.toHaveBeenCalled();
 
     const switcher = wrapper.find('.rc-tree-select-tree-switcher');
     const node = wrapper.find(TreeNode).instance();
     switcher.simulate('click');
 
     return timeoutPromise().then(() => {
-      expect(handleLoadData).toBeCalledWith(node);
+      expect(handleLoadData).toHaveBeenCalledWith(node);
       expect(called).toBe(1);
       expect(wrapper.render()).toMatchSnapshot();
     });
@@ -726,7 +702,7 @@ describe('TreeSelect.props', () => {
           .find('.rc-tree-select-tree-node-content-wrapper')
           .at(0)
           .simulate('click');
-        expect(onSelect).not.toBeCalled();
+        expect(onSelect).not.toHaveBeenCalled();
         expect(onDeselect.mock.calls[0][0]).toEqual('smart');
         expect(onDeselect.mock.calls[0][1]).toEqual(nodeMatcher(0));
         expect(onDeselect.mock.calls[0][2]).toEqual({
@@ -770,7 +746,7 @@ describe('TreeSelect.props', () => {
             .find('.rc-tree-select-tree-node-content-wrapper')
             .at(0)
             .simulate('click');
-          expect(onSelect).not.toBeCalled();
+          expect(onSelect).not.toHaveBeenCalled();
           expect(onDeselect.mock.calls[0][0]).toEqual('smart');
           expect(onDeselect.mock.calls[0][1]).toEqual(nodeMatcher(0));
           expect(onDeselect.mock.calls[0][2]).toEqual({
@@ -793,7 +769,7 @@ describe('TreeSelect.props', () => {
             .find('.rc-tree-select-selection__choice__remove')
             .at(0)
             .simulate('click');
-          expect(onSelect).not.toBeCalled();
+          expect(onSelect).not.toHaveBeenCalled();
           expect(onDeselect.mock.calls[0][0]).toEqual('smart');
           expect(onDeselect.mock.calls[0][1]).toEqual(nodeMatcher(0));
 

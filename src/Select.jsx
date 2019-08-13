@@ -20,10 +20,10 @@
  */
 
 import React from 'react';
-import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import KeyCode from 'rc-util/lib/KeyCode';
+import findDOMNode from 'rc-util/lib/Dom/findDOMNode';
 import shallowEqual from 'shallowequal';
 import raf from 'raf';
 import scrollIntoView from 'dom-scroll-into-view';
@@ -971,7 +971,7 @@ class Select extends React.Component {
       }
 
       if (!this.isMultiple()) {
-        returnValue = returnValue[0];
+        [returnValue] = returnValue;
       }
 
       onChange(returnValue, labelList, extra);
