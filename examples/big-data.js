@@ -1,10 +1,9 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import 'rc-tree-select/assets/index.less';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import TreeSelect, { SHOW_PARENT } from 'rc-tree-select';
-import Gen from './big-data-generator';
+import TreeSelect, { SHOW_PARENT } from '../src';
+import Gen from './utils/big-data-generator';
+import '../assets/index.less';
 import './demo.less';
 
 class Demo extends React.Component {
@@ -83,4 +82,4 @@ class Demo extends React.Component {
   }
 }
 
-ReactDOM.render(<Demo />, document.getElementById('__react-content'));
+export default Demo;

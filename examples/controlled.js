@@ -1,11 +1,10 @@
 /* eslint react/no-multi-comp:0, no-console:0, no-alert: 0 */
 
-import 'rc-tree-select/assets/index.less';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import 'rc-dialog/assets/index.css';
-import TreeSelect, { TreeNode } from 'rc-tree-select';
+import TreeSelect, { TreeNode } from '../src';
 import './demo.less';
+import '../assets/index.less';
 
 class Demo extends React.Component {
   state = {
@@ -70,4 +69,4 @@ class Demo extends React.Component {
   }
 }
 
-ReactDOM.render(<Demo />, document.getElementById('__react-content'));
+export default Demo;

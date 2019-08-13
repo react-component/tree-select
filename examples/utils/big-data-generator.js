@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { generateData, calcTotal } from './util';
-import { createRef } from '../src/util';
+import { generateData, calcTotal } from './data';
+import { createRef } from '../../src/util';
 
 class Gen extends React.Component {
   static propTypes = {
@@ -45,13 +45,11 @@ class Gen extends React.Component {
     });
   };
 
-  getVals = () => {
-    return {
+  getVals = () => ({
       x: parseInt(this.xRef.current.value, 10),
       y: parseInt(this.yRef.current.value, 10),
       z: parseInt(this.zRef.current.value, 10),
-    };
-  };
+    });
 
   render() {
     const { nums } = this.state;

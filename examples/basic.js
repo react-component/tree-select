@@ -1,13 +1,12 @@
 /* eslint react/no-multi-comp:0, no-console:0, no-alert: 0 */
 
-import 'rc-tree-select/assets/index.less';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import 'rc-dialog/assets/index.css';
 import Dialog from 'rc-dialog';
-import TreeSelect, { TreeNode, SHOW_PARENT } from 'rc-tree-select';
-import { gData } from './util';
+import TreeSelect, { TreeNode, SHOW_PARENT } from '../src';
+import { gData } from './utils/data';
 import './demo.less';
+import '../assets/index.less';
 
 function isLeaf(value) {
   if (!value) {
@@ -33,7 +32,7 @@ function isLeaf(value) {
 function findPath(value, data) {
   const sel = [];
   function loop(selected, children) {
-    for (let i = 0; i < children.length; i++) {
+    for (let i = 0; i < children.length; i += 1) {
       const item = children[i];
       if (selected === item.value) {
         sel.push(item);
@@ -138,9 +137,7 @@ class Demo extends React.Component {
     return true;
   };
 
-  filterTreeNode = (input, child) => {
-    return String(child.props.title).indexOf(input) === 0;
-  };
+  filterTreeNode = (input, child) => String(child.props.title).indexOf(input) === 0;
 
   render() {
     const {
@@ -401,4 +398,4 @@ class Demo extends React.Component {
   }
 }
 
-ReactDOM.render(<Demo />, document.getElementById('__react-content'));
+export default Demo;

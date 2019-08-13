@@ -82,9 +82,7 @@ export function flatToHierarchy(positionList) {
     posMap[entity.pos] = entity;
   });
 
-  parsedList.sort((a, b) => {
-    return a.fields.length - b.fields.length;
-  });
+  parsedList.sort((a, b) => a.fields.length - b.fields.length);
 
   // Create the hierarchy
   parsedList.forEach(entity => {
@@ -381,7 +379,7 @@ function initWrapper(wrapper) {
 }
 
 function processEntity(entity, wrapper) {
-  const value = entity.node.props.value;
+  const { value } = entity.node.props;
   entity.value = value;
 
   // This should be empty, or will get error message.

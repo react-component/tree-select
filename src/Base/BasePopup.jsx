@@ -142,9 +142,7 @@ class BasePopup extends React.Component {
     this.setState({ loadedKeys });
   };
 
-  getTree = () => {
-    return this.treeRef.current;
-  };
+  getTree = () => this.treeRef.current;
 
   /**
    * Not pass `loadData` when searching. To avoid loop ajax call makes browser crash.

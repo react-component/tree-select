@@ -1,10 +1,9 @@
-/* eslint react/no-multi-comp:0, no-console:0 */
+/* eslint-disable react/no-multi-comp, no-console, no-param-reassign */
 
-import 'rc-tree-select/assets/index.less';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import TreeSelect, { SHOW_PARENT } from 'rc-tree-select';
-import { gData } from './util';
+import TreeSelect, { SHOW_PARENT } from '../src';
+import { gData } from './utils/data';
+import '../assets/index.less';
 
 class Demo extends React.Component {
   state = {
@@ -103,4 +102,5 @@ class Demo extends React.Component {
   }
 }
 
-ReactDOM.render(<Demo />, document.getElementById('__react-content'));
+export default Demo;
+/* eslint-enable */

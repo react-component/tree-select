@@ -74,7 +74,7 @@ class SearchInput extends React.Component {
   /**
    * Need additional timeout for focus cause parent dom is not ready when didMount trigger
    */
-  focus = (isDidMount) => {
+  focus = isDidMount => {
     if (this.inputRef.current) {
       this.inputRef.current.focus();
       if (isDidMount) {

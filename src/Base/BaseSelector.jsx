@@ -165,7 +165,7 @@ export default function (modeName) {
               [`${prefixCls}-disabled`]: disabled,
               [`${prefixCls}-enabled`]: !disabled,
               [`${prefixCls}-allow-clear`]: allowClear,
-            }
+            },
           )}
           ref={this.domRef}
           role="combobox"
@@ -183,7 +183,7 @@ export default function (modeName) {
             key="selection"
             className={classNames(
               `${prefixCls}-selection`,
-              `${prefixCls}-selection--${modeName}`
+              `${prefixCls}-selection--${modeName}`,
             )}
           >
             {renderSelection()}

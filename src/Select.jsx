@@ -884,9 +884,7 @@ class Select extends React.Component {
     return !!(multiple || treeCheckable);
   };
 
-  isLabelInValue = () => {
-    return isLabelInValue(this.props);
-  };
+  isLabelInValue = () => isLabelInValue(this.props);
 
   // [Legacy] To align with `Select` component,
   // We use `searchValue` instead of `inputValue`

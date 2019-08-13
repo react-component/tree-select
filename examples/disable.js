@@ -1,10 +1,10 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
-import 'rc-tree-select/assets/index.less';
-import TreeSelect from 'rc-tree-select';
-import React from 'react';
-import ReactDOM from 'react-dom';
 
-const SHOW_PARENT = TreeSelect.SHOW_PARENT;
+import React from 'react';
+import '../assets/index.less';
+import TreeSelect from '../src';
+
+const { SHOW_PARENT } = TreeSelect;
 
 const treeData = [
   {
@@ -83,4 +83,4 @@ class Demo extends React.Component {
   }
 }
 
-ReactDOM.render(<Demo />, document.getElementById('__react-content'));
+export default Demo;

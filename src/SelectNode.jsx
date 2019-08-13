@@ -7,7 +7,7 @@ import { valueProp } from './propTypes';
  * Let's use SelectNode instead of TreeNode
  * since TreeNode is so confuse here.
  */
-const SelectNode = (props) => (
+const SelectNode = props => (
   <TreeNode {...props} />
 );
 

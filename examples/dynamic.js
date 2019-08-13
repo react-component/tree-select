@@ -1,10 +1,9 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import 'rc-tree-select/assets/index.less';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import TreeSelect from 'rc-tree-select';
-import { getNewTreeData, generateTreeNodes } from './util';
+import { getNewTreeData, generateTreeNodes } from './utils/data';
+import TreeSelect from '../src';
+import '../assets/index.less';
 
 class Demo extends React.Component {
   static propTypes = {};
@@ -57,4 +56,4 @@ class Demo extends React.Component {
   }
 }
 
-ReactDOM.render(<Demo />, document.getElementById('__react-content'));
+export default Demo;

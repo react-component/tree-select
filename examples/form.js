@@ -2,22 +2,21 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
-import TreeSelect from 'rc-tree-select';
 import Select from 'rc-select';
 import { createForm } from 'rc-form';
 import 'rc-select/assets/index.css';
-import 'rc-tree-select/assets/index.less';
-import { regionStyle, errorStyle } from './styles';
-import { gData } from './util';
+import '../assets/index.less';
+import { regionStyle, errorStyle } from './utils/styles';
+import { gData } from './utils/data';
 import './demo.less';
+import TreeSelect from '../src';
 
 const { Option } = Select;
 
 class TreeSelectInput extends Component {
   onChange = (value, ...args) => {
     console.log(value, ...args);
-    const props = this.props;
+    const { props } = this;
     if (props.onChange) {
       props.onChange(value);
     }
@@ -124,6 +123,6 @@ class Form extends Component {
   }
 }
 
-// ReactDOM.render(<Form />, document.getElementById('__react-content'));
 const NewForm = createForm()(Form);
-ReactDOM.render(<NewForm />, document.getElementById('__react-content'));
+
+export default NewForm;

@@ -26,9 +26,7 @@ class SinglePopup extends React.Component {
     this.inputRef.current.focus();
   };
 
-  getTree = () => {
-    return this.popupRef.current && this.popupRef.current.getTree();
-  };
+  getTree = () => this.popupRef.current && this.popupRef.current.getTree();
 
   renderPlaceholder = () => {
     const { searchPlaceholder, searchValue, prefixCls } = this.props;
