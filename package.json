@@ -64,7 +64,7 @@
     "warning": "^4.0.1"
   },
   "devDependencies": {
-    "lint-staged": "^8.1.1",
+    "lint-staged": "^9.2.3",
     "pre-commit": "1.x",
     "rc-dialog": "^7.0.0",
     "rc-form": "^2.4.2",
