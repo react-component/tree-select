@@ -441,6 +441,7 @@ class Select extends React.Component {
             scrollIntoView(domNode, triggerContainer, {
               onlyScrollIfNeeded: true,
               offsetTop: searchNode.offsetHeight,
+              alignWithTop: true,
             });
           }
         });
