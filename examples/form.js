@@ -15,6 +15,10 @@ import './demo.less';
 const { Option } = Select;
 
 class TreeSelectInput extends Component {
+  static propTypes = {
+    onChange: PropTypes.func,
+  };
+
   onChange = (value, ...args) => {
     console.log(value, ...args);
     const props = this.props;
