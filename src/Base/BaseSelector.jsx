@@ -95,7 +95,7 @@ export default function (modeName) {
     }
 
     blur = () => {
-      this.domRef.current.focus();
+      this.domRef.current.blur();
     }
 
     renderClear() {
