@@ -80,6 +80,7 @@ class SelectTrigger extends React.Component {
       dropdownStyle, onDropdownVisibleChange, getPopupContainer,
       dropdownPrefixCls, popupElement, open,
       children,
+      ...restProps
     } = this.props;
 
     // TODO: [Legacy] Use new action when trigger fixed: https://github.com/react-component/trigger/pull/86
@@ -113,6 +114,7 @@ class SelectTrigger extends React.Component {
           },
         )}
         popupStyle={dropdownStyle}
+        {...restProps}
       >
         {children}
       </Trigger>

@@ -144,6 +144,7 @@ export default function (modeName) {
         ariaId,
         renderSelection, renderPlaceholder,
         tabIndex,
+        ...restProps
       } = this.props;
       const { rcTreeSelect: { onSelectorKeyDown } } = this.context;
 
@@ -178,6 +179,7 @@ export default function (modeName) {
           onFocus={this.onFocus}
           onBlur={this.onBlur}
           onKeyDown={onSelectorKeyDown}
+          {...restProps}
         >
           <span
             key="selection"

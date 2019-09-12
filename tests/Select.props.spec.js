@@ -58,7 +58,12 @@ describe('TreeSelect.props', () => {
     const wrapper = mount(createOpenSelect({ prefixCls: 'another-cls' }));
     expect(wrapper.render()).toMatchSnapshot();
   });
-
+  
+  it('dataAttributes', ()=>{
+    const wrapper = mount(createOpenSelect({ 'data-testid': 'my-test-id' }));
+    expect(wrapper.find('[data-testid="my-test-id"]')).toBe();
+  })
+  
   it.skip('animation', () => {
     // setMock(true);
     const wrapper = mount(
