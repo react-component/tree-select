@@ -45,7 +45,11 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         case KeyCode.UP:
         case KeyCode.DOWN:
         case KeyCode.LEFT:
-        case KeyCode.RIGHT: {
+        case KeyCode.RIGHT:
+
+        // >>> Operation keys
+        case KeyCode.SPACE:
+        case KeyCode.ENTER: {
           treeRef.current.onKeyDown(event as React.KeyboardEvent<HTMLDivElement>);
           break;
         }
@@ -55,7 +59,11 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   }));
 
   return (
-    <>
+    <div
+      onMouseDown={event => {
+        event.preventDefault();
+      }}
+    >
       <Tree
         ref={treeRef}
         focusable={false}
@@ -64,7 +72,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         height={height}
         itemHeight={itemHeight}
       />
-    </>
+    </div>
   );
 };
 

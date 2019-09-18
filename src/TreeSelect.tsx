@@ -42,9 +42,68 @@ const RefTreeSelect = generateSelector<DataNode[]>({
 });
 
 export interface TreeSelectProps<ValueType = DefaultValueType> {
+  prefixCls?: string;
+  style?: React.CSSProperties;
+  className?: string;
+  multiple?: boolean;
+  treeCheckable?: boolean | React.ReactNode;
+
   treeExpandedKeys?: Key[];
   treeData?: DataNode[];
   children?: React.ReactNode;
+
+  // MISS PROPS:
+  // prefixAria: PropTypes.string,
+  // showArrow: PropTypes.bool,
+  //   open: PropTypes.bool,
+  //   value: valueProp,
+  //   autoFocus: PropTypes.bool,
+
+  //   defaultOpen: PropTypes.bool,
+  //   defaultValue: valueProp,
+
+  //   showSearch: PropTypes.bool,
+  //   placeholder: PropTypes.node,
+  //   inputValue: PropTypes.string, // [Legacy] Deprecated. Use `searchValue` instead.
+  //   searchValue: PropTypes.string,
+  //   autoClearSearchValue: PropTypes.bool,
+  //   searchPlaceholder: PropTypes.node, // [Legacy] Confuse with placeholder
+  //   disabled: PropTypes.bool,
+  //   children: PropTypes.node,
+  //   labelInValue: PropTypes.bool,
+  //   maxTagCount: PropTypes.number,
+  //   maxTagPlaceholder: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  //   maxTagTextLength: PropTypes.number,
+  //   showCheckedStrategy: PropTypes.oneOf([SHOW_ALL, SHOW_PARENT, SHOW_CHILD]),
+
+  //   dropdownMatchSelectWidth: PropTypes.bool,
+  //   treeData: PropTypes.array,
+  //   treeDataSimpleMode: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+  //   treeNodeFilterProp: PropTypes.string,
+  //   treeNodeLabelProp: PropTypes.string,
+  //   treeCheckStrictly: PropTypes.bool,
+  //   treeIcon: PropTypes.bool,
+  //   treeLine: PropTypes.bool,
+  //   treeDefaultExpandAll: PropTypes.bool,
+  //   treeDefaultExpandedKeys: PropTypes.array,
+  //   treeExpandedKeys: PropTypes.array,
+  //   loadData: PropTypes.func,
+  //   filterTreeNode: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+
+  //   notFoundContent: PropTypes.node,
+
+  //   onSearch: PropTypes.func,
+  //   onSelect: PropTypes.func,
+  //   onDeselect: PropTypes.func,
+  //   onChange: PropTypes.func,
+  //   onDropdownVisibleChange: PropTypes.func,
+
+  //   onTreeExpand: PropTypes.func,
+
+  //   inputIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  //   clearIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  //   removeIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  //   switcherIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 }
 
 interface TreeSelectState<ValueType = DefaultValueType> {
@@ -111,13 +170,21 @@ class TreeSelect<ValueType = DefaultValueType> extends React.Component<
 
   render() {
     const { treeData, expandedKeys } = this.state;
+    const { multiple, treeCheckable } = this.props;
 
     // Used for tree calculation
     const additionalProps = {
       expandedKeys,
     };
 
-    return <RefTreeSelect {...this.props} options={treeData} {...additionalProps} />;
+    return (
+      <RefTreeSelect
+        mode={multiple || treeCheckable ? 'multiple' : null}
+        {...this.props}
+        options={treeData}
+        {...additionalProps}
+      />
+    );
   }
 }
 

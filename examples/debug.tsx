@@ -14,7 +14,7 @@ const Demo: React.FC<{}> = () => {
     >
       <h1>Debug</h1>
       <input />
-      <TreeSelect>
+      <TreeSelect style={{ width: 200 }}>
         <TreeNode title="parent" value="parent">
           <TreeNode title="child" value="child" />
         </TreeNode>
