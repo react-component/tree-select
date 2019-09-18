@@ -2,7 +2,7 @@ import { flattenTreeData } from 'rc-tree/lib/utils/treeUtil';
 import { FlattenNode } from 'rc-tree/lib/interface';
 import { FilterFunc } from 'rc-select/lib/interface/generator';
 import { FlattenDataNode, Key, RawValueType, DataNode, InnerDataNode } from '../interface';
-import { warning } from 'rc-util/lib/warning';
+import warning from 'rc-util/lib/warning';
 
 export function findValueOption(values: RawValueType[], options: FlattenDataNode[]): DataNode[] {
   const optionMap: Map<RawValueType, DataNode> = new Map();
@@ -40,7 +40,7 @@ export function formatTreeData(treeData: DataNode[]): InnerDataNode[] {
     };
 
     warning(
-      key === null || key === value,
+      key === null || String(key) === String(value),
       '`key` or `value` with TreeNode must be the same or you can remove one of them.',
     );
 

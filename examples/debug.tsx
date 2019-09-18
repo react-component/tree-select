@@ -18,7 +18,7 @@ const Demo: React.FC<{}> = () => {
         <TreeNode title="parent" value="parent">
           <TreeNode title="child" value="child" />
         </TreeNode>
-        <TreeNode title="parent2" value="222">
+        <TreeNode title="parent2" value="parent2">
           {new Array(20).fill(null).map((_, index) => (
             <TreeNode key={index} title={`Hello_${index}`} value={index} />
           ))}

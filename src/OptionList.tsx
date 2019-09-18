@@ -2,6 +2,7 @@ import React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { RefOptionListProps, OptionListProps } from 'rc-select/lib/OptionList';
 import Tree from 'rc-tree';
+import Tree1 from 'rc-tree/lib/Tree';
 import { FlattenDataNode, RawValueType, DataNode, TreeDataNode, Key } from './interface';
 
 export interface OptionListProps<OptionsType extends object[]> {
@@ -27,15 +28,12 @@ export interface OptionListProps<OptionsType extends object[]> {
   onScroll: React.UIEventHandler<HTMLDivElement>;
 }
 
-// TODO: Should check if use `treeData` without `key`
 const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListProps<DataNode[]>> = (
   props,
   ref,
 ) => {
-  const { prefixCls, height, itemHeight, options } = props;
-
-  // ========================== Active ==========================
-  const [activeKey, setActiveKey] = React.useState<Key>(null);
+  const { prefixCls, height, itemHeight, options, flattenOptions } = props;
+  const treeRef = React.useRef<Tree1>();
 
   // ========================= Keyboard =========================
   React.useImperativeHandle(ref, () => ({
@@ -45,8 +43,10 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
       switch (which) {
         // >>> Arrow keys
         case KeyCode.UP:
-        case KeyCode.DOWN: {
-          console.log('!!!!ARROW');
+        case KeyCode.DOWN:
+        case KeyCode.LEFT:
+        case KeyCode.RIGHT: {
+          treeRef.current.onKeyDown(event as React.KeyboardEvent<HTMLDivElement>);
           break;
         }
       }
@@ -57,7 +57,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   return (
     <>
       <Tree
-        activeKey={activeKey}
+        ref={treeRef}
         focusable={false}
         prefixCls={`${prefixCls}-tree`}
         treeData={options as TreeDataNode[]}
