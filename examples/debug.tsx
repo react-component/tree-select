@@ -39,6 +39,7 @@ const Demo: React.FC<{}> = () => (
             title: `Hello_${index}`,
           })),
         },
+        { value: 'disabled', title: 'Disabled', disabled: true },
       ]}
     />
     <input />

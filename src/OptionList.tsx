@@ -54,9 +54,14 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   }, [flattenOptions]);
 
   const getValueByKey = React.useCallback(
-    (key: Key) => {
+    (key: Key, allowDisabled: boolean = false) => {
       const dataNode = flattenOptionMap.get(key);
-      return dataNode ? dataNode.data.value : null;
+
+      if (!dataNode || (!allowDisabled && dataNode.data.disabled)) {
+        return null;
+      }
+
+      return dataNode.data.value;
     },
     [flattenOptionMap],
   );
