@@ -5,5 +5,6 @@ module.exports = {
   rules: {
     ...base.rules,
     'default-case': 0,
+    'eslint-comments/disable-enable-pair': 0,
   },
 };

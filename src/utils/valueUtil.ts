@@ -42,7 +42,7 @@ export function formatTreeData(treeData: DataNode[]): InnerDataNode[] {
     };
 
     warning(
-      key === null || String(key) === String(value),
+      key === null || key === undefined || value === undefined || String(key) === String(value),
       '`key` or `value` with TreeNode must be the same or you can remove one of them.',
     );
 

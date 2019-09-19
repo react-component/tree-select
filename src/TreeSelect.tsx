@@ -14,7 +14,7 @@ import {
 } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
 
-const OMIT_PROPS = ['expandedKeys'];
+const OMIT_PROPS = ['expandedKeys', 'treeData'];
 
 const RefTreeSelect = generateSelector<DataNode[]>({
   prefixCls: 'rc-tree-select',
@@ -113,7 +113,8 @@ interface TreeSelectState<ValueType = DefaultValueType> {
   prevProps: TreeSelectProps<ValueType>;
 }
 
-// Use class component since typescript not support generic by `forwardRef` with function component yet.
+// Use class component since typescript not support generic
+// by `forwardRef` with function component yet.
 class TreeSelect<ValueType = DefaultValueType> extends React.Component<
   TreeSelectProps<ValueType>,
   TreeSelectState<ValueType>
