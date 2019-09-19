@@ -99,12 +99,16 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
           break;
 
         // >>> Select item
-        case KeyCode.ENTER:
-        case KeyCode.SPACE: {
+        case KeyCode.ENTER: {
           // TODO: Check if is checkable
           const value = getValueByKey(activeKey);
           onInternalSelect(null, { node: { key: activeKey }, selected: !values.has(value) });
           break;
+        }
+
+        // >>> Close
+        case KeyCode.ESC: {
+          onToggleOpen(false);
         }
       }
     },
