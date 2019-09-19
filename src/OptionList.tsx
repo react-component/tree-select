@@ -56,16 +56,19 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   const treeRef = React.useRef<Tree>();
 
   const [cacheKeyMap, cacheValueMap] = useKeyValueMap(flattenOptions);
-  const [getValueByKey, getKeyByValue] = useKeyValueMapping(cacheKeyMap, cacheValueMap);
+  const [getEntityByKey, getEntityByValue] = useKeyValueMapping(cacheKeyMap, cacheValueMap);
 
   // ========================== Values ==========================
-  const valueKeys = [...values].map(val => getKeyByValue(val));
+  const valueKeys = [...values].map(val => {
+    const entity = getEntityByValue(val);
+    return entity ? entity.key : null;
+  });
 
   // ========================== Events ==========================
   const onInternalSelect = (_: Key[], { node: { key }, selected }: TreeEventInfo) => {
-    const value = getValueByKey(key);
-    if (value !== null) {
-      onSelect(value, { selected });
+    const entity = getEntityByKey(key);
+    if (entity !== null) {
+      onSelect(entity.data.value, { selected });
     }
 
     if (!multiple) {
@@ -74,9 +77,9 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   };
 
   const onInternalCheck = (_: Key[], { node: { key }, checked }: TreeEventInfo) => {
-    const value = getValueByKey(key);
-    if (value !== null) {
-      onSelect(value, { selected: checked });
+    const entity = getEntityByKey(key);
+    if (entity !== null) {
+      onSelect(entity.data.value, { selected: checked });
     }
 
     if (!multiple) {
@@ -102,9 +105,13 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
 
         // >>> Select item
         case KeyCode.ENTER: {
-          // TODO: Check if is checkable
-          const value = getValueByKey(activeKey);
-          onInternalSelect(null, { node: { key: activeKey }, selected: !values.has(value) });
+          const entity = getEntityByKey(activeKey);
+          if (entity !== null) {
+            onInternalSelect(null, {
+              node: { key: activeKey },
+              selected: !values.has(entity.data.value),
+            });
+          }
           break;
         }
 

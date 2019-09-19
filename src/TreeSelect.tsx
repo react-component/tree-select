@@ -11,10 +11,13 @@ import {
   isValueDisabled,
   findValueOption,
   formatTreeData,
+  getRawValues,
 } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
 import { SelectContext } from './Context';
 import useTreeData from './hooks/useTreeData';
+import useKeyValueMap from './hooks/useKeyValueMap';
+import useKeyValueMapping from './hooks/useKeyValueMapping';
 
 const OMIT_PROPS = ['expandedKeys', 'treeData', 'treeCheckable'];
 
@@ -60,6 +63,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType> {
   // Event
 
   // TODO:
+  labelInValue?: boolean;
   treeExpandedKeys?: Key[];
   treeCheckable?: boolean | React.ReactNode;
   treeCheckStrictly?: boolean;
@@ -78,7 +82,6 @@ export interface TreeSelectProps<ValueType = DefaultValueType> {
   //   searchPlaceholder: PropTypes.node, // [Legacy] Confuse with placeholder
   //   disabled: PropTypes.bool,
   //   children: PropTypes.node,
-  //   labelInValue: PropTypes.bool,
   //   maxTagCount: PropTypes.number,
   //   maxTagPlaceholder: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   //   maxTagTextLength: PropTypes.number,
@@ -120,32 +123,54 @@ interface TreeSelectState<ValueType = DefaultValueType> {
 }
 
 const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
-  const { multiple, treeCheckable, treeCheckStrictly, treeData, children, onChange } = props;
+  const {
+    multiple,
+    treeCheckable,
+    treeCheckStrictly,
+    labelInValue,
+    treeData,
+    children,
+    onChange,
+  } = props;
+  const mergedCheckable = !!(treeCheckable || treeCheckStrictly);
+  const mergedMultiple = multiple || mergedCheckable;
 
   // ======================= Tree Data =======================
   const mergedTreeData = useTreeData(treeData, children);
+  const flattedOptions = React.useMemo(() => flattenOptions(mergedTreeData), [mergedTreeData]);
+  const [cacheKeyMap, cacheValueMap] = useKeyValueMap(flattedOptions);
+  const [getEntityByKey, getEntityByValue] = useKeyValueMapping(cacheKeyMap, cacheValueMap);
 
   // ========================= Value =========================
   const [value, setValue] = React.useState<DefaultValueType>(props.defaultValue);
   const mergedValue = 'value' in props ? props.value : value;
 
   const onInternalChange = (newValue: DefaultValueType, options: DataNode | DataNode[]) => {
-    console.log('~~~>', newValue, options);
     setValue(newValue);
 
     if (onChange) {
-      onChange(newValue);
+      const rawValues = getRawValues(newValue, mergedMultiple, labelInValue);
+      onChange(
+        newValue,
+        labelInValue
+          ? null
+          : rawValues.map(val => {
+              const entity = getEntityByValue(val);
+              return entity ? entity.data.title : null;
+            }),
+        null,
+      );
     }
   };
 
   return (
     <SelectContext.Provider
       value={{
-        checkable: !!(treeCheckable || treeCheckStrictly),
+        checkable: mergedCheckable,
       }}
     >
       <RefSelect
-        mode={multiple || treeCheckable ? 'multiple' : null}
+        mode={mergedMultiple ? 'multiple' : null}
         {...props}
         value={mergedValue}
         options={mergedTreeData}

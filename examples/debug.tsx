@@ -50,7 +50,10 @@ const Demo: React.FC<{}> = () => {
         treeData={treeData}
         treeCheckable
         value={value}
-        onChange={setValue}
+        onChange={(newValue, ...args) => {
+          console.log('Change:', newValue, ...args);
+          setValue(newValue);
+        }}
         placeholder="Control Mode"
       />
       <input />

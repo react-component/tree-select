@@ -2,7 +2,15 @@ import { flattenTreeData } from 'rc-tree/lib/utils/treeUtil';
 import { FlattenNode } from 'rc-tree/lib/interface';
 import { FilterFunc } from 'rc-select/lib/interface/generator';
 import warning from 'rc-util/lib/warning';
-import { FlattenDataNode, Key, RawValueType, DataNode, InnerDataNode } from '../interface';
+import {
+  FlattenDataNode,
+  Key,
+  RawValueType,
+  DataNode,
+  InnerDataNode,
+  DefaultValueType,
+  LabelValueType,
+} from '../interface';
 
 export function findValueOption(values: RawValueType[], options: FlattenDataNode[]): DataNode[] {
   const optionMap: Map<RawValueType, DataNode> = new Map();
@@ -112,4 +120,18 @@ export function filterOptions(
 ) {
   // TODO: handle this
   return options;
+}
+
+export function getRawValues(
+  value: DefaultValueType,
+  multiple: boolean,
+  labelInValue: boolean,
+): RawValueType[] {
+  const values = (multiple ? value : [value]) as (RawValueType | LabelValueType)[];
+
+  if (labelInValue) {
+    return (values as LabelValueType[]).map(data => data.value);
+  }
+
+  return values as RawValueType[];
 }
