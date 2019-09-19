@@ -23,6 +23,7 @@ export interface DataNode {
 export interface InnerDataNode extends DataNode {
   key: Key;
   value: RawValueType;
+  label?: React.ReactNode;
 }
 
 export interface TreeDataNode extends DataNode {

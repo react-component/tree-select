@@ -32,10 +32,53 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   props,
   ref,
 ) => {
-  const { prefixCls, height, itemHeight, options, flattenOptions } = props;
+  const {
+    prefixCls,
+    height,
+    itemHeight,
+    options,
+    flattenOptions,
+    multiple,
+    values,
+    onSelect,
+    onToggleOpen,
+  } = props;
   const treeRef = React.useRef<Tree1>();
 
+  const flattenOptionMap = React.useMemo(() => {
+    const map: Map<Key, FlattenDataNode> = new Map();
+    flattenOptions.forEach((dataNode: FlattenDataNode) => {
+      map.set(dataNode.key, dataNode);
+    });
+    return map;
+  }, [flattenOptions]);
+
+  const getValueByKey = React.useCallback(
+    (key: Key) => {
+      const dataNode = flattenOptionMap.get(key);
+      return dataNode ? dataNode.data.value : null;
+    },
+    [flattenOptionMap],
+  );
+
+  // ========================== Events ==========================
+  const onInternalSelect = (
+    _: Key[],
+    { node: { key }, selected }: { node: { key: Key }; selected: boolean },
+  ) => {
+    const value = getValueByKey(key);
+    if (value !== null) {
+      onSelect(value, { selected });
+    }
+
+    if (!multiple) {
+      onToggleOpen(false);
+    }
+  };
+
   // ========================= Keyboard =========================
+  const [activeKey, setActiveKey] = React.useState<Key>(null);
+
   React.useImperativeHandle(ref, () => ({
     onKeyDown: event => {
       const { which } = event;
@@ -48,6 +91,15 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         case KeyCode.RIGHT:
           treeRef.current.onKeyDown(event as React.KeyboardEvent<HTMLDivElement>);
           break;
+
+        // >>> Select item
+        case KeyCode.ENTER:
+        case KeyCode.SPACE: {
+          // TODO: Check if is checkable
+          const value = getValueByKey(activeKey);
+          onInternalSelect(null, { node: { key: activeKey }, selected: !values.has(value) });
+          break;
+        }
       }
     },
     onKeyUp: () => {},
@@ -66,9 +118,13 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         treeData={options as TreeDataNode[]}
         height={height}
         itemHeight={itemHeight}
+        multiple={multiple}
         // We handle keys by out instead tree self
         checkedKeys={[]}
         selectedKeys={[]}
+        // Proxy event out
+        onActiveChange={setActiveKey}
+        onSelect={onInternalSelect}
       />
     </div>
   );

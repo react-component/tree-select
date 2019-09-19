@@ -1,8 +1,8 @@
 import { flattenTreeData } from 'rc-tree/lib/utils/treeUtil';
 import { FlattenNode } from 'rc-tree/lib/interface';
 import { FilterFunc } from 'rc-select/lib/interface/generator';
-import { FlattenDataNode, Key, RawValueType, DataNode, InnerDataNode } from '../interface';
 import warning from 'rc-util/lib/warning';
+import { FlattenDataNode, Key, RawValueType, DataNode, InnerDataNode } from '../interface';
 
 export function findValueOption(values: RawValueType[], options: FlattenDataNode[]): DataNode[] {
   const optionMap: Map<RawValueType, DataNode> = new Map();
@@ -29,7 +29,7 @@ export function isValueDisabled(value: RawValueType, options: FlattenDataNode[])
  */
 export function formatTreeData(treeData: DataNode[]): InnerDataNode[] {
   return treeData.map(node => {
-    const { key, value, children, ...rest } = node;
+    const { key, title, value, children, ...rest } = node;
 
     const mergedValue = 'value' in node ? value : key;
 
@@ -37,6 +37,8 @@ export function formatTreeData(treeData: DataNode[]): InnerDataNode[] {
       ...rest,
       key: mergedValue,
       value: mergedValue,
+      label: title,
+      title,
     };
 
     warning(
