@@ -13,6 +13,7 @@ import {
   formatTreeData,
 } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
+import { SelectContext } from './Context';
 
 const OMIT_PROPS = ['expandedKeys', 'treeData'];
 
@@ -46,11 +47,14 @@ export interface TreeSelectProps<ValueType = DefaultValueType> {
   style?: React.CSSProperties;
   className?: string;
   multiple?: boolean;
-  treeCheckable?: boolean | React.ReactNode;
 
   treeExpandedKeys?: Key[];
   treeData?: DataNode[];
   children?: React.ReactNode;
+
+  // TODO:
+  treeCheckable?: boolean | React.ReactNode;
+  treeCheckStrictly?: boolean;
 
   // MISS PROPS:
   // prefixAria: PropTypes.string,
@@ -77,11 +81,9 @@ export interface TreeSelectProps<ValueType = DefaultValueType> {
   //   showCheckedStrategy: PropTypes.oneOf([SHOW_ALL, SHOW_PARENT, SHOW_CHILD]),
 
   //   dropdownMatchSelectWidth: PropTypes.bool,
-  //   treeData: PropTypes.array,
   //   treeDataSimpleMode: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   //   treeNodeFilterProp: PropTypes.string,
   //   treeNodeLabelProp: PropTypes.string,
-  //   treeCheckStrictly: PropTypes.bool,
   //   treeIcon: PropTypes.bool,
   //   treeLine: PropTypes.bool,
   //   treeDefaultExpandAll: PropTypes.bool,
@@ -171,7 +173,7 @@ class TreeSelect<ValueType = DefaultValueType> extends React.Component<
 
   render() {
     const { treeData, expandedKeys } = this.state;
-    const { multiple, treeCheckable } = this.props;
+    const { multiple, treeCheckable, treeCheckStrictly } = this.props;
 
     // Used for tree calculation
     const additionalProps = {
@@ -179,12 +181,18 @@ class TreeSelect<ValueType = DefaultValueType> extends React.Component<
     };
 
     return (
-      <RefTreeSelect
-        mode={multiple || treeCheckable ? 'multiple' : null}
-        {...this.props}
-        options={treeData}
-        {...additionalProps}
-      />
+      <SelectContext.Provider
+        value={{
+          checkable: !!(treeCheckable || treeCheckStrictly),
+        }}
+      >
+        <RefTreeSelect
+          mode={multiple || treeCheckable ? 'multiple' : null}
+          {...this.props}
+          options={treeData}
+          {...additionalProps}
+        />
+      </SelectContext.Provider>
     );
   }
 }

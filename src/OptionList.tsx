@@ -1,9 +1,16 @@
 import React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
-import { RefOptionListProps, OptionListProps } from 'rc-select/lib/OptionList';
+import { RefOptionListProps } from 'rc-select/lib/OptionList';
 import Tree from 'rc-tree';
-import Tree1 from 'rc-tree/lib/Tree';
 import { FlattenDataNode, RawValueType, DataNode, TreeDataNode, Key } from './interface';
+import { SelectContext } from './Context';
+import useKeyValueMapping from './hooks/useKeyValueMapping';
+
+interface TreeEventInfo {
+  node: { key: Key };
+  selected?: boolean;
+  checked?: boolean;
+}
 
 export interface OptionListProps<OptionsType extends object[]> {
   prefixCls: string;
@@ -43,37 +50,31 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     onSelect,
     onToggleOpen,
   } = props;
-  const treeRef = React.useRef<Tree1>();
+  const { checkable } = React.useContext(SelectContext);
 
-  const flattenOptionMap = React.useMemo(() => {
-    const map: Map<Key, FlattenDataNode> = new Map();
-    flattenOptions.forEach((dataNode: FlattenDataNode) => {
-      map.set(dataNode.key, dataNode);
-    });
-    return map;
-  }, [flattenOptions]);
+  const treeRef = React.useRef<Tree>();
 
-  const getValueByKey = React.useCallback(
-    (key: Key, allowDisabled: boolean = false) => {
-      const dataNode = flattenOptionMap.get(key);
+  const { getValueByKey, getKeyByValue } = useKeyValueMapping(flattenOptions);
 
-      if (!dataNode || (!allowDisabled && dataNode.data.disabled)) {
-        return null;
-      }
-
-      return dataNode.data.value;
-    },
-    [flattenOptionMap],
-  );
+  // ========================== Values ==========================
+  const valueKeys = [...values].map(val => getKeyByValue(val));
 
   // ========================== Events ==========================
-  const onInternalSelect = (
-    _: Key[],
-    { node: { key }, selected }: { node: { key: Key }; selected: boolean },
-  ) => {
+  const onInternalSelect = (_: Key[], { node: { key }, selected }: TreeEventInfo) => {
     const value = getValueByKey(key);
     if (value !== null) {
       onSelect(value, { selected });
+    }
+
+    if (!multiple) {
+      onToggleOpen(false);
+    }
+  };
+
+  const onInternalCheck = (_: Key[], { node: { key }, checked }: TreeEventInfo) => {
+    const value = getValueByKey(key);
+    if (value !== null) {
+      onSelect(value, { selected: checked });
     }
 
     if (!multiple) {
@@ -125,11 +126,14 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         itemHeight={itemHeight}
         multiple={multiple}
         // We handle keys by out instead tree self
-        checkedKeys={[]}
-        selectedKeys={[]}
+        checkable={checkable}
+        checkStrictly
+        checkedKeys={checkable ? valueKeys : []}
+        selectedKeys={!checkable ? valueKeys : []}
         // Proxy event out
         onActiveChange={setActiveKey}
         onSelect={onInternalSelect}
+        onCheck={onInternalCheck}
       />
     </div>
   );

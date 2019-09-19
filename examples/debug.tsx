@@ -4,6 +4,19 @@ import React from 'react';
 import TreeSelect, { TreeNode } from '../src';
 import '../assets/index.less';
 
+const treeData = [
+  { value: 'parent', title: 'Parent', children: [{ key: 'child', title: 'Child' }] },
+  {
+    value: 'parent2',
+    title: 'Parent 2',
+    children: new Array(20).fill(null).map((_, index) => ({
+      key: index,
+      title: `Hello_${index}`,
+    })),
+  },
+  { value: 'disabled', title: 'Disabled', disabled: true },
+];
+
 const Demo: React.FC<{}> = () => (
   <div
     onFocus={({ target }) => {
@@ -26,22 +39,8 @@ const Demo: React.FC<{}> = () => (
       </TreeNode>
     </TreeSelect>
 
-    <TreeSelect
-      style={{ width: 200 }}
-      multiple
-      treeData={[
-        { value: 'parent', title: 'Parent', children: [{ key: 'child', title: 'Child' }] },
-        {
-          value: 'parent2',
-          title: 'Parent 2',
-          children: new Array(20).fill(null).map((_, index) => ({
-            key: index,
-            title: `Hello_${index}`,
-          })),
-        },
-        { value: 'disabled', title: 'Disabled', disabled: true },
-      ]}
-    />
+    <TreeSelect style={{ width: 200 }} treeData={treeData} multiple />
+    <TreeSelect style={{ width: 200 }} treeData={treeData} treeCheckable />
     <input />
   </div>
 );
