@@ -14,10 +14,11 @@ import {
 } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
 import { SelectContext } from './Context';
+import useTreeData from './hooks/useTreeData';
 
 const OMIT_PROPS = ['expandedKeys', 'treeData', 'treeCheckable'];
 
-const RefTreeSelect = generateSelector<DataNode[]>({
+const RefSelect = generateSelector<DataNode[]>({
   prefixCls: 'rc-tree-select',
   components: {
     optionList: OptionList,
@@ -53,13 +54,13 @@ export interface TreeSelectProps<ValueType = DefaultValueType> {
   defaultValue?: ValueType;
   placeholder?: React.ReactNode;
 
-  treeExpandedKeys?: Key[];
   treeData?: DataNode[];
   children?: React.ReactNode;
 
   // Event
 
   // TODO:
+  treeExpandedKeys?: Key[];
   treeCheckable?: boolean | React.ReactNode;
   treeCheckStrictly?: boolean;
   onChange?: (value: ValueType, labelList: React.ReactNode[], extra: any) => void;
@@ -118,6 +119,42 @@ interface TreeSelectState<ValueType = DefaultValueType> {
   prevProps: TreeSelectProps<ValueType>;
 }
 
+const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
+  const { multiple, treeCheckable, treeCheckStrictly, treeData, children, onChange } = props;
+
+  // ======================= Tree Data =======================
+  const mergedTreeData = useTreeData(treeData, children);
+
+  // ========================= Value =========================
+  const [value, setValue] = React.useState<DefaultValueType>(props.defaultValue);
+  const mergedValue = 'value' in props ? props.value : value;
+
+  const onInternalChange = (newValue: DefaultValueType, options: DataNode | DataNode[]) => {
+    console.log('~~~>', newValue, options);
+    setValue(newValue);
+
+    if (onChange) {
+      onChange(newValue);
+    }
+  };
+
+  return (
+    <SelectContext.Provider
+      value={{
+        checkable: !!(treeCheckable || treeCheckStrictly),
+      }}
+    >
+      <RefSelect
+        mode={multiple || treeCheckable ? 'multiple' : null}
+        {...props}
+        value={mergedValue}
+        options={mergedTreeData}
+        onChange={onInternalChange}
+      />
+    </SelectContext.Provider>
+  );
+});
+
 // Use class component since typescript not support generic
 // by `forwardRef` with function component yet.
 class TreeSelect<ValueType = DefaultValueType> extends React.Component<
@@ -126,85 +163,8 @@ class TreeSelect<ValueType = DefaultValueType> extends React.Component<
 > {
   static TreeNode = TreeNode;
 
-  static getDerivedStateFromProps(
-    props: TreeSelectProps,
-    { prevProps, ...prevState }: TreeSelectState,
-  ) {
-    const newState: Partial<TreeSelectState> = {
-      prevProps: props,
-    };
-
-    function needSync(propName: string, callback: (prop: any) => void) {
-      if (!prevProps || prevProps[propName] !== props[propName]) {
-        callback(props[propName]);
-        return true;
-      }
-      return false;
-    }
-
-    if ('treeExpandedKeys' in props) {
-      newState.expandedKeys = props.treeExpandedKeys;
-    }
-
-    // ======================= Tree Data =======================
-    // We convert `children` to `treeData` here since we need inject `value` as `key`
-    let treeData = null;
-
-    if (props.treeData) {
-      needSync('treeData', (oriTreeData: DataNode[]) => {
-        treeData = oriTreeData;
-      });
-    } else if (props.children) {
-      needSync('children', (children: React.ReactNode) => {
-        treeData = convertChildrenToData(children);
-      });
-    }
-
-    if (treeData) {
-      newState.treeData = formatTreeData(treeData);
-    }
-
-    // ========================= Value =========================
-
-    return newState;
-  }
-
-  constructor(props: TreeSelectProps<ValueType>) {
-    super(props);
-
-    this.state = {
-      value: 'value' in props ? props.value : props.defaultValue,
-      expandedKeys: [],
-      treeData: null,
-
-      prevProps: null,
-    };
-  }
-
-  onChange = (value: ValueType, options: DataNode | DataNode[]) => {
-    console.log('~~~>', value, options);
-    this.setState({ value });
-  };
-
   render() {
-    const { treeData, value } = this.state;
-    const { multiple, treeCheckable, treeCheckStrictly } = this.props;
-
-    return (
-      <SelectContext.Provider
-        value={{
-          checkable: !!(treeCheckable || treeCheckStrictly),
-        }}
-      >
-        <RefTreeSelect
-          mode={multiple || treeCheckable ? 'multiple' : null}
-          {...this.props}
-          value={value}
-          options={treeData}
-          onChange={this.onChange}
-        />
-      </SelectContext.Provider>
-    );
+    return <RefTreeSelect {...this.props} />;
   }
 }
 

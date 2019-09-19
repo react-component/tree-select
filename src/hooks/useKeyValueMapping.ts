@@ -1,24 +1,10 @@
 import React from 'react';
 import { FlattenDataNode, Key, RawValueType } from '../interface';
 
-function useCacheOptions(flattenOptions: FlattenDataNode[]) {
-  return React.useMemo(() => {
-    const cacheKeyMap: Map<Key, FlattenDataNode> = new Map();
-    const cacheValueMap: Map<RawValueType, FlattenDataNode> = new Map();
-
-    // Cache options by key
-    flattenOptions.forEach((dataNode: FlattenDataNode) => {
-      cacheKeyMap.set(dataNode.key, dataNode);
-      cacheValueMap.set(dataNode.data.value, dataNode);
-    });
-
-    return [cacheKeyMap, cacheValueMap];
-  }, [flattenOptions]);
-}
-
-export default function useKeyValueMapping(flattenOptions: FlattenDataNode[]) {
-  const [cacheKeyMap, cacheValueMap] = useCacheOptions(flattenOptions);
-
+export default function useKeyValueMapping(
+  cacheKeyMap: Map<Key, FlattenDataNode>,
+  cacheValueMap: Map<RawValueType, FlattenDataNode>,
+) {
   const getValueByKey = React.useCallback(
     (key: Key, allowDisabled: boolean = false) => {
       const dataNode = cacheKeyMap.get(key);
@@ -45,5 +31,5 @@ export default function useKeyValueMapping(flattenOptions: FlattenDataNode[]) {
     [cacheValueMap],
   );
 
-  return { getValueByKey, getKeyByValue };
+  return [getValueByKey, getKeyByValue];
 }

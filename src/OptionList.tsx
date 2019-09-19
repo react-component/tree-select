@@ -5,6 +5,7 @@ import Tree from 'rc-tree';
 import { FlattenDataNode, RawValueType, DataNode, TreeDataNode, Key } from './interface';
 import { SelectContext } from './Context';
 import useKeyValueMapping from './hooks/useKeyValueMapping';
+import useKeyValueMap from './hooks/useKeyValueMap';
 
 interface TreeEventInfo {
   node: { key: Key };
@@ -54,7 +55,8 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
 
   const treeRef = React.useRef<Tree>();
 
-  const { getValueByKey, getKeyByValue } = useKeyValueMapping(flattenOptions);
+  const [cacheKeyMap, cacheValueMap] = useKeyValueMap(flattenOptions);
+  const [getValueByKey, getKeyByValue] = useKeyValueMapping(cacheKeyMap, cacheValueMap);
 
   // ========================== Values ==========================
   const valueKeys = [...values].map(val => getKeyByValue(val));
