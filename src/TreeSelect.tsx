@@ -15,7 +15,7 @@ import {
 import warningProps from './utils/warningPropsUtil';
 import { SelectContext } from './Context';
 
-const OMIT_PROPS = ['expandedKeys', 'treeData'];
+const OMIT_PROPS = ['expandedKeys', 'treeData', 'treeCheckable'];
 
 const RefTreeSelect = generateSelector<DataNode[]>({
   prefixCls: 'rc-tree-select',
@@ -47,27 +47,30 @@ export interface TreeSelectProps<ValueType = DefaultValueType> {
   style?: React.CSSProperties;
   className?: string;
   multiple?: boolean;
+  showArrow?: boolean;
+  open?: boolean;
+  value?: ValueType;
+  defaultValue?: ValueType;
+  placeholder?: React.ReactNode;
 
   treeExpandedKeys?: Key[];
   treeData?: DataNode[];
   children?: React.ReactNode;
 
+  // Event
+
   // TODO:
   treeCheckable?: boolean | React.ReactNode;
   treeCheckStrictly?: boolean;
+  onChange?: (value: ValueType, labelList: React.ReactNode[], extra: any) => void;
 
   // MISS PROPS:
-  // prefixAria: PropTypes.string,
-  // showArrow: PropTypes.bool,
-  //   open: PropTypes.bool,
   //   value: valueProp,
   //   autoFocus: PropTypes.bool,
 
   //   defaultOpen: PropTypes.bool,
-  //   defaultValue: valueProp,
 
   //   showSearch: PropTypes.bool,
-  //   placeholder: PropTypes.node,
   //   inputValue: PropTypes.string, // [Legacy] Deprecated. Use `searchValue` instead.
   //   searchValue: PropTypes.string,
   //   autoClearSearchValue: PropTypes.bool,
@@ -97,7 +100,6 @@ export interface TreeSelectProps<ValueType = DefaultValueType> {
   //   onSearch: PropTypes.func,
   //   onSelect: PropTypes.func,
   //   onDeselect: PropTypes.func,
-  //   onChange: PropTypes.func,
   //   onDropdownVisibleChange: PropTypes.func,
 
   //   onTreeExpand: PropTypes.func,
@@ -109,6 +111,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType> {
 }
 
 interface TreeSelectState<ValueType = DefaultValueType> {
+  value: ValueType;
   expandedKeys: Key[];
   treeData: DataNode[];
 
@@ -161,24 +164,31 @@ class TreeSelect<ValueType = DefaultValueType> extends React.Component<
       newState.treeData = formatTreeData(treeData);
     }
 
+    // ========================= Value =========================
+
     return newState;
   }
 
-  state = {
-    expandedKeys: [],
-    treeData: null,
+  constructor(props: TreeSelectProps<ValueType>) {
+    super(props);
 
-    prevProps: null,
+    this.state = {
+      value: 'value' in props ? props.value : props.defaultValue,
+      expandedKeys: [],
+      treeData: null,
+
+      prevProps: null,
+    };
+  }
+
+  onChange = (value: ValueType, options: DataNode | DataNode[]) => {
+    console.log('~~~>', value, options);
+    this.setState({ value });
   };
 
   render() {
-    const { treeData, expandedKeys } = this.state;
+    const { treeData, value } = this.state;
     const { multiple, treeCheckable, treeCheckStrictly } = this.props;
-
-    // Used for tree calculation
-    const additionalProps = {
-      expandedKeys,
-    };
 
     return (
       <SelectContext.Provider
@@ -189,8 +199,9 @@ class TreeSelect<ValueType = DefaultValueType> extends React.Component<
         <RefTreeSelect
           mode={multiple || treeCheckable ? 'multiple' : null}
           {...this.props}
+          value={value}
           options={treeData}
-          {...additionalProps}
+          onChange={this.onChange}
         />
       </SelectContext.Provider>
     );
