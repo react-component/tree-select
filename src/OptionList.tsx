@@ -46,13 +46,8 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         case KeyCode.DOWN:
         case KeyCode.LEFT:
         case KeyCode.RIGHT:
-
-        // >>> Operation keys
-        case KeyCode.SPACE:
-        case KeyCode.ENTER: {
           treeRef.current.onKeyDown(event as React.KeyboardEvent<HTMLDivElement>);
           break;
-        }
       }
     },
     onKeyUp: () => {},
@@ -71,6 +66,9 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         treeData={options as TreeDataNode[]}
         height={height}
         itemHeight={itemHeight}
+        // We handle keys by out instead tree self
+        checkedKeys={[]}
+        selectedKeys={[]}
       />
     </div>
   );
