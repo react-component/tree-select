@@ -1,16 +1,14 @@
 import React from 'react';
-import generateSelector from 'rc-select/lib/generate';
+import generateSelector, { SelectProps } from 'rc-select/lib/generate';
 import { getLabeledValue } from 'rc-select/lib/utils/valueUtil';
 import OptionList from './OptionList';
 import TreeNode from './TreeNode';
-import { Key, DefaultValueType, DataNode, LabelValueType } from './interface';
-import { convertChildrenToData } from './utils/legacyUtil';
+import { Key, DefaultValueType, DataNode, LabelValueType, SimpleModeConfig } from './interface';
 import {
   flattenOptions,
   filterOptions,
   isValueDisabled,
   findValueOption,
-  formatTreeData,
   getRawValues,
 } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
@@ -18,6 +16,7 @@ import { SelectContext } from './Context';
 import useTreeData from './hooks/useTreeData';
 import useKeyValueMap from './hooks/useKeyValueMap';
 import useKeyValueMapping from './hooks/useKeyValueMapping';
+import { CheckedStrategy } from './strategies';
 
 const OMIT_PROPS = ['expandedKeys', 'treeData', 'treeCheckable'];
 
@@ -70,6 +69,9 @@ export interface TreeSelectProps<ValueType = DefaultValueType> {
   maxTagCount?: number;
   maxTagPlaceholder?: (omittedValues: LabelValueType[]) => React.ReactNode;
 
+  treeNodeFilterProp?: string;
+  treeNodeLabelProp?: string;
+  treeDataSimpleMode?: boolean | SimpleModeConfig;
   treeData?: DataNode[];
   children?: React.ReactNode;
 
@@ -81,6 +83,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType> {
   treeExpandedKeys?: Key[];
   treeCheckable?: boolean | React.ReactNode;
   treeCheckStrictly?: boolean;
+  showCheckedStrategy?: CheckedStrategy;
   onChange?: (value: ValueType, labelList: React.ReactNode[], extra: any) => void;
 
   // MISS PROPS:
@@ -88,9 +91,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType> {
   //   showCheckedStrategy: PropTypes.oneOf([SHOW_ALL, SHOW_PARENT, SHOW_CHILD]),
 
   //   dropdownMatchSelectWidth: PropTypes.bool,
-  //   treeDataSimpleMode: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-  //   treeNodeFilterProp: PropTypes.string,
-  //   treeNodeLabelProp: PropTypes.string,
+  //
   //   treeIcon: PropTypes.bool,
   //   treeLine: PropTypes.bool,
   //   treeDefaultExpandAll: PropTypes.bool,
@@ -127,6 +128,9 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
     treeCheckable,
     treeCheckStrictly,
     labelInValue,
+    treeNodeFilterProp,
+    treeNodeLabelProp,
+    treeDataSimpleMode,
     treeData,
     children,
     onChange,
@@ -135,7 +139,10 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
   const mergedMultiple = multiple || mergedCheckable;
 
   // ======================= Tree Data =======================
-  const mergedTreeData = useTreeData(treeData, children);
+  const mergedTreeData = useTreeData(treeData, children, {
+    labelProp: treeNodeLabelProp,
+    simpleMode: treeDataSimpleMode,
+  });
   const flattedOptions = React.useMemo(() => flattenOptions(mergedTreeData), [mergedTreeData]);
   const [cacheKeyMap, cacheValueMap] = useKeyValueMap(flattedOptions);
   const [getEntityByKey, getEntityByValue] = useKeyValueMapping(cacheKeyMap, cacheValueMap);
@@ -162,6 +169,17 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
     }
   };
 
+  // ======================== Render =========================
+  // We pass some props into select props style
+  const selectProps: Partial<SelectProps<any, any>> = {};
+
+  if (treeNodeFilterProp) {
+    selectProps.optionFilterProp = treeNodeFilterProp;
+  }
+  if (treeNodeLabelProp) {
+    selectProps.optionLabelProp = treeNodeLabelProp;
+  }
+
   return (
     <SelectContext.Provider
       value={{
@@ -171,6 +189,7 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
       <RefSelect
         mode={mergedMultiple ? 'multiple' : null}
         {...props}
+        {...selectProps}
         value={mergedValue}
         options={mergedTreeData}
         onChange={onInternalChange}

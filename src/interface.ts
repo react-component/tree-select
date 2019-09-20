@@ -15,6 +15,7 @@ export type DefaultValueType = RawValueType | RawValueType[] | LabelValueType | 
 export interface DataNode {
   value?: RawValueType;
   title?: React.ReactNode;
+  label?: React.ReactNode;
   key?: Key;
   disabled?: boolean;
   disableCheckbox?: boolean;
@@ -36,4 +37,10 @@ export interface FlattenDataNode {
   data: DataNode;
   key: Key;
   level: number;
+}
+
+export interface SimpleModeConfig {
+  id?: Key;
+  pId?: Key;
+  rootPId?: Key;
 }

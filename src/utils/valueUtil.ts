@@ -32,36 +32,6 @@ export function isValueDisabled(value: RawValueType, options: FlattenDataNode[])
   return false;
 }
 
-/**
- * Format `treeData` with `value` & `key` which is used for calculation
- */
-export function formatTreeData(treeData: DataNode[]): InnerDataNode[] {
-  return treeData.map(node => {
-    const { key, title, value, children, ...rest } = node;
-
-    const mergedValue = 'value' in node ? value : key;
-
-    const dataNode: InnerDataNode = {
-      ...rest,
-      key: mergedValue,
-      value: mergedValue,
-      label: title,
-      title,
-    };
-
-    warning(
-      key === null || key === undefined || value === undefined || String(key) === String(value),
-      '`key` or `value` with TreeNode must be the same or you can remove one of them.',
-    );
-
-    if ('children' in node) {
-      dataNode.children = formatTreeData(children);
-    }
-
-    return dataNode;
-  });
-}
-
 interface TreeDataNode {
   key: Key;
 }

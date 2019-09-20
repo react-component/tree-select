@@ -6,17 +6,17 @@ import '../assets/index.less';
 import { RawValueType } from '../src/interface';
 
 const treeData = [
-  { value: 'parent', title: 'Parent', children: [{ key: 'child', title: 'Child' }] },
+  { value: 'parent', label: 'Parent', children: [{ key: 'child', label: 'Child' }] },
   {
     value: 'parent2',
-    title: 'Parent 2',
+    label: 'Parent 2',
     children: new Array(20).fill(null).map((_, index) => ({
       key: index,
-      title: `Hello_${index}`,
+      label: `Hello_${index}`,
     })),
   },
-  { value: 'disabled', title: 'Disabled', disabled: true },
-  { value: 'disableCheckbox', title: 'No Checkbox', disableCheckbox: true },
+  { value: 'disabled', label: 'Disabled', disabled: true },
+  { value: 'disableCheckbox', label: 'No Checkbox', disableCheckbox: true },
 ];
 
 const Demo: React.FC<{}> = () => {
