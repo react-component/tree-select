@@ -20,6 +20,7 @@ const treeData = [
 ];
 
 const Demo: React.FC<{}> = () => {
+  const [search, setSearch] = React.useState<string>('');
   const [value, setValue] = React.useState<RawValueType[]>([]);
 
   return (
@@ -45,12 +46,25 @@ const Demo: React.FC<{}> = () => {
       </TreeSelect>
 
       <TreeSelect style={{ width: 200 }} treeData={treeData} multiple />
-      <TreeSelect style={{ width: 200 }} treeData={treeData} treeCheckable />
       <TreeSelect
         style={{ width: 200 }}
         treeData={treeData}
+        placeholder="Search Control"
         treeCheckable
+        searchValue={search}
+        onSearch={str => {
+          console.log('Search:', str);
+          setSearch(str);
+        }}
+      />
+      <TreeSelect
+        autoFocus
+        style={{ width: 200 }}
+        treeData={treeData}
+        treeCheckable
+        showSearch={false}
         value={value}
+        maxTagCount={2}
         onChange={(newValue, ...args) => {
           console.log('Change:', newValue, ...args);
           setValue(newValue);

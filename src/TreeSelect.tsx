@@ -3,7 +3,7 @@ import generateSelector from 'rc-select/lib/generate';
 import { getLabeledValue } from 'rc-select/lib/utils/valueUtil';
 import OptionList from './OptionList';
 import TreeNode from './TreeNode';
-import { Key, DefaultValueType, DataNode } from './interface';
+import { Key, DefaultValueType, DataNode, LabelValueType } from './interface';
 import { convertChildrenToData } from './utils/legacyUtil';
 import {
   flattenOptions,
@@ -50,17 +50,31 @@ export interface TreeSelectProps<ValueType = DefaultValueType> {
   prefixCls?: string;
   style?: React.CSSProperties;
   className?: string;
+  autoFocus?: boolean;
   multiple?: boolean;
   showArrow?: boolean;
+  showSearch?: boolean;
   open?: boolean;
+  defaultOpen?: boolean;
   value?: ValueType;
   defaultValue?: ValueType;
+  disabled?: boolean;
+
   placeholder?: React.ReactNode;
+  /** @deprecated Use `searchValue` instead */
+  inputValue?: string;
+  searchValue?: string;
+  autoClearSearchValue?: boolean;
+
+  maxTagTextLength?: number;
+  maxTagCount?: number;
+  maxTagPlaceholder?: (omittedValues: LabelValueType[]) => React.ReactNode;
 
   treeData?: DataNode[];
   children?: React.ReactNode;
 
   // Event
+  onSearch?: (value: string) => void;
 
   // TODO:
   labelInValue?: boolean;
@@ -70,21 +84,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType> {
   onChange?: (value: ValueType, labelList: React.ReactNode[], extra: any) => void;
 
   // MISS PROPS:
-  //   value: valueProp,
-  //   autoFocus: PropTypes.bool,
-
-  //   defaultOpen: PropTypes.bool,
-
-  //   showSearch: PropTypes.bool,
-  //   inputValue: PropTypes.string, // [Legacy] Deprecated. Use `searchValue` instead.
-  //   searchValue: PropTypes.string,
-  //   autoClearSearchValue: PropTypes.bool,
   //   searchPlaceholder: PropTypes.node, // [Legacy] Confuse with placeholder
-  //   disabled: PropTypes.bool,
-  //   children: PropTypes.node,
-  //   maxTagCount: PropTypes.number,
-  //   maxTagPlaceholder: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-  //   maxTagTextLength: PropTypes.number,
   //   showCheckedStrategy: PropTypes.oneOf([SHOW_ALL, SHOW_PARENT, SHOW_CHILD]),
 
   //   dropdownMatchSelectWidth: PropTypes.bool,
@@ -101,7 +101,6 @@ export interface TreeSelectProps<ValueType = DefaultValueType> {
 
   //   notFoundContent: PropTypes.node,
 
-  //   onSearch: PropTypes.func,
   //   onSelect: PropTypes.func,
   //   onDeselect: PropTypes.func,
   //   onDropdownVisibleChange: PropTypes.func,

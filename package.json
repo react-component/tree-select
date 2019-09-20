@@ -58,7 +58,7 @@
   },
   "dependencies": {
     "classnames": "2.x",
-    "rc-select": "^10.0.0-alpha.15",
+    "rc-select": "^10.0.0-alpha.17",
     "rc-tree": "^3.0.0-alpha.33",
     "rc-util": "^4.9.0"
   }
