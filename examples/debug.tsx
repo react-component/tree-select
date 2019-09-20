@@ -16,6 +16,7 @@ const treeData = [
     })),
   },
   { value: 'disabled', title: 'Disabled', disabled: true },
+  { value: 'disableCheckbox', title: 'No Checkbox', disableCheckbox: true },
 ];
 
 const Demo: React.FC<{}> = () => {

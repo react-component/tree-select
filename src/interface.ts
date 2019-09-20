@@ -17,6 +17,7 @@ export interface DataNode {
   title?: React.ReactNode;
   key?: Key;
   disabled?: boolean;
+  disableCheckbox?: boolean;
   children?: DataNode[];
 }
 

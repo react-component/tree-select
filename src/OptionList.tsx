@@ -65,21 +65,10 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   });
 
   // ========================== Events ==========================
-  const onInternalSelect = (_: Key[], { node: { key }, selected }: TreeEventInfo) => {
-    const entity = getEntityByKey(key);
+  const onInternalSelect = (_: Key[], { node: { key } }: TreeEventInfo) => {
+    const entity = getEntityByKey(key, checkable ? 'checkbox' : 'select');
     if (entity !== null) {
-      onSelect(entity.data.value, { selected });
-    }
-
-    if (!multiple) {
-      onToggleOpen(false);
-    }
-  };
-
-  const onInternalCheck = (_: Key[], { node: { key }, checked }: TreeEventInfo) => {
-    const entity = getEntityByKey(key);
-    if (entity !== null) {
-      onSelect(entity.data.value, { selected: checked });
+      onSelect(entity.data.value, { selected: !values.has(entity.data.value) });
     }
 
     if (!multiple) {
@@ -146,7 +135,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         // Proxy event out
         onActiveChange={setActiveKey}
         onSelect={onInternalSelect}
-        onCheck={onInternalCheck}
+        onCheck={onInternalSelect}
       />
     </div>
   );
