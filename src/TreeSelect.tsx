@@ -4,7 +4,7 @@ import { getLabeledValue } from 'rc-select/lib/utils/valueUtil';
 import { convertDataToEntities } from 'rc-tree/lib/utils/treeUtil';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 import { IconType } from 'rc-tree/lib/interface';
-import { FilterFunc } from 'rc-select/lib/interface/generator';
+import { FilterFunc, INTERNAL_PROPS_MARK } from 'rc-select/lib/interface/generator';
 import warning from 'rc-util/lib/warning';
 import OptionList from './OptionList';
 import TreeNode from './TreeNode';
@@ -147,6 +147,8 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
     onChange,
     onTreeExpand,
     onDropdownVisibleChange,
+    onSelect,
+    onDeselect,
   } = props;
   const mergedCheckable = !!(treeCheckable || treeCheckStrictly);
   const mergedMultiple = multiple || mergedCheckable;
@@ -225,11 +227,11 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
         eventValues = formatStrategyValues(newRawValues, showCheckedStrategy, conductKeyEntities);
       }
 
-      const { triggerValue, selected } = extra;
+      const { triggerValue, selected } = extra || { triggerValue: undefined, selected: undefined };
 
       const returnValues = labelInValue ? convertToLabelValues(eventValues) : eventValues;
       onChange(
-        returnValues,
+        mergedMultiple ? returnValues : returnValues[0],
         labelInValue
           ? null
           : eventValues.map(val => {
@@ -249,7 +251,7 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
     }
   };
 
-  const onInternalSelect = (selectValue: RawValueType) => {
+  const onInternalSelect = (selectValue: RawValueType, options: DataNode[]) => {
     if (!mergedMultiple) {
       // Single mode always set value
       triggerChange([selectValue], { selected: true, triggerValue: selectValue });
@@ -262,10 +264,14 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
       }
 
       triggerChange(newRawValues, { selected: true, triggerValue: selectValue });
+
+      if (onSelect) {
+        onSelect(selectValue, options);
+      }
     }
   };
 
-  const onInternalDeselect = (selectValue: RawValueType) => {
+  const onInternalDeselect = (selectValue: RawValueType, options: DataNode[]) => {
     let newRawValues = removeValue(rawValues, getRawValue(selectValue, labelInValue));
 
     // Remove keys if tree conduction
@@ -278,6 +284,14 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
     }
 
     triggerChange(newRawValues, { selected: false, triggerValue: selectValue });
+
+    if (onDeselect) {
+      onDeselect(selectValue, options);
+    }
+  };
+
+  const onInternalClear = () => {
+    triggerChange([], null);
   };
 
   // ========================= Open ==========================
@@ -303,6 +317,10 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
   // We pass some props into select props style
   const selectProps: Partial<SelectProps<any, any>> = {
     optionLabelProp: mergeTreeNodeLabelProp,
+    internalProps: {
+      mark: INTERNAL_PROPS_MARK,
+      onClear: onInternalClear,
+    },
   };
 
   if (treeNodeFilterProp) {

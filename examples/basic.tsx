@@ -205,28 +205,18 @@ class Demo extends React.Component {
           open={tsOpen}
           onChange={(val, ...args) => {
             console.log('onChange', val, ...args);
-            if (val === '0-0-0-0-value') {
-              this.setState({ tsOpen: true });
-            } else {
-              this.setState({ tsOpen: false });
-            }
             this.setState({ value: val });
           }}
-          onDropdownVisibleChange={(v, info) => {
-            console.log('single onDropdownVisibleChange', v, info);
-            // document clicked
-            if (info.documentClickClose && value === '0-0-0-0-value') {
-              return false;
-            }
+          onDropdownVisibleChange={v => {
+            console.log('single onDropdownVisibleChange', v);
             this.setState({
               tsOpen: v,
             });
-            return true;
           }}
           onSelect={this.onSelect}
         />
 
-        {/* <h2>single select (just select children)</h2>
+        <h2>single select (just select children)</h2>
         <TreeSelect
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
@@ -244,7 +234,7 @@ class Demo extends React.Component {
           onChange={this.onChangeChildren}
         />
 
-        <h2>multiple select</h2>
+        {/* <h2>multiple select</h2>
         <TreeSelect
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
