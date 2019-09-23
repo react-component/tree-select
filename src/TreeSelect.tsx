@@ -150,6 +150,7 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
   } = props;
   const mergedCheckable = !!(treeCheckable || treeCheckStrictly);
   const mergedMultiple = multiple || mergedCheckable;
+  const treeConduction = treeCheckable && !treeCheckStrictly;
 
   // ======================= Tree Data =======================
   const mergeTreeNodeLabelProp = treeNodeLabelProp || (treeData ? 'label' : 'title');
@@ -165,7 +166,7 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
 
   // Only generate keyEntities for check conduction when is `treeCheckable`
   const { keyEntities: conductKeyEntities } = React.useMemo(() => {
-    if (treeCheckable && !treeCheckStrictly) {
+    if (treeConduction) {
       return convertDataToEntities(mergedTreeData as any);
     }
     return { keyEntities: null };
@@ -179,7 +180,7 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
     const newRawValues = getRawValues(mergedValue, mergedMultiple, labelInValue);
 
     // We need do conduction of values
-    if (treeCheckable && !treeCheckStrictly) {
+    if (treeConduction) {
       const { checkedKeys, halfCheckedKeys } = conductCheck(newRawValues, true, conductKeyEntities);
       return [checkedKeys, halfCheckedKeys];
     }
@@ -192,17 +193,9 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
     return values !== undefined ? values : '';
   }, [rawValues]);
 
-  const triggerChange = (newRawValues: RawValueType[], info: { selected?: boolean; key?: Key }) => {
-    const { selected, key } = info || {};
+  const triggerChange = (newRawValues: RawValueType[]) => {
     setValue(mergedMultiple ? newRawValues : newRawValues[0]);
     if (onChange) {
-      // TODO: handle conduction
-      // We need process conduction in addition
-      if (treeCheckable && !treeCheckStrictly) {
-        // newRawValues = processConduction(newRawValues);
-        console.log('=>', newRawValues);
-      }
-
       onChange(
         labelInValue
           ? newRawValues.map(val => {
@@ -224,19 +217,31 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
   const onInternalSelect = (selectValue: RawValueType) => {
     if (!mergedMultiple) {
       // Single mode always set value
-      triggerChange([selectValue], null);
+      triggerChange([selectValue]);
     } else {
-      triggerChange(addValue(rawValues, getRawValue(selectValue, labelInValue)), {
-        selected: true,
-        key: selectValue,
-      });
+      let newRawValues = addValue(rawValues, getRawValue(selectValue, labelInValue));
+
+      // Add keys if tree conduction
+      if (treeConduction) {
+        newRawValues = conductCheck(newRawValues, true, conductKeyEntities).checkedKeys;
+      }
+
+      triggerChange(newRawValues);
     }
   };
   const onInternalDeselect = (selectValue: RawValueType) => {
-    triggerChange(removeValue(rawValues, getRawValue(selectValue, labelInValue)), {
-      selected: false,
-      key: selectValue,
-    });
+    let newRawValues = removeValue(rawValues, getRawValue(selectValue, labelInValue));
+
+    // Remove keys if tree conduction
+    if (treeConduction) {
+      newRawValues = conductCheck(
+        newRawValues,
+        { checked: false, halfCheckedKeys: rawHalfCheckedValues },
+        conductKeyEntities,
+      ).checkedKeys;
+    }
+
+    triggerChange(newRawValues);
   };
 
   // ======================== Render =========================
