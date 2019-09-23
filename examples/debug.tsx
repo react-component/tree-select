@@ -57,7 +57,7 @@ const Demo: React.FC<{}> = () => {
           setSearch(str);
         }}
       />
-      <TreeSelect
+      {/* <TreeSelect
         autoFocus
         style={{ width: 200 }}
         treeData={treeData}
@@ -70,7 +70,7 @@ const Demo: React.FC<{}> = () => {
           setValue(newValue);
         }}
         placeholder="Control Mode"
-      />
+      /> */}
       <input />
     </div>
   );

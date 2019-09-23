@@ -47,11 +47,10 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     options,
     flattenOptions,
     multiple,
-    values,
     onSelect,
     onToggleOpen,
   } = props;
-  const { checkable } = React.useContext(SelectContext);
+  const { checkable, checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
 
   const treeRef = React.useRef<Tree>();
 
@@ -59,7 +58,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   const [getEntityByKey, getEntityByValue] = useKeyValueMapping(cacheKeyMap, cacheValueMap);
 
   // ========================== Values ==========================
-  const valueKeys = [...values].map(val => {
+  const valueKeys = checkedKeys.map(val => {
     const entity = getEntityByValue(val);
     return entity ? entity.key : null;
   });
@@ -68,7 +67,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   const onInternalSelect = (_: Key[], { node: { key } }: TreeEventInfo) => {
     const entity = getEntityByKey(key, checkable ? 'checkbox' : 'select');
     if (entity !== null) {
-      onSelect(entity.data.value, { selected: !values.has(entity.data.value) });
+      onSelect(entity.data.value, { selected: !checkedKeys.includes(entity.data.value) });
     }
 
     if (!multiple) {
@@ -98,7 +97,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
           if (entity !== null) {
             onInternalSelect(null, {
               node: { key: activeKey },
-              selected: !values.has(entity.data.value),
+              selected: !checkedKeys.includes(entity.data.value),
             });
           }
           break;

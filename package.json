@@ -60,7 +60,7 @@
   "dependencies": {
     "classnames": "2.x",
     "rc-select": "^10.0.0-alpha.18",
-    "rc-tree": "^3.0.0-alpha.33",
+    "rc-tree": "^3.0.0-alpha.34",
     "rc-util": "^4.9.0"
   }
 }
