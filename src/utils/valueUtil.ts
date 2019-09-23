@@ -6,10 +6,11 @@ import {
   Key,
   RawValueType,
   DataNode,
-  InnerDataNode,
   DefaultValueType,
   LabelValueType,
+  LegacyDataNode,
 } from '../interface';
+import { fillLegacyProps } from './legacyUtil';
 
 export function toArray<T>(value: T | T[]): T[] {
   if (Array.isArray(value)) {
@@ -85,6 +86,16 @@ export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
   }));
 }
 
+function getDefaultFilterOption(optionFilterProp: string) {
+  return (searchValue: string, dataNode: LegacyDataNode) => {
+    const value = dataNode[optionFilterProp];
+
+    return String(value)
+      .toLowerCase()
+      .includes(String(searchValue).toLowerCase());
+  };
+}
+
 /** Filter options and return a new options by the search text */
 export function filterOptions(
   searchValue: string,
@@ -92,22 +103,48 @@ export function filterOptions(
   {
     optionFilterProp,
     filterOption,
-  }: { optionFilterProp: string; filterOption: boolean | FilterFunc<DataNode> },
-) {
-  // TODO: handle this
-  return options;
+  }: { optionFilterProp: string; filterOption: boolean | FilterFunc<LegacyDataNode> },
+): DataNode[] {
+  if (filterOption === false) {
+    return options;
+  }
+
+  let filterOptionFunc: FilterFunc<LegacyDataNode>;
+  if (typeof filterOption === 'function') {
+    filterOptionFunc = filterOption;
+  } else {
+    filterOptionFunc = getDefaultFilterOption(optionFilterProp);
+  }
+
+  function dig(list: DataNode[]): DataNode[] {
+    return list
+      .map(dataNode => {
+        const wrappedDataNode = fillLegacyProps(dataNode);
+
+        // Skip if not match
+        if (!filterOptionFunc(searchValue, wrappedDataNode)) {
+          return null;
+        }
+
+        const { children, ...rest } = dataNode;
+
+        return {
+          ...rest,
+          children: children && dig(children),
+        };
+      })
+      .filter(node => node);
+  }
+
+  return dig(options);
 }
 
 export function getRawValue(value: DefaultValueType, labelInValue: boolean): RawValueType {
   return labelInValue ? (value as LabelValueType).value : (value as RawValueType);
 }
 
-export function getRawValues(
-  value: DefaultValueType,
-  multiple: boolean,
-  labelInValue: boolean,
-): RawValueType[] {
-  const values = ((multiple ? value : [value]) as (RawValueType | LabelValueType)[]) || [];
+export function getRawValues(value: DefaultValueType, labelInValue: boolean): RawValueType[] {
+  const values = toArray(value);
 
   return values.map(val => getRawValue(val, labelInValue));
 }

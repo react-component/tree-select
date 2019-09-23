@@ -69,6 +69,7 @@ const Demo: React.FC<{}> = () => {
         showCheckedStrategy="SHOW_PARENT"
         value={value}
         maxTagCount={2}
+        treeDefaultExpandedKeys={['parent']}
         onChange={(newValue, ...args) => {
           console.log('Change:', newValue, ...args);
           setValue(newValue);

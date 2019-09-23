@@ -50,7 +50,18 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     onSelect,
     onToggleOpen,
   } = props;
-  const { checkable, checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
+  const {
+    checkable,
+    checkedKeys,
+    halfCheckedKeys,
+    treeExpandedKeys,
+    treeDefaultExpandAll,
+    treeDefaultExpandedKeys,
+    onTreeExpand,
+    treeIcon,
+    switcherIcon,
+    treeLine,
+  } = React.useContext(SelectContext);
 
   const treeRef = React.useRef<Tree>();
 
@@ -62,6 +73,18 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     const entity = getEntityByValue(val);
     return entity ? entity.key : null;
   });
+
+  // =========================== Keys ===========================
+  const [expandedKeys, setExpandedKeys] = React.useState<Key[]>(treeDefaultExpandedKeys);
+  const mergedExpandedKeys = treeExpandedKeys || expandedKeys;
+
+  const onInternalExpand = (keys: Key[]) => {
+    setExpandedKeys(keys);
+
+    if (onTreeExpand) {
+      onTreeExpand(keys);
+    }
+  };
 
   // ========================== Events ==========================
   const onInternalSelect = (_: Key[], { node: { key } }: TreeEventInfo) => {
@@ -126,15 +149,21 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         height={height}
         itemHeight={itemHeight}
         multiple={multiple}
+        icon={treeIcon}
+        switcherIcon={switcherIcon}
+        showLine={treeLine}
         // We handle keys by out instead tree self
         checkable={checkable}
         checkStrictly
         checkedKeys={checkable ? valueKeys : []}
         selectedKeys={!checkable ? valueKeys : []}
+        expandedKeys={mergedExpandedKeys}
+        defaultExpandAll={treeDefaultExpandAll}
         // Proxy event out
         onActiveChange={setActiveKey}
         onSelect={onInternalSelect}
         onCheck={onInternalSelect}
+        onExpand={onInternalExpand}
       />
     </div>
   );

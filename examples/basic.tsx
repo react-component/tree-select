@@ -150,7 +150,7 @@ class Demo extends React.Component {
     } = this.state;
     return (
       <div style={{ margin: 20 }}>
-        {/* <h2>tree-select in dialog</h2>
+        <h2>tree-select in dialog</h2>
         <button type="button" className="btn btn-primary" onClick={this.onClick}>
           show dialog
         </button>
@@ -168,7 +168,7 @@ class Demo extends React.Component {
                 style={{ width: 300 }}
                 transitionName="rc-tree-select-dropdown-slide-up"
                 choiceTransitionName="rc-tree-select-selection__choice-zoom"
-                dropdownStyle={{ maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
+                // dropdownStyle={{ maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
                 placeholder={<i>请下拉选择</i>}
                 searchPlaceholder="please search"
                 showSearch
@@ -226,7 +226,7 @@ class Demo extends React.Component {
           onSelect={this.onSelect}
         />
 
-        <h2>single select (just select children)</h2>
+        {/* <h2>single select (just select children)</h2>
         <TreeSelect
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
@@ -307,7 +307,7 @@ class Demo extends React.Component {
           onChange={this.onChangeLV}
         /> */}
 
-        <h2>use treeDataSimpleMode</h2>
+        {/* <h2>use treeDataSimpleMode</h2>
         <TreeSelect
           style={{ width: 300 }}
           // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
@@ -327,7 +327,7 @@ class Demo extends React.Component {
           showCheckedStrategy={SHOW_PARENT}
           onChange={this.onChange}
           onSelect={this.onSelect}
-        />
+        /> */}
 
         {/* <h2>Testing in extreme conditions (Boundary conditions test) </h2>
         <TreeSelect

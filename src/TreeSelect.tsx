@@ -3,6 +3,9 @@ import generateSelector, { SelectProps } from 'rc-select/lib/generate';
 import { getLabeledValue } from 'rc-select/lib/utils/valueUtil';
 import { convertDataToEntities } from 'rc-tree/lib/utils/treeUtil';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
+import { IconType } from 'rc-tree/lib/interface';
+import { FilterFunc } from 'rc-select/lib/interface/generator';
+import warning from 'rc-util/lib/warning';
 import OptionList from './OptionList';
 import TreeNode from './TreeNode';
 import {
@@ -13,6 +16,7 @@ import {
   SimpleModeConfig,
   RawValueType,
   ChangeEventExtra,
+  LegacyDataNode,
 } from './interface';
 import {
   flattenOptions,
@@ -60,11 +64,19 @@ const RefSelect = generateSelector<DataNode[]>({
   },
 });
 
-export interface TreeSelectProps<ValueType = DefaultValueType> {
-  prefixCls?: string;
-  style?: React.CSSProperties;
-  className?: string;
-  autoFocus?: boolean;
+export interface TreeSelectProps<ValueType = DefaultValueType>
+  extends Omit<
+    SelectProps<DataNode[], ValueType>,
+    | 'onChange'
+    | 'mode'
+    | 'menuItemSelectedIcon'
+    | 'dropdownRender'
+    | 'backfill'
+    | 'getInputElement'
+    | 'optionLabelProp'
+    | 'tokenSeparators'
+    | 'filterOption'
+  > {
   multiple?: boolean;
   showArrow?: boolean;
   showSearch?: boolean;
@@ -84,57 +96,32 @@ export interface TreeSelectProps<ValueType = DefaultValueType> {
   maxTagCount?: number;
   maxTagPlaceholder?: (omittedValues: LabelValueType[]) => React.ReactNode;
 
+  loadData?: (dataNode: LegacyDataNode) => Promise<void>;
   treeNodeFilterProp?: string;
   treeNodeLabelProp?: string;
   treeDataSimpleMode?: boolean | SimpleModeConfig;
-  treeData?: DataNode[];
-  children?: React.ReactNode;
-
-  // Event
-  onSearch?: (value: string) => void;
-
-  // TODO:
-  labelInValue?: boolean;
   treeExpandedKeys?: Key[];
+  treeDefaultExpandedKeys?: Key[];
   treeCheckable?: boolean | React.ReactNode;
   treeCheckStrictly?: boolean;
   showCheckedStrategy?: CheckedStrategy;
+  treeDefaultExpandAll?: boolean;
+  treeData?: DataNode[];
+  treeLine?: boolean;
+  treeIcon?: IconType;
+  switcherIcon?: IconType;
+  children?: React.ReactNode;
+
+  filterTreeNode?: boolean | FilterFunc<LegacyDataNode>;
+
+  // Event
+  onSearch?: (value: string) => void;
   onChange?: (value: ValueType, labelList: React.ReactNode[], extra: ChangeEventExtra) => void;
+  onTreeExpand?: (expandedKeys: Key[]) => void;
 
-  // MISS PROPS:
-  //   searchPlaceholder: PropTypes.node, // [Legacy] Confuse with placeholder
-  //   showCheckedStrategy: PropTypes.oneOf([SHOW_ALL, SHOW_PARENT, SHOW_CHILD]),
-
-  //   dropdownMatchSelectWidth: PropTypes.bool,
-  //
-  //   treeIcon: PropTypes.bool,
-  //   treeLine: PropTypes.bool,
-  //   treeDefaultExpandAll: PropTypes.bool,
-  //   treeDefaultExpandedKeys: PropTypes.array,
-  //   treeExpandedKeys: PropTypes.array,
-  //   loadData: PropTypes.func,
-  //   filterTreeNode: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
-
-  //   notFoundContent: PropTypes.node,
-
-  //   onSelect: PropTypes.func,
-  //   onDeselect: PropTypes.func,
-  //   onDropdownVisibleChange: PropTypes.func,
-
-  //   onTreeExpand: PropTypes.func,
-
-  //   inputIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-  //   clearIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-  //   removeIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-  //   switcherIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-}
-
-interface TreeSelectState<ValueType = DefaultValueType> {
-  value: ValueType;
-  expandedKeys: Key[];
-  treeData: DataNode[];
-
-  prevProps: TreeSelectProps<ValueType>;
+  // Legacy
+  /** `searchPlaceholder` has been removed since search box has been merged into input box */
+  searchPlaceholder?: React.ReactNode;
 }
 
 const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
@@ -144,12 +131,22 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
     treeCheckStrictly,
     showCheckedStrategy = 'SHOW_CHILD',
     labelInValue,
+    loadData,
     treeNodeFilterProp,
     treeNodeLabelProp,
     treeDataSimpleMode,
     treeData,
+    treeExpandedKeys,
+    treeDefaultExpandedKeys,
+    treeDefaultExpandAll,
     children,
+    treeIcon,
+    switcherIcon,
+    treeLine,
+    filterTreeNode,
     onChange,
+    onTreeExpand,
+    onDropdownVisibleChange,
   } = props;
   const mergedCheckable = !!(treeCheckable || treeCheckStrictly);
   const mergedMultiple = multiple || mergedCheckable;
@@ -192,7 +189,7 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
     });
 
   const [rawValues, rawHalfCheckedValues]: [RawValueType[], RawValueType[]] = React.useMemo(() => {
-    const newRawValues = getRawValues(mergedValue, mergedMultiple, labelInValue);
+    const newRawValues = getRawValues(mergedValue, labelInValue);
 
     // We need do conduction of values
     if (treeConduction) {
@@ -283,6 +280,25 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
     triggerChange(newRawValues, { selected: false, triggerValue: selectValue });
   };
 
+  // ========================= Open ==========================
+  const onInternalDropdownVisibleChange = React.useCallback(
+    (open: boolean) => {
+      if (onDropdownVisibleChange) {
+        const legacyParam = {};
+
+        Object.defineProperty(legacyParam, 'documentClickClose', {
+          get() {
+            warning(false, 'Second param of `onDropdownVisibleChange` has been removed.');
+            return false;
+          },
+        });
+
+        (onDropdownVisibleChange as any)(open, legacyParam);
+      }
+    },
+    [onDropdownVisibleChange],
+  );
+
   // ======================== Render =========================
   // We pass some props into select props style
   const selectProps: Partial<SelectProps<any, any>> = {
@@ -292,13 +308,24 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
   if (treeNodeFilterProp) {
     selectProps.optionFilterProp = treeNodeFilterProp;
   }
+  if ('filterTreeNode' in props) {
+    selectProps.filterOption = filterTreeNode;
+  }
 
   return (
     <SelectContext.Provider
       value={{
         checkable: mergedCheckable,
+        loadData,
         checkedKeys: rawValues,
         halfCheckedKeys: rawHalfCheckedValues,
+        treeDefaultExpandAll,
+        treeExpandedKeys,
+        treeDefaultExpandedKeys,
+        onTreeExpand,
+        treeIcon,
+        switcherIcon,
+        treeLine,
       }}
     >
       <RefSelect
@@ -312,6 +339,7 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
         onChange={null}
         onSelect={onInternalSelect}
         onDeselect={onInternalDeselect}
+        onDropdownVisibleChange={onInternalDropdownVisibleChange}
       />
     </SelectContext.Provider>
   );
@@ -321,7 +349,7 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
 // by `forwardRef` with function component yet.
 class TreeSelect<ValueType = DefaultValueType> extends React.Component<
   TreeSelectProps<ValueType>,
-  TreeSelectState<ValueType>
+  {}
 > {
   static TreeNode = TreeNode;
 

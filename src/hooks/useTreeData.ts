@@ -57,7 +57,7 @@ function formatTreeData(treeData: DataNode[], labelProp: string): InnerDataNode[
 
     warning(
       key === null || key === undefined || value === undefined || String(key) === String(value),
-      '`key` or `value` with TreeNode must be the same or you can remove one of them.',
+      `\`key\` or \`value\` with TreeNode must be the same or you can remove one of them. key: ${key}, value: ${value}.`,
     );
 
     if ('children' in node) {
