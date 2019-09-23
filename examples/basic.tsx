@@ -124,9 +124,9 @@ class Demo extends React.Component {
     console.log(args);
   };
 
-  onDropdownVisibleChange = (visible, info) => {
+  onDropdownVisibleChange = visible => {
     const { value } = this.state;
-    console.log(visible, value, info);
+    console.log(visible, value);
     if (Array.isArray(value) && value.length > 1 && value.length < 3) {
       window.alert('please select more than two item or less than one item.');
       return false;
@@ -234,7 +234,7 @@ class Demo extends React.Component {
           onChange={this.onChangeChildren}
         />
 
-        {/* <h2>multiple select</h2>
+        <h2>multiple select</h2>
         <TreeSelect
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
@@ -256,7 +256,8 @@ class Demo extends React.Component {
           className="check-select"
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
-          dropdownStyle={{ height: 200, overflow: 'auto' }}
+          style={{ width: 300 }}
+          // dropdownStyle={{ height: 200, overflow: 'auto' }}
           dropdownPopupAlign={{ overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 2] }}
           onDropdownVisibleChange={this.onDropdownVisibleChange}
           placeholder={<i>请下拉选择</i>}
@@ -278,7 +279,7 @@ class Demo extends React.Component {
           }}
         />
 
-        <h2>labelInValue & show path</h2>
+        {/* <h2>labelInValue & show path</h2>
         <TreeSelect
           style={{ width: 500 }}
           transitionName="rc-tree-select-dropdown-slide-up"

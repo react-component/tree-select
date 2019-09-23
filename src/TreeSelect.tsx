@@ -1,5 +1,5 @@
 import React from 'react';
-import generateSelector, { SelectProps } from 'rc-select/lib/generate';
+import generateSelector, { SelectProps, RefSelectProps } from 'rc-select/lib/generate';
 import { getLabeledValue } from 'rc-select/lib/utils/valueUtil';
 import { convertDataToEntities } from 'rc-tree/lib/utils/treeUtil';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
@@ -37,7 +37,17 @@ import useKeyValueMapping from './hooks/useKeyValueMapping';
 import { CheckedStrategy, formatStrategyValues } from './utils/strategyUtil';
 import { fillLegacyProps } from './utils/legacyUtil';
 
-const OMIT_PROPS = ['expandedKeys', 'treeData', 'treeCheckable', 'showCheckedStrategy'];
+const OMIT_PROPS = [
+  'expandedKeys',
+  'treeData',
+  'treeCheckable',
+  'showCheckedStrategy',
+  'searchPlaceholder',
+  'treeLine',
+  'treeNodeFilterProp',
+  'filterTreeNode',
+  'dropdownPopupAlign',
+];
 
 const RefSelect = generateSelector<DataNode[]>({
   prefixCls: 'rc-tree-select',
@@ -71,6 +81,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
     | 'mode'
     | 'menuItemSelectedIcon'
     | 'dropdownRender'
+    | 'dropdownAlign'
     | 'backfill'
     | 'getInputElement'
     | 'optionLabelProp'
@@ -113,6 +124,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
   children?: React.ReactNode;
 
   filterTreeNode?: boolean | FilterFunc<LegacyDataNode>;
+  dropdownPopupAlign?: any;
 
   // Event
   onSearch?: (value: string) => void;
@@ -124,7 +136,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
   searchPlaceholder?: React.ReactNode;
 }
 
-const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
+const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, ref) => {
   const {
     multiple,
     treeCheckable,
@@ -144,6 +156,7 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
     switcherIcon,
     treeLine,
     filterTreeNode,
+    dropdownPopupAlign,
     onChange,
     onTreeExpand,
     onDropdownVisibleChange,
@@ -153,6 +166,14 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
   const mergedCheckable = !!(treeCheckable || treeCheckStrictly);
   const mergedMultiple = multiple || mergedCheckable;
   const treeConduction = treeCheckable && !treeCheckStrictly;
+
+  // ========================== Ref ==========================
+  const selectRef = React.useRef<RefSelectProps>(null);
+
+  React.useImperativeHandle(ref, () => ({
+    focus: selectRef.current.focus,
+    blur: selectRef.current.blur,
+  }));
 
   // ======================= Tree Data =======================
   const mergeTreeNodeLabelProp = treeNodeLabelProp || (treeData ? 'label' : 'title');
@@ -317,6 +338,7 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
   // We pass some props into select props style
   const selectProps: Partial<SelectProps<any, any>> = {
     optionLabelProp: mergeTreeNodeLabelProp,
+    dropdownAlign: dropdownPopupAlign,
     internalProps: {
       mark: INTERNAL_PROPS_MARK,
       onClear: onInternalClear,
@@ -347,6 +369,7 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
       }}
     >
       <RefSelect
+        ref={selectRef}
         mode={mergedMultiple ? 'multiple' : null}
         {...props}
         {...selectProps}
@@ -371,8 +394,18 @@ class TreeSelect<ValueType = DefaultValueType> extends React.Component<
 > {
   static TreeNode = TreeNode;
 
+  selectRef = React.createRef<RefSelectProps>();
+
+  focus = () => {
+    this.selectRef.current.focus();
+  };
+
+  blur = () => {
+    this.selectRef.current.blur();
+  };
+
   render() {
-    return <RefTreeSelect {...this.props} />;
+    return <RefTreeSelect ref={this.selectRef} {...this.props} />;
   }
 }
 

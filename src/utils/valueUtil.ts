@@ -116,22 +116,21 @@ export function filterOptions(
     filterOptionFunc = getDefaultFilterOption(optionFilterProp);
   }
 
-  function dig(list: DataNode[]): DataNode[] {
+  function dig(list: DataNode[], keepAll: boolean = false) {
     return list
       .map(dataNode => {
-        const wrappedDataNode = fillLegacyProps(dataNode);
+        const { children } = dataNode;
 
-        // Skip if not match
-        if (!filterOptionFunc(searchValue, wrappedDataNode)) {
-          return null;
+        const match = keepAll || filterOptionFunc(searchValue, fillLegacyProps(dataNode));
+        const childList = dig(children || [], match);
+
+        if (match || childList.length) {
+          return {
+            ...dataNode,
+            children: childList,
+          };
         }
-
-        const { children, ...rest } = dataNode;
-
-        return {
-          ...rest,
-          children: children && dig(children),
-        };
+        return null;
       })
       .filter(node => node);
   }
