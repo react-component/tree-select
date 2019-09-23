@@ -19,7 +19,6 @@ import {
   isValueDisabled,
   findValueOption,
   getRawValues,
-  processConduction,
   addValue,
   getRawValue,
   removeValue,
@@ -29,7 +28,7 @@ import { SelectContext } from './Context';
 import useTreeData from './hooks/useTreeData';
 import useKeyValueMap from './hooks/useKeyValueMap';
 import useKeyValueMapping from './hooks/useKeyValueMapping';
-import { CheckedStrategy } from './strategies';
+import { CheckedStrategy, formatStrategyValues } from './utils/strategyUtil';
 
 const OMIT_PROPS = ['expandedKeys', 'treeData', 'treeCheckable'];
 
@@ -140,6 +139,7 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
     multiple,
     treeCheckable,
     treeCheckStrictly,
+    showCheckedStrategy = 'SHOW_CHILD',
     labelInValue,
     treeNodeFilterProp,
     treeNodeLabelProp,
@@ -189,6 +189,15 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
 
   const selectValues = React.useMemo(() => {
     const values = mergedMultiple ? rawValues : rawValues[0];
+
+    if (treeConduction) {
+      return formatStrategyValues(
+        values as RawValueType[],
+        showCheckedStrategy,
+        conductKeyEntities,
+      );
+    }
+
     // Force set a empty string as value if not exist
     return values !== undefined ? values : '';
   }, [rawValues]);
@@ -196,16 +205,22 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
   const triggerChange = (newRawValues: RawValueType[]) => {
     setValue(mergedMultiple ? newRawValues : newRawValues[0]);
     if (onChange) {
+      let eventValues = newRawValues;
+      if (treeConduction && showCheckedStrategy !== 'SHOW_ALL') {
+        eventValues = formatStrategyValues(newRawValues, showCheckedStrategy, conductKeyEntities);
+      }
+
+      // TODO: extra
       onChange(
         labelInValue
-          ? newRawValues.map(val => {
+          ? eventValues.map(val => {
               const entity = getEntityByValue(val);
               return { value: val, label: entity ? entity.data[mergeTreeNodeLabelProp] : val };
             })
-          : newRawValues,
+          : eventValues,
         labelInValue
           ? null
-          : newRawValues.map(val => {
+          : eventValues.map(val => {
               const entity = getEntityByValue(val);
               return entity ? entity.data[mergeTreeNodeLabelProp] : null;
             }),
@@ -229,6 +244,7 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
       triggerChange(newRawValues);
     }
   };
+
   const onInternalDeselect = (selectValue: RawValueType) => {
     let newRawValues = removeValue(rawValues, getRawValue(selectValue, labelInValue));
 

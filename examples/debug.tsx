@@ -34,7 +34,7 @@ const Demo: React.FC<{}> = () => {
     >
       <h1>Debug</h1>
       <input />
-      {/* <TreeSelect style={{ width: 200 }}>
+      <TreeSelect style={{ width: 200 }}>
         <TreeNode title="Parent" value="parent">
           <TreeNode title="Child" value="child" />
         </TreeNode>
@@ -45,7 +45,7 @@ const Demo: React.FC<{}> = () => {
         </TreeNode>
       </TreeSelect>
 
-      <TreeSelect style={{ width: 200 }} treeData={treeData} multiple /> */}
+      <TreeSelect style={{ width: 200 }} treeData={treeData} multiple />
       <TreeSelect
         style={{ width: 200 }}
         treeData={treeData}
@@ -60,7 +60,7 @@ const Demo: React.FC<{}> = () => {
           console.log('Change:', ...args);
         }}
       />
-      {/* <TreeSelect
+      <TreeSelect
         autoFocus
         style={{ width: 200 }}
         treeData={treeData}
@@ -73,7 +73,7 @@ const Demo: React.FC<{}> = () => {
           setValue(newValue);
         }}
         placeholder="Control Mode"
-      /> */}
+      />
       <input />
     </div>
   );

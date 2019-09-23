@@ -115,5 +115,3 @@ export function removeValue(rawValues: RawValueType[], value: RawValueType) {
   values.delete(value);
   return Array.from(values);
 }
-
-export function processConduction(rawValues: RawValueType[]): RawValueType[] {}
