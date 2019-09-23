@@ -102,13 +102,13 @@ export default function useTreeData(
                   ...(simpleMode !== true ? simpleMode : {}),
                 })
               : treeData,
-            labelProp || 'label',
+            labelProp,
           );
   } else {
     cacheRef.current.formatTreeData =
       cacheRef.current.children === children
         ? cacheRef.current.formatTreeData
-        : formatTreeData(convertChildrenToData(children), labelProp || 'title');
+        : formatTreeData(convertChildrenToData(children), labelProp);
   }
 
   return cacheRef.current.formatTreeData;

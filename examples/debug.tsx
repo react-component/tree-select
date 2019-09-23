@@ -35,10 +35,10 @@ const Demo: React.FC<{}> = () => {
       <h1>Debug</h1>
       <input />
       <TreeSelect style={{ width: 200 }}>
-        <TreeNode title="parent" value="parent">
-          <TreeNode title="child" value="child" />
+        <TreeNode title="Parent" value="parent">
+          <TreeNode title="Child" value="child" />
         </TreeNode>
-        <TreeNode title="parent2" value="parent2">
+        <TreeNode title="Parent2" value="parent2">
           {new Array(20).fill(null).map((_, index) => (
             <TreeNode key={index} title={`Hello_${index}`} value={index} />
           ))}

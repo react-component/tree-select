@@ -3,13 +3,24 @@ import generateSelector, { SelectProps } from 'rc-select/lib/generate';
 import { getLabeledValue } from 'rc-select/lib/utils/valueUtil';
 import OptionList from './OptionList';
 import TreeNode from './TreeNode';
-import { Key, DefaultValueType, DataNode, LabelValueType, SimpleModeConfig } from './interface';
+import {
+  Key,
+  DefaultValueType,
+  DataNode,
+  LabelValueType,
+  SimpleModeConfig,
+  RawValueType,
+} from './interface';
 import {
   flattenOptions,
   filterOptions,
   isValueDisabled,
   findValueOption,
   getRawValues,
+  processConduction,
+  addValue,
+  getRawValue,
+  removeValue,
 } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
 import { SelectContext } from './Context';
@@ -139,8 +150,10 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
   const mergedMultiple = multiple || mergedCheckable;
 
   // ======================= Tree Data =======================
+  const mergeTreeNodeLabelProp = treeNodeLabelProp || (treeData ? 'label' : 'title');
+
   const mergedTreeData = useTreeData(treeData, children, {
-    labelProp: treeNodeLabelProp,
+    labelProp: mergeTreeNodeLabelProp,
     simpleMode: treeDataSimpleMode,
   });
   const flattedOptions = React.useMemo(() => flattenOptions(mergedTreeData), [mergedTreeData]);
@@ -150,34 +163,65 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
   // ========================= Value =========================
   const [value, setValue] = React.useState<DefaultValueType>(props.defaultValue);
   const mergedValue = 'value' in props ? props.value : value;
+  const rawValues = React.useMemo(() => getRawValues(mergedValue, mergedMultiple, labelInValue), [
+    mergedValue,
+    mergedMultiple,
+    labelInValue,
+  ]);
+  const selectValues = React.useMemo(() => {
+    const values = mergedMultiple ? rawValues : rawValues[0];
+    // Force set a empty string as value if not exist
+    return values !== undefined ? values : '';
+  }, [rawValues]);
 
-  const onInternalChange = (newValue: DefaultValueType, options: DataNode | DataNode[]) => {
-    setValue(newValue);
-
+  const triggerChange = (newRawValues: RawValueType[]) => {
+    setValue(mergedMultiple ? newRawValues : newRawValues[0]);
     if (onChange) {
-      const rawValues = getRawValues(newValue, mergedMultiple, labelInValue);
+      // TODO: handle conduction
+      // We need process conduction in addition
+      if (treeCheckable && !treeCheckStrictly) {
+        // newRawValues = processConduction(newRawValues);
+        console.log('=>', newRawValues);
+      }
+
       onChange(
-        newValue,
+        labelInValue
+          ? newRawValues.map(val => {
+              const entity = getEntityByValue(val);
+              return { value: val, label: entity ? entity.data[mergeTreeNodeLabelProp] : val };
+            })
+          : newRawValues,
         labelInValue
           ? null
-          : rawValues.map(val => {
+          : newRawValues.map(val => {
               const entity = getEntityByValue(val);
-              return entity ? entity.data.title : null;
+              return entity ? entity.data[mergeTreeNodeLabelProp] : null;
             }),
         null,
       );
     }
   };
 
+  const onInternalSelect = (selectValue: RawValueType) => {
+    if (!mergedMultiple) {
+      // Single mode always set value
+      triggerChange([selectValue]);
+    } else {
+      triggerChange(addValue(rawValues, getRawValue(selectValue, labelInValue)));
+    }
+  };
+  const onInternalDeselect = (selectValue: RawValueType) => {
+    triggerChange(removeValue(rawValues, getRawValue(selectValue, labelInValue)));
+  };
+
   // ======================== Render =========================
   // We pass some props into select props style
-  const selectProps: Partial<SelectProps<any, any>> = {};
+  const selectProps: Partial<SelectProps<any, any>> = {
+    optionLabelProp: mergeTreeNodeLabelProp,
+  };
 
   if (treeNodeFilterProp) {
     selectProps.optionFilterProp = treeNodeFilterProp;
-  }
-  if (treeNodeLabelProp) {
-    selectProps.optionLabelProp = treeNodeLabelProp;
   }
 
   return (
@@ -190,9 +234,13 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
         mode={mergedMultiple ? 'multiple' : null}
         {...props}
         {...selectProps}
-        value={mergedValue}
+        value={selectValues}
+        // We will handle this ourself since we need calculate conduction
+        labelInValue={false}
         options={mergedTreeData}
-        onChange={onInternalChange}
+        onChange={null}
+        onSelect={onInternalSelect}
+        onDeselect={onInternalDeselect}
       />
     </SelectContext.Provider>
   );

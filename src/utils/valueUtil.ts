@@ -1,7 +1,6 @@
 import { flattenTreeData } from 'rc-tree/lib/utils/treeUtil';
 import { FlattenNode } from 'rc-tree/lib/interface';
 import { FilterFunc } from 'rc-select/lib/interface/generator';
-import warning from 'rc-util/lib/warning';
 import {
   FlattenDataNode,
   Key,
@@ -92,16 +91,29 @@ export function filterOptions(
   return options;
 }
 
+export function getRawValue(value: DefaultValueType, labelInValue: boolean): RawValueType {
+  return labelInValue ? (value as LabelValueType).value : (value as RawValueType);
+}
+
 export function getRawValues(
   value: DefaultValueType,
   multiple: boolean,
   labelInValue: boolean,
 ): RawValueType[] {
-  const values = (multiple ? value : [value]) as (RawValueType | LabelValueType)[];
+  const values = ((multiple ? value : [value]) as (RawValueType | LabelValueType)[]) || [];
 
-  if (labelInValue) {
-    return (values as LabelValueType[]).map(data => data.value);
-  }
-
-  return values as RawValueType[];
+  return values.map(val => getRawValue(val, labelInValue));
 }
+
+export function addValue(rawValues: RawValueType[], value: RawValueType) {
+  const values = new Set(rawValues);
+  values.add(value);
+  return Array.from(values);
+}
+export function removeValue(rawValues: RawValueType[], value: RawValueType) {
+  const values = new Set(rawValues);
+  values.delete(value);
+  return Array.from(values);
+}
+
+export function processConduction(rawValues: RawValueType[]): RawValueType[] {}
