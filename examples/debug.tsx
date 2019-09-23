@@ -66,6 +66,7 @@ const Demo: React.FC<{}> = () => {
         treeData={treeData}
         treeCheckable
         showSearch={false}
+        showCheckedStrategy="SHOW_PARENT"
         value={value}
         maxTagCount={2}
         onChange={(newValue, ...args) => {

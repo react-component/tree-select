@@ -12,6 +12,7 @@ import {
   LabelValueType,
   SimpleModeConfig,
   RawValueType,
+  ChangeEventExtra,
 } from './interface';
 import {
   flattenOptions,
@@ -22,6 +23,7 @@ import {
   addValue,
   getRawValue,
   removeValue,
+  toArray,
 } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
 import { SelectContext } from './Context';
@@ -29,8 +31,9 @@ import useTreeData from './hooks/useTreeData';
 import useKeyValueMap from './hooks/useKeyValueMap';
 import useKeyValueMapping from './hooks/useKeyValueMapping';
 import { CheckedStrategy, formatStrategyValues } from './utils/strategyUtil';
+import { fillLegacyProps } from './utils/legacyUtil';
 
-const OMIT_PROPS = ['expandedKeys', 'treeData', 'treeCheckable'];
+const OMIT_PROPS = ['expandedKeys', 'treeData', 'treeCheckable', 'showCheckedStrategy'];
 
 const RefSelect = generateSelector<DataNode[]>({
   prefixCls: 'rc-tree-select',
@@ -96,7 +99,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType> {
   treeCheckable?: boolean | React.ReactNode;
   treeCheckStrictly?: boolean;
   showCheckedStrategy?: CheckedStrategy;
-  onChange?: (value: ValueType, labelList: React.ReactNode[], extra: any) => void;
+  onChange?: (value: ValueType, labelList: React.ReactNode[], extra: ChangeEventExtra) => void;
 
   // MISS PROPS:
   //   searchPlaceholder: PropTypes.node, // [Legacy] Confuse with placeholder
@@ -164,6 +167,12 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
   const [cacheKeyMap, cacheValueMap] = useKeyValueMap(flattedOptions);
   const [getEntityByKey, getEntityByValue] = useKeyValueMapping(cacheKeyMap, cacheValueMap);
 
+  /** Return wrapped with legacy info data node for out event param */
+  const getDataNode = (value: RawValueType) => {
+    const entity = getEntityByValue(value);
+    return entity ? fillLegacyProps(entity.data) : null;
+  };
+
   // Only generate keyEntities for check conduction when is `treeCheckable`
   const { keyEntities: conductKeyEntities } = React.useMemo(() => {
     if (treeConduction) {
@@ -175,6 +184,12 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
   // ========================= Value =========================
   const [value, setValue] = React.useState<DefaultValueType>(props.defaultValue);
   const mergedValue = 'value' in props ? props.value : value;
+
+  const convertToLabelValues = (rawValues: RawValueType[]) =>
+    rawValues.map(val => {
+      const entity = getEntityByValue(val);
+      return { value: val, label: entity ? entity.data[mergeTreeNodeLabelProp] : val };
+    });
 
   const [rawValues, rawHalfCheckedValues]: [RawValueType[], RawValueType[]] = React.useMemo(() => {
     const newRawValues = getRawValues(mergedValue, mergedMultiple, labelInValue);
@@ -202,29 +217,37 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
     return values !== undefined ? values : '';
   }, [rawValues]);
 
-  const triggerChange = (newRawValues: RawValueType[]) => {
+  const triggerChange = (
+    newRawValues: RawValueType[],
+    extra: { triggerValue: RawValueType; selected: boolean },
+  ) => {
     setValue(mergedMultiple ? newRawValues : newRawValues[0]);
     if (onChange) {
-      let eventValues = newRawValues;
+      let eventValues: RawValueType[] = newRawValues;
       if (treeConduction && showCheckedStrategy !== 'SHOW_ALL') {
         eventValues = formatStrategyValues(newRawValues, showCheckedStrategy, conductKeyEntities);
       }
 
-      // TODO: extra
+      const { triggerValue, selected } = extra;
+
+      const returnValues = labelInValue ? convertToLabelValues(eventValues) : eventValues;
       onChange(
-        labelInValue
-          ? eventValues.map(val => {
-              const entity = getEntityByValue(val);
-              return { value: val, label: entity ? entity.data[mergeTreeNodeLabelProp] : val };
-            })
-          : eventValues,
+        returnValues,
         labelInValue
           ? null
           : eventValues.map(val => {
               const entity = getEntityByValue(val);
               return entity ? entity.data[mergeTreeNodeLabelProp] : null;
             }),
-        null,
+        {
+          // [Legacy] Always return as array contains label & value
+          preValue: convertToLabelValues(toArray(selectValues)),
+          triggerValue,
+          selected: !mergedCheckable ? selected : undefined,
+          checked: mergedCheckable ? selected : undefined,
+          triggerNode: getDataNode(triggerValue),
+          allCheckedNodes: eventValues.map(getDataNode),
+        },
       );
     }
   };
@@ -232,7 +255,7 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
   const onInternalSelect = (selectValue: RawValueType) => {
     if (!mergedMultiple) {
       // Single mode always set value
-      triggerChange([selectValue]);
+      triggerChange([selectValue], { selected: true, triggerValue: selectValue });
     } else {
       let newRawValues = addValue(rawValues, getRawValue(selectValue, labelInValue));
 
@@ -241,7 +264,7 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
         newRawValues = conductCheck(newRawValues, true, conductKeyEntities).checkedKeys;
       }
 
-      triggerChange(newRawValues);
+      triggerChange(newRawValues, { selected: true, triggerValue: selectValue });
     }
   };
 
@@ -257,7 +280,7 @@ const RefTreeSelect = React.forwardRef<any, TreeSelectProps>((props, ref) => {
       ).checkedKeys;
     }
 
-    triggerChange(newRawValues);
+    triggerChange(newRawValues, { selected: false, triggerValue: selectValue });
   };
 
   // ======================== Render =========================

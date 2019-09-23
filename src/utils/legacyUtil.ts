@@ -1,6 +1,7 @@
 import React from 'react';
 import toArray from 'rc-util/lib/Children/toArray';
-import { DataNode } from '../interface';
+import warning from 'rc-util/lib/warning';
+import { DataNode, LegacyDataNode } from '../interface';
 
 export function convertChildrenToData(nodes: React.ReactNode): DataNode[] {
   return toArray(nodes)
@@ -28,4 +29,22 @@ export function convertChildrenToData(nodes: React.ReactNode): DataNode[] {
       return data;
     })
     .filter(data => data);
+}
+
+export function fillLegacyProps(dataNode: DataNode): LegacyDataNode {
+  const cloneNode = { ...dataNode };
+
+  if (!('props' in cloneNode)) {
+    Object.defineProperty(cloneNode, 'props', {
+      get() {
+        warning(
+          false,
+          'New `rc-tree-select` not support return node instance as argument anymore. Please consider to remove `props` access.',
+        );
+        return cloneNode;
+      },
+    });
+  }
+
+  return cloneNode as LegacyDataNode;
 }

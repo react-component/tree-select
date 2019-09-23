@@ -11,6 +11,13 @@ import {
   LabelValueType,
 } from '../interface';
 
+export function toArray<T>(value: T | T[]): T[] {
+  if (Array.isArray(value)) {
+    return value;
+  }
+  return value !== undefined ? [value] : [];
+}
+
 export function findValueOption(values: RawValueType[], options: FlattenDataNode[]): DataNode[] {
   const optionMap: Map<RawValueType, DataNode> = new Map();
 

@@ -20,12 +20,19 @@ export interface DataNode {
   disabled?: boolean;
   disableCheckbox?: boolean;
   children?: DataNode[];
+
+  /** Customize data info */
+  [prop: string]: any;
 }
 
 export interface InnerDataNode extends DataNode {
   key: Key;
   value: RawValueType;
   label?: React.ReactNode;
+}
+
+export interface LegacyDataNode extends DataNode {
+  props: any;
 }
 
 export interface TreeDataNode extends DataNode {
@@ -43,4 +50,23 @@ export interface SimpleModeConfig {
   id?: Key;
   pId?: Key;
   rootPId?: Key;
+}
+
+interface ChangeEventExtraNode {
+  props: any;
+  [prop: string]: any;
+}
+
+export interface ChangeEventExtra {
+  /** @deprecated Please save prev value by control logic instead */
+  preValue: LabelValueType[];
+  triggerValue: RawValueType;
+  /** @deprecated This prop not work as react node anymore. */
+  triggerNode: ChangeEventExtraNode;
+  /** @deprecated Use `onSelect` or `onDeselect` instead. */
+  selected?: boolean;
+  /** @deprecated Use `onSelect` or `onDeselect` instead. */
+  checked?: boolean;
+  /** @deprecated This prop not work as react node anymore. */
+  allCheckedNodes: ChangeEventExtraNode[];
 }
