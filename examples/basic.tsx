@@ -298,7 +298,7 @@ class Demo extends React.Component {
           onChange={this.onChangeLV}
         />
 
-        {/* <h2>use treeDataSimpleMode</h2>
+        <h2>use treeDataSimpleMode</h2>
         <TreeSelect
           style={{ width: 300 }}
           // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
@@ -317,8 +317,11 @@ class Demo extends React.Component {
           treeCheckable
           showCheckedStrategy={SHOW_PARENT}
           onChange={this.onChange}
-          onSelect={this.onSelect}
-        /> */}
+          onSelect={(...args) => {
+            this.setState({ simpleSearchValue: '' });
+            this.onSelect(...args);
+          }}
+        />
 
         {/* <h2>Testing in extreme conditions (Boundary conditions test) </h2>
         <TreeSelect

@@ -47,6 +47,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     options,
     flattenOptions,
     multiple,
+    searchValue,
     onSelect,
     onToggleOpen,
   } = props;
@@ -87,10 +88,19 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
 
   // =========================== Keys ===========================
   const [expandedKeys, setExpandedKeys] = React.useState<Key[]>(treeDefaultExpandedKeys);
-  const mergedExpandedKeys = treeExpandedKeys || expandedKeys;
+  const [searchExpandedKeys, setSearchExpandedKeys] = React.useState<Key[]>(null);
+  const mergedExpandedKeys =
+    treeExpandedKeys || (searchValue ? searchExpandedKeys : expandedKeys) || [];
+
+  React.useEffect(() => {
+    if (searchValue) {
+      setSearchExpandedKeys(flattenOptions.map(o => o.key));
+    }
+  }, [searchValue]);
 
   const onInternalExpand = (keys: Key[]) => {
     setExpandedKeys(keys);
+    setSearchExpandedKeys(keys);
 
     if (onTreeExpand) {
       onTreeExpand(keys);
