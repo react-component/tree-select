@@ -49,6 +49,8 @@ const OMIT_PROPS = [
   'dropdownPopupAlign',
   'treeDefaultExpandAll',
   'treeCheckStrictly',
+  'treeExpandedKeys',
+  'onTreeExpand',
 ];
 
 const RefSelect = generateSelector<DataNode[]>({

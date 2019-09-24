@@ -55,7 +55,7 @@ function formatTreeData(treeData: DataNode[], labelProp: string): InnerDataNode[
 
       const dataNode: InnerDataNode = {
         ...rest,
-        key: mergedValue,
+        key: key !== null && key !== undefined ? key : mergedValue,
         value: mergedValue,
         title: node[labelProp],
       };
