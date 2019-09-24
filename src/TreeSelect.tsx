@@ -209,29 +209,36 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   const [value, setValue] = React.useState<DefaultValueType>(props.defaultValue);
   const mergedValue = 'value' in props ? props.value : value;
 
+  /** Get `missingRawValues` which not exist in the tree yet */
+  const splitRawValues = (newRawValues: RawValueType[]) => {
+    const missingRawValues = [];
+    const existRawValues = [];
+
+    // Keep missing value in the cache
+    newRawValues.forEach(val => {
+      if (getEntityByValue(val)) {
+        existRawValues.push(val);
+      } else {
+        missingRawValues.push(val);
+      }
+    });
+
+    return { missingRawValues, existRawValues };
+  };
+
   const [rawValues, rawHalfCheckedValues]: [RawValueType[], RawValueType[]] = React.useMemo(() => {
     const newRawValues = getRawValues(mergedValue, labelInValue);
 
     // We need do conduction of values
     if (treeConduction) {
-      const missRawValues = [];
-      const existRawValues = [];
-
-      // Keep missing value in the cache
-      newRawValues.forEach(val => {
-        if (getEntityByValue(val)) {
-          existRawValues.push(val);
-        } else {
-          missRawValues.push(val);
-        }
-      });
+      const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
 
       const { checkedKeys, halfCheckedKeys } = conductCheck(
         existRawValues,
         true,
         conductKeyEntities,
       );
-      return [[...missRawValues, ...checkedKeys], halfCheckedKeys];
+      return [[...missingRawValues, ...checkedKeys], halfCheckedKeys];
     }
     return [newRawValues, []];
   }, [mergedValue, mergedMultiple, labelInValue, treeCheckable, treeCheckStrictly]);
@@ -294,7 +301,12 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
 
       // Add keys if tree conduction
       if (treeConduction) {
-        newRawValues = conductCheck(newRawValues, true, conductKeyEntities).checkedKeys;
+        // Should keep missing values
+        const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
+        newRawValues = [
+          ...missingRawValues,
+          ...conductCheck(existRawValues, true, conductKeyEntities).checkedKeys,
+        ];
       }
 
       triggerChange(newRawValues, { selected: true, triggerValue: selectValue.value });
@@ -312,11 +324,15 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
 
     // Remove keys if tree conduction
     if (treeConduction) {
-      newRawValues = conductCheck(
-        newRawValues,
-        { checked: false, halfCheckedKeys: rawHalfCheckedValues },
-        conductKeyEntities,
-      ).checkedKeys;
+      const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
+      newRawValues = [
+        ...missingRawValues,
+        ...conductCheck(
+          existRawValues,
+          { checked: false, halfCheckedKeys: rawHalfCheckedValues },
+          conductKeyEntities,
+        ).checkedKeys,
+      ];
     }
 
     triggerChange(newRawValues, { selected: false, triggerValue: selectValue.value });

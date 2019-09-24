@@ -28,8 +28,6 @@ export default function useSelectValues(
     treeNodeLabelProp,
   }: Config,
 ): LabelValueType[] {
-  console.log('!!!!', rawValues);
-
   return React.useMemo(() => {
     let mergedRawValues = rawValues;
 
