@@ -35,7 +35,7 @@ import useKeyValueMap from './hooks/useKeyValueMap';
 import useKeyValueMapping from './hooks/useKeyValueMapping';
 import {
   CheckedStrategy,
-  formatStrategyValues,
+  formatStrategyKeys,
   SHOW_ALL,
   SHOW_PARENT,
   SHOW_CHILD,
@@ -60,6 +60,7 @@ const OMIT_PROPS = [
   'onTreeExpand',
   'onTreeLoad',
   'loadData',
+  'treeDataSimpleMode',
 ];
 
 const RefSelect = generateSelector<DataNode[]>({
@@ -259,13 +260,13 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     // We need do conduction of values
     if (treeConduction) {
       const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
+      const keyList = existRawValues.map(val => getEntityByValue(val).key);
 
-      const { checkedKeys, halfCheckedKeys } = conductCheck(
-        existRawValues,
-        true,
-        conductKeyEntities,
-      );
-      return [[...missingRawValues, ...checkedKeys], halfCheckedKeys];
+      const { checkedKeys, halfCheckedKeys } = conductCheck(keyList, true, conductKeyEntities);
+      return [
+        [...missingRawValues, ...checkedKeys.map(key => getEntityByKey(key).data.value)],
+        halfCheckedKeys,
+      ];
     }
     return [newRawValues, valueHalfCheckedValues];
   }, [mergedValue, mergedMultiple, labelInValue, treeCheckable, treeCheckStrictly]);
@@ -275,6 +276,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     showCheckedStrategy,
     conductKeyEntities,
     getEntityByValue,
+    getEntityByKey,
     treeNodeLabelProp: mergedTreeNodeLabelProp,
   });
 
@@ -286,7 +288,20 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     if (onChange) {
       let eventValues: RawValueType[] = newRawValues;
       if (treeConduction && showCheckedStrategy !== 'SHOW_ALL') {
-        eventValues = formatStrategyValues(newRawValues, showCheckedStrategy, conductKeyEntities);
+        const keyList = newRawValues.map(val => {
+          const entity = getEntityByValue(val);
+          return entity ? entity.key : val;
+        });
+        const formattedKeyList = formatStrategyKeys(
+          keyList,
+          showCheckedStrategy,
+          conductKeyEntities,
+        );
+
+        eventValues = formattedKeyList.map(key => {
+          const entity = getEntityByKey(key);
+          return entity ? entity.data.value : key;
+        });
       }
 
       const { triggerValue, selected } = extra || { triggerValue: undefined, selected: undefined };
@@ -339,10 +354,14 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
       if (treeConduction) {
         // Should keep missing values
         const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
+        const keyList = existRawValues.map(val => getEntityByValue(val).key);
+        const { checkedKeys } = conductCheck(keyList, true, conductKeyEntities);
         newRawValues = [
           ...missingRawValues,
-          ...conductCheck(existRawValues, true, conductKeyEntities).checkedKeys,
+          ...checkedKeys.map(key => getEntityByKey(key).data.value),
         ];
+
+        console.log('~>', newRawValues);
       }
 
       triggerChange(newRawValues, { selected: true, triggerValue: selectValue });
@@ -361,13 +380,15 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     // Remove keys if tree conduction
     if (treeConduction) {
       const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
+      const keyList = existRawValues.map(val => getEntityByValue(val).key);
+      const { checkedKeys } = conductCheck(
+        keyList,
+        { checked: false, halfCheckedKeys: rawHalfCheckedValues },
+        conductKeyEntities,
+      );
       newRawValues = [
         ...missingRawValues,
-        ...conductCheck(
-          existRawValues,
-          { checked: false, halfCheckedKeys: rawHalfCheckedValues },
-          conductKeyEntities,
-        ).checkedKeys,
+        ...checkedKeys.map(key => getEntityByKey(key).data.value),
       ];
     }
 

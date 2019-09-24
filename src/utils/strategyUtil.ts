@@ -7,33 +7,37 @@ export const SHOW_CHILD = 'SHOW_CHILD';
 
 export type CheckedStrategy = typeof SHOW_ALL | typeof SHOW_PARENT | typeof SHOW_CHILD;
 
-export function formatStrategyValues(
-  rawValues: RawValueType[],
+export function formatStrategyKeys(
+  keys: Key[],
   strategy: CheckedStrategy,
   keyEntities: Record<Key, DataEntity>,
 ): RawValueType[] {
-  const valueSet = new Set(rawValues);
+  const keySet = new Set(keys);
 
   if (strategy === SHOW_CHILD) {
-    return rawValues.filter(val => {
-      const { children } = keyEntities[val];
+    return keys.filter(key => {
+      const entity = keyEntities[key];
 
-      if (children && children.every(({ node }) => valueSet.has((node as DataNode).value))) {
+      if (
+        entity &&
+        entity.children &&
+        entity.children.every(({ node }) => keySet.has((node as DataNode).key))
+      ) {
         return false;
       }
       return true;
     });
   }
   if (strategy === SHOW_PARENT) {
-    return rawValues.filter(val => {
-      const entity = keyEntities[val];
+    return keys.filter(key => {
+      const entity = keyEntities[key];
       const parent = entity ? entity.parent : null;
 
-      if (parent && valueSet.has((parent.node as DataNode).value)) {
+      if (parent && keySet.has((parent.node as DataNode).key)) {
         return false;
       }
       return true;
     });
   }
-  return rawValues;
+  return keys;
 }

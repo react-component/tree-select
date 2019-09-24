@@ -1,7 +1,7 @@
 import React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { RefOptionListProps } from 'rc-select/lib/OptionList';
-import Tree from 'rc-tree';
+import Tree, { TreeProps } from 'rc-tree';
 import { EventDataNode } from 'rc-tree/lib/interface';
 import {
   FlattenDataNode,
@@ -179,6 +179,11 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     onKeyUp: () => {},
   }));
 
+  const treeProps: Partial<TreeProps> = {};
+  if (treeLoadedKeys) {
+    treeProps.loadedKeys = treeLoadedKeys;
+  }
+
   return (
     <div
       onMouseDown={event => {
@@ -204,7 +209,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         selectedKeys={!checkable ? valueKeys : []}
         expandedKeys={mergedExpandedKeys}
         defaultExpandAll={treeDefaultExpandAll}
-        loadedKeys={treeLoadedKeys}
+        {...treeProps}
         // Proxy event out
         onActiveChange={setActiveKey}
         onSelect={onInternalSelect}

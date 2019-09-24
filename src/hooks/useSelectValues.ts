@@ -4,7 +4,7 @@ import { DataEntity } from 'rc-tree/lib/interface';
 import { RawValueType, FlattenDataNode, Key, LabelValueType } from '../interface';
 import { SkipType } from './useKeyValueMapping';
 import { toArray, getRawValueLabeled } from '../utils/valueUtil';
-import { formatStrategyValues, CheckedStrategy } from '../utils/strategyUtil';
+import { formatStrategyKeys, CheckedStrategy } from '../utils/strategyUtil';
 
 interface Config {
   treeConduction: boolean;
@@ -12,6 +12,7 @@ interface Config {
   value: DefaultValueType;
   showCheckedStrategy: CheckedStrategy;
   conductKeyEntities: Record<Key, DataEntity>;
+  getEntityByKey: (key: Key, skipType?: SkipType) => FlattenDataNode;
   getEntityByValue: (value: RawValueType, skipType?: SkipType) => FlattenDataNode;
   treeNodeLabelProp: string;
 }
@@ -22,6 +23,7 @@ export default function useSelectValues(
   {
     value,
     getEntityByValue,
+    getEntityByKey,
     treeConduction,
     showCheckedStrategy,
     conductKeyEntities,
@@ -32,11 +34,19 @@ export default function useSelectValues(
     let mergedRawValues = rawValues;
 
     if (treeConduction) {
-      mergedRawValues = formatStrategyValues(
-        rawValues as RawValueType[],
+      const rawKeys = formatStrategyKeys(
+        rawValues.map(val => {
+          const entity = getEntityByValue(val);
+          return entity ? entity.key : val;
+        }),
         showCheckedStrategy,
         conductKeyEntities,
       );
+
+      mergedRawValues = rawKeys.map(key => {
+        const entity = getEntityByKey(key);
+        return entity ? entity.data.value : key;
+      });
     }
 
     return getRawValueLabeled(mergedRawValues, value, getEntityByValue, treeNodeLabelProp);
