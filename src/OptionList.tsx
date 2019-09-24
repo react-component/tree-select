@@ -96,9 +96,15 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   }, [valueKeys, halfCheckedKeys, checkable]);
 
   // ========================== Search ==========================
-  const filterTreeNode = (treeNode: EventDataNode) => String(treeNode[treeNodeFilterProp])
+  const lowerSearchValue = String(searchValue).toLowerCase();
+  const filterTreeNode = (treeNode: EventDataNode) => {
+    if (!lowerSearchValue) {
+      return false;
+    }
+    return String(treeNode[treeNodeFilterProp])
       .toLowerCase()
-      .includes(String(searchValue).toLowerCase());
+      .includes(lowerSearchValue);
+  };
 
   // =========================== Keys ===========================
   const [expandedKeys, setExpandedKeys] = React.useState<Key[]>(treeDefaultExpandedKeys);

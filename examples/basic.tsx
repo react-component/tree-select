@@ -150,7 +150,7 @@ class Demo extends React.Component {
     } = this.state;
     return (
       <div style={{ margin: 20 }}>
-        {/* <h2>tree-select in dialog</h2>
+        <h2>tree-select in dialog</h2>
         <button type="button" className="btn btn-primary" onClick={this.onClick}>
           show dialog
         </button>
@@ -321,7 +321,7 @@ class Demo extends React.Component {
             this.setState({ simpleSearchValue: '' });
             this.onSelect(...args);
           }}
-        /> */}
+        />
 
         <h2>Testing in extreme conditions (Boundary conditions test) </h2>
         <TreeSelect
@@ -347,10 +347,10 @@ class Demo extends React.Component {
           onChange={(val, ...args) => console.log(val, ...args)}
         />
 
-        {/* <h2>use TreeNode Component (not recommend)</h2>
+        <h2>use TreeNode Component (not recommend)</h2>
         <TreeSelect
           style={{ width: 200 }}
-          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+          // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           defaultValue="leaf1"
           treeDefaultExpandAll
           treeNodeFilterProp="title"
@@ -382,7 +382,7 @@ class Demo extends React.Component {
             <TreeNode value="2same value" title="2same title" key="0-2-0" />
           </TreeNode>
           <TreeNode value="same value3" title="same title" key="0-3" />
-        </TreeSelect> */}
+        </TreeSelect>
       </div>
     );
   }
