@@ -148,6 +148,7 @@ class Demo extends React.Component {
       simpleSearchValue,
       treeDataSimpleMode,
     } = this.state;
+    console.log('=>', lv);
     return (
       <div style={{ margin: 20 }}>
         <h2>tree-select in dialog</h2>
@@ -279,7 +280,7 @@ class Demo extends React.Component {
           }}
         />
 
-        {/* <h2>labelInValue & show path</h2>
+        <h2>labelInValue & show path</h2>
         <TreeSelect
           style={{ width: 500 }}
           transitionName="rc-tree-select-dropdown-slide-up"
@@ -296,7 +297,7 @@ class Demo extends React.Component {
           treeNodeFilterProp="label"
           filterTreeNode={false}
           onChange={this.onChangeLV}
-        /> */}
+        />
 
         {/* <h2>use treeDataSimpleMode</h2>
         <TreeSelect
