@@ -40,6 +40,10 @@ export function isValueDisabled(value: RawValueType, options: FlattenDataNode[])
   return false;
 }
 
+export function isCheckDisabled(node: DataNode) {
+  return node.disabled || node.disableCheckbox || node.checkable === false;
+}
+
 interface TreeDataNode {
   key: Key;
 }

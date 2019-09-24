@@ -21,6 +21,7 @@ export interface DataNode {
   key?: Key;
   disabled?: boolean;
   disableCheckbox?: boolean;
+  checkable?: boolean;
   children?: DataNode[];
 
   /** Customize data info */

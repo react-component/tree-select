@@ -53,6 +53,7 @@
     "father": "^2.13.2",
     "np": "^5.0.3",
     "rc-dialog": "^7.5.7",
+    "rc-field-form": "^0.0.0-alpha.21",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "typescript": "^3.5.2"

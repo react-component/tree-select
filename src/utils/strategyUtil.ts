@@ -1,5 +1,6 @@
 import { DataEntity } from 'rc-tree/lib/interface';
 import { RawValueType, Key, DataNode } from '../interface';
+import { isCheckDisabled } from './valueUtil';
 
 export const SHOW_ALL = 'SHOW_ALL';
 export const SHOW_PARENT = 'SHOW_PARENT';
@@ -21,7 +22,9 @@ export function formatStrategyKeys(
       if (
         entity &&
         entity.children &&
-        entity.children.every(({ node }) => keySet.has((node as DataNode).key))
+        entity.children.every(
+          ({ node }) => isCheckDisabled(node) || keySet.has((node as DataNode).key),
+        )
       ) {
         return false;
       }
@@ -33,7 +36,7 @@ export function formatStrategyKeys(
       const entity = keyEntities[key];
       const parent = entity ? entity.parent : null;
 
-      if (parent && keySet.has((parent.node as DataNode).key)) {
+      if (parent && !isCheckDisabled(parent.node) && keySet.has((parent.node as DataNode).key)) {
         return false;
       }
       return true;
