@@ -49,6 +49,7 @@ const OMIT_PROPS = [
   'treeNodeFilterProp',
   'filterTreeNode',
   'dropdownPopupAlign',
+  'treeDefaultExpandAll',
 ];
 
 const RefSelect = generateSelector<DataNode[]>({
@@ -213,8 +214,24 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
 
     // We need do conduction of values
     if (treeConduction) {
-      const { checkedKeys, halfCheckedKeys } = conductCheck(newRawValues, true, conductKeyEntities);
-      return [checkedKeys, halfCheckedKeys];
+      const missRawValues = [];
+      const existRawValues = [];
+
+      // Keep missing value in the cache
+      newRawValues.forEach(val => {
+        if (getEntityByValue(val)) {
+          existRawValues.push(val);
+        } else {
+          missRawValues.push(val);
+        }
+      });
+
+      const { checkedKeys, halfCheckedKeys } = conductCheck(
+        existRawValues,
+        true,
+        conductKeyEntities,
+      );
+      return [[...missRawValues, ...checkedKeys], halfCheckedKeys];
     }
     return [newRawValues, []];
   }, [mergedValue, mergedMultiple, labelInValue, treeCheckable, treeCheckStrictly]);

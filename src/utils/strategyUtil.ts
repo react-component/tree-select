@@ -23,9 +23,11 @@ export function formatStrategyValues(
       }
       return true;
     });
-  } if (strategy === SHOW_PARENT) {
+  }
+  if (strategy === SHOW_PARENT) {
     return rawValues.filter(val => {
-      const { parent } = keyEntities[val];
+      const entity = keyEntities[val];
+      const parent = entity ? entity.parent : null;
 
       if (parent && valueSet.has((parent.node as DataNode).value)) {
         return false;

@@ -296,7 +296,7 @@ class Demo extends React.Component {
           treeNodeFilterProp="label"
           filterTreeNode={false}
           onChange={this.onChangeLV}
-        /> */}
+        />
 
         <h2>use treeDataSimpleMode</h2>
         <TreeSelect
@@ -321,9 +321,9 @@ class Demo extends React.Component {
             this.setState({ simpleSearchValue: '' });
             this.onSelect(...args);
           }}
-        />
+        /> */}
 
-        {/* <h2>Testing in extreme conditions (Boundary conditions test) </h2>
+        <h2>Testing in extreme conditions (Boundary conditions test) </h2>
         <TreeSelect
           style={{ width: 200 }}
           dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
@@ -347,7 +347,7 @@ class Demo extends React.Component {
           onChange={(val, ...args) => console.log(val, ...args)}
         />
 
-        <h2>use TreeNode Component (not recommend)</h2>
+        {/* <h2>use TreeNode Component (not recommend)</h2>
         <TreeSelect
           style={{ width: 200 }}
           dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
