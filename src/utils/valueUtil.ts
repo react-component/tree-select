@@ -11,6 +11,7 @@ import {
   LegacyDataNode,
 } from '../interface';
 import { fillLegacyProps } from './legacyUtil';
+import { SkipType } from '../hooks/useKeyValueMapping';
 
 export function toArray<T>(value: T | T[]): T[] {
   if (Array.isArray(value)) {
@@ -146,6 +147,34 @@ export function getRawValues(value: DefaultValueType, labelInValue: boolean): Ra
   const values = toArray(value);
 
   return values.map(val => getRawValue(val, labelInValue));
+}
+
+export function getRawValueLabeled(
+  values: RawValueType[],
+  prevValue: DefaultValueType,
+  getEntityByValue: (value: RawValueType, skipType?: SkipType) => FlattenDataNode,
+  treeNodeLabelProp: string,
+): LabelValueType[] {
+  const valueMap = new Map<RawValueType, React.ReactNode>();
+
+  toArray(prevValue).forEach(item => {
+    if (item && typeof item === 'object' && 'value' in item && 'label' in item) {
+      valueMap.set(item.value, item.label);
+    }
+  });
+
+  return values.map(val => {
+    const item: LabelValueType = { value: val };
+
+    if (valueMap.has(val)) {
+      item.label = valueMap.get(val);
+    } else {
+      const entity = getEntityByValue(val);
+      item.label = entity ? entity.data[treeNodeLabelProp] : val;
+    }
+
+    return item;
+  });
 }
 
 export function addValue(rawValues: RawValueType[], value: RawValueType) {

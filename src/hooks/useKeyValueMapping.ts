@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlattenDataNode, Key, RawValueType } from '../interface';
 
-type SkipType = null | 'select' | 'checkbox';
+export type SkipType = null | 'select' | 'checkbox';
 
 function isDisabled(dataNode: FlattenDataNode, skipType: SkipType): boolean {
   if (!dataNode) {

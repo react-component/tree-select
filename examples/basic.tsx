@@ -148,7 +148,6 @@ class Demo extends React.Component {
       simpleSearchValue,
       treeDataSimpleMode,
     } = this.state;
-    console.log('=>', lv);
     return (
       <div style={{ margin: 20 }}>
         <h2>tree-select in dialog</h2>
@@ -161,7 +160,7 @@ class Demo extends React.Component {
             animation="zoom"
             maskAnimation="fade"
             onClose={this.onClose}
-            style={{ width: 600, height: 400, overflow: 'auto' }}
+            // style={{ width: 600, height: 400, overflow: 'auto' }}
           >
             <div style={{ height: 600, paddingTop: 100 }}>
               <TreeSelect
@@ -191,7 +190,7 @@ class Demo extends React.Component {
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
-          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+          // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           showSearch
@@ -222,7 +221,7 @@ class Demo extends React.Component {
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
-          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+          // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           showSearch
@@ -240,7 +239,7 @@ class Demo extends React.Component {
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
-          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+          // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           multiple
@@ -285,7 +284,7 @@ class Demo extends React.Component {
           style={{ width: 500 }}
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
-          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+          // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           searchPlaceholder="please search"
           showSearch
