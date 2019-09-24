@@ -26,6 +26,7 @@ class Demo extends React.Component {
   };
 
   onGen = data => {
+    console.log('on gen!!!');
     this.setState({
       gData: data,
       gData1: [...data],
@@ -40,7 +41,7 @@ class Demo extends React.Component {
   render() {
     const { value1, gData1, value, gData } = this.state;
 
-    console.log('>>>', gData, gData1, value1);
+    // console.log('>>>', gData, gData1, value1);
 
     return (
       <div style={{ padding: '0 20px' }}>

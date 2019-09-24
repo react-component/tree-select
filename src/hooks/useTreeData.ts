@@ -121,6 +121,8 @@ export default function useTreeData(
               : treeData,
             labelProp,
           );
+
+    cacheRef.current.treeData = treeData;
   } else {
     cacheRef.current.formatTreeData =
       cacheRef.current.children === children
