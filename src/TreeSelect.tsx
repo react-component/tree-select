@@ -178,6 +178,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   }));
 
   // ======================= Tree Data =======================
+  const mergedTreeNodeFilterProp = treeNodeFilterProp || (treeData ? 'label' : 'title');
   const mergedTreeNodeLabelProp = treeNodeLabelProp || (treeData ? 'label' : 'title');
 
   const mergedTreeData = useTreeData(treeData, children, {
@@ -335,6 +336,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   // We pass some props into select props style
   const selectProps: Partial<SelectProps<any, any>> = {
     optionLabelProp: mergedTreeNodeLabelProp,
+    optionFilterProp: mergedTreeNodeFilterProp,
     dropdownAlign: dropdownPopupAlign,
     internalProps: {
       mark: INTERNAL_PROPS_MARK,
@@ -342,9 +344,6 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     },
   };
 
-  if (treeNodeFilterProp) {
-    selectProps.optionFilterProp = treeNodeFilterProp;
-  }
   if ('filterTreeNode' in props) {
     selectProps.filterOption = filterTreeNode;
   }
@@ -363,6 +362,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
         treeIcon,
         switcherIcon,
         treeLine,
+        treeNodeFilterProp: mergedTreeNodeFilterProp,
       }}
     >
       <RefSelect

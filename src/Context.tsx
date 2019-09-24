@@ -14,6 +14,7 @@ interface ContextProps {
   treeIcon: IconType;
   switcherIcon: IconType;
   treeLine: boolean;
+  treeNodeFilterProp: string;
 }
 
 export const SelectContext = React.createContext<ContextProps>(null);

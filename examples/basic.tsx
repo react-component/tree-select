@@ -150,7 +150,7 @@ class Demo extends React.Component {
     } = this.state;
     return (
       <div style={{ margin: 20 }}>
-        <h2>tree-select in dialog</h2>
+        {/* <h2>tree-select in dialog</h2>
         <button type="button" className="btn btn-primary" onClick={this.onClick}>
           show dialog
         </button>
@@ -296,7 +296,7 @@ class Demo extends React.Component {
           treeNodeFilterProp="label"
           filterTreeNode={false}
           onChange={this.onChangeLV}
-        />
+        /> */}
 
         <h2>use treeDataSimpleMode</h2>
         <TreeSelect

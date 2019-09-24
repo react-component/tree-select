@@ -2,7 +2,15 @@ import React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { RefOptionListProps } from 'rc-select/lib/OptionList';
 import Tree from 'rc-tree';
-import { FlattenDataNode, RawValueType, DataNode, TreeDataNode, Key } from './interface';
+import { EventDataNode } from 'rc-tree/lib/interface';
+import {
+  FlattenDataNode,
+  RawValueType,
+  DataNode,
+  TreeDataNode,
+  Key,
+  LegacyDataNode,
+} from './interface';
 import { SelectContext } from './Context';
 import useKeyValueMapping from './hooks/useKeyValueMapping';
 import useKeyValueMap from './hooks/useKeyValueMap';
@@ -62,6 +70,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     treeIcon,
     switcherIcon,
     treeLine,
+    treeNodeFilterProp,
   } = React.useContext(SelectContext);
 
   const treeRef = React.useRef<Tree>();
@@ -85,6 +94,11 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
       halfChecked: halfCheckedKeys,
     };
   }, [valueKeys, halfCheckedKeys, checkable]);
+
+  // ========================== Search ==========================
+  const filterTreeNode = (treeNode: EventDataNode) => String(treeNode[treeNodeFilterProp])
+      .toLowerCase()
+      .includes(String(searchValue).toLowerCase());
 
   // =========================== Keys ===========================
   const [expandedKeys, setExpandedKeys] = React.useState<Key[]>(treeDefaultExpandedKeys);
@@ -185,6 +199,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         onSelect={onInternalSelect}
         onCheck={onInternalSelect}
         onExpand={onInternalExpand}
+        filterTreeNode={filterTreeNode}
       />
     </div>
   );
