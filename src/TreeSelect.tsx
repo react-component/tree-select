@@ -33,7 +33,13 @@ import { SelectContext } from './Context';
 import useTreeData from './hooks/useTreeData';
 import useKeyValueMap from './hooks/useKeyValueMap';
 import useKeyValueMapping from './hooks/useKeyValueMapping';
-import { CheckedStrategy, formatStrategyValues } from './utils/strategyUtil';
+import {
+  CheckedStrategy,
+  formatStrategyValues,
+  SHOW_ALL,
+  SHOW_PARENT,
+  SHOW_CHILD,
+} from './utils/strategyUtil';
 import { fillLegacyProps } from './utils/legacyUtil';
 import useSelectValues from './hooks/useSelectValues';
 
@@ -51,6 +57,7 @@ const OMIT_PROPS = [
   'treeCheckStrictly',
   'treeExpandedKeys',
   'onTreeExpand',
+  'loadData',
 ];
 
 const RefSelect = generateSelector<DataNode[]>({
@@ -111,7 +118,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
   maxTagCount?: number;
   maxTagPlaceholder?: (omittedValues: LabelValueType[]) => React.ReactNode;
 
-  loadData?: (dataNode: LegacyDataNode) => Promise<void>;
+  loadData?: (dataNode: LegacyDataNode) => Promise<unknown>;
   treeNodeFilterProp?: string;
   treeNodeLabelProp?: string;
   treeDataSimpleMode?: boolean | SimpleModeConfig;
@@ -450,6 +457,12 @@ class TreeSelect<ValueType = DefaultValueType> extends React.Component<
   {}
 > {
   static TreeNode = TreeNode;
+
+  static SHOW_ALL: typeof SHOW_ALL = SHOW_ALL;
+
+  static SHOW_PARENT: typeof SHOW_PARENT = SHOW_PARENT;
+
+  static SHOW_CHILD: typeof SHOW_CHILD = SHOW_CHILD;
 
   selectRef = React.createRef<RefSelectProps>();
 

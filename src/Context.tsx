@@ -10,7 +10,7 @@ interface ContextProps {
   treeDefaultExpandedKeys: Key[];
   onTreeExpand: (keys: Key[]) => void;
   treeDefaultExpandAll: boolean;
-  loadData: (treeNode: LegacyDataNode) => Promise<void>;
+  loadData: (treeNode: LegacyDataNode) => Promise<unknown>;
   treeIcon: IconType;
   switcherIcon: IconType;
   treeLine: boolean;

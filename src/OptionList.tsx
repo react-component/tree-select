@@ -71,6 +71,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     switcherIcon,
     treeLine,
     treeNodeFilterProp,
+    loadData,
   } = React.useContext(SelectContext);
 
   const treeRef = React.useRef<Tree>();
@@ -193,6 +194,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         icon={treeIcon}
         switcherIcon={switcherIcon}
         showLine={treeLine}
+        loadData={searchValue ? null : (loadData as any)}
         // We handle keys by out instead tree self
         checkable={checkable}
         checkStrictly
