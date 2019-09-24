@@ -74,6 +74,17 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     return entity ? entity.key : null;
   });
 
+  const mergedCheckedKeys = React.useMemo(() => {
+    if (!checkable) {
+      return null;
+    }
+
+    return {
+      checked: valueKeys,
+      halfChecked: halfCheckedKeys,
+    };
+  }, [valueKeys, halfCheckedKeys, checkable]);
+
   // =========================== Keys ===========================
   const [expandedKeys, setExpandedKeys] = React.useState<Key[]>(treeDefaultExpandedKeys);
   const mergedExpandedKeys = treeExpandedKeys || expandedKeys;
@@ -155,7 +166,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         // We handle keys by out instead tree self
         checkable={checkable}
         checkStrictly
-        checkedKeys={checkable ? valueKeys : []}
+        checkedKeys={mergedCheckedKeys}
         selectedKeys={!checkable ? valueKeys : []}
         expandedKeys={mergedExpandedKeys}
         defaultExpandAll={treeDefaultExpandAll}
