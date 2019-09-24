@@ -145,11 +145,11 @@ export function getRawValueLabeled(
   getEntityByValue: (value: RawValueType, skipType?: SkipType) => FlattenDataNode,
   treeNodeLabelProp: string,
 ): LabelValueType[] {
-  const valueMap = new Map<RawValueType, React.ReactNode>();
+  const valueMap = new Map<RawValueType, LabelValueType>();
 
   toArray(prevValue).forEach(item => {
     if (item && typeof item === 'object' && 'value' in item && 'label' in item) {
-      valueMap.set(item.value, item.label);
+      valueMap.set(item.value, item);
     }
   });
 
@@ -157,7 +157,11 @@ export function getRawValueLabeled(
     const item: LabelValueType = { value: val };
 
     if (valueMap.has(val)) {
-      item.label = valueMap.get(val);
+      const labeledValue = valueMap.get(val);
+      item.label = labeledValue.label;
+      if ('halfChecked' in labeledValue) {
+        item.halfChecked = labeledValue.halfChecked;
+      }
     } else {
       const entity = getEntityByValue(val);
       item.label = entity ? entity.data[treeNodeLabelProp] : val;

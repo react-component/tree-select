@@ -277,9 +277,19 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
 
       const { triggerValue, selected } = extra || { triggerValue: undefined, selected: undefined };
 
-      const returnValues = labelInValue
+      let returnValues = labelInValue
         ? getRawValueLabeled(eventValues, mergedValue, getEntityByValue, mergedTreeNodeLabelProp)
         : eventValues;
+
+      // We need fill half check back
+      if (treeCheckStrictly && labelInValue) {
+        const halfValues = rawHalfCheckedValues.filter(val => !eventValues.includes(val));
+
+        returnValues = [
+          ...(returnValues as LabelValueType[]),
+          ...getRawValueLabeled(halfValues, mergedValue, getEntityByValue, mergedTreeNodeLabelProp),
+        ];
+      }
 
       onChange(
         mergedMultiple ? returnValues : returnValues[0],

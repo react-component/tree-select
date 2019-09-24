@@ -26,7 +26,6 @@ class Demo extends React.Component {
   };
 
   onGen = data => {
-    console.log('on gen!!!');
     this.setState({
       gData: data,
       gData1: [...data],
@@ -67,6 +66,7 @@ class Demo extends React.Component {
               style={{ width: 300 }}
               // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
               treeData={gData1}
+              labelInValue
               treeLine
               value={value1}
               placeholder={<i>请下拉选择</i>}
