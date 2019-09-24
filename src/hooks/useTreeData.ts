@@ -3,6 +3,8 @@ import warning from 'rc-util/lib/warning';
 import { DataNode, InnerDataNode, SimpleModeConfig } from '../interface';
 import { convertChildrenToData } from '../utils/legacyUtil';
 
+const MAX_WARNING_TIMES = 10;
+
 function parseSimpleTreeData(
   treeData: DataNode[],
   { id, pId, rootPId }: SimpleModeConfig,
@@ -43,29 +45,44 @@ function parseSimpleTreeData(
  * Format `treeData` with `value` & `key` which is used for calculation
  */
 function formatTreeData(treeData: DataNode[], labelProp: string): InnerDataNode[] {
-  return treeData.map(node => {
-    const { key, value, children, ...rest } = node;
+  let warningTimes = 0;
 
-    const mergedValue = 'value' in node ? value : key;
+  function dig(dataNodes: DataNode[]) {
+    return dataNodes.map(node => {
+      const { key, value, children, ...rest } = node;
 
-    const dataNode: InnerDataNode = {
-      ...rest,
-      key: mergedValue,
-      value: mergedValue,
-      title: node[labelProp],
-    };
+      const mergedValue = 'value' in node ? value : key;
 
-    warning(
-      key === null || key === undefined || value === undefined || String(key) === String(value),
-      `\`key\` or \`value\` with TreeNode must be the same or you can remove one of them. key: ${key}, value: ${value}.`,
-    );
+      const dataNode: InnerDataNode = {
+        ...rest,
+        key: mergedValue,
+        value: mergedValue,
+        title: node[labelProp],
+      };
 
-    if ('children' in node) {
-      dataNode.children = formatTreeData(children, labelProp);
-    }
+      if (
+        key !== null &&
+        key !== undefined &&
+        value !== undefined &&
+        String(key) !== String(value) &&
+        warningTimes < MAX_WARNING_TIMES
+      ) {
+        warningTimes += 1;
+        warning(
+          false,
+          `\`key\` or \`value\` with TreeNode must be the same or you can remove one of them. key: ${key}, value: ${value}.`,
+        );
+      }
 
-    return dataNode;
-  });
+      if ('children' in node) {
+        dataNode.children = dig(children);
+      }
+
+      return dataNode;
+    });
+  }
+
+  return dig(treeData);
 }
 
 /**

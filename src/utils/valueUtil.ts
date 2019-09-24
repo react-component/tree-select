@@ -62,7 +62,7 @@ function getLevel({ parent }: FlattenNode): number {
 export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
   // Add missing key
   function fillKey(list: DataNode[]): TreeDataNode[] {
-    return list.map(node => {
+    return (list || []).map(node => {
       const { value, key, children } = node;
 
       const clone = {
@@ -137,16 +137,6 @@ export function filterOptions(
   }
 
   return dig(options);
-}
-
-export function getRawValue(value: DefaultValueType, labelInValue: boolean): RawValueType {
-  return labelInValue ? (value as LabelValueType).value : (value as RawValueType);
-}
-
-export function getRawValues(value: DefaultValueType, labelInValue: boolean): RawValueType[] {
-  const values = toArray(value);
-
-  return values.map(val => getRawValue(val, labelInValue));
 }
 
 export function getRawValueLabeled(

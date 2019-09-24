@@ -8,6 +8,8 @@ export interface LabelValueType {
   key?: Key;
   value?: RawValueType;
   label?: React.ReactNode;
+  /** Only works on `treeCheckStrictly` */
+  halfChecked?: boolean;
 }
 
 export type DefaultValueType = RawValueType | RawValueType[] | LabelValueType | LabelValueType[];

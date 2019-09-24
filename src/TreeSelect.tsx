@@ -23,12 +23,10 @@ import {
   filterOptions,
   isValueDisabled,
   findValueOption,
-  getRawValues,
   addValue,
-  getRawValue,
   removeValue,
-  toArray,
   getRawValueLabeled,
+  toArray,
 } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
 import { SelectContext } from './Context';
@@ -50,6 +48,7 @@ const OMIT_PROPS = [
   'filterTreeNode',
   'dropdownPopupAlign',
   'treeDefaultExpandAll',
+  'treeCheckStrictly',
 ];
 
 const RefSelect = generateSelector<DataNode[]>({
@@ -227,7 +226,20 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   };
 
   const [rawValues, rawHalfCheckedValues]: [RawValueType[], RawValueType[]] = React.useMemo(() => {
-    const newRawValues = getRawValues(mergedValue, labelInValue);
+    const valueHalfCheckedValues: RawValueType[] = [];
+    const newRawValues: RawValueType[] = [];
+
+    toArray(mergedValue).forEach(item => {
+      if (item && typeof item === 'object' && 'value' in item) {
+        if (item.halfChecked && treeCheckStrictly) {
+          valueHalfCheckedValues.push(item.value);
+        } else {
+          newRawValues.push(item.value);
+        }
+      } else {
+        newRawValues.push(item as RawValueType);
+      }
+    });
 
     // We need do conduction of values
     if (treeConduction) {
@@ -240,7 +252,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
       );
       return [[...missingRawValues, ...checkedKeys], halfCheckedKeys];
     }
-    return [newRawValues, []];
+    return [newRawValues, valueHalfCheckedValues];
   }, [mergedValue, mergedMultiple, labelInValue, treeCheckable, treeCheckStrictly]);
 
   const selectValues = useSelectValues(rawValues, {
@@ -297,7 +309,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
       // Single mode always set value
       triggerChange([selectValue.value], { selected: true, triggerValue: selectValue.value });
     } else {
-      let newRawValues = addValue(rawValues, getRawValue(selectValue, true));
+      let newRawValues = addValue(rawValues, selectValue.value);
 
       // Add keys if tree conduction
       if (treeConduction) {
@@ -320,7 +332,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   const onInternalDeselect = (selectValue: LabelValueType, options: DataNode[]) => {
     const eventValue = labelInValue ? selectValue : selectValue.value;
 
-    let newRawValues = removeValue(rawValues, getRawValue(selectValue, true));
+    let newRawValues = removeValue(rawValues, selectValue.value);
 
     // Remove keys if tree conduction
     if (treeConduction) {
