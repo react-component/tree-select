@@ -56,7 +56,9 @@ const OMIT_PROPS = [
   'treeDefaultExpandAll',
   'treeCheckStrictly',
   'treeExpandedKeys',
+  'treeLoadedKeys',
   'onTreeExpand',
+  'onTreeLoad',
   'loadData',
 ];
 
@@ -124,6 +126,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
   treeDataSimpleMode?: boolean | SimpleModeConfig;
   treeExpandedKeys?: Key[];
   treeDefaultExpandedKeys?: Key[];
+  treeLoadedKeys?: Key[];
   treeCheckable?: boolean | React.ReactNode;
   treeCheckStrictly?: boolean;
   showCheckedStrategy?: CheckedStrategy;
@@ -141,6 +144,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
   onSearch?: (value: string) => void;
   onChange?: (value: ValueType, labelList: React.ReactNode[], extra: ChangeEventExtra) => void;
   onTreeExpand?: (expandedKeys: Key[]) => void;
+  onTreeLoad?: (loadedKeys: Key[]) => void;
 
   // Legacy
   /** `searchPlaceholder` has been removed since search box has been merged into input box */
@@ -155,6 +159,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     showCheckedStrategy = 'SHOW_CHILD',
     labelInValue,
     loadData,
+    treeLoadedKeys,
     treeNodeFilterProp,
     treeNodeLabelProp,
     treeDataSimpleMode,
@@ -170,6 +175,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     dropdownPopupAlign,
     onChange,
     onTreeExpand,
+    onTreeLoad,
     onDropdownVisibleChange,
     onSelect,
     onDeselect,
@@ -420,6 +426,8 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
       value={{
         checkable: mergedCheckable,
         loadData,
+        treeLoadedKeys,
+        onTreeLoad,
         checkedKeys: rawValues,
         halfCheckedKeys: rawHalfCheckedValues,
         treeDefaultExpandAll,

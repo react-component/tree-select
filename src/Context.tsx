@@ -10,11 +10,13 @@ interface ContextProps {
   treeDefaultExpandedKeys: Key[];
   onTreeExpand: (keys: Key[]) => void;
   treeDefaultExpandAll: boolean;
-  loadData: (treeNode: LegacyDataNode) => Promise<unknown>;
   treeIcon: IconType;
   switcherIcon: IconType;
   treeLine: boolean;
   treeNodeFilterProp: string;
+  treeLoadedKeys: Key[];
+  loadData: (treeNode: LegacyDataNode) => Promise<unknown>;
+  onTreeLoad: (loadedKeys: Key[]) => void;
 }
 
 export const SelectContext = React.createContext<ContextProps>(null);

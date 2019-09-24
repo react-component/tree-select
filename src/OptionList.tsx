@@ -72,6 +72,8 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     treeLine,
     treeNodeFilterProp,
     loadData,
+    treeLoadedKeys,
+    onTreeLoad,
   } = React.useContext(SelectContext);
 
   const treeRef = React.useRef<Tree>();
@@ -202,11 +204,13 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         selectedKeys={!checkable ? valueKeys : []}
         expandedKeys={mergedExpandedKeys}
         defaultExpandAll={treeDefaultExpandAll}
+        loadedKeys={treeLoadedKeys}
         // Proxy event out
         onActiveChange={setActiveKey}
         onSelect={onInternalSelect}
         onCheck={onInternalSelect}
         onExpand={onInternalExpand}
+        onLoad={onTreeLoad}
         filterTreeNode={filterTreeNode}
       />
     </div>
