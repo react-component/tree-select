@@ -1,6 +1,6 @@
 import React from 'react';
 import warning from 'rc-util/lib/warning';
-import { DataNode, InnerDataNode, SimpleModeConfig } from '../interface';
+import { DataNode, InnerDataNode, SimpleModeConfig, RawValueType } from '../interface';
 import { convertChildrenToData } from '../utils/legacyUtil';
 
 const MAX_WARNING_TIMES = 10;
@@ -49,6 +49,7 @@ function formatTreeData(
   getLabelProp: (node: DataNode) => React.ReactNode,
 ): InnerDataNode[] {
   let warningTimes = 0;
+  const valueSet = new Set<RawValueType>();
 
   function dig(dataNodes: DataNode[]) {
     return dataNodes.map(node => {
@@ -63,18 +64,24 @@ function formatTreeData(
         title: getLabelProp(node),
       };
 
-      if (
-        key !== null &&
-        key !== undefined &&
-        value !== undefined &&
-        String(key) !== String(value) &&
-        warningTimes < MAX_WARNING_TIMES
-      ) {
-        warningTimes += 1;
-        warning(
-          false,
-          `\`key\` or \`value\` with TreeNode must be the same or you can remove one of them. key: ${key}, value: ${value}.`,
-        );
+      // Check `key` & `value` and warning user
+      if (process.env.NODE_ENV !== 'production') {
+        if (
+          key !== null &&
+          key !== undefined &&
+          value !== undefined &&
+          String(key) !== String(value) &&
+          warningTimes < MAX_WARNING_TIMES
+        ) {
+          warningTimes += 1;
+          warning(
+            false,
+            `\`key\` or \`value\` with TreeNode must be the same or you can remove one of them. key: ${key}, value: ${value}.`,
+          );
+        }
+
+        warning(!valueSet.has(value), `Same \`value\` exist in the tree: ${value}`);
+        valueSet.add(value);
       }
 
       if ('children' in node) {

@@ -18,6 +18,11 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
       .at(index)
       .simulate('click');
   },
+  switchNode(index = 0) {
+    this.find('.rc-tree-select-tree-switcher')
+      .at(index)
+      .simulate('click');
+  },
   getSelection(index = 0) {
     return this.find('.rc-tree-select-selection-item').at(index);
   },
