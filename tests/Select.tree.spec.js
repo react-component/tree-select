@@ -97,6 +97,6 @@ describe('TreeSelect.tree', () => {
       </TreeSelect>,
     );
 
-    expect(wrapper.getSelection('0').text()).toEqual('empty string');
+    expect(wrapper.getSelection(0).text()).toEqual('empty string');
   });
 });

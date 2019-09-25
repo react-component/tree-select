@@ -82,7 +82,7 @@ describe('TreeSelect.props', () => {
   //   // setMock(false);
   // });
 
-  // it.only('choiceTransitionName', () => {
+  // it('choiceTransitionName', () => {
   //   setMock(true);
   //   class Wrapper extends React.Component {
   //     state = {

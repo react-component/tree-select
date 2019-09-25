@@ -637,7 +637,28 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
                 <div
                   class="rc-tree-select-tree-list-holder-inner"
                   style="display: flex; flex-direction: column;"
-                />
+                >
+                  <div
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open filter-node"
+                  >
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                      title="labela"
+                    >
+                      <span
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                      />
+                      <span
+                        class="rc-tree-select-tree-title"
+                      >
+                        labela
+                      </span>
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -827,7 +848,7 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
                   style="display: flex; flex-direction: column;"
                 >
                   <div
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open filter-node"
                   >
                     <span
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"

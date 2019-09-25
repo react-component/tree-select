@@ -3,7 +3,11 @@ import warning, { noteOnce } from 'rc-util/lib/warning';
 import { TreeSelectProps } from '../TreeSelect';
 
 function warningProps(props: TreeSelectProps) {
-  warning(!props.searchPlaceholder, '`searchPlaceholder` has been removed.');
+  const { searchPlaceholder, treeCheckStrictly, labelInValue } = props;
+  warning(!searchPlaceholder, '`searchPlaceholder` has been removed.');
+  if (treeCheckStrictly && labelInValue === false) {
+    warning(false, '`treeCheckStrictly` will force set `labelInValue` to `true`');
+  }
 }
 
 export default warningProps;

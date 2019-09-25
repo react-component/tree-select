@@ -121,7 +121,7 @@ describe('TreeSelect.basic', () => {
     const wrapper = mount(
       <TreeSelect defaultValue="0" treeData={[{ key: '0', value: '0', title: 'label0' }]} />,
     );
-    expect(wrapper.getSelection().text()).toEqual('label0');
+    expect(wrapper.getSelection(0).text()).toEqual('label0');
   });
 
   it('select value twice', () => {
@@ -149,10 +149,10 @@ describe('TreeSelect.basic', () => {
       { key: '1', value: '1', title: 'label1' },
     ];
     const wrapper = mount(<TreeSelect value="0" treeData={treeData} />);
-    expect(wrapper.getSelection().text()).toEqual('label0');
+    expect(wrapper.getSelection(0).text()).toEqual('label0');
 
     wrapper.setProps({ value: '1' });
-    expect(wrapper.getSelection().text()).toEqual('label1');
+    expect(wrapper.getSelection(0).text()).toEqual('label1');
   });
 
   describe('select', () => {
@@ -191,7 +191,7 @@ describe('TreeSelect.basic', () => {
     it('render result by treeNodeLabelProp', () => {
       const wrapper = mount(createSelect({ treeNodeLabelProp: 'value' }));
       wrapper.selectNode();
-      expect(wrapper.getSelection().text()).toEqual('0');
+      expect(wrapper.getSelection(0).text()).toEqual('0');
     });
   });
 
@@ -314,10 +314,7 @@ describe('TreeSelect.basic', () => {
       wrapper.openSelect();
 
       wrapper.selectNode();
-      wrapper
-        .find('.rc-tree-select-clear')
-        .at(0)
-        .simulate('mouseDown');
+      wrapper.clearAll();
       expect(wrapper.find('Select').props().value).toHaveLength(0);
     });
 
@@ -345,10 +342,7 @@ describe('TreeSelect.basic', () => {
       const wrapper = mount(<App />);
       wrapper.openSelect();
       wrapper.selectNode();
-      wrapper
-        .find('.rc-tree-select-clear')
-        .at(0)
-        .simulate('mouseDown');
+      wrapper.clearAll();
       expect(wrapper.find('Select').props().value).toHaveLength(0);
     });
   });

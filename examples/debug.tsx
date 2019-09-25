@@ -76,15 +76,11 @@ const Demo: React.FC<{}> = () => {
         }}
         placeholder="Control Mode"
       />
-      <TreeSelect
-        open
-        showSearch
-        allowClear
-        treeData={[
-          { key: 'a', value: 'a', title: 'labela' },
-          { key: 'b', value: 'b', title: 'labelb' },
-        ]}
-      />
+      <TreeSelect treeCheckable labelInValue value={[{ value: '0-0' }]}>
+        <TreeNode key="0-0" value="0-0" title="0-0">
+          <TreeNode key="0-0-0" value="0-0-0" title="0-0-0" />
+        </TreeNode>
+      </TreeSelect>
       <input />
     </div>
   );

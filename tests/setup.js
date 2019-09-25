@@ -23,8 +23,27 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
       .at(index)
       .simulate('click');
   },
-  getSelection(index = 0) {
-    return this.find('.rc-tree-select-selection-item').at(index);
+  getSelection(index) {
+    const selections = this.find('.rc-tree-select-selection-item');
+    if (index !== undefined) {
+      const selection = selections.at(index);
+      const content = selection.find('.rc-tree-select-selection-item-content');
+
+      return content.length ? content : selection;
+    }
+    return selections;
+  },
+  clearSelection(index = 0) {
+    return this.getSelection()
+      .at(index)
+      .find('.rc-tree-select-selection-item-remove')
+      .hostNodes()
+      .simulate('click');
+  },
+  clearAll() {
+    return this.find('.rc-tree-select-clear')
+      .first()
+      .simulate('mouseDown');
   },
   search(text) {
     this.find('input.rc-tree-select-selection-search-input').simulate('change', {

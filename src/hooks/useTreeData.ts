@@ -109,7 +109,7 @@ export default function useTreeData(
     getLabelProp: (node: DataNode) => React.ReactNode;
     simpleMode: boolean | SimpleModeConfig;
   },
-) {
+): InnerDataNode[] {
   const cacheRef = React.useRef<{
     treeData?: DataNode[];
     children?: React.ReactNode;

@@ -32,6 +32,7 @@ export interface InnerDataNode extends DataNode {
   key: Key;
   value: RawValueType;
   label?: React.ReactNode;
+  children?: InnerDataNode[];
 }
 
 export interface LegacyDataNode extends DataNode {
@@ -55,21 +56,25 @@ export interface SimpleModeConfig {
   rootPId?: Key;
 }
 
-interface ChangeEventExtraNode {
-  props: any;
-  [prop: string]: any;
+/** @deprecated This is only used for legacy compatible. Not works on new code. */
+export interface LegacyCheckedNode {
+  pos: string;
+  node: React.ReactElement;
+  children?: LegacyCheckedNode[];
 }
 
 export interface ChangeEventExtra {
   /** @deprecated Please save prev value by control logic instead */
   preValue: LabelValueType[];
   triggerValue: RawValueType;
-  /** @deprecated This prop not work as react node anymore. */
-  triggerNode: ChangeEventExtraNode;
   /** @deprecated Use `onSelect` or `onDeselect` instead. */
   selected?: boolean;
   /** @deprecated Use `onSelect` or `onDeselect` instead. */
   checked?: boolean;
+
+  // Not sure if exist user still use this. We have to keep but not recommend user to use
   /** @deprecated This prop not work as react node anymore. */
-  allCheckedNodes: ChangeEventExtraNode[];
+  triggerNode: React.ReactElement;
+  /** @deprecated This prop not work as react node anymore. */
+  allCheckedNodes: LegacyCheckedNode[];
 }

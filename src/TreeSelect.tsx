@@ -40,7 +40,7 @@ import {
   SHOW_PARENT,
   SHOW_CHILD,
 } from './utils/strategyUtil';
-import { fillLegacyProps } from './utils/legacyUtil';
+import { fillLegacyProps, fillAdditionalInfo } from './utils/legacyUtil';
 import useSelectValues from './hooks/useSelectValues';
 
 const OMIT_PROPS = [
@@ -165,7 +165,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     labelInValue,
     loadData,
     treeLoadedKeys,
-    treeNodeFilterProp,
+    treeNodeFilterProp = 'value',
     treeNodeLabelProp,
     treeDataSimpleMode,
     treeData,
@@ -188,6 +188,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   const mergedCheckable = !!(treeCheckable || treeCheckStrictly);
   const mergedMultiple = multiple || mergedCheckable;
   const treeConduction = treeCheckable && !treeCheckStrictly;
+  const mergedLabelInValue = treeCheckStrictly || labelInValue;
 
   // ========================== Ref ==========================
   const selectRef = React.useRef<RefSelectProps>(null);
@@ -198,8 +199,6 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   }));
 
   // ======================= Tree Data =======================
-  const mergedTreeNodeFilterProp = treeNodeFilterProp || (treeData ? 'label' : 'title');
-
   // Legacy both support `label` or `title` if not set.
   // We have to fallback to function to handle this
   const getTreeNodeLabelProp = (node: DataNode): React.ReactNode => {
@@ -286,7 +285,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
       ];
     }
     return [newRawValues, valueHalfCheckedKeys];
-  }, [mergedValue, mergedMultiple, labelInValue, treeCheckable, treeCheckStrictly]);
+  }, [mergedValue, mergedMultiple, mergedLabelInValue, treeCheckable, treeCheckStrictly]);
   const selectValues = useSelectValues(rawValues, {
     treeConduction,
     value: mergedValue,
@@ -323,12 +322,12 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
 
       const { triggerValue, selected } = extra || { triggerValue: undefined, selected: undefined };
 
-      let returnValues = labelInValue
+      let returnValues = mergedLabelInValue
         ? getRawValueLabeled(eventValues, mergedValue, getEntityByValue, getTreeNodeLabelProp)
         : eventValues;
 
       // We need fill half check back
-      if (treeCheckStrictly && labelInValue) {
+      if (treeCheckStrictly) {
         const halfValues = rawHalfCheckedKeys
           .map(key => {
             const entity = getEntityByKey(key);
@@ -342,13 +341,15 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
         ];
       }
 
-      const additionalInfo: ChangeEventExtra = {
+      const additionalInfo = {
         // [Legacy] Always return as array contains label & value
         preValue: selectValues,
         triggerValue,
-        triggerNode: getDataNode(triggerValue),
-        allCheckedNodes: eventValues.map(getDataNode),
-      };
+      } as ChangeEventExtra;
+
+      // [Legacy] Fill legacy data if user query.
+      // This is expansive that we only fill when user query
+      fillAdditionalInfo(additionalInfo, triggerValue, eventValues, mergedTreeData, treeCheckStrictly);
 
       if (mergedCheckable) {
         additionalInfo.checked = selected;
@@ -358,7 +359,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
 
       onChange(
         mergedMultiple ? returnValues : returnValues[0],
-        labelInValue
+        mergedLabelInValue
           ? null
           : eventValues.map(val => {
               const entity = getEntityByValue(val);
@@ -370,7 +371,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   };
 
   const onInternalSelect = (selectValue: RawValueType, option: DataNode) => {
-    const eventValue = labelInValue ? selectValue : selectValue;
+    const eventValue = mergedLabelInValue ? selectValue : selectValue;
 
     if (!mergedMultiple) {
       // Single mode always set value
@@ -399,7 +400,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   };
 
   const onInternalDeselect = (selectValue: RawValueType, option: DataNode) => {
-    const eventValue = labelInValue ? selectValue : selectValue;
+    const eventValue = mergedLabelInValue ? selectValue : selectValue;
 
     let newRawValues = removeValue(rawValues, selectValue);
 
@@ -452,7 +453,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   // We pass some props into select props style
   const selectProps: Partial<SelectProps<any, any>> = {
     optionLabelProp: null,
-    optionFilterProp: mergedTreeNodeFilterProp,
+    optionFilterProp: treeNodeFilterProp,
     dropdownAlign: dropdownPopupAlign,
     internalProps: {
       mark: INTERNAL_PROPS_MARK,
@@ -484,7 +485,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
         treeIcon,
         switcherIcon,
         treeLine,
-        treeNodeFilterProp: mergedTreeNodeFilterProp,
+        treeNodeFilterProp,
       }}
     >
       <RefSelect
