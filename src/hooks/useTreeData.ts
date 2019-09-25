@@ -44,7 +44,10 @@ function parseSimpleTreeData(
 /**
  * Format `treeData` with `value` & `key` which is used for calculation
  */
-function formatTreeData(treeData: DataNode[], labelProp: string): InnerDataNode[] {
+function formatTreeData(
+  treeData: DataNode[],
+  getLabelProp: (node: DataNode) => React.ReactNode,
+): InnerDataNode[] {
   let warningTimes = 0;
 
   function dig(dataNodes: DataNode[]) {
@@ -57,7 +60,7 @@ function formatTreeData(treeData: DataNode[], labelProp: string): InnerDataNode[
         ...rest,
         key: key !== null && key !== undefined ? key : mergedValue,
         value: mergedValue,
-        title: node[labelProp],
+        title: getLabelProp(node),
       };
 
       if (
@@ -93,10 +96,10 @@ export default function useTreeData(
   treeData: DataNode[],
   children: React.ReactNode,
   {
-    labelProp,
+    getLabelProp,
     simpleMode,
   }: {
-    labelProp: string;
+    getLabelProp: (node: DataNode) => React.ReactNode;
     simpleMode: boolean | SimpleModeConfig;
   },
 ) {
@@ -119,7 +122,7 @@ export default function useTreeData(
                   ...(simpleMode !== true ? simpleMode : {}),
                 })
               : treeData,
-            labelProp,
+            getLabelProp,
           );
 
     cacheRef.current.treeData = treeData;
@@ -127,7 +130,7 @@ export default function useTreeData(
     cacheRef.current.formatTreeData =
       cacheRef.current.children === children
         ? cacheRef.current.formatTreeData
-        : formatTreeData(convertChildrenToData(children), labelProp);
+        : formatTreeData(convertChildrenToData(children), getLabelProp);
   }
 
   return cacheRef.current.formatTreeData;

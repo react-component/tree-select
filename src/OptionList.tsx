@@ -112,8 +112,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   // =========================== Keys ===========================
   const [expandedKeys, setExpandedKeys] = React.useState<Key[]>(treeDefaultExpandedKeys);
   const [searchExpandedKeys, setSearchExpandedKeys] = React.useState<Key[]>(null);
-  const mergedExpandedKeys =
-    treeExpandedKeys || (searchValue ? searchExpandedKeys : expandedKeys) || [];
+  const mergedExpandedKeys = treeExpandedKeys || (searchValue ? searchExpandedKeys : expandedKeys);
 
   React.useEffect(() => {
     if (searchValue) {
@@ -183,6 +182,9 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   if (treeLoadedKeys) {
     treeProps.loadedKeys = treeLoadedKeys;
   }
+  if (mergedExpandedKeys) {
+    treeProps.expandedKeys = mergedExpandedKeys;
+  }
 
   return (
     <div
@@ -207,7 +209,6 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         checkStrictly
         checkedKeys={mergedCheckedKeys}
         selectedKeys={!checkable ? valueKeys : []}
-        expandedKeys={mergedExpandedKeys}
         defaultExpandAll={treeDefaultExpandAll}
         {...treeProps}
         // Proxy event out

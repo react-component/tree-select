@@ -1,7 +1,7 @@
 import React from 'react';
 import { DefaultValueType } from 'rc-select/lib/interface/generator';
 import { DataEntity } from 'rc-tree/lib/interface';
-import { RawValueType, FlattenDataNode, Key, LabelValueType } from '../interface';
+import { RawValueType, FlattenDataNode, Key, LabelValueType, DataNode } from '../interface';
 import { SkipType } from './useKeyValueMapping';
 import { toArray, getRawValueLabeled } from '../utils/valueUtil';
 import { formatStrategyKeys, CheckedStrategy } from '../utils/strategyUtil';
@@ -14,7 +14,7 @@ interface Config {
   conductKeyEntities: Record<Key, DataEntity>;
   getEntityByKey: (key: Key, skipType?: SkipType) => FlattenDataNode;
   getEntityByValue: (value: RawValueType, skipType?: SkipType) => FlattenDataNode;
-  treeNodeLabelProp: string;
+  getLabelProp: (node: DataNode) => React.ReactNode;
 }
 
 /** Return  */
@@ -27,7 +27,7 @@ export default function useSelectValues(
     treeConduction,
     showCheckedStrategy,
     conductKeyEntities,
-    treeNodeLabelProp,
+    getLabelProp,
   }: Config,
 ): LabelValueType[] {
   return React.useMemo(() => {
@@ -49,6 +49,6 @@ export default function useSelectValues(
       });
     }
 
-    return getRawValueLabeled(mergedRawValues, value, getEntityByValue, treeNodeLabelProp);
-  }, [rawValues, value, treeConduction, showCheckedStrategy, treeNodeLabelProp]);
+    return getRawValueLabeled(mergedRawValues, value, getEntityByValue, getLabelProp);
+  }, [rawValues, value, treeConduction, showCheckedStrategy]);
 }

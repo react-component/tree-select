@@ -147,7 +147,7 @@ export function getRawValueLabeled(
   values: RawValueType[],
   prevValue: DefaultValueType,
   getEntityByValue: (value: RawValueType, skipType?: SkipType) => FlattenDataNode,
-  treeNodeLabelProp: string,
+  getLabelProp: (node: DataNode) => React.ReactNode,
 ): LabelValueType[] {
   const valueMap = new Map<RawValueType, LabelValueType>();
 
@@ -168,7 +168,7 @@ export function getRawValueLabeled(
       }
     } else {
       const entity = getEntityByValue(val);
-      item.label = entity ? entity.data[treeNodeLabelProp] : val;
+      item.label = entity ? getLabelProp(entity.data) : val;
     }
 
     return item;

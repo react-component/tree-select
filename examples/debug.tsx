@@ -34,7 +34,7 @@ const Demo: React.FC<{}> = () => {
     >
       <h1>Debug</h1>
       <input />
-      <TreeSelect style={{ width: 200 }}>
+      <TreeSelect style={{ width: 200 }} defaultValue="child">
         <TreeNode title="Parent" value="parent">
           <TreeNode title="Child" value="child" />
         </TreeNode>
@@ -75,6 +75,15 @@ const Demo: React.FC<{}> = () => {
           setValue(newValue);
         }}
         placeholder="Control Mode"
+      />
+      <TreeSelect
+        open
+        showSearch
+        allowClear
+        treeData={[
+          { key: 'a', value: 'a', title: 'labela' },
+          { key: 'b', value: 'b', title: 'labelb' },
+        ]}
       />
       <input />
     </div>

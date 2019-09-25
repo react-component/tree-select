@@ -61,6 +61,7 @@ const OMIT_PROPS = [
   'onTreeLoad',
   'loadData',
   'treeDataSimpleMode',
+  'treeNodeLabelProp',
 ];
 
 const RefSelect = generateSelector<DataNode[]>({
@@ -87,6 +88,8 @@ const RefSelect = generateSelector<DataNode[]>({
     return cloneProps;
   },
 });
+
+RefSelect.displayName = 'Select';
 
 export interface TreeSelectProps<ValueType = DefaultValueType>
   extends Omit<
@@ -195,10 +198,22 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
 
   // ======================= Tree Data =======================
   const mergedTreeNodeFilterProp = treeNodeFilterProp || (treeData ? 'label' : 'title');
-  const mergedTreeNodeLabelProp = treeNodeLabelProp || (treeData ? 'label' : 'title');
+
+  // Legacy both support `label` or `title` if not set.
+  // We have to fallback to function to handle this
+  const getTreeNodeLabelProp = (node: DataNode): React.ReactNode => {
+    if (treeNodeLabelProp) {
+      return node[treeNodeLabelProp];
+    }
+
+    if (!treeData) {
+      return node.title;
+    }
+    return node.label || node.title;
+  };
 
   const mergedTreeData = useTreeData(treeData, children, {
-    labelProp: mergedTreeNodeLabelProp,
+    getLabelProp: getTreeNodeLabelProp,
     simpleMode: treeDataSimpleMode,
   });
 
@@ -278,7 +293,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     conductKeyEntities,
     getEntityByValue,
     getEntityByKey,
-    treeNodeLabelProp: mergedTreeNodeLabelProp,
+    getLabelProp: getTreeNodeLabelProp,
   });
 
   const triggerChange = (
@@ -308,7 +323,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
       const { triggerValue, selected } = extra || { triggerValue: undefined, selected: undefined };
 
       let returnValues = labelInValue
-        ? getRawValueLabeled(eventValues, mergedValue, getEntityByValue, mergedTreeNodeLabelProp)
+        ? getRawValueLabeled(eventValues, mergedValue, getEntityByValue, getTreeNodeLabelProp)
         : eventValues;
 
       // We need fill half check back
@@ -322,8 +337,22 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
 
         returnValues = [
           ...(returnValues as LabelValueType[]),
-          ...getRawValueLabeled(halfValues, mergedValue, getEntityByValue, mergedTreeNodeLabelProp),
+          ...getRawValueLabeled(halfValues, mergedValue, getEntityByValue, getTreeNodeLabelProp),
         ];
+      }
+
+      const additionalInfo: ChangeEventExtra = {
+        // [Legacy] Always return as array contains label & value
+        preValue: selectValues,
+        triggerValue,
+        triggerNode: getDataNode(triggerValue),
+        allCheckedNodes: eventValues.map(getDataNode),
+      };
+
+      if (mergedCheckable) {
+        additionalInfo.checked = selected;
+      } else {
+        additionalInfo.selected = selected;
       }
 
       onChange(
@@ -332,17 +361,9 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
           ? null
           : eventValues.map(val => {
               const entity = getEntityByValue(val);
-              return entity ? entity.data[mergedTreeNodeLabelProp] : null;
+              return entity ? getTreeNodeLabelProp(entity.data) : null;
             }),
-        {
-          // [Legacy] Always return as array contains label & value
-          preValue: selectValues,
-          triggerValue,
-          selected: !mergedCheckable ? selected : undefined,
-          checked: mergedCheckable ? selected : undefined,
-          triggerNode: getDataNode(triggerValue),
-          allCheckedNodes: eventValues.map(getDataNode),
-        },
+        additionalInfo,
       );
     }
   };
@@ -366,15 +387,13 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
           ...missingRawValues,
           ...checkedKeys.map(key => getEntityByKey(key).data.value),
         ];
-
-        console.log('~>', newRawValues);
       }
 
       triggerChange(newRawValues, { selected: true, triggerValue: selectValue });
+    }
 
-      if (onSelect) {
-        onSelect(eventValue, option);
-      }
+    if (onSelect) {
+      onSelect(eventValue, option);
     }
   };
 
@@ -431,7 +450,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   // ======================== Render =========================
   // We pass some props into select props style
   const selectProps: Partial<SelectProps<any, any>> = {
-    optionLabelProp: mergedTreeNodeLabelProp,
+    optionLabelProp: null,
     optionFilterProp: mergedTreeNodeFilterProp,
     dropdownAlign: dropdownPopupAlign,
     internalProps: {
