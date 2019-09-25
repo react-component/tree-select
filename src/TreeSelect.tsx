@@ -349,7 +349,13 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
 
       // [Legacy] Fill legacy data if user query.
       // This is expansive that we only fill when user query
-      fillAdditionalInfo(additionalInfo, triggerValue, eventValues, mergedTreeData, treeCheckStrictly);
+      fillAdditionalInfo(
+        additionalInfo,
+        triggerValue,
+        eventValues,
+        mergedTreeData,
+        treeCheckStrictly,
+      );
 
       if (mergedCheckable) {
         additionalInfo.checked = selected;

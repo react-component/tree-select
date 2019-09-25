@@ -68,25 +68,25 @@ export function fillAdditionalInfo(
   let nodeMap: Map<RawValueType, LegacyCheckedNode> = null;
 
   function generateMap() {
+    function dig(list: InnerDataNode[], level: string = '0'): LegacyCheckedNode[] {
+      return list.map((dataNode, index) => {
+        const pos = `${level}-${index}`;
+        const children = dig(dataNode.children || [], pos);
+
+        const checkedNode: LegacyCheckedNode = {
+          pos,
+          node: <TreeNode {...dataNode}>{children.map(child => child.node)}</TreeNode>,
+          children,
+        };
+
+        nodeMap.set(dataNode.value, checkedNode);
+
+        return checkedNode;
+      });
+    }
+
     if (!nodeMap) {
       nodeMap = new Map();
-
-      function dig(list: InnerDataNode[], level: string = '0'): LegacyCheckedNode[] {
-        return list.map((dataNode, index) => {
-          const pos = `${level}-${index}`;
-          const children = dig(dataNode.children || [], pos);
-
-          const checkedNode: LegacyCheckedNode = {
-            pos,
-            node: <TreeNode {...dataNode}>{children.map(child => child.node)}</TreeNode>,
-            children,
-          };
-
-          nodeMap.set(dataNode.value, checkedNode);
-
-          return checkedNode;
-        });
-      }
 
       dig(treeData);
     }
