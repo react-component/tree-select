@@ -259,7 +259,7 @@ describe('TreeSelect.basic', () => {
       </TreeSelect>,
     );
     wrapper.openSelect();
-    expect(wrapper.find('.rc-tree-select').hasClass('rc-tree-select-open')).toBeTruthy();
+    expect(wrapper.isOpen()).toBeTruthy();
   });
 
   it('close tree when press ESC', () => {
@@ -273,7 +273,7 @@ describe('TreeSelect.basic', () => {
       .find('input')
       .first()
       .simulate('keyDown', { which: KeyCode.ESC });
-    expect(wrapper.find('.rc-tree-select').hasClass('rc-tree-select-open')).toBeFalsy();
+    expect(wrapper.isOpen()).toBeFalsy();
   });
 
   // https://github.com/ant-design/ant-design/issues/4084
@@ -353,63 +353,43 @@ describe('TreeSelect.basic', () => {
     });
   });
 
-  // describe('keyCode', () => {
-  //   [KeyCode.ENTER, KeyCode.DOWN].forEach(code => {
-  //     it('open', () => {
-  //       const onFocus = jest.fn();
+  describe('keyCode', () => {
+    [KeyCode.ENTER, KeyCode.DOWN].forEach(code => {
+      it('open', () => {
+        const onFocus = jest.fn();
 
-  //       const wrapper = mount(
-  //         <TreeSelect onFocus={onFocus}>
-  //           <TreeNode title="0" value="0" />
-  //         </TreeSelect>,
-  //       );
+        const wrapper = mount(
+          <TreeSelect onFocus={onFocus}>
+            <TreeNode title="0" value="0" />
+          </TreeSelect>,
+        );
 
-  //       wrapper.find('.rc-tree-select').simulate('keyDown', { keyCode: code });
-  //       expect(wrapper.state('open')).toBe(true);
-  //     });
-  //   });
-  // });
+        wrapper
+          .find('input')
+          .first()
+          .simulate('keyDown', { which: code });
+        expect(wrapper.isOpen()).toBeTruthy();
+      });
+    });
+  });
 
-  // describe('util', () => {
-  //   it('getLabel never reach', () => {
-  //     expect(getLabel({ value: 'newValue' })).toBe('newValue');
-  //   });
-  // });
+  describe('scroll to view', () => {
+    it('single mode should trigger scroll', () => {
+      const wrapper = mount(
+        <TreeSelect value="0">
+          <TreeNode title="0" value="0" />
+        </TreeSelect>,
+      );
 
-  // describe('forceAlign', () => {
-  //   it('onChoiceAnimationLeave trigger', done => {
-  //     const wrapper = mount(
-  //       <TreeSelect open>
-  //         <TreeNode title="0" value="0" />
-  //       </TreeSelect>,
-  //     );
+      wrapper.openSelect();
+      wrapper.openSelect();
+      expect(wrapper.isOpen()).toBeFalsy();
 
-  //     const instance = wrapper.instance();
-  //     instance.forcePopupAlign = jest.fn();
+      const scrollTo = jest.fn();
+      wrapper.find('List').instance().scrollTo = scrollTo;
 
-  //     instance.onChoiceAnimationLeave();
-
-  //     raf(() => {
-  //       expect(instance.forcePopupAlign).toBeCalled();
-  //       done();
-  //     });
-  //   });
-  // });
-
-  // describe('scroll to view', () => {
-  //   it('single mode should trigger scroll', done => {
-  //     const wrapper = mount(
-  //       <TreeSelect value="0">
-  //         <TreeNode title="0" value="0" />
-  //       </TreeSelect>,
-  //     );
-
-  //     wrapper.openSelect();
-
-  //     raf(() => {
-  //       done();
-  //     });
-  //     jest.runAllTimers();
-  //   });
-  // });
+      wrapper.openSelect();
+      expect(scrollTo).toHaveBeenCalled();
+    });
+  });
 });

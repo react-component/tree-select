@@ -58,6 +58,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     searchValue,
     onSelect,
     onToggleOpen,
+    open,
   } = props;
   const {
     checkable,
@@ -82,10 +83,10 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   const [getEntityByKey, getEntityByValue] = useKeyValueMapping(cacheKeyMap, cacheValueMap);
 
   // ========================== Values ==========================
-  const valueKeys = checkedKeys.map(val => {
-    const entity = getEntityByValue(val);
-    return entity ? entity.key : null;
-  });
+  const valueKeys = React.useMemo(() => checkedKeys.map(val => {
+      const entity = getEntityByValue(val);
+      return entity ? entity.key : null;
+    }), [checkedKeys]);
 
   const mergedCheckedKeys = React.useMemo(() => {
     if (!checkable) {
@@ -97,6 +98,14 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
       halfChecked: halfCheckedKeys,
     };
   }, [valueKeys, halfCheckedKeys, checkable]);
+
+  // ========================== Scroll ==========================
+  React.useEffect(() => {
+    // Single mode should scroll to current key
+    if (open && !multiple && valueKeys.length) {
+      treeRef.current.scrollTo({ key: valueKeys[0] });
+    }
+  }, [open]);
 
   // ========================== Search ==========================
   const lowerSearchValue = String(searchValue).toLowerCase();

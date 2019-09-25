@@ -62,6 +62,7 @@ const OMIT_PROPS = [
   'loadData',
   'treeDataSimpleMode',
   'treeNodeLabelProp',
+  'treeDefaultExpandedKeys',
 ];
 
 const RefSelect = generateSelector<DataNode[]>({

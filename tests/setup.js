@@ -22,6 +22,11 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
     return this.find('.rc-tree-select-selection-item').at(index);
   },
   search(text) {
-    this.find('input.rc-tree-select-selection-search-input').simulate('change', { target: { value: text } });
+    this.find('input.rc-tree-select-selection-search-input').simulate('change', {
+      target: { value: text },
+    });
+  },
+  isOpen() {
+    return this.find('.rc-tree-select').hasClass('rc-tree-select-open');
   },
 });
