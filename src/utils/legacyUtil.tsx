@@ -63,7 +63,7 @@ export function fillAdditionalInfo(
   triggerValue: RawValueType,
   checkedValues: RawValueType[],
   treeData: InnerDataNode[],
-  treeCheckStrictly: boolean,
+  showPosition: boolean,
 ) {
   let nodeMap: Map<RawValueType, LegacyCheckedNode> = null;
 
@@ -108,11 +108,11 @@ export function fillAdditionalInfo(
 
       const list = checkedValues.map(val => nodeMap.get(val));
 
-      if (treeCheckStrictly) {
-        return list.map(({ node }) => node);
+      if (showPosition) {
+        return list;
       }
 
-      return list;
+      return list.map(({ node }) => node);
     },
   });
 }

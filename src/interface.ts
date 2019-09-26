@@ -1,5 +1,7 @@
 import React from 'react';
 
+export type SelectSource = 'option' | 'selection' | 'input' | 'clear';
+
 export type Key = string | number;
 
 export type RawValueType = string | number;

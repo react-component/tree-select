@@ -76,7 +76,7 @@ const Demo: React.FC<{}> = () => {
         }}
         placeholder="Control Mode"
       />
-      <TreeSelect treeCheckable labelInValue value={[{ value: '0-0' }]}>
+      <TreeSelect treeCheckable labelInValue value={[{ value: '0-0' }]} allowClear>
         <TreeNode key="0-0" value="0-0" title="0-0">
           <TreeNode key="0-0-0" value="0-0-0" title="0-0-0" />
         </TreeNode>

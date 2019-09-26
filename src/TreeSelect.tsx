@@ -17,6 +17,7 @@ import {
   RawValueType,
   ChangeEventExtra,
   LegacyDataNode,
+  SelectSource,
 } from './interface';
 import {
   flattenOptions,
@@ -299,6 +300,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   const triggerChange = (
     newRawValues: RawValueType[],
     extra: { triggerValue: RawValueType; selected: boolean },
+    source: SelectSource,
   ) => {
     setValue(mergedMultiple ? newRawValues : newRawValues[0]);
     if (onChange) {
@@ -349,13 +351,13 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
 
       // [Legacy] Fill legacy data if user query.
       // This is expansive that we only fill when user query
-      fillAdditionalInfo(
-        additionalInfo,
-        triggerValue,
-        eventValues,
-        mergedTreeData,
-        treeCheckStrictly,
-      );
+      // https://github.com/react-component/tree-select/blob/fe33eb7c27830c9ac70cd1fdb1ebbe7bc679c16a/src/Select.jsx
+      let showPosition = true;
+      if (treeCheckStrictly || (source === 'selection' && !selected)) {
+        showPosition = false;
+      }
+
+      fillAdditionalInfo(additionalInfo, triggerValue, eventValues, mergedTreeData, showPosition);
 
       if (mergedCheckable) {
         additionalInfo.checked = selected;
@@ -376,12 +378,12 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     }
   };
 
-  const onInternalSelect = (selectValue: RawValueType, option: DataNode) => {
+  const onInternalSelect = (selectValue: RawValueType, option: DataNode, source: SelectSource) => {
     const eventValue = mergedLabelInValue ? selectValue : selectValue;
 
     if (!mergedMultiple) {
       // Single mode always set value
-      triggerChange([selectValue], { selected: true, triggerValue: selectValue });
+      triggerChange([selectValue], { selected: true, triggerValue: selectValue }, source);
     } else {
       let newRawValues = addValue(rawValues, selectValue);
 
@@ -397,7 +399,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
         ];
       }
 
-      triggerChange(newRawValues, { selected: true, triggerValue: selectValue });
+      triggerChange(newRawValues, { selected: true, triggerValue: selectValue }, source);
     }
 
     if (onSelect) {
@@ -405,7 +407,11 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     }
   };
 
-  const onInternalDeselect = (selectValue: RawValueType, option: DataNode) => {
+  const onInternalDeselect = (
+    selectValue: RawValueType,
+    option: DataNode,
+    source: SelectSource,
+  ) => {
     const eventValue = mergedLabelInValue ? selectValue : selectValue;
 
     let newRawValues = removeValue(rawValues, selectValue);
@@ -425,7 +431,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
       ];
     }
 
-    triggerChange(newRawValues, { selected: false, triggerValue: selectValue });
+    triggerChange(newRawValues, { selected: false, triggerValue: selectValue }, source);
 
     if (onDeselect) {
       onDeselect(eventValue, option);
@@ -433,7 +439,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   };
 
   const onInternalClear = () => {
-    triggerChange([], null);
+    triggerChange([], null, 'clear');
   };
 
   // ========================= Open ==========================
