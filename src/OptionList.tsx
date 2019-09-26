@@ -8,6 +8,17 @@ import { SelectContext } from './Context';
 import useKeyValueMapping from './hooks/useKeyValueMapping';
 import useKeyValueMap from './hooks/useKeyValueMap';
 
+const HIDDEN_STYLE = {
+  width: 0,
+  height: 0,
+  display: 'flex',
+  overflow: 'hidden',
+  opacity: 0,
+  border: 0,
+  padding: 0,
+  margin: 0,
+};
+
 interface TreeEventInfo {
   node: { key: Key };
   selected?: boolean;
@@ -154,6 +165,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
 
   // ========================= Keyboard =========================
   const [activeKey, setActiveKey] = React.useState<Key>(null);
+  const activeEntity = getEntityByKey(activeKey);
 
   React.useImperativeHandle(ref, () => ({
     onKeyDown: event => {
@@ -169,11 +181,10 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
 
         // >>> Select item
         case KeyCode.ENTER: {
-          const entity = getEntityByKey(activeKey);
-          if (entity !== null) {
+          if (activeEntity !== null) {
             onInternalSelect(null, {
               node: { key: activeKey },
-              selected: !checkedKeys.includes(entity.data.value),
+              selected: !checkedKeys.includes(activeEntity.data.value),
             });
           }
           break;
@@ -207,6 +218,12 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
 
   return (
     <div onMouseDown={onListMouseDown}>
+      {activeEntity && open && (
+        <span style={HIDDEN_STYLE} aria-live="assertive">
+          {activeEntity.data.value}
+        </span>
+      )}
+
       <Tree
         ref={treeRef}
         focusable={false}
