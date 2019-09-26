@@ -1,22 +1,10 @@
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
 import React from 'react';
-import { mount, render } from 'enzyme';
+import { mount } from 'enzyme';
+import { resetWarned } from 'rc-util/lib/warning';
 import TreeSelect, { TreeNode as SelectNode } from '../src';
-import { resetAriaId } from '../src/util';
-// import { setMock } from './__mocks__/rc-animate';
 
 describe('TreeSelect.tree', () => {
-  beforeEach(() => {
-    jest.useFakeTimers();
-    resetAriaId();
-    // setMock(true);
-  });
-
-  afterEach(() => {
-    jest.useRealTimers();
-    // setMock(false);
-  });
-
   const createSelect = props => (
     <TreeSelect {...props}>
       <SelectNode key="0-0" value="0-0">
@@ -69,33 +57,35 @@ describe('TreeSelect.tree', () => {
 
     const wrapper = mount(<Test />);
 
-    wrapper.find('.rc-tree-select-tree-switcher').simulate('click');
-    expect(wrapper.state().treeExpandedKeys).toEqual(['0-0']);
+    wrapper.switchNode();
+    expect(wrapper.find('Tree').props().expandedKeys).toEqual(['0-0']);
 
-    wrapper
-      .find('.rc-tree-select-tree-switcher')
-      .at(2)
-      .simulate('click');
-    expect(wrapper.state().treeExpandedKeys).toEqual(['0-0', '0-0-1']);
+    wrapper.switchNode(2);
+    expect(wrapper.find('Tree').props().expandedKeys).toEqual(['0-0', '0-0-1']);
 
     wrapper.find('button.reset').simulate('click');
-    expect(wrapper.find('Tree').instance().state.expandedKeys).toEqual([]);
+    expect(wrapper.find('Tree').props().expandedKeys).toEqual([]);
+  });
+
+  it('warning if node key are not same as value', () => {
+    resetWarned();
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    mount(<TreeSelect treeData={[{ title: 'little', value: 'ttt', key: 'little' }]} />);
+    expect(spy).toHaveBeenCalledWith(
+      'Warning: `key` or `value` with TreeNode must be the same or you can remove one of them. key: little, value: ttt.',
+    );
+    spy.mockRestore();
   });
 
   it('warning if node has same value', () => {
-    const spy = jest.spyOn(global.console, 'error');
-    console.log(">>> Follow Warning is for test purpose. Don't be scared :)");
-    render(
+    resetWarned();
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    mount(
       <TreeSelect
-        treeData={[
-          { title: 'little', value: 'ttt', key: 'little' },
-          { title: 'bamboo', value: 'ttt', key: 'bamboo' },
-        ]}
+        treeData={[{ title: 'little', value: 'ttt' }, { title: 'bamboo', value: 'ttt' }]}
       />,
     );
-    expect(spy).toHaveBeenCalledWith(
-      "Warning: Conflict! value of node 'bamboo' (ttt) has already used by node 'little'.",
-    );
+    expect(spy).toHaveBeenCalledWith('Warning: Same `value` exist in the tree: ttt');
     spy.mockRestore();
   });
 
@@ -107,6 +97,6 @@ describe('TreeSelect.tree', () => {
       </TreeSelect>,
     );
 
-    expect(wrapper.render()).toMatchSnapshot();
+    expect(wrapper.getSelection(0).text()).toEqual('empty string');
   });
 });

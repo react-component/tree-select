@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import { mount } from 'enzyme';
-import TreeSelect from '../../src/Select';
+import TreeSelect from '../../src';
 
 export default function focusTest(mode) {
   let container;
@@ -17,55 +17,35 @@ export default function focusTest(mode) {
 
   it('focus()', () => {
     const handleFocus = jest.fn();
-    const treeData = [
-      { key: '0', value: '0', title: '0 label' },
-    ];
+    const treeData = [{ key: '0', value: '0', title: '0 label' }];
     const wrapper = mount(
-      <TreeSelect
-        {...{ [mode]: true }}
-        onFocus={handleFocus}
-        treeData={treeData}
-      />,
-      { attachTo: container }
+      <TreeSelect {...{ [mode]: true }} onFocus={handleFocus} treeData={treeData} />,
+      { attachTo: container },
     );
 
     wrapper.instance().focus();
-    expect(handleFocus).toBeCalled();
+    expect(handleFocus).toHaveBeenCalled();
   });
-
 
   it('blur()', () => {
     const handleBlur = jest.fn();
-    const treeData = [
-      { key: '0', value: '0', title: '0 label' },
-    ];
+    const treeData = [{ key: '0', value: '0', title: '0 label' }];
     const wrapper = mount(
-      <TreeSelect
-        {...{ [mode]: true }}
-        onBlur={handleBlur}
-        treeData={treeData}
-      />,
-      { attachTo: container }
+      <TreeSelect {...{ [mode]: true }} onBlur={handleBlur} treeData={treeData} />,
+      { attachTo: container },
     );
     wrapper.instance().focus();
     wrapper.instance().blur();
-    expect(handleBlur).toBeCalled();
+    expect(handleBlur).toHaveBeenCalled();
   });
 
   it('autoFocus', () => {
     const handleFocus = jest.fn();
-    const treeData = [
-      { key: '0', value: '0', title: '0 label' },
-    ];
+    const treeData = [{ key: '0', value: '0', title: '0 label' }];
     mount(
-      <TreeSelect
-        {...{ [mode]: true }}
-        autoFocus
-        onFocus={handleFocus}
-        treeData={treeData}
-      />,
-      { attachTo: container }
+      <TreeSelect {...{ [mode]: true }} autoFocus onFocus={handleFocus} treeData={treeData} />,
+      { attachTo: container },
     );
-    expect(handleFocus).toBeCalled();
+    expect(handleFocus).toHaveBeenCalled();
   });
 }

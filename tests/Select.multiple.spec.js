@@ -1,10 +1,8 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { mount, render } from 'enzyme';
+import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import TreeSelect, { TreeNode } from '../src';
-import Selection from '../src/Selector/MultipleSelector/Selection';
-import { resetAriaId } from '../src/util';
 import focusTest from './shared/focusTest';
 
 describe('TreeSelect.multiple', () => {
@@ -15,45 +13,30 @@ describe('TreeSelect.multiple', () => {
     { key: '1', value: '1', title: 'label1' },
   ];
   const createSelect = props => <TreeSelect treeData={treeData} multiple {...props} />;
-  const select = (wrapper, index = 0) => {
-    wrapper
-      .find('.rc-tree-select-tree-node-content-wrapper')
-      .at(index)
-      .simulate('click');
-  };
-
-  beforeEach(() => {
-    resetAriaId();
-  });
 
   it('select multiple nodes', () => {
     const wrapper = mount(createSelect({ open: true }));
-    select(wrapper, 0);
-    select(wrapper, 1);
-    const result = wrapper.find('.rc-tree-select-selection__rendered');
-    const choices = result.find('.rc-tree-select-selection__choice__content');
-    expect(result.last().is('ul')).toBe(true);
-    expect(choices.at(0).prop('children')).toBe('label0');
-    expect(choices.at(1).prop('children')).toBe('label1');
+    wrapper.selectNode(0);
+    wrapper.selectNode(1);
+    expect(wrapper.getSelection(0).text()).toBe('label0');
+    expect(wrapper.getSelection(1).text()).toBe('label1');
   });
 
   it('remove selected node', () => {
     const wrapper = mount(createSelect({ defaultValue: ['0', '1'] }));
-    wrapper
-      .find('.rc-tree-select-selection__choice__remove')
-      .first()
-      .simulate('click');
-    const choice = wrapper.find('ul .rc-tree-select-selection__choice__content');
-    expect(choice).toHaveLength(1);
-    expect(choice.prop('children')).toBe('label1');
+    wrapper.clearSelection();
+    expect(wrapper.getSelection()).toHaveLength(1);
+    expect(wrapper.getSelection(0).text()).toBe('label1');
   });
 
   it('remove by backspace key', () => {
     const wrapper = mount(createSelect({ defaultValue: ['0', '1'] }));
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.BACKSPACE });
-    const choice = wrapper.find('ul .rc-tree-select-selection__choice__content');
-    expect(choice).toHaveLength(1);
-    expect(choice.prop('children')).toBe('label0');
+    wrapper
+      .find('input')
+      .first()
+      .simulate('keyDown', { which: KeyCode.BACKSPACE });
+    expect(wrapper.getSelection()).toHaveLength(1);
+    expect(wrapper.getSelection(0).text()).toBe('label0');
   });
 
   // https://github.com/react-component/tree-select/issues/47
@@ -78,15 +61,17 @@ describe('TreeSelect.multiple', () => {
       }
     }
     const wrapper = mount(<App />);
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.BACKSPACE });
     wrapper
-      .find('.rc-tree-select-tree-checkbox')
-      .at(1)
-      .simulate('click');
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.BACKSPACE });
-    const choice = wrapper.find('ul .rc-tree-select-selection__choice__content');
-    expect(choice).toHaveLength(1);
-    expect(choice.prop('children')).toBe('label0');
+      .find('input')
+      .first()
+      .simulate('keyDown', { which: KeyCode.BACKSPACE });
+    wrapper.selectNode(1);
+    wrapper
+      .find('input')
+      .first()
+      .simulate('keyDown', { which: KeyCode.BACKSPACE });
+    expect(wrapper.getSelection()).toHaveLength(1);
+    expect(wrapper.getSelection(0).text()).toBe('label0');
   });
 
   // TODO: Check preVal, it's not correct
@@ -107,15 +92,9 @@ describe('TreeSelect.multiple', () => {
       }),
     );
 
-    const $remove = wrapper
-      .find('.rc-tree-select-selection__rendered')
-      .find('.rc-tree-select-selection__choice')
-      .find('.rc-tree-select-selection__choice__remove')
-      .at(1);
+    wrapper.clearSelection(1);
 
-    $remove.simulate('click');
-
-    expect(handleChange).toBeCalledWith(
+    expect(handleChange).toHaveBeenCalledWith(
       ['0'],
       ['label0'],
       expect.objectContaining({
@@ -129,94 +108,102 @@ describe('TreeSelect.multiple', () => {
   });
 
   it('renders clear button', () => {
-    const wrapper = render(createSelect({ allowClear: true }));
+    const wrapper = mount(createSelect({ allowClear: true, value: ['0'] }));
 
-    expect(wrapper.find('.rc-tree-select-selection__clear')).toMatchSnapshot();
+    expect(wrapper.find('.rc-tree-select-clear').length).toBeTruthy();
   });
 
   it('should focus and clear search input after select and unselect item', () => {
     const wrapper = mount(createSelect());
-    wrapper.find('input').simulate('change', { target: { value: '0' } });
-    expect(wrapper.find('input').getDOMNode().value).toBe('0');
-    select(wrapper, 0);
-    expect(wrapper.find('input').getDOMNode().value).toBe('');
-    wrapper.find('input').simulate('change', { target: { value: '0' } });
-    expect(wrapper.find('input').getDOMNode().value).toBe('0');
-    select(wrapper, 0); // unselect
-    expect(wrapper.find('input').getDOMNode().value).toBe('');
+
+    wrapper.search('0');
+    wrapper.selectNode(0);
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .props().value,
+    ).toBe('');
+
+    wrapper.search('0');
+    wrapper.selectNode(0);
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .props().value,
+    ).toBe('');
   });
 
   it('do not open tree when close button click', () => {
     const wrapper = mount(createSelect());
-    wrapper.find('.rc-tree-select-selection').simulate('click');
-    select(wrapper, 0);
-    select(wrapper, 1);
-    wrapper.setState({ open: false });
-    wrapper
-      .find('.rc-tree-select-selection__choice__remove')
-      .at(0)
-      .simulate('click');
-    expect(wrapper.state('open')).toBe(false);
-    expect(wrapper.state('valueList')).toEqual([{ label: 'label1', value: '1' }]);
+    wrapper.openSelect();
+    wrapper.selectNode(0);
+    wrapper.selectNode(1);
+    wrapper.openSelect();
+    wrapper.clearSelection(0);
+    expect(wrapper.isOpen()).toBeFalsy();
+    expect(wrapper.getSelection()).toHaveLength(1);
   });
 
   describe('maxTagCount', () => {
     it('legal', () => {
-      const wrapper = render(
+      const wrapper = mount(
         createSelect({
           maxTagCount: 1,
           value: ['0', '1'],
         }),
       );
 
-      expect(wrapper.find('.rc-tree-select-selection')).toMatchSnapshot();
+      expect(wrapper.getSelection()).toHaveLength(2);
+      expect(wrapper.getSelection(1).text()).toBe('+ 1 ...');
     });
 
     it('illegal', () => {
-      const wrapper = render(
+      const wrapper = mount(
         createSelect({
           maxTagCount: 1,
           value: ['0', 'not exist'],
         }),
       );
 
-      expect(wrapper.find('.rc-tree-select-selection')).toMatchSnapshot();
+      expect(wrapper.getSelection()).toHaveLength(2);
+      expect(wrapper.getSelection(1).text()).toBe('+ 1 ...');
     });
 
     it('zero', () => {
-      const wrapper = render(
+      const wrapper = mount(
         createSelect({
           maxTagCount: 0,
           value: ['0', '1'],
         }),
       );
 
-      expect(wrapper.find('.rc-tree-select-selection')).toMatchSnapshot();
+      expect(wrapper.getSelection()).toHaveLength(1);
+      expect(wrapper.getSelection(0).text()).toBe('+ 2 ...');
     });
 
     describe('maxTagPlaceholder', () => {
       it('string', () => {
-        const wrapper = render(
+        const wrapper = mount(
           createSelect({
             maxTagCount: 1,
             value: ['0', '1'],
             maxTagPlaceholder: 'bamboo',
           }),
         );
-
-        expect(wrapper.find('.rc-tree-select-selection')).toMatchSnapshot();
+        expect(wrapper.getSelection(1).text()).toBe('bamboo');
       });
 
       it('function', () => {
-        const wrapper = render(
+        const wrapper = mount(
           createSelect({
             maxTagCount: 1,
             value: ['0', '1'],
             maxTagPlaceholder: list => `${list.length} bamboo...`,
           }),
         );
-
-        expect(wrapper.find('.rc-tree-select-selection')).toMatchSnapshot();
+        expect(wrapper.getSelection(1).text()).toBe('1 bamboo...');
       });
     });
   });
@@ -245,17 +232,17 @@ describe('TreeSelect.multiple', () => {
       }),
     );
 
-    select(wrapper, 0);
-    select(wrapper, 1);
+    wrapper.selectNode(0);
+    expect(onChange).toHaveBeenCalledWith([4, 0], expect.anything(), expect.anything());
+    onChange.mockReset();
 
-    expect(onChange.mock.calls[0][0]).toEqual([0, 4]);
-    expect(onChange.mock.calls[1][0]).toEqual([0, 2, 3, 4]);
+    wrapper.selectNode(1);
+    expect(onChange).toHaveBeenCalledWith([4, 0, 2, 3], expect.anything(), expect.anything());
   });
 
   // https://github.com/ant-design/ant-design/issues/12315
   it('select searched node', () => {
     const onChange = jest.fn();
-
     const wrapper = mount(
       <TreeSelect value={['leaf1']} multiple onChange={onChange}>
         <TreeNode value="parent 1" title="parent 1" key="0-1">
@@ -269,13 +256,9 @@ describe('TreeSelect.multiple', () => {
       </TreeSelect>,
     );
 
-    wrapper.find('.rc-tree-select-search__field').simulate('change', { target: { value: 'sss' } });
-    wrapper
-      .find('.rc-tree-select-tree-node-content-wrapper')
-      .at(2)
-      .simulate('click');
-
-    expect(onChange.mock.calls[0][0]).toEqual(['leaf1', 'sss']);
+    wrapper.search('sss');
+    wrapper.selectNode(2);
+    expect(onChange).toHaveBeenCalledWith(['leaf1', 'sss'], expect.anything(), expect.anything());
   });
 
   it('do not crash when value has empty string', () => {
@@ -285,12 +268,12 @@ describe('TreeSelect.multiple', () => {
       </TreeSelect>,
     );
 
-    expect(wrapper.find(Selection).length).toEqual(1);
+    expect(wrapper.getSelection()).toHaveLength(1);
   });
 
   it('can hide search box by showSearch = false', () => {
-    const wrapper = render(<TreeSelect multiple showSearch={false} />);
+    const wrapper = mount(<TreeSelect multiple showSearch={false} />);
 
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.render()).toMatchSnapshot();
   });
 });

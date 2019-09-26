@@ -2,21 +2,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import TreeSelect, { SHOW_PARENT, SHOW_ALL, TreeNode } from '../src';
-import { resetAriaId } from '../src/util';
 
 describe('TreeSelect.checkable', () => {
-  beforeEach(() => {
-    resetAriaId();
-  });
-
-  beforeAll(() => {
-    jest.useFakeTimers();
-  });
-
-  afterAll(() => {
-    jest.useRealTimers();
-  });
-
   it('allow clear when controlled', () => {
     const treeData = [
       {
@@ -32,7 +19,6 @@ describe('TreeSelect.checkable', () => {
         ],
       },
     ];
-
     class App extends React.Component {
       state = {
         value: [],
@@ -57,13 +43,10 @@ describe('TreeSelect.checkable', () => {
       }
     }
     const wrapper = mount(<App />);
-    // open
     wrapper.openSelect();
-    // select
-    wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
-    // clear
-    wrapper.find('.rc-tree-select-selection__clear').simulate('click');
-    expect(wrapper.find('.rc-tree-select-selection__choice')).toHaveLength(0);
+    wrapper.selectNode();
+    wrapper.clearSelection();
+    expect(wrapper.getSelection()).toHaveLength(0);
   });
 
   // https://github.com/ant-design/ant-design/issues/6731
@@ -141,21 +124,19 @@ describe('TreeSelect.checkable', () => {
       }
     }
     const wrapper = mount(<App />);
-    expect(wrapper.find('.rc-tree-select-selection__choice')).toHaveLength(1);
-    // open
+    expect(wrapper.getSelection()).toHaveLength(1);
+
     wrapper.openSelect();
-    // select
-    wrapper
-      .find('.rc-tree-select-tree-checkbox')
-      .at(2)
-      .simulate('click');
-    expect(wrapper.find('.rc-tree-select-selection__choice')).toHaveLength(2);
-    // clear
-    wrapper.find('.rc-tree-select-selection__clear').simulate('click');
-    expect(wrapper.find('.rc-tree-select-selection__choice')).toHaveLength(0);
-    // disabled
+    wrapper.selectNode(2);
+    expect(wrapper.getSelection()).toHaveLength(2);
+
+    // Clear all
+    wrapper.clearAll();
+    expect(wrapper.getSelection()).toHaveLength(0);
+
+    // disabled - legacy, just keep it though it's meaningless anymore
     wrapper.find('#checkbox').simulate('change', { target: { checked: true } });
-    expect(wrapper.find('.rc-tree-select-selection__choice')).toHaveLength(0);
+    expect(wrapper.getSelection()).toHaveLength(0);
   });
 
   // Fix https://github.com/ant-design/ant-design/issues/7312#issuecomment-324865971
@@ -183,23 +164,12 @@ describe('TreeSelect.checkable', () => {
         onChange={handleChange}
       />,
     );
-    // open
-    wrapper.find('.rc-tree-select').simulate('click');
-    jest.runAllTimers();
-    wrapper.update();
-    // select
-    wrapper
-      .find('.rc-tree-select-tree-checkbox')
-      .at(0)
-      .simulate('click');
-    expect(handleChange).toBeCalled();
-    expect(wrapper.find('.rc-tree-select-selection__choice__content').length).toBe(1);
-    expect(
-      wrapper
-        .find('.rc-tree-select-selection__choice__content')
-        .at(0)
-        .text(),
-    ).toBe('1-1');
+
+    wrapper.openSelect();
+    wrapper.selectNode();
+    expect(handleChange).toHaveBeenCalled();
+    expect(wrapper.getSelection()).toHaveLength(1);
+    expect(wrapper.getSelection(0).text()).toEqual('1-1');
   });
 
   // Fix https://github.com/ant-design/ant-design/issues/8581
@@ -227,28 +197,15 @@ describe('TreeSelect.checkable', () => {
         onChange={handleChange}
       />,
     );
-    // open
-    wrapper.find('.rc-tree-select').simulate('click');
-    jest.runAllTimers();
-    // select
-    wrapper
-      .find('.rc-tree-select-tree-node-content-wrapper')
-      .at(0)
-      .simulate('click');
-    expect(handleChange).toBeCalled();
-    expect(wrapper.find('.rc-tree-select-selection__choice__content').length).toBe(1);
-    expect(
-      wrapper
-        .find('.rc-tree-select-selection__choice__content')
-        .at(0)
-        .text(),
-    ).toBe('1-1');
-    // clear
-    wrapper
-      .find('.rc-tree-select-tree-node-content-wrapper')
-      .at(0)
-      .simulate('click');
-    expect(wrapper.find('.rc-tree-select-selection__choice__content').length).toBe(0);
+
+    wrapper.openSelect();
+    wrapper.selectNode();
+    expect(handleChange).toHaveBeenCalled();
+    expect(wrapper.getSelection()).toHaveLength(1);
+    expect(wrapper.getSelection(0).text()).toBe('1-1');
+
+    wrapper.selectNode(0);
+    expect(wrapper.getSelection()).toHaveLength(0);
   });
 
   it('clear selected value and input value', () => {
@@ -270,14 +227,16 @@ describe('TreeSelect.checkable', () => {
       />,
     );
     wrapper.openSelect();
-    wrapper
-      .find('.rc-tree-select-tree-checkbox')
-      .at(0)
-      .simulate('click');
-    wrapper.find('input').simulate('change', { target: { value: 'foo' } });
-    wrapper.find('.rc-tree-select-selection__clear').simulate('click');
-    expect(wrapper.state().valueList).toEqual([]);
-    expect(wrapper.state().searchValue).toBe('');
+    wrapper.selectNode(0);
+    wrapper.search('foo');
+    wrapper.clearAll();
+    expect(wrapper.getSelection()).toHaveLength(0);
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .props().value,
+    ).toBe('');
   });
 
   describe('uncheck', () => {
@@ -300,16 +259,11 @@ describe('TreeSelect.checkable', () => {
           </TreeSelect>
         </div>,
       );
-
     describe('remove by selector', () => {
       it('not treeCheckStrictly', () => {
         const wrapper = createSelect();
         expect(wrapper.render()).toMatchSnapshot();
-
-        wrapper
-          .find('.rc-tree-select-selection__choice__remove')
-          .at(1)
-          .simulate('click');
+        wrapper.clearSelection(1);
         expect(wrapper.render()).toMatchSnapshot();
       });
 
@@ -321,16 +275,12 @@ describe('TreeSelect.checkable', () => {
           defaultValue: [val('0'), val('0-0'), val('0-0-0')],
           onChange,
         });
-        wrapper
-          .find('.rc-tree-select-selection__choice__remove')
-          .at(1)
-          .simulate('click');
-
-        expect(onChange.mock.calls[0][0]).toEqual([
-          { label: '0', value: '0' },
-          { label: '0-0-0', value: '0-0-0' },
-        ]);
-        expect(onChange.mock.calls[0][1]).toEqual(null);
+        wrapper.clearSelection(1);
+        expect(onChange).toHaveBeenCalledWith(
+          [{ label: '0', value: '0' }, { label: '0-0-0', value: '0-0-0' }],
+          null,
+          expect.anything(),
+        );
 
         const getProps = index => {
           const node = onChange.mock.calls[0][2].allCheckedNodes[index];
@@ -348,10 +298,7 @@ describe('TreeSelect.checkable', () => {
       const wrapper = createSelect({ searchValue: '0' });
       expect(wrapper.render()).toMatchSnapshot();
 
-      wrapper
-        .find('.rc-tree-select-tree-checkbox')
-        .at(1)
-        .simulate('click');
+      wrapper.selectNode(1);
       expect(wrapper.render()).toMatchSnapshot();
     });
 
@@ -384,24 +331,14 @@ describe('TreeSelect.checkable', () => {
           ],
         },
       ];
-
       const wrapper = mount(<TreeSelect treeCheckable treeData={treeData} open />);
+      wrapper.search('58');
+      wrapper.selectNode(2);
+      expect(wrapper.getSelection()).toHaveLength(1);
 
-      wrapper.find('.rc-tree-select-search__field').simulate('change', { target: { value: '58' } });
-      wrapper
-        .find(TreeNode)
-        .at(2)
-        .find('.rc-tree-select-tree-checkbox')
-        .simulate('click');
-      expect(wrapper.state().valueList.length).toBe(3);
-
-      wrapper.find('.rc-tree-select-search__field').simulate('change', { target: { value: '59' } });
-      wrapper
-        .find(TreeNode)
-        .at(2)
-        .find('.rc-tree-select-tree-checkbox')
-        .simulate('click');
-      expect(wrapper.state().valueList.length).toBe(6);
+      wrapper.search('59');
+      wrapper.selectNode(2);
+      expect(wrapper.getSelection()).toHaveLength(2);
     });
   });
 
@@ -457,14 +394,9 @@ describe('TreeSelect.checkable', () => {
       />,
     );
 
-    wrapper.find('.rc-tree-select-search__field').simulate('change', { target: { value: '0-0' } });
-    wrapper
-      .find('.rc-tree-select-tree-checkbox')
-      .at(0)
-      .simulate('click');
-    const keyList = onChange.mock.calls[0][0];
-
-    expect(keyList.sort()).toEqual(['0-1-0', '0-1-2'].sort());
+    wrapper.search('0-0');
+    wrapper.selectNode(0);
+    expect(onChange).toHaveBeenCalledWith(['0-1-0', '0-1-2'], expect.anything(), expect.anything());
   });
 
   // https://github.com/ant-design/ant-design/issues/13328
@@ -499,21 +431,16 @@ describe('TreeSelect.checkable', () => {
         />,
       );
 
-      wrapper
-        .find('.rc-tree-select-search__field')
-        .simulate('change', { target: { value: '0-0-1' } });
-      wrapper
-        .find('.rc-tree-select-tree-checkbox')
-        .at(1)
-        .simulate('click');
+      wrapper.search('0-0-1');
+      wrapper.selectNode(1);
+      expect(onChange).toHaveBeenCalledWith(['0-0-1'], expect.anything(), expect.anything());
 
-      expect(onChange.mock.calls[0][0]).toEqual(['0-0-1']);
       expect(
         wrapper
           .find('.rc-tree-select-tree-checkbox')
           .at(0)
           .hasClass('rc-tree-select-tree-checkbox-indeterminate'),
-      ).toBe(true);
+      ).toBeTruthy();
     });
 
     it('controlled', () => {
@@ -547,15 +474,9 @@ describe('TreeSelect.checkable', () => {
 
       const wrapper = mount(<Test />);
 
-      wrapper
-        .find('.rc-tree-select-search__field')
-        .simulate('change', { target: { value: '0-0-1' } });
-      wrapper
-        .find('.rc-tree-select-tree-checkbox')
-        .at(1)
-        .simulate('click');
-
-      expect(onChange).toBeCalled();
+      wrapper.search('0-0-1');
+      wrapper.selectNode(1);
+      expect(onChange).toHaveBeenCalled();
 
       expect(
         wrapper
@@ -575,12 +496,7 @@ describe('TreeSelect.checkable', () => {
       </TreeSelect>,
     );
 
-    expect(wrapper.state().selectorValueList).toEqual([
-      {
-        label: '0-0',
-        value: '0-0',
-      },
-    ]);
+    expect(wrapper.getSelection(0).text()).toEqual('0-0');
   });
 
   it('extra.allCheckedNodes', () => {
@@ -593,19 +509,19 @@ describe('TreeSelect.checkable', () => {
     );
 
     // Just click
-    wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
+    wrapper.selectNode();
     expect(onChange.mock.calls[0][2].allCheckedNodes).toEqual([
       expect.objectContaining({
         pos: '0-0',
       }),
     ]);
 
-    wrapper.find('.rc-tree-select-selection__choice__remove').simulate('click');
+    wrapper.clearSelection(0);
     onChange.mockReset();
 
     // By search
-    wrapper.find('input').simulate('change', { target: { value: '0' } });
-    wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
+    wrapper.search('0');
+    wrapper.selectNode();
     expect(onChange.mock.calls[0][2].allCheckedNodes).toEqual([
       expect.objectContaining({
         pos: '0-0',
@@ -666,14 +582,8 @@ describe('TreeSelect.checkable', () => {
       />,
     );
 
-    wrapper
-      .find('.rc-tree-select-search__field')
-      .simulate('change', { target: { value: '0-0-0' } });
-    wrapper
-      .find(TreeNode)
-      .at(1)
-      .find('.rc-tree-select-tree-checkbox')
-      .simulate('click');
+    wrapper.search('0-0-0');
+    wrapper.selectNode(1);
 
     expect(onChange.mock.calls[0][0]).toEqual([
       { label: 'Node2', value: '0-1' },
@@ -693,8 +603,49 @@ describe('TreeSelect.checkable', () => {
 
     const wrapper = mount(<TreeSelect defaultValue={['0-0']} treeData={treeData} treeCheckable />);
 
-    const choiceNode = wrapper.find('.rc-tree-select-selection__choice');
-    expect(choiceNode.length).toBeTruthy();
-    expect(choiceNode.find('.rc-tree-select-selection__choice__remove').length).toBeFalsy();
+    expect(wrapper.getSelection().length).toBeTruthy();
+    expect(wrapper.find('.rc-tree-select-selection-item-remove').length).toBeFalsy();
+  });
+
+  it('treeCheckStrictly can set halfChecked', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <TreeSelect
+        treeCheckStrictly
+        treeCheckable
+        value={[{ value: 'half', halfChecked: true }]}
+        open
+        onChange={onChange}
+        treeData={[{ value: 'half', title: 'Half Check' }, { value: 'full', title: 'Full Check' }]}
+      />,
+    );
+
+    function getTreeNode(index) {
+      return wrapper.find('.rc-tree-select-tree-treenode').at(index);
+    }
+
+    expect(
+      getTreeNode(0).hasClass('rc-tree-select-tree-treenode-checkbox-indeterminate'),
+    ).toBeTruthy();
+    expect(
+      getTreeNode(1).hasClass('rc-tree-select-tree-treenode-checkbox-indeterminate'),
+    ).toBeFalsy();
+
+    wrapper.selectNode(1);
+    expect(onChange).toHaveBeenCalledWith(
+      [
+        {
+          label: 'Full Check',
+          value: 'full',
+        },
+        {
+          value: 'half',
+          label: 'Half Check',
+          halfChecked: true,
+        },
+      ],
+      null,
+      expect.anything(),
+    );
   });
 });

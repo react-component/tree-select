@@ -1,712 +1,1023 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TreeSelect.basic check title when label is a object 1`] = `
-<span
-  aria-haspopup="listbox"
-  class="rc-tree-select rc-tree-select-enabled"
-  role="combobox"
-  tabindex="0"
->
-  <span
-    class="rc-tree-select-selection rc-tree-select-selection--single"
-  >
-    <span
-      class="rc-tree-select-selection__rendered"
-    >
-      <span
-        class="rc-tree-select-selection-selected-value"
-      >
-        <span>
-          Do not show
-        </span>
-      </span>
-    </span>
-    <span
-      class="rc-tree-select-arrow"
-      style="outline:none"
-    />
-  </span>
-</span>
-`;
-
 exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
-<span
-  aria-haspopup="listbox"
-  class="rc-tree-select rc-tree-select-enabled"
-  role="combobox"
-  tabindex="0"
+<div
+  class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open"
 >
-  <span
-    class="rc-tree-select-selection rc-tree-select-selection--single"
+  <div
+    class="rc-tree-select-selector"
+    style=""
   >
     <span
-      class="rc-tree-select-selection__rendered"
+      class="rc-tree-select-selection-search"
     >
-      <span
-        class="rc-tree-select-selection__placeholder"
+      <input
+        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+        aria-autocomplete="list"
+        aria-controls="rc_select_TEST_OR_SSR_list"
+        aria-expanded="true"
+        aria-haspopup="listbox"
+        aria-owns="rc_select_TEST_OR_SSR_list"
+        autocomplete="off"
+        class="rc-tree-select-selection-search-input"
+        id="rc_select_TEST_OR_SSR"
+        role="combobox"
+        style="opacity: 0;"
+        value=""
       />
     </span>
     <span
-      class="rc-tree-select-arrow"
-      style="outline:none"
+      class="rc-tree-select-selection-placeholder"
+    />
+  </div>
+  <div>
+    <div
+      class="rc-tree-select-dropdown  rc-tree-select-dropdown-placement-bottomLeft "
+      style="left: -999px; top: -995px; width: 0px;"
+    >
+      <div>
+        <div>
+          <div
+            role="tree"
+          >
+            <input
+              disabled=""
+              style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+              value=""
+            />
+          </div>
+          <div
+            class="rc-tree-select-tree-list rc-tree-select-tree"
+            style="height: 200px;"
+          >
+            <div>
+              <div
+                class="rc-tree-select-tree-list-holder-inner"
+                style="display: flex; flex-direction: column;"
+              >
+                <div
+                  class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                >
+                  <span
+                    class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                  />
+                  <span
+                    class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                    title="0 label"
+                  >
+                    <span
+                      class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                    />
+                    <span
+                      class="rc-tree-select-tree-title"
+                    >
+                      0 label
+                    </span>
+                  </span>
+                </div>
+                <div
+                  class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                >
+                  <span
+                    class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                  />
+                  <span
+                    class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                    title="1 label"
+                  >
+                    <span
+                      class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
+                    />
+                    <span
+                      class="rc-tree-select-tree-title"
+                    >
+                      1 label
+                    </span>
+                  </span>
+                </div>
+                <div
+                  class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="rc-tree-select-tree-indent"
+                  >
+                    <span
+                      class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start"
+                    />
+                  </span>
+                  <span
+                    class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                  />
+                  <span
+                    class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                    title="10 label"
+                  >
+                    <span
+                      class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                    />
+                    <span
+                      class="rc-tree-select-tree-title"
+                    >
+                      10 label
+                    </span>
+                  </span>
+                </div>
+                <div
+                  class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="rc-tree-select-tree-indent"
+                  >
+                    <span
+                      class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-end"
+                    />
+                  </span>
+                  <span
+                    class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                  />
+                  <span
+                    class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                    title="11 label"
+                  >
+                    <span
+                      class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                    />
+                    <span
+                      class="rc-tree-select-tree-title"
+                    >
+                      11 label
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span
+    aria-hidden="true"
+    class="rc-tree-select-arrow"
+    style="user-select: none;"
+    unselectable="on"
+  >
+    <span
+      class="rc-tree-select-arrow-icon"
     />
   </span>
-</span>
+</div>
 `;
 
 exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`] = `
-<span
-  aria-haspopup="listbox"
-  class="rc-tree-select rc-tree-select-enabled"
-  role="combobox"
-  tabindex="0"
+<div
+  class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open"
 >
-  <span
-    class="rc-tree-select-selection rc-tree-select-selection--single"
+  <div
+    class="rc-tree-select-selector"
+    style=""
   >
     <span
-      class="rc-tree-select-selection__rendered"
+      class="rc-tree-select-selection-search"
     >
-      <span
-        class="rc-tree-select-selection__placeholder"
+      <input
+        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+        aria-autocomplete="list"
+        aria-controls="rc_select_TEST_OR_SSR_list"
+        aria-expanded="true"
+        aria-haspopup="listbox"
+        aria-owns="rc_select_TEST_OR_SSR_list"
+        autocomplete="off"
+        class="rc-tree-select-selection-search-input"
+        id="rc_select_TEST_OR_SSR"
+        role="combobox"
+        style="opacity: 0;"
+        value=""
       />
     </span>
     <span
-      class="rc-tree-select-arrow"
-      style="outline:none"
+      class="rc-tree-select-selection-placeholder"
+    />
+  </div>
+  <div>
+    <div
+      class="rc-tree-select-dropdown  rc-tree-select-dropdown-placement-bottomLeft "
+      style="left: -999px; top: -995px; width: 0px;"
+    >
+      <div>
+        <div>
+          <div
+            role="tree"
+          >
+            <input
+              disabled=""
+              style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+              value=""
+            />
+          </div>
+          <div
+            class="rc-tree-select-tree-list rc-tree-select-tree"
+            style="height: 200px;"
+          >
+            <div>
+              <div
+                class="rc-tree-select-tree-list-holder-inner"
+                style="display: flex; flex-direction: column;"
+              >
+                <div
+                  class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                >
+                  <span
+                    class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                  />
+                  <span
+                    class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                    title="0 label"
+                  >
+                    <span
+                      class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                    />
+                    <span
+                      class="rc-tree-select-tree-title"
+                    >
+                      0 label
+                    </span>
+                  </span>
+                </div>
+                <div
+                  class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                >
+                  <span
+                    class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                  />
+                  <span
+                    class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                    title="1 label"
+                  >
+                    <span
+                      class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
+                    />
+                    <span
+                      class="rc-tree-select-tree-title"
+                    >
+                      1 label
+                    </span>
+                  </span>
+                </div>
+                <div
+                  class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="rc-tree-select-tree-indent"
+                  >
+                    <span
+                      class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start"
+                    />
+                  </span>
+                  <span
+                    class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                  />
+                  <span
+                    class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                    title="10 label"
+                  >
+                    <span
+                      class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                    />
+                    <span
+                      class="rc-tree-select-tree-title"
+                    >
+                      10 label
+                    </span>
+                  </span>
+                </div>
+                <div
+                  class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="rc-tree-select-tree-indent"
+                  >
+                    <span
+                      class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-end"
+                    />
+                  </span>
+                  <span
+                    class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                  />
+                  <span
+                    class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                    title="11 label"
+                  >
+                    <span
+                      class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                    />
+                    <span
+                      class="rc-tree-select-tree-title"
+                    >
+                      11 label
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span
+    aria-hidden="true"
+    class="rc-tree-select-arrow"
+    style="user-select: none;"
+    unselectable="on"
+  >
+    <span
+      class="rc-tree-select-arrow-icon"
     />
   </span>
-</span>
+</div>
 `;
 
 exports[`TreeSelect.basic render renders correctly 1`] = `
-<span
-  aria-haspopup="listbox"
-  class="forTest awesome awesome-enabled"
-  role="combobox"
-  style="width:300px"
-  tabindex="-1"
+<div
+  class="awesome forTest awesome-multiple awesome-show-search"
+  style="width: 300px;"
 >
-  <span
-    class="awesome-selection awesome-selection--multiple"
+  <div
+    class="awesome-selector"
   >
-    <ul
-      class="awesome-selection__rendered"
-      role="menubar"
+    <span
+      class="awesome-selection-search"
+      style="width: 0px;"
     >
-      <li
-        class="awesome-search awesome-search--inline"
+      <input
+        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+        aria-autocomplete="list"
+        aria-controls="rc_select_TEST_OR_SSR_list"
+        aria-haspopup="listbox"
+        aria-owns="rc_select_TEST_OR_SSR_list"
+        autocomplete="off"
+        class="awesome-selection-search-input"
+        id="rc_select_TEST_OR_SSR"
+        role="combobox"
+        style="opacity: 0;"
+        value=""
+      />
+      <span
+        aria-hidden="true"
+        class="awesome-selection-search-mirror"
       >
-        <span
-          class="awesome-search__field__wrap"
-        >
-          <input
-            aria-autocomplete="list"
-            aria-label="filter select"
-            aria-multiline="false"
-            class="awesome-search__field"
-            type="text"
-            value=""
-          />
-          <span
-            class="awesome-search__field__mirror"
-          >
-             
-          </span>
-        </span>
-      </li>
-    </ul>
-  </span>
-</span>
+         
+      </span>
+    </span>
+    <span
+      class="awesome-selection-placeholder"
+    />
+  </div>
+</div>
 `;
 
 exports[`TreeSelect.basic render renders disabled correctly 1`] = `
-<span
-  aria-disabled="true"
-  aria-haspopup="listbox"
-  class="rc-tree-select rc-tree-select-disabled"
-  role="combobox"
+<div
+  class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-disabled"
 >
-  <span
-    class="rc-tree-select-selection rc-tree-select-selection--single"
+  <div
+    class="rc-tree-select-selector"
   >
     <span
-      class="rc-tree-select-selection__rendered"
+      class="rc-tree-select-selection-search"
     >
-      <span
-        class="rc-tree-select-selection__placeholder"
+      <input
+        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+        aria-autocomplete="list"
+        aria-controls="rc_select_TEST_OR_SSR_list"
+        aria-haspopup="listbox"
+        aria-owns="rc_select_TEST_OR_SSR_list"
+        autocomplete="off"
+        class="rc-tree-select-selection-search-input"
+        disabled=""
+        id="rc_select_TEST_OR_SSR"
+        role="combobox"
+        style="opacity: 0;"
+        value=""
       />
     </span>
     <span
-      class="rc-tree-select-arrow"
-      style="outline:none"
+      class="rc-tree-select-selection-placeholder"
+    />
+  </div>
+  <span
+    aria-hidden="true"
+    class="rc-tree-select-arrow"
+    style="user-select: none;"
+    unselectable="on"
+  >
+    <span
+      class="rc-tree-select-arrow-icon"
     />
   </span>
-</span>
+</div>
 `;
 
 exports[`TreeSelect.basic render renders tree correctly 1`] = `
-<span
-  aria-haspopup="listbox"
-  class="rc-tree-select rc-tree-select-enabled"
-  role="combobox"
-  tabindex="-1"
+<div
+  class="rc-tree-select rc-tree-select-multiple rc-tree-select-show-search"
 >
-  <span
-    class="rc-tree-select-selection rc-tree-select-selection--multiple"
+  <div
+    class="rc-tree-select-selector"
   >
-    <ul
-      class="rc-tree-select-selection__rendered"
-      role="menubar"
+    <span
+      class="rc-tree-select-selection-search"
+      style="width: 0px;"
     >
-      <li
-        class="rc-tree-select-search rc-tree-select-search--inline"
+      <input
+        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+        aria-autocomplete="list"
+        aria-controls="rc_select_TEST_OR_SSR_list"
+        aria-haspopup="listbox"
+        aria-owns="rc_select_TEST_OR_SSR_list"
+        autocomplete="off"
+        class="rc-tree-select-selection-search-input"
+        id="rc_select_TEST_OR_SSR"
+        role="combobox"
+        style="opacity: 0;"
+        value=""
+      />
+      <span
+        aria-hidden="true"
+        class="rc-tree-select-selection-search-mirror"
       >
-        <span
-          class="rc-tree-select-search__field__wrap"
-        >
-          <input
-            aria-autocomplete="list"
-            aria-label="filter select"
-            aria-multiline="false"
-            class="rc-tree-select-search__field"
-            type="text"
-            value=""
-          />
-          <span
-            class="rc-tree-select-search__field__mirror"
-          >
-             
-          </span>
-        </span>
-      </li>
-    </ul>
-  </span>
-</span>
+         
+      </span>
+    </span>
+    <span
+      class="rc-tree-select-selection-placeholder"
+    />
+  </div>
+</div>
 `;
 
 exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
 <div>
-  <span
-    aria-controls="rc-tree-select-list_1"
-    aria-expanded="true"
-    aria-haspopup="listbox"
-    aria-owns="rc-tree-select-list_1"
-    class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
-    role="combobox"
-    tabindex="0"
+  <div
+    class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open"
   >
-    <span
-      class="rc-tree-select-selection rc-tree-select-selection--single"
+    <div
+      class="rc-tree-select-selector"
+      style=""
     >
       <span
-        class="rc-tree-select-selection__rendered"
+        class="rc-tree-select-selection-search"
       >
-        <span
-          class="rc-tree-select-selection__placeholder"
+        <input
+          aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+          aria-autocomplete="list"
+          aria-controls="rc_select_TEST_OR_SSR_list"
+          aria-expanded="true"
+          aria-haspopup="listbox"
+          aria-owns="rc_select_TEST_OR_SSR_list"
+          autocomplete="off"
+          class="rc-tree-select-selection-search-input"
+          id="rc_select_TEST_OR_SSR"
+          role="combobox"
+          style="opacity: 0;"
+          value=""
         />
       </span>
       <span
-        class="rc-tree-select-arrow"
-        style="outline:none"
+        class="rc-tree-select-selection-placeholder"
       />
-    </span>
-  </span>
-  <div>
-    <div
-      class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
-      style="visibility:hidden"
-    >
+    </div>
+    <div>
       <div
-        id="rc-tree-select-list_1"
-        role="listbox"
-        tabindex="-1"
+        class="rc-tree-select-dropdown  rc-tree-select-dropdown-placement-bottomLeft "
+        style="left: -999px; top: -995px; width: 0px;"
       >
-        <span
-          class="rc-tree-select-dropdown-search"
-        >
-          <span
-            class="rc-tree-select-search__field__wrap"
-          >
-            <input
-              aria-autocomplete="list"
-              aria-controls="rc-tree-select-list_1"
-              aria-label="filter select"
-              aria-multiline="false"
-              class="rc-tree-select-search__field"
-              type="text"
-              value=""
-            />
-            <span
-              class="rc-tree-select-search__field__mirror"
+        <div>
+          <div>
+            <div
+              role="tree"
             >
-               
-            </span>
-          </span>
-        </span>
-        <ul
-          class="rc-tree-select-tree"
-          role="tree"
-          unselectable="on"
-        >
-          <li
-            class="rc-tree-select-tree-treenode-switcher-open"
-            role="treeitem"
-          >
-            <span
-              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
-            />
-            <span
-              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-              title="label0"
+              <input
+                disabled=""
+                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+                value=""
+              />
+            </div>
+            <div
+              class="rc-tree-select-tree-list rc-tree-select-tree"
+              style="height: 200px;"
             >
-              <span
-                class="rc-tree-select-tree-title"
-              >
-                label0
-              </span>
-            </span>
-            <ul
-              class="rc-tree-select-tree-child-tree rc-tree-select-tree-child-tree-open"
-              data-expanded="true"
-              role="group"
-            >
-              <li
-                class="rc-tree-select-tree-treenode-switcher-open"
-                role="treeitem"
-              >
-                <span
-                  class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
-                />
-                <span
-                  class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                  title="label1"
+              <div>
+                <div
+                  class="rc-tree-select-tree-list-holder-inner"
+                  style="display: flex; flex-direction: column;"
                 >
-                  <span
-                    class="rc-tree-select-tree-title"
+                  <div
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
                   >
-                    label1
-                  </span>
-                </span>
-              </li>
-            </ul>
-          </li>
-        </ul>
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                      title="label0"
+                    >
+                      <span
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
+                      />
+                      <span
+                        class="rc-tree-select-tree-title"
+                      >
+                        label0
+                      </span>
+                    </span>
+                  </div>
+                  <div
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                  >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    >
+                      <span
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                      />
+                    </span>
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                      title="label1"
+                    >
+                      <span
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                      />
+                      <span
+                        class="rc-tree-select-tree-title"
+                      >
+                        label1
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <span
+      aria-hidden="true"
+      class="rc-tree-select-arrow"
+      style="user-select: none;"
+      unselectable="on"
+    >
+      <span
+        class="rc-tree-select-arrow-icon"
+      />
+    </span>
   </div>
 </div>
 `;
 
 exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
 <div>
-  <span
-    aria-controls="rc-tree-select-list_1"
-    aria-expanded="true"
-    aria-haspopup="listbox"
-    aria-owns="rc-tree-select-list_1"
-    class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
-    role="combobox"
-    style=""
-    tabindex="0"
+  <div
+    class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open rc-tree-select-show-search"
   >
-    <span
-      class="rc-tree-select-selection rc-tree-select-selection--single"
+    <div
+      class="rc-tree-select-selector"
+      style=""
     >
       <span
-        class="rc-tree-select-selection__rendered"
+        class="rc-tree-select-selection-search"
       >
-        <span
-          class="rc-tree-select-selection__placeholder"
+        <input
+          aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+          aria-autocomplete="list"
+          aria-controls="rc_select_TEST_OR_SSR_list"
+          aria-expanded="true"
+          aria-haspopup="listbox"
+          aria-owns="rc_select_TEST_OR_SSR_list"
+          autocomplete="off"
+          class="rc-tree-select-selection-search-input"
+          id="rc_select_TEST_OR_SSR"
+          role="combobox"
+          value="a"
         />
       </span>
-      <span
-        class="rc-tree-select-arrow"
-        style="outline: none;"
-      />
-    </span>
-  </span>
-  <div>
-    <div
-      class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
-      style="left: -999px; top: -995px; min-width: 0;"
-    >
+    </div>
+    <div>
       <div
-        id="rc-tree-select-list_1"
-        role="listbox"
-        tabindex="-1"
+        class="rc-tree-select-dropdown  rc-tree-select-dropdown-placement-bottomLeft "
+        style="left: -999px; top: -995px; width: 0px;"
       >
-        <span
-          class="rc-tree-select-dropdown-search"
-        >
-          <span
-            class="rc-tree-select-search__field__wrap"
-          >
-            <input
-              aria-autocomplete="list"
-              aria-controls="rc-tree-select-list_1"
-              aria-label="filter select"
-              aria-multiline="false"
-              class="rc-tree-select-search__field"
-              type="text"
-              value="a"
-            />
-            <span
-              class="rc-tree-select-search__field__mirror"
+        <div>
+          <div>
+            <div
+              role="tree"
             >
-              a 
-            </span>
-          </span>
-        </span>
-        <ul
-          class="rc-tree-select-tree"
-          role="tree"
-          unselectable="on"
-        >
-          <li
-            class="rc-tree-select-tree-treenode-switcher-open filter-node"
-            role="treeitem"
-          >
-            <span
-              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
-            />
-            <span
-              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-              title="labela"
+              <input
+                disabled=""
+                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+                value=""
+              />
+            </div>
+            <div
+              class="rc-tree-select-tree-list rc-tree-select-tree"
+              style="height: 200px;"
             >
-              <span
-                class="rc-tree-select-tree-title"
-              >
-                labela
-              </span>
-            </span>
-          </li>
-        </ul>
+              <div>
+                <div
+                  class="rc-tree-select-tree-list-holder-inner"
+                  style="display: flex; flex-direction: column;"
+                >
+                  <div
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open filter-node"
+                  >
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                      title="labela"
+                    >
+                      <span
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                      />
+                      <span
+                        class="rc-tree-select-tree-title"
+                      >
+                        labela
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <span
+      aria-hidden="true"
+      class="rc-tree-select-arrow"
+      style="user-select: none;"
+      unselectable="on"
+    >
+      <span
+        class="rc-tree-select-arrow-icon"
+      />
+    </span>
   </div>
 </div>
 `;
 
 exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
 <div>
-  <span
-    aria-controls="rc-tree-select-list_1"
-    aria-expanded="true"
-    aria-haspopup="listbox"
-    aria-owns="rc-tree-select-list_1"
-    class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
-    role="combobox"
-    style=""
-    tabindex="0"
+  <div
+    class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open rc-tree-select-show-search"
   >
-    <span
-      class="rc-tree-select-selection rc-tree-select-selection--single"
+    <div
+      class="rc-tree-select-selector"
+      style=""
     >
       <span
-        class="rc-tree-select-selection__rendered"
+        class="rc-tree-select-selection-search"
       >
-        <span
-          class="rc-tree-select-selection__placeholder"
+        <input
+          aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+          aria-autocomplete="list"
+          aria-controls="rc_select_TEST_OR_SSR_list"
+          aria-expanded="true"
+          aria-haspopup="listbox"
+          aria-owns="rc_select_TEST_OR_SSR_list"
+          autocomplete="off"
+          class="rc-tree-select-selection-search-input"
+          id="rc_select_TEST_OR_SSR"
+          role="combobox"
+          value=""
         />
       </span>
       <span
-        class="rc-tree-select-arrow"
-        style="outline: none;"
+        class="rc-tree-select-selection-placeholder"
       />
-    </span>
-  </span>
-  <div>
-    <div
-      class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
-      style="left: -999px; top: -995px; min-width: 0;"
-    >
+    </div>
+    <div>
       <div
-        id="rc-tree-select-list_1"
-        role="listbox"
-        tabindex="-1"
+        class="rc-tree-select-dropdown  rc-tree-select-dropdown-placement-bottomLeft "
+        style="left: -999px; top: -995px; width: 0px;"
       >
-        <span
-          class="rc-tree-select-dropdown-search"
-        >
-          <span
-            class="rc-tree-select-search__field__wrap"
-          >
-            <input
-              aria-autocomplete="list"
-              aria-controls="rc-tree-select-list_1"
-              aria-label="filter select"
-              aria-multiline="false"
-              class="rc-tree-select-search__field"
-              type="text"
-              value=""
-            />
-            <span
-              class="rc-tree-select-search__field__mirror"
+        <div>
+          <div>
+            <div
+              role="tree"
             >
-               
-            </span>
-          </span>
-        </span>
-        <ul
-          class="rc-tree-select-tree"
-          role="tree"
-          unselectable="on"
-        >
-          <li
-            class="rc-tree-select-tree-treenode-switcher-open"
-            role="treeitem"
-          >
-            <span
-              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
-            />
-            <span
-              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-              title="labela"
+              <input
+                disabled=""
+                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+                value=""
+              />
+            </div>
+            <div
+              class="rc-tree-select-tree-list rc-tree-select-tree"
+              style="height: 200px;"
             >
-              <span
-                class="rc-tree-select-tree-title"
-              >
-                labela
-              </span>
-            </span>
-          </li>
-          <li
-            class="rc-tree-select-tree-treenode-switcher-open"
-            role="treeitem"
-          >
-            <span
-              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
-            />
-            <span
-              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-              title="labelb"
-            >
-              <span
-                class="rc-tree-select-tree-title"
-              >
-                labelb
-              </span>
-            </span>
-          </li>
-        </ul>
+              <div>
+                <div
+                  class="rc-tree-select-tree-list-holder-inner"
+                  style="display: flex; flex-direction: column;"
+                >
+                  <div
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
+                  >
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                      title="labela"
+                    >
+                      <span
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                      />
+                      <span
+                        class="rc-tree-select-tree-title"
+                      >
+                        labela
+                      </span>
+                    </span>
+                  </div>
+                  <div
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
+                  >
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                      title="labelb"
+                    >
+                      <span
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                      />
+                      <span
+                        class="rc-tree-select-tree-title"
+                      >
+                        labelb
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <span
+      aria-hidden="true"
+      class="rc-tree-select-arrow"
+      style="user-select: none;"
+      unselectable="on"
+    >
+      <span
+        class="rc-tree-select-arrow-icon"
+      />
+    </span>
   </div>
 </div>
 `;
 
 exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
 <div>
-  <span
-    aria-controls="rc-tree-select-list_1"
-    aria-expanded="true"
-    aria-haspopup="listbox"
-    aria-owns="rc-tree-select-list_1"
-    class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
-    role="combobox"
-    style=""
-    tabindex="0"
+  <div
+    class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open rc-tree-select-show-search"
   >
-    <span
-      class="rc-tree-select-selection rc-tree-select-selection--single"
+    <div
+      class="rc-tree-select-selector"
+      style=""
     >
       <span
-        class="rc-tree-select-selection__rendered"
+        class="rc-tree-select-selection-search"
       >
-        <span
-          class="rc-tree-select-selection__placeholder"
+        <input
+          aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+          aria-autocomplete="list"
+          aria-controls="rc_select_TEST_OR_SSR_list"
+          aria-expanded="true"
+          aria-haspopup="listbox"
+          aria-owns="rc_select_TEST_OR_SSR_list"
+          autocomplete="off"
+          class="rc-tree-select-selection-search-input"
+          id="rc_select_TEST_OR_SSR"
+          role="combobox"
+          value="a"
         />
       </span>
-      <span
-        class="rc-tree-select-arrow"
-        style="outline: none;"
-      />
-    </span>
-  </span>
-  <div>
-    <div
-      class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
-      style="left: -999px; top: -995px; min-width: 0;"
-    >
+    </div>
+    <div>
       <div
-        id="rc-tree-select-list_1"
-        role="listbox"
-        tabindex="-1"
+        class="rc-tree-select-dropdown  rc-tree-select-dropdown-placement-bottomLeft "
+        style="left: -999px; top: -995px; width: 0px;"
       >
-        <span
-          class="rc-tree-select-dropdown-search"
-        >
-          <span
-            class="rc-tree-select-search__field__wrap"
-          >
-            <input
-              aria-autocomplete="list"
-              aria-controls="rc-tree-select-list_1"
-              aria-label="filter select"
-              aria-multiline="false"
-              class="rc-tree-select-search__field"
-              type="text"
-              value="a"
-            />
-            <span
-              class="rc-tree-select-search__field__mirror"
+        <div>
+          <div>
+            <div
+              role="tree"
             >
-              a 
-            </span>
-          </span>
-        </span>
-        <ul
-          class="rc-tree-select-tree"
-          role="tree"
-          unselectable="on"
-        >
-          <li
-            class="rc-tree-select-tree-treenode-switcher-open filter-node"
-            role="treeitem"
-          >
-            <span
-              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
-            />
-            <span
-              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-              title="labela"
+              <input
+                disabled=""
+                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+                value=""
+              />
+            </div>
+            <div
+              class="rc-tree-select-tree-list rc-tree-select-tree"
+              style="height: 200px;"
             >
-              <span
-                class="rc-tree-select-tree-title"
-              >
-                labela
-              </span>
-            </span>
-          </li>
-          <li
-            class="rc-tree-select-tree-treenode-switcher-open"
-            role="treeitem"
-          >
-            <span
-              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
-            />
-            <span
-              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-              title="labelb"
-            >
-              <span
-                class="rc-tree-select-tree-title"
-              >
-                labelb
-              </span>
-            </span>
-          </li>
-        </ul>
+              <div>
+                <div
+                  class="rc-tree-select-tree-list-holder-inner"
+                  style="display: flex; flex-direction: column;"
+                >
+                  <div
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open filter-node"
+                  >
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                      title="labela"
+                    >
+                      <span
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                      />
+                      <span
+                        class="rc-tree-select-tree-title"
+                      >
+                        labela
+                      </span>
+                    </span>
+                  </div>
+                  <div
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                  >
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                      title="labelb"
+                    >
+                      <span
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                      />
+                      <span
+                        class="rc-tree-select-tree-title"
+                      >
+                        labelb
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <span
+      aria-hidden="true"
+      class="rc-tree-select-arrow"
+      style="user-select: none;"
+      unselectable="on"
+    >
+      <span
+        class="rc-tree-select-arrow-icon"
+      />
+    </span>
   </div>
 </div>
 `;
 
 exports[`TreeSelect.basic search nodes renders search input 1`] = `
-Array [
-  <span
-    aria-controls="rc-tree-select-list_1"
-    aria-expanded="true"
-    aria-haspopup="listbox"
-    aria-owns="rc-tree-select-list_1"
-    class="rc-tree-select rc-tree-select-open rc-tree-select-focused rc-tree-select-enabled"
-    role="combobox"
-    tabindex="0"
+<div
+  class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open rc-tree-select-show-search"
+>
+  <div
+    class="rc-tree-select-selector"
+    style=""
   >
     <span
-      class="rc-tree-select-selection rc-tree-select-selection--single"
+      class="rc-tree-select-selection-search"
     >
-      <span
-        class="rc-tree-select-selection__rendered"
-      >
-        <span
-          class="rc-tree-select-selection__placeholder"
-        />
-      </span>
-      <span
-        class="rc-tree-select-arrow"
-        style="outline:none"
+      <input
+        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+        aria-autocomplete="list"
+        aria-controls="rc_select_TEST_OR_SSR_list"
+        aria-expanded="true"
+        aria-haspopup="listbox"
+        aria-owns="rc_select_TEST_OR_SSR_list"
+        autocomplete="off"
+        class="rc-tree-select-selection-search-input"
+        id="rc_select_TEST_OR_SSR"
+        role="combobox"
+        value=""
       />
     </span>
-  </span>,
+    <span
+      class="rc-tree-select-selection-placeholder"
+    />
+  </div>
   <div>
     <div
-      class="rc-tree-select-dropdown rc-tree-select-dropdown--single rc-tree-select-dropdown-placement-bottomLeft "
-      style="visibility:hidden"
+      class="rc-tree-select-dropdown  rc-tree-select-dropdown-placement-bottomLeft "
+      style="left: -999px; top: -995px; width: 0px;"
     >
-      <div
-        id="rc-tree-select-list_1"
-        role="listbox"
-        tabindex="-1"
-      >
-        <span
-          class="rc-tree-select-dropdown-search"
-        >
-          <span
-            class="rc-tree-select-search__field__wrap"
+      <div>
+        <div>
+          <div
+            role="tree"
           >
             <input
-              aria-autocomplete="list"
-              aria-controls="rc-tree-select-list_1"
-              aria-label="filter select"
-              aria-multiline="false"
-              class="rc-tree-select-search__field"
-              type="text"
+              disabled=""
+              style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
               value=""
             />
-            <span
-              class="rc-tree-select-search__field__mirror"
-            >
-               
-            </span>
-          </span>
-        </span>
-        <ul
-          class="rc-tree-select-tree"
-          role="tree"
-          unselectable="on"
-        >
-          <li
-            class="rc-tree-select-tree-treenode-switcher-close"
-            role="treeitem"
+          </div>
+          <div
+            class="rc-tree-select-tree-list rc-tree-select-tree"
+            style="height: 200px;"
           >
-            <span
-              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
-            />
-            <span
-              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-              title="labela"
-            >
-              <span
-                class="rc-tree-select-tree-title"
+            <div>
+              <div
+                class="rc-tree-select-tree-list-holder-inner"
+                style="display: flex; flex-direction: column;"
               >
-                labela
-              </span>
-            </span>
-          </li>
-          <li
-            class="rc-tree-select-tree-treenode-switcher-close"
-            role="treeitem"
-          >
-            <span
-              class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
-            />
-            <span
-              class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-              title="labelb"
-            >
-              <span
-                class="rc-tree-select-tree-title"
-              >
-                labelb
-              </span>
-            </span>
-          </li>
-        </ul>
+                <div
+                  class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
+                >
+                  <span
+                    class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                  />
+                  <span
+                    class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                    title="labela"
+                  >
+                    <span
+                      class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                    />
+                    <span
+                      class="rc-tree-select-tree-title"
+                    >
+                      labela
+                    </span>
+                  </span>
+                </div>
+                <div
+                  class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
+                >
+                  <span
+                    class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                  />
+                  <span
+                    class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                    title="labelb"
+                  >
+                    <span
+                      class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                    />
+                    <span
+                      class="rc-tree-select-tree-title"
+                    >
+                      labelb
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>,
-]
+  </div>
+  <span
+    aria-hidden="true"
+    class="rc-tree-select-arrow"
+    style="user-select: none;"
+    unselectable="on"
+  >
+    <span
+      class="rc-tree-select-arrow-icon"
+    />
+  </span>
+</div>
 `;
