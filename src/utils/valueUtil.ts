@@ -28,7 +28,7 @@ export function findValueOption(values: RawValueType[], options: FlattenDataNode
     optionMap.set(data.value, data);
   });
 
-  return values.map(val => optionMap.get(val));
+  return values.map(val => fillLegacyProps(optionMap.get(val)));
 }
 
 export function isValueDisabled(value: RawValueType, options: FlattenDataNode[]): boolean {
@@ -152,23 +152,24 @@ export function getRawValueLabeled(
   const valueMap = new Map<RawValueType, LabelValueType>();
 
   toArray(prevValue).forEach(item => {
-    if (item && typeof item === 'object' && 'value' in item && 'label' in item) {
+    if (item && typeof item === 'object' && 'value' in item) {
       valueMap.set(item.value, item);
     }
   });
 
   return values.map(val => {
     const item: LabelValueType = { value: val };
+    const entity = getEntityByValue(val);
+    const label = entity ? getLabelProp(entity.data) : val;
 
     if (valueMap.has(val)) {
       const labeledValue = valueMap.get(val);
-      item.label = labeledValue.label;
+      item.label = 'label' in labeledValue ? labeledValue.label : label;
       if ('halfChecked' in labeledValue) {
         item.halfChecked = labeledValue.halfChecked;
       }
     } else {
-      const entity = getEntityByValue(val);
-      item.label = entity ? getLabelProp(entity.data) : val;
+      item.label = label;
     }
 
     return item;

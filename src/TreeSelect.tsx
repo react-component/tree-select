@@ -79,9 +79,6 @@ const RefSelect = generateSelector<DataNode[]>({
   filterOptions,
   isValueDisabled,
   findValueOption,
-  warningProps,
-  // TreeSelect will not fill missing options
-  fillOptionsWithMissingValue: options => options,
   omitDOMProps: (props: object) => {
     const cloneProps = { ...props };
     OMIT_PROPS.forEach(prop => {
@@ -222,12 +219,6 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   const [cacheKeyMap, cacheValueMap] = useKeyValueMap(flattedOptions);
   const [getEntityByKey, getEntityByValue] = useKeyValueMapping(cacheKeyMap, cacheValueMap);
 
-  /** Return wrapped with legacy info data node for out event param */
-  const getDataNode = (value: RawValueType) => {
-    const entity = getEntityByValue(value);
-    return entity ? fillLegacyProps(entity.data) : null;
-  };
-
   // Only generate keyEntities for check conduction when is `treeCheckable`
   const { keyEntities: conductKeyEntities } = React.useMemo(() => {
     if (treeConduction) {
@@ -357,7 +348,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
         showPosition = false;
       }
 
-      fillAdditionalInfo(additionalInfo, triggerValue, eventValues, mergedTreeData, showPosition);
+      fillAdditionalInfo(additionalInfo, triggerValue, newRawValues, mergedTreeData, showPosition);
 
       if (mergedCheckable) {
         additionalInfo.checked = selected;
@@ -460,6 +451,11 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     },
     [onDropdownVisibleChange],
   );
+
+  // ======================== Warning ========================
+  if (process.env.NODE_ENV !== 'production') {
+    warningProps(props);
+  }
 
   // ======================== Render =========================
   // We pass some props into select props style

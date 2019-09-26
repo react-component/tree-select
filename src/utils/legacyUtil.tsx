@@ -41,6 +41,11 @@ export function convertChildrenToData(nodes: React.ReactNode): DataNode[] {
 }
 
 export function fillLegacyProps(dataNode: DataNode): LegacyDataNode {
+  // Skip if not dataNode exist
+  if (!dataNode) {
+    return dataNode as LegacyDataNode;
+  }
+
   const cloneNode = { ...dataNode };
 
   if (!('props' in cloneNode)) {
@@ -65,32 +70,66 @@ export function fillAdditionalInfo(
   treeData: InnerDataNode[],
   showPosition: boolean,
 ) {
-  let nodeMap: Map<RawValueType, LegacyCheckedNode> = null;
+  let triggerNode: React.ReactNode = null;
+  let nodeList: LegacyCheckedNode[] = null;
 
   function generateMap() {
-    function dig(list: InnerDataNode[], level: string = '0'): LegacyCheckedNode[] {
-      return list.map((dataNode, index) => {
-        const pos = `${level}-${index}`;
-        const children = dig(dataNode.children || [], pos);
+    function dig(list: InnerDataNode[], level = '0', parentIncluded = false) {
+      return list
+        .map((dataNode, index) => {
+          const pos = `${level}-${index}`;
+          const included = checkedValues.includes(dataNode.value);
+          const children = dig(dataNode.children || [], pos, included);
+          const node = <TreeNode {...dataNode}>{children.map(child => child.node)}</TreeNode>;
 
-        const checkedNode: LegacyCheckedNode = {
-          pos,
-          node: <TreeNode {...dataNode}>{children.map(child => child.node)}</TreeNode>,
-          children,
-        };
+          // Link with trigger node
+          if (triggerValue === dataNode.value) {
+            triggerNode = node;
+          }
 
-        nodeMap.set(dataNode.value, checkedNode);
+          if (included) {
+            const checkedNode: LegacyCheckedNode = {
+              pos,
+              node,
+              children,
+            };
 
-        return checkedNode;
-      });
+            if (!parentIncluded) {
+              nodeList.push(checkedNode);
+            }
+
+            return checkedNode;
+          }
+          return null;
+        })
+        .filter(node => node);
     }
 
-    if (!nodeMap) {
-      nodeMap = new Map();
+    if (!nodeList) {
+      nodeList = [];
 
       dig(treeData);
+
+      // Sort to keep the checked node length
+      nodeList.sort(
+        (
+          {
+            node: {
+              props: { value: val1 },
+            },
+          },
+          {
+            node: {
+              props: { value: val2 },
+            },
+          },
+        ) => {
+          const index1 = checkedValues.indexOf(val1);
+          const index2 = checkedValues.indexOf(val2);
+          return index1 - index2;
+        },
+      );
     }
-    return nodeMap;
   }
 
   Object.defineProperty(extra, 'triggerNode', {
@@ -98,7 +137,7 @@ export function fillAdditionalInfo(
       warning(false, '`triggerNode` is deprecated. Please consider decoupling data with node.');
       generateMap();
 
-      return nodeMap.get(triggerValue);
+      return triggerNode;
     },
   });
   Object.defineProperty(extra, 'allCheckedNodes', {
@@ -106,13 +145,11 @@ export function fillAdditionalInfo(
       warning(false, '`allCheckedNodes` is deprecated. Please consider decoupling data with node.');
       generateMap();
 
-      const list = checkedValues.map(val => nodeMap.get(val));
-
       if (showPosition) {
-        return list;
+        return nodeList;
       }
 
-      return list.map(({ node }) => node);
+      return nodeList.map(({ node }) => node);
     },
   });
 }

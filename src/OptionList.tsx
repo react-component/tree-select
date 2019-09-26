@@ -59,6 +59,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     onSelect,
     onToggleOpen,
     open,
+    notFoundContent,
   } = props;
   const {
     checkable,
@@ -83,10 +84,14 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   const [getEntityByKey, getEntityByValue] = useKeyValueMapping(cacheKeyMap, cacheValueMap);
 
   // ========================== Values ==========================
-  const valueKeys = React.useMemo(() => checkedKeys.map(val => {
-      const entity = getEntityByValue(val);
-      return entity ? entity.key : null;
-    }), [checkedKeys]);
+  const valueKeys = React.useMemo(
+    () =>
+      checkedKeys.map(val => {
+        const entity = getEntityByValue(val);
+        return entity ? entity.key : null;
+      }),
+    [checkedKeys],
+  );
 
   const mergedCheckedKeys = React.useMemo(() => {
     if (!checkable) {
@@ -139,6 +144,10 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   };
 
   // ========================== Events ==========================
+  const onListMouseDown: React.MouseEventHandler<HTMLDivElement> = event => {
+    event.preventDefault();
+  };
+
   const onInternalSelect = (_: Key[], { node: { key } }: TreeEventInfo) => {
     const entity = getEntityByKey(key, checkable ? 'checkbox' : 'select');
     if (entity !== null) {
@@ -156,7 +165,6 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   React.useImperativeHandle(ref, () => ({
     onKeyDown: event => {
       const { which } = event;
-
       switch (which) {
         // >>> Arrow keys
         case KeyCode.UP:
@@ -187,6 +195,15 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     onKeyUp: () => {},
   }));
 
+  // ========================== Render ==========================
+  if (options.length === 0) {
+    return (
+      <div role="listbox" className={`${prefixCls}-empty`} onMouseDown={onListMouseDown}>
+        {notFoundContent}
+      </div>
+    );
+  }
+
   const treeProps: Partial<TreeProps> = {};
   if (treeLoadedKeys) {
     treeProps.loadedKeys = treeLoadedKeys;
@@ -196,11 +213,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   }
 
   return (
-    <div
-      onMouseDown={event => {
-        event.preventDefault();
-      }}
-    >
+    <div onMouseDown={onListMouseDown}>
       <Tree
         ref={treeRef}
         focusable={false}

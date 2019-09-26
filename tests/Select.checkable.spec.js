@@ -606,4 +606,46 @@ describe('TreeSelect.checkable', () => {
     expect(wrapper.getSelection().length).toBeTruthy();
     expect(wrapper.find('.rc-tree-select-selection-item-remove').length).toBeFalsy();
   });
+
+  it('treeCheckStrictly can set halfChecked', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <TreeSelect
+        treeCheckStrictly
+        treeCheckable
+        value={[{ value: 'half', halfChecked: true }]}
+        open
+        onChange={onChange}
+        treeData={[{ value: 'half', title: 'Half Check' }, { value: 'full', title: 'Full Check' }]}
+      />,
+    );
+
+    function getTreeNode(index) {
+      return wrapper.find('.rc-tree-select-tree-treenode').at(index);
+    }
+
+    expect(
+      getTreeNode(0).hasClass('rc-tree-select-tree-treenode-checkbox-indeterminate'),
+    ).toBeTruthy();
+    expect(
+      getTreeNode(1).hasClass('rc-tree-select-tree-treenode-checkbox-indeterminate'),
+    ).toBeFalsy();
+
+    wrapper.selectNode(1);
+    expect(onChange).toHaveBeenCalledWith(
+      [
+        {
+          label: 'Full Check',
+          value: 'full',
+        },
+        {
+          value: 'half',
+          label: 'Half Check',
+          halfChecked: true,
+        },
+      ],
+      null,
+      expect.anything(),
+    );
+  });
 });

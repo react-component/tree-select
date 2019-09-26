@@ -386,4 +386,52 @@ describe('TreeSelect.basic', () => {
       expect(scrollTo).toHaveBeenCalled();
     });
   });
+
+  describe('accessibility', () => {
+    it('key operation', () => {
+      const onChange = jest.fn();
+      const wrapper = mount(
+        <TreeSelect
+          onChange={onChange}
+          treeDefaultExpandAll
+          treeData={[{ value: 'parent', children: [{ value: 'child' }] }]}
+          multiple
+        />,
+      );
+
+      function keyDown(code) {
+        wrapper
+          .find('input')
+          .first()
+          .simulate('keyDown', { which: code });
+        wrapper.update();
+      }
+
+      function matchValue(value) {
+        expect(onChange).toHaveBeenCalledWith(value, expect.anything(), expect.anything());
+        onChange.mockReset();
+      }
+
+      wrapper.openSelect();
+
+      keyDown(KeyCode.DOWN);
+      keyDown(KeyCode.ENTER);
+      matchValue(['parent']);
+
+      keyDown(KeyCode.UP);
+      keyDown(KeyCode.ENTER);
+      matchValue(['parent', 'child']);
+    });
+  });
+
+  it('click in list should preventDefault', () => {
+    const wrapper = mount(<TreeSelect open treeData={[{ value: 'parent' }]} />);
+
+    const preventDefault = jest.fn();
+    wrapper.find('.rc-tree-select-tree-node-content-wrapper').simulate('mouseDown', {
+      preventDefault,
+    });
+
+    expect(preventDefault).toHaveBeenCalled();
+  });
 });
