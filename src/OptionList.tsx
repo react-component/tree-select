@@ -3,14 +3,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import { RefOptionListProps } from 'rc-select/lib/OptionList';
 import Tree, { TreeProps } from 'rc-tree';
 import { EventDataNode } from 'rc-tree/lib/interface';
-import {
-  FlattenDataNode,
-  RawValueType,
-  DataNode,
-  TreeDataNode,
-  Key,
-  LegacyDataNode,
-} from './interface';
+import { FlattenDataNode, RawValueType, DataNode, TreeDataNode, Key } from './interface';
 import { SelectContext } from './Context';
 import useKeyValueMapping from './hooks/useKeyValueMapping';
 import useKeyValueMap from './hooks/useKeyValueMap';

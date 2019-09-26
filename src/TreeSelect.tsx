@@ -41,7 +41,7 @@ import {
   SHOW_PARENT,
   SHOW_CHILD,
 } from './utils/strategyUtil';
-import { fillLegacyProps, fillAdditionalInfo } from './utils/legacyUtil';
+import { fillAdditionalInfo } from './utils/legacyUtil';
 import useSelectValues from './hooks/useSelectValues';
 
 const OMIT_PROPS = [

@@ -1,4 +1,3 @@
-import React from 'react';
 import warning from 'rc-util/lib/warning';
 import { TreeSelectProps } from '../TreeSelect';
 import { toArray } from './valueUtil';

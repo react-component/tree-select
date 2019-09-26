@@ -6,7 +6,6 @@ import {
   LegacyDataNode,
   ChangeEventExtra,
   InnerDataNode,
-  Key,
   RawValueType,
   LegacyCheckedNode,
 } from '../interface';

@@ -3,7 +3,7 @@ import { DefaultValueType } from 'rc-select/lib/interface/generator';
 import { DataEntity } from 'rc-tree/lib/interface';
 import { RawValueType, FlattenDataNode, Key, LabelValueType, DataNode } from '../interface';
 import { SkipType } from './useKeyValueMapping';
-import { toArray, getRawValueLabeled } from '../utils/valueUtil';
+import { getRawValueLabeled } from '../utils/valueUtil';
 import { formatStrategyKeys, CheckedStrategy } from '../utils/strategyUtil';
 
 interface Config {
