@@ -191,7 +191,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     onSelect,
     onDeselect,
   } = props;
-  const mergedCheckable = !!(treeCheckable || treeCheckStrictly);
+  const mergedCheckable: React.ReactNode | boolean = treeCheckable || treeCheckStrictly;
   const mergedMultiple = multiple || mergedCheckable;
   const treeConduction = treeCheckable && !treeCheckStrictly;
   const mergedLabelInValue = treeCheckStrictly || labelInValue;

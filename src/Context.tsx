@@ -3,7 +3,7 @@ import { IconType } from 'rc-tree/lib/interface';
 import { Key, LegacyDataNode } from './interface';
 
 interface ContextProps {
-  checkable: boolean;
+  checkable: boolean | React.ReactNode;
   checkedKeys: Key[];
   halfCheckedKeys: Key[];
   treeExpandedKeys: Key[];
