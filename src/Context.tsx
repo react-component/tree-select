@@ -16,6 +16,7 @@ interface ContextProps {
   treeLine: boolean;
   treeNodeFilterProp: string;
   treeLoadedKeys: Key[];
+  treeMotion: any;
   loadData: (treeNode: LegacyDataNode) => Promise<unknown>;
   onTreeLoad: (loadedKeys: Key[]) => void;
 }

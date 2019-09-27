@@ -61,6 +61,7 @@ const OMIT_PROPS = [
   'treeCheckStrictly',
   'treeExpandedKeys',
   'treeLoadedKeys',
+  'treeMotion',
   'onTreeExpand',
   'onTreeLoad',
   'loadData',
@@ -142,6 +143,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
   treeIcon?: IconType;
   showTreeIcon?: boolean;
   switcherIcon?: IconType;
+  treeMotion?: any;
   children?: React.ReactNode;
 
   filterTreeNode?: boolean | FilterFunc<LegacyDataNode>;
@@ -179,6 +181,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     showTreeIcon,
     switcherIcon,
     treeLine,
+    treeMotion,
     filterTreeNode,
     dropdownPopupAlign,
     onChange,
@@ -496,6 +499,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
         treeDefaultExpandedKeys,
         onTreeExpand,
         treeIcon,
+        treeMotion,
         showTreeIcon,
         switcherIcon,
         treeLine,
