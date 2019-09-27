@@ -51,6 +51,9 @@ const OMIT_PROPS = [
   'showCheckedStrategy',
   'searchPlaceholder',
   'treeLine',
+  'treeIcon',
+  'showTreeIcon',
+  'switcherIcon',
   'treeNodeFilterProp',
   'filterTreeNode',
   'dropdownPopupAlign',
@@ -137,6 +140,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
   treeData?: DataNode[];
   treeLine?: boolean;
   treeIcon?: IconType;
+  showTreeIcon?: boolean;
   switcherIcon?: IconType;
   children?: React.ReactNode;
 
@@ -172,6 +176,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     treeDefaultExpandAll,
     children,
     treeIcon,
+    showTreeIcon,
     switcherIcon,
     treeLine,
     filterTreeNode,
@@ -491,6 +496,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
         treeDefaultExpandedKeys,
         onTreeExpand,
         treeIcon,
+        showTreeIcon,
         switcherIcon,
         treeLine,
         treeNodeFilterProp,

@@ -74,6 +74,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     treeDefaultExpandedKeys,
     onTreeExpand,
     treeIcon,
+    showTreeIcon,
     switcherIcon,
     treeLine,
     treeNodeFilterProp,
@@ -233,6 +234,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         itemHeight={itemHeight}
         multiple={multiple}
         icon={treeIcon}
+        showIcon={showTreeIcon}
         switcherIcon={switcherIcon}
         showLine={treeLine}
         loadData={searchValue ? null : (loadData as any)}

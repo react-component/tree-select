@@ -11,6 +11,7 @@ interface ContextProps {
   onTreeExpand: (keys: Key[]) => void;
   treeDefaultExpandAll: boolean;
   treeIcon: IconType;
+  showTreeIcon: boolean;
   switcherIcon: IconType;
   treeLine: boolean;
   treeNodeFilterProp: string;
