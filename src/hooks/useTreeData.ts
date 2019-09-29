@@ -52,7 +52,7 @@ function formatTreeData(
   const valueSet = new Set<RawValueType>();
 
   function dig(dataNodes: DataNode[]) {
-    return dataNodes.map(node => {
+    return (dataNodes || []).map(node => {
       const { key, value, children, ...rest } = node;
 
       const mergedValue = 'value' in node ? value : key;
