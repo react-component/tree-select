@@ -54,7 +54,7 @@
     "np": "^5.0.3",
     "rc-dialog": "^7.5.7",
     "rc-field-form": "^0.0.0-alpha.21",
-    "rc-trigger": "^2.6.5",
+    "rc-trigger": "^4.0.0-alpha.4",
     "rc-virtual-list": "^0.0.0-alpha.28",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",

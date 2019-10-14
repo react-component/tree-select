@@ -7,7 +7,6 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
   >
     <div
       class="rc-tree-select-selector"
-      style=""
     >
       <span
         class="rc-tree-select-selection-item"
@@ -99,8 +98,8 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
     </div>
     <div>
       <div
-        class="rc-tree-select-dropdown  rc-tree-select-dropdown-placement-bottomLeft "
-        style="left: -999px; top: -995px; width: 0px;"
+        class="rc-tree-select-dropdown"
+        style="opacity: 0; width: 0px;"
       >
         <div>
           <div>
@@ -228,7 +227,6 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
   >
     <div
       class="rc-tree-select-selector"
-      style=""
     >
       <span
         class="rc-tree-select-selection-search"
@@ -260,8 +258,8 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
     </div>
     <div>
       <div
-        class="rc-tree-select-dropdown  rc-tree-select-dropdown-placement-bottomLeft "
-        style="left: -999px; top: -995px; width: 0px;"
+        class="rc-tree-select-dropdown"
+        style="opacity: 0; width: 0px;"
       >
         <div>
           <div>
@@ -389,7 +387,6 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
   >
     <div
       class="rc-tree-select-selector"
-      style=""
     >
       <span
         class="rc-tree-select-selection-item"
@@ -481,8 +478,8 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
     </div>
     <div>
       <div
-        class="rc-tree-select-dropdown  rc-tree-select-dropdown-placement-bottomLeft "
-        style="left: -999px; top: -995px; width: 0px;"
+        class="rc-tree-select-dropdown"
+        style="opacity: 0; width: 0px;"
       >
         <div>
           <div>
@@ -610,7 +607,6 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
   >
     <div
       class="rc-tree-select-selector"
-      style=""
     >
       <span
         class="rc-tree-select-selection-search"
@@ -639,8 +635,8 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
     </div>
     <div>
       <div
-        class="rc-tree-select-dropdown  rc-tree-select-dropdown-placement-bottomLeft "
-        style="left: -999px; top: -995px; width: 0px;"
+        class="rc-tree-select-dropdown"
+        style="opacity: 0; width: 0px;"
       >
         <div>
           <div>
