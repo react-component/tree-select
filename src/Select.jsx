@@ -800,8 +800,10 @@ class Select extends React.Component {
 
       let filterTreeNodeFn = filterTreeNode;
       if (filterTreeNode === false) {
+        // Don't filter if is false
         filterTreeNodeFn = () => true;
-      } else if (!filterTreeNodeFn) {
+      } else if (typeof filterTreeNodeFn !== 'function') {
+        // When is not function (true or undefined), use inner filter
         filterTreeNodeFn = (_, node) => {
           const nodeValue = String(node.props[treeNodeFilterProp]).toUpperCase();
           return nodeValue.indexOf(upperSearchValue) !== -1;
