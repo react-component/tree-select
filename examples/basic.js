@@ -10,7 +10,7 @@
 /******/ 		var moduleId, chunkId, i = 0, resolves = [];
 /******/ 		for(;i < chunkIds.length; i++) {
 /******/ 			chunkId = chunkIds[i];
-/******/ 			if(installedChunks[chunkId]) {
+/******/ 			if(Object.prototype.hasOwnProperty.call(installedChunks, chunkId) && installedChunks[chunkId]) {
 /******/ 				resolves.push(installedChunks[chunkId][0]);
 /******/ 			}
 /******/ 			installedChunks[chunkId] = 0;
@@ -46,6 +46,7 @@
 /******/ 				result = __webpack_require__(__webpack_require__.s = deferredModule[0]);
 /******/ 			}
 /******/ 		}
+/******/
 /******/ 		return result;
 /******/ 	}
 /******/
@@ -165,13 +166,13 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rc_tree_select_assets_index_less__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rc-tree-select/assets/index.less */ "./assets/index.less");
 /* harmony import */ var rc_tree_select_assets_index_less__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(rc_tree_select_assets_index_less__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/_react@16.8.6@react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/_react@16.12.0@react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/_react-dom@16.8.6@react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/_react-dom@16.12.0@react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var rc_dialog_assets_index_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rc-dialog/assets/index.css */ "./node_modules/_rc-dialog@7.3.1@rc-dialog/assets/index.css");
+/* harmony import */ var rc_dialog_assets_index_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rc-dialog/assets/index.css */ "./node_modules/_rc-dialog@7.5.13@rc-dialog/assets/index.css");
 /* harmony import */ var rc_dialog_assets_index_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(rc_dialog_assets_index_css__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var rc_dialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rc-dialog */ "./node_modules/_rc-dialog@7.3.1@rc-dialog/es/DialogWrap.js");
+/* harmony import */ var rc_dialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rc-dialog */ "./node_modules/_rc-dialog@7.5.13@rc-dialog/es/DialogWrap.js");
 /* harmony import */ var rc_tree_select__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rc-tree-select */ "./index.js");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./util */ "./examples/util.js");
 /* harmony import */ var _demo_less__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./demo.less */ "./examples/demo.less");
@@ -823,10 +824,10 @@ react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_
 
 /***/ }),
 
-/***/ "./node_modules/_rc-dialog@7.3.1@rc-dialog/es/Dialog.js":
-/*!**************************************************************!*\
-  !*** ./node_modules/_rc-dialog@7.3.1@rc-dialog/es/Dialog.js ***!
-  \**************************************************************/
+/***/ "./node_modules/_rc-dialog@7.5.13@rc-dialog/es/Dialog.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/_rc-dialog@7.5.13@rc-dialog/es/Dialog.js ***!
+  \***************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -840,15 +841,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! babel-runtime/helpers/inherits */ "./node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/inherits.js");
 /* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/_react@16.8.6@react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/_react@16.12.0@react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-dom */ "./node_modules/_react-dom@16.8.6@react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-dom */ "./node_modules/_react-dom@16.12.0@react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rc-util/es/KeyCode */ "./node_modules/_rc-util@4.6.0@rc-util/es/KeyCode.js");
-/* harmony import */ var rc_util_es_Dom_contains__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rc-util/es/Dom/contains */ "./node_modules/_rc-util@4.6.0@rc-util/es/Dom/contains.js");
-/* harmony import */ var rc_animate__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rc-animate */ "./node_modules/_rc-animate@2.8.2@rc-animate/es/Animate.js");
-/* harmony import */ var _LazyRenderBox__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./LazyRenderBox */ "./node_modules/_rc-dialog@7.3.1@rc-dialog/es/LazyRenderBox.js");
-/* harmony import */ var rc_util_es_getScrollBarSize__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rc-util/es/getScrollBarSize */ "./node_modules/_rc-util@4.6.0@rc-util/es/getScrollBarSize.js");
+/* harmony import */ var rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rc-util/es/KeyCode */ "./node_modules/_rc-util@4.15.7@rc-util/es/KeyCode.js");
+/* harmony import */ var rc_util_es_Dom_contains__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rc-util/es/Dom/contains */ "./node_modules/_rc-util@4.15.7@rc-util/es/Dom/contains.js");
+/* harmony import */ var rc_util_es_switchScrollingEffect__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rc-util/es/switchScrollingEffect */ "./node_modules/_rc-util@4.15.7@rc-util/es/switchScrollingEffect.js");
+/* harmony import */ var rc_animate__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rc-animate */ "./node_modules/_rc-animate@2.10.2@rc-animate/es/Animate.js");
+/* harmony import */ var _LazyRenderBox__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./LazyRenderBox */ "./node_modules/_rc-dialog@7.5.13@rc-dialog/es/LazyRenderBox.js");
 
 
 
@@ -861,7 +862,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var uuid = 0;
-var openCount = 0;
 /* eslint react/no-is-mounted:0 */
 function getScroll(w, top) {
     var ret = w['page' + (top ? 'Y' : 'X') + 'Offset'];
@@ -894,15 +894,17 @@ function offset(el) {
     pos.top += getScroll(w, true);
     return pos;
 }
+var cacheOverflow = {};
 
 var Dialog = function (_React$Component) {
     babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3___default()(Dialog, _React$Component);
 
-    function Dialog() {
+    function Dialog(props) {
         babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default()(this, Dialog);
 
-        var _this = babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2___default()(this, _React$Component.apply(this, arguments));
+        var _this = babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2___default()(this, _React$Component.call(this, props));
 
+        _this.inTransition = false;
         _this.onAnimateLeave = function () {
             var afterClose = _this.props.afterClose;
             // need demo?
@@ -912,7 +914,7 @@ var Dialog = function (_React$Component) {
                 _this.wrap.style.display = 'none';
             }
             _this.inTransition = false;
-            _this.removeScrollingEffect();
+            _this.switchScrollingEffect();
             if (afterClose) {
                 afterClose();
             }
@@ -979,13 +981,13 @@ var Dialog = function (_React$Component) {
             }
             var closer = void 0;
             if (closable) {
-                closer = react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("button", { onClick: _this.close, "aria-label": "Close", className: prefixCls + '-close' }, props.closeIcon || react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("span", { className: prefixCls + '-close-x' }));
+                closer = react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("button", { type: "button", onClick: _this.close, "aria-label": "Close", className: prefixCls + '-close' }, props.closeIcon || react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("span", { className: prefixCls + '-close-x' }));
             }
             var style = babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, props.style, dest);
             var sentinelStyle = { width: 0, height: 0, overflow: 'hidden' };
             var transitionName = _this.getTransitionName();
-            var dialogElement = react__WEBPACK_IMPORTED_MODULE_4__["createElement"](_LazyRenderBox__WEBPACK_IMPORTED_MODULE_9__["default"], { key: "dialog-element", role: "document", ref: _this.saveRef('dialog'), style: style, className: prefixCls + ' ' + (props.className || ''), visible: props.visible, onMouseDown: _this.onDialogMouseDown }, react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", { tabIndex: 0, ref: _this.saveRef('sentinelStart'), style: sentinelStyle }, "sentinelStart"), react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", { className: prefixCls + '-content' }, closer, header, react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({ className: prefixCls + '-body', style: props.bodyStyle, ref: _this.saveRef('body') }, props.bodyProps), props.children), footer), react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", { tabIndex: 0, ref: _this.saveRef('sentinelEnd'), style: sentinelStyle }, "sentinelEnd"));
-            return react__WEBPACK_IMPORTED_MODULE_4__["createElement"](rc_animate__WEBPACK_IMPORTED_MODULE_8__["default"], { key: "dialog", showProp: "visible", onLeave: _this.onAnimateLeave, transitionName: transitionName, component: "", transitionAppear: true }, props.visible || !props.destroyOnClose ? dialogElement : null);
+            var dialogElement = react__WEBPACK_IMPORTED_MODULE_4__["createElement"](_LazyRenderBox__WEBPACK_IMPORTED_MODULE_10__["default"], { key: "dialog-element", role: "document", ref: _this.saveRef('dialog'), style: style, className: prefixCls + ' ' + (props.className || ''), visible: props.visible, forceRender: props.forceRender, onMouseDown: _this.onDialogMouseDown }, react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", { tabIndex: 0, ref: _this.saveRef('sentinelStart'), style: sentinelStyle, "aria-hidden": "true" }), react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", { className: prefixCls + '-content' }, closer, header, react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({ className: prefixCls + '-body', style: props.bodyStyle, ref: _this.saveRef('body') }, props.bodyProps), props.children), footer), react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", { tabIndex: 0, ref: _this.saveRef('sentinelEnd'), style: sentinelStyle, "aria-hidden": "true" }));
+            return react__WEBPACK_IMPORTED_MODULE_4__["createElement"](rc_animate__WEBPACK_IMPORTED_MODULE_9__["default"], { key: "dialog", showProp: "visible", onLeave: _this.onAnimateLeave, transitionName: transitionName, component: "", transitionAppear: true }, props.visible || !props.destroyOnClose ? dialogElement : null);
         };
         _this.getZIndexStyle = function () {
             var style = {};
@@ -1006,9 +1008,9 @@ var Dialog = function (_React$Component) {
             var maskElement = void 0;
             if (props.mask) {
                 var maskTransition = _this.getMaskTransitionName();
-                maskElement = react__WEBPACK_IMPORTED_MODULE_4__["createElement"](_LazyRenderBox__WEBPACK_IMPORTED_MODULE_9__["default"], babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({ style: _this.getMaskStyle(), key: "mask", className: props.prefixCls + '-mask', hiddenClassName: props.prefixCls + '-mask-hidden', visible: props.visible }, props.maskProps));
+                maskElement = react__WEBPACK_IMPORTED_MODULE_4__["createElement"](_LazyRenderBox__WEBPACK_IMPORTED_MODULE_10__["default"], babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({ style: _this.getMaskStyle(), key: "mask", className: props.prefixCls + '-mask', hiddenClassName: props.prefixCls + '-mask-hidden', visible: props.visible }, props.maskProps));
                 if (maskTransition) {
-                    maskElement = react__WEBPACK_IMPORTED_MODULE_4__["createElement"](rc_animate__WEBPACK_IMPORTED_MODULE_8__["default"], { key: "mask", showProp: "visible", transitionAppear: true, component: "", transitionName: maskTransition }, maskElement);
+                    maskElement = react__WEBPACK_IMPORTED_MODULE_4__["createElement"](rc_animate__WEBPACK_IMPORTED_MODULE_9__["default"], { key: "mask", showProp: "visible", transitionAppear: true, component: "", transitionName: maskTransition }, maskElement);
                 }
             }
             return maskElement;
@@ -1031,29 +1033,37 @@ var Dialog = function (_React$Component) {
             }
             return transitionName;
         };
-        _this.setScrollbar = function () {
-            if (_this.bodyIsOverflowing && _this.scrollbarWidth !== undefined) {
-                document.body.style.paddingRight = _this.scrollbarWidth + 'px';
+        _this.switchScrollingEffect = function () {
+            var getOpenCount = _this.props.getOpenCount;
+
+            var openCount = getOpenCount();
+            if (openCount === 1) {
+                if (cacheOverflow.hasOwnProperty('overflowX')) {
+                    return;
+                }
+                cacheOverflow = {
+                    overflowX: document.body.style.overflowX,
+                    overflowY: document.body.style.overflowY,
+                    overflow: document.body.style.overflow
+                };
+                Object(rc_util_es_switchScrollingEffect__WEBPACK_IMPORTED_MODULE_8__["default"])();
+                // Must be set after switchScrollingEffect
+                document.body.style.overflow = 'hidden';
+            } else if (!openCount) {
+                // IE browser doesn't merge overflow style, need to set it separately
+                // https://github.com/ant-design/ant-design/issues/19393
+                if (cacheOverflow.overflow !== undefined) {
+                    document.body.style.overflow = cacheOverflow.overflow;
+                }
+                if (cacheOverflow.overflowX !== undefined) {
+                    document.body.style.overflowX = cacheOverflow.overflowX;
+                }
+                if (cacheOverflow.overflowY !== undefined) {
+                    document.body.style.overflowY = cacheOverflow.overflowY;
+                }
+                cacheOverflow = {};
+                Object(rc_util_es_switchScrollingEffect__WEBPACK_IMPORTED_MODULE_8__["default"])(true);
             }
-        };
-        _this.addScrollingEffect = function () {
-            openCount++;
-            if (openCount !== 1) {
-                return;
-            }
-            _this.checkScrollbar();
-            _this.setScrollbar();
-            document.body.style.overflow = 'hidden';
-            // this.adjustDialog();
-        };
-        _this.removeScrollingEffect = function () {
-            openCount--;
-            if (openCount !== 0) {
-                return;
-            }
-            document.body.style.overflow = '';
-            _this.resetScrollbar();
-            // this.resetAdjustments();
         };
         _this.close = function (e) {
             var onClose = _this.props.onClose;
@@ -1062,50 +1072,19 @@ var Dialog = function (_React$Component) {
                 onClose(e);
             }
         };
-        _this.checkScrollbar = function () {
-            var fullWindowWidth = window.innerWidth;
-            if (!fullWindowWidth) {
-                // workaround for missing window.innerWidth in IE8
-                var documentElementRect = document.documentElement.getBoundingClientRect();
-                fullWindowWidth = documentElementRect.right - Math.abs(documentElementRect.left);
-            }
-            _this.bodyIsOverflowing = document.body.clientWidth < fullWindowWidth;
-            if (_this.bodyIsOverflowing) {
-                _this.scrollbarWidth = Object(rc_util_es_getScrollBarSize__WEBPACK_IMPORTED_MODULE_10__["default"])();
-            }
-        };
-        _this.resetScrollbar = function () {
-            document.body.style.paddingRight = '';
-        };
-        _this.adjustDialog = function () {
-            if (_this.wrap && _this.scrollbarWidth !== undefined) {
-                var modalIsOverflowing = _this.wrap.scrollHeight > document.documentElement.clientHeight;
-                _this.wrap.style.paddingLeft = (!_this.bodyIsOverflowing && modalIsOverflowing ? _this.scrollbarWidth : '') + 'px';
-                _this.wrap.style.paddingRight = (_this.bodyIsOverflowing && !modalIsOverflowing ? _this.scrollbarWidth : '') + 'px';
-            }
-        };
-        _this.resetAdjustments = function () {
-            if (_this.wrap) {
-                _this.wrap.style.paddingLeft = _this.wrap.style.paddingLeft = '';
-            }
-        };
         _this.saveRef = function (name) {
             return function (node) {
                 _this[name] = node;
             };
         };
+        _this.titleId = 'rcDialogTitle' + uuid++;
         return _this;
     }
-
-    Dialog.prototype.componentWillMount = function componentWillMount() {
-        this.inTransition = false;
-        this.titleId = 'rcDialogTitle' + uuid++;
-    };
 
     Dialog.prototype.componentDidMount = function componentDidMount() {
         this.componentDidUpdate({});
         // if forceRender is true, set element style display to be none;
-        if (this.props.forceRender && this.wrap) {
+        if ((this.props.forceRender || this.props.getContainer === false && !this.props.visible) && this.wrap) {
             this.wrap.style.display = 'none';
         }
     };
@@ -1117,7 +1096,7 @@ var Dialog = function (_React$Component) {
             // first show
             if (!prevProps.visible) {
                 this.openTime = Date.now();
-                this.addScrollingEffect();
+                this.switchScrollingEffect();
                 this.tryFocus();
                 var dialogNode = react_dom__WEBPACK_IMPORTED_MODULE_5__["findDOMNode"](this.dialog);
                 if (mousePosition) {
@@ -1141,8 +1120,12 @@ var Dialog = function (_React$Component) {
     };
 
     Dialog.prototype.componentWillUnmount = function componentWillUnmount() {
-        if (this.props.visible || this.inTransition) {
-            this.removeScrollingEffect();
+        var _props = this.props,
+            visible = _props.visible,
+            getOpenCount = _props.getOpenCount;
+
+        if ((visible || this.inTransition) && !getOpenCount()) {
+            this.switchScrollingEffect();
         }
         clearTimeout(this.timeoutId);
     };
@@ -1186,10 +1169,10 @@ Dialog.defaultProps = {
 
 /***/ }),
 
-/***/ "./node_modules/_rc-dialog@7.3.1@rc-dialog/es/DialogWrap.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/_rc-dialog@7.3.1@rc-dialog/es/DialogWrap.js ***!
-  \******************************************************************/
+/***/ "./node_modules/_rc-dialog@7.5.13@rc-dialog/es/DialogWrap.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/_rc-dialog@7.5.13@rc-dialog/es/DialogWrap.js ***!
+  \*******************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1197,127 +1180,44 @@ Dialog.defaultProps = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! babel-runtime/helpers/extends */ "./node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/extends.js");
 /* harmony import */ var babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! babel-runtime/helpers/classCallCheck */ "./node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/classCallCheck.js");
-/* harmony import */ var babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! babel-runtime/helpers/possibleConstructorReturn */ "./node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/possibleConstructorReturn.js");
-/* harmony import */ var babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! babel-runtime/helpers/inherits */ "./node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/inherits.js");
-/* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/_react@16.8.6@react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-dom */ "./node_modules/_react-dom@16.8.6@react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _Dialog__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Dialog */ "./node_modules/_rc-dialog@7.3.1@rc-dialog/es/Dialog.js");
-/* harmony import */ var rc_util_es_ContainerRender__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rc-util/es/ContainerRender */ "./node_modules/_rc-util@4.6.0@rc-util/es/ContainerRender.js");
-/* harmony import */ var rc_util_es_Portal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rc-util/es/Portal */ "./node_modules/_rc-util@4.6.0@rc-util/es/Portal.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/_react@16.12.0@react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _Dialog__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Dialog */ "./node_modules/_rc-dialog@7.5.13@rc-dialog/es/Dialog.js");
+/* harmony import */ var rc_util_es_PortalWrapper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rc-util/es/PortalWrapper */ "./node_modules/_rc-util@4.15.7@rc-util/es/PortalWrapper.js");
 
 
 
 
+// fix issue #10656
+/*
+* getContainer remarks
+* Custom container should not be return, because in the Portal component, it will remove the
+* return container element here, if the custom container is the only child of it's component,
+* like issue #10656, It will has a conflict with removeChild method in react-dom.
+* So here should add a child (div element) to custom container.
+* */
+/* harmony default export */ __webpack_exports__["default"] = (function (props) {
+    var visible = props.visible,
+        getContainer = props.getContainer,
+        forceRender = props.forceRender;
+    // 渲染在当前 dom 里；
 
-
-
-
-
-var IS_REACT_16 = 'createPortal' in react_dom__WEBPACK_IMPORTED_MODULE_5__;
-
-var DialogWrap = function (_React$Component) {
-    babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3___default()(DialogWrap, _React$Component);
-
-    function DialogWrap() {
-        babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default()(this, DialogWrap);
-
-        var _this = babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2___default()(this, _React$Component.apply(this, arguments));
-
-        _this.saveDialog = function (node) {
-            _this._component = node;
-        };
-        _this.getComponent = function () {
-            var extra = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-            return react__WEBPACK_IMPORTED_MODULE_4__["createElement"](_Dialog__WEBPACK_IMPORTED_MODULE_6__["default"], babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({ ref: _this.saveDialog }, _this.props, extra, { key: "dialog" }));
-        };
-        // fix issue #10656
-        /*
-        * Custom container should not be return, because in the Portal component, it will remove the
-        * return container element here, if the custom container is the only child of it's component,
-        * like issue #10656, It will has a conflict with removeChild method in react-dom.
-        * So here should add a child (div element) to custom container.
-        * */
-        _this.getContainer = function () {
-            var container = document.createElement('div');
-            if (_this.props.getContainer) {
-                _this.props.getContainer().appendChild(container);
-            } else {
-                document.body.appendChild(container);
-            }
-            return container;
-        };
-        return _this;
+    if (getContainer === false) {
+        return react__WEBPACK_IMPORTED_MODULE_1__["createElement"](_Dialog__WEBPACK_IMPORTED_MODULE_2__["default"], babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, props, { getOpenCount: function getOpenCount() {
+                return 2;
+            } }));
     }
-
-    DialogWrap.prototype.shouldComponentUpdate = function shouldComponentUpdate(_ref) {
-        var visible = _ref.visible,
-            forceRender = _ref.forceRender;
-
-        return !!(this.props.visible || visible) || this.props.forceRender || forceRender;
-    };
-
-    DialogWrap.prototype.componentWillUnmount = function componentWillUnmount() {
-        if (IS_REACT_16) {
-            return;
-        }
-        if (this.props.visible) {
-            this.renderComponent({
-                afterClose: this.removeContainer,
-                onClose: function onClose() {},
-
-                visible: false
-            });
-        } else {
-            this.removeContainer();
-        }
-    };
-
-    DialogWrap.prototype.render = function render() {
-        var _this2 = this;
-
-        var _props = this.props,
-            visible = _props.visible,
-            forceRender = _props.forceRender;
-
-        var portal = null;
-        if (!IS_REACT_16) {
-            return react__WEBPACK_IMPORTED_MODULE_4__["createElement"](rc_util_es_ContainerRender__WEBPACK_IMPORTED_MODULE_7__["default"], { parent: this, visible: visible, autoDestroy: false, getComponent: this.getComponent, getContainer: this.getContainer, forceRender: forceRender }, function (_ref2) {
-                var renderComponent = _ref2.renderComponent,
-                    removeContainer = _ref2.removeContainer;
-
-                _this2.renderComponent = renderComponent;
-                _this2.removeContainer = removeContainer;
-                return null;
-            });
-        }
-        if (visible || forceRender || this._component) {
-            portal = react__WEBPACK_IMPORTED_MODULE_4__["createElement"](rc_util_es_Portal__WEBPACK_IMPORTED_MODULE_8__["default"], { getContainer: this.getContainer }, this.getComponent());
-        }
-        return portal;
-    };
-
-    return DialogWrap;
-}(react__WEBPACK_IMPORTED_MODULE_4__["Component"]);
-
-DialogWrap.defaultProps = {
-    visible: false,
-    forceRender: false
-};
-/* harmony default export */ __webpack_exports__["default"] = (DialogWrap);
+    return react__WEBPACK_IMPORTED_MODULE_1__["createElement"](rc_util_es_PortalWrapper__WEBPACK_IMPORTED_MODULE_3__["default"], { visible: visible, forceRender: forceRender, getContainer: getContainer }, function (childProps) {
+        return react__WEBPACK_IMPORTED_MODULE_1__["createElement"](_Dialog__WEBPACK_IMPORTED_MODULE_2__["default"], babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, props, childProps));
+    });
+});
 
 /***/ }),
 
-/***/ "./node_modules/_rc-dialog@7.3.1@rc-dialog/es/LazyRenderBox.js":
-/*!*********************************************************************!*\
-  !*** ./node_modules/_rc-dialog@7.3.1@rc-dialog/es/LazyRenderBox.js ***!
-  \*********************************************************************/
+/***/ "./node_modules/_rc-dialog@7.5.13@rc-dialog/es/LazyRenderBox.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/_rc-dialog@7.5.13@rc-dialog/es/LazyRenderBox.js ***!
+  \**********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1331,12 +1231,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! babel-runtime/helpers/inherits */ "./node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/inherits.js");
 /* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/_react@16.8.6@react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/_react@16.12.0@react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
 
 
 
 
+var __rest = undefined && undefined.__rest || function (s, e) {
+    var t = {};
+    for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+    }if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+        if (e.indexOf(p[i]) < 0) t[p[i]] = s[p[i]];
+    }return t;
+};
 
 
 var LazyRenderBox = function (_React$Component) {
@@ -1349,19 +1257,24 @@ var LazyRenderBox = function (_React$Component) {
     }
 
     LazyRenderBox.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps) {
+        if (nextProps.forceRender) {
+            return true;
+        }
         return !!nextProps.hiddenClassName || !!nextProps.visible;
     };
 
     LazyRenderBox.prototype.render = function render() {
-        var className = this.props.className;
-        if (!!this.props.hiddenClassName && !this.props.visible) {
-            className += " " + this.props.hiddenClassName;
+        var _a = this.props,
+            className = _a.className,
+            hiddenClassName = _a.hiddenClassName,
+            visible = _a.visible,
+            forceRender = _a.forceRender,
+            restProps = __rest(_a, ["className", "hiddenClassName", "visible", "forceRender"]);
+        var useClassName = className;
+        if (!!hiddenClassName && !visible) {
+            useClassName += " " + hiddenClassName;
         }
-        var props = babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, this.props);
-        delete props.hiddenClassName;
-        delete props.visible;
-        props.className = className;
-        return react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, props));
+        return react__WEBPACK_IMPORTED_MODULE_4__["createElement"]("div", babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, restProps, { className: useClassName }));
     };
 
     return LazyRenderBox;
@@ -1371,27 +1284,273 @@ var LazyRenderBox = function (_React$Component) {
 
 /***/ }),
 
-/***/ "./node_modules/_rc-util@4.6.0@rc-util/es/getScrollBarSize.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/_rc-util@4.6.0@rc-util/es/getScrollBarSize.js ***!
-  \********************************************************************/
+/***/ "./node_modules/_rc-util@4.15.7@rc-util/es/PortalWrapper.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/_rc-util@4.15.7@rc-util/es/PortalWrapper.js ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/_react@16.12.0@react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/_react-dom@16.12.0@react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/_prop-types@15.7.2@prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_lifecycles_compat__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-lifecycles-compat */ "./node_modules/_react-lifecycles-compat@3.0.4@react-lifecycles-compat/react-lifecycles-compat.es.js");
+/* harmony import */ var _ContainerRender__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ContainerRender */ "./node_modules/_rc-util@4.15.7@rc-util/es/ContainerRender.js");
+/* harmony import */ var _Portal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Portal */ "./node_modules/_rc-util@4.15.7@rc-util/es/Portal.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+
+
+var openCount = 0;
+var windowIsUndefined = !(typeof window !== 'undefined' && window.document && window.document.createElement);
+var IS_REACT_16 = 'createPortal' in react_dom__WEBPACK_IMPORTED_MODULE_1___default.a;
+
+var PortalWrapper =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(PortalWrapper, _React$Component);
+
+  function PortalWrapper(props) {
+    var _this;
+
+    _classCallCheck(this, PortalWrapper);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(PortalWrapper).call(this, props));
+
+    _this.getParent = function () {
+      var getContainer = _this.props.getContainer;
+
+      if (getContainer) {
+        if (typeof getContainer === 'string') {
+          return document.querySelectorAll(getContainer)[0];
+        }
+
+        if (typeof getContainer === 'function') {
+          return getContainer();
+        }
+
+        if (_typeof(getContainer) === 'object' && getContainer instanceof window.HTMLElement) {
+          return getContainer;
+        }
+      }
+
+      return document.body;
+    };
+
+    _this.getContainer = function () {
+      if (windowIsUndefined) {
+        return null;
+      }
+
+      if (!_this.container) {
+        _this.container = document.createElement('div');
+
+        var parent = _this.getParent();
+
+        if (parent) {
+          parent.appendChild(_this.container);
+        }
+      }
+
+      _this.setWrapperClassName();
+
+      return _this.container;
+    };
+
+    _this.setWrapperClassName = function () {
+      var wrapperClassName = _this.props.wrapperClassName;
+
+      if (_this.container && wrapperClassName && wrapperClassName !== _this.container.className) {
+        _this.container.className = wrapperClassName;
+      }
+    };
+
+    _this.savePortal = function (c) {
+      _this._component = c;
+    };
+
+    _this.removeCurrentContainer = function (visible) {
+      _this.container = null;
+      _this._component = null;
+
+      if (!IS_REACT_16) {
+        if (visible) {
+          _this.renderComponent({
+            afterClose: _this.removeContainer,
+            onClose: function onClose() {},
+            visible: false
+          });
+        } else {
+          _this.removeContainer();
+        }
+      }
+    };
+
+    var _visible = props.visible;
+    openCount = _visible ? openCount + 1 : openCount;
+    _this.state = {
+      _self: _assertThisInitialized(_this)
+    };
+    return _this;
+  }
+
+  _createClass(PortalWrapper, [{
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      this.setWrapperClassName();
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      var visible = this.props.visible; // 离开时不会 render， 导到离开时数值不变，改用 func 。。
+
+      openCount = visible && openCount ? openCount - 1 : openCount;
+      this.removeCurrentContainer(visible);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var _this$props = this.props,
+          children = _this$props.children,
+          forceRender = _this$props.forceRender,
+          visible = _this$props.visible;
+      var portal = null;
+      var childProps = {
+        getOpenCount: function getOpenCount() {
+          return openCount;
+        },
+        getContainer: this.getContainer
+      }; // suppport react15
+
+      if (!IS_REACT_16) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ContainerRender__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          parent: this,
+          visible: visible,
+          autoDestroy: false,
+          getComponent: function getComponent() {
+            var extra = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+            return children(_objectSpread({}, extra, {}, childProps, {
+              ref: _this2.savePortal
+            }));
+          },
+          getContainer: this.getContainer,
+          forceRender: forceRender
+        }, function (_ref) {
+          var renderComponent = _ref.renderComponent,
+              removeContainer = _ref.removeContainer;
+          _this2.renderComponent = renderComponent;
+          _this2.removeContainer = removeContainer;
+          return null;
+        });
+      }
+
+      if (forceRender || visible || this._component) {
+        portal = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Portal__WEBPACK_IMPORTED_MODULE_5__["default"], {
+          getContainer: this.getContainer,
+          ref: this.savePortal
+        }, children(childProps));
+      }
+
+      return portal;
+    }
+  }], [{
+    key: "getDerivedStateFromProps",
+    value: function getDerivedStateFromProps(props, _ref2) {
+      var prevProps = _ref2.prevProps,
+          _self = _ref2._self;
+      var visible = props.visible,
+          getContainer = props.getContainer;
+
+      if (prevProps) {
+        var prevVisible = prevProps.visible,
+            prevGetContainer = prevProps.getContainer;
+
+        if (visible !== prevVisible) {
+          openCount = visible && !prevVisible ? openCount + 1 : openCount - 1;
+        }
+
+        var getContainerIsFunc = typeof getContainer === 'function' && typeof prevGetContainer === 'function';
+
+        if (getContainerIsFunc ? getContainer.toString() !== prevGetContainer.toString() : getContainer !== prevGetContainer) {
+          _self.removeCurrentContainer(false);
+        }
+      }
+
+      return {
+        prevProps: props
+      };
+    }
+  }]);
+
+  return PortalWrapper;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+PortalWrapper.propTypes = {
+  wrapperClassName: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
+  forceRender: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  getContainer: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.any,
+  children: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
+  visible: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool
+};
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_lifecycles_compat__WEBPACK_IMPORTED_MODULE_3__["polyfill"])(PortalWrapper));
+
+/***/ }),
+
+/***/ "./node_modules/_rc-util@4.15.7@rc-util/es/getScrollBarSize.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/_rc-util@4.15.7@rc-util/es/getScrollBarSize.js ***!
+  \*********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return getScrollBarSize; });
-var cached = void 0;
-
+var cached;
 function getScrollBarSize(fresh) {
+  if (typeof document === 'undefined') {
+    return 0;
+  }
+
   if (fresh || cached === undefined) {
     var inner = document.createElement('div');
     inner.style.width = '100%';
     inner.style.height = '200px';
-
     var outer = document.createElement('div');
     var outerStyle = outer.style;
-
     outerStyle.position = 'absolute';
     outerStyle.top = 0;
     outerStyle.left = 0;
@@ -1400,11 +1559,8 @@ function getScrollBarSize(fresh) {
     outerStyle.width = '200px';
     outerStyle.height = '150px';
     outerStyle.overflow = 'hidden';
-
     outer.appendChild(inner);
-
     document.body.appendChild(outer);
-
     var widthContained = inner.offsetWidth;
     outer.style.overflow = 'scroll';
     var widthScroll = inner.offsetWidth;
@@ -1414,11 +1570,59 @@ function getScrollBarSize(fresh) {
     }
 
     document.body.removeChild(outer);
-
     cached = widthContained - widthScroll;
   }
+
   return cached;
 }
+
+/***/ }),
+
+/***/ "./node_modules/_rc-util@4.15.7@rc-util/es/switchScrollingEffect.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/_rc-util@4.15.7@rc-util/es/switchScrollingEffect.js ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _getScrollBarSize__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getScrollBarSize */ "./node_modules/_rc-util@4.15.7@rc-util/es/getScrollBarSize.js");
+
+/* harmony default export */ __webpack_exports__["default"] = (function (close) {
+  var bodyIsOverflowing = document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight) && window.innerWidth > document.body.offsetWidth;
+
+  if (!bodyIsOverflowing) {
+    return;
+  } // https://github.com/ant-design/ant-design/issues/19729
+
+
+  var scrollingEffectClassName = 'switch-scrolling-effect';
+  var scrollingEffectClassNameReg = new RegExp("".concat(scrollingEffectClassName), 'g');
+  var bodyClassName = document.body.className;
+
+  if (close) {
+    document.body.style.position = '';
+    document.body.style.width = '';
+
+    if (scrollingEffectClassNameReg.test(bodyClassName)) {
+      document.body.className = bodyClassName.replace(scrollingEffectClassNameReg, '').trim();
+    }
+
+    return;
+  }
+
+  var scrollBarSize = Object(_getScrollBarSize__WEBPACK_IMPORTED_MODULE_0__["default"])();
+
+  if (scrollBarSize) {
+    document.body.style.position = 'relative';
+    document.body.style.width = "calc(100% - ".concat(scrollBarSize, "px)");
+
+    if (!scrollingEffectClassNameReg.test(bodyClassName)) {
+      document.body.className = "".concat(bodyClassName, " ").concat(scrollingEffectClassName);
+    }
+  }
+});
 
 /***/ }),
 

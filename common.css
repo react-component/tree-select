@@ -190,11 +190,13 @@
   margin-right: 4px;
   position: relative;
   overflow: hidden;
+  -webkit-transition: padding 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045), width 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
   transition: padding 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045), width 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
 }
 .rc-tree-select .rc-tree-select-selection__choice__content {
   margin-left: 0;
   margin-right: 0;
+  -webkit-transition: margin 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
   transition: margin 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .rc-tree-select .rc-tree-select-selection__choice-zoom-enter,
@@ -279,6 +281,7 @@
           transform: scale(0);
   top: 0;
   right: 2px;
+  -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
   transition: opacity 0.3s, -webkit-transform 0.3s;
   transition: opacity 0.3s, transform 0.3s;
   transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s;
