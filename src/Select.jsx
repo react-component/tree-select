@@ -296,9 +296,11 @@ class Select extends React.Component {
       }
 
       // Get key by value
+      const valueLabels = {};
       latestValueList.forEach(wrapperValue => {
-        const { value } = wrapperValue;
+        const { value, label } = wrapperValue;
         const entity = (newState.valueEntities || prevState.valueEntities)[value];
+        valueLabels[value] = label;
 
         if (entity) {
           keyList.push(entity.key);
@@ -320,9 +322,18 @@ class Select extends React.Component {
         );
 
         // Format value list again for internal usage
-        newState.valueList = checkedKeys.map(key => ({
-          value: (newState.keyEntities || prevState.keyEntities)[key].value,
-        }));
+        newState.valueList = checkedKeys.map(key => {
+          const val = (newState.keyEntities || prevState.keyEntities)[key].value;
+          const wrappedValue = {
+            value: val,
+          };
+
+          if (valueLabels[val] !== undefined) {
+            wrappedValue.label = valueLabels[val];
+          }
+
+          return wrappedValue;
+        });
       } else {
         newState.valueList = filteredValueList;
       }

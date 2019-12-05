@@ -697,4 +697,25 @@ describe('TreeSelect.checkable', () => {
     expect(choiceNode.length).toBeTruthy();
     expect(choiceNode.find('.rc-tree-select-selection__choice__remove').length).toBeFalsy();
   });
+
+  it('labelInValue should work', () => {
+    const treeData = [
+      {
+        title: 'Node1',
+        value: '0-0',
+        key: '0-0',
+      },
+    ];
+
+    const wrapper = mount(
+      <TreeSelect
+        value={[{ value: '0-0', label: 'bamboo' }]}
+        treeData={treeData}
+        labelInValue
+        treeCheckable
+      />,
+    );
+
+    expect(wrapper.find('.rc-tree-select-selection__choice__content').text()).toEqual('bamboo');
+  });
 });
