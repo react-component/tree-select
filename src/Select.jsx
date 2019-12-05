@@ -54,6 +54,7 @@ import {
   getFilterTree,
   cleanEntity,
   findPopupContainer,
+  debounce,
 } from './util';
 import { valueProp } from './propTypes';
 import SelectNode from './SelectNode';
@@ -99,6 +100,7 @@ class Select extends React.Component {
     treeExpandedKeys: PropTypes.array,
     loadData: PropTypes.func,
     filterTreeNode: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+    filterWait: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
 
     notFoundContent: PropTypes.node,
 
@@ -142,12 +144,13 @@ class Select extends React.Component {
     treeNodeLabelProp: 'title',
     treeIcon: false,
     notFoundContent: 'Not Found',
+    filterWait: false,
   };
 
   constructor(props) {
     super(props);
 
-    const { prefixAria, defaultOpen, open } = props;
+    const { prefixAria, defaultOpen, open, filterWait } = props;
 
     this.state = {
       open: open || defaultOpen,
@@ -168,6 +171,9 @@ class Select extends React.Component {
     // ARIA need `aria-controls` props mapping
     // Since this need user input. Let's generate ourselves
     this.ariaId = generateAriaId(`${prefixAria}-list`);
+
+    // debounce function
+    this.updateFilteredNodes = debounce(this.updateFilteredNodes, filterWait || 300);
   }
 
   getChildContext() {
@@ -359,24 +365,23 @@ class Select extends React.Component {
       const upperSearchValue = String(searchValue).toUpperCase();
 
       let filterTreeNodeFn = filterTreeNode;
-      if (filterTreeNode === false) {
-        // Don't filter if is false
-        filterTreeNodeFn = () => true;
-      } else if (typeof filterTreeNodeFn !== 'function') {
-        // When is not function (true or undefined), use inner filter
-        filterTreeNodeFn = (_, node) => {
-          const nodeValue = String(node.props[treeNodeFilterProp]).toUpperCase();
-          return nodeValue.indexOf(upperSearchValue) !== -1;
-        };
+      // if filterTreeNode is false, we don't need to update filteredTreeNodes
+      if (filterTreeNode !== false) {
+        if (typeof filterTreeNodeFn !== 'function') {
+          // When is not function (true or undefined), use inner filter
+          filterTreeNodeFn = (_, node) => {
+            const nodeValue = String(node.props[treeNodeFilterProp]).toUpperCase();
+            return nodeValue.indexOf(upperSearchValue) !== -1;
+          };
+        }
+        newState.filteredTreeNodes = getFilterTree(
+          newState.treeNodes || prevState.treeNodes,
+          searchValue,
+          filterTreeNodeFn,
+          newState.valueEntities || prevState.valueEntities,
+          SelectNode,
+        );
       }
-
-      newState.filteredTreeNodes = getFilterTree(
-        newState.treeNodes || prevState.treeNodes,
-        searchValue,
-        filterTreeNodeFn,
-        newState.valueEntities || prevState.valueEntities,
-        SelectNode,
-      );
     }
 
     // We should re-calculate the halfCheckedKeys when in search mode
@@ -779,7 +784,7 @@ class Select extends React.Component {
 
   onSearchInputChange = ({ target: { value } }) => {
     const { treeNodes, valueEntities } = this.state;
-    const { onSearch, filterTreeNode, treeNodeFilterProp } = this.props;
+    const { onSearch, filterTreeNode, treeNodeFilterProp, filterWait } = this.props;
 
     if (onSearch) {
       onSearch(value);
@@ -799,24 +804,34 @@ class Select extends React.Component {
       const upperSearchValue = String(value).toUpperCase();
 
       let filterTreeNodeFn = filterTreeNode;
+      // we don't need to do search logic if filterTreeNodeFn is set to false
       if (filterTreeNode === false) {
-        filterTreeNodeFn = () => true;
-      } else if (!filterTreeNodeFn) {
+        return;
+      }
+      if (typeof filterTreeNode !== 'function') {
+        // use default filter
         filterTreeNodeFn = (_, node) => {
           const nodeValue = String(node.props[treeNodeFilterProp]).toUpperCase();
           return nodeValue.indexOf(upperSearchValue) !== -1;
         };
       }
 
-      this.setState({
-        filteredTreeNodes: getFilterTree(
-          treeNodes,
-          value,
-          filterTreeNodeFn,
-          valueEntities,
-          SelectNode,
-        ),
-      });
+      // if filterWait is false or not a number, filter and update directly
+      if (filterWait === false || typeof filterWait !== 'number') {
+        this.setState({
+          filteredTreeNodes: getFilterTree(
+            treeNodes,
+            value,
+            filterTreeNodeFn,
+            valueEntities,
+            SelectNode,
+          ),
+        });
+      } else {
+        // We do filter and update with debounce
+        // Fix: https://github.com/react-component/tree-select/issues/180
+        this.updateFilteredNodes(treeNodes, value, filterTreeNodeFn, valueEntities);
+      }
     }
   };
 
@@ -834,6 +849,18 @@ class Select extends React.Component {
   onChoiceAnimationLeave = () => {
     raf(() => {
       this.forcePopupAlign();
+    });
+  };
+
+  updateFilteredNodes = (treeNodes, value, filterTreeNodeFn, valueEntities) => {
+    this.setState({
+      filteredTreeNodes: getFilterTree(
+        treeNodes,
+        value,
+        filterTreeNodeFn,
+        valueEntities,
+        SelectNode,
+      ),
     });
   };
 

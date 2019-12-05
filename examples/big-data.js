@@ -62,7 +62,7 @@ class Demo extends React.Component {
               onChange={this.onChange}
             />
           </div>
-          <div>
+          <div style={{ marginRight: 20 }}>
             <h3>checkStrictly</h3>
             <TreeSelect
               style={{ width: 300 }}
@@ -75,6 +75,17 @@ class Demo extends React.Component {
               treeCheckStrictly
               showCheckedStrategy={SHOW_PARENT}
               onChange={this.onChangeStrictly}
+            />
+          </div>
+          <div>
+            <h3>filter wait</h3>
+            <TreeSelect
+              style={{ width: 300 }}
+              dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+              filterWait={800}
+              treeData={gData}
+              showSearch
+              searchPlaceholder="please search"
             />
           </div>
         </div>
