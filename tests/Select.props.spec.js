@@ -47,7 +47,9 @@ describe('TreeSelect.props', () => {
       function filterTreeNode(input, child) {
         return String(child.props.title).indexOf(input) !== -1;
       }
-      const wrapper = mount(createOpenSelect({ filterTreeNode }));
+      const wrapper = mount(
+        createOpenSelect({ filterTreeNode, showSearch: true }),
+      );
       wrapper.search('Title 1');
       expect(wrapper.find('List').props().data).toHaveLength(1);
 
@@ -56,7 +58,9 @@ describe('TreeSelect.props', () => {
     });
 
     it('false', () => {
-      const wrapper = mount(createOpenSelect({ filterTreeNode: false }));
+      const wrapper = mount(
+        createOpenSelect({ filterTreeNode: false, showSearch: true }),
+      );
       wrapper.search('Title 1');
       expect(wrapper.find('List').props().data).toHaveLength(4);
     });
