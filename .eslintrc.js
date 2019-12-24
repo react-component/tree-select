@@ -4,6 +4,7 @@ module.exports = {
   ...base,
   rules: {
     ...base.rules,
+    'react/sort-comp': 0,
     'default-case': 0,
     'eslint-comments/disable-enable-pair': 0,
     'jsx-a11y/interactive-supports-focus': 0,
