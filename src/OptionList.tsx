@@ -1,9 +1,16 @@
 import React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
+import useMemo from 'rc-util/lib/hooks/useMemo';
 import { RefOptionListProps } from 'rc-select/lib/OptionList';
 import Tree, { TreeProps } from 'rc-tree';
 import { EventDataNode } from 'rc-tree/lib/interface';
-import { FlattenDataNode, RawValueType, DataNode, TreeDataNode, Key } from './interface';
+import {
+  FlattenDataNode,
+  RawValueType,
+  DataNode,
+  TreeDataNode,
+  Key,
+} from './interface';
 import { SelectContext } from './Context';
 import useKeyValueMapping from './hooks/useKeyValueMapping';
 import useKeyValueMap from './hooks/useKeyValueMap';
@@ -48,10 +55,10 @@ export interface OptionListProps<OptionsType extends object[]> {
   onScroll: React.UIEventHandler<HTMLDivElement>;
 }
 
-const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListProps<DataNode[]>> = (
-  props,
-  ref,
-) => {
+const OptionList: React.RefForwardingComponent<
+  RefOptionListProps,
+  OptionListProps<DataNode[]>
+> = (props, ref) => {
   const {
     prefixCls,
     height,
@@ -86,8 +93,17 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
 
   const treeRef = React.useRef<Tree>();
 
+  const memoOptions = useMemo(
+    () => options,
+    [open, options],
+    (prev, next) => next[0] && prev[1] !== next[1],
+  );
+
   const [cacheKeyMap, cacheValueMap] = useKeyValueMap(flattenOptions);
-  const [getEntityByKey, getEntityByValue] = useKeyValueMapping(cacheKeyMap, cacheValueMap);
+  const [getEntityByKey, getEntityByValue] = useKeyValueMapping(
+    cacheKeyMap,
+    cacheValueMap,
+  );
 
   // ========================== Values ==========================
   const valueKeys = React.useMemo(
@@ -130,9 +146,14 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   };
 
   // =========================== Keys ===========================
-  const [expandedKeys, setExpandedKeys] = React.useState<Key[]>(treeDefaultExpandedKeys);
-  const [searchExpandedKeys, setSearchExpandedKeys] = React.useState<Key[]>(null);
-  const mergedExpandedKeys = treeExpandedKeys || (searchValue ? searchExpandedKeys : expandedKeys);
+  const [expandedKeys, setExpandedKeys] = React.useState<Key[]>(
+    treeDefaultExpandedKeys,
+  );
+  const [searchExpandedKeys, setSearchExpandedKeys] = React.useState<Key[]>(
+    null,
+  );
+  const mergedExpandedKeys =
+    treeExpandedKeys || (searchValue ? searchExpandedKeys : expandedKeys);
 
   React.useEffect(() => {
     if (searchValue) {
@@ -157,7 +178,9 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   const onInternalSelect = (_: Key[], { node: { key } }: TreeEventInfo) => {
     const entity = getEntityByKey(key, checkable ? 'checkbox' : 'select');
     if (entity !== null) {
-      onSelect(entity.data.value, { selected: !checkedKeys.includes(entity.data.value) });
+      onSelect(entity.data.value, {
+        selected: !checkedKeys.includes(entity.data.value),
+      });
     }
 
     if (!multiple) {
@@ -178,7 +201,9 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         case KeyCode.DOWN:
         case KeyCode.LEFT:
         case KeyCode.RIGHT:
-          treeRef.current.onKeyDown(event as React.KeyboardEvent<HTMLDivElement>);
+          treeRef.current.onKeyDown(event as React.KeyboardEvent<
+            HTMLDivElement
+          >);
           break;
 
         // >>> Select item
@@ -202,9 +227,13 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   }));
 
   // ========================== Render ==========================
-  if (options.length === 0) {
+  if (memoOptions.length === 0) {
     return (
-      <div role="listbox" className={`${prefixCls}-empty`} onMouseDown={onListMouseDown}>
+      <div
+        role="listbox"
+        className={`${prefixCls}-empty`}
+        onMouseDown={onListMouseDown}
+      >
         {notFoundContent}
       </div>
     );
@@ -230,7 +259,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         ref={treeRef}
         focusable={false}
         prefixCls={`${prefixCls}-tree`}
-        treeData={options as TreeDataNode[]}
+        treeData={memoOptions as TreeDataNode[]}
         height={height}
         itemHeight={itemHeight}
         multiple={multiple}
@@ -259,7 +288,10 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   );
 };
 
-const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataNode[]>>(OptionList);
+const RefOptionList = React.forwardRef<
+  RefOptionListProps,
+  OptionListProps<DataNode[]>
+>(OptionList);
 RefOptionList.displayName = 'OptionList';
 
 export default RefOptionList;
