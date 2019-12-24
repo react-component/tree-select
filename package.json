@@ -62,8 +62,8 @@
   },
   "dependencies": {
     "classnames": "2.x",
-    "rc-select": "^10.0.0-alpha.24",
+    "rc-select": "^10.0.0-alpha.35",
     "rc-tree": "^3.0.0-alpha.35",
-    "rc-util": "^4.9.0"
+    "rc-util": "^4.17.0"
   }
 }

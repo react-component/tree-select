@@ -3,87 +3,45 @@
 import React from 'react';
 import TreeSelect, { TreeNode } from '../src';
 import '../assets/index.less';
-import { RawValueType } from '../src/interface';
 
-const treeData = [
-  { value: 'parent', label: 'Parent', children: [{ key: 'child', label: 'Child' }] },
-  {
-    value: 'parent2',
-    label: 'Parent 2',
-    children: new Array(20).fill(null).map((_, index) => ({
-      key: index,
-      label: `Hello_${index}`,
-    })),
-  },
-  { value: 'disabled', label: 'Disabled', disabled: true },
-  { value: 'disableCheckbox', label: 'No Checkbox', disableCheckbox: true },
-];
+class Demo extends React.Component {
+  state = {
+    value: undefined,
+  };
 
-const Demo: React.FC<{}> = () => {
-  const [search, setSearch] = React.useState<string>('');
-  const [value, setValue] = React.useState<RawValueType[]>([]);
+  onChange = value => {
+    console.log(value);
+    this.setState({ value });
+  };
 
-  return (
-    <div
-      onFocus={({ target }) => {
-        console.log('Focus:', target);
-      }}
-      onBlur={({ target }) => {
-        console.log('Blur:', target);
-      }}
-    >
-      <h1>Debug</h1>
-      <input />
-      <TreeSelect style={{ width: 200 }} defaultValue="child">
-        <TreeNode title="Parent" value="parent">
-          <TreeNode title="Child" value="child" />
-        </TreeNode>
-        <TreeNode title="Parent2" value="parent2">
-          {new Array(20).fill(null).map((_, index) => (
-            <TreeNode key={index} title={`Hello_${index}`} value={index} />
-          ))}
+  render() {
+    return (
+      <TreeSelect
+        showSearch
+        style={{ width: '100%' }}
+        value={this.state.value}
+        dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+        placeholder="Please select"
+        allowClear
+        treeDefaultExpandAll
+        onChange={this.onChange}
+      >
+        <TreeNode value="parent 1" title="parent 1" key="0-1">
+          <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
+            <TreeNode value="leaf1" title="my leaf" key="random" />
+            <TreeNode value="leaf2" title="your leaf" key="random1" />
+          </TreeNode>
+          <TreeNode value="parent 1-1" title="parent 1-1" key="random2">
+            <TreeNode
+              value="sss"
+              title={<b style={{ color: '#08c' }}>sss</b>}
+              key="random3"
+            />
+          </TreeNode>
         </TreeNode>
       </TreeSelect>
-
-      <TreeSelect style={{ width: 200 }} treeData={treeData} multiple />
-      <TreeSelect
-        style={{ width: 200 }}
-        treeData={treeData}
-        placeholder="Search Control"
-        treeCheckable
-        searchValue={search}
-        onSearch={str => {
-          console.log('Search:', str);
-          setSearch(str);
-        }}
-        onChange={(...args) => {
-          console.log('Change:', ...args);
-        }}
-      />
-      <TreeSelect
-        autoFocus
-        style={{ width: 200 }}
-        treeData={treeData}
-        treeCheckable
-        showSearch={false}
-        showCheckedStrategy="SHOW_PARENT"
-        value={value}
-        maxTagCount={2}
-        treeDefaultExpandedKeys={['parent']}
-        onChange={(newValue, ...args) => {
-          console.log('Change:', newValue, ...args);
-          setValue(newValue);
-        }}
-        placeholder="Control Mode"
-      />
-      <TreeSelect treeCheckable labelInValue value={[{ value: '0-0' }]} allowClear>
-        <TreeNode key="0-0" value="0-0" title="0-0">
-          <TreeNode key="0-0-0" value="0-0-0" title="0-0-0" />
-        </TreeNode>
-      </TreeSelect>
-      <input />
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default Demo;
