@@ -67,6 +67,10 @@ describe('TreeSelect.basic', () => {
       mount(<TreeSelect open />);
     });
 
+    it('not crash if no treeData', () => {
+      const wrapper = mount(<TreeSelect value="" treeData={[]} open />);
+    });
+
     it('renders disabled correctly', () => {
       const wrapper = mount(<TreeSelect disabled treeData={treeData} />);
       expect(wrapper.render()).toMatchSnapshot();
