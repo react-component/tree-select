@@ -79,7 +79,11 @@ export function fillAdditionalInfo(
           const pos = `${level}-${index}`;
           const included = checkedValues.includes(dataNode.value);
           const children = dig(dataNode.children || [], pos, included);
-          const node = <TreeNode {...dataNode}>{children.map(child => child.node)}</TreeNode>;
+          const node = (
+            <TreeNode {...dataNode}>
+              {children.map(child => child.node)}
+            </TreeNode>
+          );
 
           // Link with trigger node
           if (triggerValue === dataNode.value) {
@@ -133,7 +137,10 @@ export function fillAdditionalInfo(
 
   Object.defineProperty(extra, 'triggerNode', {
     get() {
-      warning(false, '`triggerNode` is deprecated. Please consider decoupling data with node.');
+      warning(
+        false,
+        '`triggerNode` is deprecated. Please consider decoupling data with node.',
+      );
       generateMap();
 
       return triggerNode;
@@ -141,7 +148,10 @@ export function fillAdditionalInfo(
   });
   Object.defineProperty(extra, 'allCheckedNodes', {
     get() {
-      warning(false, '`allCheckedNodes` is deprecated. Please consider decoupling data with node.');
+      warning(
+        false,
+        '`allCheckedNodes` is deprecated. Please consider decoupling data with node.',
+      );
       generateMap();
 
       if (showPosition) {

@@ -35,6 +35,7 @@
     "compile": "father build",
     "prepublishOnly": "npm run compile && np --no-cleanup --yolo --no-publish",
     "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.js",
+    "prettier": "prettier '{src,tests}/**/*.{ts,tsx}' 'tests/**/*.js' --write",
     "test": "father test",
     "now-build": "npm run build"
   },

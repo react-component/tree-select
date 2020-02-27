@@ -19,7 +19,11 @@ class Demo extends React.Component {
   onChangeStrictly = value1 => {
     console.log('onChangeStrictly', value1);
     const ind = parseInt(`${Math.random() * 3}`, 10);
-    value1.push({ value: `0-0-0-${ind}-value`, label: `0-0-0-${ind}-label`, halfChecked: true });
+    value1.push({
+      value: `0-0-0-${ind}-value`,
+      label: `0-0-0-${ind}-label`,
+      halfChecked: true,
+    });
     this.setState({
       value1,
     });

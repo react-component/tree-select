@@ -12,7 +12,9 @@ describe('TreeSelect.multiple', () => {
     { key: '0', value: '0', title: 'label0' },
     { key: '1', value: '1', title: 'label1' },
   ];
-  const createSelect = props => <TreeSelect treeData={treeData} multiple {...props} />;
+  const createSelect = props => (
+    <TreeSelect treeData={treeData} multiple {...props} />
+  );
 
   it('select multiple nodes', () => {
     const wrapper = mount(createSelect({ open: true }));
@@ -215,7 +217,10 @@ describe('TreeSelect.multiple', () => {
         key: 1,
         value: 1,
         title: 1,
-        children: [{ key: 2, value: 2, title: 2 }, { key: 3, value: 3, title: 3 }],
+        children: [
+          { key: 2, value: 2, title: 2 },
+          { key: 3, value: 3, title: 3 },
+        ],
       },
       { key: 4, value: 4, title: 4 },
     ];
@@ -233,11 +238,19 @@ describe('TreeSelect.multiple', () => {
     );
 
     wrapper.selectNode(0);
-    expect(onChange).toHaveBeenCalledWith([4, 0], expect.anything(), expect.anything());
+    expect(onChange).toHaveBeenCalledWith(
+      [4, 0],
+      expect.anything(),
+      expect.anything(),
+    );
     onChange.mockReset();
 
     wrapper.selectNode(1);
-    expect(onChange).toHaveBeenCalledWith([4, 0, 2, 3], expect.anything(), expect.anything());
+    expect(onChange).toHaveBeenCalledWith(
+      [4, 0, 2, 3],
+      expect.anything(),
+      expect.anything(),
+    );
   });
 
   // https://github.com/ant-design/ant-design/issues/12315
@@ -258,7 +271,11 @@ describe('TreeSelect.multiple', () => {
 
     wrapper.search('sss');
     wrapper.selectNode(2);
-    expect(onChange).toHaveBeenCalledWith(['leaf1', 'sss'], expect.anything(), expect.anything());
+    expect(onChange).toHaveBeenCalledWith(
+      ['leaf1', 'sss'],
+      expect.anything(),
+      expect.anything(),
+    );
   });
 
   it('do not crash when value has empty string', () => {

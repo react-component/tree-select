@@ -76,7 +76,11 @@ class Demo extends React.Component {
     return (
       <div>
         <TreeSelect {...tProps} />
-        <input type="checkbox" onChange={e => this.switch(e.target.checked)} /> 禁用
+        <input
+          type="checkbox"
+          onChange={e => this.switch(e.target.checked)}
+        />{' '}
+        禁用
       </div>
     );
   }

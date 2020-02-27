@@ -14,7 +14,11 @@ export interface LabelValueType {
   halfChecked?: boolean;
 }
 
-export type DefaultValueType = RawValueType | RawValueType[] | LabelValueType | LabelValueType[];
+export type DefaultValueType =
+  | RawValueType
+  | RawValueType[]
+  | LabelValueType
+  | LabelValueType[];
 
 export interface DataNode {
   value?: RawValueType;

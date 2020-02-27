@@ -46,9 +46,12 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
       .simulate('mouseDown');
   },
   search(text) {
-    this.find('input.rc-tree-select-selection-search-input').simulate('change', {
-      target: { value: text },
-    });
+    this.find('input.rc-tree-select-selection-search-input').simulate(
+      'change',
+      {
+        target: { value: text },
+      },
+    );
   },
   isOpen() {
     return this.find('.rc-tree-select').hasClass('rc-tree-select-open');

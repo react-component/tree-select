@@ -6,7 +6,10 @@ export const SHOW_ALL = 'SHOW_ALL';
 export const SHOW_PARENT = 'SHOW_PARENT';
 export const SHOW_CHILD = 'SHOW_CHILD';
 
-export type CheckedStrategy = typeof SHOW_ALL | typeof SHOW_PARENT | typeof SHOW_CHILD;
+export type CheckedStrategy =
+  | typeof SHOW_ALL
+  | typeof SHOW_PARENT
+  | typeof SHOW_CHILD;
 
 export function formatStrategyKeys(
   keys: Key[],
@@ -23,7 +26,8 @@ export function formatStrategyKeys(
         entity &&
         entity.children &&
         entity.children.every(
-          ({ node }) => isCheckDisabled(node) || keySet.has((node as DataNode).key),
+          ({ node }) =>
+            isCheckDisabled(node) || keySet.has((node as DataNode).key),
         )
       ) {
         return false;
@@ -36,7 +40,11 @@ export function formatStrategyKeys(
       const entity = keyEntities[key];
       const parent = entity ? entity.parent : null;
 
-      if (parent && !isCheckDisabled(parent.node) && keySet.has((parent.node as DataNode).key)) {
+      if (
+        parent &&
+        !isCheckDisabled(parent.node) &&
+        keySet.has((parent.node as DataNode).key)
+      ) {
         return false;
       }
       return true;

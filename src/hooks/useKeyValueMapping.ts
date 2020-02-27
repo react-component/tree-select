@@ -3,7 +3,10 @@ import { FlattenDataNode, Key, RawValueType } from '../interface';
 
 export type SkipType = null | 'select' | 'checkbox';
 
-export function isDisabled(dataNode: FlattenDataNode, skipType: SkipType): boolean {
+export function isDisabled(
+  dataNode: FlattenDataNode,
+  skipType: SkipType,
+): boolean {
   if (!dataNode) {
     return true;
   }

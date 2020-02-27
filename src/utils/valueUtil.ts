@@ -20,7 +20,10 @@ export function toArray<T>(value: T | T[]): T[] {
   return value !== undefined ? [value] : [];
 }
 
-export function findValueOption(values: RawValueType[], options: FlattenDataNode[]): DataNode[] {
+export function findValueOption(
+  values: RawValueType[],
+  options: FlattenDataNode[],
+): DataNode[] {
   const optionMap: Map<RawValueType, DataNode> = new Map();
 
   options.forEach(flattenItem => {
@@ -31,7 +34,10 @@ export function findValueOption(values: RawValueType[], options: FlattenDataNode
   return values.map(val => fillLegacyProps(optionMap.get(val)));
 }
 
-export function isValueDisabled(value: RawValueType, options: FlattenDataNode[]): boolean {
+export function isValueDisabled(
+  value: RawValueType,
+  options: FlattenDataNode[],
+): boolean {
   const option = findValueOption([value], options)[0];
   if (option) {
     return option.disabled;
@@ -108,7 +114,10 @@ export function filterOptions(
   {
     optionFilterProp,
     filterOption,
-  }: { optionFilterProp: string; filterOption: boolean | FilterFunc<LegacyDataNode> },
+  }: {
+    optionFilterProp: string;
+    filterOption: boolean | FilterFunc<LegacyDataNode>;
+  },
 ): DataNode[] {
   if (filterOption === false) {
     return options;
@@ -126,7 +135,8 @@ export function filterOptions(
       .map(dataNode => {
         const { children } = dataNode;
 
-        const match = keepAll || filterOptionFunc(searchValue, fillLegacyProps(dataNode));
+        const match =
+          keepAll || filterOptionFunc(searchValue, fillLegacyProps(dataNode));
         const childList = dig(children || [], match);
 
         if (match || childList.length) {
@@ -146,7 +156,10 @@ export function filterOptions(
 export function getRawValueLabeled(
   values: RawValueType[],
   prevValue: DefaultValueType,
-  getEntityByValue: (value: RawValueType, skipType?: SkipType) => FlattenDataNode,
+  getEntityByValue: (
+    value: RawValueType,
+    skipType?: SkipType,
+  ) => FlattenDataNode,
   getLabelProp: (node: DataNode) => React.ReactNode,
 ): LabelValueType[] {
   const valueMap = new Map<RawValueType, LabelValueType>();

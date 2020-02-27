@@ -19,7 +19,11 @@ export default function focusTest(mode) {
     const handleFocus = jest.fn();
     const treeData = [{ key: '0', value: '0', title: '0 label' }];
     const wrapper = mount(
-      <TreeSelect {...{ [mode]: true }} onFocus={handleFocus} treeData={treeData} />,
+      <TreeSelect
+        {...{ [mode]: true }}
+        onFocus={handleFocus}
+        treeData={treeData}
+      />,
       { attachTo: container },
     );
 
@@ -31,7 +35,11 @@ export default function focusTest(mode) {
     const handleBlur = jest.fn();
     const treeData = [{ key: '0', value: '0', title: '0 label' }];
     const wrapper = mount(
-      <TreeSelect {...{ [mode]: true }} onBlur={handleBlur} treeData={treeData} />,
+      <TreeSelect
+        {...{ [mode]: true }}
+        onBlur={handleBlur}
+        treeData={treeData}
+      />,
       { attachTo: container },
     );
     wrapper.instance().focus();
@@ -43,7 +51,12 @@ export default function focusTest(mode) {
     const handleFocus = jest.fn();
     const treeData = [{ key: '0', value: '0', title: '0 label' }];
     mount(
-      <TreeSelect {...{ [mode]: true }} autoFocus onFocus={handleFocus} treeData={treeData} />,
+      <TreeSelect
+        {...{ [mode]: true }}
+        autoFocus
+        onFocus={handleFocus}
+        treeData={treeData}
+      />,
       { attachTo: container },
     );
     expect(handleFocus).toHaveBeenCalled();

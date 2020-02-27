@@ -1,7 +1,13 @@
 import React from 'react';
 import { DefaultValueType } from 'rc-select/lib/interface/generator';
 import { DataEntity } from 'rc-tree/lib/interface';
-import { RawValueType, FlattenDataNode, Key, LabelValueType, DataNode } from '../interface';
+import {
+  RawValueType,
+  FlattenDataNode,
+  Key,
+  LabelValueType,
+  DataNode,
+} from '../interface';
 import { SkipType } from './useKeyValueMapping';
 import { getRawValueLabeled } from '../utils/valueUtil';
 import { formatStrategyKeys, CheckedStrategy } from '../utils/strategyUtil';
@@ -13,7 +19,10 @@ interface Config {
   showCheckedStrategy: CheckedStrategy;
   conductKeyEntities: Record<Key, DataEntity>;
   getEntityByKey: (key: Key, skipType?: SkipType) => FlattenDataNode;
-  getEntityByValue: (value: RawValueType, skipType?: SkipType) => FlattenDataNode;
+  getEntityByValue: (
+    value: RawValueType,
+    skipType?: SkipType,
+  ) => FlattenDataNode;
   getLabelProp: (node: DataNode) => React.ReactNode;
 }
 
@@ -49,6 +58,11 @@ export default function useSelectValues(
       });
     }
 
-    return getRawValueLabeled(mergedRawValues, value, getEntityByValue, getLabelProp);
+    return getRawValueLabeled(
+      mergedRawValues,
+      value,
+      getEntityByValue,
+      getLabelProp,
+    );
   }, [rawValues, value, treeConduction, showCheckedStrategy]);
 }
