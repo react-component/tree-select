@@ -130,7 +130,7 @@ const OptionList: React.RefForwardingComponent<
   React.useEffect(() => {
     // Single mode should scroll to current key
     if (open && !multiple && valueKeys.length) {
-      treeRef.current.scrollTo({ key: valueKeys[0] });
+      treeRef.current?.scrollTo({ key: valueKeys[0] });
     }
   }, [open]);
 
