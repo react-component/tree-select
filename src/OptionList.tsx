@@ -39,6 +39,7 @@ export interface OptionListProps<OptionsType extends object[]> {
   flattenOptions: FlattenDataNode[];
   height: number;
   itemHeight: number;
+  virtual?: boolean;
   values: Set<RawValueType>;
   multiple: boolean;
   open: boolean;
@@ -63,6 +64,7 @@ const OptionList: React.RefForwardingComponent<
     prefixCls,
     height,
     itemHeight,
+    virtual,
     options,
     flattenOptions,
     multiple,
@@ -262,6 +264,7 @@ const OptionList: React.RefForwardingComponent<
         treeData={memoOptions as TreeDataNode[]}
         height={height}
         itemHeight={itemHeight}
+        virtual={virtual}
         multiple={multiple}
         icon={treeIcon}
         showIcon={showTreeIcon}

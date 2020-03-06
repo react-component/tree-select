@@ -56,15 +56,15 @@
     "rc-dialog": "^7.5.7",
     "rc-field-form": "^1.0.0",
     "rc-trigger": "^4.0.0",
-    "rc-virtual-list": "^0.0.0",
+    "rc-virtual-list": "^1.1.0",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "typescript": "^3.5.2"
   },
   "dependencies": {
     "classnames": "2.x",
-    "rc-select": "^10.0.0",
-    "rc-tree": "^3.0.0",
+    "rc-select": "^10.1.0",
+    "rc-tree": "^3.1.0",
     "rc-util": "^4.17.0"
   }
 }

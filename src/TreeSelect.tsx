@@ -79,7 +79,7 @@ const OMIT_PROPS = [
 const RefSelect = generateSelector<DataNode[]>({
   prefixCls: 'rc-tree-select',
   components: {
-    optionList: OptionList,
+    optionList: OptionList as any,
   },
   // Not use generate since we will handle ourself
   convertChildrenToData: () => null,

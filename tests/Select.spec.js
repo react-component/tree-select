@@ -472,4 +472,19 @@ describe('TreeSelect.basic', () => {
 
     expect(preventDefault).toHaveBeenCalled();
   });
+
+  it('virtual can be false', () => {
+    const data = [];
+    for (let i = 0; i < 100; i += 1) {
+      data.push({
+        value: i,
+        title: i,
+      });
+    }
+
+    const wrapper = mount(<TreeSelect treeData={data} virtual={false} />);
+    wrapper.openSelect();
+
+    expect(wrapper.find('List').props().virtual).toBe(false);
+  });
 });

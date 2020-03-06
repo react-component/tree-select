@@ -97,6 +97,7 @@ online example: http://react-component.github.io/tree-select/
 | clearIcon | specify the clear icon | ReactNode \| (props: TreeProps) => ReactNode | - |
 | removeIcon | specify the remove icon | ReactNode \| (props: TreeProps) => ReactNode | - |
 |switcherIcon| specify the switcher icon | ReactNode \| (props: TreeProps) => ReactNode | - |
+|virtual| Disable virtual when `false` | false | - |
 
 
 ### TreeNode props

@@ -99,7 +99,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
     <div>
       <div
         class="rc-tree-select-dropdown"
-        style="opacity: 0; width: 0px;"
+        style="opacity: 0; min-width: 0; width: 0px;"
       >
         <div>
           <div>
@@ -263,7 +263,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
     <div>
       <div
         class="rc-tree-select-dropdown"
-        style="opacity: 0; width: 0px;"
+        style="opacity: 0; min-width: 0; width: 0px;"
       >
         <div>
           <div>
@@ -487,7 +487,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
     <div>
       <div
         class="rc-tree-select-dropdown"
-        style="opacity: 0; width: 0px;"
+        style="opacity: 0; min-width: 0; width: 0px;"
       >
         <div>
           <div>
@@ -648,7 +648,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
     <div>
       <div
         class="rc-tree-select-dropdown"
-        style="opacity: 0; width: 0px;"
+        style="opacity: 0; min-width: 0; width: 0px;"
       >
         <div>
           <div>
