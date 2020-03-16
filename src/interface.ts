@@ -53,7 +53,6 @@ export interface TreeDataNode extends DataNode {
 export interface FlattenDataNode {
   data: DataNode;
   key: Key;
-  level: number;
 }
 
 export interface SimpleModeConfig {
