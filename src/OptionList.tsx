@@ -203,7 +203,7 @@ const OptionList: React.RefForwardingComponent<
         case KeyCode.DOWN:
         case KeyCode.LEFT:
         case KeyCode.RIGHT:
-          treeRef.current.onKeyDown(event as React.KeyboardEvent<
+          treeRef.current?.onKeyDown(event as React.KeyboardEvent<
             HTMLDivElement
           >);
           break;
