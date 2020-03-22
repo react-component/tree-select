@@ -53,7 +53,7 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.4.0",
     "father": "^2.13.2",
-    "np": "^5.0.3",
+    "np": "^6.2.0",
     "rc-dialog": "^7.5.7",
     "rc-field-form": "^1.0.0",
     "rc-trigger": "^4.0.0",
