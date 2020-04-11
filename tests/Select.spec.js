@@ -68,7 +68,7 @@ describe('TreeSelect.basic', () => {
     });
 
     it('not crash if no treeData', () => {
-      const wrapper = mount(<TreeSelect value="" treeData={[]} open />);
+      mount(<TreeSelect value="" treeData={[]} open />);
     });
 
     it('renders disabled correctly', () => {
@@ -123,10 +123,7 @@ describe('TreeSelect.basic', () => {
 
   it('sets default value', () => {
     const wrapper = mount(
-      <TreeSelect
-        defaultValue="0"
-        treeData={[{ key: '0', value: '0', title: 'label0' }]}
-      />,
+      <TreeSelect defaultValue="0" treeData={[{ key: '0', value: '0', title: 'label0' }]} />,
     );
     expect(wrapper.getSelection(0).text()).toEqual('label0');
   });
@@ -142,20 +139,12 @@ describe('TreeSelect.basic', () => {
     wrapper.openSelect();
     wrapper.selectNode();
     expect(onChange.mock.calls[0][0]).toEqual('0');
-    expect(onChange).toHaveBeenCalledWith(
-      '0',
-      expect.anything(),
-      expect.anything(),
-    );
+    expect(onChange).toHaveBeenCalledWith('0', expect.anything(), expect.anything());
 
     onChange.mockReset();
     wrapper.openSelect();
     wrapper.selectNode(1);
-    expect(onChange).toHaveBeenCalledWith(
-      '1',
-      expect.anything(),
-      expect.anything(),
-    );
+    expect(onChange).toHaveBeenCalledWith('1', expect.anything(), expect.anything());
   });
 
   it('can be controlled by value', () => {
@@ -175,9 +164,7 @@ describe('TreeSelect.basic', () => {
       { key: '0', value: '0', title: 'label0' },
       { key: '1', value: '1', title: 'label1' },
     ];
-    const createSelect = props => (
-      <TreeSelect open treeData={treeData} {...props} />
-    );
+    const createSelect = props => <TreeSelect open treeData={treeData} {...props} />;
 
     it('fires change and select event', () => {
       const onChange = jest.fn();
@@ -217,9 +204,7 @@ describe('TreeSelect.basic', () => {
       { key: 'a', value: 'a', title: 'labela' },
       { key: 'b', value: 'b', title: 'labelb' },
     ];
-    const createSelect = props => (
-      <TreeSelect open showSearch treeData={treeData} {...props} />
-    );
+    const createSelect = props => <TreeSelect open showSearch treeData={treeData} {...props} />;
 
     it('renders search input', () => {
       const wrapper = mount(createSelect());
@@ -235,17 +220,14 @@ describe('TreeSelect.basic', () => {
 
     it('check tree changed by filter', () => {
       const Wrapper = props => <div>{createSelect(props)}</div>;
-      const wrapper = mount(
-        <Wrapper searchValue="a" treeDefaultExpandAll open />,
-      );
+      const wrapper = mount(<Wrapper searchValue="a" treeDefaultExpandAll open />);
       expect(wrapper.render()).toMatchSnapshot();
       wrapper.setProps({ searchValue: '' });
       expect(wrapper.render()).toMatchSnapshot();
     });
 
     it('search nodes by filterTreeNode', () => {
-      const filter = (value, node) =>
-        node.props.value.toLowerCase() === value.toLowerCase();
+      const filter = (value, node) => node.props.value.toLowerCase() === value.toLowerCase();
       const wrapper = mount(createSelect({ filterTreeNode: filter }));
       wrapper.search('A');
       expect(wrapper.find('TreeNode')).toHaveLength(1);
@@ -301,16 +283,10 @@ describe('TreeSelect.basic', () => {
   // https://github.com/ant-design/ant-design/issues/4084
   it('checks node correctly after treeData updated', () => {
     const onChange = jest.fn();
-    const wrapper = mount(
-      <TreeSelect open treeCheckable treeData={[]} onChange={onChange} />,
-    );
+    const wrapper = mount(<TreeSelect open treeCheckable treeData={[]} onChange={onChange} />);
     wrapper.setProps({ treeData: [{ key: '0', value: '0', title: 'label0' }] });
     wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
-    expect(onChange).toHaveBeenCalledWith(
-      ['0'],
-      expect.anything(),
-      expect.anything(),
-    );
+    expect(onChange).toHaveBeenCalledWith(['0'], expect.anything(), expect.anything());
   });
 
   it('expands tree nodes by treeDefaultExpandedKeys', () => {
@@ -360,11 +336,7 @@ describe('TreeSelect.basic', () => {
           const { inputValue } = this.state;
           return (
             <div>
-              <TreeSelect
-                allowClear
-                inputValue={inputValue}
-                onSearch={this.handleSearch}
-              >
+              <TreeSelect allowClear inputValue={inputValue} onSearch={this.handleSearch}>
                 <TreeNode key="0" value="0" title="0 label" />
               </TreeSelect>
             </div>
@@ -440,11 +412,7 @@ describe('TreeSelect.basic', () => {
       }
 
       function matchValue(value) {
-        expect(onChange).toHaveBeenCalledWith(
-          value,
-          expect.anything(),
-          expect.anything(),
-        );
+        expect(onChange).toHaveBeenCalledWith(value, expect.anything(), expect.anything());
         onChange.mockReset();
       }
 
@@ -464,11 +432,9 @@ describe('TreeSelect.basic', () => {
     const wrapper = mount(<TreeSelect open treeData={[{ value: 'parent' }]} />);
 
     const preventDefault = jest.fn();
-    wrapper
-      .find('.rc-tree-select-tree-node-content-wrapper')
-      .simulate('mouseDown', {
-        preventDefault,
-      });
+    wrapper.find('.rc-tree-select-tree-node-content-wrapper').simulate('mouseDown', {
+      preventDefault,
+    });
 
     expect(preventDefault).toHaveBeenCalled();
   });
@@ -486,5 +452,16 @@ describe('TreeSelect.basic', () => {
     wrapper.openSelect();
 
     expect(wrapper.find('List').props().virtual).toBe(false);
+  });
+
+  it('update label', () => {
+    const wrapper = mount(<TreeSelect value="light" treeData={[]} />);
+    expect(wrapper.find('.rc-tree-select-selection-item').text()).toEqual('light');
+
+    wrapper.setProps({
+      treeData: [{ value: 'light', title: 'bamboo' }],
+    });
+    wrapper.update();
+    expect(wrapper.find('.rc-tree-select-selection-item').text()).toEqual('bamboo');
   });
 });
