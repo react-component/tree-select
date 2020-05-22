@@ -46,11 +46,6 @@ export default function useKeyValueMapping(
   const getEntityByValue = React.useCallback(
     (value: RawValueType, skipType: SkipType = 'select') => {
       const dataNode = cacheValueMap.get(value);
-
-      if (isDisabled(dataNode, skipType)) {
-        return null;
-      }
-
       return dataNode;
     },
     [cacheValueMap],
