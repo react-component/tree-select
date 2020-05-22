@@ -40,10 +40,9 @@ export default function useKeyValueMapping(
     [cacheKeyMap],
   );
 
-  const getEntityByValue = React.useCallback(
-    (value: RawValueType, skipType: SkipType = 'select') => cacheValueMap.get(value),
-    [cacheValueMap],
-  );
+  const getEntityByValue = React.useCallback((value: RawValueType) => cacheValueMap.get(value), [
+    cacheValueMap,
+  ]);
 
   return [getEntityByKey, getEntityByValue];
 }
