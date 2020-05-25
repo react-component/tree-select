@@ -27,10 +27,7 @@ export default function useKeyValueMapping(
   (key: Key, skipType?: SkipType) => FlattenDataNode,
   (value: RawValueType, skipType?: SkipType) => FlattenDataNode,
 ] {
-  const getEntityByKey = React.useCallback(
-    (key: Key, skipType: SkipType = 'select') =>cacheKeyMap.get(key),
-    [cacheKeyMap],
-  );
+  const getEntityByKey = React.useCallback((key: Key) => cacheKeyMap.get(key), [cacheKeyMap]);
 
   const getEntityByValue = React.useCallback((value: RawValueType) => cacheValueMap.get(value), [
     cacheValueMap,
