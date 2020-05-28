@@ -2,7 +2,6 @@ import React from 'react';
 import { DefaultValueType } from 'rc-select/lib/interface/generator';
 import { DataEntity } from 'rc-tree/lib/interface';
 import { RawValueType, FlattenDataNode, Key, LabelValueType, DataNode } from '../interface';
-import { SkipType } from './useKeyValueMapping';
 import { getRawValueLabeled } from '../utils/valueUtil';
 import { formatStrategyKeys, CheckedStrategy } from '../utils/strategyUtil';
 
@@ -12,8 +11,8 @@ interface Config {
   value: DefaultValueType;
   showCheckedStrategy: CheckedStrategy;
   conductKeyEntities: Record<Key, DataEntity>;
-  getEntityByKey: (key: Key, skipType?: SkipType) => FlattenDataNode;
-  getEntityByValue: (value: RawValueType, skipType?: SkipType) => FlattenDataNode;
+  getEntityByKey: (key: Key) => FlattenDataNode;
+  getEntityByValue: (value: RawValueType) => FlattenDataNode;
   getLabelProp: (node: DataNode) => React.ReactNode;
 }
 
