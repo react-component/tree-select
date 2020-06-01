@@ -411,6 +411,14 @@ describe('TreeSelect.basic', () => {
         wrapper.update();
       }
 
+      function keyUp(code) {
+        wrapper
+          .find('input')
+          .first()
+          .simulate('keyUp', { which: code });
+        wrapper.update();
+      }
+
       function matchValue(value) {
         expect(onChange).toHaveBeenCalledWith(value, expect.anything(), expect.anything());
         onChange.mockReset();
@@ -419,11 +427,15 @@ describe('TreeSelect.basic', () => {
       wrapper.openSelect();
 
       keyDown(KeyCode.DOWN);
+      keyUp(KeyCode.DOWN);
       keyDown(KeyCode.ENTER);
+      keyUp(KeyCode.ENTER);
       matchValue(['parent']);
 
       keyDown(KeyCode.UP);
+      keyUp(KeyCode.UP);
       keyDown(KeyCode.ENTER);
+      keyUp(KeyCode.ENTER);
       matchValue(['parent', 'child']);
     });
   });
