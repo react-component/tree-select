@@ -147,7 +147,7 @@ export function filterOptions(
         }
         return null;
       })
-      .filter(node => node);
+      .filter(Boolean);
   }
 
   return dig(options);

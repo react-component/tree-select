@@ -36,7 +36,7 @@ export function convertChildrenToData(nodes: React.ReactNode): DataNode[] {
 
       return data;
     })
-    .filter(data => data);
+    .filter(Boolean);
 }
 
 export function fillLegacyProps(dataNode: DataNode): LegacyDataNode {
@@ -105,7 +105,7 @@ export function fillAdditionalInfo(
           }
           return null;
         })
-        .filter(node => node);
+        .filter(Boolean);
     }
 
     if (!nodeList) {
