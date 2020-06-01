@@ -11,6 +11,7 @@ describe('TreeSelect.tree', () => {
         <SelectNode key="0-0-0" value="0-0-0">
           <SelectNode key="0-0-0-0" value="0-0-0-0" />
           <SelectNode key="0-0-0-1" />
+          invalid element
         </SelectNode>
         <SelectNode key="0-0-1" value="0-0-1">
           <SelectNode key="0-0-1-0" value="0-0-1-0" />
@@ -70,11 +71,7 @@ describe('TreeSelect.tree', () => {
   it('warning if node key are not same as value', () => {
     resetWarned();
     const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    mount(
-      <TreeSelect
-        treeData={[{ title: 'little', value: 'ttt', key: 'little' }]}
-      />,
-    );
+    mount(<TreeSelect treeData={[{ title: 'little', value: 'ttt', key: 'little' }]} />);
     expect(spy).toHaveBeenCalledWith(
       'Warning: `key` or `value` with TreeNode must be the same or you can remove one of them. key: little, value: ttt.',
     );
@@ -86,15 +83,10 @@ describe('TreeSelect.tree', () => {
     const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
     mount(
       <TreeSelect
-        treeData={[
-          { title: 'little', value: 'ttt' },
-          { title: 'bamboo', value: 'ttt' },
-        ]}
+        treeData={[{ title: 'little', value: 'ttt' }, { title: 'bamboo', value: 'ttt' }]}
       />,
     );
-    expect(spy).toHaveBeenCalledWith(
-      'Warning: Same `value` exist in the tree: ttt',
-    );
+    expect(spy).toHaveBeenCalledWith('Warning: Same `value` exist in the tree: ttt');
     spy.mockRestore();
   });
 
