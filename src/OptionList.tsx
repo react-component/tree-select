@@ -170,7 +170,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   };
 
   const onInternalSelect = (_: Key[], { node: { key } }: TreeEventInfo) => {
-    const entity = getEntityByKey(key);
+    const entity = getEntityByKey(key, checkable ? 'checkbox' : 'select');
     if (entity !== null) {
       onSelect(entity.data.value, {
         selected: !checkedKeys.includes(entity.data.value),
