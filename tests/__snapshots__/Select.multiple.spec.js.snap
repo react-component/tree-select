@@ -23,6 +23,7 @@ exports[`TreeSelect.multiple can hide search box by showSearch = false 1`] = `
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        unselectable="on"
         value=""
       />
       <span

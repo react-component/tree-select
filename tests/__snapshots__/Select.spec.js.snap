@@ -23,6 +23,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        unselectable="on"
         value=""
       />
     </span>
@@ -198,6 +199,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        unselectable="on"
         value=""
       />
     </span>
@@ -374,6 +376,7 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        unselectable="on"
         value=""
       />
       <span
@@ -414,6 +417,7 @@ exports[`TreeSelect.basic render renders disabled correctly 1`] = `
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        unselectable="on"
         value=""
       />
     </span>
@@ -457,6 +461,7 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        unselectable="on"
         value=""
       />
       <span
@@ -497,6 +502,7 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
           readonly=""
           role="combobox"
           style="opacity: 0;"
+          unselectable="on"
           value=""
         />
       </span>
