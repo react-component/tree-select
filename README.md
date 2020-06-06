@@ -5,23 +5,28 @@ React TreeSelect Component
 
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
-[![Test coverage][codecov-image]][codecov-url]
-[![gemnasium deps][gemnasium-image]][gemnasium-url]
+[![Test coverage][coveralls-image]][coveralls-url]
+[![Dependencies][david-image]][david-url]
+[![DevDependencies][david-dev-image]][david-dev-url]
 [![npm download][download-image]][download-url]
+[![bundle size][bundlephobia-image]][bundlephobia-url]
 
 [npm-image]: http://img.shields.io/npm/v/rc-tree-select.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-tree-select
-[travis-image]: https://img.shields.io/travis/react-component/tree-select.svg?style=flat-square
+[travis-image]: https://img.shields.io/travis/react-component/tree-select/master?style=flat-square
 [travis-url]: https://travis-ci.org/react-component/tree-select
-[codecov-image]: https://img.shields.io/codecov/c/github/react-component/tree-select/master.svg?style=flat-square
-[codecov-url]: https://codecov.io/gh/react-component/tree-select/branch/master
-[gemnasium-image]: http://img.shields.io/gemnasium/react-component/tree-select.svg?style=flat-square
-[gemnasium-url]: https://gemnasium.com/react-component/tree-select
-[node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
-[node-url]: http://nodejs.org/download/
+[circleci-image]: https://img.shields.io/circleci/react-component/tree-select/master?style=flat-square
+[circleci-url]: https://circleci.com/gh/react-component/tree-select
+[coveralls-image]: https://img.shields.io/coveralls/react-component/tree-select.svg?style=flat-square
+[coveralls-url]: https://coveralls.io/r/react-component/tree-select?branch=master
+[david-url]: https://david-dm.org/react-component/tree-select
+[david-image]: https://david-dm.org/react-component/tree-select/status.svg?style=flat-square
+[david-dev-url]: https://david-dm.org/react-component/tree-select?type=dev
+[david-dev-image]: https://david-dm.org/react-component/tree-select/dev-status.svg?style=flat-square
 [download-image]: https://img.shields.io/npm/dm/rc-tree-select.svg?style=flat-square
 [download-url]: https://npmjs.org/package/rc-tree-select
-
+[bundlephobia-url]: https://bundlephobia.com/result?p=rc-tree-select
+[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/rc-tree-select
 
 ## Screenshots
 
