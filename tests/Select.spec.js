@@ -128,6 +128,16 @@ describe('TreeSelect.basic', () => {
     expect(wrapper.getSelection(0).text()).toEqual('label0');
   });
 
+  it('sets default value(disabled)', () => {
+    const wrapper = mount(
+      <TreeSelect
+        defaultValue="0"
+        treeData={[{ key: '0', value: '0', title: 'label0', disabled: true }]}
+      />,
+    );
+    expect(wrapper.getSelection(0).text()).toEqual('label0');
+  });
+
   it('select value twice', () => {
     const onChange = jest.fn();
     const wrapper = mount(
@@ -150,7 +160,7 @@ describe('TreeSelect.basic', () => {
   it('can be controlled by value', () => {
     const treeData = [
       { key: '0', value: '0', title: 'label0' },
-      { key: '1', value: '1', title: 'label1', disabled: true },
+      { key: '1', value: '1', title: 'label1' },
     ];
     const wrapper = mount(<TreeSelect value="0" treeData={treeData} />);
     expect(wrapper.getSelection(0).text()).toEqual('label0');
