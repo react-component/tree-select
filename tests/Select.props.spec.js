@@ -2,12 +2,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { TreeNode } from 'rc-tree';
-import TreeSelect, {
-  SHOW_ALL,
-  SHOW_CHILD,
-  SHOW_PARENT,
-  TreeNode as SelectNode,
-} from '../src';
+import TreeSelect, { SHOW_ALL, SHOW_CHILD, SHOW_PARENT, TreeNode as SelectNode } from '../src';
 
 // Promisify timeout to let jest catch works
 function timeoutPromise(delay = 0) {
@@ -47,9 +42,7 @@ describe('TreeSelect.props', () => {
       function filterTreeNode(input, child) {
         return String(child.props.title).indexOf(input) !== -1;
       }
-      const wrapper = mount(
-        createOpenSelect({ filterTreeNode, showSearch: true }),
-      );
+      const wrapper = mount(createOpenSelect({ filterTreeNode, showSearch: true }));
       wrapper.search('Title 1');
       expect(wrapper.find('List').props().data).toHaveLength(1);
 
@@ -58,9 +51,7 @@ describe('TreeSelect.props', () => {
     });
 
     it('false', () => {
-      const wrapper = mount(
-        createOpenSelect({ filterTreeNode: false, showSearch: true }),
-      );
+      const wrapper = mount(createOpenSelect({ filterTreeNode: false, showSearch: true }));
       wrapper.search('Title 1');
       expect(wrapper.find('List').props().data).toHaveLength(4);
     });
@@ -122,9 +113,7 @@ describe('TreeSelect.props', () => {
         placeholder: 'RC Component',
       }),
     );
-    expect(wrapper.find('.rc-tree-select-selection-placeholder').text()).toBe(
-      'RC Component',
-    );
+    expect(wrapper.find('.rc-tree-select-selection-placeholder').text()).toBe('RC Component');
   });
 
   // https://github.com/ant-design/ant-design/issues/11746
@@ -132,13 +121,7 @@ describe('TreeSelect.props', () => {
     const treeData = [{ title: 'aaa', value: '111' }];
     const Wrapper = props => (
       <div>
-        <TreeSelect
-          treeData={treeData}
-          searchValue="111"
-          showSearch
-          open
-          {...props}
-        />
+        <TreeSelect treeData={treeData} searchValue="111" showSearch open {...props} />
       </div>
     );
     const wrapper = mount(<Wrapper />);
@@ -345,16 +328,8 @@ describe('TreeSelect.props', () => {
         // Since after click will render new TreeNode
         // [Legacy] FIXME: This is so hard to test
         wrapper.selectNode(0);
-        expect(handleChange).toHaveBeenCalledWith(
-          arg1,
-          arg2,
-          expect.anything(),
-        );
-        const {
-          triggerNode,
-          allCheckedNodes,
-          ...rest
-        } = handleChange.mock.calls[0][2];
+        expect(handleChange).toHaveBeenCalledWith(arg1, arg2, expect.anything());
+        const { triggerNode, allCheckedNodes, ...rest } = handleChange.mock.calls[0][2];
         expect({ ...rest, triggerNode, allCheckedNodes }).toEqual(arg3);
       });
     });
@@ -448,9 +423,7 @@ describe('TreeSelect.props', () => {
     wrapper.find('.rc-tree-select-tree-switcher').simulate('click');
 
     return timeoutPromise().then(() => {
-      expect(handleLoadData).toHaveBeenCalledWith(
-        expect.objectContaining({ value: '0-0' }),
-      );
+      expect(handleLoadData).toHaveBeenCalledWith(expect.objectContaining({ value: '0-0' }));
       expect(called).toBe(1);
       expect(wrapper.find('List').props().data).toHaveLength(2);
     });
@@ -469,9 +442,7 @@ describe('TreeSelect.props', () => {
     );
 
     expect(loadData).toHaveBeenCalledTimes(1);
-    expect(loadData).toHaveBeenCalledWith(
-      expect.objectContaining({ value: '0-1' }),
-    );
+    expect(loadData).toHaveBeenCalledWith(expect.objectContaining({ value: '0-1' }));
   });
 
   it('getPopupContainer', () => {
@@ -489,12 +460,7 @@ describe('TreeSelect.props', () => {
     const onChange = jest.fn();
     const wrapper = mount(
       <div>
-        <TreeSelect
-          value={['not exist']}
-          onChange={onChange}
-          treeCheckable
-          open
-        >
+        <TreeSelect value={['not exist']} onChange={onChange} treeCheckable open>
           <SelectNode title="exist" value="exist" />
         </TreeSelect>
       </div>,

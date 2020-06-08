@@ -128,6 +128,16 @@ describe('TreeSelect.basic', () => {
     expect(wrapper.getSelection(0).text()).toEqual('label0');
   });
 
+  it('sets default value(disabled)', () => {
+    const wrapper = mount(
+      <TreeSelect
+        defaultValue="0"
+        treeData={[{ key: '0', value: '0', title: 'label0', disabled: true }]}
+      />,
+    );
+    expect(wrapper.getSelection(0).text()).toEqual('label0');
+  });
+
   it('select value twice', () => {
     const onChange = jest.fn();
     const wrapper = mount(
@@ -411,6 +421,14 @@ describe('TreeSelect.basic', () => {
         wrapper.update();
       }
 
+      function keyUp(code) {
+        wrapper
+          .find('input')
+          .first()
+          .simulate('keyUp', { which: code });
+        wrapper.update();
+      }
+
       function matchValue(value) {
         expect(onChange).toHaveBeenCalledWith(value, expect.anything(), expect.anything());
         onChange.mockReset();
@@ -419,11 +437,15 @@ describe('TreeSelect.basic', () => {
       wrapper.openSelect();
 
       keyDown(KeyCode.DOWN);
+      keyUp(KeyCode.DOWN);
       keyDown(KeyCode.ENTER);
+      keyUp(KeyCode.ENTER);
       matchValue(['parent']);
 
       keyDown(KeyCode.UP);
+      keyUp(KeyCode.UP);
       keyDown(KeyCode.ENTER);
+      keyUp(KeyCode.ENTER);
       matchValue(['parent', 'child']);
     });
   });

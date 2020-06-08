@@ -3,10 +3,7 @@ import { FlattenDataNode, Key, RawValueType } from '../interface';
 
 export type SkipType = null | 'select' | 'checkbox';
 
-export function isDisabled(
-  dataNode: FlattenDataNode,
-  skipType: SkipType,
-): boolean {
+export function isDisabled(dataNode: FlattenDataNode, skipType: SkipType): boolean {
   if (!dataNode) {
     return true;
   }
@@ -27,14 +24,14 @@ export default function useKeyValueMapping(
   cacheKeyMap: Map<Key, FlattenDataNode>,
   cacheValueMap: Map<RawValueType, FlattenDataNode>,
 ): [
-  (key: Key, skipType?: SkipType) => FlattenDataNode,
-  (value: RawValueType, skipType?: SkipType) => FlattenDataNode,
+  (key: Key, skipType?: SkipType, ignoreDisabledCheck?: boolean) => FlattenDataNode,
+  (value: RawValueType, skipType?: SkipType, ignoreDisabledCheck?: boolean) => FlattenDataNode,
 ] {
   const getEntityByKey = React.useCallback(
-    (key: Key, skipType: SkipType = 'select') => {
+    (key: Key, skipType: SkipType = 'select', ignoreDisabledCheck?: boolean) => {
       const dataNode = cacheKeyMap.get(key);
 
-      if (isDisabled(dataNode, skipType)) {
+      if (!ignoreDisabledCheck && isDisabled(dataNode, skipType)) {
         return null;
       }
 
@@ -44,10 +41,10 @@ export default function useKeyValueMapping(
   );
 
   const getEntityByValue = React.useCallback(
-    (value: RawValueType, skipType: SkipType = 'select') => {
+    (value: RawValueType, skipType: SkipType = 'select', ignoreDisabledCheck?: boolean) => {
       const dataNode = cacheValueMap.get(value);
 
-      if (isDisabled(dataNode, skipType)) {
+      if (!ignoreDisabledCheck && isDisabled(dataNode, skipType)) {
         return null;
       }
 

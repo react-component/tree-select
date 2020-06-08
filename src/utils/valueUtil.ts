@@ -20,10 +20,7 @@ export function toArray<T>(value: T | T[]): T[] {
   return value !== undefined ? [value] : [];
 }
 
-export function findValueOption(
-  values: RawValueType[],
-  options: FlattenDataNode[],
-): DataNode[] {
+export function findValueOption(values: RawValueType[], options: FlattenDataNode[]): DataNode[] {
   const optionMap: Map<RawValueType, DataNode> = new Map();
 
   options.forEach(flattenItem => {
@@ -34,10 +31,7 @@ export function findValueOption(
   return values.map(val => fillLegacyProps(optionMap.get(val)));
 }
 
-export function isValueDisabled(
-  value: RawValueType,
-  options: FlattenDataNode[],
-): boolean {
+export function isValueDisabled(value: RawValueType, options: FlattenDataNode[]): boolean {
   const option = findValueOption([value], options)[0];
   if (option) {
     return option.disabled;
@@ -135,8 +129,7 @@ export function filterOptions(
       .map(dataNode => {
         const { children } = dataNode;
 
-        const match =
-          keepAll || filterOptionFunc(searchValue, fillLegacyProps(dataNode));
+        const match = keepAll || filterOptionFunc(searchValue, fillLegacyProps(dataNode));
         const childList = dig(children || [], match);
 
         if (match || childList.length) {
@@ -159,6 +152,7 @@ export function getRawValueLabeled(
   getEntityByValue: (
     value: RawValueType,
     skipType?: SkipType,
+    ignoreDisabledCheck?: boolean,
   ) => FlattenDataNode,
   getLabelProp: (node: DataNode) => React.ReactNode,
 ): LabelValueType[] {
@@ -172,7 +166,7 @@ export function getRawValueLabeled(
 
   return values.map(val => {
     const item: LabelValueType = { value: val };
-    const entity = getEntityByValue(val);
+    const entity = getEntityByValue(val, 'select', true);
     const label = entity ? getLabelProp(entity.data) : val;
 
     if (valueMap.has(val)) {

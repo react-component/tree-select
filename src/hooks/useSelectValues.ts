@@ -12,8 +12,12 @@ interface Config {
   value: DefaultValueType;
   showCheckedStrategy: CheckedStrategy;
   conductKeyEntities: Record<Key, DataEntity>;
-  getEntityByKey: (key: Key, skipType?: SkipType) => FlattenDataNode;
-  getEntityByValue: (value: RawValueType, skipType?: SkipType) => FlattenDataNode;
+  getEntityByKey: (key: Key, skipType?: SkipType, ignoreDisabledCheck?: boolean) => FlattenDataNode;
+  getEntityByValue: (
+    value: RawValueType,
+    skipType?: SkipType,
+    ignoreDisabledCheck?: boolean,
+  ) => FlattenDataNode;
   getLabelProp: (node: DataNode) => React.ReactNode;
 }
 
