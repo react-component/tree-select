@@ -16,11 +16,11 @@ describe('TreeSelect.props', () => {
   const createSelect = (props = {}) => (
     <div>
       <TreeSelect {...props}>
-        <SelectNode value="Value 0" title="Title 0" key="Value 0">
-          <SelectNode value="Value 0-0" title="Title 0-0" key="Value 0-0" />
-          <SelectNode value="Value 0-1" title="Title 0-1" key="Value 0-1" />
+        <SelectNode value="Value 0" title="Title 0" key="key 0">
+          <SelectNode value="Value 0-0" title="Title 0-0" key="key 0-0" />
+          <SelectNode value="Value 0-1" title="Title 0-1" key="key 0-1" />
         </SelectNode>
-        <SelectNode value="Value 1" title="Title 1" key="Value 1" />
+        <SelectNode value="Value 1" title="Title 1" key="key 1" />
       </TreeSelect>
     </div>
   );
