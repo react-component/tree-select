@@ -48,6 +48,8 @@ export interface OptionListProps<OptionsType extends object[]> {
   /** Tell Select that some value is now active to make accessibility work */
   onActiveValue: (value: RawValueType, index: number) => void;
   onScroll: React.UIEventHandler<HTMLDivElement>;
+
+  onMouseEnter: () => void;
 }
 
 const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListProps<DataNode[]>> = (
@@ -67,6 +69,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     onToggleOpen,
     open,
     notFoundContent,
+    onMouseEnter,
   } = props;
   const {
     checkable,
@@ -236,7 +239,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   }
 
   return (
-    <div onMouseDown={onListMouseDown}>
+    <div onMouseDown={onListMouseDown} onMouseEnter={onMouseEnter}>
       {activeEntity && open && (
         <span style={HIDDEN_STYLE} aria-live="assertive">
           {activeEntity.data.value}

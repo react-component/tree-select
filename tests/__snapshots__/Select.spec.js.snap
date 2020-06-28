@@ -80,7 +80,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                     </span>
                   </div>
                   <div
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
                   >
                     <span
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -128,7 +128,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                     </span>
                   </div>
                   <div
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
                   >
                     <span
                       aria-hidden="true"
@@ -256,7 +256,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                     </span>
                   </div>
                   <div
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
                   >
                     <span
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -304,7 +304,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                     </span>
                   </div>
                   <div
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
                   >
                     <span
                       aria-hidden="true"
@@ -539,7 +539,7 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
                     style="display: flex; flex-direction: column;"
                   >
                     <div
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
                     >
                       <span
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
@@ -559,7 +559,7 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
                       </span>
                     </div>
                     <div
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
                     >
                       <span
                         aria-hidden="true"
@@ -663,7 +663,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
                     style="display: flex; flex-direction: column;"
                   >
                     <div
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open filter-node"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node"
                     >
                       <span
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -782,7 +782,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
                       </span>
                     </div>
                     <div
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
                     >
                       <span
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -898,7 +898,7 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
                       </span>
                     </div>
                     <div
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
                     >
                       <span
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
@@ -1016,7 +1016,7 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
                     </span>
                   </div>
                   <div
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
                   >
                     <span
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
