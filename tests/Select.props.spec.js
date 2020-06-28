@@ -158,11 +158,12 @@ describe('TreeSelect.props', () => {
     it('set illegal value', () => {
       const wrapper = mount(
         createSelect({
+          placeholder: 'showMe',
           labelInValue: true,
           value: [null],
         }),
       );
-      expect(wrapper.getSelection(0).text()).toBe('');
+      expect(wrapper.find('.rc-tree-select-selection-placeholder').text()).toBe('showMe');
     });
   });
 
