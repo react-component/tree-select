@@ -1,16 +1,10 @@
 import React from 'react';
-import generateSelector, {
-  SelectProps,
-  RefSelectProps,
-} from 'rc-select/lib/generate';
+import generateSelector, { SelectProps, RefSelectProps } from 'rc-select/lib/generate';
 import { getLabeledValue } from 'rc-select/lib/utils/valueUtil';
 import { convertDataToEntities } from 'rc-tree/lib/utils/treeUtil';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 import { IconType } from 'rc-tree/lib/interface';
-import {
-  FilterFunc,
-  INTERNAL_PROPS_MARK,
-} from 'rc-select/lib/interface/generator';
+import { FilterFunc, INTERNAL_PROPS_MARK } from 'rc-select/lib/interface/generator';
 import warning from 'rc-util/lib/warning';
 import OptionList from './OptionList';
 import TreeNode from './TreeNode';
@@ -106,7 +100,6 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
     | 'onChange'
     | 'mode'
     | 'menuItemSelectedIcon'
-    | 'dropdownRender'
     | 'dropdownAlign'
     | 'backfill'
     | 'getInputElement'
@@ -157,11 +150,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
 
   // Event
   onSearch?: (value: string) => void;
-  onChange?: (
-    value: ValueType,
-    labelList: React.ReactNode[],
-    extra: ChangeEventExtra,
-  ) => void;
+  onChange?: (value: ValueType, labelList: React.ReactNode[], extra: ChangeEventExtra) => void;
   onTreeExpand?: (expandedKeys: Key[]) => void;
   onTreeLoad?: (loadedKeys: Key[]) => void;
 
@@ -170,443 +159,372 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
   searchPlaceholder?: React.ReactNode;
 }
 
-const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>(
-  (props, ref) => {
-    const {
-      multiple,
-      treeCheckable,
-      treeCheckStrictly,
-      showCheckedStrategy = 'SHOW_CHILD',
-      labelInValue,
-      loadData,
-      treeLoadedKeys,
-      treeNodeFilterProp = 'value',
-      treeNodeLabelProp,
-      treeDataSimpleMode,
-      treeData,
-      treeExpandedKeys,
-      treeDefaultExpandedKeys,
-      treeDefaultExpandAll,
-      children,
-      treeIcon,
-      showTreeIcon,
-      switcherIcon,
-      treeLine,
-      treeMotion,
-      filterTreeNode,
-      dropdownPopupAlign,
-      onChange,
-      onTreeExpand,
-      onTreeLoad,
-      onDropdownVisibleChange,
-      onSelect,
-      onDeselect,
-    } = props;
-    const mergedCheckable: React.ReactNode | boolean =
-      treeCheckable || treeCheckStrictly;
-    const mergedMultiple = multiple || mergedCheckable;
-    const treeConduction = treeCheckable && !treeCheckStrictly;
-    const mergedLabelInValue = treeCheckStrictly || labelInValue;
+const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, ref) => {
+  const {
+    multiple,
+    treeCheckable,
+    treeCheckStrictly,
+    showCheckedStrategy = 'SHOW_CHILD',
+    labelInValue,
+    loadData,
+    treeLoadedKeys,
+    treeNodeFilterProp = 'value',
+    treeNodeLabelProp,
+    treeDataSimpleMode,
+    treeData,
+    treeExpandedKeys,
+    treeDefaultExpandedKeys,
+    treeDefaultExpandAll,
+    children,
+    treeIcon,
+    showTreeIcon,
+    switcherIcon,
+    treeLine,
+    treeMotion,
+    filterTreeNode,
+    dropdownPopupAlign,
+    onChange,
+    onTreeExpand,
+    onTreeLoad,
+    onDropdownVisibleChange,
+    onSelect,
+    onDeselect,
+  } = props;
+  const mergedCheckable: React.ReactNode | boolean = treeCheckable || treeCheckStrictly;
+  const mergedMultiple = multiple || mergedCheckable;
+  const treeConduction = treeCheckable && !treeCheckStrictly;
+  const mergedLabelInValue = treeCheckStrictly || labelInValue;
 
-    // ========================== Ref ==========================
-    const selectRef = React.useRef<RefSelectProps>(null);
+  // ========================== Ref ==========================
+  const selectRef = React.useRef<RefSelectProps>(null);
 
-    React.useImperativeHandle(ref, () => ({
-      focus: selectRef.current.focus,
-      blur: selectRef.current.blur,
-    }));
+  React.useImperativeHandle(ref, () => ({
+    focus: selectRef.current.focus,
+    blur: selectRef.current.blur,
+  }));
 
-    // ======================= Tree Data =======================
-    // Legacy both support `label` or `title` if not set.
-    // We have to fallback to function to handle this
-    const getTreeNodeLabelProp = (node: DataNode): React.ReactNode => {
-      if (treeNodeLabelProp) {
-        return node[treeNodeLabelProp];
+  // ======================= Tree Data =======================
+  // Legacy both support `label` or `title` if not set.
+  // We have to fallback to function to handle this
+  const getTreeNodeLabelProp = (node: DataNode): React.ReactNode => {
+    if (treeNodeLabelProp) {
+      return node[treeNodeLabelProp];
+    }
+
+    if (!treeData) {
+      return node.title;
+    }
+    return node.label || node.title;
+  };
+
+  const mergedTreeData = useTreeData(treeData, children, {
+    getLabelProp: getTreeNodeLabelProp,
+    simpleMode: treeDataSimpleMode,
+  });
+
+  const flattedOptions = React.useMemo(() => flattenOptions(mergedTreeData), [mergedTreeData]);
+  const [cacheKeyMap, cacheValueMap] = useKeyValueMap(flattedOptions);
+  const [getEntityByKey, getEntityByValue] = useKeyValueMapping(cacheKeyMap, cacheValueMap);
+
+  // Only generate keyEntities for check conduction when is `treeCheckable`
+  const { keyEntities: conductKeyEntities } = React.useMemo(() => {
+    if (treeConduction) {
+      return convertDataToEntities(mergedTreeData as any);
+    }
+    return { keyEntities: null };
+  }, [mergedTreeData, treeCheckable, treeCheckStrictly]);
+
+  // ========================= Value =========================
+  const [value, setValue] = React.useState<DefaultValueType>(props.defaultValue);
+  const mergedValue = 'value' in props ? props.value : value;
+
+  /** Get `missingRawValues` which not exist in the tree yet */
+  const splitRawValues = (newRawValues: RawValueType[]) => {
+    const missingRawValues = [];
+    const existRawValues = [];
+
+    // Keep missing value in the cache
+    newRawValues.forEach(val => {
+      if (getEntityByValue(val)) {
+        existRawValues.push(val);
+      } else {
+        missingRawValues.push(val);
       }
-
-      if (!treeData) {
-        return node.title;
-      }
-      return node.label || node.title;
-    };
-
-    const mergedTreeData = useTreeData(treeData, children, {
-      getLabelProp: getTreeNodeLabelProp,
-      simpleMode: treeDataSimpleMode,
     });
 
-    const flattedOptions = React.useMemo(() => flattenOptions(mergedTreeData), [
-      mergedTreeData,
-    ]);
-    const [cacheKeyMap, cacheValueMap] = useKeyValueMap(flattedOptions);
-    const [getEntityByKey, getEntityByValue] = useKeyValueMapping(
-      cacheKeyMap,
-      cacheValueMap,
-    );
+    return { missingRawValues, existRawValues };
+  };
 
-    // Only generate keyEntities for check conduction when is `treeCheckable`
-    const { keyEntities: conductKeyEntities } = React.useMemo(() => {
-      if (treeConduction) {
-        return convertDataToEntities(mergedTreeData as any);
+  const [rawValues, rawHalfCheckedKeys]: [RawValueType[], RawValueType[]] = React.useMemo(() => {
+    const valueHalfCheckedKeys: RawValueType[] = [];
+    const newRawValues: RawValueType[] = [];
+
+    toArray(mergedValue).forEach(item => {
+      if (item && typeof item === 'object' && 'value' in item) {
+        if (item.halfChecked && treeCheckStrictly) {
+          const entity = getEntityByValue(item.value);
+          valueHalfCheckedKeys.push(entity ? entity.key : item.value);
+        } else {
+          newRawValues.push(item.value);
+        }
+      } else {
+        newRawValues.push(item as RawValueType);
       }
-      return { keyEntities: null };
-    }, [mergedTreeData, treeCheckable, treeCheckStrictly]);
+    });
 
-    // ========================= Value =========================
-    const [value, setValue] = React.useState<DefaultValueType>(
-      props.defaultValue,
-    );
-    const mergedValue = 'value' in props ? props.value : value;
+    // We need do conduction of values
+    if (treeConduction) {
+      const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
+      const keyList = existRawValues.map(val => getEntityByValue(val).key);
 
-    /** Get `missingRawValues` which not exist in the tree yet */
-    const splitRawValues = (newRawValues: RawValueType[]) => {
-      const missingRawValues = [];
-      const existRawValues = [];
+      const { checkedKeys, halfCheckedKeys } = conductCheck(keyList, true, conductKeyEntities);
+      return [
+        [...missingRawValues, ...checkedKeys.map(key => getEntityByKey(key).data.value)],
+        halfCheckedKeys,
+      ];
+    }
+    return [newRawValues, valueHalfCheckedKeys];
+  }, [mergedValue, mergedMultiple, mergedLabelInValue, treeCheckable, treeCheckStrictly]);
+  const selectValues = useSelectValues(rawValues, {
+    treeConduction,
+    value: mergedValue,
+    showCheckedStrategy,
+    conductKeyEntities,
+    getEntityByValue,
+    getEntityByKey,
+    getLabelProp: getTreeNodeLabelProp,
+  });
 
-      // Keep missing value in the cache
-      newRawValues.forEach(val => {
-        if (getEntityByValue(val)) {
-          existRawValues.push(val);
-        } else {
-          missingRawValues.push(val);
-        }
-      });
-
-      return { missingRawValues, existRawValues };
-    };
-
-    const [rawValues, rawHalfCheckedKeys]: [
-      RawValueType[],
-      RawValueType[],
-    ] = React.useMemo(() => {
-      const valueHalfCheckedKeys: RawValueType[] = [];
-      const newRawValues: RawValueType[] = [];
-
-      toArray(mergedValue).forEach(item => {
-        if (item && typeof item === 'object' && 'value' in item) {
-          if (item.halfChecked && treeCheckStrictly) {
-            const entity = getEntityByValue(item.value);
-            valueHalfCheckedKeys.push(entity ? entity.key : item.value);
-          } else {
-            newRawValues.push(item.value);
-          }
-        } else {
-          newRawValues.push(item as RawValueType);
-        }
-      });
-
-      // We need do conduction of values
-      if (treeConduction) {
-        const { missingRawValues, existRawValues } = splitRawValues(
-          newRawValues,
-        );
-        const keyList = existRawValues.map(val => getEntityByValue(val).key);
-
-        const { checkedKeys, halfCheckedKeys } = conductCheck(
+  const triggerChange = (
+    newRawValues: RawValueType[],
+    extra: { triggerValue: RawValueType; selected: boolean },
+    source: SelectSource,
+  ) => {
+    setValue(mergedMultiple ? newRawValues : newRawValues[0]);
+    if (onChange) {
+      let eventValues: RawValueType[] = newRawValues;
+      if (treeConduction && showCheckedStrategy !== 'SHOW_ALL') {
+        const keyList = newRawValues.map(val => {
+          const entity = getEntityByValue(val);
+          return entity ? entity.key : val;
+        });
+        const formattedKeyList = formatStrategyKeys(
           keyList,
-          true,
+          showCheckedStrategy,
           conductKeyEntities,
         );
-        return [
-          [
-            ...missingRawValues,
-            ...checkedKeys.map(key => getEntityByKey(key).data.value),
-          ],
-          halfCheckedKeys,
-        ];
+
+        eventValues = formattedKeyList.map(key => {
+          const entity = getEntityByKey(key);
+          return entity ? entity.data.value : key;
+        });
       }
-      return [newRawValues, valueHalfCheckedKeys];
-    }, [
-      mergedValue,
-      mergedMultiple,
-      mergedLabelInValue,
-      treeCheckable,
-      treeCheckStrictly,
-    ]);
-    const selectValues = useSelectValues(rawValues, {
-      treeConduction,
-      value: mergedValue,
-      showCheckedStrategy,
-      conductKeyEntities,
-      getEntityByValue,
-      getEntityByKey,
-      getLabelProp: getTreeNodeLabelProp,
-    });
 
-    const triggerChange = (
-      newRawValues: RawValueType[],
-      extra: { triggerValue: RawValueType; selected: boolean },
-      source: SelectSource,
-    ) => {
-      setValue(mergedMultiple ? newRawValues : newRawValues[0]);
-      if (onChange) {
-        let eventValues: RawValueType[] = newRawValues;
-        if (treeConduction && showCheckedStrategy !== 'SHOW_ALL') {
-          const keyList = newRawValues.map(val => {
-            const entity = getEntityByValue(val);
-            return entity ? entity.key : val;
-          });
-          const formattedKeyList = formatStrategyKeys(
-            keyList,
-            showCheckedStrategy,
-            conductKeyEntities,
-          );
+      const { triggerValue, selected } = extra || {
+        triggerValue: undefined,
+        selected: undefined,
+      };
 
-          eventValues = formattedKeyList.map(key => {
+      let returnValues = mergedLabelInValue
+        ? getRawValueLabeled(eventValues, mergedValue, getEntityByValue, getTreeNodeLabelProp)
+        : eventValues;
+
+      // We need fill half check back
+      if (treeCheckStrictly) {
+        const halfValues = rawHalfCheckedKeys
+          .map(key => {
             const entity = getEntityByKey(key);
             return entity ? entity.data.value : key;
-          });
-        }
+          })
+          .filter(val => !eventValues.includes(val));
 
-        const { triggerValue, selected } = extra || {
-          triggerValue: undefined,
-          selected: undefined,
-        };
-
-        let returnValues = mergedLabelInValue
-          ? getRawValueLabeled(
-              eventValues,
-              mergedValue,
-              getEntityByValue,
-              getTreeNodeLabelProp,
-            )
-          : eventValues;
-
-        // We need fill half check back
-        if (treeCheckStrictly) {
-          const halfValues = rawHalfCheckedKeys
-            .map(key => {
-              const entity = getEntityByKey(key);
-              return entity ? entity.data.value : key;
-            })
-            .filter(val => !eventValues.includes(val));
-
-          returnValues = [
-            ...(returnValues as LabelValueType[]),
-            ...getRawValueLabeled(
-              halfValues,
-              mergedValue,
-              getEntityByValue,
-              getTreeNodeLabelProp,
-            ),
-          ];
-        }
-
-        const additionalInfo = {
-          // [Legacy] Always return as array contains label & value
-          preValue: selectValues,
-          triggerValue,
-        } as ChangeEventExtra;
-
-        // [Legacy] Fill legacy data if user query.
-        // This is expansive that we only fill when user query
-        // https://github.com/react-component/tree-select/blob/fe33eb7c27830c9ac70cd1fdb1ebbe7bc679c16a/src/Select.jsx
-        let showPosition = true;
-        if (treeCheckStrictly || (source === 'selection' && !selected)) {
-          showPosition = false;
-        }
-
-        fillAdditionalInfo(
-          additionalInfo,
-          triggerValue,
-          newRawValues,
-          mergedTreeData,
-          showPosition,
-        );
-
-        if (mergedCheckable) {
-          additionalInfo.checked = selected;
-        } else {
-          additionalInfo.selected = selected;
-        }
-
-        onChange(
-          mergedMultiple ? returnValues : returnValues[0],
-          mergedLabelInValue
-            ? null
-            : eventValues.map(val => {
-                const entity = getEntityByValue(val);
-                return entity ? getTreeNodeLabelProp(entity.data) : null;
-              }),
-          additionalInfo,
-        );
+        returnValues = [
+          ...(returnValues as LabelValueType[]),
+          ...getRawValueLabeled(halfValues, mergedValue, getEntityByValue, getTreeNodeLabelProp),
+        ];
       }
-    };
 
-    const onInternalSelect = (
-      selectValue: RawValueType,
-      option: DataNode,
-      source: SelectSource,
-    ) => {
-      const eventValue = mergedLabelInValue ? selectValue : selectValue;
+      const additionalInfo = {
+        // [Legacy] Always return as array contains label & value
+        preValue: selectValues,
+        triggerValue,
+      } as ChangeEventExtra;
 
-      if (!mergedMultiple) {
-        // Single mode always set value
-        triggerChange(
-          [selectValue],
-          { selected: true, triggerValue: selectValue },
-          source,
-        );
+      // [Legacy] Fill legacy data if user query.
+      // This is expansive that we only fill when user query
+      // https://github.com/react-component/tree-select/blob/fe33eb7c27830c9ac70cd1fdb1ebbe7bc679c16a/src/Select.jsx
+      let showPosition = true;
+      if (treeCheckStrictly || (source === 'selection' && !selected)) {
+        showPosition = false;
+      }
+
+      fillAdditionalInfo(additionalInfo, triggerValue, newRawValues, mergedTreeData, showPosition);
+
+      if (mergedCheckable) {
+        additionalInfo.checked = selected;
       } else {
-        let newRawValues = addValue(rawValues, selectValue);
-
-        // Add keys if tree conduction
-        if (treeConduction) {
-          // Should keep missing values
-          const { missingRawValues, existRawValues } = splitRawValues(
-            newRawValues,
-          );
-          const keyList = existRawValues.map(val => getEntityByValue(val).key);
-          const { checkedKeys } = conductCheck(
-            keyList,
-            true,
-            conductKeyEntities,
-          );
-          newRawValues = [
-            ...missingRawValues,
-            ...checkedKeys.map(key => getEntityByKey(key).data.value),
-          ];
-        }
-
-        triggerChange(
-          newRawValues,
-          { selected: true, triggerValue: selectValue },
-          source,
-        );
+        additionalInfo.selected = selected;
       }
 
-      if (onSelect) {
-        onSelect(eventValue, option);
-      }
-    };
+      onChange(
+        mergedMultiple ? returnValues : returnValues[0],
+        mergedLabelInValue
+          ? null
+          : eventValues.map(val => {
+              const entity = getEntityByValue(val);
+              return entity ? getTreeNodeLabelProp(entity.data) : null;
+            }),
+        additionalInfo,
+      );
+    }
+  };
 
-    const onInternalDeselect = (
-      selectValue: RawValueType,
-      option: DataNode,
-      source: SelectSource,
-    ) => {
-      const eventValue = mergedLabelInValue ? selectValue : selectValue;
+  const onInternalSelect = (selectValue: RawValueType, option: DataNode, source: SelectSource) => {
+    const eventValue = mergedLabelInValue ? selectValue : selectValue;
 
-      let newRawValues = removeValue(rawValues, selectValue);
+    if (!mergedMultiple) {
+      // Single mode always set value
+      triggerChange([selectValue], { selected: true, triggerValue: selectValue }, source);
+    } else {
+      let newRawValues = addValue(rawValues, selectValue);
 
-      // Remove keys if tree conduction
+      // Add keys if tree conduction
       if (treeConduction) {
-        const { missingRawValues, existRawValues } = splitRawValues(
-          newRawValues,
-        );
+        // Should keep missing values
+        const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
         const keyList = existRawValues.map(val => getEntityByValue(val).key);
-        const { checkedKeys } = conductCheck(
-          keyList,
-          { checked: false, halfCheckedKeys: rawHalfCheckedKeys },
-          conductKeyEntities,
-        );
+        const { checkedKeys } = conductCheck(keyList, true, conductKeyEntities);
         newRawValues = [
           ...missingRawValues,
           ...checkedKeys.map(key => getEntityByKey(key).data.value),
         ];
       }
 
-      triggerChange(
-        newRawValues,
-        { selected: false, triggerValue: selectValue },
-        source,
+      triggerChange(newRawValues, { selected: true, triggerValue: selectValue }, source);
+    }
+
+    if (onSelect) {
+      onSelect(eventValue, option);
+    }
+  };
+
+  const onInternalDeselect = (
+    selectValue: RawValueType,
+    option: DataNode,
+    source: SelectSource,
+  ) => {
+    const eventValue = mergedLabelInValue ? selectValue : selectValue;
+
+    let newRawValues = removeValue(rawValues, selectValue);
+
+    // Remove keys if tree conduction
+    if (treeConduction) {
+      const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
+      const keyList = existRawValues.map(val => getEntityByValue(val).key);
+      const { checkedKeys } = conductCheck(
+        keyList,
+        { checked: false, halfCheckedKeys: rawHalfCheckedKeys },
+        conductKeyEntities,
       );
+      newRawValues = [
+        ...missingRawValues,
+        ...checkedKeys.map(key => getEntityByKey(key).data.value),
+      ];
+    }
 
-      if (onDeselect) {
-        onDeselect(eventValue, option);
+    triggerChange(newRawValues, { selected: false, triggerValue: selectValue }, source);
+
+    if (onDeselect) {
+      onDeselect(eventValue, option);
+    }
+  };
+
+  const onInternalClear = () => {
+    triggerChange([], null, 'clear');
+  };
+
+  // ========================= Open ==========================
+  const onInternalDropdownVisibleChange = React.useCallback(
+    (open: boolean) => {
+      if (onDropdownVisibleChange) {
+        const legacyParam = {};
+
+        Object.defineProperty(legacyParam, 'documentClickClose', {
+          get() {
+            warning(false, 'Second param of `onDropdownVisibleChange` has been removed.');
+            return false;
+          },
+        });
+
+        (onDropdownVisibleChange as any)(open, legacyParam);
       }
-    };
+    },
+    [onDropdownVisibleChange],
+  );
 
-    const onInternalClear = () => {
-      triggerChange([], null, 'clear');
-    };
+  // ======================== Warning ========================
+  if (process.env.NODE_ENV !== 'production') {
+    warningProps(props);
+  }
 
-    // ========================= Open ==========================
-    const onInternalDropdownVisibleChange = React.useCallback(
-      (open: boolean) => {
-        if (onDropdownVisibleChange) {
-          const legacyParam = {};
+  // ======================== Render =========================
+  // We pass some props into select props style
+  const selectProps: Partial<SelectProps<any, any>> = {
+    optionLabelProp: null,
+    optionFilterProp: treeNodeFilterProp,
+    dropdownAlign: dropdownPopupAlign,
+    internalProps: {
+      mark: INTERNAL_PROPS_MARK,
+      onClear: onInternalClear,
+      skipTriggerChange: true,
+      skipTriggerSelect: true,
+      onRawSelect: onInternalSelect,
+      onRawDeselect: onInternalDeselect,
+    },
+  };
 
-          Object.defineProperty(legacyParam, 'documentClickClose', {
-            get() {
-              warning(
-                false,
-                'Second param of `onDropdownVisibleChange` has been removed.',
-              );
-              return false;
-            },
-          });
+  if ('filterTreeNode' in props) {
+    selectProps.filterOption = filterTreeNode;
+  }
 
-          (onDropdownVisibleChange as any)(open, legacyParam);
-        }
-      },
-      [onDropdownVisibleChange],
-    );
-
-    // ======================== Warning ========================
-    if (process.env.NODE_ENV !== 'production') {
-      warningProps(props);
-    }
-
-    // ======================== Render =========================
-    // We pass some props into select props style
-    const selectProps: Partial<SelectProps<any, any>> = {
-      optionLabelProp: null,
-      optionFilterProp: treeNodeFilterProp,
-      dropdownAlign: dropdownPopupAlign,
-      internalProps: {
-        mark: INTERNAL_PROPS_MARK,
-        onClear: onInternalClear,
-        skipTriggerChange: true,
-        skipTriggerSelect: true,
-        onRawSelect: onInternalSelect,
-        onRawDeselect: onInternalDeselect,
-      },
-    };
-
-    if ('filterTreeNode' in props) {
-      selectProps.filterOption = filterTreeNode;
-    }
-
-    return (
-      <SelectContext.Provider
-        value={{
-          checkable: mergedCheckable,
-          loadData,
-          treeLoadedKeys,
-          onTreeLoad,
-          checkedKeys: rawValues,
-          halfCheckedKeys: rawHalfCheckedKeys,
-          treeDefaultExpandAll,
-          treeExpandedKeys,
-          treeDefaultExpandedKeys,
-          onTreeExpand,
-          treeIcon,
-          treeMotion,
-          showTreeIcon,
-          switcherIcon,
-          treeLine,
-          treeNodeFilterProp,
-        }}
-      >
-        <RefSelect
-          ref={selectRef}
-          mode={mergedMultiple ? 'multiple' : null}
-          {...props}
-          {...selectProps}
-          value={selectValues}
-          // We will handle this ourself since we need calculate conduction
-          labelInValue
-          options={mergedTreeData}
-          onChange={null}
-          onSelect={null}
-          onDeselect={null}
-          onDropdownVisibleChange={onInternalDropdownVisibleChange}
-        />
-      </SelectContext.Provider>
-    );
-  },
-);
+  return (
+    <SelectContext.Provider
+      value={{
+        checkable: mergedCheckable,
+        loadData,
+        treeLoadedKeys,
+        onTreeLoad,
+        checkedKeys: rawValues,
+        halfCheckedKeys: rawHalfCheckedKeys,
+        treeDefaultExpandAll,
+        treeExpandedKeys,
+        treeDefaultExpandedKeys,
+        onTreeExpand,
+        treeIcon,
+        treeMotion,
+        showTreeIcon,
+        switcherIcon,
+        treeLine,
+        treeNodeFilterProp,
+      }}
+    >
+      <RefSelect
+        ref={selectRef}
+        mode={mergedMultiple ? 'multiple' : null}
+        {...props}
+        {...selectProps}
+        value={selectValues}
+        // We will handle this ourself since we need calculate conduction
+        labelInValue
+        options={mergedTreeData}
+        onChange={null}
+        onSelect={null}
+        onDeselect={null}
+        onDropdownVisibleChange={onInternalDropdownVisibleChange}
+      />
+    </SelectContext.Provider>
+  );
+});
 
 // Use class component since typescript not support generic
 // by `forwardRef` with function component yet.
