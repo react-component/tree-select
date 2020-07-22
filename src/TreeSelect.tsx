@@ -5,6 +5,7 @@ import { convertDataToEntities } from 'rc-tree/lib/utils/treeUtil';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 import { IconType } from 'rc-tree/lib/interface';
 import { FilterFunc, INTERNAL_PROPS_MARK } from 'rc-select/lib/interface/generator';
+import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import warning from 'rc-util/lib/warning';
 import OptionList from './OptionList';
 import TreeNode from './TreeNode';
@@ -235,8 +236,9 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   }, [mergedTreeData, treeCheckable, treeCheckStrictly]);
 
   // ========================= Value =========================
-  const [value, setValue] = React.useState<DefaultValueType>(props.defaultValue);
-  const mergedValue = 'value' in props ? props.value : value;
+  const [mergedValue, setValue] = useMergedState<DefaultValueType>(props.defaultValue, {
+    value: props.value,
+  });
 
   /** Get `missingRawValues` which not exist in the tree yet */
   const splitRawValues = (newRawValues: RawValueType[]) => {
