@@ -1,4 +1,5 @@
-import React from 'react';
+import * as React from 'react';
+import { useMemo } from 'react';
 import generateSelector, { SelectProps, RefSelectProps } from 'rc-select/lib/generate';
 import { getLabeledValue } from 'rc-select/lib/utils/valueUtil';
 import { convertDataToEntities } from 'rc-tree/lib/utils/treeUtil';
@@ -207,28 +208,32 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   // ======================= Tree Data =======================
   // Legacy both support `label` or `title` if not set.
   // We have to fallback to function to handle this
-  const getTreeNodeLabelProp = (node: DataNode): React.ReactNode => {
-    if (treeNodeLabelProp) {
-      return node[treeNodeLabelProp];
-    }
-
+  const getTreeNodeTitle = (node: DataNode): React.ReactNode => {
     if (!treeData) {
       return node.title;
     }
     return node.label || node.title;
   };
 
+  const getTreeNodeLabelProp = (node: DataNode): React.ReactNode => {
+    if (treeNodeLabelProp) {
+      return node[treeNodeLabelProp];
+    }
+
+    return getTreeNodeTitle(node);
+  };
+
   const mergedTreeData = useTreeData(treeData, children, {
-    getLabelProp: getTreeNodeLabelProp,
+    getLabelProp: getTreeNodeTitle,
     simpleMode: treeDataSimpleMode,
   });
 
-  const flattedOptions = React.useMemo(() => flattenOptions(mergedTreeData), [mergedTreeData]);
+  const flattedOptions = useMemo(() => flattenOptions(mergedTreeData), [mergedTreeData]);
   const [cacheKeyMap, cacheValueMap] = useKeyValueMap(flattedOptions);
   const [getEntityByKey, getEntityByValue] = useKeyValueMapping(cacheKeyMap, cacheValueMap);
 
   // Only generate keyEntities for check conduction when is `treeCheckable`
-  const { keyEntities: conductKeyEntities } = React.useMemo(() => {
+  const { keyEntities: conductKeyEntities } = useMemo(() => {
     if (treeConduction) {
       return convertDataToEntities(mergedTreeData as any);
     }
@@ -236,7 +241,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   }, [mergedTreeData, treeCheckable, treeCheckStrictly]);
 
   // ========================= Value =========================
-  const [mergedValue, setValue] = useMergedState<DefaultValueType>(props.defaultValue, {
+  const [value, setValue] = useMergedState<DefaultValueType>(props.defaultValue, {
     value: props.value,
   });
 
@@ -257,11 +262,11 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     return { missingRawValues, existRawValues };
   };
 
-  const [rawValues, rawHalfCheckedKeys]: [RawValueType[], RawValueType[]] = React.useMemo(() => {
+  const [rawValues, rawHalfCheckedKeys]: [RawValueType[], RawValueType[]] = useMemo(() => {
     const valueHalfCheckedKeys: RawValueType[] = [];
     const newRawValues: RawValueType[] = [];
 
-    toArray(mergedValue).forEach(item => {
+    toArray(value).forEach(item => {
       if (item && typeof item === 'object' && 'value' in item) {
         if (item.halfChecked && treeCheckStrictly) {
           const entity = getEntityByValue(item.value);
@@ -286,10 +291,10 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
       ];
     }
     return [newRawValues, valueHalfCheckedKeys];
-  }, [mergedValue, mergedMultiple, mergedLabelInValue, treeCheckable, treeCheckStrictly]);
+  }, [value, mergedMultiple, mergedLabelInValue, treeCheckable, treeCheckStrictly]);
   const selectValues = useSelectValues(rawValues, {
     treeConduction,
-    value: mergedValue,
+    value,
     showCheckedStrategy,
     conductKeyEntities,
     getEntityByValue,
@@ -328,7 +333,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
       };
 
       let returnValues = mergedLabelInValue
-        ? getRawValueLabeled(eventValues, mergedValue, getEntityByValue, getTreeNodeLabelProp)
+        ? getRawValueLabeled(eventValues, value, getEntityByValue, getTreeNodeLabelProp)
         : eventValues;
 
       // We need fill half check back
@@ -342,7 +347,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
 
         returnValues = [
           ...(returnValues as LabelValueType[]),
-          ...getRawValueLabeled(halfValues, mergedValue, getEntityByValue, getTreeNodeLabelProp),
+          ...getRawValueLabeled(halfValues, value, getEntityByValue, getTreeNodeLabelProp),
         ];
       }
 

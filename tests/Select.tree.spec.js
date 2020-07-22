@@ -100,4 +100,29 @@ describe('TreeSelect.tree', () => {
 
     expect(wrapper.getSelection(0).text()).toEqual('empty string');
   });
+
+  describe('treeNodeLabelProp', () => {
+    [
+      { name: 'treeDate', treeData: [{ title: 'a light', op: 'Light', value: 'light' }] },
+      {
+        name: 'children',
+        children: <SelectNode title="a light" op="Light" value="light" />,
+      },
+    ].forEach(({ name, ...restProps }) => {
+      it(name, () => {
+        const wrapper = mount(
+          <TreeSelect
+            open
+            treeDefaultExpandAll
+            treeNodeLabelProp="op"
+            value="light"
+            {...restProps}
+          />,
+        );
+
+        expect(wrapper.find('.rc-tree-select-tree-title').text()).toEqual('a light');
+        expect(wrapper.find('.rc-tree-select-selection-item').text()).toEqual('Light');
+      });
+    });
+  });
 });
