@@ -1,6 +1,8 @@
+/* eslint-disable import/no-extraneous-dependencies */
+
 import React from 'react';
-import { genCSSMotion } from 'rc-animate/lib/CSSMotion';
-import CSSMotionList, { genCSSMotionList } from 'rc-animate/lib/CSSMotionList';
+import { genCSSMotion } from 'rc-motion/lib/CSSMotion';
+import CSSMotionList, { genCSSMotionList } from 'rc-motion/lib/CSSMotionList';
 
 let mock = false;
 
