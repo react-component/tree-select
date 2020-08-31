@@ -1,11 +1,6 @@
 import * as React from 'react';
 import warning from 'rc-util/lib/warning';
-import {
-  DataNode,
-  InnerDataNode,
-  SimpleModeConfig,
-  RawValueType,
-} from '../interface';
+import { DataNode, InnerDataNode, SimpleModeConfig, RawValueType } from '../interface';
 import { convertChildrenToData } from '../utils/legacyUtil';
 
 const MAX_WARNING_TIMES = 10;
@@ -85,10 +80,7 @@ function formatTreeData(
           );
         }
 
-        warning(
-          !valueSet.has(value),
-          `Same \`value\` exist in the tree: ${value}`,
-        );
+        warning(!valueSet.has(value), `Same \`value\` exist in the tree: ${value}`);
         valueSet.add(value);
       }
 
