@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import toArray from 'rc-util/lib/Children/toArray';
 import warning from 'rc-util/lib/warning';
 import {

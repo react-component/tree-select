@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { DefaultValueType } from 'rc-select/lib/interface/generator';
 import { DataEntity } from 'rc-tree/lib/interface';
 import { RawValueType, FlattenDataNode, Key, LabelValueType, DataNode } from '../interface';

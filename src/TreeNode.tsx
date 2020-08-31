@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import React from 'react';
+import * as React from 'react';
 import { DataNode, Key } from './interface';
 
 export interface TreeNodeProps extends Omit<DataNode, 'children'> {

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import useMemo from 'rc-util/lib/hooks/useMemo';
 import { RefOptionListProps } from 'rc-select/lib/OptionList';
