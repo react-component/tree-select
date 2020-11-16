@@ -23,6 +23,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        type="search"
         unselectable="on"
         value=""
       />
@@ -34,7 +35,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
   <div>
     <div
       class="rc-tree-select-dropdown"
-      style="opacity: 0; min-width: 0; width: 0px;"
+      style="opacity: 0; pointer-events: none; min-width: 0; width: 0px;"
     >
       <div>
         <div>
@@ -107,7 +108,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                       class="rc-tree-select-tree-indent"
                     >
                       <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start"
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-end"
                       />
                     </span>
                     <span
@@ -199,6 +200,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        type="search"
         unselectable="on"
         value=""
       />
@@ -210,7 +212,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
   <div>
     <div
       class="rc-tree-select-dropdown"
-      style="opacity: 0; min-width: 0; width: 0px;"
+      style="opacity: 0; pointer-events: none; min-width: 0; width: 0px;"
     >
       <div>
         <div>
@@ -283,7 +285,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                       class="rc-tree-select-tree-indent"
                     >
                       <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start"
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-end"
                       />
                     </span>
                     <span
@@ -376,6 +378,7 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        type="search"
         unselectable="on"
         value=""
       />
@@ -417,6 +420,7 @@ exports[`TreeSelect.basic render renders disabled correctly 1`] = `
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        type="search"
         unselectable="on"
         value=""
       />
@@ -461,6 +465,7 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        type="search"
         unselectable="on"
         value=""
       />
@@ -502,6 +507,7 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
           readonly=""
           role="combobox"
           style="opacity: 0;"
+          type="search"
           unselectable="on"
           value=""
         />
@@ -513,7 +519,7 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
     <div>
       <div
         class="rc-tree-select-dropdown"
-        style="opacity: 0; min-width: 0; width: 0px;"
+        style="opacity: 0; pointer-events: none; min-width: 0; width: 0px;"
       >
         <div>
           <div>
@@ -630,6 +636,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
           class="rc-tree-select-selection-search-input"
           id="rc_select_TEST_OR_SSR"
           role="combobox"
+          type="search"
           value="a"
         />
       </span>
@@ -637,7 +644,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
     <div>
       <div
         class="rc-tree-select-dropdown"
-        style="opacity: 0; min-width: 0; width: 0px;"
+        style="opacity: 0; pointer-events: none; min-width: 0; width: 0px;"
       >
         <div>
           <div>
@@ -726,6 +733,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
           class="rc-tree-select-selection-search-input"
           id="rc_select_TEST_OR_SSR"
           role="combobox"
+          type="search"
           value=""
         />
       </span>
@@ -736,7 +744,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
     <div>
       <div
         class="rc-tree-select-dropdown"
-        style="opacity: 0; min-width: 0; width: 0px;"
+        style="opacity: 0; pointer-events: none; min-width: 0; width: 0px;"
       >
         <div>
           <div>
@@ -845,6 +853,7 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
           class="rc-tree-select-selection-search-input"
           id="rc_select_TEST_OR_SSR"
           role="combobox"
+          type="search"
           value="a"
         />
       </span>
@@ -852,7 +861,7 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
     <div>
       <div
         class="rc-tree-select-dropdown"
-        style="opacity: 0; min-width: 0; width: 0px;"
+        style="opacity: 0; pointer-events: none; min-width: 0; width: 0px;"
       >
         <div>
           <div>
@@ -960,6 +969,7 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
         class="rc-tree-select-selection-search-input"
         id="rc_select_TEST_OR_SSR"
         role="combobox"
+        type="search"
         value=""
       />
     </span>
@@ -970,7 +980,7 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
   <div>
     <div
       class="rc-tree-select-dropdown"
-      style="opacity: 0; min-width: 0; width: 0px;"
+      style="opacity: 0; pointer-events: none; min-width: 0; width: 0px;"
     >
       <div>
         <div>
