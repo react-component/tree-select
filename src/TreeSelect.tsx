@@ -155,6 +155,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
   onChange?: (value: ValueType, labelList: React.ReactNode[], extra: ChangeEventExtra) => void;
   onTreeExpand?: (expandedKeys: Key[]) => void;
   onTreeLoad?: (loadedKeys: Key[]) => void;
+  onDropdownVisibleChange?: (open: boolean) => void;
 
   // Legacy
   /** `searchPlaceholder` has been removed since search box has been merged into input box */
