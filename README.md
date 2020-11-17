@@ -4,7 +4,7 @@
 React TreeSelect Component
 
 [![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
+[![build status][github-actions-image]][github-actions-url]
 [![Test coverage][coveralls-image]][coveralls-url]
 [![Dependencies][david-image]][david-url]
 [![DevDependencies][david-dev-image]][david-dev-url]
@@ -13,8 +13,8 @@ React TreeSelect Component
 
 [npm-image]: http://img.shields.io/npm/v/rc-tree-select.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-tree-select
-[travis-image]: https://img.shields.io/travis/react-component/tree-select/master?style=flat-square
-[travis-url]: https://travis-ci.org/react-component/tree-select
+[github-actions-image]: https://github.com/react-component/tree-select/workflows/CI/badge.svg
+[github-actions-url]: https://github.com/react-component/tree-select/actions
 [circleci-image]: https://img.shields.io/circleci/react-component/tree-select/master?style=flat-square
 [circleci-url]: https://circleci.com/gh/react-component/tree-select
 [coveralls-image]: https://img.shields.io/coveralls/react-component/tree-select.svg?style=flat-square
