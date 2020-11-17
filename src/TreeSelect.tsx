@@ -202,6 +202,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
   const selectRef = React.useRef<RefSelectProps>(null);
 
   React.useImperativeHandle(ref, () => ({
+    scrollTo: selectRef.current.scrollTo,
     focus: selectRef.current.focus,
     blur: selectRef.current.blur,
   }));
