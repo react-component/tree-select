@@ -54,10 +54,10 @@ export interface OptionListProps<OptionsType extends object[]> {
 
 type ReviseRefOptionListProps = Omit<RefOptionListProps, 'scrollTo'> & { scrollTo: ScrollTo };
 
-const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps, OptionListProps<DataNode[]>> = (
-  props,
-  ref,
-) => {
+const OptionList: React.RefForwardingComponent<
+  ReviseRefOptionListProps,
+  OptionListProps<DataNode[]>
+> = (props, ref) => {
   const {
     prefixCls,
     height,
@@ -283,7 +283,9 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps, OptionL
   );
 };
 
-const RefOptionList = React.forwardRef<ReviseRefOptionListProps, OptionListProps<DataNode[]>>(OptionList);
+const RefOptionList = React.forwardRef<ReviseRefOptionListProps, OptionListProps<DataNode[]>>(
+  OptionList,
+);
 RefOptionList.displayName = 'OptionList';
 
 export default RefOptionList;
