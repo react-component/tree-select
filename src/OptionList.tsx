@@ -108,7 +108,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         const entity = getEntityByValue(val);
         return entity ? entity.key : null;
       }),
-    [checkedKeys],
+    [checkedKeys, flattenOptions],
   );
 
   const mergedCheckedKeys = React.useMemo(() => {
