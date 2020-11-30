@@ -117,11 +117,7 @@ describe('TreeSelect.checkable', () => {
               onChange={this.handleChange}
               disabled={disabled}
             />
-            <input
-              type="checkbox"
-              onChange={e => this.switch(e.target.checked)}
-              id="checkbox"
-            />{' '}
+            <input type="checkbox" onChange={e => this.switch(e.target.checked)} id="checkbox" />{' '}
             禁用
           </div>
         );
@@ -335,9 +331,7 @@ describe('TreeSelect.checkable', () => {
           ],
         },
       ];
-      const wrapper = mount(
-        <TreeSelect treeCheckable treeData={treeData} open />,
-      );
+      const wrapper = mount(<TreeSelect treeCheckable treeData={treeData} open />);
       wrapper.search('58');
       wrapper.selectNode(2);
       expect(wrapper.getSelection()).toHaveLength(1);
@@ -402,11 +396,7 @@ describe('TreeSelect.checkable', () => {
 
     wrapper.search('0-0');
     wrapper.selectNode(0);
-    expect(onChange).toHaveBeenCalledWith(
-      ['0-1-0', '0-1-2'],
-      expect.anything(),
-      expect.anything(),
-    );
+    expect(onChange).toHaveBeenCalledWith(['0-1-0', '0-1-2'], expect.anything(), expect.anything());
   });
 
   // https://github.com/ant-design/ant-design/issues/13328
@@ -443,11 +433,7 @@ describe('TreeSelect.checkable', () => {
 
       wrapper.search('0-0-1');
       wrapper.selectNode(1);
-      expect(onChange).toHaveBeenCalledWith(
-        ['0-0-1'],
-        expect.anything(),
-        expect.anything(),
-      );
+      expect(onChange).toHaveBeenCalledWith(['0-0-1'], expect.anything(), expect.anything());
 
       expect(
         wrapper
@@ -615,14 +601,10 @@ describe('TreeSelect.checkable', () => {
       },
     ];
 
-    const wrapper = mount(
-      <TreeSelect defaultValue={['0-0']} treeData={treeData} treeCheckable />,
-    );
+    const wrapper = mount(<TreeSelect defaultValue={['0-0']} treeData={treeData} treeCheckable />);
 
     expect(wrapper.getSelection().length).toBeTruthy();
-    expect(
-      wrapper.find('.rc-tree-select-selection-item-remove').length,
-    ).toBeFalsy();
+    expect(wrapper.find('.rc-tree-select-selection-item-remove').length).toBeFalsy();
   });
 
   it('treeCheckStrictly can set halfChecked', () => {
@@ -634,26 +616,22 @@ describe('TreeSelect.checkable', () => {
         value={[{ value: 'half', halfChecked: true }]}
         open
         onChange={onChange}
-        treeData={[
-          { value: 'half', title: 'Half Check' },
-          { value: 'full', title: 'Full Check' },
-        ]}
+        treeData={[{ value: 'half', title: 'Half Check' }, { value: 'full', title: 'Full Check' }]}
       />,
     );
 
     function getTreeNode(index) {
-      return wrapper.find('.rc-tree-select-tree-treenode').at(index);
+      return wrapper
+        .find('.rc-tree-select-tree-treenode')
+        .not('[aria-hidden]')
+        .at(index);
     }
 
     expect(
-      getTreeNode(0).hasClass(
-        'rc-tree-select-tree-treenode-checkbox-indeterminate',
-      ),
+      getTreeNode(0).hasClass('rc-tree-select-tree-treenode-checkbox-indeterminate'),
     ).toBeTruthy();
     expect(
-      getTreeNode(1).hasClass(
-        'rc-tree-select-tree-treenode-checkbox-indeterminate',
-      ),
+      getTreeNode(1).hasClass('rc-tree-select-tree-treenode-checkbox-indeterminate'),
     ).toBeFalsy();
 
     wrapper.selectNode(1);

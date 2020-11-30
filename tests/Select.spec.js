@@ -313,6 +313,7 @@ describe('TreeSelect.basic', () => {
     expect(
       wrapper
         .find('.rc-tree-select-tree-treenode')
+        .not('[aria-hidden]')
         .at(1)
         .hasClass('rc-tree-select-tree-treenode-switcher-open'),
     ).toBeTruthy();
