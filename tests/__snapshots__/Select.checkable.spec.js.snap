@@ -117,6 +117,19 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
                 />
               </div>
               <div
+                aria-hidden="true"
+                class="rc-tree-select-tree-treenode"
+                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden;"
+              >
+                <div
+                  class="rc-tree-select-tree-indent"
+                >
+                  <div
+                    class="rc-tree-select-tree-indent-unit"
+                  />
+                </div>
+              </div>
+              <div
                 class="rc-tree-select-tree-list"
                 style="height: 200px;"
               >
@@ -128,6 +141,10 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
                     <div
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
                     >
+                      <span
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
+                      />
                       <span
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                       />
@@ -282,6 +299,19 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
                 />
               </div>
               <div
+                aria-hidden="true"
+                class="rc-tree-select-tree-treenode"
+                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden;"
+              >
+                <div
+                  class="rc-tree-select-tree-indent"
+                >
+                  <div
+                    class="rc-tree-select-tree-indent-unit"
+                  />
+                </div>
+              </div>
+              <div
                 class="rc-tree-select-tree-list"
                 style="height: 200px;"
               >
@@ -293,6 +323,10 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
                     <div
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
                     >
+                      <span
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
+                      />
                       <span
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                       />
@@ -507,6 +541,19 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
                 />
               </div>
               <div
+                aria-hidden="true"
+                class="rc-tree-select-tree-treenode"
+                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden;"
+              >
+                <div
+                  class="rc-tree-select-tree-indent"
+                >
+                  <div
+                    class="rc-tree-select-tree-indent-unit"
+                  />
+                </div>
+              </div>
+              <div
                 class="rc-tree-select-tree-list"
                 style="height: 200px;"
               >
@@ -518,6 +565,10 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
                     <div
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
                     >
+                      <span
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
+                      />
                       <span
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                       />
@@ -669,6 +720,19 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
                 />
               </div>
               <div
+                aria-hidden="true"
+                class="rc-tree-select-tree-treenode"
+                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden;"
+              >
+                <div
+                  class="rc-tree-select-tree-indent"
+                >
+                  <div
+                    class="rc-tree-select-tree-indent-unit"
+                  />
+                </div>
+              </div>
+              <div
                 class="rc-tree-select-tree-list"
                 style="height: 200px;"
               >
@@ -680,6 +744,10 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
                     <div
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node"
                     >
+                      <span
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
+                      />
                       <span
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                       />
