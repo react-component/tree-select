@@ -58,7 +58,7 @@
     "rc-dialog": "^7.5.7",
     "rc-field-form": "^1.0.0",
     "rc-trigger": "^4.0.0",
-    "rc-virtual-list": "^1.1.0",
+    "rc-virtual-list": "^3.2.3",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "typescript": "^3.5.2"
