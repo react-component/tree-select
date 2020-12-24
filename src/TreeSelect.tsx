@@ -124,8 +124,6 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
   searchValue?: string;
   autoClearSearchValue?: boolean;
 
-  maxTagTextLength?: number;
-  maxTagCount?: number;
   maxTagPlaceholder?: (omittedValues: LabelValueType[]) => React.ReactNode;
 
   loadData?: (dataNode: LegacyDataNode) => Promise<unknown>;
