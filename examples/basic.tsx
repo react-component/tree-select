@@ -134,8 +134,7 @@ class Demo extends React.Component {
     return true;
   };
 
-  filterTreeNode = (input, child) =>
-    String(child.props.title).indexOf(input) === 0;
+  filterTreeNode = (input, child) => String(child.props.title).indexOf(input) === 0;
 
   render() {
     const {
@@ -152,11 +151,7 @@ class Demo extends React.Component {
     return (
       <div style={{ margin: 20 }}>
         <h2>tree-select in dialog</h2>
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={this.onClick}
-        >
+        <button type="button" className="btn btn-primary" onClick={this.onClick}>
           show dialog
         </button>
         {visible ? (
@@ -280,7 +275,7 @@ class Demo extends React.Component {
           showCheckedStrategy={SHOW_PARENT}
           onChange={this.onChange}
           onSelect={this.onSelect}
-          maxTagCount={2}
+          maxTagCount="responsive"
           maxTagPlaceholder={valueList => {
             console.log('Max Tag Rest Value:', valueList);
             return `${valueList.length} rest...`;
@@ -368,12 +363,7 @@ class Demo extends React.Component {
           <TreeNode value="" title="parent 1" key="">
             <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-0">
               <TreeNode value="leaf1" title="my leaf" key="random" />
-              <TreeNode
-                value="leaf2"
-                title="your leaf"
-                key="random1"
-                disabled
-              />
+              <TreeNode value="leaf2" title="your leaf" key="random1" disabled />
             </TreeNode>
             <TreeNode value="parent 1-1" title="parent 1-1" key="0-1-1">
               <TreeNode

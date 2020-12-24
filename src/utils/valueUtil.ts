@@ -13,6 +13,8 @@ import {
 import { fillLegacyProps } from './legacyUtil';
 import { SkipType } from '../hooks/useKeyValueMapping';
 
+type CompatibleDataNode = Omit<FlattenDataNode, 'level'>;
+
 export function toArray<T>(value: T | T[]): T[] {
   if (Array.isArray(value)) {
     return value;
@@ -20,7 +22,7 @@ export function toArray<T>(value: T | T[]): T[] {
   return value !== undefined ? [value] : [];
 }
 
-export function findValueOption(values: RawValueType[], options: FlattenDataNode[]): DataNode[] {
+export function findValueOption(values: RawValueType[], options: CompatibleDataNode[]): DataNode[] {
   const optionMap: Map<RawValueType, DataNode> = new Map();
 
   options.forEach(flattenItem => {
@@ -31,7 +33,7 @@ export function findValueOption(values: RawValueType[], options: FlattenDataNode
   return values.map(val => fillLegacyProps(optionMap.get(val)));
 }
 
-export function isValueDisabled(value: RawValueType, options: FlattenDataNode[]): boolean {
+export function isValueDisabled(value: RawValueType, options: CompatibleDataNode[]): boolean {
   const option = findValueOption([value], options)[0];
   if (option) {
     return option.disabled;
