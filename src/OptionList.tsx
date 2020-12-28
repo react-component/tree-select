@@ -192,7 +192,7 @@ const OptionList: React.RefForwardingComponent<
   const activeEntity = getEntityByKey(activeKey);
 
   React.useImperativeHandle(ref, () => ({
-    scrollTo: treeRef.current.scrollTo,
+    scrollTo: treeRef.current?.scrollTo,
     onKeyDown: event => {
       const { which } = event;
       switch (which) {
