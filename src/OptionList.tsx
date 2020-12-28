@@ -3,7 +3,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import useMemo from 'rc-util/lib/hooks/useMemo';
 import { RefOptionListProps } from 'rc-select/lib/OptionList';
 import Tree, { TreeProps } from 'rc-tree';
-import { EventDataNode } from 'rc-tree/lib/interface';
+import { EventDataNode, ScrollTo } from 'rc-tree/lib/interface';
 import { FlattenDataNode, RawValueType, DataNode, TreeDataNode, Key } from './interface';
 import { SelectContext } from './Context';
 import useKeyValueMapping from './hooks/useKeyValueMapping';
@@ -52,10 +52,12 @@ export interface OptionListProps<OptionsType extends object[]> {
   onMouseEnter: () => void;
 }
 
-const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListProps<DataNode[]>> = (
-  props,
-  ref,
-) => {
+type ReviseRefOptionListProps = Omit<RefOptionListProps, 'scrollTo'> & { scrollTo: ScrollTo };
+
+const OptionList: React.RefForwardingComponent<
+  ReviseRefOptionListProps,
+  OptionListProps<DataNode[]>
+> = (props, ref) => {
   const {
     prefixCls,
     height,
@@ -190,6 +192,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   const activeEntity = getEntityByKey(activeKey);
 
   React.useImperativeHandle(ref, () => ({
+    scrollTo: treeRef.current?.scrollTo,
     onKeyDown: event => {
       const { which } = event;
       switch (which) {
@@ -280,7 +283,9 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   );
 };
 
-const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataNode[]>>(OptionList);
+const RefOptionList = React.forwardRef<ReviseRefOptionListProps, OptionListProps<DataNode[]>>(
+  OptionList,
+);
 RefOptionList.displayName = 'OptionList';
 
 export default RefOptionList;
