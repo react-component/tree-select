@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IconType } from 'rc-tree/lib/interface';
-import { Key, LegacyDataNode } from './interface';
+import type { IconType } from 'rc-tree/lib/interface';
+import type { Key, LegacyDataNode } from './interface';
 
 interface ContextProps {
   checkable: boolean | React.ReactNode;

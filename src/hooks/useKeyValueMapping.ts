@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FlattenDataNode, Key, RawValueType } from '../interface';
+import type { FlattenDataNode, Key, RawValueType } from '../interface';
 
 export type SkipType = null | 'select' | 'checkbox';
 

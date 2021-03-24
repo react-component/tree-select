@@ -1,7 +1,7 @@
 import * as React from 'react';
 import toArray from 'rc-util/lib/Children/toArray';
 import warning from 'rc-util/lib/warning';
-import {
+import type {
   DataNode,
   LegacyDataNode,
   ChangeEventExtra,
@@ -36,7 +36,7 @@ export function convertChildrenToData(nodes: React.ReactNode): DataNode[] {
 
       return data;
     })
-    .filter(data => data);
+    .filter((data) => data);
 }
 
 export function fillLegacyProps(dataNode: DataNode): LegacyDataNode {
@@ -79,7 +79,7 @@ export function fillAdditionalInfo(
           const pos = `${level}-${index}`;
           const included = checkedValues.includes(dataNode.value);
           const children = dig(dataNode.children || [], pos, included);
-          const node = <TreeNode {...dataNode}>{children.map(child => child.node)}</TreeNode>;
+          const node = <TreeNode {...dataNode}>{children.map((child) => child.node)}</TreeNode>;
 
           // Link with trigger node
           if (triggerValue === dataNode.value) {
@@ -101,7 +101,7 @@ export function fillAdditionalInfo(
           }
           return null;
         })
-        .filter(node => node);
+        .filter((node) => node);
     }
 
     if (!nodeList) {

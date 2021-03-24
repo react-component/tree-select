@@ -1,10 +1,11 @@
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import useMemo from 'rc-util/lib/hooks/useMemo';
-import { RefOptionListProps } from 'rc-select/lib/OptionList';
-import Tree, { TreeProps } from 'rc-tree';
-import { EventDataNode, ScrollTo } from 'rc-tree/lib/interface';
-import { FlattenDataNode, RawValueType, DataNode, TreeDataNode, Key } from './interface';
+import type { RefOptionListProps } from 'rc-select/lib/OptionList';
+import type { TreeProps } from 'rc-tree';
+import Tree from 'rc-tree';
+import type { EventDataNode, ScrollTo } from 'rc-tree/lib/interface';
+import type { FlattenDataNode, RawValueType, DataNode, TreeDataNode, Key } from './interface';
 import { SelectContext } from './Context';
 import useKeyValueMapping from './hooks/useKeyValueMapping';
 import useKeyValueMap from './hooks/useKeyValueMap';
@@ -106,7 +107,7 @@ const OptionList: React.RefForwardingComponent<
   // ========================== Values ==========================
   const valueKeys = React.useMemo(
     () =>
-      checkedKeys.map(val => {
+      checkedKeys.map((val) => {
         const entity = getEntityByValue(val);
         return entity ? entity.key : null;
       }),
@@ -138,9 +139,7 @@ const OptionList: React.RefForwardingComponent<
     if (!lowerSearchValue) {
       return false;
     }
-    return String(treeNode[treeNodeFilterProp])
-      .toLowerCase()
-      .includes(lowerSearchValue);
+    return String(treeNode[treeNodeFilterProp]).toLowerCase().includes(lowerSearchValue);
   };
 
   // =========================== Keys ===========================
@@ -156,7 +155,7 @@ const OptionList: React.RefForwardingComponent<
 
   React.useEffect(() => {
     if (searchValue) {
-      setSearchExpandedKeys(flattenOptions.map(o => o.key));
+      setSearchExpandedKeys(flattenOptions.map((o) => o.key));
     }
   }, [searchValue]);
 
@@ -170,7 +169,7 @@ const OptionList: React.RefForwardingComponent<
   };
 
   // ========================== Events ==========================
-  const onListMouseDown: React.MouseEventHandler<HTMLDivElement> = event => {
+  const onListMouseDown: React.MouseEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
   };
 
@@ -193,7 +192,7 @@ const OptionList: React.RefForwardingComponent<
 
   React.useImperativeHandle(ref, () => ({
     scrollTo: treeRef.current?.scrollTo,
-    onKeyDown: event => {
+    onKeyDown: (event) => {
       const { which } = event;
       switch (which) {
         // >>> Arrow keys

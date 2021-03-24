@@ -1,5 +1,5 @@
 import warning from 'rc-util/lib/warning';
-import { TreeSelectProps } from '../TreeSelect';
+import type { TreeSelectProps } from '../TreeSelect';
 import { toArray } from './valueUtil';
 
 function warningProps(props: TreeSelectProps) {
@@ -15,17 +15,12 @@ function warningProps(props: TreeSelectProps) {
   warning(!searchPlaceholder, '`searchPlaceholder` has been removed.');
 
   if (treeCheckStrictly && labelInValue === false) {
-    warning(
-      false,
-      '`treeCheckStrictly` will force set `labelInValue` to `true`.',
-    );
+    warning(false, '`treeCheckStrictly` will force set `labelInValue` to `true`.');
   }
 
   if (labelInValue || treeCheckStrictly) {
     warning(
-      toArray(value).every(
-        val => val && typeof val === 'object' && 'value' in val,
-      ),
+      toArray(value).every((val) => val && typeof val === 'object' && 'value' in val),
       'Invalid prop `value` supplied to `TreeSelect`. You should use { label: string, value: string | number } or [{ label: string, value: string | number }] instead.',
     );
   }
@@ -36,10 +31,7 @@ function warningProps(props: TreeSelectProps) {
       '`value` should be an array when `TreeSelect` is checkable or multiple.',
     );
   } else {
-    warning(
-      !Array.isArray(value),
-      '`value` should not be array when `TreeSelect` is single mode.',
-    );
+    warning(!Array.isArray(value), '`value` should not be array when `TreeSelect` is single mode.');
   }
 }
 

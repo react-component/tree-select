@@ -1,7 +1,7 @@
 import { flattenTreeData } from 'rc-tree/lib/utils/treeUtil';
-import { FlattenNode } from 'rc-tree/lib/interface';
-import { FilterFunc } from 'rc-select/lib/interface/generator';
-import {
+import type { FlattenNode } from 'rc-tree/lib/interface';
+import type { FilterFunc } from 'rc-select/lib/interface/generator';
+import type {
   FlattenDataNode,
   Key,
   RawValueType,
@@ -11,7 +11,7 @@ import {
   LegacyDataNode,
 } from '../interface';
 import { fillLegacyProps } from './legacyUtil';
-import { SkipType } from '../hooks/useKeyValueMapping';
+import type { SkipType } from '../hooks/useKeyValueMapping';
 
 type CompatibleDataNode = Omit<FlattenDataNode, 'level'>;
 
@@ -25,12 +25,12 @@ export function toArray<T>(value: T | T[]): T[] {
 export function findValueOption(values: RawValueType[], options: CompatibleDataNode[]): DataNode[] {
   const optionMap: Map<RawValueType, DataNode> = new Map();
 
-  options.forEach(flattenItem => {
+  options.forEach((flattenItem) => {
     const { data } = flattenItem;
     optionMap.set(data.value, data);
   });
 
-  return values.map(val => fillLegacyProps(optionMap.get(val)));
+  return values.map((val) => fillLegacyProps(optionMap.get(val)));
 }
 
 export function isValueDisabled(value: RawValueType, options: CompatibleDataNode[]): boolean {
@@ -68,7 +68,7 @@ function getLevel({ parent }: FlattenNode): number {
 export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
   // Add missing key
   function fillKey(list: DataNode[]): TreeDataNode[] {
-    return (list || []).map(node => {
+    return (list || []).map((node) => {
       const { value, key, children } = node;
 
       const clone = {
@@ -86,7 +86,7 @@ export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
 
   const flattenList = flattenTreeData(fillKey(options), true);
 
-  return flattenList.map(node => ({
+  return flattenList.map((node) => ({
     key: node.data.key,
     data: node.data,
     level: getLevel(node),
@@ -97,9 +97,7 @@ function getDefaultFilterOption(optionFilterProp: string) {
   return (searchValue: string, dataNode: LegacyDataNode) => {
     const value = dataNode[optionFilterProp];
 
-    return String(value)
-      .toLowerCase()
-      .includes(String(searchValue).toLowerCase());
+    return String(value).toLowerCase().includes(String(searchValue).toLowerCase());
   };
 }
 
@@ -128,7 +126,7 @@ export function filterOptions(
 
   function dig(list: DataNode[], keepAll: boolean = false) {
     return list
-      .map(dataNode => {
+      .map((dataNode) => {
         const { children } = dataNode;
 
         const match = keepAll || filterOptionFunc(searchValue, fillLegacyProps(dataNode));
@@ -142,7 +140,7 @@ export function filterOptions(
         }
         return null;
       })
-      .filter(node => node);
+      .filter((node) => node);
   }
 
   return dig(options);
@@ -160,13 +158,13 @@ export function getRawValueLabeled(
 ): LabelValueType[] {
   const valueMap = new Map<RawValueType, LabelValueType>();
 
-  toArray(prevValue).forEach(item => {
+  toArray(prevValue).forEach((item) => {
     if (item && typeof item === 'object' && 'value' in item) {
       valueMap.set(item.value, item);
     }
   });
 
-  return values.map(val => {
+  return values.map((val) => {
     const item: LabelValueType = { value: val };
     const entity = getEntityByValue(val, 'select', true);
     const label = entity ? getLabelProp(entity.data) : val;

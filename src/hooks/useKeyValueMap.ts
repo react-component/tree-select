@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FlattenDataNode, Key, RawValueType } from '../interface';
+import type { FlattenDataNode, Key, RawValueType } from '../interface';
 
 /**
  * Return cached Key Value map with DataNode.

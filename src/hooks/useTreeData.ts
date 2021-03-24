@@ -1,6 +1,6 @@
 import * as React from 'react';
 import warning from 'rc-util/lib/warning';
-import { DataNode, InnerDataNode, SimpleModeConfig, RawValueType } from '../interface';
+import type { DataNode, InnerDataNode, SimpleModeConfig, RawValueType } from '../interface';
 import { convertChildrenToData } from '../utils/legacyUtil';
 
 const MAX_WARNING_TIMES = 10;
@@ -13,7 +13,7 @@ function parseSimpleTreeData(
   const rootNodeList = [];
 
   // Fill in the map
-  const nodeList = treeData.map(node => {
+  const nodeList = treeData.map((node) => {
     const clone = { ...node };
     const key = clone[id];
     keyNodes[key] = clone;
@@ -22,7 +22,7 @@ function parseSimpleTreeData(
   });
 
   // Connect tree
-  nodeList.forEach(node => {
+  nodeList.forEach((node) => {
     const parentKey = node[pId];
     const parent = keyNodes[parentKey];
 
@@ -52,7 +52,7 @@ function formatTreeData(
   const valueSet = new Set<RawValueType>();
 
   function dig(dataNodes: DataNode[]) {
-    return (dataNodes || []).map(node => {
+    return (dataNodes || []).map((node) => {
       const { key, value, children, ...rest } = node;
 
       const mergedValue = 'value' in node ? value : key;

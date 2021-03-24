@@ -1,16 +1,18 @@
 import * as React from 'react';
 import { useMemo } from 'react';
-import generateSelector, { SelectProps, RefSelectProps } from 'rc-select/lib/generate';
+import type { SelectProps, RefSelectProps } from 'rc-select/lib/generate';
+import generateSelector from 'rc-select/lib/generate';
 import { getLabeledValue } from 'rc-select/lib/utils/valueUtil';
 import { convertDataToEntities } from 'rc-tree/lib/utils/treeUtil';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
-import { IconType } from 'rc-tree/lib/interface';
-import { FilterFunc, INTERNAL_PROPS_MARK } from 'rc-select/lib/interface/generator';
+import type { IconType } from 'rc-tree/lib/interface';
+import type { FilterFunc } from 'rc-select/lib/interface/generator';
+import { INTERNAL_PROPS_MARK } from 'rc-select/lib/interface/generator';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import warning from 'rc-util/lib/warning';
 import OptionList from './OptionList';
 import TreeNode from './TreeNode';
-import {
+import type {
   Key,
   DefaultValueType,
   DataNode,
@@ -36,13 +38,8 @@ import { SelectContext } from './Context';
 import useTreeData from './hooks/useTreeData';
 import useKeyValueMap from './hooks/useKeyValueMap';
 import useKeyValueMapping from './hooks/useKeyValueMapping';
-import {
-  CheckedStrategy,
-  formatStrategyKeys,
-  SHOW_ALL,
-  SHOW_PARENT,
-  SHOW_CHILD,
-} from './utils/strategyUtil';
+import type { CheckedStrategy } from './utils/strategyUtil';
+import { formatStrategyKeys, SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './utils/strategyUtil';
 import { fillAdditionalInfo } from './utils/legacyUtil';
 import useSelectValues from './hooks/useSelectValues';
 
@@ -87,7 +84,7 @@ const RefSelect = generateSelector<DataNode[]>({
   findValueOption,
   omitDOMProps: (props: object) => {
     const cloneProps = { ...props };
-    OMIT_PROPS.forEach(prop => {
+    OMIT_PROPS.forEach((prop) => {
       delete cloneProps[prop];
     });
     return cloneProps;
@@ -251,7 +248,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     const existRawValues = [];
 
     // Keep missing value in the cache
-    newRawValues.forEach(val => {
+    newRawValues.forEach((val) => {
       if (getEntityByValue(val)) {
         existRawValues.push(val);
       } else {
@@ -266,7 +263,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     const valueHalfCheckedKeys: RawValueType[] = [];
     const newRawValues: RawValueType[] = [];
 
-    toArray(value).forEach(item => {
+    toArray(value).forEach((item) => {
       if (item && typeof item === 'object' && 'value' in item) {
         if (item.halfChecked && treeCheckStrictly) {
           const entity = getEntityByValue(item.value);
@@ -282,11 +279,11 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     // We need do conduction of values
     if (treeConduction) {
       const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
-      const keyList = existRawValues.map(val => getEntityByValue(val).key);
+      const keyList = existRawValues.map((val) => getEntityByValue(val).key);
 
       const { checkedKeys, halfCheckedKeys } = conductCheck(keyList, true, conductKeyEntities);
       return [
-        [...missingRawValues, ...checkedKeys.map(key => getEntityByKey(key).data.value)],
+        [...missingRawValues, ...checkedKeys.map((key) => getEntityByKey(key).data.value)],
         halfCheckedKeys,
       ];
     }
@@ -311,7 +308,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     if (onChange) {
       let eventValues: RawValueType[] = newRawValues;
       if (treeConduction && showCheckedStrategy !== 'SHOW_ALL') {
-        const keyList = newRawValues.map(val => {
+        const keyList = newRawValues.map((val) => {
           const entity = getEntityByValue(val);
           return entity ? entity.key : val;
         });
@@ -321,7 +318,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
           conductKeyEntities,
         );
 
-        eventValues = formattedKeyList.map(key => {
+        eventValues = formattedKeyList.map((key) => {
           const entity = getEntityByKey(key);
           return entity ? entity.data.value : key;
         });
@@ -339,11 +336,11 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
       // We need fill half check back
       if (treeCheckStrictly) {
         const halfValues = rawHalfCheckedKeys
-          .map(key => {
+          .map((key) => {
             const entity = getEntityByKey(key);
             return entity ? entity.data.value : key;
           })
-          .filter(val => !eventValues.includes(val));
+          .filter((val) => !eventValues.includes(val));
 
         returnValues = [
           ...(returnValues as LabelValueType[]),
@@ -377,7 +374,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
         mergedMultiple ? returnValues : returnValues[0],
         mergedLabelInValue
           ? null
-          : eventValues.map(val => {
+          : eventValues.map((val) => {
               const entity = getEntityByValue(val);
               return entity ? getTreeNodeLabelProp(entity.data) : null;
             }),
@@ -399,11 +396,11 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
       if (treeConduction) {
         // Should keep missing values
         const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
-        const keyList = existRawValues.map(val => getEntityByValue(val).key);
+        const keyList = existRawValues.map((val) => getEntityByValue(val).key);
         const { checkedKeys } = conductCheck(keyList, true, conductKeyEntities);
         newRawValues = [
           ...missingRawValues,
-          ...checkedKeys.map(key => getEntityByKey(key).data.value),
+          ...checkedKeys.map((key) => getEntityByKey(key).data.value),
         ];
       }
 
@@ -427,7 +424,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
     // Remove keys if tree conduction
     if (treeConduction) {
       const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
-      const keyList = existRawValues.map(val => getEntityByValue(val).key);
+      const keyList = existRawValues.map((val) => getEntityByValue(val).key);
       const { checkedKeys } = conductCheck(
         keyList,
         { checked: false, halfCheckedKeys: rawHalfCheckedKeys },
@@ -435,7 +432,7 @@ const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, 
       );
       newRawValues = [
         ...missingRawValues,
-        ...checkedKeys.map(key => getEntityByKey(key).data.value),
+        ...checkedKeys.map((key) => getEntityByKey(key).data.value),
       ];
     }
 
