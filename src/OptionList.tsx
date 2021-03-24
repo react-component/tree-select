@@ -205,7 +205,7 @@ const OptionList: React.RefForwardingComponent<
 
         // >>> Select item
         case KeyCode.ENTER: {
-          if (activeEntity !== null) {
+          if (activeEntity?.data?.selectable !== false) {
             onInternalSelect(null, {
               node: { key: activeKey },
               selected: !checkedKeys.includes(activeEntity.data.value),
