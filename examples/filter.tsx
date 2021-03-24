@@ -24,7 +24,7 @@ class Demo extends React.Component {
     },
   };
 
-  onChange = value => {
+  onChange = (value) => {
     const { simpleTreeData } = this.state;
     if (value.length === 1) {
       // return;
@@ -41,11 +41,13 @@ class Demo extends React.Component {
   onDataChange = () => {
     const { simpleTreeData } = this.state;
     const data = simpleTreeData.slice();
-    data.forEach(i => {
+    data.forEach((i) => {
       if (i.key === 11) {
+        // eslint-disable-next-line no-param-reassign
         delete i.disabled;
       }
       if (i.key === 20) {
+        // eslint-disable-next-line no-param-reassign
         i.disabled = true;
       }
     });
