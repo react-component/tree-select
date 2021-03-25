@@ -174,7 +174,7 @@ describe('TreeSelect.basic', () => {
       { key: '0', value: '0', title: 'label0' },
       { key: '1', value: '1', title: 'label1' },
     ];
-    const createSelect = props => <TreeSelect open treeData={treeData} {...props} />;
+    const createSelect = (props) => <TreeSelect open treeData={treeData} {...props} />;
 
     it('fires change and select event', () => {
       const onChange = jest.fn();
@@ -214,7 +214,7 @@ describe('TreeSelect.basic', () => {
       { key: 'a', value: 'a', title: 'labela' },
       { key: 'b', value: 'b', title: 'labelb' },
     ];
-    const createSelect = props => <TreeSelect open showSearch treeData={treeData} {...props} />;
+    const createSelect = (props) => <TreeSelect open showSearch treeData={treeData} {...props} />;
 
     it('renders search input', () => {
       const wrapper = mount(createSelect());
@@ -229,7 +229,7 @@ describe('TreeSelect.basic', () => {
     });
 
     it('check tree changed by filter', () => {
-      const Wrapper = props => <div>{createSelect(props)}</div>;
+      const Wrapper = (props) => <div>{createSelect(props)}</div>;
       const wrapper = mount(<Wrapper searchValue="a" treeDefaultExpandAll open />);
       expect(wrapper.render()).toMatchSnapshot();
       wrapper.setProps({ searchValue: '' });
@@ -283,10 +283,7 @@ describe('TreeSelect.basic', () => {
       </TreeSelect>,
     );
     wrapper.openSelect();
-    wrapper
-      .find('input')
-      .first()
-      .simulate('keyDown', { which: KeyCode.ESC });
+    wrapper.find('input').first().simulate('keyDown', { which: KeyCode.ESC });
     expect(wrapper.isOpen()).toBeFalsy();
   });
 
@@ -339,7 +336,7 @@ describe('TreeSelect.basic', () => {
           inputValue: '0',
         };
 
-        handleSearch = inputValue => {
+        handleSearch = (inputValue) => {
           this.setState({ inputValue });
         };
 
@@ -363,7 +360,7 @@ describe('TreeSelect.basic', () => {
   });
 
   describe('keyCode', () => {
-    [KeyCode.ENTER, KeyCode.DOWN].forEach(code => {
+    [KeyCode.ENTER, KeyCode.DOWN].forEach((code) => {
       it('open', () => {
         const onFocus = jest.fn();
 
@@ -373,10 +370,7 @@ describe('TreeSelect.basic', () => {
           </TreeSelect>,
         );
 
-        wrapper
-          .find('input')
-          .first()
-          .simulate('keyDown', { which: code });
+        wrapper.find('input').first().simulate('keyDown', { which: code });
         expect(wrapper.isOpen()).toBeTruthy();
       });
     });
@@ -415,18 +409,12 @@ describe('TreeSelect.basic', () => {
       );
 
       function keyDown(code) {
-        wrapper
-          .find('input')
-          .first()
-          .simulate('keyDown', { which: code });
+        wrapper.find('input').first().simulate('keyDown', { which: code });
         wrapper.update();
       }
 
       function keyUp(code) {
-        wrapper
-          .find('input')
-          .first()
-          .simulate('keyUp', { which: code });
+        wrapper.find('input').first().simulate('keyUp', { which: code });
         wrapper.update();
       }
 
@@ -448,6 +436,34 @@ describe('TreeSelect.basic', () => {
       keyDown(KeyCode.ENTER);
       keyUp(KeyCode.ENTER);
       matchValue(['parent', 'child']);
+    });
+
+    it('selectable works with keyboard operations', () => {
+      const onChange = jest.fn();
+      const wrapper = mount(
+        <TreeSelect
+          onChange={onChange}
+          treeDefaultExpandAll
+          treeData={[{ value: 'parent', children: [{ value: 'child', selectable: false }] }]}
+          multiple
+        />,
+      );
+
+      function keyDown(code) {
+        wrapper.find('input').first().simulate('keyDown', { which: code });
+        wrapper.update();
+      }
+
+      wrapper.openSelect();
+
+      keyDown(KeyCode.DOWN);
+      keyDown(KeyCode.ENTER);
+      expect(onChange).toHaveBeenCalledWith(['parent'], expect.anything(), expect.anything());
+      onChange.mockReset();
+
+      keyDown(KeyCode.UP);
+      keyDown(KeyCode.ENTER);
+      expect(onChange).not.toHaveBeenCalled();
     });
   });
 
