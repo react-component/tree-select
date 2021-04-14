@@ -10,7 +10,7 @@
     "paths": {
       "@/*": ["src/*"],
       "@@/*": ["src/.umi/*"],
-      "rc-dialog": ["src/index.ts"]
+      "rc-tree-select": ["src/index.tsx"]
     }
   }
 }
