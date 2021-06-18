@@ -501,27 +501,51 @@ export default function generate(optionList: GenerateConfig<any>['components']['
       selectProps.filterOption = filterTreeNode;
     }
 
+    const selectContext = React.useMemo(
+      () => ({
+        checkable: mergedCheckable,
+        loadData,
+        treeLoadedKeys,
+        onTreeLoad,
+        checkedKeys: rawValues,
+        halfCheckedKeys: rawHalfCheckedKeys,
+        treeDefaultExpandAll,
+        treeExpandedKeys,
+        treeDefaultExpandedKeys,
+        onTreeExpand,
+        treeIcon,
+        treeMotion,
+        showTreeIcon,
+        switcherIcon,
+        treeLine,
+        treeNodeFilterProp,
+        getEntityByKey,
+        getEntityByValue,
+      }),
+      [
+        mergedCheckable,
+        loadData,
+        treeLoadedKeys,
+        onTreeLoad,
+        rawValues,
+        rawHalfCheckedKeys,
+        treeDefaultExpandAll,
+        treeExpandedKeys,
+        treeDefaultExpandedKeys,
+        onTreeExpand,
+        treeIcon,
+        treeMotion,
+        showTreeIcon,
+        switcherIcon,
+        treeLine,
+        treeNodeFilterProp,
+        getEntityByKey,
+        getEntityByValue,
+      ],
+    );
+
     return (
-      <SelectContext.Provider
-        value={{
-          checkable: mergedCheckable,
-          loadData,
-          treeLoadedKeys,
-          onTreeLoad,
-          checkedKeys: rawValues,
-          halfCheckedKeys: rawHalfCheckedKeys,
-          treeDefaultExpandAll,
-          treeExpandedKeys,
-          treeDefaultExpandedKeys,
-          onTreeExpand,
-          treeIcon,
-          treeMotion,
-          showTreeIcon,
-          switcherIcon,
-          treeLine,
-          treeNodeFilterProp,
-        }}
-      >
+      <SelectContext.Provider value={selectContext}>
         <RefSelect
           ref={selectRef}
           mode={mergedMultiple ? 'multiple' : null}
