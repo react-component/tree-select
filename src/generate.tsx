@@ -132,9 +132,14 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
   searchPlaceholder?: React.ReactNode;
 }
 
-export default function generate(optionList: GenerateConfig<any>['components']['optionList']) {
+export default function generate(config: {
+  prefixCls: string;
+  optionList: GenerateConfig<any>['components']['optionList'];
+}) {
+  const { prefixCls, optionList } = config;
+
   const RefSelect = generateSelector<DataNode[]>({
-    prefixCls: 'rc-tree-select',
+    prefixCls,
     components: {
       optionList,
     },

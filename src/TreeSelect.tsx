@@ -1,7 +1,7 @@
 import generate, { TreeSelectProps } from './generate';
 import OptionList from './OptionList';
 
-const TreeSelect = generate(OptionList as any);
+const TreeSelect = generate({ prefixCls: 'rc-tree-select', optionList: OptionList as any });
 
 export { TreeSelectProps };
 
