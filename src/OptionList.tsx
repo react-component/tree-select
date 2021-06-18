@@ -7,8 +7,6 @@ import Tree from 'rc-tree';
 import type { EventDataNode, ScrollTo } from 'rc-tree/lib/interface';
 import type { FlattenDataNode, RawValueType, DataNode, TreeDataNode, Key } from './interface';
 import { SelectContext } from './Context';
-import useKeyValueMapping from './hooks/useKeyValueMapping';
-import useKeyValueMap from './hooks/useKeyValueMap';
 
 const HIDDEN_STYLE = {
   width: 0,
@@ -91,6 +89,9 @@ const OptionList: React.RefForwardingComponent<
     treeLoadedKeys,
     treeMotion,
     onTreeLoad,
+
+    getEntityByKey,
+    getEntityByValue,
   } = React.useContext(SelectContext);
 
   const treeRef = React.useRef<Tree>();
@@ -100,9 +101,6 @@ const OptionList: React.RefForwardingComponent<
     [open, options],
     (prev, next) => next[0] && prev[1] !== next[1],
   );
-
-  const [cacheKeyMap, cacheValueMap] = useKeyValueMap(flattenOptions);
-  const [getEntityByKey, getEntityByValue] = useKeyValueMapping(cacheKeyMap, cacheValueMap);
 
   // ========================== Values ==========================
   const valueKeys = React.useMemo(
@@ -283,9 +281,8 @@ const OptionList: React.RefForwardingComponent<
   );
 };
 
-const RefOptionList = React.forwardRef<ReviseRefOptionListProps, OptionListProps<DataNode[]>>(
-  OptionList,
-);
+const RefOptionList =
+  React.forwardRef<ReviseRefOptionListProps, OptionListProps<DataNode[]>>(OptionList);
 RefOptionList.displayName = 'OptionList';
 
 export default RefOptionList;
