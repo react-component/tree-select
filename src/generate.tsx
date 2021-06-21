@@ -162,6 +162,9 @@ export default function generate(config: {
 
   RefSelect.displayName = 'Select';
 
+  // =================================================================================
+  // =                                      Tree                                     =
+  // =================================================================================
   const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, ref) => {
     const {
       multiple,
@@ -198,15 +201,6 @@ export default function generate(config: {
     const treeConduction = treeCheckable && !treeCheckStrictly;
     const mergedLabelInValue = treeCheckStrictly || labelInValue;
 
-    // ========================== Ref ==========================
-    const selectRef = React.useRef<RefSelectProps>(null);
-
-    React.useImperativeHandle(ref, () => ({
-      scrollTo: selectRef.current.scrollTo,
-      focus: selectRef.current.focus,
-      blur: selectRef.current.blur,
-    }));
-
     // ======================= Tree Data =======================
     // Legacy both support `label` or `title` if not set.
     // We have to fallback to function to handle this
@@ -241,6 +235,18 @@ export default function generate(config: {
       }
       return { keyEntities: null };
     }, [mergedTreeData, treeCheckable, treeCheckStrictly]);
+
+    // ========================== Ref ==========================
+    const selectRef = React.useRef<RefSelectProps>(null);
+
+    React.useImperativeHandle(ref, () => ({
+      scrollTo: selectRef.current.scrollTo,
+      focus: selectRef.current.focus,
+      blur: selectRef.current.blur,
+
+      /** @private Internal usage. It's save to remove if `rc-cascader` not use it any longer */
+      getEntityByValue,
+    }));
 
     // ========================= Value =========================
     const [value, setValue] = useMergedState<DefaultValueType>(props.defaultValue, {
@@ -569,32 +575,24 @@ export default function generate(config: {
     );
   });
 
-  // Use class component since typescript not support generic
-  // by `forwardRef` with function component yet.
-  return class TreeSelect<ValueType = DefaultValueType> extends React.Component<
-    TreeSelectProps<ValueType>,
-    {}
-  > {
-    static TreeNode = TreeNode;
-
-    static SHOW_ALL: typeof SHOW_ALL = SHOW_ALL;
-
-    static SHOW_PARENT: typeof SHOW_PARENT = SHOW_PARENT;
-
-    static SHOW_CHILD: typeof SHOW_CHILD = SHOW_CHILD;
-
-    selectRef = React.createRef<RefSelectProps>();
-
-    focus = () => {
-      this.selectRef.current.focus();
-    };
-
-    blur = () => {
-      this.selectRef.current.blur();
-    };
-
-    render() {
-      return <RefTreeSelect ref={this.selectRef} {...this.props} />;
-    }
+  // =================================================================================
+  // =                                    Generic                                    =
+  // =================================================================================
+  const TreeSelect = RefTreeSelect as any as (<ValueType = DefaultValueType>(
+    props: React.PropsWithChildren<TreeSelectProps<ValueType>> & {
+      ref?: React.Ref<RefSelectProps>;
+    },
+  ) => React.ReactElement) & {
+    TreeNode: typeof TreeNode;
+    SHOW_ALL: typeof SHOW_ALL;
+    SHOW_PARENT: typeof SHOW_PARENT;
+    SHOW_CHILD: typeof SHOW_CHILD;
   };
+
+  TreeSelect.TreeNode = TreeNode;
+  TreeSelect.SHOW_ALL = SHOW_ALL;
+  TreeSelect.SHOW_PARENT = SHOW_PARENT;
+  TreeSelect.SHOW_CHILD = SHOW_CHILD;
+
+  return TreeSelect;
 }

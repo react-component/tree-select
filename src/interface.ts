@@ -50,6 +50,7 @@ export interface FlattenDataNode {
   data: DataNode;
   key: Key;
   level: number;
+  parent?: FlattenDataNode;
 }
 
 export interface SimpleModeConfig {

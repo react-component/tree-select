@@ -86,11 +86,32 @@ export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
 
   const flattenList = flattenTreeData(fillKey(options), true);
 
-  return flattenList.map((node) => ({
-    key: node.data.key,
-    data: node.data,
-    level: getLevel(node),
-  }));
+  const cacheMap = new Map<React.Key, FlattenDataNode>();
+  const flattenDateNodeList: (FlattenDataNode & { parentKey?: React.Key })[] = flattenList.map(
+    (node) => {
+      const { data } = node;
+      const { key } = data;
+
+      const flattenNode = {
+        key,
+        data,
+        level: getLevel(node),
+        parentKey: node.parent?.data.key,
+      };
+
+      cacheMap.set(key, flattenNode);
+
+      return flattenNode;
+    },
+  );
+
+  // Fill parent
+  flattenDateNodeList.forEach((flattenNode) => {
+    // eslint-disable-next-line no-param-reassign
+    flattenNode.parent = cacheMap.get(flattenNode.parentKey);
+  });
+
+  return flattenDateNodeList;
 }
 
 function getDefaultFilterOption(optionFilterProp: string) {
