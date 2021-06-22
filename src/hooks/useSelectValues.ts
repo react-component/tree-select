@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { DefaultValueType } from 'rc-select/lib/interface/generator';
 import type { DataEntity } from 'rc-tree/lib/interface';
-import type { RawValueType, FlattenDataNode, Key, LabelValueType, DataNode } from '../interface';
+import type { RawValueType, FlattenDataNode, Key, LabelValueType } from '../interface';
 import type { SkipType } from './useKeyValueMapping';
 import { getRawValueLabeled } from '../utils/valueUtil';
 import type { CheckedStrategy } from '../utils/strategyUtil';
@@ -19,7 +19,7 @@ interface Config {
     skipType?: SkipType,
     ignoreDisabledCheck?: boolean,
   ) => FlattenDataNode;
-  getLabelProp: (node: DataNode) => React.ReactNode;
+  getLabelProp: (entity: FlattenDataNode) => React.ReactNode;
 }
 
 /** Return  */
@@ -40,7 +40,7 @@ export default function useSelectValues(
 
     if (treeConduction) {
       const rawKeys = formatStrategyKeys(
-        rawValues.map((val) => {
+        rawValues.map(val => {
           const entity = getEntityByValue(val);
           return entity ? entity.key : val;
         }),
@@ -48,7 +48,7 @@ export default function useSelectValues(
         conductKeyEntities,
       );
 
-      mergedRawValues = rawKeys.map((key) => {
+      mergedRawValues = rawKeys.map(key => {
         const entity = getEntityByKey(key);
         return entity ? entity.data.value : key;
       });

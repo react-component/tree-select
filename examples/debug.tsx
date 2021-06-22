@@ -25,6 +25,17 @@ class Demo extends React.Component {
         allowClear
         treeDefaultExpandAll
         onChange={this.onChange}
+        labelRender={entity => {
+          let current = entity;
+          const nodes = [];
+
+          while (current) {
+            nodes.unshift(current.data.title);
+            current = current.parent;
+          }
+
+          return nodes.join('>');
+        }}
       >
         <TreeNode value="parent 1" title="parent 1" key="0-1">
           <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
@@ -32,11 +43,7 @@ class Demo extends React.Component {
             <TreeNode value="leaf2" title="your leaf" key="random1" />
           </TreeNode>
           <TreeNode value="parent 1-1" title="parent 1-1" key="random2">
-            <TreeNode
-              value="sss"
-              title={<b style={{ color: '#08c' }}>sss</b>}
-              key="random3"
-            />
+            <TreeNode value="sss" title={<b style={{ color: '#08c' }}>sss</b>} key="random3" />
           </TreeNode>
         </TreeNode>
       </TreeSelect>
