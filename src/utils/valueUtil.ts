@@ -25,12 +25,12 @@ export function toArray<T>(value: T | T[]): T[] {
 export function findValueOption(values: RawValueType[], options: CompatibleDataNode[]): DataNode[] {
   const optionMap: Map<RawValueType, DataNode> = new Map();
 
-  options.forEach((flattenItem) => {
+  options.forEach(flattenItem => {
     const { data } = flattenItem;
     optionMap.set(data.value, data);
   });
 
-  return values.map((val) => fillLegacyProps(optionMap.get(val)));
+  return values.map(val => fillLegacyProps(optionMap.get(val)));
 }
 
 export function isValueDisabled(value: RawValueType, options: CompatibleDataNode[]): boolean {
@@ -68,7 +68,7 @@ function getLevel({ parent }: FlattenNode): number {
 export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
   // Add missing key
   function fillKey(list: DataNode[]): TreeDataNode[] {
-    return (list || []).map((node) => {
+    return (list || []).map(node => {
       const { value, key, children } = node;
 
       const clone = {
@@ -88,7 +88,7 @@ export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
 
   const cacheMap = new Map<React.Key, FlattenDataNode>();
   const flattenDateNodeList: (FlattenDataNode & { parentKey?: React.Key })[] = flattenList.map(
-    (node) => {
+    node => {
       const { data } = node;
       const { key } = data;
 
@@ -106,7 +106,7 @@ export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
   );
 
   // Fill parent
-  flattenDateNodeList.forEach((flattenNode) => {
+  flattenDateNodeList.forEach(flattenNode => {
     // eslint-disable-next-line no-param-reassign
     flattenNode.parent = cacheMap.get(flattenNode.parentKey);
   });
@@ -147,7 +147,7 @@ export function filterOptions(
 
   function dig(list: DataNode[], keepAll: boolean = false) {
     return list
-      .map((dataNode) => {
+      .map(dataNode => {
         const { children } = dataNode;
 
         const match = keepAll || filterOptionFunc(searchValue, fillLegacyProps(dataNode));
@@ -161,7 +161,7 @@ export function filterOptions(
         }
         return null;
       })
-      .filter((node) => node);
+      .filter(node => node);
   }
 
   return dig(options);
@@ -175,20 +175,20 @@ export function getRawValueLabeled(
     skipType?: SkipType,
     ignoreDisabledCheck?: boolean,
   ) => FlattenDataNode,
-  getLabelProp: (node: DataNode) => React.ReactNode,
+  getLabelProp: (entity: FlattenDataNode) => React.ReactNode,
 ): LabelValueType[] {
   const valueMap = new Map<RawValueType, LabelValueType>();
 
-  toArray(prevValue).forEach((item) => {
+  toArray(prevValue).forEach(item => {
     if (item && typeof item === 'object' && 'value' in item) {
       valueMap.set(item.value, item);
     }
   });
 
-  return values.map((val) => {
+  return values.map(val => {
     const item: LabelValueType = { value: val };
     const entity = getEntityByValue(val, 'select', true);
-    const label = entity ? getLabelProp(entity.data) : val;
+    const label = entity ? getLabelProp(entity) : val;
 
     if (valueMap.has(val)) {
       const labeledValue = valueMap.get(val);

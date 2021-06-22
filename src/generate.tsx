@@ -21,6 +21,7 @@ import type {
   ChangeEventExtra,
   LegacyDataNode,
   SelectSource,
+  FlattenDataNode,
 } from './interface';
 import {
   flattenOptions,
@@ -130,6 +131,9 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
   // Legacy
   /** `searchPlaceholder` has been removed since search box has been merged into input box */
   searchPlaceholder?: React.ReactNode;
+
+  /** @private This is not standard API since we only used in `rc-cascader`. Do not use in your production */
+  labelRender?: (entity: FlattenDataNode) => React.ReactNode;
 }
 
 export default function generate(config: {
@@ -153,7 +157,7 @@ export default function generate(config: {
     findValueOption,
     omitDOMProps: (props: object) => {
       const cloneProps = { ...props };
-      OMIT_PROPS.forEach((prop) => {
+      OMIT_PROPS.forEach(prop => {
         delete cloneProps[prop];
       });
       return cloneProps;
@@ -195,6 +199,7 @@ export default function generate(config: {
       onDropdownVisibleChange,
       onSelect,
       onDeselect,
+      labelRender,
     } = props;
     const mergedCheckable: React.ReactNode | boolean = treeCheckable || treeCheckStrictly;
     const mergedMultiple = multiple || mergedCheckable;
@@ -211,7 +216,13 @@ export default function generate(config: {
       return node.label || node.title;
     };
 
-    const getTreeNodeLabelProp = (node: DataNode): React.ReactNode => {
+    const getTreeNodeLabelProp = (entity: FlattenDataNode): React.ReactNode => {
+      const node = entity.data;
+
+      if (labelRender) {
+        return labelRender(entity);
+      }
+
       if (treeNodeLabelProp) {
         return node[treeNodeLabelProp];
       }
@@ -259,7 +270,7 @@ export default function generate(config: {
       const existRawValues = [];
 
       // Keep missing value in the cache
-      newRawValues.forEach((val) => {
+      newRawValues.forEach(val => {
         if (getEntityByValue(val)) {
           existRawValues.push(val);
         } else {
@@ -274,7 +285,7 @@ export default function generate(config: {
       const valueHalfCheckedKeys: RawValueType[] = [];
       const newRawValues: RawValueType[] = [];
 
-      toArray(value).forEach((item) => {
+      toArray(value).forEach(item => {
         if (item && typeof item === 'object' && 'value' in item) {
           if (item.halfChecked && treeCheckStrictly) {
             const entity = getEntityByValue(item.value);
@@ -290,11 +301,11 @@ export default function generate(config: {
       // We need do conduction of values
       if (treeConduction) {
         const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
-        const keyList = existRawValues.map((val) => getEntityByValue(val).key);
+        const keyList = existRawValues.map(val => getEntityByValue(val).key);
 
         const { checkedKeys, halfCheckedKeys } = conductCheck(keyList, true, conductKeyEntities);
         return [
-          [...missingRawValues, ...checkedKeys.map((key) => getEntityByKey(key).data.value)],
+          [...missingRawValues, ...checkedKeys.map(key => getEntityByKey(key).data.value)],
           halfCheckedKeys,
         ];
       }
@@ -319,7 +330,7 @@ export default function generate(config: {
       if (onChange) {
         let eventValues: RawValueType[] = newRawValues;
         if (treeConduction && showCheckedStrategy !== 'SHOW_ALL') {
-          const keyList = newRawValues.map((val) => {
+          const keyList = newRawValues.map(val => {
             const entity = getEntityByValue(val);
             return entity ? entity.key : val;
           });
@@ -329,7 +340,7 @@ export default function generate(config: {
             conductKeyEntities,
           );
 
-          eventValues = formattedKeyList.map((key) => {
+          eventValues = formattedKeyList.map(key => {
             const entity = getEntityByKey(key);
             return entity ? entity.data.value : key;
           });
@@ -347,11 +358,11 @@ export default function generate(config: {
         // We need fill half check back
         if (treeCheckStrictly) {
           const halfValues = rawHalfCheckedKeys
-            .map((key) => {
+            .map(key => {
               const entity = getEntityByKey(key);
               return entity ? entity.data.value : key;
             })
-            .filter((val) => !eventValues.includes(val));
+            .filter(val => !eventValues.includes(val));
 
           returnValues = [
             ...(returnValues as LabelValueType[]),
@@ -391,9 +402,9 @@ export default function generate(config: {
           mergedMultiple ? returnValues : returnValues[0],
           mergedLabelInValue
             ? null
-            : eventValues.map((val) => {
+            : eventValues.map(val => {
                 const entity = getEntityByValue(val);
-                return entity ? getTreeNodeLabelProp(entity.data) : null;
+                return entity ? getTreeNodeLabelProp(entity) : null;
               }),
           additionalInfo,
         );
@@ -417,11 +428,11 @@ export default function generate(config: {
         if (treeConduction) {
           // Should keep missing values
           const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
-          const keyList = existRawValues.map((val) => getEntityByValue(val).key);
+          const keyList = existRawValues.map(val => getEntityByValue(val).key);
           const { checkedKeys } = conductCheck(keyList, true, conductKeyEntities);
           newRawValues = [
             ...missingRawValues,
-            ...checkedKeys.map((key) => getEntityByKey(key).data.value),
+            ...checkedKeys.map(key => getEntityByKey(key).data.value),
           ];
         }
 
@@ -445,7 +456,7 @@ export default function generate(config: {
       // Remove keys if tree conduction
       if (treeConduction) {
         const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
-        const keyList = existRawValues.map((val) => getEntityByValue(val).key);
+        const keyList = existRawValues.map(val => getEntityByValue(val).key);
         const { checkedKeys } = conductCheck(
           keyList,
           { checked: false, halfCheckedKeys: rawHalfCheckedKeys },
@@ -453,7 +464,7 @@ export default function generate(config: {
         );
         newRawValues = [
           ...missingRawValues,
-          ...checkedKeys.map((key) => getEntityByKey(key).data.value),
+          ...checkedKeys.map(key => getEntityByKey(key).data.value),
         ];
       }
 
