@@ -81,3 +81,9 @@ export interface ChangeEventExtra {
   /** @deprecated This prop not work as react node anymore. */
   allCheckedNodes: LegacyCheckedNode[];
 }
+
+export interface FieldNames {
+  value?: string;
+  label?: string;
+  children?: string;
+}

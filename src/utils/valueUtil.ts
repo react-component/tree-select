@@ -9,6 +9,7 @@ import type {
   DefaultValueType,
   LabelValueType,
   LegacyDataNode,
+  FieldNames,
 } from '../interface';
 import { fillLegacyProps } from './legacyUtil';
 import type { SkipType } from '../hooks/useKeyValueMapping';
@@ -20,6 +21,16 @@ export function toArray<T>(value: T | T[]): T[] {
     return value;
   }
   return value !== undefined ? [value] : [];
+}
+
+export function fillFieldNames(fieldNames?: FieldNames) {
+  const { label, value, children } = fieldNames || {};
+
+  return {
+    label: label || 'label',
+    value: value || 'value',
+    children: children || 'children',
+  };
 }
 
 export function findValueOption(values: RawValueType[], options: CompatibleDataNode[]): DataNode[] {
@@ -65,11 +76,22 @@ function getLevel({ parent }: FlattenNode): number {
 /**
  * Before reuse `rc-tree` logic, we need to add key since TreeSelect use `value` instead of `key`.
  */
-export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
+export function flattenOptions(
+  options: DataNode[],
+  { fieldNames }: { fieldNames?: FieldNames } = {},
+): FlattenDataNode[] {
+  const {
+    label: fieldLabel,
+    value: fieldValue,
+    children: fieldChildren,
+  } = fillFieldNames(fieldNames);
+
   // Add missing key
   function fillKey(list: DataNode[]): TreeDataNode[] {
     return (list || []).map(node => {
-      const { value, key, children } = node;
+      const { key } = node;
+      const value = node[fieldValue];
+      const children = node[fieldChildren];
 
       const clone = {
         ...node,
@@ -84,7 +106,11 @@ export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
     });
   }
 
-  const flattenList = flattenTreeData(fillKey(options), true);
+  const flattenList = flattenTreeData(fillKey(options), true, {
+    title: fieldLabel,
+    key: fieldValue,
+    children: fieldChildren,
+  });
 
   const cacheMap = new Map<React.Key, FlattenDataNode>();
   const flattenDateNodeList: (FlattenDataNode & { parentKey?: React.Key })[] = flattenList.map(
@@ -96,6 +122,8 @@ export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
         key,
         data,
         level: getLevel(node),
+        label: data[fieldLabel],
+        value: data[fieldValue],
         parentKey: node.parent?.data.key,
       };
 

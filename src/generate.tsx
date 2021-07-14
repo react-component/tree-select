@@ -6,6 +6,7 @@ import { getLabeledValue } from 'rc-select/lib/utils/valueUtil';
 import { convertDataToEntities } from 'rc-tree/lib/utils/treeUtil';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 import type { IconType } from 'rc-tree/lib/interface';
+import omit from 'rc-util/lib/omit';
 import type { FilterFunc } from 'rc-select/lib/interface/generator';
 import { INTERNAL_PROPS_MARK } from 'rc-select/lib/interface/generator';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
@@ -22,6 +23,7 @@ import type {
   LegacyDataNode,
   SelectSource,
   FlattenDataNode,
+  FieldNames,
 } from './interface';
 import {
   flattenOptions,
@@ -43,8 +45,8 @@ import { formatStrategyKeys, SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './utils/s
 import { fillAdditionalInfo } from './utils/legacyUtil';
 import useSelectValues from './hooks/useSelectValues';
 
-const OMIT_PROPS = [
-  'expandedKeys',
+const OMIT_PROPS: (keyof TreeSelectProps)[] = [
+  'expandedKeys' as any,
   'treeData',
   'treeCheckable',
   'showCheckedStrategy',
@@ -63,6 +65,7 @@ const OMIT_PROPS = [
   'treeMotion',
   'onTreeExpand',
   'onTreeLoad',
+  'labelRender',
   'loadData',
   'treeDataSimpleMode',
   'treeNodeLabelProp',
@@ -81,6 +84,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
     | 'optionLabelProp'
     | 'tokenSeparators'
     | 'filterOption'
+    | 'fieldNames'
   > {
   multiple?: boolean;
   showArrow?: boolean;
@@ -99,6 +103,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
 
   maxTagPlaceholder?: (omittedValues: LabelValueType[]) => React.ReactNode;
 
+  fieldNames?: FieldNames;
   loadData?: (dataNode: LegacyDataNode) => Promise<unknown>;
   treeNodeFilterProp?: string;
   treeNodeLabelProp?: string;
@@ -155,13 +160,7 @@ export default function generate(config: {
     filterOptions,
     isValueDisabled,
     findValueOption,
-    omitDOMProps: (props: object) => {
-      const cloneProps = { ...props };
-      OMIT_PROPS.forEach(prop => {
-        delete cloneProps[prop];
-      });
-      return cloneProps;
-    },
+    omitDOMProps: (props: TreeSelectProps<any>) => omit(props, OMIT_PROPS),
   });
 
   RefSelect.displayName = 'Select';

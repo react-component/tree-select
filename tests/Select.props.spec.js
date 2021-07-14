@@ -182,7 +182,7 @@ describe('TreeSelect.props', () => {
 
   // onChange - is already test above
 
-  it('onSelect', () => {
+  it.only('onSelect', () => {
     const handleSelect = jest.fn();
     const wrapper = mount(
       createOpenSelect({
@@ -239,12 +239,9 @@ describe('TreeSelect.props', () => {
         dropdownStyle: style,
       }),
     );
-    expect(
-      wrapper
-        .find('.test-dropdownClassName')
-        .first()
-        .props().style,
-    ).toEqual(expect.objectContaining(style));
+    expect(wrapper.find('.test-dropdownClassName').first().props().style).toEqual(
+      expect.objectContaining(style),
+    );
   });
 
   it('notFoundContent', () => {
@@ -449,12 +446,7 @@ describe('TreeSelect.props', () => {
   it('getPopupContainer', () => {
     const getPopupContainer = trigger => trigger.parentNode;
     const wrapper = mount(createOpenSelect({ getPopupContainer }));
-    expect(
-      wrapper
-        .find('Trigger')
-        .first()
-        .props().getPopupContainer,
-    ).toBe(getPopupContainer);
+    expect(wrapper.find('Trigger').first().props().getPopupContainer).toBe(getPopupContainer);
   });
 
   it('set value not in the Tree', () => {
