@@ -6,6 +6,7 @@ import TreeSelect from '../src';
 export default () => {
   return (
     <TreeSelect
+      treeDefaultExpandAll
       treeData={[
         {
           myLabel: 'Parent',

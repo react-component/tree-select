@@ -76,22 +76,11 @@ function getLevel({ parent }: FlattenNode): number {
 /**
  * Before reuse `rc-tree` logic, we need to add key since TreeSelect use `value` instead of `key`.
  */
-export function flattenOptions(
-  options: DataNode[],
-  { fieldNames }: { fieldNames?: FieldNames } = {},
-): FlattenDataNode[] {
-  const {
-    label: fieldLabel,
-    value: fieldValue,
-    children: fieldChildren,
-  } = fillFieldNames(fieldNames);
-
+export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
   // Add missing key
   function fillKey(list: DataNode[]): TreeDataNode[] {
     return (list || []).map(node => {
-      const { key } = node;
-      const value = node[fieldValue];
-      const children = node[fieldChildren];
+      const { value, key, children } = node;
 
       const clone = {
         ...node,
@@ -106,11 +95,7 @@ export function flattenOptions(
     });
   }
 
-  const flattenList = flattenTreeData(fillKey(options), true, {
-    title: fieldLabel,
-    key: fieldValue,
-    children: fieldChildren,
-  });
+  const flattenList = flattenTreeData(fillKey(options), true, null);
 
   const cacheMap = new Map<React.Key, FlattenDataNode>();
   const flattenDateNodeList: (FlattenDataNode & { parentKey?: React.Key })[] = flattenList.map(
@@ -122,8 +107,6 @@ export function flattenOptions(
         key,
         data,
         level: getLevel(node),
-        label: data[fieldLabel],
-        value: data[fieldValue],
         parentKey: node.parent?.data.key,
       };
 

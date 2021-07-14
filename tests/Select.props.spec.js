@@ -182,7 +182,7 @@ describe('TreeSelect.props', () => {
 
   // onChange - is already test above
 
-  it.only('onSelect', () => {
+  it('onSelect', () => {
     const handleSelect = jest.fn();
     const wrapper = mount(
       createOpenSelect({

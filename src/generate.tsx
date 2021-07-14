@@ -34,6 +34,7 @@ import {
   removeValue,
   getRawValueLabeled,
   toArray,
+  fillFieldNames,
 } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
 import { SelectContext } from './Context';
@@ -170,6 +171,7 @@ export default function generate(config: {
   // =================================================================================
   const RefTreeSelect = React.forwardRef<RefSelectProps, TreeSelectProps>((props, ref) => {
     const {
+      fieldNames,
       multiple,
       treeCheckable,
       treeCheckStrictly,
@@ -206,12 +208,20 @@ export default function generate(config: {
     const mergedLabelInValue = treeCheckStrictly || labelInValue;
 
     // ======================= Tree Data =======================
+    // FieldNames
+    const mergedFieldNames = fillFieldNames(fieldNames);
+
     // Legacy both support `label` or `title` if not set.
     // We have to fallback to function to handle this
     const getTreeNodeTitle = (node: DataNode): React.ReactNode => {
       if (!treeData) {
         return node.title;
       }
+
+      if (fieldNames?.label) {
+        return node[fieldNames.label];
+      }
+
       return node.label || node.title;
     };
 
@@ -232,6 +242,7 @@ export default function generate(config: {
     const mergedTreeData = useTreeData(treeData, children, {
       getLabelProp: getTreeNodeTitle,
       simpleMode: treeDataSimpleMode,
+      fieldNames: mergedFieldNames,
     });
 
     const flattedOptions = useMemo(() => flattenOptions(mergedTreeData), [mergedTreeData]);
