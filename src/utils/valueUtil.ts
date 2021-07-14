@@ -101,10 +101,11 @@ export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
   const flattenDateNodeList: (FlattenDataNode & { parentKey?: React.Key })[] = flattenList.map(
     node => {
       const { data } = node;
-      const { key } = data;
+      const { key, value } = data as DataNode & { value: RawValueType };
 
       const flattenNode = {
         key,
+        value,
         data,
         level: getLevel(node),
         parentKey: node.parent?.data.key,
