@@ -414,7 +414,7 @@ export default function generate(config: {
             ? null
             : eventValues.map(val => {
                 const entity = getEntityByValue(val);
-                return entity ? getTreeNodeLabelProp(entity) : null;
+                return entity ? entity.data.title : null;
               }),
           additionalInfo,
         );

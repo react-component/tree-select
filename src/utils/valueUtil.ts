@@ -38,8 +38,8 @@ export function findValueOption(values: RawValueType[], options: CompatibleDataN
   const optionMap: Map<RawValueType, DataNode> = new Map();
 
   options.forEach(flattenItem => {
-    const { data } = flattenItem;
-    optionMap.set(data.value, data.node);
+    const { data, value } = flattenItem;
+    optionMap.set(value, data.node);
   });
 
   return values.map(val => fillLegacyProps(optionMap.get(val)));
