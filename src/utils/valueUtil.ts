@@ -10,6 +10,7 @@ import type {
   LabelValueType,
   LegacyDataNode,
   FieldNames,
+  InternalDataEntity,
 } from '../interface';
 import { fillLegacyProps } from './legacyUtil';
 import type { SkipType } from '../hooks/useKeyValueMapping';
@@ -38,7 +39,7 @@ export function findValueOption(values: RawValueType[], options: CompatibleDataN
 
   options.forEach(flattenItem => {
     const { data } = flattenItem;
-    optionMap.set(data.value, data);
+    optionMap.set(data.value, data.node);
   });
 
   return values.map(val => fillLegacyProps(optionMap.get(val)));
@@ -57,8 +58,9 @@ export function isCheckDisabled(node: DataNode) {
   return node.disabled || node.disableCheckbox || node.checkable === false;
 }
 
-interface TreeDataNode {
+interface TreeDataNode extends InternalDataEntity {
   key: Key;
+  children?: TreeDataNode[];
 }
 
 function getLevel({ parent }: FlattenNode): number {
@@ -76,13 +78,15 @@ function getLevel({ parent }: FlattenNode): number {
 /**
  * Before reuse `rc-tree` logic, we need to add key since TreeSelect use `value` instead of `key`.
  */
-export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
+export function flattenOptions(options: any): FlattenDataNode[] {
+  const typedOptions = options as InternalDataEntity[];
+
   // Add missing key
-  function fillKey(list: DataNode[]): TreeDataNode[] {
+  function fillKey(list: InternalDataEntity[]): TreeDataNode[] {
     return (list || []).map(node => {
       const { value, key, children } = node;
 
-      const clone = {
+      const clone: TreeDataNode = {
         ...node,
         key: 'key' in node ? key : value,
       };
@@ -95,20 +99,22 @@ export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
     });
   }
 
-  const flattenList = flattenTreeData(fillKey(options), true, null);
+  const flattenList = flattenTreeData(fillKey(typedOptions), true, null);
 
   const cacheMap = new Map<React.Key, FlattenDataNode>();
   const flattenDateNodeList: (FlattenDataNode & { parentKey?: React.Key })[] = flattenList.map(
-    node => {
-      const { data } = node;
-      const { key, value } = data as DataNode & { value: RawValueType };
+    option => {
+      const { data, key, value } = option as any as Omit<FlattenNode, 'data'> & {
+        value: RawValueType;
+        data: InternalDataEntity;
+      };
 
       const flattenNode = {
         key,
         value,
         data,
-        level: getLevel(node),
-        parentKey: node.parent?.data.key,
+        level: getLevel(option),
+        parentKey: option.parent?.data.key,
       };
 
       cacheMap.set(key, flattenNode);

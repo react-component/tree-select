@@ -30,11 +30,14 @@ export interface DataNode {
   [prop: string]: any;
 }
 
-export interface InnerDataNode extends DataNode {
+export interface InternalDataEntity {
   key: Key;
   value: RawValueType;
-  label?: React.ReactNode;
-  children?: InnerDataNode[];
+  title?: React.ReactNode;
+  children?: InternalDataEntity[];
+
+  /** Origin DataNode */
+  node: DataNode;
 }
 
 export interface LegacyDataNode extends DataNode {
@@ -47,8 +50,9 @@ export interface TreeDataNode extends DataNode {
 }
 
 export interface FlattenDataNode {
-  data: DataNode;
+  data: InternalDataEntity;
   key: Key;
+  value: RawValueType;
   level: number;
   parent?: FlattenDataNode;
 }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import warning from 'rc-util/lib/warning';
 import type {
   DataNode,
-  InnerDataNode,
+  InternalDataEntity,
   SimpleModeConfig,
   RawValueType,
   FieldNames,
@@ -54,7 +54,7 @@ function formatTreeData(
   treeData: DataNode[],
   getLabelProp: (node: DataNode) => React.ReactNode,
   fieldNames: FieldNames,
-): InnerDataNode[] {
+): InternalDataEntity[] {
   let warningTimes = 0;
   const valueSet = new Set<RawValueType>();
 
@@ -63,16 +63,16 @@ function formatTreeData(
 
   function dig(dataNodes: DataNode[]) {
     return (dataNodes || []).map(node => {
-      const { key, children, ...rest } = node;
+      const { key } = node;
 
       const value = node[fieldValue];
       const mergedValue = fieldValue in node ? value : key;
 
-      const dataNode: InnerDataNode = {
-        ...rest,
+      const dataNode: InternalDataEntity = {
         key: key !== null && key !== undefined ? key : mergedValue,
         value: mergedValue,
         title: getLabelProp(node),
+        node,
       };
 
       // Check `key` & `value` and warning user
@@ -122,11 +122,11 @@ export default function useTreeData(
     simpleMode: boolean | SimpleModeConfig;
     fieldNames: FieldNames;
   },
-): InnerDataNode[] {
+): InternalDataEntity[] {
   const cacheRef = React.useRef<{
     treeData?: DataNode[];
     children?: React.ReactNode;
-    formatTreeData?: InnerDataNode[];
+    formatTreeData?: InternalDataEntity[];
   }>({});
 
   if (treeData) {
