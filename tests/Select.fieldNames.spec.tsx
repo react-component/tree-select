@@ -42,4 +42,48 @@ describe('TreeSelect.FieldNames', () => {
 
     expect(onChange).toHaveBeenCalledWith('sub_1', ['Sub 1'], expect.anything());
   });
+
+  it('labelInValue', () => {
+    const onChange = jest.fn();
+    const wrapper = mountTreeSelect({ onChange, open: true, labelInValue: true });
+    wrapper.selectNode(2);
+
+    expect(onChange).toHaveBeenCalledWith(
+      { label: 'Sub 2', value: 'sub_2' },
+      null,
+      expect.anything(),
+    );
+  });
+
+  it('multiple', () => {
+    const onChange = jest.fn();
+    const wrapper = mountTreeSelect({ onChange, open: true, multiple: true });
+
+    wrapper.selectNode(1);
+
+    onChange.mockReset();
+    wrapper.selectNode(2);
+
+    expect(onChange).toHaveBeenCalledWith(
+      ['sub_1', 'sub_2'],
+      ['Sub 1', 'Sub 2'],
+      expect.anything(),
+    );
+  });
+
+  it('onSelect', () => {
+    const onSelect = jest.fn();
+    const wrapper = mountTreeSelect({ onSelect, open: true });
+
+    wrapper.selectNode(0);
+
+    expect(onSelect).toHaveBeenCalledWith('parent', {
+      myChildren: [
+        { myLabel: 'Sub 1', myValue: 'sub_1' },
+        { myLabel: 'Sub 2', myValue: 'sub_2' },
+      ],
+      myLabel: 'Parent',
+      myValue: 'parent',
+    });
+  });
 });
