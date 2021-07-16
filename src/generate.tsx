@@ -218,15 +218,15 @@ export default function generate(config: {
         return node.title;
       }
 
-      if (fieldNames?.label) {
-        return node[fieldNames.label];
+      if (mergedFieldNames?.label) {
+        return node[mergedFieldNames.label];
       }
 
       return node.label || node.title;
     };
 
     const getTreeNodeLabelProp = (entity: FlattenDataNode): React.ReactNode => {
-      const node = entity.data;
+      const { node } = entity.data;
 
       if (labelRender) {
         return labelRender(entity);
