@@ -209,7 +209,7 @@ export default function generate(config: {
 
     // ======================= Tree Data =======================
     // FieldNames
-    const mergedFieldNames = fillFieldNames(fieldNames);
+    const mergedFieldNames = fillFieldNames(fieldNames, true);
 
     // Legacy both support `label` or `title` if not set.
     // We have to fallback to function to handle this

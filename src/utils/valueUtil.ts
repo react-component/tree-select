@@ -24,14 +24,26 @@ export function toArray<T>(value: T | T[]): T[] {
   return value !== undefined ? [value] : [];
 }
 
-export function fillFieldNames(fieldNames?: FieldNames) {
+/**
+ * Fill `fieldNames` with default field names.
+ *
+ * @param fieldNames passed props
+ * @param skipTitle Skip if no need fill `title`. This is useful since we have 2 name as same title level
+ * @returns
+ */
+export function fillFieldNames(fieldNames?: FieldNames, skipTitle: boolean = false) {
   const { label, value, children } = fieldNames || {};
 
-  return {
-    label: label || 'label',
+  const filledNames: FieldNames = {
     value: value || 'value',
     children: children || 'children',
   };
+
+  if (!skipTitle || label) {
+    filledNames.label = label || 'label';
+  }
+
+  return filledNames;
 }
 
 export function findValueOption(values: RawValueType[], options: CompatibleDataNode[]): DataNode[] {
