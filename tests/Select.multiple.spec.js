@@ -12,9 +12,7 @@ describe('TreeSelect.multiple', () => {
     { key: '0', value: '0', title: 'label0' },
     { key: '1', value: '1', title: 'label1' },
   ];
-  const createSelect = props => (
-    <TreeSelect treeData={treeData} multiple {...props} />
-  );
+  const createSelect = props => <TreeSelect treeData={treeData} multiple {...props} />;
 
   it('select multiple nodes', () => {
     const wrapper = mount(createSelect({ open: true }));
@@ -33,10 +31,7 @@ describe('TreeSelect.multiple', () => {
 
   it('remove by backspace key', () => {
     const wrapper = mount(createSelect({ defaultValue: ['0', '1'] }));
-    wrapper
-      .find('input')
-      .first()
-      .simulate('keyDown', { which: KeyCode.BACKSPACE });
+    wrapper.find('input').first().simulate('keyDown', { which: KeyCode.BACKSPACE });
     expect(wrapper.getSelection()).toHaveLength(1);
     expect(wrapper.getSelection(0).text()).toBe('label0');
   });
@@ -63,15 +58,9 @@ describe('TreeSelect.multiple', () => {
       }
     }
     const wrapper = mount(<App />);
-    wrapper
-      .find('input')
-      .first()
-      .simulate('keyDown', { which: KeyCode.BACKSPACE });
+    wrapper.find('input').first().simulate('keyDown', { which: KeyCode.BACKSPACE });
     wrapper.selectNode(1);
-    wrapper
-      .find('input')
-      .first()
-      .simulate('keyDown', { which: KeyCode.BACKSPACE });
+    wrapper.find('input').first().simulate('keyDown', { which: KeyCode.BACKSPACE });
     expect(wrapper.getSelection()).toHaveLength(1);
     expect(wrapper.getSelection(0).text()).toBe('label0');
   });
@@ -96,10 +85,12 @@ describe('TreeSelect.multiple', () => {
 
     wrapper.clearSelection(1);
 
+    expect(handleChange.mock.calls[0][2].allCheckedNodes[0].props).toBeTruthy();
+
     expect(handleChange).toHaveBeenCalledWith(
       ['0'],
       ['label0'],
-      expect.objectContaining({
+      expect.anything({
         allCheckedNodes: [
           expect.objectContaining({
             props: expect.objectContaining(children[0].props),
@@ -120,21 +111,11 @@ describe('TreeSelect.multiple', () => {
 
     wrapper.search('0');
     wrapper.selectNode(0);
-    expect(
-      wrapper
-        .find('input')
-        .first()
-        .props().value,
-    ).toBe('');
+    expect(wrapper.find('input').first().props().value).toBe('');
 
     wrapper.search('0');
     wrapper.selectNode(0);
-    expect(
-      wrapper
-        .find('input')
-        .first()
-        .props().value,
-    ).toBe('');
+    expect(wrapper.find('input').first().props().value).toBe('');
   });
 
   it('do not open tree when close button click', () => {
@@ -238,19 +219,11 @@ describe('TreeSelect.multiple', () => {
     );
 
     wrapper.selectNode(0);
-    expect(onChange).toHaveBeenCalledWith(
-      [4, 0],
-      expect.anything(),
-      expect.anything(),
-    );
+    expect(onChange).toHaveBeenCalledWith([4, 0], expect.anything(), expect.anything());
     onChange.mockReset();
 
     wrapper.selectNode(1);
-    expect(onChange).toHaveBeenCalledWith(
-      [4, 0, 2, 3],
-      expect.anything(),
-      expect.anything(),
-    );
+    expect(onChange).toHaveBeenCalledWith([4, 0, 2, 3], expect.anything(), expect.anything());
   });
 
   // https://github.com/ant-design/ant-design/issues/12315
@@ -271,11 +244,7 @@ describe('TreeSelect.multiple', () => {
 
     wrapper.search('sss');
     wrapper.selectNode(2);
-    expect(onChange).toHaveBeenCalledWith(
-      ['leaf1', 'sss'],
-      expect.anything(),
-      expect.anything(),
-    );
+    expect(onChange).toHaveBeenCalledWith(['leaf1', 'sss'], expect.anything(), expect.anything());
   });
 
   it('do not crash when value has empty string', () => {
