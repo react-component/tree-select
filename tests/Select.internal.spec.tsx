@@ -21,7 +21,7 @@ describe('TreeSelect.InternalAPI', () => {
           const nodes = [];
 
           while (current) {
-            nodes.unshift(current.data.label);
+            nodes.unshift(current.data.node.label);
             current = current.parent;
           }
 
