@@ -34,6 +34,8 @@ export interface InternalDataEntity {
   key: Key;
   value: RawValueType;
   title?: React.ReactNode;
+  disableCheckbox?: boolean;
+  disabled?: boolean;
   children?: InternalDataEntity[];
 
   /** Origin DataNode */

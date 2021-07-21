@@ -63,12 +63,14 @@ function formatTreeData(
 
   function dig(dataNodes: DataNode[]) {
     return (dataNodes || []).map(node => {
-      const { key } = node;
+      const { key, disableCheckbox, disabled } = node;
 
       const value = node[fieldValue];
       const mergedValue = fieldValue in node ? value : key;
 
       const dataNode: InternalDataEntity = {
+        disableCheckbox,
+        disabled,
         key: key !== null && key !== undefined ? key : mergedValue,
         value: mergedValue,
         title: getLabelProp(node),
