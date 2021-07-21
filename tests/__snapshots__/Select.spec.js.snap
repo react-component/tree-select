@@ -41,11 +41,11 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
         <div>
           <div
             class="rc-tree-select-tree"
+            role="tree"
           >
-            <div
-              role="tree"
-            >
+            <div>
               <input
+                aria-label="for screen reader"
                 disabled=""
                 style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
                 value=""
@@ -239,11 +239,11 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
         <div>
           <div
             class="rc-tree-select-tree"
+            role="tree"
           >
-            <div
-              role="tree"
-            >
+            <div>
               <input
+                aria-label="for screen reader"
                 disabled=""
                 style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
                 value=""
@@ -585,11 +585,11 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
           <div>
             <div
               class="rc-tree-select-tree"
+              role="tree"
             >
-              <div
-                role="tree"
-              >
+              <div>
                 <input
+                  aria-label="for screen reader"
                   disabled=""
                   style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
                   value=""
@@ -727,11 +727,11 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
           <div>
             <div
               class="rc-tree-select-tree"
+              role="tree"
             >
-              <div
-                role="tree"
-              >
+              <div>
                 <input
+                  aria-label="for screen reader"
                   disabled=""
                   style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
                   value=""
@@ -844,11 +844,11 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
           <div>
             <div
               class="rc-tree-select-tree"
+              role="tree"
             >
-              <div
-                role="tree"
-              >
+              <div>
                 <input
+                  aria-label="for screen reader"
                   disabled=""
                   style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
                   value=""
@@ -982,11 +982,11 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
           <div>
             <div
               class="rc-tree-select-tree"
+              role="tree"
             >
-              <div
-                role="tree"
-              >
+              <div>
                 <input
+                  aria-label="for screen reader"
                   disabled=""
                   style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
                   value=""
@@ -1122,11 +1122,11 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
         <div>
           <div
             class="rc-tree-select-tree"
+            role="tree"
           >
-            <div
-              role="tree"
-            >
+            <div>
               <input
+                aria-label="for screen reader"
                 disabled=""
                 style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
                 value=""

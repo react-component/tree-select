@@ -8,16 +8,15 @@ export function isDisabled(dataNode: FlattenDataNode, skipType: SkipType): boole
     return true;
   }
 
-  const { disabled, disableCheckbox } = dataNode.data;
+  const { disabled, disableCheckbox } = dataNode.data.node;
 
   switch (skipType) {
-    case 'select':
-      return disabled;
     case 'checkbox':
       return disabled || disableCheckbox;
-  }
 
-  return false;
+    default:
+      return disabled;
+  }
 }
 
 export default function useKeyValueMapping(

@@ -5,7 +5,7 @@ import type {
   DataNode,
   LegacyDataNode,
   ChangeEventExtra,
-  InnerDataNode,
+  InternalDataEntity,
   RawValueType,
   LegacyCheckedNode,
 } from '../interface';
@@ -36,7 +36,7 @@ export function convertChildrenToData(nodes: React.ReactNode): DataNode[] {
 
       return data;
     })
-    .filter((data) => data);
+    .filter(data => data);
 }
 
 export function fillLegacyProps(dataNode: DataNode): LegacyDataNode {
@@ -66,20 +66,20 @@ export function fillAdditionalInfo(
   extra: ChangeEventExtra,
   triggerValue: RawValueType,
   checkedValues: RawValueType[],
-  treeData: InnerDataNode[],
+  treeData: InternalDataEntity[],
   showPosition: boolean,
 ) {
   let triggerNode: React.ReactNode = null;
   let nodeList: LegacyCheckedNode[] = null;
 
   function generateMap() {
-    function dig(list: InnerDataNode[], level = '0', parentIncluded = false) {
+    function dig(list: InternalDataEntity[], level = '0', parentIncluded = false) {
       return list
         .map((dataNode, index) => {
           const pos = `${level}-${index}`;
           const included = checkedValues.includes(dataNode.value);
           const children = dig(dataNode.children || [], pos, included);
-          const node = <TreeNode {...dataNode}>{children.map((child) => child.node)}</TreeNode>;
+          const node = <TreeNode {...dataNode}>{children.map(child => child.node)}</TreeNode>;
 
           // Link with trigger node
           if (triggerValue === dataNode.value) {
@@ -101,7 +101,7 @@ export function fillAdditionalInfo(
           }
           return null;
         })
-        .filter((node) => node);
+        .filter(node => node);
     }
 
     if (!nodeList) {

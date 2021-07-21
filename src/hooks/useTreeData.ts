@@ -1,6 +1,12 @@
 import * as React from 'react';
 import warning from 'rc-util/lib/warning';
-import type { DataNode, InnerDataNode, SimpleModeConfig, RawValueType } from '../interface';
+import type {
+  DataNode,
+  InternalDataEntity,
+  SimpleModeConfig,
+  RawValueType,
+  FieldNames,
+} from '../interface';
 import { convertChildrenToData } from '../utils/legacyUtil';
 
 const MAX_WARNING_TIMES = 10;
@@ -13,7 +19,7 @@ function parseSimpleTreeData(
   const rootNodeList = [];
 
   // Fill in the map
-  const nodeList = treeData.map((node) => {
+  const nodeList = treeData.map(node => {
     const clone = { ...node };
     const key = clone[id];
     keyNodes[key] = clone;
@@ -22,7 +28,7 @@ function parseSimpleTreeData(
   });
 
   // Connect tree
-  nodeList.forEach((node) => {
+  nodeList.forEach(node => {
     const parentKey = node[pId];
     const parent = keyNodes[parentKey];
 
@@ -47,21 +53,28 @@ function parseSimpleTreeData(
 function formatTreeData(
   treeData: DataNode[],
   getLabelProp: (node: DataNode) => React.ReactNode,
-): InnerDataNode[] {
+  fieldNames: FieldNames,
+): InternalDataEntity[] {
   let warningTimes = 0;
   const valueSet = new Set<RawValueType>();
 
+  // Field names
+  const { value: fieldValue, children: fieldChildren } = fieldNames;
+
   function dig(dataNodes: DataNode[]) {
-    return (dataNodes || []).map((node) => {
-      const { key, value, children, ...rest } = node;
+    return (dataNodes || []).map(node => {
+      const { key, disableCheckbox, disabled } = node;
 
-      const mergedValue = 'value' in node ? value : key;
+      const value = node[fieldValue];
+      const mergedValue = fieldValue in node ? value : key;
 
-      const dataNode: InnerDataNode = {
-        ...rest,
+      const dataNode: InternalDataEntity = {
+        disableCheckbox,
+        disabled,
         key: key !== null && key !== undefined ? key : mergedValue,
         value: mergedValue,
         title: getLabelProp(node),
+        node,
       };
 
       // Check `key` & `value` and warning user
@@ -84,8 +97,8 @@ function formatTreeData(
         valueSet.add(value);
       }
 
-      if ('children' in node) {
-        dataNode.children = dig(children);
+      if (fieldChildren in node) {
+        dataNode.children = dig(node[fieldChildren]);
       }
 
       return dataNode;
@@ -105,15 +118,17 @@ export default function useTreeData(
   {
     getLabelProp,
     simpleMode,
+    fieldNames,
   }: {
     getLabelProp: (node: DataNode) => React.ReactNode;
     simpleMode: boolean | SimpleModeConfig;
+    fieldNames: FieldNames;
   },
-): InnerDataNode[] {
+): InternalDataEntity[] {
   const cacheRef = React.useRef<{
     treeData?: DataNode[];
     children?: React.ReactNode;
-    formatTreeData?: InnerDataNode[];
+    formatTreeData?: InternalDataEntity[];
   }>({});
 
   if (treeData) {
@@ -130,6 +145,7 @@ export default function useTreeData(
                 })
               : treeData,
             getLabelProp,
+            fieldNames,
           );
 
     cacheRef.current.treeData = treeData;
@@ -137,7 +153,7 @@ export default function useTreeData(
     cacheRef.current.formatTreeData =
       cacheRef.current.children === children
         ? cacheRef.current.formatTreeData
-        : formatTreeData(convertChildrenToData(children), getLabelProp);
+        : formatTreeData(convertChildrenToData(children), getLabelProp, fieldNames);
   }
 
   return cacheRef.current.formatTreeData;

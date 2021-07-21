@@ -1,4 +1,4 @@
-/* eslint-disable no-undef, react/no-multi-comp */
+/* eslint-disable no-undef, react/no-multi-comp, max-classes-per-file */
 import React from 'react';
 import { mount } from 'enzyme';
 import TreeSelect, { SHOW_PARENT, SHOW_ALL, TreeNode } from '../src';
@@ -231,12 +231,7 @@ describe('TreeSelect.checkable', () => {
     wrapper.search('foo');
     wrapper.clearAll();
     expect(wrapper.getSelection()).toHaveLength(0);
-    expect(
-      wrapper
-        .find('input')
-        .first()
-        .props().value,
-    ).toBe('');
+    expect(wrapper.find('input').first().props().value).toBe('');
   });
 
   describe('uncheck', () => {
@@ -277,7 +272,10 @@ describe('TreeSelect.checkable', () => {
         });
         wrapper.clearSelection(1);
         expect(onChange).toHaveBeenCalledWith(
-          [{ label: '0', value: '0' }, { label: '0-0-0', value: '0-0-0' }],
+          [
+            { label: '0', value: '0' },
+            { label: '0-0-0', value: '0-0-0' },
+          ],
           null,
           expect.anything(),
         );
@@ -616,15 +614,15 @@ describe('TreeSelect.checkable', () => {
         value={[{ value: 'half', halfChecked: true }]}
         open
         onChange={onChange}
-        treeData={[{ value: 'half', title: 'Half Check' }, { value: 'full', title: 'Full Check' }]}
+        treeData={[
+          { value: 'half', title: 'Half Check' },
+          { value: 'full', title: 'Full Check' },
+        ]}
       />,
     );
 
     function getTreeNode(index) {
-      return wrapper
-        .find('.rc-tree-select-tree-treenode')
-        .not('[aria-hidden]')
-        .at(index);
+      return wrapper.find('.rc-tree-select-tree-treenode').not('[aria-hidden]').at(index);
     }
 
     expect(
@@ -650,5 +648,40 @@ describe('TreeSelect.checkable', () => {
       null,
       expect.anything(),
     );
+  });
+
+  it('disableCheckbox', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <TreeSelect
+        treeCheckable
+        treeDefaultExpandAll
+        showCheckedStrategy="SHOW_ALL"
+        open
+        onChange={onChange}
+        treeData={[
+          {
+            value: 'parent',
+            title: 'Parent',
+            children: [
+              { value: 'sub1', title: 'Sub 1' },
+              { value: 'sub2', title: 'Sub 2', disableCheckbox: true },
+              { value: 'sub3', title: 'Sub 3', disabled: true },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    wrapper.selectNode(0);
+    expect(onChange).toHaveBeenCalledWith(['parent', 'sub1'], expect.anything(), expect.anything());
+
+    onChange.mockReset();
+    wrapper.selectNode(2);
+    wrapper.selectNode(3);
+    expect(onChange).not.toHaveBeenCalled();
+
+    wrapper.selectNode(1);
+    expect(onChange).toHaveBeenCalledWith([], expect.anything(), expect.anything());
   });
 });

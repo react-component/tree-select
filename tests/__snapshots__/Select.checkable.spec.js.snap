@@ -17,6 +17,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
         >
           <span
             class="rc-tree-select-selection-item"
+            title="0"
           >
             <span
               class="rc-tree-select-selection-item-content"
@@ -43,6 +44,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
         >
           <span
             class="rc-tree-select-selection-item"
+            title="0-0"
           >
             <span
               class="rc-tree-select-selection-item-content"
@@ -69,6 +71,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
         >
           <span
             class="rc-tree-select-selection-item"
+            title="0-0-0"
           >
             <span
               class="rc-tree-select-selection-item-content"
@@ -130,11 +133,11 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
           <div>
             <div
               class="rc-tree-select-tree"
+              role="tree"
             >
-              <div
-                role="tree"
-              >
+              <div>
                 <input
+                  aria-label="for screen reader"
                   disabled=""
                   style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
                   value=""
@@ -321,11 +324,11 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
           <div>
             <div
               class="rc-tree-select-tree"
+              role="tree"
             >
-              <div
-                role="tree"
-              >
+              <div>
                 <input
+                  aria-label="for screen reader"
                   disabled=""
                   style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
                   value=""
@@ -474,6 +477,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
         >
           <span
             class="rc-tree-select-selection-item"
+            title="0"
           >
             <span
               class="rc-tree-select-selection-item-content"
@@ -500,6 +504,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
         >
           <span
             class="rc-tree-select-selection-item"
+            title="0-0"
           >
             <span
               class="rc-tree-select-selection-item-content"
@@ -526,6 +531,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
         >
           <span
             class="rc-tree-select-selection-item"
+            title="0-0-0"
           >
             <span
               class="rc-tree-select-selection-item-content"
@@ -587,11 +593,11 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
           <div>
             <div
               class="rc-tree-select-tree"
+              role="tree"
             >
-              <div
-                role="tree"
-              >
+              <div>
                 <input
+                  aria-label="for screen reader"
                   disabled=""
                   style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
                   value=""
@@ -775,11 +781,11 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
           <div>
             <div
               class="rc-tree-select-tree"
+              role="tree"
             >
-              <div
-                role="tree"
-              >
+              <div>
                 <input
+                  aria-label="for screen reader"
                   disabled=""
                   style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
                   value=""
