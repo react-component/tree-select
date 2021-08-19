@@ -9,6 +9,8 @@ import type {
   DefaultValueType,
   LabelValueType,
   LegacyDataNode,
+  FieldNames,
+  InternalDataEntity,
 } from '../interface';
 import { fillLegacyProps } from './legacyUtil';
 import type { SkipType } from '../hooks/useKeyValueMapping';
@@ -22,12 +24,34 @@ export function toArray<T>(value: T | T[]): T[] {
   return value !== undefined ? [value] : [];
 }
 
+/**
+ * Fill `fieldNames` with default field names.
+ *
+ * @param fieldNames passed props
+ * @param skipTitle Skip if no need fill `title`. This is useful since we have 2 name as same title level
+ * @returns
+ */
+export function fillFieldNames(fieldNames?: FieldNames, skipTitle: boolean = false) {
+  const { label, value, children } = fieldNames || {};
+
+  const filledNames: FieldNames = {
+    value: value || 'value',
+    children: children || 'children',
+  };
+
+  if (!skipTitle || label) {
+    filledNames.label = label || 'label';
+  }
+
+  return filledNames;
+}
+
 export function findValueOption(values: RawValueType[], options: CompatibleDataNode[]): DataNode[] {
   const optionMap: Map<RawValueType, DataNode> = new Map();
 
   options.forEach(flattenItem => {
-    const { data } = flattenItem;
-    optionMap.set(data.value, data);
+    const { data, value } = flattenItem;
+    optionMap.set(value, data.node);
   });
 
   return values.map(val => fillLegacyProps(optionMap.get(val)));
@@ -46,8 +70,9 @@ export function isCheckDisabled(node: DataNode) {
   return node.disabled || node.disableCheckbox || node.checkable === false;
 }
 
-interface TreeDataNode {
+interface TreeDataNode extends InternalDataEntity {
   key: Key;
+  children?: TreeDataNode[];
 }
 
 function getLevel({ parent }: FlattenNode): number {
@@ -65,13 +90,15 @@ function getLevel({ parent }: FlattenNode): number {
 /**
  * Before reuse `rc-tree` logic, we need to add key since TreeSelect use `value` instead of `key`.
  */
-export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
+export function flattenOptions(options: any): FlattenDataNode[] {
+  const typedOptions = options as InternalDataEntity[];
+
   // Add missing key
-  function fillKey(list: DataNode[]): TreeDataNode[] {
+  function fillKey(list: InternalDataEntity[]): TreeDataNode[] {
     return (list || []).map(node => {
       const { value, key, children } = node;
 
-      const clone = {
+      const clone: TreeDataNode = {
         ...node,
         key: 'key' in node ? key : value,
       };
@@ -84,19 +111,22 @@ export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
     });
   }
 
-  const flattenList = flattenTreeData(fillKey(options), true);
+  const flattenList = flattenTreeData(fillKey(typedOptions), true, null);
 
   const cacheMap = new Map<React.Key, FlattenDataNode>();
   const flattenDateNodeList: (FlattenDataNode & { parentKey?: React.Key })[] = flattenList.map(
-    node => {
-      const { data } = node;
-      const { key } = data;
+    option => {
+      const { data, key, value } = option as any as Omit<FlattenNode, 'data'> & {
+        value: RawValueType;
+        data: InternalDataEntity;
+      };
 
       const flattenNode = {
         key,
+        value,
         data,
-        level: getLevel(node),
-        parentKey: node.parent?.data.key,
+        level: getLevel(option),
+        parentKey: option.parent?.data.key,
       };
 
       cacheMap.set(key, flattenNode);

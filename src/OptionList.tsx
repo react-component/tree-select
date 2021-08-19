@@ -105,7 +105,7 @@ const OptionList: React.RefForwardingComponent<
   // ========================== Values ==========================
   const valueKeys = React.useMemo(
     () =>
-      checkedKeys.map((val) => {
+      checkedKeys.map(val => {
         const entity = getEntityByValue(val);
         return entity ? entity.key : null;
       }),
@@ -153,7 +153,7 @@ const OptionList: React.RefForwardingComponent<
 
   React.useEffect(() => {
     if (searchValue) {
-      setSearchExpandedKeys(flattenOptions.map((o) => o.key));
+      setSearchExpandedKeys(flattenOptions.map(o => o.key));
     }
   }, [searchValue]);
 
@@ -167,7 +167,7 @@ const OptionList: React.RefForwardingComponent<
   };
 
   // ========================== Events ==========================
-  const onListMouseDown: React.MouseEventHandler<HTMLDivElement> = (event) => {
+  const onListMouseDown: React.MouseEventHandler<HTMLDivElement> = event => {
     event.preventDefault();
   };
 
@@ -190,7 +190,7 @@ const OptionList: React.RefForwardingComponent<
 
   React.useImperativeHandle(ref, () => ({
     scrollTo: treeRef.current?.scrollTo,
-    onKeyDown: (event) => {
+    onKeyDown: event => {
       const { which } = event;
       switch (which) {
         // >>> Arrow keys
@@ -203,7 +203,7 @@ const OptionList: React.RefForwardingComponent<
 
         // >>> Select item
         case KeyCode.ENTER: {
-          const { selectable, value } = activeEntity?.data || {};
+          const { selectable, value } = activeEntity?.data.node || {};
           if (selectable !== false) {
             onInternalSelect(null, {
               node: { key: activeKey },
@@ -281,8 +281,9 @@ const OptionList: React.RefForwardingComponent<
   );
 };
 
-const RefOptionList =
-  React.forwardRef<ReviseRefOptionListProps, OptionListProps<DataNode[]>>(OptionList);
+const RefOptionList = React.forwardRef<ReviseRefOptionListProps, OptionListProps<DataNode[]>>(
+  OptionList,
+);
 RefOptionList.displayName = 'OptionList';
 
 export default RefOptionList;
