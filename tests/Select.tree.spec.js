@@ -83,7 +83,10 @@ describe('TreeSelect.tree', () => {
     const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
     mount(
       <TreeSelect
-        treeData={[{ title: 'little', value: 'ttt' }, { title: 'bamboo', value: 'ttt' }]}
+        treeData={[
+          { title: 'little', value: 'ttt' },
+          { title: 'bamboo', value: 'ttt' },
+        ]}
       />,
     );
     expect(spy).toHaveBeenCalledWith('Warning: Same `value` exist in the tree: ttt');
@@ -124,5 +127,15 @@ describe('TreeSelect.tree', () => {
         expect(wrapper.find('.rc-tree-select-selection-item').text()).toEqual('Light');
       });
     });
+  });
+
+  it('Node icon', () => {
+    const wrapper = mount(
+      <TreeSelect open>
+        <SelectNode value="little" title="Little" icon={<span className="bamboo-light" />} />
+      </TreeSelect>,
+    );
+
+    expect(wrapper.exists('.bamboo-light')).toBeTruthy();
   });
 });
