@@ -139,7 +139,7 @@ export interface TreeSelectProps<ValueType = DefaultValueType>
   searchPlaceholder?: React.ReactNode;
 
   /** @private This is not standard API since we only used in `rc-cascader`. Do not use in your production */
-  labelRender?: (entity: FlattenDataNode) => React.ReactNode;
+  labelRender?: (entity: FlattenDataNode, value: RawValueType) => React.ReactNode;
 }
 
 export default function generate(config: {
@@ -225,12 +225,17 @@ export default function generate(config: {
       return node.label || node.title;
     };
 
-    const getTreeNodeLabelProp = (entity: FlattenDataNode): React.ReactNode => {
-      const { node } = entity.data;
-
+    const getTreeNodeLabelProp = (entity: FlattenDataNode, val: RawValueType): React.ReactNode => {
       if (labelRender) {
-        return labelRender(entity);
+        return labelRender(entity, val);
       }
+
+      // Skip since entity not exist
+      if (!entity) {
+        return undefined;
+      }
+
+      const { node } = entity.data;
 
       if (treeNodeLabelProp) {
         return node[treeNodeLabelProp];
@@ -595,6 +600,8 @@ export default function generate(config: {
       </SelectContext.Provider>
     );
   });
+
+  RefTreeSelect.displayName = 'TreeSelect';
 
   // =================================================================================
   // =                                    Generic                                    =

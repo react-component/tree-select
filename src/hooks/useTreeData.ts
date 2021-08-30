@@ -92,6 +92,10 @@ function formatTreeData(
           );
         }
 
+        warning(
+          value !== undefined || key !== undefined,
+          'TreeNode `value` is invalidate: undefined',
+        );
         warning(!valueSet.has(value), `Same \`value\` exist in the tree: ${value}`);
         valueSet.add(value);
       }

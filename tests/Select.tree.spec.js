@@ -78,6 +78,14 @@ describe('TreeSelect.tree', () => {
     spy.mockRestore();
   });
 
+  it('warning if node undefined value', () => {
+    resetWarned();
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    mount(<TreeSelect treeData={[{ title: 'little' }]} />);
+    expect(spy).toHaveBeenCalledWith('Warning: TreeNode `value` is invalidate: undefined');
+    spy.mockRestore();
+  });
+
   it('warning if node has same value', () => {
     resetWarned();
     const spy = jest.spyOn(console, 'error').mockImplementation(() => {});

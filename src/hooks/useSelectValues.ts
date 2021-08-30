@@ -19,7 +19,7 @@ interface Config {
     skipType?: SkipType,
     ignoreDisabledCheck?: boolean,
   ) => FlattenDataNode;
-  getLabelProp: (entity: FlattenDataNode) => React.ReactNode;
+  getLabelProp: (entity: FlattenDataNode, value: RawValueType) => React.ReactNode;
 }
 
 /** Return  */

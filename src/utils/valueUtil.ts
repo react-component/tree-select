@@ -205,7 +205,7 @@ export function getRawValueLabeled(
     skipType?: SkipType,
     ignoreDisabledCheck?: boolean,
   ) => FlattenDataNode,
-  getLabelProp: (entity: FlattenDataNode) => React.ReactNode,
+  getLabelProp: (entity: FlattenDataNode, val: RawValueType) => React.ReactNode,
 ): LabelValueType[] {
   const valueMap = new Map<RawValueType, LabelValueType>();
 
@@ -218,7 +218,12 @@ export function getRawValueLabeled(
   return values.map(val => {
     const item: LabelValueType = { value: val };
     const entity = getEntityByValue(val, 'select', true);
-    const label = entity ? getLabelProp(entity) : val;
+
+    // Always try to get the value by entity even it's enpty
+    let label = getLabelProp(entity, val);
+    if (label === undefined) {
+      label = val;
+    }
 
     if (valueMap.has(val)) {
       const labeledValue = valueMap.get(val);
