@@ -68,7 +68,7 @@
   "dependencies": {
     "@babel/runtime": "^7.10.1",
     "classnames": "2.x",
-    "rc-select": "~13.0.0-alpha.1",
+    "rc-select": "~13.1.0-alpha.0",
     "rc-tree": "~5.0.0",
     "rc-util": "^5.0.5"
   }
