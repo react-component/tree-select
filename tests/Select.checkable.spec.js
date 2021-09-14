@@ -684,4 +684,32 @@ describe('TreeSelect.checkable', () => {
     wrapper.selectNode(1);
     expect(onChange).toHaveBeenCalledWith([], expect.anything(), expect.anything());
   });
+
+  it('disabled option should keep check', () => {
+    const wrapper = mount(
+      <TreeSelect
+        open
+        treeCheckable
+        showCheckedStrategy={TreeSelect.SHOW_PARENT}
+        value={['child']}
+        treeDefaultExpandAll
+        treeData={[
+          {
+            label: 'parent',
+            value: 'parent',
+            disabled: true,
+            children: [
+              {
+                label: 'child',
+                value: 'child',
+                disabled: true,
+              },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    expect(wrapper.exists('.rc-tree-select-tree-treenode-checkbox-checked')).toBeTruthy();
+  });
 });

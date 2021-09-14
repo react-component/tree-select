@@ -106,7 +106,8 @@ const OptionList: React.RefForwardingComponent<
   const valueKeys = React.useMemo(
     () =>
       checkedKeys.map(val => {
-        const entity = getEntityByValue(val);
+        // We should keep disabled value entity here
+        const entity = getEntityByValue(val, undefined, true);
         return entity ? entity.key : null;
       }),
     [checkedKeys, getEntityByValue],
