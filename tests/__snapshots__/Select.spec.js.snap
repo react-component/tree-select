@@ -74,7 +74,9 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                   style="display: flex; flex-direction: column;"
                 >
                   <div
+                    aria-grabbed="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                    draggable="false"
                   >
                     <span
                       aria-hidden="true"
@@ -98,7 +100,9 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                     </span>
                   </div>
                   <div
+                    aria-grabbed="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                    draggable="false"
                   >
                     <span
                       aria-hidden="true"
@@ -122,7 +126,9 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                     </span>
                   </div>
                   <div
+                    aria-grabbed="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                    draggable="false"
                   >
                     <span
                       aria-hidden="true"
@@ -150,7 +156,9 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                     </span>
                   </div>
                   <div
+                    aria-grabbed="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                    draggable="false"
                   >
                     <span
                       aria-hidden="true"
@@ -272,7 +280,9 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                   style="display: flex; flex-direction: column;"
                 >
                   <div
+                    aria-grabbed="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                    draggable="false"
                   >
                     <span
                       aria-hidden="true"
@@ -296,7 +306,9 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                     </span>
                   </div>
                   <div
+                    aria-grabbed="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                    draggable="false"
                   >
                     <span
                       aria-hidden="true"
@@ -320,7 +332,9 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                     </span>
                   </div>
                   <div
+                    aria-grabbed="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                    draggable="false"
                   >
                     <span
                       aria-hidden="true"
@@ -348,7 +362,9 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                     </span>
                   </div>
                   <div
+                    aria-grabbed="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                    draggable="false"
                   >
                     <span
                       aria-hidden="true"
@@ -618,7 +634,9 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
                     style="display: flex; flex-direction: column;"
                   >
                     <div
+                      aria-grabbed="false"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                      draggable="false"
                     >
                       <span
                         aria-hidden="true"
@@ -642,7 +660,9 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
                       </span>
                     </div>
                     <div
+                      aria-grabbed="false"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                      draggable="false"
                     >
                       <span
                         aria-hidden="true"
@@ -760,7 +780,9 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
                     style="display: flex; flex-direction: column;"
                   >
                     <div
+                      aria-grabbed="false"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node"
+                      draggable="false"
                     >
                       <span
                         aria-hidden="true"
@@ -877,7 +899,9 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
                     style="display: flex; flex-direction: column;"
                   >
                     <div
+                      aria-grabbed="false"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                      draggable="false"
                     >
                       <span
                         aria-hidden="true"
@@ -901,7 +925,9 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
                       </span>
                     </div>
                     <div
+                      aria-grabbed="false"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
+                      draggable="false"
                     >
                       <span
                         aria-hidden="true"
@@ -1015,7 +1041,9 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
                     style="display: flex; flex-direction: column;"
                   >
                     <div
+                      aria-grabbed="false"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open filter-node"
+                      draggable="false"
                     >
                       <span
                         aria-hidden="true"
@@ -1039,7 +1067,9 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
                       </span>
                     </div>
                     <div
+                      aria-grabbed="false"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                      draggable="false"
                     >
                       <span
                         aria-hidden="true"
@@ -1155,7 +1185,9 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
                   style="display: flex; flex-direction: column;"
                 >
                   <div
+                    aria-grabbed="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
+                    draggable="false"
                   >
                     <span
                       aria-hidden="true"
@@ -1179,7 +1211,9 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
                     </span>
                   </div>
                   <div
+                    aria-grabbed="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
+                    draggable="false"
                   >
                     <span
                       aria-hidden="true"
