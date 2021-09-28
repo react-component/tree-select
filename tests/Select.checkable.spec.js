@@ -712,4 +712,45 @@ describe('TreeSelect.checkable', () => {
 
     expect(wrapper.exists('.rc-tree-select-tree-treenode-checkbox-checked')).toBeTruthy();
   });
+
+  // https://github.com/ant-design/ant-design/issues/32184
+  it('should pass correct keys', () => {
+    const wrapper = mount(
+      <TreeSelect
+        open
+        treeCheckable
+        showCheckedStrategy={TreeSelect.SHOW_PARENT}
+        value={['parent']}
+        treeData={[
+          {
+            label: 'parent',
+            value: 'parent',
+          },
+        ]}
+      />,
+    );
+
+    expect(wrapper.find('Tree').prop('checkedKeys')).toEqual(
+      expect.objectContaining({ checked: ['parent'] }),
+    );
+
+    wrapper.setProps({
+      treeData: [
+        {
+          label: 'parent',
+          value: 'parent',
+          children: [
+            {
+              label: 'child',
+              value: 'child',
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(wrapper.find('Tree').prop('checkedKeys')).toEqual(
+      expect.objectContaining({ checked: ['parent', 'child'] }),
+    );
+  });
 });
