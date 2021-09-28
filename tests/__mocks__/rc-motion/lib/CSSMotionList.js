@@ -1,5 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
 import React from 'react';
 import { genCSSMotion } from 'rc-motion/lib/CSSMotion';
 import CSSMotionList, { genCSSMotionList } from 'rc-motion/lib/CSSMotionList';

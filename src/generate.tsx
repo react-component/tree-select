@@ -325,7 +325,14 @@ export default function generate(config: {
         ];
       }
       return [newRawValues, valueHalfCheckedKeys];
-    }, [value, mergedMultiple, mergedLabelInValue, treeCheckable, treeCheckStrictly]);
+    }, [
+      value,
+      flattedOptions,
+      mergedMultiple,
+      mergedLabelInValue,
+      treeCheckable,
+      treeCheckStrictly,
+    ]);
 
     const selectValues = useSelectValues(rawValues, {
       treeConduction,

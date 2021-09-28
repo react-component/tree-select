@@ -1,4 +1,3 @@
-/* eslint-disable import/no-named-as-default-member */
 import '../assets/index.less';
 import React from 'react';
 import TreeSelect from '../src';
@@ -76,11 +75,7 @@ class Demo extends React.Component {
     return (
       <div>
         <TreeSelect {...tProps} />
-        <input
-          type="checkbox"
-          onChange={e => this.switch(e.target.checked)}
-        />{' '}
-        禁用
+        <input type="checkbox" onChange={e => this.switch(e.target.checked)} /> 禁用
       </div>
     );
   }
