@@ -146,4 +146,23 @@ describe('TreeSelect.tree', () => {
 
     expect(wrapper.exists('.bamboo-light')).toBeTruthy();
   });
+
+  // https://github.com/ant-design/ant-design/issues/32806
+  it('OptionList should get empty children instead of list', () => {
+    const wrapper = mount(
+      <TreeSelect
+        open
+        treeData={[
+          {
+            title: 'bamboo',
+            value: 'bamboo',
+            children: undefined,
+          },
+        ]}
+      />,
+    );
+
+    const options = wrapper.find('OptionList').prop('options');
+    expect(options[0].children).toBeFalsy();
+  });
 });
