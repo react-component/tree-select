@@ -15,7 +15,7 @@ import type {
 } from '../interface';
 import { fillLegacyProps } from './legacyUtil';
 import type { SkipType } from '../hooks/useKeyValueMapping';
-import type { DefaultOptionType } from '../TreeSelect';
+import type { DefaultOptionType, InternalFieldName } from '../TreeSelect';
 
 type CompatibleDataNode = Omit<FlattenDataNode, 'level'>;
 
@@ -33,7 +33,7 @@ export function toArray<T>(value: T | T[]): T[] {
  * @param skipTitle Skip if no need fill `title`. This is useful since we have 2 name as same title level
  * @returns
  */
-export function fillFieldNames(fieldNames?: FieldNames, skipTitle: boolean = false) {
+export function fillFieldNames2333(fieldNames?: FieldNames, skipTitle: boolean = false) {
   const { label, value, children } = fieldNames || {};
 
   const filledNames: FieldNames = {
@@ -46,6 +46,19 @@ export function fillFieldNames(fieldNames?: FieldNames, skipTitle: boolean = fal
   }
 
   return filledNames;
+}
+
+export function fillFieldNames(fieldNames?: FieldNames) {
+  const { label, value, children } = fieldNames || {};
+
+  const mergedValue = value || 'value';
+
+  return {
+    _title: label ? [label] : ['title', 'label'],
+    value: mergedValue,
+    key: mergedValue,
+    children: children || 'children',
+  };
 }
 
 export function findValueOption(values: RawValueType[], options: CompatibleDataNode[]): DataNode[] {
@@ -253,7 +266,7 @@ export function removeValue(rawValues: RawValueType[], value: RawValueType) {
 }
 
 /** Loop fetch all the keys exist in the tree */
-export function getAllKeys(treeData: DefaultOptionType[], fieldNames: FieldNames) {
+export function getAllKeys(treeData: DefaultOptionType[], fieldNames: InternalFieldName) {
   const keys: React.Key[] = [];
 
   function dig(list: DefaultOptionType[]) {

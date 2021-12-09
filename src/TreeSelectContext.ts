@@ -1,12 +1,12 @@
 import * as React from 'react';
-import type { DefaultOptionType, FieldNames } from './TreeSelect';
+import type { DefaultOptionType, InternalFieldName } from './TreeSelect';
 
 export interface TreeSelectContextProps {
   virtual?: boolean;
   listHeight: number;
   listItemHeight: number;
   treeData: DefaultOptionType[];
-  fieldNames: FieldNames;
+  fieldNames: InternalFieldName;
 }
 
 const TreeSelectContext = React.createContext<TreeSelectContextProps>(null as any);

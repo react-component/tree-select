@@ -8,6 +8,7 @@ import type {
   FieldNames,
 } from '../interface';
 import { convertChildrenToData } from '../utils/legacyUtil';
+import type { DefaultOptionType } from '../TreeSelect';
 
 const MAX_WARNING_TIMES = 10;
 
@@ -118,32 +119,20 @@ function formatTreeData(
 export default function useTreeData(
   treeData: DataNode[],
   children: React.ReactNode,
-  {
-    getLabelProp,
-    simpleMode,
-    fieldNames,
-  }: {
-    getLabelProp: (node: DataNode) => React.ReactNode;
-    simpleMode: boolean | SimpleModeConfig;
-    fieldNames: FieldNames;
-  },
-): InternalDataEntity[] {
+  simpleMode: boolean | SimpleModeConfig,
+): DefaultOptionType[] {
   return React.useMemo(() => {
     if (treeData) {
-      return formatTreeData(
-        simpleMode
-          ? parseSimpleTreeData(treeData, {
-              id: 'id',
-              pId: 'pId',
-              rootPId: null,
-              ...(simpleMode !== true ? simpleMode : {}),
-            })
-          : treeData,
-        getLabelProp,
-        fieldNames,
-      );
+      return simpleMode
+        ? parseSimpleTreeData(treeData, {
+            id: 'id',
+            pId: 'pId',
+            rootPId: null,
+            ...(simpleMode !== true ? simpleMode : {}),
+          })
+        : treeData;
     }
 
-    return formatTreeData(convertChildrenToData(children), getLabelProp, fieldNames);
-  }, [children, fieldNames, getLabelProp, simpleMode, treeData]);
+    return convertChildrenToData(children);
+  }, [children, simpleMode, treeData]);
 }

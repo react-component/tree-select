@@ -105,15 +105,18 @@ const OptionList: React.RefForwardingComponent<
   );
 
   // ========================== Values ==========================
-  const valueKeys = React.useMemo(
-    () =>
-      checkedKeys.map(val => {
-        // We should keep disabled value entity here
-        const entity = getEntityByValue(val, undefined, true);
-        return entity ? entity.key : null;
-      }),
-    [checkedKeys, getEntityByValue],
-  );
+  // const valueKeys = React.useMemo(
+  //   () =>
+  //     checkedKeys.map(val => {
+  //       // We should keep disabled value entity here
+  //       const entity = getEntityByValue(val, undefined, true);
+  //       return entity ? entity.key : null;
+  //     }),
+  //   [checkedKeys, getEntityByValue],
+  // );
+
+  // TODO: handle this
+  const valueKeys = [];
 
   const mergedCheckedKeys = React.useMemo(() => {
     if (!checkable) {
@@ -189,7 +192,9 @@ const OptionList: React.RefForwardingComponent<
 
   // ========================= Keyboard =========================
   const [activeKey, setActiveKey] = React.useState<Key>(null);
-  const activeEntity = getEntityByKey(activeKey);
+  // const activeEntity = getEntityByKey(activeKey);
+  // TODO: handle this
+  const activeEntity = null;
 
   React.useImperativeHandle(ref, () => ({
     scrollTo: treeRef.current?.scrollTo,

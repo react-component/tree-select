@@ -2,7 +2,9 @@
 import * as React from 'react';
 import { BaseSelect } from 'rc-select';
 import type { BaseSelectRef, BaseSelectPropsWithoutPrivate } from 'rc-select';
+import { convertDataToEntities } from 'rc-tree/lib/utils/treeUtil';
 import useId from 'rc-select/lib/hooks/useId';
+import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import OptionList from './OptionList';
 import TreeNode from './TreeNode';
 import { SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './utils/strategyUtil';
@@ -20,13 +22,28 @@ import {
   toArray,
   fillFieldNames,
 } from './utils/valueUtil';
+import useCache from './hooks/useCache';
 
 export type RawValueType = string | number;
+
+export interface LabeledValueType {
+  key?: React.Key;
+  value?: RawValueType;
+  label?: React.ReactNode;
+  /** Only works on `treeCheckStrictly` */
+  halfChecked?: boolean;
+}
+
+export type ValueType = RawValueType | LabeledValueType | (RawValueType | LabeledValueType)[];
 
 export interface FieldNames {
   value?: string;
   label?: string;
   children?: string;
+}
+
+export interface InternalFieldName extends Omit<FieldNames, 'label'> {
+  _title: string[];
 }
 
 export interface SimpleModeConfig {
@@ -60,6 +77,10 @@ export interface TreeSelectProps<OptionType extends BaseOptionType = DefaultOpti
   prefixCls?: string;
   id?: string;
 
+  // >>> Value
+  value?: ValueType;
+  defaultValue?: ValueType;
+
   // >>> Field Names
   fieldNames?: FieldNames;
 
@@ -80,12 +101,20 @@ export interface TreeSelectProps<OptionType extends BaseOptionType = DefaultOpti
   listItemHeight?: number;
 }
 
+function isRawValue(value: RawValueType | LabeledValueType): value is RawValueType {
+  return !value || typeof value !== 'object';
+}
+
 const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref) => {
   const {
     id,
     prefixCls = 'rc-tree-select',
 
-    // >>> Mode
+    // Value
+    value,
+    defaultValue,
+
+    //  Mode
     treeCheckable,
     treeCheckStrictly,
 
@@ -107,35 +136,102 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   } = props;
 
   const mergedId = useId(id);
+  const treeConduction = treeCheckable && !treeCheckStrictly;
   const mergedCheckable: React.ReactNode | boolean = treeCheckable || treeCheckStrictly;
-  const mergedFieldNames = React.useMemo(() => fillFieldNames(fieldNames, true), [fieldNames]);
-
-  // =========================== Values ===========================
-  const displayValues = React.useMemo(() => [], []);
-
-  // ========================== Options ===========================
-  // Legacy both support `label` or `title` if not set.
-  // We have to fallback to function to handle this
-  const getTreeNodeTitle = React.useCallback(
-    (node: DefaultOptionType): React.ReactNode => {
-      if (!treeData) {
-        return node.title;
-      }
-
-      if (mergedFieldNames?.label) {
-        return node[mergedFieldNames.label];
-      }
-
-      return node.label || node.title;
-    },
-    [mergedFieldNames, treeData],
+  const mergedFieldNames: InternalFieldName = React.useMemo(
+    () => fillFieldNames(fieldNames),
+    [fieldNames],
   );
 
-  const mergedTreeData = useTreeData(treeData, children, {
-    getLabelProp: getTreeNodeTitle,
-    simpleMode: treeDataSimpleMode,
-    fieldNames: mergedFieldNames,
-  });
+  // ============================ Data ============================
+  // `useTreeData` only do convert of `children` or `simpleMode`.
+  // Else will return origin `treeData` for perf consideration.
+  // Do not do anything to loop the data.
+  const mergedTreeData = useTreeData(treeData, children, treeDataSimpleMode);
+
+  const { keyEntities } = React.useMemo(
+    () =>
+      convertDataToEntities(mergedTreeData as any, {
+        fieldNames: mergedFieldNames,
+      }),
+    [mergedTreeData, mergedFieldNames],
+  );
+
+  // useCache(mergedTreeData, treeConduction, mergedFieldNames);
+
+  // =========================== Label ============================
+  const getLabel = React.useCallback(
+    (item: DefaultOptionType) => {
+      if (item) {
+        const { _title: titleList } = mergedFieldNames;
+
+        for (let i = 0; i < titleList.length; i += 1) {
+          const title = item[titleList[i]];
+          if (title !== undefined) {
+            return title;
+          }
+        }
+      }
+    },
+    [mergedFieldNames],
+  );
+
+  // ========================= Wrap Value =========================
+  const convert2LabelValues = React.useCallback(
+    (draftValues: ValueType) => {
+      const values = toArray(draftValues);
+
+      return values.map(val => {
+        let rawLabel: React.ReactNode;
+        let rawValue: RawValueType;
+        let rawHalfChecked: boolean;
+
+        // Init provided info
+        if (!isRawValue(val)) {
+          rawLabel = val.label;
+          rawValue = val.value;
+          rawHalfChecked = val.halfChecked;
+        } else {
+          rawValue = val;
+        }
+
+        // Fill missing label
+        if (rawLabel === undefined) {
+          const entity = keyEntities[rawValue];
+          rawLabel = getLabel(entity?.node);
+        }
+
+        return {
+          label: rawLabel,
+          value: rawValue,
+          halfChecked: rawHalfChecked,
+        };
+      });
+    },
+    [keyEntities, getLabel],
+  );
+
+  // =========================== Values ===========================
+  const [internalValue, setInternalValue] = useMergedState(defaultValue, { value });
+
+  const rawLabeledValues = React.useMemo(
+    () => convert2LabelValues(internalValue),
+    [convert2LabelValues, internalValue],
+  );
+
+  const displayValues = React.useMemo(
+    () =>
+      rawLabeledValues.map(item => ({
+        ...item,
+        label: item.label ?? item.value,
+      })),
+    [rawLabeledValues],
+  );
+
+  const rawValues = React.useMemo(
+    () => rawLabeledValues.map(item => item.value),
+    [rawLabeledValues],
+  );
 
   // ========================== Context ===========================
   const treeSelectContext = React.useMemo(
@@ -156,7 +252,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       loadData,
       treeLoadedKeys,
       onTreeLoad,
-      // checkedKeys: rawValues,
+      checkedKeys: rawValues,
       // halfCheckedKeys: rawHalfCheckedKeys,
       // treeDefaultExpandAll,
       // treeExpandedKeys,
@@ -176,7 +272,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       loadData,
       treeLoadedKeys,
       onTreeLoad,
-      // rawValues,
+      rawValues,
       // rawHalfCheckedKeys,
       // treeDefaultExpandAll,
       // treeExpandedKeys,
