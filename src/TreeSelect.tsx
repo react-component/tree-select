@@ -71,6 +71,8 @@ export interface TreeSelectProps<OptionType extends BaseOptionType = DefaultOpti
   treeData?: OptionType[];
   treeDataSimpleMode?: boolean | SimpleModeConfig;
   loadData?: (dataNode: LegacyDataNode) => Promise<unknown>;
+  treeLoadedKeys?: React.Key[];
+  onTreeLoad?: (loadedKeys: React.Key[]) => void;
 
   // >>> Options
   virtual?: boolean;
@@ -95,6 +97,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     treeData,
     children,
     loadData,
+    treeLoadedKeys,
+    onTreeLoad,
 
     // Options
     virtual,
@@ -150,8 +154,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     () => ({
       checkable: mergedCheckable,
       loadData,
-      // treeLoadedKeys,
-      // onTreeLoad,
+      treeLoadedKeys,
+      onTreeLoad,
       // checkedKeys: rawValues,
       // halfCheckedKeys: rawHalfCheckedKeys,
       // treeDefaultExpandAll,
@@ -170,8 +174,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     [
       mergedCheckable,
       loadData,
-      // treeLoadedKeys,
-      // onTreeLoad,
+      treeLoadedKeys,
+      onTreeLoad,
       // rawValues,
       // rawHalfCheckedKeys,
       // treeDefaultExpandAll,

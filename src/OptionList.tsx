@@ -7,7 +7,7 @@ import type { TreeProps } from 'rc-tree';
 import Tree from 'rc-tree';
 import type { EventDataNode, ScrollTo } from 'rc-tree/lib/interface';
 import type { FlattenDataNode, RawValueType, DataNode, TreeDataNode, Key } from './interface';
-import { SelectContext } from './LegacyContext';
+import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
 import { getAllKeys } from './utils/valueUtil';
 
@@ -94,7 +94,7 @@ const OptionList: React.RefForwardingComponent<
 
     getEntityByKey,
     getEntityByValue,
-  } = React.useContext(SelectContext);
+  } = React.useContext(LegacyContext);
 
   const treeRef = React.useRef<Tree>();
 

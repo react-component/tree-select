@@ -31,4 +31,6 @@ interface LegacyContextProps {
   ) => FlattenDataNode;
 }
 
-export const LegacySelectContext = React.createContext<LegacyContextProps>(null);
+const LegacySelectContext = React.createContext<LegacyContextProps>(null);
+
+export default LegacySelectContext;
