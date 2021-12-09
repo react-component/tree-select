@@ -128,36 +128,22 @@ export default function useTreeData(
     fieldNames: FieldNames;
   },
 ): InternalDataEntity[] {
-  const cacheRef = React.useRef<{
-    treeData?: DataNode[];
-    children?: React.ReactNode;
-    formatTreeData?: InternalDataEntity[];
-  }>({});
+  return React.useMemo(() => {
+    if (treeData) {
+      return formatTreeData(
+        simpleMode
+          ? parseSimpleTreeData(treeData, {
+              id: 'id',
+              pId: 'pId',
+              rootPId: null,
+              ...(simpleMode !== true ? simpleMode : {}),
+            })
+          : treeData,
+        getLabelProp,
+        fieldNames,
+      );
+    }
 
-  if (treeData) {
-    cacheRef.current.formatTreeData =
-      cacheRef.current.treeData === treeData
-        ? cacheRef.current.formatTreeData
-        : formatTreeData(
-            simpleMode
-              ? parseSimpleTreeData(treeData, {
-                  id: 'id',
-                  pId: 'pId',
-                  rootPId: null,
-                  ...(simpleMode !== true ? simpleMode : {}),
-                })
-              : treeData,
-            getLabelProp,
-            fieldNames,
-          );
-
-    cacheRef.current.treeData = treeData;
-  } else {
-    cacheRef.current.formatTreeData =
-      cacheRef.current.children === children
-        ? cacheRef.current.formatTreeData
-        : formatTreeData(convertChildrenToData(children), getLabelProp, fieldNames);
-  }
-
-  return cacheRef.current.formatTreeData;
+    return formatTreeData(convertChildrenToData(children), getLabelProp, fieldNames);
+  }, [children, fieldNames, getLabelProp, simpleMode, treeData]);
 }

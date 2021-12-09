@@ -37,7 +37,7 @@ import {
   fillFieldNames,
 } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
-import { SelectContext } from './Context';
+import { SelectContext } from './LegacyContext';
 import useTreeData from './hooks/useTreeData';
 import useKeyValueMap from './hooks/useKeyValueMap';
 import useKeyValueMapping from './hooks/useKeyValueMapping';

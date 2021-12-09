@@ -3,7 +3,7 @@ import type { IconType } from 'rc-tree/lib/interface';
 import type { FlattenDataNode, Key, LegacyDataNode, RawValueType } from './interface';
 import type { SkipType } from './hooks/useKeyValueMapping';
 
-interface ContextProps {
+interface LegacyContextProps {
   checkable: boolean | React.ReactNode;
   checkedKeys: Key[];
   halfCheckedKeys: Key[];
@@ -31,4 +31,4 @@ interface ContextProps {
   ) => FlattenDataNode;
 }
 
-export const SelectContext = React.createContext<ContextProps>(null);
+export const LegacySelectContext = React.createContext<LegacyContextProps>(null);

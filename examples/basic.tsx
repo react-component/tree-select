@@ -150,7 +150,7 @@ class Demo extends React.Component {
     } = this.state;
     return (
       <div style={{ margin: 20 }}>
-        <h2>tree-select in dialog</h2>
+        {/* <h2>tree-select in dialog</h2>
         <button type="button" className="btn btn-primary" onClick={this.onClick}>
           show dialog
         </button>
@@ -184,7 +184,7 @@ class Demo extends React.Component {
               />
             </div>
           </Dialog>
-        ) : null}
+        ) : null} */}
         <h2>single select</h2>
         <TreeSelect
           style={{ width: 300 }}
@@ -216,7 +216,7 @@ class Demo extends React.Component {
           onSelect={this.onSelect}
         />
 
-        <h2>single select (just select children)</h2>
+        {/* <h2>single select (just select children)</h2>
         <TreeSelect
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
@@ -385,7 +385,7 @@ class Demo extends React.Component {
             <TreeNode value="2same value" title="2same title" key="0-2-0" />
           </TreeNode>
           <TreeNode value="same value3" title="same title" key="0-3" />
-        </TreeSelect>
+        </TreeSelect> */}
       </div>
     );
   }

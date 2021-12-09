@@ -1,3 +1,4 @@
+import type * as React from 'react';
 import { flattenTreeData } from 'rc-tree/lib/utils/treeUtil';
 import type { FlattenNode } from 'rc-tree/lib/interface';
 import type { FilterFunc } from 'rc-select/lib/interface/generator';
@@ -14,6 +15,7 @@ import type {
 } from '../interface';
 import { fillLegacyProps } from './legacyUtil';
 import type { SkipType } from '../hooks/useKeyValueMapping';
+import type { DefaultOptionType } from '../TreeSelect';
 
 type CompatibleDataNode = Omit<FlattenDataNode, 'level'>;
 
@@ -248,4 +250,24 @@ export function removeValue(rawValues: RawValueType[], value: RawValueType) {
   const values = new Set(rawValues);
   values.delete(value);
   return Array.from(values);
+}
+
+/** Loop fetch all the keys exist in the tree */
+export function getAllKeys(treeData: DefaultOptionType[], fieldNames: FieldNames) {
+  const keys: React.Key[] = [];
+
+  function dig(list: DefaultOptionType[]) {
+    list.forEach(item => {
+      keys.push(item[fieldNames.value]);
+
+      const children = item[fieldNames.children];
+      if (children) {
+        dig(children);
+      }
+    });
+  }
+
+  dig(treeData);
+
+  return keys;
 }

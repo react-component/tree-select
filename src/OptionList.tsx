@@ -2,11 +2,14 @@ import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import useMemo from 'rc-util/lib/hooks/useMemo';
 import type { RefOptionListProps } from 'rc-select/lib/OptionList';
+import { useBaseProps } from 'rc-select';
 import type { TreeProps } from 'rc-tree';
 import Tree from 'rc-tree';
 import type { EventDataNode, ScrollTo } from 'rc-tree/lib/interface';
 import type { FlattenDataNode, RawValueType, DataNode, TreeDataNode, Key } from './interface';
-import { SelectContext } from './Context';
+import { SelectContext } from './LegacyContext';
+import TreeSelectContext from './TreeSelectContext';
+import { getAllKeys } from './utils/valueUtil';
 
 const HIDDEN_STYLE = {
   width: 0,
@@ -59,19 +62,18 @@ const OptionList: React.RefForwardingComponent<
 > = (props, ref) => {
   const {
     prefixCls,
-    height,
-    itemHeight,
-    virtual,
-    options,
-    flattenOptions,
     multiple,
     searchValue,
     onSelect,
-    onToggleOpen,
+    toggleOpen,
     open,
     notFoundContent,
     onMouseEnter,
-  } = props;
+  } = useBaseProps();
+
+  const { virtual, listHeight, listItemHeight, treeData, fieldNames } =
+    React.useContext(TreeSelectContext);
+
   const {
     checkable,
     checkedKeys,
@@ -96,9 +98,9 @@ const OptionList: React.RefForwardingComponent<
 
   const treeRef = React.useRef<Tree>();
 
-  const memoOptions = useMemo(
-    () => options,
-    [open, options],
+  const memoTreeData = useMemo(
+    () => treeData,
+    [open, treeData],
     (prev, next) => next[0] && prev[1] !== next[1],
   );
 
@@ -154,9 +156,9 @@ const OptionList: React.RefForwardingComponent<
 
   React.useEffect(() => {
     if (searchValue) {
-      setSearchExpandedKeys(flattenOptions.map(o => o.key));
+      setSearchExpandedKeys(getAllKeys(treeData, fieldNames));
     }
-  }, [searchValue]);
+  }, [!!searchValue]);
 
   const onInternalExpand = (keys: Key[]) => {
     setExpandedKeys(keys);
@@ -181,7 +183,7 @@ const OptionList: React.RefForwardingComponent<
     }
 
     if (!multiple) {
-      onToggleOpen(false);
+      toggleOpen(false);
     }
   };
 
@@ -216,7 +218,7 @@ const OptionList: React.RefForwardingComponent<
 
         // >>> Close
         case KeyCode.ESC: {
-          onToggleOpen(false);
+          toggleOpen(false);
         }
       }
     },
@@ -224,7 +226,7 @@ const OptionList: React.RefForwardingComponent<
   }));
 
   // ========================== Render ==========================
-  if (memoOptions.length === 0) {
+  if (memoTreeData.length === 0) {
     return (
       <div role="listbox" className={`${prefixCls}-empty`} onMouseDown={onListMouseDown}>
         {notFoundContent}
@@ -232,7 +234,9 @@ const OptionList: React.RefForwardingComponent<
     );
   }
 
-  const treeProps: Partial<TreeProps> = {};
+  const treeProps: Partial<TreeProps> = {
+    fieldNames,
+  };
   if (treeLoadedKeys) {
     treeProps.loadedKeys = treeLoadedKeys;
   }
@@ -252,9 +256,9 @@ const OptionList: React.RefForwardingComponent<
         ref={treeRef}
         focusable={false}
         prefixCls={`${prefixCls}-tree`}
-        treeData={memoOptions as TreeDataNode[]}
-        height={height}
-        itemHeight={itemHeight}
+        treeData={memoTreeData as TreeDataNode[]}
+        height={listHeight}
+        itemHeight={listItemHeight}
         virtual={virtual}
         multiple={multiple}
         icon={treeIcon}
