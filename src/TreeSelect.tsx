@@ -442,7 +442,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   // ========================== Options ===========================
   /** Trigger by option list */
   const onOptionSelect: OnInternalSelect = React.useCallback(
-    (selectedKey, info) => {
+    (selectedKey, { selected }) => {
       const entity = keyEntities[selectedKey];
 
       // const eventValue = mergedLabelInValue ? selectValue : selectValue;
@@ -454,14 +454,31 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           // Single mode always set value
           triggerChange([selectedValue], { selected: true, triggerValue: selectedValue }, 'option');
         } else {
-          let newRawValues = Array.from([...rawValues, selectedValue]);
+          let newRawValues = selected
+            ? [...rawValues, selectedValue]
+            : rawCheckedKeys.filter(v => v !== selectedValue);
 
           // Add keys if tree conduction
           if (treeConduction) {
             // Should keep missing values
             const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
             const keyList = existRawValues.map(val => valueEntities.get(val).key);
-            const { checkedKeys } = conductCheck(keyList, true, keyEntities);
+
+            // Conduction by selected or not
+            let checkedKeys: React.Key[];
+            if (selected) {
+              ({ checkedKeys } = conductCheck(keyList, true, keyEntities));
+            } else {
+              console.log('🎉', rawCheckedKeys, rawValues);
+              ({ checkedKeys } = conductCheck(
+                keyList,
+                { checked: false, halfCheckedKeys: rawHalfCheckedKeys },
+                keyEntities,
+              ));
+              console.log('🧶', keyList, checkedKeys);
+            }
+
+            // Fill back of keys
             newRawValues = [
               ...missingRawValues,
               ...checkedKeys.map(key => keyEntities[key].node[mergedFieldNames.value]),
