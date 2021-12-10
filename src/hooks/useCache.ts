@@ -1,47 +1,35 @@
 import * as React from 'react';
-import { convertDataToEntities } from 'rc-tree/lib/utils/treeUtil';
-import type { DefaultOptionType } from '../TreeSelect';
-import useRefFunc from './useRefFunc';
+import type { DataEntity } from 'rc-tree/lib/interface';
+import type { DefaultOptionType, LabeledValueType, RawValueType } from '../TreeSelect';
 
 /**
  * This function will try to call requestIdleCallback if available to save performance.
+ * No need `getLabel` here since already fetch on `rawLabeledValue`.
  */
-export default (
-  treeData: DefaultOptionType[],
-  treeConduction: boolean,
-  fieldNames: InternalFieldName,
-) => {
-  // const { keyEntities: conductKeyEntities } = React.useMemo(() => {
-  //   if (treeConduction) {
-  //     return convertDataToEntities(mergedTreeData as any);
-  //   }
-  //   return { keyEntities: null };
-  // }, [mergedTreeData, treeCheckable, treeCheckStrictly]);
-  const cacheRef = React.useRef<{
-    process?: DefaultOptionType[];
-    treeData?: DefaultOptionType[];
-    keyEntities?: Record<string, any>;
-  }>({});
-
-  // Call useIdleCallback to get data async
-  React.useEffect(() => {
-    if (typeof requestIdleCallback !== 'undefined' && typeof cancelIdleCallback !== 'undefined') {
-      cacheRef.current.process = treeData;
-
-      // Call requestIdleCallback
-      const id = requestIdleCallback(() => {
-        console.log('waht????');
-      });
-
-      return () => cancelIdleCallback(id);
-    }
-  }, [treeData]);
-
-  return useRefFunc(() => {
-    if (cacheRef.current.treeData !== treeData) {
-      // Force generate conduction data
-    }
-
-    return cacheRef.current.keyEntities;
+export default (values: LabeledValueType[]): [LabeledValueType[]] => {
+  const cacheRef = React.useRef({
+    valueLabels: new Map<RawValueType, React.ReactNode>(),
   });
+
+  return React.useMemo(() => {
+    const { valueLabels } = cacheRef.current;
+    const valueLabelsCache = new Map<RawValueType, React.ReactNode>();
+
+    const filledValues = values.map(item => {
+      const { value } = item;
+      const mergedLabel = item.label ?? valueLabels.get(value);
+
+      // Save in cache
+      valueLabelsCache.set(value, mergedLabel);
+
+      return {
+        ...item,
+        label: mergedLabel,
+      };
+    });
+
+    cacheRef.current.valueLabels = valueLabelsCache;
+
+    return [filledValues];
+  }, [values]);
 };

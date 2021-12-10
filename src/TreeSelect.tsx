@@ -28,6 +28,7 @@ import useCache from './hooks/useCache';
 import useRefFunc from './hooks/useRefFunc';
 import useChange from './hooks/useChange';
 import useDataEntities from './hooks/useDataEntities';
+import { fillAdditionalInfo } from './utils/legacyUtil';
 
 export type OnInternalSelect = (value: RawValueType, info: { selected: boolean }) => void;
 
@@ -40,6 +41,8 @@ export interface LabeledValueType {
   /** Only works on `treeCheckStrictly` */
   halfChecked?: boolean;
 }
+
+export type SelectSource = 'option' | 'selection' | 'input' | 'clear';
 
 export type ValueType = RawValueType | LabeledValueType | (RawValueType | LabeledValueType)[];
 
@@ -116,6 +119,7 @@ export interface TreeSelectProps<OptionType extends BaseOptionType = DefaultOpti
 
   // >>> Selector
   showCheckedStrategy?: CheckedStrategy;
+  treeNodeLabelProp?: string;
 
   // >>> Field Names
   fieldNames?: FieldNames;
@@ -156,6 +160,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
     // Selector
     showCheckedStrategy,
+    treeNodeLabelProp,
 
     //  Mode
     multiple,
@@ -201,13 +206,15 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
   const { keyEntities, valueEntities } = useDataEntities(mergedTreeData, mergedFieldNames);
 
-  // useCache(mergedTreeData, treeConduction, mergedFieldNames);
-  // console.log('>>>', keyEntities);
-
   // =========================== Label ============================
   const getLabel = React.useCallback(
     (item: DefaultOptionType) => {
       if (item) {
+        if (treeNodeLabelProp) {
+          return item[treeNodeLabelProp];
+        }
+
+        // Loop from fieldNames
         const { _title: titleList } = mergedFieldNames;
 
         for (let i = 0; i < titleList.length; i += 1) {
@@ -218,7 +225,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         }
       }
     },
-    [mergedFieldNames],
+    [mergedFieldNames, treeNodeLabelProp],
   );
 
   // ========================= Wrap Value =========================
@@ -259,23 +266,37 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   // =========================== Values ===========================
   const [internalValue, setInternalValue] = useMergedState(defaultValue, { value });
 
-  const rawLabeledValues = React.useMemo(
+  const rawMixedLabeledValues = React.useMemo(
     () => convert2LabelValues(internalValue),
     [convert2LabelValues, internalValue],
   );
 
+  // Split value into full check and half check
+  const [rawLabeledValues, rawHalfCheckedValues] = React.useMemo(() => {
+    const fullCheckValues: LabeledValueType[] = [];
+    const halfCheckValues: LabeledValueType[] = [];
+
+    rawMixedLabeledValues.forEach(item => {
+      if (item.halfChecked) {
+        halfCheckValues.push(item);
+      } else {
+        fullCheckValues.push(item);
+      }
+    });
+
+    return [fullCheckValues, halfCheckValues];
+  }, [rawMixedLabeledValues]);
+
+  const [mergedValues] = useCache(rawLabeledValues);
+  const rawValues = React.useMemo(() => mergedValues.map(item => item.value), [mergedValues]);
+
   const displayValues = React.useMemo(
     () =>
-      rawLabeledValues.map(item => ({
+      mergedValues.map(item => ({
         ...item,
         label: item.label ?? item.value,
       })),
-    [rawLabeledValues],
-  );
-
-  const rawValues = React.useMemo(
-    () => rawLabeledValues.map(item => item.value),
-    [rawLabeledValues],
+    [mergedValues],
   );
 
   /** Get `missingRawValues` which not exist in the tree yet */
@@ -299,84 +320,85 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   );
 
   // =========================== Change ===========================
-  console.log('Entities:', keyEntities, valueEntities);
-  const triggerChange = useRefFunc((newRawValues: RawValueType[]) => {
-    const labeledValues = convert2LabelValues(newRawValues);
-    setInternalValue(labeledValues);
+  const triggerChange = useRefFunc(
+    (
+      newRawValues: RawValueType[],
+      extra: { triggerValue: RawValueType; selected: boolean },
+      source: SelectSource,
+    ) => {
+      const labeledValues = convert2LabelValues(newRawValues);
+      setInternalValue(labeledValues);
 
-    // Generate rest parameters is costly, so only do it when necessary
-    if (onChange) {
-      let eventValues: RawValueType[] = newRawValues;
-      if (treeConduction && showCheckedStrategy !== 'SHOW_ALL') {
-        const keyList = newRawValues.map(val => {
-          const entity = valueEntities.get(val);
-          return entity?.key ?? val;
-        });
-        const formattedKeyList = formatStrategyKeys(keyList, showCheckedStrategy, keyEntities);
-        eventValues = formattedKeyList.map(key => {
-          const entity = valueEntities.get(key);
-          return entity ? entity.node[mergedFieldNames.value] : key;
-        });
+      // Generate rest parameters is costly, so only do it when necessary
+      if (onChange) {
+        let eventValues: RawValueType[] = newRawValues;
+        if (treeConduction && showCheckedStrategy !== 'SHOW_ALL') {
+          const keyList = newRawValues.map(val => {
+            const entity = valueEntities.get(val);
+            return entity?.key ?? val;
+          });
+          const formattedKeyList = formatStrategyKeys(keyList, showCheckedStrategy, keyEntities);
+          eventValues = formattedKeyList.map(key => {
+            const entity = valueEntities.get(key);
+            return entity ? entity.node[mergedFieldNames.value] : key;
+          });
+        }
+
+        const { triggerValue, selected } = extra || {
+          triggerValue: undefined,
+          selected: undefined,
+        };
+
+        let returnLabeledValues: LabeledValueType[] = convert2LabelValues(eventValues);
+
+        // We need fill half check back
+        if (treeCheckStrictly) {
+          const halfValues = rawHalfCheckedValues.filter(item => !eventValues.includes(item.value));
+
+          returnLabeledValues = [...returnLabeledValues, ...halfValues];
+        }
+
+        const additionalInfo = {
+          // [Legacy] Always return as array contains label & value
+          preValue: rawLabeledValues,
+          triggerValue,
+        } as ChangeEventExtra;
+
+        // [Legacy] Fill legacy data if user query.
+        // This is expansive that we only fill when user query
+        // https://github.com/react-component/tree-select/blob/fe33eb7c27830c9ac70cd1fdb1ebbe7bc679c16a/src/Select.jsx
+        let showPosition = true;
+        if (treeCheckStrictly || (source === 'selection' && !selected)) {
+          showPosition = false;
+        }
+
+        fillAdditionalInfo(
+          additionalInfo,
+          triggerValue,
+          newRawValues,
+          mergedTreeData,
+          showPosition,
+          fieldNames,
+        );
+
+        if (mergedCheckable) {
+          additionalInfo.checked = selected;
+        } else {
+          additionalInfo.selected = selected;
+        }
+
+        const returnValues = returnLabeledValues
+          ? returnLabeledValues
+          : returnLabeledValues.map(item => item.value);
+
+        onChange(
+          mergedMultiple ? returnValues : returnValues[0],
+          mergedLabelInValue ? null : returnLabeledValues.map(item => item.label),
+          additionalInfo,
+        );
       }
-
-      // const { triggerValue, selected } = extra || {
-      //   triggerValue: undefined,
-      //   selected: undefined,
-      // };
-
-      // let returnValues = mergedLabelInValue
-      //   ? getRawValueLabeled(eventValues, value, getEntityByValue, getTreeNodeLabelProp)
-      //   : eventValues;
-
-      // // We need fill half check back
-      // if (treeCheckStrictly) {
-      //   const halfValues = rawHalfCheckedKeys
-      //     .map(key => {
-      //       const entity = getEntityByKey(key);
-      //       return entity ? entity.data.value : key;
-      //     })
-      //     .filter(val => !eventValues.includes(val));
-
-      //   returnValues = [
-      //     ...(returnValues as LabelValueType[]),
-      //     ...getRawValueLabeled(halfValues, value, getEntityByValue, getTreeNodeLabelProp),
-      //   ];
-      // }
-
-      // const additionalInfo = {
-      //   // [Legacy] Always return as array contains label & value
-      //   preValue: selectValues,
-      //   triggerValue,
-      // } as ChangeEventExtra;
-
-      // // [Legacy] Fill legacy data if user query.
-      // // This is expansive that we only fill when user query
-      // // https://github.com/react-component/tree-select/blob/fe33eb7c27830c9ac70cd1fdb1ebbe7bc679c16a/src/Select.jsx
-      // let showPosition = true;
-      // if (treeCheckStrictly || (source === 'selection' && !selected)) {
-      //   showPosition = false;
-      // }
-
-      // fillAdditionalInfo(additionalInfo, triggerValue, newRawValues, mergedTreeData, showPosition);
-
-      // if (mergedCheckable) {
-      //   additionalInfo.checked = selected;
-      // } else {
-      //   additionalInfo.selected = selected;
-      // }
-
-      // onChange(
-      //   mergedMultiple ? returnValues : returnValues[0],
-      //   mergedLabelInValue
-      //     ? null
-      //     : eventValues.map(val => {
-      //         const entity = getEntityByValue(val);
-      //         return entity ? entity.data.title : null;
-      //       }),
-      //   additionalInfo,
-      // );
-    }
-  });
+    },
+  );
 
   // ========================== Options ===========================
   /** Trigger by option list */
@@ -391,8 +413,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
         if (!mergedMultiple) {
           // Single mode always set value
-          triggerChange([selectedValue]);
-          // triggerChange([selectValue], { selected: true, triggerValue: selectValue }, source);
+          triggerChange([selectedValue], { selected: true, triggerValue: selectedValue }, 'option');
         } else {
           let newRawValues = Array.from([...rawValues, selectedValue]);
 
@@ -407,8 +428,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
               ...checkedKeys.map(key => keyEntities[key].node[mergedFieldNames.value]),
             ];
           }
-          triggerChange(newRawValues);
-          //   triggerChange(newRawValues, { selected: true, triggerValue: selectValue }, source);
+          triggerChange(newRawValues, { selected: true, triggerValue: selectedValue }, 'option');
         }
 
         // Trigger select event
