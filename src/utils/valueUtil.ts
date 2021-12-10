@@ -82,7 +82,7 @@ export function isValueDisabled(value: RawValueType, options: CompatibleDataNode
 }
 
 export function isCheckDisabled(node: DataNode) {
-  return node.disabled || node.disableCheckbox || node.checkable === false;
+  return !node || node.disabled || node.disableCheckbox || node.checkable === false;
 }
 
 interface TreeDataNode extends InternalDataEntity {

@@ -1,4 +1,5 @@
 import type { DataEntity } from 'rc-tree/lib/interface';
+import type * as React from 'react';
 import type { RawValueType, Key, DataNode } from '../interface';
 import { isCheckDisabled } from './valueUtil';
 
@@ -9,14 +10,14 @@ export const SHOW_CHILD = 'SHOW_CHILD';
 export type CheckedStrategy = typeof SHOW_ALL | typeof SHOW_PARENT | typeof SHOW_CHILD;
 
 export function formatStrategyKeys(
-  keys: Key[],
+  keys: React.Key[],
   strategy: CheckedStrategy,
   keyEntities: Record<Key, DataEntity>,
 ): RawValueType[] {
   const keySet = new Set(keys);
 
   if (strategy === SHOW_CHILD) {
-    return keys.filter((key) => {
+    return keys.filter(key => {
       const entity = keyEntities[key];
 
       if (
@@ -32,11 +33,11 @@ export function formatStrategyKeys(
     });
   }
   if (strategy === SHOW_PARENT) {
-    return keys.filter((key) => {
+    return keys.filter(key => {
       const entity = keyEntities[key];
       const parent = entity ? entity.parent : null;
 
-      if (parent && !isCheckDisabled(parent.node) && keySet.has((parent.node as DataNode).key)) {
+      if (parent && !isCheckDisabled(parent.node) && keySet.has(parent.key)) {
         return false;
       }
       return true;

@@ -1,7 +1,12 @@
 // import generate, { TreeSelectProps } from './generate';
 import * as React from 'react';
 import { BaseSelect } from 'rc-select';
-import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, SelectProps } from 'rc-select';
+import type {
+  BaseSelectRef,
+  BaseSelectPropsWithoutPrivate,
+  BaseSelectProps,
+  SelectProps,
+} from 'rc-select';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 import useId from 'rc-select/lib/hooks/useId';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
@@ -114,6 +119,13 @@ export interface TreeSelectProps<OptionType extends BaseOptionType = DefaultOpti
   defaultValue?: ValueType;
   onChange?: (value: ValueType, labelList: React.ReactNode[], extra: ChangeEventExtra) => void;
 
+  // >>> Search
+  searchValue?: string;
+  /** @deprecated Use `searchValue` instead */
+  inputValue?: string;
+  onSearch?: (value: string) => void;
+  autoClearSearchValue?: boolean;
+
   // >>> Select
   onSelect?: SelectProps<OptionType>['onSelect'];
 
@@ -158,8 +170,14 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     onChange,
     onSelect,
 
+    // Search
+    searchValue,
+    inputValue,
+    onSearch,
+    autoClearSearchValue = true,
+
     // Selector
-    showCheckedStrategy,
+    showCheckedStrategy = SHOW_CHILD,
     treeNodeLabelProp,
 
     //  Mode
@@ -191,12 +209,24 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const mergedLabelInValue = treeCheckStrictly || labelInValue;
   const mergedMultiple = mergedCheckable || multiple;
 
+  // ========================= FieldNames =========================
   const mergedFieldNames: InternalFieldName = React.useMemo(
     () => fillFieldNames(fieldNames),
     /* eslint-disable react-hooks/exhaustive-deps */
     [JSON.stringify(fieldNames)],
     /* eslint-enable react-hooks/exhaustive-deps */
   );
+
+  // =========================== Search ===========================
+  const [mergedSearchValue, setSearchValue] = useMergedState('', {
+    value: searchValue !== undefined ? searchValue : inputValue,
+    postState: search => search || '',
+  });
+
+  const onInternalSearch: BaseSelectProps['onSearch'] = searchText => {
+    setSearchValue(searchText);
+    onSearch?.(searchText);
+  };
 
   // ============================ Data ============================
   // `useTreeData` only do convert of `children` or `simpleMode`.
@@ -205,6 +235,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const mergedTreeData = useTreeData(treeData, children, treeDataSimpleMode);
 
   const { keyEntities, valueEntities } = useDataEntities(mergedTreeData, mergedFieldNames);
+  // console.log('KeyEntities', keyEntities);
 
   // =========================== Label ============================
   const getLabel = React.useCallback(
@@ -517,6 +548,9 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           prefixCls={prefixCls}
           displayValues={displayValues}
           mode={mergedMultiple ? 'multiple' : undefined}
+          // >>> Search
+          searchValue={mergedSearchValue}
+          onSearch={onInternalSearch}
           // >>> Options
           OptionList={OptionList}
         />
