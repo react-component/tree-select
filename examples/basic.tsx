@@ -185,7 +185,7 @@ class Demo extends React.Component {
             </div>
           </Dialog>
         ) : null} */}
-        <h2>single select</h2>
+        {/* <h2>single select</h2>
         <TreeSelect
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
@@ -216,7 +216,7 @@ class Demo extends React.Component {
           onSelect={this.onSelect}
         />
 
-        {/* <h2>single select (just select children)</h2>
+        <h2>single select (just select children)</h2>
         <TreeSelect
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
@@ -249,7 +249,7 @@ class Demo extends React.Component {
           onChange={this.onMultipleChange}
           onSelect={this.onSelect}
           allowClear
-        />
+        /> */}
 
         <h2>check select</h2>
         <TreeSelect
@@ -277,12 +277,12 @@ class Demo extends React.Component {
           onSelect={this.onSelect}
           maxTagCount="responsive"
           maxTagPlaceholder={valueList => {
-            console.log('Max Tag Rest Value:', valueList);
+            // console.log('Max Tag Rest Value:', valueList);
             return `${valueList.length} rest...`;
           }}
         />
 
-        <h2>labelInValue & show path</h2>
+        {/* <h2>labelInValue & show path</h2>
         <TreeSelect
           style={{ width: 500 }}
           transitionName="rc-tree-select-dropdown-slide-up"

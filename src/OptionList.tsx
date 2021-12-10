@@ -29,29 +29,27 @@ interface TreeEventInfo {
 }
 
 export interface OptionListProps<OptionsType extends object[]> {
-  prefixCls: string;
-  id: string;
-  options: OptionsType;
-  flattenOptions: FlattenDataNode[];
-  height: number;
-  itemHeight: number;
-  virtual?: boolean;
-  values: Set<RawValueType>;
-  multiple: boolean;
-  open: boolean;
-  defaultActiveFirstOption?: boolean;
-  notFoundContent?: React.ReactNode;
-  menuItemSelectedIcon?: any;
-  childrenAsData: boolean;
-  searchValue: string;
-
-  onSelect: (value: RawValueType, option: { selected: boolean }) => void;
-  onToggleOpen: (open?: boolean) => void;
-  /** Tell Select that some value is now active to make accessibility work */
-  onActiveValue: (value: RawValueType, index: number) => void;
-  onScroll: React.UIEventHandler<HTMLDivElement>;
-
-  onMouseEnter: () => void;
+  // prefixCls: string;
+  // id: string;
+  // options: OptionsType;
+  // flattenOptions: FlattenDataNode[];
+  // height: number;
+  // itemHeight: number;
+  // virtual?: boolean;
+  // values: Set<RawValueType>;
+  // multiple: boolean;
+  // open: boolean;
+  // defaultActiveFirstOption?: boolean;
+  // notFoundContent?: React.ReactNode;
+  // menuItemSelectedIcon?: any;
+  // childrenAsData: boolean;
+  // searchValue: string;
+  // onSelect: (value: RawValueType, option: { selected: boolean }) => void;
+  // onToggleOpen: (open?: boolean) => void;
+  // /** Tell Select that some value is now active to make accessibility work */
+  // onActiveValue: (value: RawValueType, index: number) => void;
+  // onScroll: React.UIEventHandler<HTMLDivElement>;
+  // onMouseEnter: () => void;
 }
 
 type ReviseRefOptionListProps = Omit<RefOptionListProps, 'scrollTo'> & { scrollTo: ScrollTo };
@@ -60,18 +58,10 @@ const OptionList: React.RefForwardingComponent<
   ReviseRefOptionListProps,
   OptionListProps<DataNode[]>
 > = (props, ref) => {
-  const {
-    prefixCls,
-    multiple,
-    searchValue,
-    onSelect,
-    toggleOpen,
-    open,
-    notFoundContent,
-    onMouseEnter,
-  } = useBaseProps();
+  const { prefixCls, multiple, searchValue, toggleOpen, open, notFoundContent, onMouseEnter } =
+    useBaseProps();
 
-  const { virtual, listHeight, listItemHeight, treeData, fieldNames } =
+  const { virtual, listHeight, listItemHeight, treeData, fieldNames, onSelect } =
     React.useContext(TreeSelectContext);
 
   const {
@@ -177,13 +167,17 @@ const OptionList: React.RefForwardingComponent<
     event.preventDefault();
   };
 
-  const onInternalSelect = (_: Key[], { node: { key } }: TreeEventInfo) => {
-    const entity = getEntityByKey(key, checkable ? 'checkbox' : 'select');
-    if (entity !== null) {
-      onSelect(entity.data.value, {
-        selected: !checkedKeys.includes(entity.data.value),
-      });
-    }
+  // const onInternalSelect = (_: Key[], { node: { key } }: TreeEventInfo) => {
+  const onInternalSelect = (_: Key[], info: TreeEventInfo) => {
+    // const entity = getEntityByKey(key, checkable ? 'checkbox' : 'select');
+    // if (entity !== null) {
+    //   onSelect(entity.data.value, {
+    //     selected: !checkedKeys.includes(entity.data.value),
+    //   });
+    // }
+    onSelect(info.node.key, {
+      selected: !checkedKeys.includes(info.node.key),
+    });
 
     if (!multiple) {
       toggleOpen(false);
