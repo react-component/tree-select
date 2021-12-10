@@ -34,6 +34,7 @@ import useRefFunc from './hooks/useRefFunc';
 import useChange from './hooks/useChange';
 import useDataEntities from './hooks/useDataEntities';
 import { fillAdditionalInfo } from './utils/legacyUtil';
+import useCheckedKeys from './hooks/useCheckedKeys';
 
 export type OnInternalSelect = (value: RawValueType, info: { selected: boolean }) => void;
 
@@ -235,7 +236,26 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const mergedTreeData = useTreeData(treeData, children, treeDataSimpleMode);
 
   const { keyEntities, valueEntities } = useDataEntities(mergedTreeData, mergedFieldNames);
-  // console.log('KeyEntities', keyEntities);
+
+  /** Get `missingRawValues` which not exist in the tree yet */
+  const splitRawValues = React.useCallback(
+    (newRawValues: RawValueType[]) => {
+      const missingRawValues = [];
+      const existRawValues = [];
+
+      // Keep missing value in the cache
+      newRawValues.forEach(val => {
+        if (valueEntities.has(val)) {
+          existRawValues.push(val);
+        } else {
+          missingRawValues.push(val);
+        }
+      });
+
+      return { missingRawValues, existRawValues };
+    },
+    [valueEntities],
+  );
 
   // =========================== Label ============================
   const getLabel = React.useCallback(
@@ -330,24 +350,12 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     [mergedValues],
   );
 
-  /** Get `missingRawValues` which not exist in the tree yet */
-  const splitRawValues = React.useCallback(
-    (newRawValues: RawValueType[]) => {
-      const missingRawValues = [];
-      const existRawValues = [];
-
-      // Keep missing value in the cache
-      newRawValues.forEach(val => {
-        if (valueEntities.has(val)) {
-          existRawValues.push(val);
-        } else {
-          missingRawValues.push(val);
-        }
-      });
-
-      return { missingRawValues, existRawValues };
-    },
-    [valueEntities],
+  // Convert value to key. Will fill missed keys for conduct check.
+  const [rawCheckedKeys, rawHalfCheckedKeys] = useCheckedKeys(
+    rawLabeledValues,
+    rawHalfCheckedValues,
+    treeConduction,
+    keyEntities,
   );
 
   // =========================== Change ===========================
@@ -499,8 +507,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       loadData,
       treeLoadedKeys,
       onTreeLoad,
-      checkedKeys: rawValues,
-      // halfCheckedKeys: rawHalfCheckedKeys,
+      checkedKeys: rawCheckedKeys,
+      halfCheckedKeys: rawHalfCheckedKeys,
       // treeDefaultExpandAll,
       // treeExpandedKeys,
       // treeDefaultExpandedKeys,
@@ -519,8 +527,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       loadData,
       treeLoadedKeys,
       onTreeLoad,
-      rawValues,
-      // rawHalfCheckedKeys,
+      rawCheckedKeys,
+      rawHalfCheckedKeys,
       // treeDefaultExpandAll,
       // treeExpandedKeys,
       // treeDefaultExpandedKeys,

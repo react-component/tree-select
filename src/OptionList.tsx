@@ -81,9 +81,6 @@ const OptionList: React.RefForwardingComponent<
     treeLoadedKeys,
     treeMotion,
     onTreeLoad,
-
-    getEntityByKey,
-    getEntityByValue,
   } = React.useContext(LegacyContext);
 
   const treeRef = React.useRef<Tree>();
@@ -95,35 +92,22 @@ const OptionList: React.RefForwardingComponent<
   );
 
   // ========================== Values ==========================
-  // const valueKeys = React.useMemo(
-  //   () =>
-  //     checkedKeys.map(val => {
-  //       // We should keep disabled value entity here
-  //       const entity = getEntityByValue(val, undefined, true);
-  //       return entity ? entity.key : null;
-  //     }),
-  //   [checkedKeys, getEntityByValue],
-  // );
-
-  // TODO: handle this
-  const valueKeys = [];
-
   const mergedCheckedKeys = React.useMemo(() => {
     if (!checkable) {
       return null;
     }
 
     return {
-      checked: valueKeys,
+      checked: checkedKeys,
       halfChecked: halfCheckedKeys,
     };
-  }, [valueKeys, halfCheckedKeys, checkable]);
+  }, [checkable, checkedKeys, halfCheckedKeys]);
 
   // ========================== Scroll ==========================
   React.useEffect(() => {
     // Single mode should scroll to current key
-    if (open && !multiple && valueKeys.length) {
-      treeRef.current?.scrollTo({ key: valueKeys[0] });
+    if (open && !multiple && checkedKeys.length) {
+      treeRef.current?.scrollTo({ key: checkedKeys[0] });
     }
   }, [open]);
 
@@ -167,14 +151,7 @@ const OptionList: React.RefForwardingComponent<
     event.preventDefault();
   };
 
-  // const onInternalSelect = (_: Key[], { node: { key } }: TreeEventInfo) => {
   const onInternalSelect = (_: Key[], info: TreeEventInfo) => {
-    // const entity = getEntityByKey(key, checkable ? 'checkbox' : 'select');
-    // if (entity !== null) {
-    //   onSelect(entity.data.value, {
-    //     selected: !checkedKeys.includes(entity.data.value),
-    //   });
-    // }
     onSelect(info.node.key, {
       selected: !checkedKeys.includes(info.node.key),
     });

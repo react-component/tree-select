@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { convertDataToEntities } from 'rc-tree/lib/utils/treeUtil';
 import type { DataEntity } from 'rc-tree/lib/interface';
-import type { FieldNames } from '../TreeSelect';
+import type { FieldNames, RawValueType } from '../TreeSelect';
 
 export default (treeData: any, fieldNames: FieldNames) =>
   React.useMemo<{ keyEntities: Record<string, DataEntity> }>(
@@ -17,4 +17,4 @@ export default (treeData: any, fieldNames: FieldNames) =>
         },
       }),
     [treeData, fieldNames],
-  ) as ReturnType<typeof convertDataToEntities> & { valueEntities: Map<any, DataEntity> };
+  ) as ReturnType<typeof convertDataToEntities> & { valueEntities: Map<RawValueType, DataEntity> };

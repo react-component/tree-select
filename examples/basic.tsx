@@ -253,6 +253,7 @@ class Demo extends React.Component {
 
         <h2>check select</h2>
         <TreeSelect
+          open
           className="check-select"
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
