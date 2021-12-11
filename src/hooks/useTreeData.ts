@@ -100,7 +100,7 @@ function formatTreeData(
         valueSet.add(value);
       }
 
-      if (node[fieldChildren] !== undefined) {
+      if (node[fieldChildren] !== undefined && node[fieldChildren] !== null) {
         dataNode.children = dig(node[fieldChildren]);
       }
 
