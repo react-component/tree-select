@@ -20,6 +20,7 @@ interface Config {
     ignoreDisabledCheck?: boolean,
   ) => FlattenDataNode;
   getLabelProp: (entity: FlattenDataNode, value: RawValueType) => React.ReactNode;
+  treeNodeLabelProp?: string;
 }
 
 /** Return  */
@@ -33,6 +34,7 @@ export default function useSelectValues(
     showCheckedStrategy,
     conductKeyEntities,
     getLabelProp,
+    treeNodeLabelProp,
   }: Config,
 ): LabelValueType[] {
   return React.useMemo(() => {
@@ -55,5 +57,5 @@ export default function useSelectValues(
     }
 
     return getRawValueLabeled(mergedRawValues, value, getEntityByValue, getLabelProp);
-  }, [rawValues, value, treeConduction, showCheckedStrategy, getEntityByValue]);
+  }, [rawValues, value, treeConduction, showCheckedStrategy, getEntityByValue, treeNodeLabelProp]);
 }

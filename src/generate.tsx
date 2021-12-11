@@ -342,6 +342,7 @@ export default function generate(config: {
       getEntityByValue,
       getEntityByKey,
       getLabelProp: getTreeNodeLabelProp,
+      treeNodeLabelProp,
     });
 
     const triggerChange = (
