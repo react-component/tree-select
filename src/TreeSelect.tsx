@@ -155,6 +155,10 @@ function isRawValue(value: RawValueType | LabeledValueType): value is RawValueTy
   return !value || typeof value !== 'object';
 }
 
+function isNil(val: any) {
+  return val === null || val === undefined;
+}
+
 const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref) => {
   const {
     id,
@@ -375,7 +379,15 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
     // Convert to value and filled with label
     const values = displayKeys.map(key => keyEntities[key]?.node?.[mergedFieldNames.value]);
-    return convert2LabelValues(values);
+    const rawDisplayValues = convert2LabelValues(values);
+
+    const firstVal = rawDisplayValues[0];
+
+    if (rawDisplayValues.length === 1 && isNil(firstVal.value) && isNil(firstVal.label)) {
+      return [];
+    }
+
+    return rawDisplayValues;
   }, [
     rawCheckedKeys,
     convert2LabelValues,
