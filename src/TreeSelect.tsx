@@ -386,7 +386,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const triggerChange = useRefFunc(
     (
       newRawValues: RawValueType[],
-      extra: { triggerValue: RawValueType; selected: boolean },
+      extra: { triggerValue?: RawValueType; selected?: boolean },
       source: SelectSource,
     ) => {
       const labeledValues = convert2LabelValues(newRawValues);
@@ -447,7 +447,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           newRawValues,
           mergedTreeData,
           showPosition,
-          fieldNames,
+          mergedFieldNames,
         );
 
         if (mergedCheckable) {
@@ -466,23 +466,6 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           additionalInfo,
         );
       }
-    },
-  );
-
-  const onDisplayValuesChange = useRefFunc<BaseSelectProps['onDisplayValuesChange']>(
-    (newValues, info) => {
-      const newRawValues = newValues.map(item => item.value);
-
-      const extraInfo = {
-        triggerValue: undefined,
-        selected: undefined,
-      };
-      if (info.type !== 'clear') {
-        extraInfo.triggerValue = info.values[0].value;
-        extraInfo.selected = info.type === 'add';
-      }
-
-      triggerChange(newRawValues, extraInfo, 'selection');
     },
   );
 
@@ -549,6 +532,23 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       rawCheckedKeys,
       rawHalfCheckedKeys,
     ],
+  );
+
+  // ====================== Display Change ========================
+  const onDisplayValuesChange = useRefFunc<BaseSelectProps['onDisplayValuesChange']>(
+    (newValues, info) => {
+      const newRawValues = newValues.map(item => item.value);
+
+      if (info.type === 'clear') {
+        triggerChange(newRawValues, {}, 'selection');
+        return;
+      }
+
+      // TreeSelect only have multiple mode which means display change only has remove
+      if (info.values.length) {
+        onOptionSelect(info.values[0].value, { selected: false });
+      }
+    },
   );
 
   // ========================== Context ===========================
