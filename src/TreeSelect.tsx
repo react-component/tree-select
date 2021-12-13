@@ -326,10 +326,6 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   // =========================== Values ===========================
   const [internalValue, setInternalValue] = useMergedState(defaultValue, { value });
 
-  // const rawMixedLabeledValues = React.useMemo(
-  //   () => convert2LabelValues(internalValue),
-  //   [convert2LabelValues, internalValue],
-  // );
   const rawMixedLabeledValues = React.useMemo(
     () => toLabeledValues(internalValue),
     [toLabeledValues, internalValue],
@@ -351,8 +347,11 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     return [fullCheckValues, halfCheckValues];
   }, [rawMixedLabeledValues]);
 
-  const [mergedValues] = useCache(rawLabeledValues);
-  const rawValues = React.useMemo(() => mergedValues.map(item => item.value), [mergedValues]);
+  // const [mergedValues] = useCache(rawLabeledValues);
+  const rawValues = React.useMemo(
+    () => rawLabeledValues.map(item => item.value),
+    [rawLabeledValues],
+  );
 
   // Convert value to key. Will fill missed keys for conduct check.
   const [rawCheckedKeys, rawHalfCheckedKeys] = useCheckedKeys(
@@ -363,10 +362,25 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   );
 
   // Convert rawCheckedKeys to check strategy related values
-  const displayValues = React.useMemo(
-    () => convert2LabelValues(rawCheckedKeys),
-    [rawCheckedKeys, convert2LabelValues],
-  );
+  const displayValues = React.useMemo(() => {
+    // Collect keys which need to show
+    const displayKeys =
+      showCheckedStrategy === 'SHOW_ALL'
+        ? rawCheckedKeys
+        : formatStrategyKeys(rawCheckedKeys, showCheckedStrategy, keyEntities);
+
+    // Convert to value and filled with label
+    const values = displayKeys.map(key => keyEntities[key]?.node?.[mergedFieldNames.value]);
+    return convert2LabelValues(values);
+  }, [
+    rawCheckedKeys,
+    convert2LabelValues,
+    showCheckedStrategy,
+    keyEntities,
+    mergedFieldNames.value,
+  ]);
+
+  const [cachedDisplayValues] = useCache(displayValues);
 
   // =========================== Change ===========================
   const triggerChange = useRefFunc(
@@ -377,6 +391,11 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     ) => {
       const labeledValues = convert2LabelValues(newRawValues);
       setInternalValue(labeledValues);
+      
+      // Clean up if needed
+      if (autoClearSearchValue) {
+        setSearchValue('');
+      }
 
       // Generate rest parameters is costly, so only do it when necessary
       if (onChange) {
@@ -600,7 +619,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           prefixCls={prefixCls}
           mode={mergedMultiple ? 'multiple' : undefined}
           // >>> Display Value
-          displayValues={displayValues}
+          displayValues={cachedDisplayValues}
           onDisplayValuesChange={onDisplayValuesChange}
           // >>> Search
           searchValue={mergedSearchValue}

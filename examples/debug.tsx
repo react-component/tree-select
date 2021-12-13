@@ -6,36 +6,28 @@ import '../assets/index.less';
 
 const treeData = [
   {
-    title: 'Node1',
-    value: '0-0',
-    key: '0-0',
+    key: 'P001',
+    title: 'P001',
+    value: 'P001',
     children: [
       {
-        title: 'Child Node1',
-        value: '0-0-0',
-        key: '0-0-0',
+        key: '0020',
+        title: '0020',
+        value: '0020',
+        children: [{ key: '9459', title: '9459', value: '9459' }],
       },
     ],
   },
   {
-    title: 'Node2',
-    value: '0-1',
-    key: '0-1',
+    key: 'P002',
+    title: 'P002',
+    value: 'P002',
     children: [
       {
-        title: 'Child Node3',
-        value: '0-1-0',
-        key: '0-1-0',
-      },
-      {
-        title: 'Child Node4',
-        value: '0-1-1',
-        key: '0-1-1',
-      },
-      {
-        title: 'Child Node5',
-        value: '0-1-2',
-        key: '0-1-2',
+        key: '0021',
+        title: '0021',
+        value: '0021',
+        children: [{ key: '9458', title: '9458', value: '9458' }],
       },
     ],
   },
@@ -43,17 +35,7 @@ const treeData = [
 
 export default () => (
   <TreeSelect
-    defaultValue={['0']}
     style={{ width: '100%' }}
-    showCheckedStrategy={TreeSelect.SHOW_ALL}
-    treeCheckable
-    treeDefaultExpandAll
-    open
-  >
-    <TreeSelect.TreeNode title="0" value="0">
-      <TreeSelect.TreeNode title="0-0" value="0-0">
-        <TreeSelect.TreeNode title="0-0-0" value="0-0-0" />
-      </TreeSelect.TreeNode>
-    </TreeSelect.TreeNode>
-  </TreeSelect>
+    treeCheckable treeData={treeData} open
+  />
 );

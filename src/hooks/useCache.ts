@@ -1,6 +1,5 @@
 import * as React from 'react';
-import type { DataEntity } from 'rc-tree/lib/interface';
-import type { DefaultOptionType, LabeledValueType, RawValueType } from '../TreeSelect';
+import type { LabeledValueType, RawValueType } from '../TreeSelect';
 
 /**
  * This function will try to call requestIdleCallback if available to save performance.
