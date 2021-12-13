@@ -18,17 +18,7 @@ import TreeSelectContext from './TreeSelectContext';
 import type { TreeSelectContextProps } from './TreeSelectContext';
 import LegacyContext from './LegacyContext';
 import useTreeData from './hooks/useTreeData';
-import {
-  flattenOptions,
-  filterOptions,
-  isValueDisabled,
-  findValueOption,
-  addValue,
-  removeValue,
-  getRawValueLabeled,
-  toArray,
-  fillFieldNames,
-} from './utils/valueUtil';
+import { toArray, fillFieldNames } from './utils/valueUtil';
 import useCache from './hooks/useCache';
 import useRefFunc from './hooks/useRefFunc';
 import useDataEntities from './hooks/useDataEntities';
@@ -293,46 +283,56 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   );
 
   // ========================= Wrap Value =========================
+  const toLabeledValues = React.useCallback((draftValues: ValueType) => {
+    const values = toArray(draftValues);
+
+    return values.map(val => {
+      if (isRawValue(val)) {
+        return { value: val };
+      }
+      return val;
+    });
+  }, []);
+
   const convert2LabelValues = React.useCallback(
     (draftValues: ValueType) => {
-      const values = toArray(draftValues);
+      const values = toLabeledValues(draftValues);
 
-      return values.map(val => {
-        let rawLabel: React.ReactNode;
-        let rawValue: RawValueType;
-        let rawHalfChecked: boolean;
+      return values.map(item => {
+        let { label: rawLabel } = item;
+        const { value: rawValue, halfChecked: rawHalfChecked } = item;
 
-        // Init provided info
-        if (!isRawValue(val)) {
-          rawLabel = val.label;
-          rawValue = val.value;
-          rawHalfChecked = val.halfChecked;
-        } else {
-          rawValue = val;
-        }
+        let rawDisabled: boolean | undefined;
 
-        // Fill missing label
-        if (rawLabel === undefined) {
-          const entity = valueEntities.get(rawValue);
-          rawLabel = getLabel(entity?.node);
+        const entity = valueEntities.get(rawValue);
+
+        // Fill missing label & status
+        if (entity) {
+          rawLabel = rawLabel ?? getLabel(entity.node);
+          rawDisabled = entity.node.disabled;
         }
 
         return {
           label: rawLabel,
           value: rawValue,
           halfChecked: rawHalfChecked,
+          disabled: rawDisabled,
         };
       });
     },
-    [valueEntities, getLabel],
+    [valueEntities, getLabel, toLabeledValues],
   );
 
   // =========================== Values ===========================
   const [internalValue, setInternalValue] = useMergedState(defaultValue, { value });
 
+  // const rawMixedLabeledValues = React.useMemo(
+  //   () => convert2LabelValues(internalValue),
+  //   [convert2LabelValues, internalValue],
+  // );
   const rawMixedLabeledValues = React.useMemo(
-    () => convert2LabelValues(internalValue),
-    [convert2LabelValues, internalValue],
+    () => toLabeledValues(internalValue),
+    [toLabeledValues, internalValue],
   );
 
   // Split value into full check and half check
@@ -354,21 +354,18 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const [mergedValues] = useCache(rawLabeledValues);
   const rawValues = React.useMemo(() => mergedValues.map(item => item.value), [mergedValues]);
 
-  const displayValues = React.useMemo(
-    () =>
-      mergedValues.map(item => ({
-        ...item,
-        label: item.label ?? item.value,
-      })),
-    [mergedValues],
-  );
-
   // Convert value to key. Will fill missed keys for conduct check.
   const [rawCheckedKeys, rawHalfCheckedKeys] = useCheckedKeys(
     rawLabeledValues,
     rawHalfCheckedValues,
     treeConduction,
     keyEntities,
+  );
+
+  // Convert rawCheckedKeys to check strategy related values
+  const displayValues = React.useMemo(
+    () => convert2LabelValues(rawCheckedKeys),
+    [rawCheckedKeys, convert2LabelValues],
   );
 
   // =========================== Change ===========================
@@ -565,7 +562,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       // showTreeIcon,
       // switcherIcon,
       // treeLine,
-      // treeNodeFilterProp,
+      treeNodeFilterProp,
       // getEntityByKey,
       // getEntityByValue,
     }),
@@ -585,7 +582,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       // showTreeIcon,
       // switcherIcon,
       // treeLine,
-      // treeNodeFilterProp,
+      treeNodeFilterProp,
       // getEntityByKey,
       // getEntityByValue,
     ],

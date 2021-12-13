@@ -9,7 +9,7 @@ import type { EventDataNode, ScrollTo } from 'rc-tree/lib/interface';
 import type { FlattenDataNode, RawValueType, DataNode, TreeDataNode, Key } from './interface';
 import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
-import { getAllKeys } from './utils/valueUtil';
+import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
 
 const HIDDEN_STYLE = {
   width: 0,
@@ -58,8 +58,7 @@ const OptionList: React.RefForwardingComponent<
   ReviseRefOptionListProps,
   OptionListProps<DataNode[]>
 > = (props, ref) => {
-  const { prefixCls, multiple, searchValue, toggleOpen, open, notFoundContent, onMouseEnter } =
-    useBaseProps();
+  const { prefixCls, multiple, searchValue, toggleOpen, open, notFoundContent } = useBaseProps();
 
   const { virtual, listHeight, listItemHeight, treeData, fieldNames, onSelect } =
     React.useContext(TreeSelectContext);
@@ -124,18 +123,20 @@ const OptionList: React.RefForwardingComponent<
   const [expandedKeys, setExpandedKeys] = React.useState<Key[]>(treeDefaultExpandedKeys);
   const [searchExpandedKeys, setSearchExpandedKeys] = React.useState<Key[]>(null);
 
+  const hasSearchValue = !!searchValue;
+
   const mergedExpandedKeys = React.useMemo(() => {
     if (treeExpandedKeys) {
       return [...treeExpandedKeys];
     }
-    return searchValue ? searchExpandedKeys : expandedKeys;
-  }, [expandedKeys, searchExpandedKeys, lowerSearchValue, treeExpandedKeys]);
+    return hasSearchValue ? searchExpandedKeys : expandedKeys;
+  }, [expandedKeys, searchExpandedKeys, treeExpandedKeys, hasSearchValue]);
 
   React.useEffect(() => {
-    if (searchValue) {
+    if (hasSearchValue) {
       setSearchExpandedKeys(getAllKeys(treeData, fieldNames));
     }
-  }, [!!searchValue]);
+  }, [hasSearchValue]);
 
   const onInternalExpand = (keys: Key[]) => {
     setExpandedKeys(keys);
@@ -152,8 +153,14 @@ const OptionList: React.RefForwardingComponent<
   };
 
   const onInternalSelect = (_: Key[], info: TreeEventInfo) => {
-    onSelect(info.node.key, {
-      selected: !checkedKeys.includes(info.node.key),
+    const { node } = info;
+
+    if (checkable && isCheckDisabled(node)) {
+      return;
+    }
+
+    onSelect(node.key, {
+      selected: !checkedKeys.includes(node.key),
     });
 
     if (!multiple) {
@@ -221,7 +228,7 @@ const OptionList: React.RefForwardingComponent<
   }
 
   return (
-    <div onMouseDown={onListMouseDown} onMouseEnter={onMouseEnter}>
+    <div onMouseDown={onListMouseDown}>
       {activeEntity && open && (
         <span style={HIDDEN_STYLE} aria-live="assertive">
           {activeEntity.data.value}
@@ -247,7 +254,7 @@ const OptionList: React.RefForwardingComponent<
         checkable={checkable}
         checkStrictly
         checkedKeys={mergedCheckedKeys}
-        selectedKeys={!checkable ? valueKeys : []}
+        selectedKeys={!checkable ? checkedKeys : []}
         defaultExpandAll={treeDefaultExpandAll}
         {...treeProps}
         // Proxy event out

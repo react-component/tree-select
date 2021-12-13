@@ -43,12 +43,17 @@ const treeData = [
 
 export default () => (
   <TreeSelect
+    defaultValue={['0']}
+    style={{ width: '100%' }}
+    showCheckedStrategy={TreeSelect.SHOW_ALL}
     treeCheckable
-    style={{ width: 300 }}
-    treeData={treeData}
-    onChange={console.log}
-    showCheckedStrategy={TreeSelect.SHOW_PARENT}
-    defaultValue={['0-0', '0-1-0', '0-1-2']}
+    treeDefaultExpandAll
     open
-  />
+  >
+    <TreeSelect.TreeNode title="0" value="0">
+      <TreeSelect.TreeNode title="0-0" value="0-0">
+        <TreeSelect.TreeNode title="0-0-0" value="0-0-0" />
+      </TreeSelect.TreeNode>
+    </TreeSelect.TreeNode>
+  </TreeSelect>
 );
