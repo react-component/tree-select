@@ -22,7 +22,7 @@ import { toArray, fillFieldNames } from './utils/valueUtil';
 import useCache from './hooks/useCache';
 import useRefFunc from './hooks/useRefFunc';
 import useDataEntities from './hooks/useDataEntities';
-import { fillAdditionalInfo } from './utils/legacyUtil';
+import { fillAdditionalInfo, fillLegacyProps } from './utils/legacyUtil';
 import useCheckedKeys from './hooks/useCheckedKeys';
 import useFilterTreeData from './hooks/useFilterTreeData';
 
@@ -121,6 +121,7 @@ export interface TreeSelectProps<OptionType extends BaseOptionType = DefaultOpti
 
   // >>> Select
   onSelect?: SelectProps<OptionType>['onSelect'];
+  onDeselect?: SelectProps<OptionType>['onDeselect'];
 
   // >>> Selector
   showCheckedStrategy?: CheckedStrategy;
@@ -164,6 +165,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     defaultValue,
     onChange,
     onSelect,
+    onDeselect,
 
     // Search
     searchValue,
@@ -518,7 +520,11 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         }
 
         // Trigger select event
-        onSelect?.(selectedValue, entity.node);
+        if (selected) {
+          onSelect?.(selectedValue, fillLegacyProps(entity.node));
+        } else {
+          onDeselect?.(selectedValue, fillLegacyProps(entity.node));
+        }
       }
     },
     [
@@ -531,6 +537,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       triggerChange,
       treeConduction,
       onSelect,
+      onDeselect,
       rawCheckedKeys,
       rawHalfCheckedKeys,
     ],
