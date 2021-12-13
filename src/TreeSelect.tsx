@@ -439,7 +439,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           additionalInfo.selected = selected;
         }
 
-        const returnValues = returnLabeledValues
+        const returnValues = mergedLabelInValue
           ? returnLabeledValues
           : returnLabeledValues.map(item => item.value);
 
