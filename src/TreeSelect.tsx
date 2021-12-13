@@ -391,7 +391,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     ) => {
       const labeledValues = convert2LabelValues(newRawValues);
       setInternalValue(labeledValues);
-      
+
       // Clean up if needed
       if (autoClearSearchValue) {
         setSearchValue('');
@@ -417,15 +417,16 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           selected: undefined,
         };
 
-        let returnLabeledValues: LabeledValueType[] = convert2LabelValues(eventValues);
+        let returnRawValues: (LabeledValueType | RawValueType)[] = eventValues;
 
         // We need fill half check back
         if (treeCheckStrictly) {
           const halfValues = rawHalfCheckedValues.filter(item => !eventValues.includes(item.value));
 
-          returnLabeledValues = [...returnLabeledValues, ...halfValues];
+          returnRawValues = [...returnRawValues, ...halfValues];
         }
 
+        const returnLabeledValues = convert2LabelValues(returnRawValues);
         const additionalInfo = {
           // [Legacy] Always return as array contains label & value
           preValue: rawLabeledValues,
