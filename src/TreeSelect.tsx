@@ -31,10 +31,10 @@ import {
 } from './utils/valueUtil';
 import useCache from './hooks/useCache';
 import useRefFunc from './hooks/useRefFunc';
-import useChange from './hooks/useChange';
 import useDataEntities from './hooks/useDataEntities';
 import { fillAdditionalInfo } from './utils/legacyUtil';
 import useCheckedKeys from './hooks/useCheckedKeys';
+import useFilterTreeData from './hooks/useFilterTreeData';
 
 export type OnInternalSelect = (value: RawValueType, info: { selected: boolean }) => void;
 
@@ -126,6 +126,8 @@ export interface TreeSelectProps<OptionType extends BaseOptionType = DefaultOpti
   inputValue?: string;
   onSearch?: (value: string) => void;
   autoClearSearchValue?: boolean;
+  filterTreeNode?: boolean | ((inputValue: string, treeNode: DefaultOptionType) => boolean);
+  treeNodeFilterProp?: string;
 
   // >>> Select
   onSelect?: SelectProps<OptionType>['onSelect'];
@@ -149,6 +151,7 @@ export interface TreeSelectProps<OptionType extends BaseOptionType = DefaultOpti
   loadData?: (dataNode: LegacyDataNode) => Promise<unknown>;
   treeLoadedKeys?: React.Key[];
   onTreeLoad?: (loadedKeys: React.Key[]) => void;
+  treeDefaultExpandAll?: boolean;
 
   // >>> Options
   virtual?: boolean;
@@ -176,6 +179,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     inputValue,
     onSearch,
     autoClearSearchValue = true,
+    filterTreeNode,
+    treeNodeFilterProp = 'value',
 
     // Selector
     showCheckedStrategy = SHOW_CHILD,
@@ -197,6 +202,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     loadData,
     treeLoadedKeys,
     onTreeLoad,
+    treeDefaultExpandAll,
 
     // Options
     virtual,
@@ -256,6 +262,13 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     },
     [valueEntities],
   );
+
+  // Filtered Tree
+  const filteredTreeData = useFilterTreeData(mergedTreeData, mergedSearchValue, {
+    fieldNames: mergedFieldNames,
+    treeNodeFilterProp,
+    filterTreeNode,
+  });
 
   // =========================== Label ============================
   const getLabel = React.useCallback(
@@ -439,6 +452,23 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     },
   );
 
+  const onDisplayValuesChange = useRefFunc<BaseSelectProps['onDisplayValuesChange']>(
+    (newValues, info) => {
+      const newRawValues = newValues.map(item => item.value);
+
+      const extraInfo = {
+        triggerValue: undefined,
+        selected: undefined,
+      };
+      if (info.type !== 'clear') {
+        extraInfo.triggerValue = info.values[0].value;
+        extraInfo.selected = info.type === 'add';
+      }
+
+      triggerChange(newRawValues, extraInfo, 'selection');
+    },
+  );
+
   // ========================== Options ===========================
   /** Trigger by option list */
   const onOptionSelect: OnInternalSelect = React.useCallback(
@@ -469,13 +499,11 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
             if (selected) {
               ({ checkedKeys } = conductCheck(keyList, true, keyEntities));
             } else {
-              console.log('🎉', rawCheckedKeys, rawValues);
               ({ checkedKeys } = conductCheck(
                 keyList,
                 { checked: false, halfCheckedKeys: rawHalfCheckedKeys },
                 keyEntities,
               ));
-              console.log('🧶', keyList, checkedKeys);
             }
 
             // Fill back of keys
@@ -501,6 +529,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       triggerChange,
       treeConduction,
       onSelect,
+      rawCheckedKeys,
+      rawHalfCheckedKeys,
     ],
   );
 
@@ -510,11 +540,11 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       virtual,
       listHeight,
       listItemHeight,
-      treeData: mergedTreeData,
+      treeData: filteredTreeData,
       fieldNames: mergedFieldNames,
       onSelect: onOptionSelect,
     }),
-    [virtual, listHeight, listItemHeight, mergedTreeData, mergedFieldNames, onOptionSelect],
+    [virtual, listHeight, listItemHeight, filteredTreeData, mergedFieldNames, onOptionSelect],
   );
 
   // ======================= Legacy Context =======================
@@ -526,7 +556,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       onTreeLoad,
       checkedKeys: rawCheckedKeys,
       halfCheckedKeys: rawHalfCheckedKeys,
-      // treeDefaultExpandAll,
+      treeDefaultExpandAll,
       // treeExpandedKeys,
       // treeDefaultExpandedKeys,
       // onTreeExpand,
@@ -546,7 +576,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       onTreeLoad,
       rawCheckedKeys,
       rawHalfCheckedKeys,
-      // treeDefaultExpandAll,
+      treeDefaultExpandAll,
       // treeExpandedKeys,
       // treeDefaultExpandedKeys,
       // onTreeExpand,
@@ -571,8 +601,10 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           // >>> MISC
           id={mergedId}
           prefixCls={prefixCls}
-          displayValues={displayValues}
           mode={mergedMultiple ? 'multiple' : undefined}
+          // >>> Display Value
+          displayValues={displayValues}
+          onDisplayValuesChange={onDisplayValuesChange}
           // >>> Search
           searchValue={mergedSearchValue}
           onSearch={onInternalSearch}
