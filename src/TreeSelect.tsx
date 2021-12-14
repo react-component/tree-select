@@ -399,15 +399,12 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   // Convert rawCheckedKeys to check strategy related values
   const displayValues = React.useMemo(() => {
     // Collect keys which need to show
-    const displayKeys =
-      showCheckedStrategy === 'SHOW_ALL'
-        ? rawCheckedValues
-        : formatStrategyValues(
-            rawCheckedValues,
-            showCheckedStrategy,
-            keyEntities,
-            mergedFieldNames,
-          );
+    const displayKeys = formatStrategyValues(
+      rawCheckedValues,
+      showCheckedStrategy,
+      keyEntities,
+      mergedFieldNames,
+    );
 
     // Convert to value and filled with label
     const values = displayKeys.map(key => keyEntities[key]?.node?.[mergedFieldNames.value] ?? key);
@@ -452,7 +449,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       // Generate rest parameters is costly, so only do it when necessary
       if (onChange) {
         let eventValues: RawValueType[] = newRawValues;
-        if (treeConduction && showCheckedStrategy !== 'SHOW_ALL') {
+        if (treeConduction) {
           const formattedKeyList = formatStrategyValues(
             newRawValues,
             showCheckedStrategy,
