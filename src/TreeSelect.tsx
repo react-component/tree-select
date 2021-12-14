@@ -527,57 +527,50 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const onOptionSelect = React.useCallback(
     (selectedKey: React.Key, { selected, source }: { selected: boolean; source: SelectSource }) => {
       const entity = keyEntities[selectedKey];
+      const node = entity?.node;
+      const selectedValue = node?.[mergedFieldNames.value] ?? selectedKey;
 
-      // const eventValue = mergedLabelInValue ? selectValue : selectValue;
       // Never be falsy but keep it safe
-      if (entity) {
-        const selectedValue = entity.node[mergedFieldNames.value];
+      if (!mergedMultiple) {
+        // Single mode always set value
+        triggerChange([selectedValue], { selected: true, triggerValue: selectedValue }, 'option');
+      } else {
+        let newRawValues = selected
+          ? [...rawValues, selectedValue]
+          : rawCheckedValues.filter(v => v !== selectedValue);
 
-        if (!mergedMultiple) {
-          // Single mode always set value
-          triggerChange([selectedValue], { selected: true, triggerValue: selectedValue }, 'option');
-        } else {
-          let newRawValues = selected
-            ? [...rawValues, selectedValue]
-            : rawCheckedValues.filter(v => v !== selectedValue);
+        // Add keys if tree conduction
+        if (treeConduction) {
+          // Should keep missing values
+          const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
+          const keyList = existRawValues.map(val => valueEntities.get(val).key);
 
-          // Add keys if tree conduction
-          if (treeConduction) {
-            // Should keep missing values
-            const { missingRawValues, existRawValues } = splitRawValues(newRawValues);
-            const keyList = existRawValues.map(val => valueEntities.get(val).key);
-
-            // Conduction by selected or not
-            let checkedKeys: React.Key[];
-            if (selected) {
-              ({ checkedKeys } = conductCheck(keyList, true, keyEntities));
-            } else {
-              ({ checkedKeys } = conductCheck(
-                keyList,
-                { checked: false, halfCheckedKeys: rawHalfCheckedValues },
-                keyEntities,
-              ));
-            }
-
-            // Fill back of keys
-            newRawValues = [
-              ...missingRawValues,
-              ...checkedKeys.map(key => keyEntities[key].node[mergedFieldNames.value]),
-            ];
+          // Conduction by selected or not
+          let checkedKeys: React.Key[];
+          if (selected) {
+            ({ checkedKeys } = conductCheck(keyList, true, keyEntities));
+          } else {
+            ({ checkedKeys } = conductCheck(
+              keyList,
+              { checked: false, halfCheckedKeys: rawHalfCheckedValues },
+              keyEntities,
+            ));
           }
-          triggerChange(
-            newRawValues,
-            { selected, triggerValue: selectedValue },
-            source || 'option',
-          );
-        }
 
-        // Trigger select event
-        if (selected || !mergedMultiple) {
-          onSelect?.(selectedValue, fillLegacyProps(entity.node));
-        } else {
-          onDeselect?.(selectedValue, fillLegacyProps(entity.node));
+          // Fill back of keys
+          newRawValues = [
+            ...missingRawValues,
+            ...checkedKeys.map(key => keyEntities[key].node[mergedFieldNames.value]),
+          ];
         }
+        triggerChange(newRawValues, { selected, triggerValue: selectedValue }, source || 'option');
+      }
+
+      // Trigger select event
+      if (selected || !mergedMultiple) {
+        onSelect?.(selectedValue, fillLegacyProps(node));
+      } else {
+        onDeselect?.(selectedValue, fillLegacyProps(node));
       }
     },
     [

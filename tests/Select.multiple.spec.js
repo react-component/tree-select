@@ -263,13 +263,20 @@ describe('TreeSelect.multiple', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('warning if access `props` in onDeselect', () => {
+  it('not exist value should can be remove', () => {
+    const onChange = jest.fn();
     const onDeselect = jest.fn();
     const wrapper = mount(
-      <TreeSelect treeCheckable value={['not-exist']} onDeselect={onDeselect} />,
+      <TreeSelect
+        treeCheckable
+        value={['not-exist']}
+        onChange={onChange}
+        onDeselect={onDeselect}
+      />,
     );
     wrapper.clearSelection(0);
 
-    expect(onDeselect).toHaveBeenCalledWith('not-exist', expect.anything());
+    expect(onChange).toHaveBeenCalledWith([], expect.anything(), expect.anything());
+    expect(onDeselect).toHaveBeenCalledWith('not-exist', undefined);
   });
 });
