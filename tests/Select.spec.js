@@ -1,4 +1,3 @@
-/* eslint-disable no-undef react/no-multi-comp */
 import React from 'react';
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
@@ -327,7 +326,7 @@ describe('TreeSelect.basic', () => {
 
       wrapper.selectNode();
       wrapper.clearAll();
-      expect(wrapper.find('Select').props().value).toHaveLength(0);
+      expect(wrapper.find('BaseSelect').prop('displayValues')).toHaveLength(0);
     });
 
     it('has inputValue prop', () => {
@@ -355,7 +354,7 @@ describe('TreeSelect.basic', () => {
       wrapper.openSelect();
       wrapper.selectNode();
       wrapper.clearAll();
-      expect(wrapper.find('Select').props().value).toHaveLength(0);
+      expect(wrapper.find('BaseSelect').prop('displayValues')).toHaveLength(0);
     });
   });
 

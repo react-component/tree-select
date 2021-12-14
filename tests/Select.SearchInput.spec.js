@@ -48,7 +48,7 @@ describe('TreeSelect.SearchInput', () => {
       />,
     );
 
-    expect(wrapper.find('NodeList').props().expandedKeys).toEqual(['bamboo', 'light']);
+    expect(wrapper.find('NodeList').prop('expandedKeys')).toEqual(['bamboo', 'light']);
 
     function search(value) {
       wrapper

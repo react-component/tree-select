@@ -2,7 +2,7 @@ import warning from 'rc-util/lib/warning';
 import type { TreeSelectProps } from '../TreeSelect';
 import { toArray } from './valueUtil';
 
-function warningProps(props: TreeSelectProps) {
+function warningProps(props: TreeSelectProps & { searchPlaceholder?: string }) {
   const {
     searchPlaceholder,
     treeCheckStrictly,

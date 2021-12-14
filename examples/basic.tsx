@@ -253,6 +253,8 @@ class Demo extends React.Component {
 
         <h2>check select</h2>
         <TreeSelect
+          open
+          allowClear
           className="check-select"
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
@@ -277,7 +279,7 @@ class Demo extends React.Component {
           onSelect={this.onSelect}
           maxTagCount="responsive"
           maxTagPlaceholder={valueList => {
-            console.log('Max Tag Rest Value:', valueList);
+            // console.log('Max Tag Rest Value:', valueList);
             return `${valueList.length} rest...`;
           }}
         />

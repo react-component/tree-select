@@ -38,7 +38,7 @@ describe('TreeSelect.props', () => {
   });
 
   describe('filterTreeNode', () => {
-    it('function', () => {
+    it('as function', () => {
       function filterTreeNode(input, child) {
         return String(child.props.title).indexOf(input) !== -1;
       }
@@ -488,7 +488,7 @@ describe('TreeSelect.props', () => {
       });
 
     describe('single', () => {
-      it('click on tree', () => {
+      it('click on tree node', () => {
         const onSelect = jest.fn();
         const onDeselect = jest.fn();
         const wrapper = createDeselectWrapper({

@@ -5,11 +5,11 @@ import type {
   DataNode,
   LegacyDataNode,
   ChangeEventExtra,
-  InternalDataEntity,
   RawValueType,
   LegacyCheckedNode,
 } from '../interface';
 import TreeNode from '../TreeNode';
+import type { DefaultOptionType, FieldNames } from '../TreeSelect';
 
 export function convertChildrenToData(nodes: React.ReactNode): DataNode[] {
   return toArray(nodes)
@@ -40,7 +40,6 @@ export function convertChildrenToData(nodes: React.ReactNode): DataNode[] {
 }
 
 export function fillLegacyProps(dataNode: DataNode): LegacyDataNode {
-  // Skip if not dataNode exist
   if (!dataNode) {
     return dataNode as LegacyDataNode;
   }
@@ -66,23 +65,29 @@ export function fillAdditionalInfo(
   extra: ChangeEventExtra,
   triggerValue: RawValueType,
   checkedValues: RawValueType[],
-  treeData: InternalDataEntity[],
+  treeData: DefaultOptionType[],
   showPosition: boolean,
+  fieldNames: FieldNames,
 ) {
   let triggerNode: React.ReactNode = null;
   let nodeList: LegacyCheckedNode[] = null;
 
   function generateMap() {
-    function dig(list: InternalDataEntity[], level = '0', parentIncluded = false) {
+    function dig(list: DefaultOptionType[], level = '0', parentIncluded = false) {
       return list
-        .map((dataNode, index) => {
+        .map((option, index) => {
           const pos = `${level}-${index}`;
-          const included = checkedValues.includes(dataNode.value);
-          const children = dig(dataNode.children || [], pos, included);
-          const node = <TreeNode {...dataNode}>{children.map(child => child.node)}</TreeNode>;
+          const value = option[fieldNames.value];
+          const included = checkedValues.includes(value);
+          const children = dig(option[fieldNames.children] || [], pos, included);
+          const node = (
+            <TreeNode {...(option as Required<DefaultOptionType>)}>
+              {children.map(child => child.node)}
+            </TreeNode>
+          );
 
           // Link with trigger node
-          if (triggerValue === dataNode.value) {
+          if (triggerValue === value) {
             triggerNode = node;
           }
 

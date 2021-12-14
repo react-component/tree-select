@@ -2,11 +2,14 @@ import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import useMemo from 'rc-util/lib/hooks/useMemo';
 import type { RefOptionListProps } from 'rc-select/lib/OptionList';
+import { useBaseProps } from 'rc-select';
 import type { TreeProps } from 'rc-tree';
 import Tree from 'rc-tree';
 import type { EventDataNode, ScrollTo } from 'rc-tree/lib/interface';
-import type { FlattenDataNode, RawValueType, DataNode, TreeDataNode, Key } from './interface';
-import { SelectContext } from './Context';
+import type { TreeDataNode, Key } from './interface';
+import LegacyContext from './LegacyContext';
+import TreeSelectContext from './TreeSelectContext';
+import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
 
 const HIDDEN_STYLE = {
   width: 0,
@@ -25,53 +28,14 @@ interface TreeEventInfo {
   checked?: boolean;
 }
 
-export interface OptionListProps<OptionsType extends object[]> {
-  prefixCls: string;
-  id: string;
-  options: OptionsType;
-  flattenOptions: FlattenDataNode[];
-  height: number;
-  itemHeight: number;
-  virtual?: boolean;
-  values: Set<RawValueType>;
-  multiple: boolean;
-  open: boolean;
-  defaultActiveFirstOption?: boolean;
-  notFoundContent?: React.ReactNode;
-  menuItemSelectedIcon?: any;
-  childrenAsData: boolean;
-  searchValue: string;
-
-  onSelect: (value: RawValueType, option: { selected: boolean }) => void;
-  onToggleOpen: (open?: boolean) => void;
-  /** Tell Select that some value is now active to make accessibility work */
-  onActiveValue: (value: RawValueType, index: number) => void;
-  onScroll: React.UIEventHandler<HTMLDivElement>;
-
-  onMouseEnter: () => void;
-}
-
 type ReviseRefOptionListProps = Omit<RefOptionListProps, 'scrollTo'> & { scrollTo: ScrollTo };
 
-const OptionList: React.RefForwardingComponent<
-  ReviseRefOptionListProps,
-  OptionListProps<DataNode[]>
-> = (props, ref) => {
-  const {
-    prefixCls,
-    height,
-    itemHeight,
-    virtual,
-    options,
-    flattenOptions,
-    multiple,
-    searchValue,
-    onSelect,
-    onToggleOpen,
-    open,
-    notFoundContent,
-    onMouseEnter,
-  } = props;
+const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, ref) => {
+  const { prefixCls, multiple, searchValue, toggleOpen, open, notFoundContent } = useBaseProps();
+
+  const { virtual, listHeight, listItemHeight, treeData, fieldNames, onSelect } =
+    React.useContext(TreeSelectContext);
+
   const {
     checkable,
     checkedKeys,
@@ -89,46 +53,34 @@ const OptionList: React.RefForwardingComponent<
     treeLoadedKeys,
     treeMotion,
     onTreeLoad,
-
-    getEntityByKey,
-    getEntityByValue,
-  } = React.useContext(SelectContext);
+    keyEntities,
+  } = React.useContext(LegacyContext);
 
   const treeRef = React.useRef<Tree>();
 
-  const memoOptions = useMemo(
-    () => options,
-    [open, options],
+  const memoTreeData = useMemo(
+    () => treeData,
+    [open, treeData],
     (prev, next) => next[0] && prev[1] !== next[1],
   );
 
   // ========================== Values ==========================
-  const valueKeys = React.useMemo(
-    () =>
-      checkedKeys.map(val => {
-        // We should keep disabled value entity here
-        const entity = getEntityByValue(val, undefined, true);
-        return entity ? entity.key : null;
-      }),
-    [checkedKeys, getEntityByValue],
-  );
-
   const mergedCheckedKeys = React.useMemo(() => {
     if (!checkable) {
       return null;
     }
 
     return {
-      checked: valueKeys,
+      checked: checkedKeys,
       halfChecked: halfCheckedKeys,
     };
-  }, [valueKeys, halfCheckedKeys, checkable]);
+  }, [checkable, checkedKeys, halfCheckedKeys]);
 
   // ========================== Scroll ==========================
   React.useEffect(() => {
     // Single mode should scroll to current key
-    if (open && !multiple && valueKeys.length) {
-      treeRef.current?.scrollTo({ key: valueKeys[0] });
+    if (open && !multiple && checkedKeys.length) {
+      treeRef.current?.scrollTo({ key: checkedKeys[0] });
     }
   }, [open]);
 
@@ -150,11 +102,11 @@ const OptionList: React.RefForwardingComponent<
       return [...treeExpandedKeys];
     }
     return searchValue ? searchExpandedKeys : expandedKeys;
-  }, [expandedKeys, searchExpandedKeys, lowerSearchValue, treeExpandedKeys]);
+  }, [expandedKeys, searchExpandedKeys, treeExpandedKeys, searchValue]);
 
   React.useEffect(() => {
     if (searchValue) {
-      setSearchExpandedKeys(flattenOptions.map(o => o.key));
+      setSearchExpandedKeys(getAllKeys(treeData, fieldNames));
     }
   }, [searchValue]);
 
@@ -172,22 +124,25 @@ const OptionList: React.RefForwardingComponent<
     event.preventDefault();
   };
 
-  const onInternalSelect = (_: Key[], { node: { key } }: TreeEventInfo) => {
-    const entity = getEntityByKey(key, checkable ? 'checkbox' : 'select');
-    if (entity !== null) {
-      onSelect(entity.data.value, {
-        selected: !checkedKeys.includes(entity.data.value),
-      });
+  const onInternalSelect = (__: React.Key[], info: TreeEventInfo) => {
+    const { node } = info;
+
+    if (checkable && isCheckDisabled(node)) {
+      return;
     }
 
+    onSelect(node.key, {
+      selected: !checkedKeys.includes(node.key),
+    });
+
     if (!multiple) {
-      onToggleOpen(false);
+      toggleOpen(false);
     }
   };
 
   // ========================= Keyboard =========================
   const [activeKey, setActiveKey] = React.useState<Key>(null);
-  const activeEntity = getEntityByKey(activeKey);
+  const activeEntity = keyEntities[activeKey];
 
   React.useImperativeHandle(ref, () => ({
     scrollTo: treeRef.current?.scrollTo,
@@ -204,7 +159,7 @@ const OptionList: React.RefForwardingComponent<
 
         // >>> Select item
         case KeyCode.ENTER: {
-          const { selectable, value } = activeEntity?.data.node || {};
+          const { selectable, value } = activeEntity?.node || {};
           if (selectable !== false) {
             onInternalSelect(null, {
               node: { key: activeKey },
@@ -216,7 +171,7 @@ const OptionList: React.RefForwardingComponent<
 
         // >>> Close
         case KeyCode.ESC: {
-          onToggleOpen(false);
+          toggleOpen(false);
         }
       }
     },
@@ -224,7 +179,7 @@ const OptionList: React.RefForwardingComponent<
   }));
 
   // ========================== Render ==========================
-  if (memoOptions.length === 0) {
+  if (memoTreeData.length === 0) {
     return (
       <div role="listbox" className={`${prefixCls}-empty`} onMouseDown={onListMouseDown}>
         {notFoundContent}
@@ -232,7 +187,9 @@ const OptionList: React.RefForwardingComponent<
     );
   }
 
-  const treeProps: Partial<TreeProps> = {};
+  const treeProps: Partial<TreeProps> = {
+    fieldNames,
+  };
   if (treeLoadedKeys) {
     treeProps.loadedKeys = treeLoadedKeys;
   }
@@ -241,10 +198,10 @@ const OptionList: React.RefForwardingComponent<
   }
 
   return (
-    <div onMouseDown={onListMouseDown} onMouseEnter={onMouseEnter}>
+    <div onMouseDown={onListMouseDown}>
       {activeEntity && open && (
         <span style={HIDDEN_STYLE} aria-live="assertive">
-          {activeEntity.data.value}
+          {activeEntity.node.value}
         </span>
       )}
 
@@ -252,9 +209,9 @@ const OptionList: React.RefForwardingComponent<
         ref={treeRef}
         focusable={false}
         prefixCls={`${prefixCls}-tree`}
-        treeData={memoOptions as TreeDataNode[]}
-        height={height}
-        itemHeight={itemHeight}
+        treeData={memoTreeData as TreeDataNode[]}
+        height={listHeight}
+        itemHeight={listItemHeight}
         virtual={virtual}
         multiple={multiple}
         icon={treeIcon}
@@ -267,7 +224,7 @@ const OptionList: React.RefForwardingComponent<
         checkable={checkable}
         checkStrictly
         checkedKeys={mergedCheckedKeys}
-        selectedKeys={!checkable ? valueKeys : []}
+        selectedKeys={!checkable ? checkedKeys : []}
         defaultExpandAll={treeDefaultExpandAll}
         {...treeProps}
         // Proxy event out
@@ -282,9 +239,7 @@ const OptionList: React.RefForwardingComponent<
   );
 };
 
-const RefOptionList = React.forwardRef<ReviseRefOptionListProps, OptionListProps<DataNode[]>>(
-  OptionList,
-);
+const RefOptionList = React.forwardRef<ReviseRefOptionListProps>(OptionList);
 RefOptionList.displayName = 'OptionList';
 
 export default RefOptionList;

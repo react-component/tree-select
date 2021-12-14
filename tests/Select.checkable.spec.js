@@ -117,7 +117,7 @@ describe('TreeSelect.checkable', () => {
               onChange={this.handleChange}
               disabled={disabled}
             />
-            <input type="checkbox" onChange={e => this.switch(e.target.checked)} id="checkbox" />{' '}
+            <input type="checkbox" onChange={e => this.switch(e.target.checked)} id="checkbox" />
             禁用
           </div>
         );

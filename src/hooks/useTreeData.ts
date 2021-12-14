@@ -1,15 +1,7 @@
 import * as React from 'react';
-import warning from 'rc-util/lib/warning';
-import type {
-  DataNode,
-  InternalDataEntity,
-  SimpleModeConfig,
-  RawValueType,
-  FieldNames,
-} from '../interface';
+import type { DataNode, SimpleModeConfig } from '../interface';
 import { convertChildrenToData } from '../utils/legacyUtil';
-
-const MAX_WARNING_TIMES = 10;
+import type { DefaultOptionType } from '../TreeSelect';
 
 function parseSimpleTreeData(
   treeData: DataNode[],
@@ -48,116 +40,26 @@ function parseSimpleTreeData(
 }
 
 /**
- * Format `treeData` with `value` & `key` which is used for calculation
- */
-function formatTreeData(
-  treeData: DataNode[],
-  getLabelProp: (node: DataNode) => React.ReactNode,
-  fieldNames: FieldNames,
-): InternalDataEntity[] {
-  let warningTimes = 0;
-  const valueSet = new Set<RawValueType>();
-
-  // Field names
-  const { value: fieldValue, children: fieldChildren } = fieldNames;
-
-  function dig(dataNodes: DataNode[]) {
-    return (dataNodes || []).map(node => {
-      const { key, children, ...restProps } = node;
-
-      const value = node[fieldValue];
-      const mergedValue = fieldValue in node ? value : key;
-
-      const dataNode: InternalDataEntity = {
-        ...restProps,
-        key: key !== null && key !== undefined ? key : mergedValue,
-        value: mergedValue,
-        title: getLabelProp(node),
-        node,
-      };
-
-      // Check `key` & `value` and warning user
-      if (process.env.NODE_ENV !== 'production') {
-        if (
-          key !== null &&
-          key !== undefined &&
-          value !== undefined &&
-          String(key) !== String(value) &&
-          warningTimes < MAX_WARNING_TIMES
-        ) {
-          warningTimes += 1;
-          warning(
-            false,
-            `\`key\` or \`value\` with TreeNode must be the same or you can remove one of them. key: ${key}, value: ${value}.`,
-          );
-        }
-
-        warning(
-          value !== undefined || key !== undefined,
-          'TreeNode `value` is invalidate: undefined',
-        );
-        warning(!valueSet.has(value), `Same \`value\` exist in the tree: ${value}`);
-        valueSet.add(value);
-      }
-
-      if (node[fieldChildren] !== undefined) {
-        dataNode.children = dig(node[fieldChildren]);
-      }
-
-      return dataNode;
-    });
-  }
-
-  return dig(treeData);
-}
-
-/**
  * Convert `treeData` or `children` into formatted `treeData`.
  * Will not re-calculate if `treeData` or `children` not change.
  */
 export default function useTreeData(
   treeData: DataNode[],
   children: React.ReactNode,
-  {
-    getLabelProp,
-    simpleMode,
-    fieldNames,
-  }: {
-    getLabelProp: (node: DataNode) => React.ReactNode;
-    simpleMode: boolean | SimpleModeConfig;
-    fieldNames: FieldNames;
-  },
-): InternalDataEntity[] {
-  const cacheRef = React.useRef<{
-    treeData?: DataNode[];
-    children?: React.ReactNode;
-    formatTreeData?: InternalDataEntity[];
-  }>({});
+  simpleMode: boolean | SimpleModeConfig,
+): DefaultOptionType[] {
+  return React.useMemo(() => {
+    if (treeData) {
+      return simpleMode
+        ? parseSimpleTreeData(treeData, {
+            id: 'id',
+            pId: 'pId',
+            rootPId: null,
+            ...(simpleMode !== true ? simpleMode : {}),
+          })
+        : treeData;
+    }
 
-  if (treeData) {
-    cacheRef.current.formatTreeData =
-      cacheRef.current.treeData === treeData
-        ? cacheRef.current.formatTreeData
-        : formatTreeData(
-            simpleMode
-              ? parseSimpleTreeData(treeData, {
-                  id: 'id',
-                  pId: 'pId',
-                  rootPId: null,
-                  ...(simpleMode !== true ? simpleMode : {}),
-                })
-              : treeData,
-            getLabelProp,
-            fieldNames,
-          );
-
-    cacheRef.current.treeData = treeData;
-  } else {
-    cacheRef.current.formatTreeData =
-      cacheRef.current.children === children
-        ? cacheRef.current.formatTreeData
-        : formatTreeData(convertChildrenToData(children), getLabelProp, fieldNames);
-  }
-
-  return cacheRef.current.formatTreeData;
+    return convertChildrenToData(children);
+  }, [children, simpleMode, treeData]);
 }
