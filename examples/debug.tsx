@@ -1,4 +1,4 @@
-/* eslint-disable react/no-array-index-key */
+/* eslint-disable */
 
 import React from 'react';
 import TreeSelect from '../src';
@@ -28,7 +28,8 @@ const createSelect = props => <TreeSelect treeData={treeData} multiple {...props
 //   />
 // );
 
-export default () => createSelect({
-  maxTagCount: 1,
-  value: ['0', 'not exist'],
-})
+export default () =>
+  createSelect({
+    maxTagCount: 1,
+    value: ['0', 'not exist'],
+  });

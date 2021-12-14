@@ -1,16 +1,7 @@
 import * as React from 'react';
-import warning from 'rc-util/lib/warning';
-import type {
-  DataNode,
-  InternalDataEntity,
-  SimpleModeConfig,
-  RawValueType,
-  FieldNames,
-} from '../interface';
+import type { DataNode, SimpleModeConfig } from '../interface';
 import { convertChildrenToData } from '../utils/legacyUtil';
 import type { DefaultOptionType } from '../TreeSelect';
-
-const MAX_WARNING_TIMES = 10;
 
 function parseSimpleTreeData(
   treeData: DataNode[],

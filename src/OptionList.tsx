@@ -6,7 +6,7 @@ import { useBaseProps } from 'rc-select';
 import type { TreeProps } from 'rc-tree';
 import Tree from 'rc-tree';
 import type { EventDataNode, ScrollTo } from 'rc-tree/lib/interface';
-import type { FlattenDataNode, RawValueType, DataNode, TreeDataNode, Key } from './interface';
+import type { TreeDataNode, Key } from './interface';
 import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
@@ -28,36 +28,9 @@ interface TreeEventInfo {
   checked?: boolean;
 }
 
-export interface OptionListProps<OptionsType extends object[]> {
-  // prefixCls: string;
-  // id: string;
-  // options: OptionsType;
-  // flattenOptions: FlattenDataNode[];
-  // height: number;
-  // itemHeight: number;
-  // virtual?: boolean;
-  // values: Set<RawValueType>;
-  // multiple: boolean;
-  // open: boolean;
-  // defaultActiveFirstOption?: boolean;
-  // notFoundContent?: React.ReactNode;
-  // menuItemSelectedIcon?: any;
-  // childrenAsData: boolean;
-  // searchValue: string;
-  // onSelect: (value: RawValueType, option: { selected: boolean }) => void;
-  // onToggleOpen: (open?: boolean) => void;
-  // /** Tell Select that some value is now active to make accessibility work */
-  // onActiveValue: (value: RawValueType, index: number) => void;
-  // onScroll: React.UIEventHandler<HTMLDivElement>;
-  // onMouseEnter: () => void;
-}
-
 type ReviseRefOptionListProps = Omit<RefOptionListProps, 'scrollTo'> & { scrollTo: ScrollTo };
 
-const OptionList: React.RefForwardingComponent<
-  ReviseRefOptionListProps,
-  OptionListProps<DataNode[]>
-> = (props, ref) => {
+const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, ref) => {
   const { prefixCls, multiple, searchValue, toggleOpen, open, notFoundContent } = useBaseProps();
 
   const { virtual, listHeight, listItemHeight, treeData, fieldNames, onSelect } =
@@ -151,7 +124,7 @@ const OptionList: React.RefForwardingComponent<
     event.preventDefault();
   };
 
-  const onInternalSelect = (_: Key[], info: TreeEventInfo) => {
+  const onInternalSelect = (__: React.Key[], info: TreeEventInfo) => {
     const { node } = info;
 
     if (checkable && isCheckDisabled(node)) {
@@ -266,9 +239,7 @@ const OptionList: React.RefForwardingComponent<
   );
 };
 
-const RefOptionList = React.forwardRef<ReviseRefOptionListProps, OptionListProps<DataNode[]>>(
-  OptionList,
-);
+const RefOptionList = React.forwardRef<ReviseRefOptionListProps>(OptionList);
 RefOptionList.displayName = 'OptionList';
 
 export default RefOptionList;

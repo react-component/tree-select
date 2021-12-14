@@ -1,7 +1,6 @@
 import * as React from 'react';
 import type { DataEntity, IconType } from 'rc-tree/lib/interface';
-import type { FlattenDataNode, Key, LegacyDataNode, RawValueType } from './interface';
-import type { SkipType } from './hooks/useKeyValueMapping';
+import type { Key, LegacyDataNode, RawValueType } from './interface';
 
 interface LegacyContextProps {
   checkable: boolean | React.ReactNode;
