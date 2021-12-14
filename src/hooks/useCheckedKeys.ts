@@ -19,5 +19,9 @@ export default (
       ({ checkedKeys, halfCheckedKeys } = conductCheck(checkedKeys, true, keyEntities));
     }
 
-    return [[...missingValues, ...checkedKeys], halfCheckedKeys];
+    return [
+      // Checked keys should fill with missing keys which should de-duplicated
+      Array.from(new Set([...missingValues, ...checkedKeys])),
+      // Half checked keys
+      halfCheckedKeys];
   }, [rawLabeledValues, rawHalfCheckedValues, treeConduction, keyEntities]);
