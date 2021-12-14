@@ -375,7 +375,12 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     const displayKeys =
       showCheckedStrategy === 'SHOW_ALL'
         ? rawCheckedValues
-        : formatStrategyValues(rawCheckedValues, showCheckedStrategy, keyEntities, mergedFieldNames);
+        : formatStrategyValues(
+            rawCheckedValues,
+            showCheckedStrategy,
+            keyEntities,
+            mergedFieldNames,
+          );
 
     // Convert to value and filled with label
     const values = displayKeys.map(key => keyEntities[key]?.node?.[mergedFieldNames.value]);
@@ -383,7 +388,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
     const firstVal = rawDisplayValues[0];
 
-    if (!mergedMultiple && isNil(firstVal.value) && isNil(firstVal.label)) {
+    if (!mergedMultiple && firstVal && isNil(firstVal.value) && isNil(firstVal.label)) {
       return [];
     }
 
