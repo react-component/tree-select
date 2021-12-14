@@ -19,15 +19,11 @@ const children = [
 
 const createSelect = props => <TreeSelect treeData={treeData} multiple {...props} />;
 
-export default () =>
-  createSelect({
-    open: true,
-    value: ['0', '1'],
-    onChange: (val, options, extra) => {
-      console.log('Change:', extra.allCheckedNodes);
-      console.log(extra.allCheckedNodes[0].props);
-    },
-    treeCheckable: true,
-    treeData: null,
-    children,
-  });
+export default () => (
+  <TreeSelect
+    defaultValue={['not-exist']}
+    treeCheckable
+    style={{ width: 300 }}
+    onDeselect={console.error}
+  />
+);

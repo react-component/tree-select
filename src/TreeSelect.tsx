@@ -1,6 +1,6 @@
-// import generate, { TreeSelectProps } from './generate';
 import * as React from 'react';
 import { BaseSelect } from 'rc-select';
+import type { IconType } from 'rc-tree/lib/interface';
 import type {
   BaseSelectRef,
   BaseSelectPropsWithoutPrivate,
@@ -156,6 +156,13 @@ export interface TreeSelectProps<OptionType extends BaseOptionType = DefaultOpti
   listHeight?: number;
   listItemHeight?: number;
   onDropdownVisibleChange?: (open: boolean) => void;
+
+  // >>> Tree
+  treeLine?: boolean;
+  treeIcon?: IconType;
+  showTreeIcon?: boolean;
+  switcherIcon?: IconType;
+  treeMotion?: any;
 }
 
 function isRawValue(value: RawValueType | LabeledValueType): value is RawValueType {
@@ -214,6 +221,13 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     listHeight = 200,
     listItemHeight = 20,
     onDropdownVisibleChange,
+
+    // Tree
+    treeLine,
+    treeIcon,
+    showTreeIcon,
+    switcherIcon,
+    treeMotion,
   } = props;
 
   const mergedId = useId(id);
@@ -644,15 +658,13 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeExpandedKeys,
       treeDefaultExpandedKeys,
       onTreeExpand,
-      // treeIcon,
-      // treeMotion,
-      // showTreeIcon,
-      // switcherIcon,
-      // treeLine,
+      treeIcon,
+      treeMotion,
+      showTreeIcon,
+      switcherIcon,
+      treeLine,
       treeNodeFilterProp,
       keyEntities,
-      // getEntityByKey,
-      // getEntityByValue,
     }),
     [
       mergedCheckable,
@@ -665,15 +677,13 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeExpandedKeys,
       treeDefaultExpandedKeys,
       onTreeExpand,
-      // treeIcon,
-      // treeMotion,
-      // showTreeIcon,
-      // switcherIcon,
-      // treeLine,
+      treeIcon,
+      treeMotion,
+      showTreeIcon,
+      switcherIcon,
+      treeLine,
       treeNodeFilterProp,
       keyEntities,
-      // getEntityByKey,
-      // getEntityByValue,
     ],
   );
 
@@ -702,16 +712,29 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       </LegacyContext.Provider>
     </TreeSelectContext.Provider>
   );
-}) as any; // TODO: handle this
+});
 
 // Assign name for Debug
 if (process.env.NODE_ENV !== 'production') {
   TreeSelect.displayName = 'TreeSelect';
 }
 
-TreeSelect.TreeNode = TreeNode;
-TreeSelect.SHOW_ALL = SHOW_ALL;
-TreeSelect.SHOW_PARENT = SHOW_PARENT;
-TreeSelect.SHOW_CHILD = SHOW_CHILD;
+const GenericTreeSelect = TreeSelect as unknown as (<
+  Values extends BaseOptionType | DefaultOptionType = DefaultOptionType,
+>(
+  props: React.PropsWithChildren<TreeSelectProps<Values>> & {
+    ref?: React.Ref<BaseSelectRef>;
+  },
+) => React.ReactElement) & {
+  TreeNode: typeof TreeNode;
+  SHOW_ALL: typeof SHOW_ALL;
+  SHOW_PARENT: typeof SHOW_PARENT;
+  SHOW_CHILD: typeof SHOW_CHILD;
+};
 
-export default TreeSelect;
+GenericTreeSelect.TreeNode = TreeNode;
+GenericTreeSelect.SHOW_ALL = SHOW_ALL;
+GenericTreeSelect.SHOW_PARENT = SHOW_PARENT;
+GenericTreeSelect.SHOW_CHILD = SHOW_CHILD;
+
+export default GenericTreeSelect;

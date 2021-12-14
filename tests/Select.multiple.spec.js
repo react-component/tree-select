@@ -262,4 +262,14 @@ describe('TreeSelect.multiple', () => {
 
     expect(wrapper.render()).toMatchSnapshot();
   });
+
+  it('warning if access `props` in onDeselect', () => {
+    const onDeselect = jest.fn();
+    const wrapper = mount(
+      <TreeSelect treeCheckable value={['not-exist']} onDeselect={onDeselect} />,
+    );
+    wrapper.clearSelection(0);
+
+    expect(onDeselect).toHaveBeenCalledWith('not-exist', expect.anything());
+  });
 });

@@ -13,9 +13,11 @@ export default (
     let checkedKeys: RawValueType[] = rawLabeledValues.map(({ value }) => value);
     let halfCheckedKeys: RawValueType[] = rawHalfCheckedValues.map(({ value }) => value);
 
+    const missingValues = checkedKeys.filter(key => !keyEntities[key]);
+
     if (treeConduction) {
       ({ checkedKeys, halfCheckedKeys } = conductCheck(checkedKeys, true, keyEntities));
     }
 
-    return [checkedKeys, halfCheckedKeys];
+    return [[...missingValues, ...checkedKeys], halfCheckedKeys];
   }, [rawLabeledValues, rawHalfCheckedValues, treeConduction, keyEntities]);

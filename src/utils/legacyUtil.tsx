@@ -40,7 +40,6 @@ export function convertChildrenToData(nodes: React.ReactNode): DataNode[] {
 }
 
 export function fillLegacyProps(dataNode: DataNode): LegacyDataNode {
-  // Skip if not dataNode exist
   if (!dataNode) {
     return dataNode as LegacyDataNode;
   }
