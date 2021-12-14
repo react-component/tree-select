@@ -8,28 +8,26 @@ const { TreeNode, SHOW_ALL, SHOW_CHILD } = TreeSelect;
 const SelectNode = TreeNode;
 
 const treeData = [
-  { key: 'a', value: 'a', title: 'labela' },
-  {
-    key: 'b',
-    value: 'b',
-    title: 'labelb',
-    children: [
-      { key: 'b-1', value: 'b-1', title: 'labelb-1', selectable: false },
-      { key: 'b-2', value: 'b-2', title: 'labelb-2' },
-    ],
-  },
+  { key: '0', value: '0', title: 'label0' },
+  { key: '1', value: '1', title: 'label1' },
 ];
 
-const createSelect = props => <TreeSelect treeData={treeData} {...props} />;
+const children = [
+  <TreeNode key="0" value="0" title="label0" foo={0} />,
+  <TreeNode key="1" value="1" title="label1" foo={1} />,
+];
+
+const createSelect = props => <TreeSelect treeData={treeData} multiple {...props} />;
 
 export default () =>
   createSelect({
-    // searchValue: 'a',
-    // open: true,
-    // treeDefaultExpandAll: true,
-    filterTreeNode: false,
-    placeholder: 'no no no no no no',
-    onSelect: (...args) => {
-      console.log('Select:', ...args);
+    open: true,
+    value: ['0', '1'],
+    onChange: (val, options, extra) => {
+      console.log('Change:', extra.allCheckedNodes);
+      console.log(extra.allCheckedNodes[0].props);
     },
+    treeCheckable: true,
+    treeData: null,
+    children,
   });

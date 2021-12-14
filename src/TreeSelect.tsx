@@ -499,8 +499,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
   // ========================== Options ===========================
   /** Trigger by option list */
-  const onOptionSelect: OnInternalSelect = React.useCallback(
-    (selectedKey, { selected }) => {
+  const onOptionSelect = React.useCallback(
+    (selectedKey: React.Key, { selected, source }: { selected: boolean; source: SelectSource }) => {
       const entity = keyEntities[selectedKey];
 
       // const eventValue = mergedLabelInValue ? selectValue : selectValue;
@@ -540,7 +540,11 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
               ...checkedKeys.map(key => keyEntities[key].node[mergedFieldNames.value]),
             ];
           }
-          triggerChange(newRawValues, { selected: true, triggerValue: selectedValue }, 'option');
+          triggerChange(
+            newRawValues,
+            { selected, triggerValue: selectedValue },
+            source || 'option',
+          );
         }
 
         // Trigger select event
@@ -579,7 +583,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
       // TreeSelect only have multiple mode which means display change only has remove
       if (info.values.length) {
-        onOptionSelect(info.values[0].value, { selected: false });
+        onOptionSelect(info.values[0].value, { selected: false, source: 'selection' });
       }
     },
   );
