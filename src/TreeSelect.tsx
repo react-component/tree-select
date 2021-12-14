@@ -383,12 +383,13 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
     const firstVal = rawDisplayValues[0];
 
-    if (rawDisplayValues.length === 1 && isNil(firstVal.value) && isNil(firstVal.label)) {
+    if (!mergedMultiple && isNil(firstVal.value) && isNil(firstVal.label)) {
       return [];
     }
 
     return rawDisplayValues;
   }, [
+    mergedMultiple,
     rawCheckedKeys,
     convert2LabelValues,
     showCheckedStrategy,
