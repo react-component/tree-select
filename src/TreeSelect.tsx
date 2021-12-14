@@ -25,6 +25,8 @@ import useDataEntities from './hooks/useDataEntities';
 import { fillAdditionalInfo, fillLegacyProps } from './utils/legacyUtil';
 import useCheckedKeys from './hooks/useCheckedKeys';
 import useFilterTreeData from './hooks/useFilterTreeData';
+import warningProps from './utils/warningPropsUtil';
+import warning from 'rc-util/lib/warning';
 
 export type OnInternalSelect = (value: RawValueType, info: { selected: boolean }) => void;
 
@@ -153,6 +155,7 @@ export interface TreeSelectProps<OptionType extends BaseOptionType = DefaultOpti
   virtual?: boolean;
   listHeight?: number;
   listItemHeight?: number;
+  onDropdownVisibleChange?: (open: boolean) => void;
 }
 
 function isRawValue(value: RawValueType | LabeledValueType): value is RawValueType {
@@ -210,6 +213,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     virtual,
     listHeight = 200,
     listItemHeight = 20,
+    onDropdownVisibleChange,
   } = props;
 
   const mergedId = useId(id);
@@ -217,6 +221,11 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const mergedCheckable: boolean = !!(treeCheckable || treeCheckStrictly);
   const mergedLabelInValue = treeCheckStrictly || labelInValue;
   const mergedMultiple = mergedCheckable || multiple;
+
+  // ========================== Warning ===========================
+  if (process.env.NODE_ENV !== 'production') {
+    warningProps(props);
+  }
 
   // ========================= FieldNames =========================
   const mergedFieldNames: InternalFieldName = React.useMemo(
@@ -573,6 +582,25 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     ],
   );
 
+  // ========================== Dropdown ==========================
+  const onInternalDropdownVisibleChange = React.useCallback(
+    (open: boolean) => {
+      if (onDropdownVisibleChange) {
+        const legacyParam = {};
+
+        Object.defineProperty(legacyParam, 'documentClickClose', {
+          get() {
+            warning(false, 'Second param of `onDropdownVisibleChange` has been removed.');
+            return false;
+          },
+        });
+
+        (onDropdownVisibleChange as any)(open, legacyParam);
+      }
+    },
+    [onDropdownVisibleChange],
+  );
+
   // ====================== Display Change ========================
   const onDisplayValuesChange = useRefFunc<BaseSelectProps['onDisplayValuesChange']>(
     (newValues, info) => {
@@ -669,6 +697,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           // >>> Options
           OptionList={OptionList}
           emptyOptions={!mergedTreeData.length}
+          onDropdownVisibleChange={onInternalDropdownVisibleChange}
         />
       </LegacyContext.Provider>
     </TreeSelectContext.Provider>
