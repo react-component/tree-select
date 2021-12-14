@@ -284,3 +284,7 @@ export function getAllKeys(treeData: DefaultOptionType[], fieldNames: InternalFi
 
   return keys;
 }
+
+export function isNil(val: any) {
+  return val === null || val === undefined;
+}

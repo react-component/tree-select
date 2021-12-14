@@ -18,7 +18,7 @@ import TreeSelectContext from './TreeSelectContext';
 import type { TreeSelectContextProps } from './TreeSelectContext';
 import LegacyContext from './LegacyContext';
 import useTreeData from './hooks/useTreeData';
-import { toArray, fillFieldNames } from './utils/valueUtil';
+import { toArray, fillFieldNames, isNil } from './utils/valueUtil';
 import useCache from './hooks/useCache';
 import useRefFunc from './hooks/useRefFunc';
 import useDataEntities from './hooks/useDataEntities';
@@ -142,9 +142,12 @@ export interface TreeSelectProps<OptionType extends BaseOptionType = DefaultOpti
   loadData?: (dataNode: LegacyDataNode) => Promise<unknown>;
   treeLoadedKeys?: React.Key[];
   onTreeLoad?: (loadedKeys: React.Key[]) => void;
+
+  // >>> Expanded
   treeDefaultExpandAll?: boolean;
   treeExpandedKeys?: React.Key[];
   treeDefaultExpandedKeys?: React.Key[];
+  onTreeExpand?: (expandedKeys: React.Key[]) => void;
 
   // >>> Options
   virtual?: boolean;
@@ -154,10 +157,6 @@ export interface TreeSelectProps<OptionType extends BaseOptionType = DefaultOpti
 
 function isRawValue(value: RawValueType | LabeledValueType): value is RawValueType {
   return !value || typeof value !== 'object';
-}
-
-function isNil(val: any) {
-  return val === null || val === undefined;
 }
 
 const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref) => {
@@ -200,9 +199,12 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     loadData,
     treeLoadedKeys,
     onTreeLoad,
+
+    // Expanded
     treeDefaultExpandAll,
     treeExpandedKeys,
     treeDefaultExpandedKeys,
+    onTreeExpand,
 
     // Options
     virtual,
@@ -613,7 +615,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeDefaultExpandAll,
       treeExpandedKeys,
       treeDefaultExpandedKeys,
-      // onTreeExpand,
+      onTreeExpand,
       // treeIcon,
       // treeMotion,
       // showTreeIcon,
@@ -634,7 +636,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeDefaultExpandAll,
       treeExpandedKeys,
       treeDefaultExpandedKeys,
-      // onTreeExpand,
+      onTreeExpand,
       // treeIcon,
       // treeMotion,
       // showTreeIcon,
