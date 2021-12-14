@@ -12,7 +12,7 @@ import useId from 'rc-select/lib/hooks/useId';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import OptionList from './OptionList';
 import TreeNode from './TreeNode';
-import { formatStrategyKeys, SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './utils/strategyUtil';
+import { formatStrategyValues, SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './utils/strategyUtil';
 import type { CheckedStrategy } from './utils/strategyUtil';
 import TreeSelectContext from './TreeSelectContext';
 import type { TreeSelectContextProps } from './TreeSelectContext';
@@ -375,7 +375,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     const displayKeys =
       showCheckedStrategy === 'SHOW_ALL'
         ? rawCheckedKeys
-        : formatStrategyKeys(rawCheckedKeys, showCheckedStrategy, keyEntities);
+        : formatStrategyValues(rawCheckedKeys, showCheckedStrategy, keyEntities, mergedFieldNames);
 
     // Convert to value and filled with label
     const values = displayKeys.map(key => keyEntities[key]?.node?.[mergedFieldNames.value]);
@@ -389,12 +389,12 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
     return rawDisplayValues;
   }, [
+    mergedFieldNames,
     mergedMultiple,
     rawCheckedKeys,
     convert2LabelValues,
     showCheckedStrategy,
     keyEntities,
-    mergedFieldNames.value,
   ]);
 
   const [cachedDisplayValues] = useCache(displayValues);
@@ -418,11 +418,12 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       if (onChange) {
         let eventValues: RawValueType[] = newRawValues;
         if (treeConduction && showCheckedStrategy !== 'SHOW_ALL') {
-          const keyList = newRawValues.map(val => {
-            const entity = valueEntities.get(val);
-            return entity?.key ?? val;
-          });
-          const formattedKeyList = formatStrategyKeys(keyList, showCheckedStrategy, keyEntities);
+          const formattedKeyList = formatStrategyValues(
+            newRawValues,
+            showCheckedStrategy,
+            keyEntities,
+            mergedFieldNames,
+          );
           eventValues = formattedKeyList.map(key => {
             const entity = valueEntities.get(key);
             return entity ? entity.node[mergedFieldNames.value] : key;

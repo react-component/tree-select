@@ -42,7 +42,7 @@ import useTreeData from './hooks/useTreeData';
 import useKeyValueMap from './hooks/useKeyValueMap';
 import useKeyValueMapping from './hooks/useKeyValueMapping';
 import type { CheckedStrategy } from './utils/strategyUtil';
-import { formatStrategyKeys, SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './utils/strategyUtil';
+import { formatStrategyValues, SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './utils/strategyUtil';
 import { fillAdditionalInfo } from './utils/legacyUtil';
 import useSelectValues from './hooks/useSelectValues';
 
@@ -357,7 +357,7 @@ export default function generate(config: {
             const entity = getEntityByValue(val);
             return entity ? entity.key : val;
           });
-          const formattedKeyList = formatStrategyKeys(
+          const formattedKeyList = formatStrategyValues(
             keyList,
             showCheckedStrategy,
             conductKeyEntities,

@@ -4,7 +4,7 @@ import React from 'react';
 import TreeSelect from '../src';
 import '../assets/index.less';
 
-const { TreeNode, SHOW_ALL } = TreeSelect;
+const { TreeNode, SHOW_ALL, SHOW_CHILD } = TreeSelect;
 
 const treeData = [
   {
@@ -38,15 +38,23 @@ const treeData = [
 export default () => (
   <TreeSelect
     style={{ width: '100%' }}
-    showCheckedStrategy={SHOW_ALL}
+    showCheckedStrategy={SHOW_CHILD}
     treeCheckable
     defaultValue={['0']}
+    treeData={[
+      {
+        key: 'k 0',
+        value: '0',
+        title: 't 0',
+        children: [
+          {
+            key: 'k 0-0',
+            value: '0-0',
+            title: 't 0-0',
+          },
+        ],
+      },
+    ]}
     open
-  >
-    <TreeNode title="0" value="0">
-      <TreeNode title="0-0" value="0-0">
-        <TreeNode title="0-0-0" value="0-0-0" />
-      </TreeNode>
-    </TreeNode>
-  </TreeSelect>
+  />
 );

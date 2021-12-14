@@ -5,7 +5,7 @@ import type { RawValueType, FlattenDataNode, Key, LabelValueType } from '../inte
 import type { SkipType } from './useKeyValueMapping';
 import { getRawValueLabeled } from '../utils/valueUtil';
 import type { CheckedStrategy } from '../utils/strategyUtil';
-import { formatStrategyKeys } from '../utils/strategyUtil';
+import { formatStrategyValues } from '../utils/strategyUtil';
 
 interface Config {
   treeConduction: boolean;
@@ -39,7 +39,7 @@ export default function useSelectValues(
     let mergedRawValues = rawValues;
 
     if (treeConduction) {
-      const rawKeys = formatStrategyKeys(
+      const rawKeys = formatStrategyValues(
         rawValues.map(val => {
           const entity = getEntityByValue(val);
           return entity ? entity.key : val;
