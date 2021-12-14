@@ -717,7 +717,6 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
         class="rc-tree-select-selection-search"
       >
         <input
-          aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
           aria-autocomplete="list"
           aria-controls="rc_select_TEST_OR_SSR_list"
           aria-expanded="true"
@@ -731,6 +730,10 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
           value="a"
         />
       </span>
+      <span
+        class="rc-tree-select-selection-placeholder"
+        style="visibility: hidden;"
+      />
     </div>
     <div>
       <div
@@ -833,7 +836,6 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
         class="rc-tree-select-selection-search"
       >
         <input
-          aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
           aria-autocomplete="list"
           aria-controls="rc_select_TEST_OR_SSR_list"
           aria-expanded="true"
@@ -849,6 +851,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
       </span>
       <span
         class="rc-tree-select-selection-placeholder"
+        style=""
       />
     </div>
     <div>
@@ -978,7 +981,6 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
         class="rc-tree-select-selection-search"
       >
         <input
-          aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
           aria-autocomplete="list"
           aria-controls="rc_select_TEST_OR_SSR_list"
           aria-expanded="true"
@@ -992,6 +994,10 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
           value="a"
         />
       </span>
+      <span
+        class="rc-tree-select-selection-placeholder"
+        style="visibility: hidden;"
+      />
     </div>
     <div>
       <div
@@ -1119,7 +1125,6 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
       class="rc-tree-select-selection-search"
     >
       <input
-        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
         aria-autocomplete="list"
         aria-controls="rc_select_TEST_OR_SSR_list"
         aria-expanded="true"

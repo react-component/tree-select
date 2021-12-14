@@ -660,6 +660,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           onSearch={onInternalSearch}
           // >>> Options
           OptionList={OptionList}
+          emptyOptions={!mergedTreeData.length}
         />
       </LegacyContext.Provider>
     </TreeSelectContext.Provider>

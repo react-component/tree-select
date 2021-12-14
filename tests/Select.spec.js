@@ -326,7 +326,7 @@ describe('TreeSelect.basic', () => {
 
       wrapper.selectNode();
       wrapper.clearAll();
-      expect(wrapper.find('Select').props().value).toHaveLength(0);
+      expect(wrapper.find('BaseSelect').prop('displayValues')).toHaveLength(0);
     });
 
     it('has inputValue prop', () => {
