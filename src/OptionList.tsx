@@ -80,6 +80,7 @@ const OptionList: React.RefForwardingComponent<
     treeLoadedKeys,
     treeMotion,
     onTreeLoad,
+    keyEntities,
   } = React.useContext(LegacyContext);
 
   const treeRef = React.useRef<Tree>();
@@ -168,9 +169,7 @@ const OptionList: React.RefForwardingComponent<
 
   // ========================= Keyboard =========================
   const [activeKey, setActiveKey] = React.useState<Key>(null);
-  // const activeEntity = getEntityByKey(activeKey);
-  // TODO: handle this
-  const activeEntity = null;
+  const activeEntity = keyEntities[activeKey];
 
   React.useImperativeHandle(ref, () => ({
     scrollTo: treeRef.current?.scrollTo,
@@ -187,7 +186,7 @@ const OptionList: React.RefForwardingComponent<
 
         // >>> Select item
         case KeyCode.ENTER: {
-          const { selectable, value } = activeEntity?.data.node || {};
+          const { selectable, value } = activeEntity?.node || {};
           if (selectable !== false) {
             onInternalSelect(null, {
               node: { key: activeKey },
@@ -229,7 +228,7 @@ const OptionList: React.RefForwardingComponent<
     <div onMouseDown={onListMouseDown}>
       {activeEntity && open && (
         <span style={HIDDEN_STYLE} aria-live="assertive">
-          {activeEntity.data.value}
+          {activeEntity.node.value}
         </span>
       )}
 
