@@ -43,8 +43,8 @@ function filterTreeNode(input, child) {
 export default () => (
   <TreeSelect
     style={{ width: '100%' }}
-    showSearch
-    filterTreeNode={false}
+    value={['not-exist-in-tree']}
+    allowClear
     // showCheckedStrategy={SHOW_CHILD}
     // treeCheckable
     // defaultValue={['0']}

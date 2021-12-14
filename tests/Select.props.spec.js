@@ -488,7 +488,7 @@ describe('TreeSelect.props', () => {
       });
 
     describe('single', () => {
-      it('click on tree', () => {
+      it('click on tree node', () => {
         const onSelect = jest.fn();
         const onDeselect = jest.fn();
         const wrapper = createDeselectWrapper({

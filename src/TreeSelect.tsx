@@ -383,7 +383,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           );
 
     // Convert to value and filled with label
-    const values = displayKeys.map(key => keyEntities[key]?.node?.[mergedFieldNames.value]);
+    const values = displayKeys.map(key => keyEntities[key]?.node?.[mergedFieldNames.value] ?? key);
     const rawDisplayValues = convert2LabelValues(values);
 
     const firstVal = rawDisplayValues[0];
@@ -392,7 +392,10 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       return [];
     }
 
-    return rawDisplayValues;
+    return rawDisplayValues.map(item => ({
+      ...item,
+      label: item.label ?? item.value,
+    }));
   }, [
     mergedFieldNames,
     mergedMultiple,
@@ -539,7 +542,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         }
 
         // Trigger select event
-        if (selected) {
+        if (selected || !mergedMultiple) {
           onSelect?.(selectedValue, fillLegacyProps(entity.node));
         } else {
           onDeselect?.(selectedValue, fillLegacyProps(entity.node));
