@@ -340,7 +340,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   );
 
   // Split value into full check and half check
-  const [rawLabeledValues, rawHalfCheckedValues] = React.useMemo(() => {
+  const [rawLabeledValues, rawHalfLabeledValues] = React.useMemo(() => {
     const fullCheckValues: LabeledValueType[] = [];
     const halfCheckValues: LabeledValueType[] = [];
 
@@ -362,9 +362,9 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   );
 
   // Convert value to key. Will fill missed keys for conduct check.
-  const [rawCheckedKeys, rawHalfCheckedKeys] = useCheckedKeys(
+  const [rawCheckedValues, rawHalfCheckedValues] = useCheckedKeys(
     rawLabeledValues,
-    rawHalfCheckedValues,
+    rawHalfLabeledValues,
     treeConduction,
     keyEntities,
   );
@@ -374,8 +374,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     // Collect keys which need to show
     const displayKeys =
       showCheckedStrategy === 'SHOW_ALL'
-        ? rawCheckedKeys
-        : formatStrategyValues(rawCheckedKeys, showCheckedStrategy, keyEntities, mergedFieldNames);
+        ? rawCheckedValues
+        : formatStrategyValues(rawCheckedValues, showCheckedStrategy, keyEntities, mergedFieldNames);
 
     // Convert to value and filled with label
     const values = displayKeys.map(key => keyEntities[key]?.node?.[mergedFieldNames.value]);
@@ -391,7 +391,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   }, [
     mergedFieldNames,
     mergedMultiple,
-    rawCheckedKeys,
+    rawCheckedValues,
     convert2LabelValues,
     showCheckedStrategy,
     keyEntities,
@@ -439,7 +439,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
         // We need fill half check back
         if (treeCheckStrictly) {
-          const halfValues = rawHalfCheckedValues.filter(item => !eventValues.includes(item.value));
+          const halfValues = rawHalfLabeledValues.filter(item => !eventValues.includes(item.value));
 
           returnRawValues = [...returnRawValues, ...halfValues];
         }
@@ -504,7 +504,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         } else {
           let newRawValues = selected
             ? [...rawValues, selectedValue]
-            : rawCheckedKeys.filter(v => v !== selectedValue);
+            : rawCheckedValues.filter(v => v !== selectedValue);
 
           // Add keys if tree conduction
           if (treeConduction) {
@@ -519,7 +519,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
             } else {
               ({ checkedKeys } = conductCheck(
                 keyList,
-                { checked: false, halfCheckedKeys: rawHalfCheckedKeys },
+                { checked: false, halfCheckedKeys: rawHalfCheckedValues },
                 keyEntities,
               ));
             }
@@ -552,8 +552,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeConduction,
       onSelect,
       onDeselect,
-      rawCheckedKeys,
-      rawHalfCheckedKeys,
+      rawCheckedValues,
+      rawHalfCheckedValues,
     ],
   );
 
@@ -594,8 +594,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       loadData,
       treeLoadedKeys,
       onTreeLoad,
-      checkedKeys: rawCheckedKeys,
-      halfCheckedKeys: rawHalfCheckedKeys,
+      checkedKeys: rawCheckedValues,
+      halfCheckedKeys: rawHalfCheckedValues,
       treeDefaultExpandAll,
       treeExpandedKeys,
       // treeDefaultExpandedKeys,
@@ -614,8 +614,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       loadData,
       treeLoadedKeys,
       onTreeLoad,
-      rawCheckedKeys,
-      rawHalfCheckedKeys,
+      rawCheckedValues,
+      rawHalfCheckedValues,
       treeDefaultExpandAll,
       treeExpandedKeys,
       // treeDefaultExpandedKeys,
