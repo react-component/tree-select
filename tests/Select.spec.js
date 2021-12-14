@@ -1,4 +1,3 @@
-/* eslint-disable no-undef react/no-multi-comp */
 import React from 'react';
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';

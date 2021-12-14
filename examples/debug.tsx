@@ -41,19 +41,11 @@ function filterTreeNode(input, child) {
 }
 
 export default () => (
-  <TreeSelect
-    style={{ width: '100%' }}
-    value={['not-exist-in-tree']}
-    allowClear
-    // showCheckedStrategy={SHOW_CHILD}
-    // treeCheckable
-    // defaultValue={['0']}
-    open
-  >
-    <SelectNode value="Value 0" title="Title 0" key="key 0">
-      <SelectNode value="Value 0-0" title="Title 0-0" key="key 0-0" />
-      <SelectNode value="Value 0-1" title="Title 0-1" key="key 0-1" />
-    </SelectNode>
-    <SelectNode value="Value 1" title="Title 1" key="key 1" />
+  <TreeSelect style={{ width: 300 }} open treeDefaultExpandedKeys={['1']}>
+    <TreeNode key="0" value="0" title="0 label" />
+    <TreeNode key="1" value="1" title="1 label">
+      <TreeNode key="10" value="10" title="10 label" />
+      <TreeNode key="11" value="11" title="11 label" />
+    </TreeNode>
   </TreeSelect>
 );

@@ -144,6 +144,7 @@ export interface TreeSelectProps<OptionType extends BaseOptionType = DefaultOpti
   onTreeLoad?: (loadedKeys: React.Key[]) => void;
   treeDefaultExpandAll?: boolean;
   treeExpandedKeys?: React.Key[];
+  treeDefaultExpandedKeys?: React.Key[];
 
   // >>> Options
   virtual?: boolean;
@@ -201,6 +202,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     onTreeLoad,
     treeDefaultExpandAll,
     treeExpandedKeys,
+    treeDefaultExpandedKeys,
 
     // Options
     virtual,
@@ -606,7 +608,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       halfCheckedKeys: rawHalfCheckedValues,
       treeDefaultExpandAll,
       treeExpandedKeys,
-      // treeDefaultExpandedKeys,
+      treeDefaultExpandedKeys,
       // onTreeExpand,
       // treeIcon,
       // treeMotion,
@@ -626,7 +628,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       rawHalfCheckedValues,
       treeDefaultExpandAll,
       treeExpandedKeys,
-      // treeDefaultExpandedKeys,
+      treeDefaultExpandedKeys,
       // onTreeExpand,
       // treeIcon,
       // treeMotion,
