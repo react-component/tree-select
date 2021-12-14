@@ -38,7 +38,7 @@ describe('TreeSelect.props', () => {
   });
 
   describe('filterTreeNode', () => {
-    it('function', () => {
+    it('as function', () => {
       function filterTreeNode(input, child) {
         return String(child.props.title).indexOf(input) !== -1;
       }

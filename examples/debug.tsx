@@ -5,6 +5,7 @@ import TreeSelect from '../src';
 import '../assets/index.less';
 
 const { TreeNode, SHOW_ALL, SHOW_CHILD } = TreeSelect;
+const SelectNode = TreeNode;
 
 const treeData = [
   {
@@ -35,26 +36,24 @@ const treeData = [
   },
 ];
 
+function filterTreeNode(input, child) {
+  return String(child.props.title).indexOf(input) !== -1;
+}
+
 export default () => (
   <TreeSelect
     style={{ width: '100%' }}
-    showCheckedStrategy={SHOW_CHILD}
-    treeCheckable
-    defaultValue={['0']}
-    treeData={[
-      {
-        key: 'k 0',
-        value: '0',
-        title: 't 0',
-        children: [
-          {
-            key: 'k 0-0',
-            value: '0-0',
-            title: 't 0-0',
-          },
-        ],
-      },
-    ]}
+    showSearch
+    filterTreeNode={false}
+    // showCheckedStrategy={SHOW_CHILD}
+    // treeCheckable
+    // defaultValue={['0']}
     open
-  />
+  >
+    <SelectNode value="Value 0" title="Title 0" key="key 0">
+      <SelectNode value="Value 0-0" title="Title 0-0" key="key 0-0" />
+      <SelectNode value="Value 0-1" title="Title 0-1" key="key 0-1" />
+    </SelectNode>
+    <SelectNode value="Value 1" title="Title 1" key="key 1" />
+  </TreeSelect>
 );

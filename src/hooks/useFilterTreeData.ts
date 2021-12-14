@@ -21,7 +21,7 @@ export default (
   const { children: fieldChildren } = fieldNames;
 
   return React.useMemo(() => {
-    if (!searchValue) {
+    if (!searchValue || filterTreeNode === false) {
       return treeData;
     }
 

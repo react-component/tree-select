@@ -123,20 +123,18 @@ const OptionList: React.RefForwardingComponent<
   const [expandedKeys, setExpandedKeys] = React.useState<Key[]>(treeDefaultExpandedKeys);
   const [searchExpandedKeys, setSearchExpandedKeys] = React.useState<Key[]>(null);
 
-  const hasSearchValue = !!searchValue;
-
   const mergedExpandedKeys = React.useMemo(() => {
     if (treeExpandedKeys) {
       return [...treeExpandedKeys];
     }
-    return hasSearchValue ? searchExpandedKeys : expandedKeys;
-  }, [expandedKeys, searchExpandedKeys, treeExpandedKeys, hasSearchValue]);
+    return searchValue ? searchExpandedKeys : expandedKeys;
+  }, [expandedKeys, searchExpandedKeys, treeExpandedKeys, searchValue]);
 
   React.useEffect(() => {
-    if (hasSearchValue) {
+    if (searchValue) {
       setSearchExpandedKeys(getAllKeys(treeData, fieldNames));
     }
-  }, [hasSearchValue]);
+  }, [searchValue]);
 
   const onInternalExpand = (keys: Key[]) => {
     setExpandedKeys(keys);
