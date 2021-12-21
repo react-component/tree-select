@@ -228,6 +228,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     showTreeIcon,
     switcherIcon,
     treeMotion,
+
+    ...restProps
   } = props;
 
   const mergedId = useId(id);
@@ -683,7 +685,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       <LegacyContext.Provider value={legacyContext}>
         <BaseSelect
           ref={ref}
-          {...props}
+          {...restProps}
           // >>> MISC
           id={mergedId}
           prefixCls={prefixCls}
