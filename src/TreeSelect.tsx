@@ -42,7 +42,7 @@ export interface LabeledValueType {
 
 export type SelectSource = 'option' | 'selection' | 'input' | 'clear';
 
-export type ValueType = RawValueType | LabeledValueType | (RawValueType | LabeledValueType)[];
+export type DraftValueType = RawValueType | LabeledValueType | (RawValueType | LabeledValueType)[];
 
 /** @deprecated This is only used for legacy compatible. Not works on new code. */
 export interface LegacyCheckedNode {
@@ -102,8 +102,10 @@ export interface DefaultOptionType extends BaseOptionType {
 export interface LegacyDataNode extends DefaultOptionType {
   props: any;
 }
-export interface TreeSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
-  extends Omit<BaseSelectPropsWithoutPrivate, 'mode'> {
+export interface TreeSelectProps<
+  ValueType = any,
+  OptionType extends BaseOptionType = DefaultOptionType,
+> extends Omit<BaseSelectPropsWithoutPrivate, 'mode'> {
   prefixCls?: string;
   id?: string;
 
@@ -320,7 +322,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   );
 
   // ========================= Wrap Value =========================
-  const toLabeledValues = React.useCallback((draftValues: ValueType) => {
+  const toLabeledValues = React.useCallback((draftValues: DraftValueType) => {
     const values = toArray(draftValues);
 
     return values.map(val => {
@@ -332,7 +334,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   }, []);
 
   const convert2LabelValues = React.useCallback(
-    (draftValues: ValueType) => {
+    (draftValues: DraftValueType) => {
       const values = toLabeledValues(draftValues);
 
       return values.map(item => {
@@ -712,9 +714,10 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const GenericTreeSelect = TreeSelect as unknown as (<
-  Values extends BaseOptionType | DefaultOptionType = DefaultOptionType,
+  ValueType = any,
+  OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType,
 >(
-  props: React.PropsWithChildren<TreeSelectProps<Values>> & {
+  props: React.PropsWithChildren<TreeSelectProps<ValueType, OptionType>> & {
     ref?: React.Ref<BaseSelectRef>;
   },
 ) => React.ReactElement) & {
