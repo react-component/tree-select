@@ -6,7 +6,10 @@ import warning from 'rc-util/lib/warning';
 import { isNil } from '../utils/valueUtil';
 
 export default (treeData: any, fieldNames: FieldNames) =>
-  React.useMemo<{ keyEntities: Record<string, DataEntity> }>(() => {
+  React.useMemo<{
+    valueEntities: Map<RawValueType, DataEntity>;
+    keyEntities: Record<string, DataEntity>;
+  }>(() => {
     const collection = convertDataToEntities(treeData, {
       fieldNames,
       initWrapper: wrapper => ({
@@ -31,7 +34,5 @@ export default (treeData: any, fieldNames: FieldNames) =>
       },
     });
 
-    return collection;
-  }, [treeData, fieldNames]) as ReturnType<typeof convertDataToEntities> & {
-    valueEntities: Map<RawValueType, DataEntity>;
-  };
+    return collection as any;
+  }, [treeData, fieldNames]);
