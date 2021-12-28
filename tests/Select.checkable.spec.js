@@ -753,4 +753,21 @@ describe('TreeSelect.checkable', () => {
       expect.objectContaining({ checked: ['parent', 'child'] }),
     );
   });
+
+  it('customize checkable node', () => {
+    const wrapper = mount(
+      <TreeSelect
+        open
+        treeCheckable={<span className="little" />}
+        treeData={[
+          {
+            label: 'parent',
+            value: 'parent',
+          },
+        ]}
+      />,
+    );
+
+    expect(wrapper.exists('.little')).toBeTruthy();
+  });
 });

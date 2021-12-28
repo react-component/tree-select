@@ -1,13 +1,7 @@
 import * as React from 'react';
 import toArray from 'rc-util/lib/Children/toArray';
 import warning from 'rc-util/lib/warning';
-import type {
-  DataNode,
-  LegacyDataNode,
-  ChangeEventExtra,
-  RawValueType,
-  LegacyCheckedNode,
-} from '../interface';
+import type { DataNode, ChangeEventExtra, RawValueType, LegacyCheckedNode } from '../interface';
 import TreeNode from '../TreeNode';
 import type { DefaultOptionType, FieldNames } from '../TreeSelect';
 
@@ -39,9 +33,9 @@ export function convertChildrenToData(nodes: React.ReactNode): DataNode[] {
     .filter(data => data);
 }
 
-export function fillLegacyProps(dataNode: DataNode): LegacyDataNode {
+export function fillLegacyProps(dataNode: DataNode): any {
   if (!dataNode) {
-    return dataNode as LegacyDataNode;
+    return dataNode;
   }
 
   const cloneNode = { ...dataNode };
@@ -58,7 +52,7 @@ export function fillLegacyProps(dataNode: DataNode): LegacyDataNode {
     });
   }
 
-  return cloneNode as LegacyDataNode;
+  return cloneNode;
 }
 
 export function fillAdditionalInfo(

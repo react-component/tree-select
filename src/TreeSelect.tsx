@@ -236,7 +236,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
   const mergedId = useId(id);
   const treeConduction = treeCheckable && !treeCheckStrictly;
-  const mergedCheckable: boolean = !!(treeCheckable || treeCheckStrictly);
+  const mergedCheckable = treeCheckable || treeCheckStrictly;
   const mergedLabelInValue = treeCheckStrictly || labelInValue;
   const mergedMultiple = mergedCheckable || multiple;
 
