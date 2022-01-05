@@ -173,7 +173,7 @@ describe('TreeSelect.basic', () => {
       { key: '0', value: '0', title: 'label0' },
       { key: '1', value: '1', title: 'label1' },
     ];
-    const createSelect = (props) => <TreeSelect open treeData={treeData} {...props} />;
+    const createSelect = props => <TreeSelect open treeData={treeData} {...props} />;
 
     it('fires change and select event', () => {
       const onChange = jest.fn();
@@ -213,7 +213,7 @@ describe('TreeSelect.basic', () => {
       { key: 'a', value: 'a', title: 'labela' },
       { key: 'b', value: 'b', title: 'labelb' },
     ];
-    const createSelect = (props) => <TreeSelect open showSearch treeData={treeData} {...props} />;
+    const createSelect = props => <TreeSelect open showSearch treeData={treeData} {...props} />;
 
     it('renders search input', () => {
       const wrapper = mount(createSelect());
@@ -228,7 +228,7 @@ describe('TreeSelect.basic', () => {
     });
 
     it('check tree changed by filter', () => {
-      const Wrapper = (props) => <div>{createSelect(props)}</div>;
+      const Wrapper = props => <div>{createSelect(props)}</div>;
       const wrapper = mount(<Wrapper searchValue="a" treeDefaultExpandAll open />);
       expect(wrapper.render()).toMatchSnapshot();
       wrapper.setProps({ searchValue: '' });
@@ -335,7 +335,7 @@ describe('TreeSelect.basic', () => {
           inputValue: '0',
         };
 
-        handleSearch = (inputValue) => {
+        handleSearch = inputValue => {
           this.setState({ inputValue });
         };
 
@@ -359,7 +359,7 @@ describe('TreeSelect.basic', () => {
   });
 
   describe('keyCode', () => {
-    [KeyCode.ENTER, KeyCode.DOWN].forEach((code) => {
+    [KeyCode.ENTER, KeyCode.DOWN].forEach(code => {
       it('open', () => {
         const onFocus = jest.fn();
 
@@ -501,5 +501,22 @@ describe('TreeSelect.basic', () => {
     });
     wrapper.update();
     expect(wrapper.find('.rc-tree-select-selection-item').text()).toEqual('bamboo');
+  });
+
+  it('should show parent if children were disabled', () => {
+    const onSelect = jest.fn();
+
+    const wrapper = mount(
+      <TreeSelect open treeDefaultExpandAll onSelect={onSelect}>
+        <TreeNode value="parent 1-0" title="parent 1-0">
+          <TreeNode value="leaf1" title="my leaf" disabled />
+          <TreeNode value="leaf2" title="your leaf" disabled />
+        </TreeNode>
+      </TreeSelect>,
+    );
+
+    wrapper.selectNode();
+    expect(onSelect).toHaveBeenCalledWith('parent 1-0', expect.anything());
+    expect(wrapper.text()).toBe('parent 1-0parent 1-0my leafyour leaf');
   });
 });
