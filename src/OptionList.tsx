@@ -220,6 +220,7 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
         showLine={treeLine}
         loadData={searchValue ? null : (loadData as any)}
         motion={treeMotion}
+        activeKey={activeKey}
         // We handle keys by out instead tree self
         checkable={checkable}
         checkStrictly
