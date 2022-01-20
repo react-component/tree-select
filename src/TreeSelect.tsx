@@ -223,6 +223,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     listHeight = 200,
     listItemHeight = 20,
     onDropdownVisibleChange,
+    dropdownMatchSelectWidth = true,
 
     // Tree
     treeLine,
@@ -702,6 +703,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           OptionList={OptionList}
           emptyOptions={!mergedTreeData.length}
           onDropdownVisibleChange={onInternalDropdownVisibleChange}
+          dropdownMatchSelectWidth={dropdownMatchSelectWidth}
         />
       </LegacyContext.Provider>
     </TreeSelectContext.Provider>
