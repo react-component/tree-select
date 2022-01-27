@@ -159,12 +159,14 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
 
         // >>> Select item
         case KeyCode.ENTER: {
-          const { selectable, value } = activeEntity?.node || {};
-          if (selectable !== false) {
-            onInternalSelect(null, {
-              node: { key: activeKey },
-              selected: !checkedKeys.includes(value),
-            });
+          if (activeEntity) {
+            const { selectable, value } = activeEntity?.node || {};
+            if (selectable !== false) {
+              onInternalSelect(null, {
+                node: { key: activeKey },
+                selected: !checkedKeys.includes(value),
+              });
+            }
           }
           break;
         }
