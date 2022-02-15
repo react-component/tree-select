@@ -17,7 +17,7 @@ const children = [
   <TreeNode key="1" value="1" title="label1" foo={1} />,
 ];
 
-const createSelect = props => <TreeSelect treeData={treeData} multiple {...props} />;
+const createSelect = props => <TreeSelect treeData={treeData} labelInValue {...props} />;
 
 // export default () => (
 //   <TreeSelect
@@ -31,5 +31,8 @@ const createSelect = props => <TreeSelect treeData={treeData} multiple {...props
 export default () =>
   createSelect({
     maxTagCount: 1,
-    value: ['0', 'not exist'],
+    defaultValue: {
+      value: '0',
+      label: '2333',
+    },
   });
