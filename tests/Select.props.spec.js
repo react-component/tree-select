@@ -165,6 +165,32 @@ describe('TreeSelect.props', () => {
       );
       expect(wrapper.find('.rc-tree-select-selection-placeholder').text()).toBe('showMe');
     });
+
+    it('use user provided one', () => {
+      // Not exist
+      expect(
+        mount(
+          createSelect({
+            labelInValue: true,
+            value: { value: 'not-exist-value', label: 'Bamboo' },
+          }),
+        )
+          .getSelection(0)
+          .text(),
+      ).toBe('Bamboo');
+
+      // Exist not same
+      expect(
+        mount(
+          createSelect({
+            labelInValue: true,
+            value: { value: 'Value 1', label: 'Bamboo' },
+          }),
+        )
+          .getSelection(0)
+          .text(),
+      ).toBe('Bamboo');
+    });
   });
 
   it('onClick', () => {
