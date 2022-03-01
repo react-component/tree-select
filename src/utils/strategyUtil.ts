@@ -25,7 +25,10 @@ export function formatStrategyValues(
       if (
         entity &&
         entity.children &&
-        entity.children.every(({ node }) => valueSet.has(node[fieldNames.value]))
+        entity.children.some(({ node }) => valueSet.has(node[fieldNames.value])) &&
+        entity.children.every(
+          ({ node }) => isCheckDisabled(node) || valueSet.has(node[fieldNames.value]),
+        )
       ) {
         return false;
       }

@@ -535,4 +535,27 @@ describe('TreeSelect.basic', () => {
     wrapper.find('input').first().simulate('keydown', { which: KeyCode.ENTER });
     expect(onSelect).not.toHaveBeenCalled();
   });
+
+  it('should not select parent if some children is disabled', () => {
+    const onChange = jest.fn();
+
+    const wrapper = mount(
+      <TreeSelect
+        open
+        treeDefaultExpandAll
+        treeCheckable
+        multiple
+        showCheckedStrategy={TreeSelect.SHOW_CHILD}
+        onChange={onChange}
+      >
+        <TreeNode value="parent 1-0" title="parent 1-0">
+          <TreeNode value="leaf1" title="my leaf" />
+          <TreeNode value="leaf2" title="your leaf" disabled />
+        </TreeNode>
+      </TreeSelect>,
+    );
+
+    wrapper.selectNode(1);
+    expect(onChange).toHaveBeenCalledWith(['leaf1'], expect.anything(), expect.anything());
+  });
 });
