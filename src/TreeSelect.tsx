@@ -124,8 +124,8 @@ export interface TreeSelectProps<
   treeNodeFilterProp?: string;
 
   // >>> Select
-  onSelect?: SelectProps<ValueType,OptionType>['onSelect'];
-  onDeselect?: SelectProps<ValueType,OptionType>['onDeselect'];
+  onSelect?: SelectProps<ValueType, OptionType>['onSelect'];
+  onDeselect?: SelectProps<ValueType, OptionType>['onDeselect'];
 
   // >>> Selector
   showCheckedStrategy?: CheckedStrategy;
