@@ -67,7 +67,6 @@ class Demo extends React.Component {
       allowClear: true,
       treeCheckable: true,
       showCheckedStrategy: SHOW_PARENT,
-      searchPlaceholder: 'Please select',
       style: {
         width: 300,
       },

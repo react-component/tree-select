@@ -170,7 +170,6 @@ class Demo extends React.Component {
                 choiceTransitionName="rc-tree-select-selection__choice-zoom"
                 // dropdownStyle={{ maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
                 placeholder={<i>请下拉选择</i>}
-                searchPlaceholder="please search"
                 showSearch
                 allowClear
                 treeLine
@@ -192,7 +191,6 @@ class Demo extends React.Component {
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
-          searchPlaceholder="please search"
           showSearch
           allowClear
           treeLine
@@ -223,7 +221,6 @@ class Demo extends React.Component {
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
-          searchPlaceholder="please search"
           showSearch
           allowClear
           treeLine
@@ -241,7 +238,6 @@ class Demo extends React.Component {
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
-          searchPlaceholder="please search"
           multiple
           value={multipleValue}
           treeData={gData}
@@ -266,7 +262,6 @@ class Demo extends React.Component {
           }}
           onDropdownVisibleChange={this.onDropdownVisibleChange}
           placeholder={<i>请下拉选择</i>}
-          searchPlaceholder="please search"
           treeLine
           maxTagTextLength={10}
           value={value}
@@ -291,7 +286,6 @@ class Demo extends React.Component {
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
-          searchPlaceholder="please search"
           showSearch
           allowClear
           treeLine
@@ -308,7 +302,6 @@ class Demo extends React.Component {
           style={{ width: 300 }}
           // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
-          // searchPlaceholder="please search"
           // treeLine
           maxTagTextLength={10}
           searchValue={simpleSearchValue}
