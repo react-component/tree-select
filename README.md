@@ -54,7 +54,7 @@ online example: https://tree-select-react-component.vercel.app/
 |animation | dropdown animation name. only support slide-up now | String | '' |
 |transitionName | dropdown css animation name | String | '' |
 |choiceTransitionName | css animation name for selected items at multiple mode | String | '' |
-|dropdownMatchSelectWidth | whether dropdown's with is same with select. Default set `min-width` same as input | bool | - |
+|dropdownMatchSelectWidth | whether dropdown's with is same with select. Default set `min-width` same as input | bool | true |
 |dropdownClassName | additional className applied to dropdown | String | - |
 |dropdownStyle | additional style applied to dropdown | Object | {} |
 |dropdownPopupAlign | specify alignment for dropdown (alignConfig of [dom-align](https://github.com/yiminghe/dom-align)) | Object | - |
