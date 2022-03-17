@@ -3,6 +3,7 @@ import type { DefaultOptionType, InternalFieldName, OnInternalSelect } from './T
 
 export interface TreeSelectContextProps {
   virtual?: boolean;
+  dropdownMatchSelectWidth?: boolean | number;
   listHeight: number;
   listItemHeight: number;
   treeData: DefaultOptionType[];
