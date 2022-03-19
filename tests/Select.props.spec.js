@@ -1,7 +1,7 @@
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
 import React from 'react';
 import { mount } from 'enzyme';
-import { TreeNode } from 'rc-tree';
+import Tree, { TreeNode } from 'rc-tree';
 import TreeSelect, { SHOW_ALL, SHOW_CHILD, SHOW_PARENT, TreeNode as SelectNode } from '../src';
 
 // Promisify timeout to let jest catch works
@@ -525,6 +525,37 @@ describe('TreeSelect.props', () => {
         wrapper.selectNode(0);
         expect(onDeselect).not.toHaveBeenCalled();
         expect(onSelect).toHaveBeenCalledWith('smart', nodeMatcher(0));
+      });
+
+      it('dropdownMatchSelectWidth={false} should turn off virtual list', () => {
+        const wrapper = mount(
+          <TreeSelect style={{ width: 120 }} open treeDefaultExpandAll>
+            <TreeNode value="parent 1" title="parent 1">
+              <TreeNode value="parent 1-0 sdfsdfsdsdfsd" title="parent 1-0 sdfsdfsd">
+                <TreeNode value="leaf1  sdfsdf" title="leaf1" />
+                <TreeNode value="leaf2 sdfsdfsdf" title="leaf2" />
+              </TreeNode>
+              <TreeNode value="parent 1-1 sdfsdfsdf" title="parent 1-1 sdfsdfsd">
+                <TreeNode value="leaf3" title={<b style={{ color: '#08c' }}>leaf3</b>} />
+              </TreeNode>
+              <TreeNode value="parent 1-2 sdfsdfsdf" title="parent 1-2 sdfsdfsd">
+                <TreeNode value="leaf4" title={<b style={{ color: '#08c' }}>leaf3</b>} />
+              </TreeNode>
+              <TreeNode value="parent 1-3 sdfsdfsdf" title="parent 1-2 sdfsdfsd">
+                <TreeNode value="leaf5" title={<b style={{ color: '#08c' }}>leaf3</b>} />
+              </TreeNode>
+              <TreeNode value="parent 1-4 sdfsdfsdf" title="parent 1-4 sdfsdfsd">
+                <TreeNode value="leaf6" title={<b style={{ color: '#08c' }}>leaf3</b>} />
+              </TreeNode>
+              <TreeNode value="parent 1-5 2sdfsdfsdf" title="parent 1-5 sdfsdfsd">
+                <TreeNode value="leaf7" title={<b style={{ color: '#08c' }}>leaf3</b>} />
+              </TreeNode>
+            </TreeNode>
+          </TreeSelect>,
+        );
+        expect(wrapper.find(Tree).props().virtual).toBe(true);
+        wrapper.setProps({ dropdownMatchSelectWidth: false });
+        expect(wrapper.find(Tree).props().virtual).toBe(false);
       });
     });
 
