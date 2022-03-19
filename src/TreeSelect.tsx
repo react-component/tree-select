@@ -104,7 +104,7 @@ export interface LegacyDataNode extends DefaultOptionType {
 }
 export interface TreeSelectProps<
   ValueType = any,
-  OptionType extends BaseOptionType = DefaultOptionType,
+  OptionType extends BaseOptionType = DefaultOptionType
 > extends Omit<BaseSelectPropsWithoutPrivate, 'mode'> {
   prefixCls?: string;
   id?: string;
@@ -366,10 +366,10 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   // =========================== Values ===========================
   const [internalValue, setInternalValue] = useMergedState(defaultValue, { value });
 
-  const rawMixedLabeledValues = React.useMemo(
-    () => toLabeledValues(internalValue),
-    [toLabeledValues, internalValue],
-  );
+  const rawMixedLabeledValues = React.useMemo(() => toLabeledValues(internalValue), [
+    toLabeledValues,
+    internalValue,
+  ]);
 
   // Split value into full check and half check
   const [rawLabeledValues, rawHalfLabeledValues] = React.useMemo(() => {
@@ -388,10 +388,9 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   }, [rawMixedLabeledValues]);
 
   // const [mergedValues] = useCache(rawLabeledValues);
-  const rawValues = React.useMemo(
-    () => rawLabeledValues.map(item => item.value),
-    [rawLabeledValues],
-  );
+  const rawValues = React.useMemo(() => rawLabeledValues.map(item => item.value), [
+    rawLabeledValues,
+  ]);
 
   // Convert value to key. Will fill missed keys for conduct check.
   const [rawCheckedValues, rawHalfCheckedValues] = useCheckedKeys(
@@ -642,13 +641,22 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const treeSelectContext = React.useMemo<TreeSelectContextProps>(
     () => ({
       virtual,
+      dropdownMatchSelectWidth,
       listHeight,
       listItemHeight,
       treeData: filteredTreeData,
       fieldNames: mergedFieldNames,
       onSelect: onOptionSelect,
     }),
-    [virtual, listHeight, listItemHeight, filteredTreeData, mergedFieldNames, onOptionSelect],
+    [
+      virtual,
+      dropdownMatchSelectWidth,
+      listHeight,
+      listItemHeight,
+      filteredTreeData,
+      mergedFieldNames,
+      onOptionSelect,
+    ],
   );
 
   // ======================= Legacy Context =======================
@@ -726,9 +734,9 @@ if (process.env.NODE_ENV !== 'production') {
   TreeSelect.displayName = 'TreeSelect';
 }
 
-const GenericTreeSelect = TreeSelect as unknown as (<
+const GenericTreeSelect = (TreeSelect as unknown) as (<
   ValueType = any,
-  OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType,
+  OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType
 >(
   props: React.PropsWithChildren<TreeSelectProps<ValueType, OptionType>> & {
     ref?: React.Ref<BaseSelectRef>;

@@ -33,8 +33,15 @@ type ReviseRefOptionListProps = Omit<RefOptionListProps, 'scrollTo'> & { scrollT
 const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, ref) => {
   const { prefixCls, multiple, searchValue, toggleOpen, open, notFoundContent } = useBaseProps();
 
-  const { virtual, listHeight, listItemHeight, treeData, fieldNames, onSelect } =
-    React.useContext(TreeSelectContext);
+  const {
+    virtual,
+    listHeight,
+    listItemHeight,
+    treeData,
+    fieldNames,
+    onSelect,
+    dropdownMatchSelectWidth,
+  } = React.useContext(TreeSelectContext);
 
   const {
     checkable,
@@ -214,7 +221,7 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
         treeData={memoTreeData as TreeDataNode[]}
         height={listHeight}
         itemHeight={listItemHeight}
-        virtual={virtual}
+        virtual={virtual !== false && dropdownMatchSelectWidth !== false}
         multiple={multiple}
         icon={treeIcon}
         showIcon={showTreeIcon}
