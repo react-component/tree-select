@@ -6,6 +6,7 @@ import { useBaseProps } from 'rc-select';
 import type { TreeProps } from 'rc-tree';
 import Tree from 'rc-tree';
 import type { EventDataNode, ScrollTo } from 'rc-tree/lib/interface';
+import { arrAdd, arrDel } from 'rc-tree/lib/util';
 import type { TreeDataNode, Key } from './interface';
 import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
@@ -41,6 +42,7 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
     fieldNames,
     onSelect,
     dropdownMatchSelectWidth,
+    expandAction,
   } = React.useContext(TreeSelectContext);
 
   const {
@@ -147,6 +149,18 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
     }
   };
 
+  const onInternalClick = (__: React.Key[], info: TreeEventInfo) =>  {
+    if (expandAction === 'click') {
+      onInternalExpand(info.expanded ? arrDel(expandedKeys, info.key) : arrAdd(expandedKeys, info.key));
+    }
+  };
+
+  const onInternalDoubleClick = (__: React.Key[], info: TreeEventInfo) =>  {
+    if (expandAction === 'doubleClick') {
+      onInternalExpand(info.expanded ? arrDel(expandedKeys, info.key) : arrAdd(expandedKeys, info.key));
+    }
+  };
+
   // ========================= Keyboard =========================
   const [activeKey, setActiveKey] = React.useState<Key>(null);
   const activeEntity = keyEntities[activeKey];
@@ -242,6 +256,8 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
         onSelect={onInternalSelect}
         onCheck={onInternalSelect}
         onExpand={onInternalExpand}
+        onClick={onInternalClick}
+        onDoubleClick={onInternalDoubleClick}
         onLoad={onTreeLoad}
         filterTreeNode={filterTreeNode}
       />

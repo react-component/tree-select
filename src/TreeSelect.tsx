@@ -32,6 +32,8 @@ export type OnInternalSelect = (value: RawValueType, info: { selected: boolean }
 
 export type RawValueType = string | number;
 
+export type ExpandAction = false | 'click' | 'doubleClick';
+
 export interface LabeledValueType {
   key?: React.Key;
   value?: RawValueType;
@@ -152,6 +154,7 @@ export interface TreeSelectProps<
   treeExpandedKeys?: React.Key[];
   treeDefaultExpandedKeys?: React.Key[];
   onTreeExpand?: (expandedKeys: React.Key[]) => void;
+  expandAction: ExpandAction;
 
   // >>> Options
   virtual?: boolean;
@@ -217,6 +220,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     treeExpandedKeys,
     treeDefaultExpandedKeys,
     onTreeExpand,
+    expandAction,
 
     // Options
     virtual,
@@ -647,6 +651,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeData: filteredTreeData,
       fieldNames: mergedFieldNames,
       onSelect: onOptionSelect,
+      expandAction,
     }),
     [
       virtual,
@@ -656,6 +661,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       filteredTreeData,
       mergedFieldNames,
       onOptionSelect,
+      expandAction,
     ],
   );
 
