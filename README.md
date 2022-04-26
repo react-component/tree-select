@@ -81,6 +81,7 @@ online example: https://tree-select-react-component.vercel.app/
 |treeDefaultExpandAll | default expand all treeNode | bool | false |
 |treeDefaultExpandedKeys | default expanded treeNode keys | Array<String> | - |
 |treeExpandedKeys | set tree expanded keys | Array<String> | - |
+|treeExpandAction | Tree open logic, optional: false \| `click` \| `doubleClick`, same as `expandAction` of `rc-tree` | string \| boolean | `click` |
 |treeCheckable | whether tree show checkbox (select callback will not fire) | bool | false |
 |treeCheckStrictly | check node precisely, parent and children nodes are not associated| bool | false |
 |filterTreeNode | whether filter treeNodes by input value. default filter by treeNode's treeNodeFilterProp prop's value | bool/Function(inputValue:string, treeNode:TreeNode) | Function |

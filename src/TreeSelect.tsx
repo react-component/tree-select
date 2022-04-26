@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { BaseSelect } from 'rc-select';
 import type { IconType } from 'rc-tree/lib/interface';
+import type { ExpandAction } from 'rc-tree/lib/Tree';
 import type {
   BaseSelectRef,
   BaseSelectPropsWithoutPrivate,
@@ -152,6 +153,7 @@ export interface TreeSelectProps<
   treeExpandedKeys?: React.Key[];
   treeDefaultExpandedKeys?: React.Key[];
   onTreeExpand?: (expandedKeys: React.Key[]) => void;
+  treeExpandAction?: ExpandAction;
 
   // >>> Options
   virtual?: boolean;
@@ -217,6 +219,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     treeExpandedKeys,
     treeDefaultExpandedKeys,
     onTreeExpand,
+    treeExpandAction,
 
     // Options
     virtual,
@@ -647,6 +650,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeData: filteredTreeData,
       fieldNames: mergedFieldNames,
       onSelect: onOptionSelect,
+      treeExpandAction,
     }),
     [
       virtual,
@@ -656,6 +660,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       filteredTreeData,
       mergedFieldNames,
       onOptionSelect,
+      treeExpandAction,
     ],
   );
 

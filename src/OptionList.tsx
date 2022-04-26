@@ -41,6 +41,7 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
     fieldNames,
     onSelect,
     dropdownMatchSelectWidth,
+    treeExpandAction,
   } = React.useContext(TreeSelectContext);
 
   const {
@@ -244,6 +245,7 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
         onExpand={onInternalExpand}
         onLoad={onTreeLoad}
         filterTreeNode={filterTreeNode}
+        expandAction={treeExpandAction}
       />
     </div>
   );
