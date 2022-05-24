@@ -1,7 +1,8 @@
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
-import React from 'react';
 import { mount } from 'enzyme';
 import Tree, { TreeNode } from 'rc-tree';
+import KeyCode from 'rc-util/lib/KeyCode';
+import React from 'react';
 import TreeSelect, { SHOW_ALL, SHOW_CHILD, SHOW_PARENT, TreeNode as SelectNode } from '../src';
 
 // Promisify timeout to let jest catch works
@@ -153,6 +154,40 @@ describe('TreeSelect.props', () => {
           triggerNode: expect.anything(),
         }),
       );
+    });
+
+    it('labelInAriaLive', () => {
+      function keyDown(code) {
+        wrapper.find('input').first().simulate('keyDown', { which: code });
+        wrapper.update();
+      }
+
+      function keyUp(code) {
+        wrapper.find('input').first().simulate('keyUp', { which: code });
+        wrapper.update();
+      }
+
+      const wrapper = mount(
+        <TreeSelect
+          labelInAriaLive={true}
+          treeDefaultExpandAll
+          treeData={[
+            {
+              value: 'parent',
+              label: 'parent-label',
+              children: [{ value: 'child', label: 'child-label' }],
+            },
+          ]}
+          multiple
+        />,
+      );
+
+      wrapper.openSelect();
+      keyDown(KeyCode.DOWN);
+      keyUp(KeyCode.DOWN);
+
+      const ariaLiveSpan = wrapper.find('[aria-live="assertive"]');
+      expect(ariaLiveSpan.text()).toEqual('parent-label');
     });
 
     it('set illegal value', () => {

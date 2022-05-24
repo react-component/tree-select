@@ -1,12 +1,12 @@
-import * as React from 'react';
-import KeyCode from 'rc-util/lib/KeyCode';
-import useMemo from 'rc-util/lib/hooks/useMemo';
-import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import { useBaseProps } from 'rc-select';
-import type { TreeProps } from 'rc-tree';
+import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import Tree from 'rc-tree';
+import type { TreeProps } from 'rc-tree';
 import type { EventDataNode, ScrollTo } from 'rc-tree/lib/interface';
-import type { TreeDataNode, Key } from './interface';
+import useMemo from 'rc-util/lib/hooks/useMemo';
+import KeyCode from 'rc-util/lib/KeyCode';
+import * as React from 'react';
+import type { Key, TreeDataNode } from './interface';
 import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
@@ -42,6 +42,7 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
     onSelect,
     dropdownMatchSelectWidth,
     treeExpandAction,
+    labelInAriaLive,
   } = React.useContext(TreeSelectContext);
 
   const {
@@ -211,7 +212,7 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
     <div onMouseDown={onListMouseDown}>
       {activeEntity && open && (
         <span style={HIDDEN_STYLE} aria-live="assertive">
-          {activeEntity.node.value}
+          {!labelInAriaLive ? activeEntity.node.value : activeEntity.node.label}
         </span>
       )}
 
