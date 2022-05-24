@@ -71,6 +71,7 @@ online example: https://tree-select-react-component.vercel.app/
 |defaultValue | initial selected treeNode(s) | same as value type | - |
 |value | current selected treeNode(s). | normal: String/Array<String>. labelInValue: {value:String,label:React.Node}/Array<{value,label}>. treeCheckStrictly(halfChecked default false): {value:String,label:React.Node, halfChecked}/Array<{value,label,halfChecked}>. | - |
 |labelInValue| whether to embed label in value, see above value type | Bool | false |
+|labelInAriaLive| whether to use option label instead of value for screenreader | Bool | false |
 |onChange | called when select treeNode or input value change | function(value, label(null), extra) | - |
 |onSelect | called when select treeNode | function(value, node, extra) | - |
 |onSearch | called when input changed | function | - |

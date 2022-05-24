@@ -1,33 +1,33 @@
-import * as React from 'react';
 import { BaseSelect } from 'rc-select';
-import type { IconType } from 'rc-tree/lib/interface';
-import type { ExpandAction } from 'rc-tree/lib/Tree';
 import type {
-  BaseSelectRef,
-  BaseSelectPropsWithoutPrivate,
   BaseSelectProps,
+  BaseSelectPropsWithoutPrivate,
+  BaseSelectRef,
   SelectProps,
 } from 'rc-select';
-import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 import useId from 'rc-select/lib/hooks/useId';
+import type { IconType } from 'rc-tree/lib/interface';
+import type { ExpandAction } from 'rc-tree/lib/Tree';
+import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import warning from 'rc-util/lib/warning';
+import * as React from 'react';
+import useCache from './hooks/useCache';
+import useCheckedKeys from './hooks/useCheckedKeys';
+import useDataEntities from './hooks/useDataEntities';
+import useFilterTreeData from './hooks/useFilterTreeData';
+import useRefFunc from './hooks/useRefFunc';
+import useTreeData from './hooks/useTreeData';
+import LegacyContext from './LegacyContext';
 import OptionList from './OptionList';
 import TreeNode from './TreeNode';
-import { formatStrategyValues, SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './utils/strategyUtil';
-import type { CheckedStrategy } from './utils/strategyUtil';
 import TreeSelectContext from './TreeSelectContext';
 import type { TreeSelectContextProps } from './TreeSelectContext';
-import LegacyContext from './LegacyContext';
-import useTreeData from './hooks/useTreeData';
-import { toArray, fillFieldNames, isNil } from './utils/valueUtil';
-import useCache from './hooks/useCache';
-import useRefFunc from './hooks/useRefFunc';
-import useDataEntities from './hooks/useDataEntities';
 import { fillAdditionalInfo, fillLegacyProps } from './utils/legacyUtil';
-import useCheckedKeys from './hooks/useCheckedKeys';
-import useFilterTreeData from './hooks/useFilterTreeData';
+import { formatStrategyValues, SHOW_ALL, SHOW_CHILD, SHOW_PARENT } from './utils/strategyUtil';
+import type { CheckedStrategy } from './utils/strategyUtil';
+import { fillFieldNames, isNil, toArray } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
-import warning from 'rc-util/lib/warning';
 
 export type OnInternalSelect = (value: RawValueType, info: { selected: boolean }) => void;
 
@@ -140,6 +140,7 @@ export interface TreeSelectProps<
   treeCheckable?: boolean | React.ReactNode;
   treeCheckStrictly?: boolean;
   labelInValue?: boolean;
+  labelInAriaLive?: boolean;
 
   // >>> Data
   treeData?: OptionType[];
@@ -202,6 +203,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     treeCheckable,
     treeCheckStrictly,
     labelInValue,
+    labelInAriaLive,
 
     // FieldNames
     fieldNames,
@@ -651,6 +653,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       fieldNames: mergedFieldNames,
       onSelect: onOptionSelect,
       treeExpandAction,
+      labelInAriaLive,
     }),
     [
       virtual,
@@ -661,6 +664,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       mergedFieldNames,
       onOptionSelect,
       treeExpandAction,
+      labelInAriaLive,
     ],
   );
 
