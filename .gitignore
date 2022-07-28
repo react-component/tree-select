@@ -28,6 +28,7 @@ lib/*
 coverage
 yarn.lock
 package-lock.json
+.npmrc
 es/*
 # umi
 .umi
