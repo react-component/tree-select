@@ -1,6 +1,6 @@
 {
   "name": "rc-tree-select-accessible",
-  "version": "5.4.3",
+  "version": "5.4.4",
   "description": "Custom fork of tree-select ui component for react",
   "keywords": [
     "react",
