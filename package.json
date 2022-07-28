@@ -1,6 +1,6 @@
 {
   "name": "@juhovalkonen/rc-tree-select",
-  "version": "5.4.1",
+  "version": "5.4.2",
   "description": "custom fork of tree-select ui component for react",
   "keywords": [
     "react",
