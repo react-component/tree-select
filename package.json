@@ -1,21 +1,25 @@
 {
-  "name": "rc-tree-select",
-  "version": "5.4.0",
-  "description": "tree-select ui component for react",
+  "name": "@juhovalkonen/rc-tree-select",
+  "version": "5.5.2",
+  "description": "custom fork of tree-select ui component for react",
   "keywords": [
     "react",
     "react-component",
     "react-tree-select",
     "tree-select"
   ],
-  "homepage": "https://github.com/react-component/tree-select",
-  "author": "smith3816@gmail.com",
+  "homepage": "https://github.com/juhoValkonen/tree-select",
+  "author": "valkonen.juho@gmail.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-component/tree-select.git"
+    "url": "https://github.com/juhoValkonen/tree-select.git"
   },
   "bugs": {
-    "url": "https://github.com/react-component/tree-select/issues"
+    "url": "https://github.com/juhoValkonen/tree-select/issues"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "files": [
     "es",
