@@ -146,4 +146,16 @@ describe('TreeSelect.tree', () => {
 
     expect(wrapper.exists('.bamboo-light')).toBeTruthy();
   });
+
+  it('dynamic with filter should not show expand icon', () => {
+    const wrapper = mount(
+      <TreeSelect
+        open
+        treeData={[{ label: 'Bamboo', value: 'bamboo', isLeaf: false }]}
+        searchValue="boo"
+      />,
+    );
+
+    expect(wrapper.exists('.rc-tree-select-tree-icon__open')).toBeFalsy();
+  });
 });

@@ -94,7 +94,7 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
 
   // ========================== Search ==========================
   const lowerSearchValue = String(searchValue).toLowerCase();
-  const filterTreeNode = (treeNode: EventDataNode) => {
+  const filterTreeNode = (treeNode: EventDataNode<any>) => {
     if (!lowerSearchValue) {
       return false;
     }
