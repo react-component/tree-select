@@ -48,6 +48,7 @@ export default (
           if (match || childList.length) {
             return {
               ...dataNode,
+              isLeaf: undefined,
               [fieldChildren]: childList,
             };
           }
