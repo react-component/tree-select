@@ -1,6 +1,7 @@
 /* eslint-disable no-undef, react/no-multi-comp, max-classes-per-file */
 import React from 'react';
 import { mount } from 'enzyme';
+import { render, fireEvent } from '@testing-library/react';
 import TreeSelect, { SHOW_PARENT, SHOW_ALL, TreeNode } from '../src';
 
 describe('TreeSelect.checkable', () => {
@@ -500,7 +501,39 @@ describe('TreeSelect.checkable', () => {
 
     // https://github.com/ant-design/ant-design/issues/38126
     it('keep label when not in options', () => {
-      // const wrapper = mount()
+      const onChange = jest.fn();
+
+      const { container } = render(
+        <TreeSelect
+          multiple
+          labelInValue
+          value={[{ label: 'Bamboo', value: 'bamboo' }]}
+          open
+          onChange={onChange}
+          treeData={[
+            {
+              label: 'Light',
+              value: 'light',
+            },
+          ]}
+        />,
+      );
+
+      fireEvent.click(container.querySelector('.rc-tree-select-tree-title'));
+      expect(onChange).toHaveBeenCalledWith(
+        [
+          expect.objectContaining({
+            label: 'Bamboo',
+            value: 'bamboo',
+          }),
+          expect.objectContaining({
+            label: 'Light',
+            value: 'light',
+          }),
+        ],
+        null,
+        expect.anything(),
+      );
     });
   });
 
