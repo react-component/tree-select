@@ -244,6 +244,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const mergedLabelInValue = treeCheckStrictly || labelInValue;
   const mergedMultiple = mergedCheckable || multiple;
 
+  const [internalValue, setInternalValue] = useMergedState(defaultValue, { value });
+
   // ========================== Warning ===========================
   if (process.env.NODE_ENV !== 'production') {
     warningProps(props);
@@ -353,6 +355,10 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         if (entity) {
           rawLabel = rawLabel ?? getLabel(entity.node);
           rawDisabled = entity.node.disabled;
+        } else if (rawLabel === undefined) {
+          // We try to find in current `labelInValue` value
+          const labelInValueItem = toLabeledValues(internalValue).find(labeledItem => labeledItem.value === rawValue);
+          rawLabel = labelInValueItem.label;
         }
 
         return {
@@ -363,12 +369,10 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         };
       });
     },
-    [valueEntities, getLabel, toLabeledValues],
+    [valueEntities, getLabel, toLabeledValues, internalValue],
   );
 
   // =========================== Values ===========================
-  const [internalValue, setInternalValue] = useMergedState(defaultValue, { value });
-
   const rawMixedLabeledValues = React.useMemo(() => toLabeledValues(internalValue), [
     toLabeledValues,
     internalValue,
