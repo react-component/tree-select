@@ -357,7 +357,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           rawDisabled = entity.node.disabled;
         } else if (rawLabel === undefined) {
           // We try to find in current `labelInValue` value
-          const labelInValueItem = toLabeledValues(internalValue).find(item => item.value === rawValue);
+          const labelInValueItem = toLabeledValues(internalValue).find(labeledItem => labeledItem.value === rawValue);
           rawLabel = labelInValueItem.label;
         }
 
