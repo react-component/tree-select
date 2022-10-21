@@ -500,7 +500,7 @@ describe('TreeSelect.checkable', () => {
 
     // https://github.com/ant-design/ant-design/issues/38126
     it('keep label when not in options', () => {
-      const wrapper = mount()
+      // const wrapper = mount()
     });
   });
 
