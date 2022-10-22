@@ -8,6 +8,7 @@ export default defineConfig({
     alias: {
       'rc-util/lib': 'rc-util/es',
       'rc-tree/lib': 'rc-tree/es',
+      'rc-select/lib': 'rc-select/es',
     },
   },
 });
