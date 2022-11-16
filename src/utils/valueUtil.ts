@@ -32,10 +32,9 @@ export function getAllKeys(treeData: DefaultOptionType[], fieldNames: InternalFi
 
   function dig(list: DefaultOptionType[]) {
     list.forEach(item => {
-      keys.push(item[fieldNames.value]);
-
       const children = item[fieldNames.children];
       if (children) {
+        keys.push(item[fieldNames.value]);
         dig(children);
       }
     });

@@ -1042,7 +1042,7 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
                   >
                     <div
                       aria-grabbed="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open filter-node"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close filter-node"
                       draggable="false"
                     >
                       <span
@@ -1068,7 +1068,7 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
                     </div>
                     <div
                       aria-grabbed="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
                       draggable="false"
                     >
                       <span
