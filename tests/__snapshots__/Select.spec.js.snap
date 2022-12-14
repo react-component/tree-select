@@ -53,7 +53,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
             <div
               aria-hidden="true"
               class="rc-tree-select-tree-treenode"
-              style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden;"
+              style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
             >
               <div
                 class="rc-tree-select-tree-indent"
@@ -258,7 +258,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
             <div
               aria-hidden="true"
               class="rc-tree-select-tree-treenode"
-              style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden;"
+              style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
             >
               <div
                 class="rc-tree-select-tree-indent"
@@ -608,7 +608,7 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
               <div
                 aria-hidden="true"
                 class="rc-tree-select-tree-treenode"
-                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden;"
+                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
               >
                 <div
                   class="rc-tree-select-tree-indent"
@@ -757,7 +757,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
               <div
                 aria-hidden="true"
                 class="rc-tree-select-tree-treenode"
-                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden;"
+                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
               >
                 <div
                   class="rc-tree-select-tree-indent"
@@ -876,7 +876,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
               <div
                 aria-hidden="true"
                 class="rc-tree-select-tree-treenode"
-                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden;"
+                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
               >
                 <div
                   class="rc-tree-select-tree-indent"
@@ -1021,7 +1021,7 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
               <div
                 aria-hidden="true"
                 class="rc-tree-select-tree-treenode"
-                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden;"
+                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
               >
                 <div
                   class="rc-tree-select-tree-indent"
@@ -1164,7 +1164,7 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
             <div
               aria-hidden="true"
               class="rc-tree-select-tree-treenode"
-              style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden;"
+              style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
             >
               <div
                 class="rc-tree-select-tree-indent"

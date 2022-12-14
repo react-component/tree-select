@@ -145,7 +145,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
               <div
                 aria-hidden="true"
                 class="rc-tree-select-tree-treenode"
-                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden;"
+                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
               >
                 <div
                   class="rc-tree-select-tree-indent"
@@ -341,7 +341,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
               <div
                 aria-hidden="true"
                 class="rc-tree-select-tree-treenode"
-                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden;"
+                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
               >
                 <div
                   class="rc-tree-select-tree-indent"
@@ -615,7 +615,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
               <div
                 aria-hidden="true"
                 class="rc-tree-select-tree-treenode"
-                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden;"
+                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
               >
                 <div
                   class="rc-tree-select-tree-indent"
@@ -808,7 +808,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
               <div
                 aria-hidden="true"
                 class="rc-tree-select-tree-treenode"
-                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden;"
+                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
               >
                 <div
                   class="rc-tree-select-tree-indent"
