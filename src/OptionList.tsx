@@ -211,7 +211,7 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
     <div onMouseDown={onListMouseDown}>
       {activeEntity && open && (
         <span style={HIDDEN_STYLE} aria-live="assertive">
-          {activeEntity.node.value}
+          {activeEntity.node['aria-label'] || activeEntity.node.value}
         </span>
       )}
 
