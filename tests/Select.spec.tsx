@@ -78,7 +78,7 @@ describe('TreeSelect.basic', () => {
     });
 
     it('renders TreeNode correctly', () => {
-      const wrapper = mount(
+      const { container } = render(
         <TreeSelect treeDefaultExpandAll open>
           <TreeNode key="0" value="0" title="0 label" />
           <TreeNode key="1" value="1" title="1 label">
@@ -87,7 +87,7 @@ describe('TreeSelect.basic', () => {
           </TreeNode>
         </TreeSelect>,
       );
-      expect(wrapper.render()).toMatchSnapshot();
+      expect(container.firstChild).toMatchSnapshot();
     });
 
     it('renders TreeNode correctly with falsy child', () => {

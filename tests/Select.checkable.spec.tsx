@@ -1,8 +1,8 @@
 /* eslint-disable no-undef, react/no-multi-comp, max-classes-per-file */
-import React from 'react';
+import { fireEvent, render } from '@testing-library/react';
 import { mount } from 'enzyme';
-import { render, fireEvent } from '@testing-library/react';
-import TreeSelect, { SHOW_PARENT, SHOW_ALL, TreeNode } from '../src';
+import React from 'react';
+import TreeSelect, { SHOW_ALL, SHOW_PARENT, TreeNode } from '../src';
 
 describe('TreeSelect.checkable', () => {
   it('allow clear when controlled', () => {
@@ -236,7 +236,7 @@ describe('TreeSelect.checkable', () => {
   });
 
   describe('uncheck', () => {
-    const createSelect = props =>
+    const createSelect = (props?: any) =>
       mount(
         <div>
           <TreeSelect
