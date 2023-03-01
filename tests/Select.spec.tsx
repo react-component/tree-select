@@ -91,7 +91,7 @@ describe('TreeSelect.basic', () => {
     });
 
     it('renders TreeNode correctly with falsy child', () => {
-      const wrapper = mount(
+      const { container } = render(
         <TreeSelect treeDefaultExpandAll open>
           <TreeNode key="0" value="0" title="0 label" />
           <TreeNode key="1" value="1" title="1 label">
@@ -101,11 +101,11 @@ describe('TreeSelect.basic', () => {
           </TreeNode>
         </TreeSelect>,
       );
-      expect(wrapper.render()).toMatchSnapshot();
+      expect(container.firstChild).toMatchSnapshot();
     });
 
     it('renders treeDataSimpleMode correctly', () => {
-      const wrapper = mount(
+      const { container } = render(
         <div>
           <TreeSelect
             treeData={[
@@ -118,7 +118,7 @@ describe('TreeSelect.basic', () => {
           />
         </div>,
       );
-      expect(wrapper.render()).toMatchSnapshot();
+      expect(container.firstChild).toMatchSnapshot();
     });
   });
 
@@ -220,8 +220,8 @@ describe('TreeSelect.basic', () => {
     );
 
     it('renders search input', () => {
-      const wrapper = mount(createSelect());
-      expect(wrapper.render()).toMatchSnapshot();
+      const { container } = render(createSelect());
+      expect(container.firstChild).toMatchSnapshot();
     });
 
     it('fires search event', () => {
