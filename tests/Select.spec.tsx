@@ -232,11 +232,11 @@ describe('TreeSelect.basic', () => {
     });
 
     it('check tree changed by filter', () => {
-      const Wrapper = props => <div>{createSelect(props)}</div>;
-      const wrapper = mount(<Wrapper searchValue="a" treeDefaultExpandAll open />);
-      expect(wrapper.render()).toMatchSnapshot();
-      wrapper.setProps({ searchValue: '' });
-      expect(wrapper.render()).toMatchSnapshot();
+      const Wrapper = (props: any) => <div>{createSelect(props)}</div>;
+      const { container, rerender } = render(<Wrapper searchValue="a" treeDefaultExpandAll open />);
+      expect(container.firstChild).toMatchSnapshot();
+      rerender(<Wrapper searchValue="" treeDefaultExpandAll open />);
+      expect(container.firstChild).toMatchSnapshot();
     });
 
     it('search nodes by filterTreeNode', () => {
