@@ -1,8 +1,10 @@
-import React from 'react';
+import { render } from '@testing-library/react';
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
+import React from 'react';
 import TreeSelect, { TreeNode } from '../src';
 import focusTest from './shared/focusTest';
+import { selectNode } from './util';
 
 describe('TreeSelect.basic', () => {
   beforeEach(() => {
@@ -213,7 +215,9 @@ describe('TreeSelect.basic', () => {
       { key: 'a', value: 'a', title: 'labela' },
       { key: 'b', value: 'b', title: 'labelb' },
     ];
-    const createSelect = props => <TreeSelect open showSearch treeData={treeData} {...props} />;
+    const createSelect = (props?: any) => (
+      <TreeSelect open showSearch treeData={treeData} {...props} />
+    );
 
     it('renders search input', () => {
       const wrapper = mount(createSelect());
@@ -251,7 +255,7 @@ describe('TreeSelect.basic', () => {
     });
 
     it('filter node but not remove then', () => {
-      const wrapper = mount(
+      const { container } = render(
         <div>
           {createSelect({
             searchValue: 'a',
@@ -261,7 +265,7 @@ describe('TreeSelect.basic', () => {
           })}
         </div>,
       );
-      expect(wrapper.render()).toMatchSnapshot();
+      expect(container.firstChild).toMatchSnapshot();
     });
   });
 
@@ -506,7 +510,7 @@ describe('TreeSelect.basic', () => {
   it('should show parent if children were disabled', () => {
     const onSelect = jest.fn();
 
-    const wrapper = mount(
+    const { container } = render(
       <TreeSelect open treeDefaultExpandAll onSelect={onSelect}>
         <TreeNode value="parent 1-0" title="parent 1-0">
           <TreeNode value="leaf1" title="my leaf" disabled />
@@ -515,9 +519,9 @@ describe('TreeSelect.basic', () => {
       </TreeSelect>,
     );
 
-    wrapper.selectNode();
+    selectNode();
     expect(onSelect).toHaveBeenCalledWith('parent 1-0', expect.anything());
-    expect(wrapper.text()).toBe('parent 1-0parent 1-0my leafyour leaf');
+    expect(container.querySelector('.rc-tree-select-selector').textContent).toBe('parent 1-0');
   });
 
   it('should not add new tag when key enter is pressed if nothing is active', () => {

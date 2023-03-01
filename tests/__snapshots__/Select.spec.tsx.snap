@@ -975,6 +975,105 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
     class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open rc-tree-select-show-search"
   >
     <div
+      class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
+      style="left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+    >
+      <div>
+        <div>
+          <div
+            class="rc-tree-select-tree"
+            role="tree"
+          >
+            <div>
+              <input
+                aria-label="for screen reader"
+                disabled=""
+                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+                value=""
+              />
+            </div>
+            <div
+              aria-hidden="true"
+              class="rc-tree-select-tree-treenode"
+              style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
+            >
+              <div
+                class="rc-tree-select-tree-indent"
+              >
+                <div
+                  class="rc-tree-select-tree-indent-unit"
+                />
+              </div>
+            </div>
+            <div
+              class="rc-tree-select-tree-list"
+              style="height: 200px;"
+            >
+              <div>
+                <div
+                  class="rc-tree-select-tree-list-holder-inner"
+                  style="display: flex; flex-direction: column;"
+                >
+                  <div
+                    aria-grabbed="false"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close filter-node"
+                    draggable="false"
+                  >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    />
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                      title="labela"
+                    >
+                      <span
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                      />
+                      <span
+                        class="rc-tree-select-tree-title"
+                      >
+                        labela
+                      </span>
+                    </span>
+                  </div>
+                  <div
+                    aria-grabbed="false"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
+                    draggable="false"
+                  >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    />
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                      title="labelb"
+                    >
+                      <span
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                      />
+                      <span
+                        class="rc-tree-select-tree-title"
+                      >
+                        labelb
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
       class="rc-tree-select-selector"
     >
       <span
@@ -998,107 +1097,6 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
         class="rc-tree-select-selection-placeholder"
         style="visibility: hidden;"
       />
-    </div>
-    <div>
-      <div
-        class="rc-tree-select-dropdown"
-        style="opacity: 0; pointer-events: none; min-width: 0; width: 0px;"
-      >
-        <div>
-          <div>
-            <div
-              class="rc-tree-select-tree"
-              role="tree"
-            >
-              <div>
-                <input
-                  aria-label="for screen reader"
-                  disabled=""
-                  style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
-                  value=""
-                />
-              </div>
-              <div
-                aria-hidden="true"
-                class="rc-tree-select-tree-treenode"
-                style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
-              >
-                <div
-                  class="rc-tree-select-tree-indent"
-                >
-                  <div
-                    class="rc-tree-select-tree-indent-unit"
-                  />
-                </div>
-              </div>
-              <div
-                class="rc-tree-select-tree-list"
-                style="height: 200px;"
-              >
-                <div>
-                  <div
-                    class="rc-tree-select-tree-list-holder-inner"
-                    style="display: flex; flex-direction: column;"
-                  >
-                    <div
-                      aria-grabbed="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close filter-node"
-                      draggable="false"
-                    >
-                      <span
-                        aria-hidden="true"
-                        class="rc-tree-select-tree-indent"
-                      />
-                      <span
-                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
-                      />
-                      <span
-                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                        title="labela"
-                      >
-                        <span
-                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
-                        />
-                        <span
-                          class="rc-tree-select-tree-title"
-                        >
-                          labela
-                        </span>
-                      </span>
-                    </div>
-                    <div
-                      aria-grabbed="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
-                      draggable="false"
-                    >
-                      <span
-                        aria-hidden="true"
-                        class="rc-tree-select-tree-indent"
-                      />
-                      <span
-                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
-                      />
-                      <span
-                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                        title="labelb"
-                      >
-                        <span
-                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
-                        />
-                        <span
-                          class="rc-tree-select-tree-title"
-                        >
-                          labelb
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
     <span
       aria-hidden="true"
