@@ -6,151 +6,6 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
     class="rc-tree-select rc-tree-select-multiple rc-tree-select-open rc-tree-select-show-search"
   >
     <div
-      class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
-      style="left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
-    >
-      <div>
-        <div>
-          <div
-            class="rc-tree-select-tree"
-            role="tree"
-          >
-            <div>
-              <input
-                aria-label="for screen reader"
-                disabled=""
-                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
-                value=""
-              />
-            </div>
-            <div
-              aria-hidden="true"
-              class="rc-tree-select-tree-treenode"
-              style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
-            >
-              <div
-                class="rc-tree-select-tree-indent"
-              >
-                <div
-                  class="rc-tree-select-tree-indent-unit"
-                />
-              </div>
-            </div>
-            <div
-              class="rc-tree-select-tree-list"
-              style="height: 200px;"
-            >
-              <div>
-                <div
-                  class="rc-tree-select-tree-list-holder-inner"
-                  style="display: flex; flex-direction: column;"
-                >
-                  <div
-                    aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
-                    draggable="false"
-                  >
-                    <span
-                      aria-hidden="true"
-                      class="rc-tree-select-tree-indent"
-                    />
-                    <span
-                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
-                    />
-                    <span
-                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
-                    />
-                    <span
-                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                      title="0"
-                    >
-                      <span
-                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
-                      />
-                      <span
-                        class="rc-tree-select-tree-title"
-                      >
-                        0
-                      </span>
-                    </span>
-                  </div>
-                  <div
-                    aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
-                    draggable="false"
-                  >
-                    <span
-                      aria-hidden="true"
-                      class="rc-tree-select-tree-indent"
-                    >
-                      <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                      />
-                    </span>
-                    <span
-                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
-                    />
-                    <span
-                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
-                    />
-                    <span
-                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                      title="0-0"
-                    >
-                      <span
-                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
-                      />
-                      <span
-                        class="rc-tree-select-tree-title"
-                      >
-                        0-0
-                      </span>
-                    </span>
-                  </div>
-                  <div
-                    aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
-                    draggable="false"
-                  >
-                    <span
-                      aria-hidden="true"
-                      class="rc-tree-select-tree-indent"
-                    >
-                      <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                      />
-                      <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                      />
-                    </span>
-                    <span
-                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
-                    />
-                    <span
-                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
-                    />
-                    <span
-                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                      title="0-0-0"
-                    >
-                      <span
-                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
-                      />
-                      <span
-                        class="rc-tree-select-tree-title"
-                      >
-                        0-0-0
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
       class="rc-tree-select-selector"
     >
       <div
@@ -268,15 +123,6 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
         </div>
       </div>
     </div>
-  </div>
-</div>
-`;
-
-exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2`] = `
-<div>
-  <div
-    class="rc-tree-select rc-tree-select-multiple rc-tree-select-open rc-tree-select-show-search"
-  >
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
       style="left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
@@ -319,7 +165,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
                 >
                   <div
                     aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
                     draggable="false"
                   >
                     <span
@@ -330,7 +176,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                     />
                     <span
-                      class="rc-tree-select-tree-checkbox"
+                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
                     />
                     <span
                       class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
@@ -348,7 +194,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
                   </div>
                   <div
                     aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
                     draggable="false"
                   >
                     <span
@@ -363,7 +209,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                     />
                     <span
-                      class="rc-tree-select-tree-checkbox"
+                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
                     />
                     <span
                       class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
@@ -381,7 +227,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
                   </div>
                   <div
                     aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
                     draggable="false"
                   >
                     <span
@@ -399,7 +245,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
                     />
                     <span
-                      class="rc-tree-select-tree-checkbox"
+                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
                     />
                     <span
                       class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
@@ -422,6 +268,15 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
         </div>
       </div>
     </div>
+  </div>
+</div>
+`;
+
+exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2`] = `
+<div>
+  <div
+    class="rc-tree-select rc-tree-select-multiple rc-tree-select-open rc-tree-select-show-search"
+  >
     <div
       class="rc-tree-select-selector"
     >
@@ -462,15 +317,6 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
         class="rc-tree-select-selection-placeholder"
       />
     </div>
-  </div>
-</div>
-`;
-
-exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
-<div>
-  <div
-    class="rc-tree-select rc-tree-select-multiple rc-tree-select-open rc-tree-select-show-search"
-  >
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
       style="left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
@@ -513,7 +359,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
                 >
                   <div
                     aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
                     draggable="false"
                   >
                     <span
@@ -524,7 +370,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                     />
                     <span
-                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                      class="rc-tree-select-tree-checkbox"
                     />
                     <span
                       class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
@@ -542,7 +388,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
                   </div>
                   <div
                     aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
                     draggable="false"
                   >
                     <span
@@ -557,7 +403,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                     />
                     <span
-                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                      class="rc-tree-select-tree-checkbox"
                     />
                     <span
                       class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
@@ -575,7 +421,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
                   </div>
                   <div
                     aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
                     draggable="false"
                   >
                     <span
@@ -593,7 +439,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
                     />
                     <span
-                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                      class="rc-tree-select-tree-checkbox"
                     />
                     <span
                       class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
@@ -616,6 +462,15 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
         </div>
       </div>
     </div>
+  </div>
+</div>
+`;
+
+exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
+<div>
+  <div
+    class="rc-tree-select rc-tree-select-multiple rc-tree-select-open rc-tree-select-show-search"
+  >
     <div
       class="rc-tree-select-selector"
     >
@@ -734,6 +589,151 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
         </div>
       </div>
     </div>
+    <div
+      class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
+      style="left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+    >
+      <div>
+        <div>
+          <div
+            class="rc-tree-select-tree"
+            role="tree"
+          >
+            <div>
+              <input
+                aria-label="for screen reader"
+                disabled=""
+                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+                value=""
+              />
+            </div>
+            <div
+              aria-hidden="true"
+              class="rc-tree-select-tree-treenode"
+              style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
+            >
+              <div
+                class="rc-tree-select-tree-indent"
+              >
+                <div
+                  class="rc-tree-select-tree-indent-unit"
+                />
+              </div>
+            </div>
+            <div
+              class="rc-tree-select-tree-list"
+              style="height: 200px;"
+            >
+              <div>
+                <div
+                  class="rc-tree-select-tree-list-holder-inner"
+                  style="display: flex; flex-direction: column;"
+                >
+                  <div
+                    aria-grabbed="false"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
+                    draggable="false"
+                  >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    />
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                    />
+                    <span
+                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                      title="0"
+                    >
+                      <span
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
+                      />
+                      <span
+                        class="rc-tree-select-tree-title"
+                      >
+                        0
+                      </span>
+                    </span>
+                  </div>
+                  <div
+                    aria-grabbed="false"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
+                    draggable="false"
+                  >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    >
+                      <span
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                      />
+                    </span>
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                    />
+                    <span
+                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                      title="0-0"
+                    >
+                      <span
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
+                      />
+                      <span
+                        class="rc-tree-select-tree-title"
+                      >
+                        0-0
+                      </span>
+                    </span>
+                  </div>
+                  <div
+                    aria-grabbed="false"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
+                    draggable="false"
+                  >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    >
+                      <span
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                      />
+                      <span
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                      />
+                    </span>
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                    />
+                    <span
+                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                      title="0-0-0"
+                    >
+                      <span
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                      />
+                      <span
+                        class="rc-tree-select-tree-title"
+                      >
+                        0-0-0
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;
@@ -743,6 +743,43 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
   <div
     class="rc-tree-select rc-tree-select-multiple rc-tree-select-open rc-tree-select-show-search"
   >
+    <div
+      class="rc-tree-select-selector"
+    >
+      <div
+        class="rc-tree-select-selection-overflow"
+      >
+        <div
+          class="rc-tree-select-selection-overflow-item rc-tree-select-selection-overflow-item-suffix"
+          style="opacity: 1;"
+        >
+          <div
+            class="rc-tree-select-selection-search"
+            style="width: 0px;"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-controls="rc_select_TEST_OR_SSR_list"
+              aria-expanded="true"
+              aria-haspopup="listbox"
+              aria-owns="rc_select_TEST_OR_SSR_list"
+              autocomplete="off"
+              class="rc-tree-select-selection-search-input"
+              id="rc_select_TEST_OR_SSR"
+              role="combobox"
+              type="search"
+              value="0"
+            />
+            <span
+              aria-hidden="true"
+              class="rc-tree-select-selection-search-mirror"
+            >
+              0 
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
       style="left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
@@ -884,43 +921,6 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="rc-tree-select-selector"
-    >
-      <div
-        class="rc-tree-select-selection-overflow"
-      >
-        <div
-          class="rc-tree-select-selection-overflow-item rc-tree-select-selection-overflow-item-suffix"
-          style="opacity: 1;"
-        >
-          <div
-            class="rc-tree-select-selection-search"
-            style="width: 0px;"
-          >
-            <input
-              aria-autocomplete="list"
-              aria-controls="rc_select_TEST_OR_SSR_list"
-              aria-expanded="true"
-              aria-haspopup="listbox"
-              aria-owns="rc_select_TEST_OR_SSR_list"
-              autocomplete="off"
-              class="rc-tree-select-selection-search-input"
-              id="rc_select_TEST_OR_SSR"
-              role="combobox"
-              type="search"
-              value="0"
-            />
-            <span
-              aria-hidden="true"
-              class="rc-tree-select-selection-search-mirror"
-            >
-              0 
-            </span>
           </div>
         </div>
       </div>
