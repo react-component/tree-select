@@ -89,6 +89,8 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
     // Single mode should scroll to current key
     if (open && !multiple && checkedKeys.length) {
       treeRef.current?.scrollTo({ key: checkedKeys[0] });
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      setActiveKey(checkedKeys[0])
     }
   }, [open]);
 
