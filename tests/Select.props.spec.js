@@ -242,7 +242,7 @@ describe('TreeSelect.props', () => {
   });
 
   it('showArrow', () => {
-    const wrapper = mount(createOpenSelect({ showArrow: false }));
+    const wrapper = mount(createOpenSelect({ suffixIcon: null }));
     expect(wrapper.find('.rc-tree-select-arrow').length).toBeFalsy();
   });
 
