@@ -1,7 +1,8 @@
 /* eslint-disable no-undef */
-import React from 'react';
+import { render } from '@testing-library/react';
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
+import React from 'react';
 import TreeSelect, { TreeNode } from '../src';
 import focusTest from './shared/focusTest';
 
@@ -278,5 +279,35 @@ describe('TreeSelect.multiple', () => {
 
     expect(onChange).toHaveBeenCalledWith([], expect.anything(), expect.anything());
     expect(onDeselect).toHaveBeenCalledWith('not-exist', undefined);
+  });
+
+  it('should not omit value', () => {
+    const { container } = render(
+      <TreeSelect
+        value={['child1', 'child2', 'parent']}
+        multiple
+        treeData={[
+          {
+            label: 'parent',
+            value: 'parent',
+            children: [
+              {
+                label: 'child1',
+                value: 'child1',
+              },
+              {
+                label: 'child2',
+                value: 'child2',
+              },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    const values = Array.from(
+      container.querySelectorAll('.rc-tree-select-selection-item-content'),
+    ).map(ele => ele.textContent);
+    expect(values).toEqual(['child1', 'child2', 'parent']);
   });
 });
