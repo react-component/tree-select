@@ -127,7 +127,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
     </div>
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
-      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
     >
       <div>
         <div>
@@ -323,7 +323,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
     </div>
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
-      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
     >
       <div>
         <div>
@@ -597,7 +597,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
     </div>
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
-      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
     >
       <div>
         <div>
@@ -790,7 +790,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
     </div>
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
-      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
     >
       <div>
         <div>
