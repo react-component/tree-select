@@ -72,6 +72,10 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
     (prev, next) => next[0] && prev[1] !== next[1],
   );
 
+  // ========================== Active ==========================
+  const [activeKey, setActiveKey] = React.useState<Key>(null);
+  const activeEntity = keyEntities[activeKey];
+
   // ========================== Values ==========================
   const mergedCheckedKeys = React.useMemo(() => {
     if (!checkable) {
@@ -89,6 +93,7 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
     // Single mode should scroll to current key
     if (open && !multiple && checkedKeys.length) {
       treeRef.current?.scrollTo({ key: checkedKeys[0] });
+      setActiveKey(checkedKeys[0]);
     }
   }, [open]);
 
@@ -149,9 +154,6 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
   };
 
   // ========================= Keyboard =========================
-  const [activeKey, setActiveKey] = React.useState<Key>(null);
-  const activeEntity = keyEntities[activeKey];
-
   React.useImperativeHandle(ref, () => ({
     scrollTo: treeRef.current?.scrollTo,
     onKeyDown: event => {

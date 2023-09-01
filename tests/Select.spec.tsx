@@ -468,6 +468,67 @@ describe('TreeSelect.basic', () => {
       keyDown(KeyCode.ENTER);
       expect(onChange).not.toHaveBeenCalled();
     });
+
+    it('active index matches value', () => {
+      const wrapper = mount(
+        <TreeSelect
+          value={['10']}
+          treeDefaultExpandAll
+          treeData={[
+            { key: '0', value: '0', title: '0 label' },
+            {
+              key: '1',
+              value: '1',
+              title: '1 label',
+              children: [
+                { key: '10', value: '10', title: '10 label' },
+                { key: '11', value: '11', title: '11 label' },
+              ],
+            },
+          ]}
+        />,
+      );
+      wrapper.openSelect();
+      expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('10 label');
+    });
+
+    it('active index updates correctly with key operation', () => {
+      const wrapper = mount(
+        <TreeSelect
+          value={['10']}
+          treeDefaultExpandAll
+          treeData={[
+            { key: '0', value: '0', title: '0 label' },
+            {
+              key: '1',
+              value: '1',
+              title: '1 label',
+              children: [
+                { key: '10', value: '10', title: '10 label' },
+                { key: '11', value: '11', title: '11 label' },
+              ],
+            },
+          ]}
+        />,
+      );
+
+      function keyDown(code) {
+        wrapper.find('input').first().simulate('keyDown', { which: code });
+        wrapper.update();
+      }
+
+      wrapper.openSelect();
+      expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('10 label');
+
+      keyDown(KeyCode.DOWN);
+      expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('11 label');
+
+      keyDown(KeyCode.DOWN);
+      expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('0 label');
+      
+      keyDown(KeyCode.UP);
+      expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('11 label');
+    });
   });
 
   it('click in list should preventDefault', () => {
