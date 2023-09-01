@@ -1,33 +1,33 @@
-import * as React from 'react';
-import { BaseSelect } from 'rc-select';
-import type { IconType } from 'rc-tree/lib/interface';
-import type { ExpandAction } from 'rc-tree/lib/Tree';
 import type {
-  BaseSelectRef,
-  BaseSelectPropsWithoutPrivate,
   BaseSelectProps,
+  BaseSelectPropsWithoutPrivate,
+  BaseSelectRef,
   SelectProps,
 } from 'rc-select';
-import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
+import { BaseSelect } from 'rc-select';
 import useId from 'rc-select/lib/hooks/useId';
+import type { IconType } from 'rc-tree/lib/interface';
+import type { ExpandAction } from 'rc-tree/lib/Tree';
+import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import warning from 'rc-util/lib/warning';
+import * as React from 'react';
+import useCache from './hooks/useCache';
+import useCheckedKeys from './hooks/useCheckedKeys';
+import useDataEntities from './hooks/useDataEntities';
+import useFilterTreeData from './hooks/useFilterTreeData';
+import useRefFunc from './hooks/useRefFunc';
+import useTreeData from './hooks/useTreeData';
+import LegacyContext from './LegacyContext';
 import OptionList from './OptionList';
 import TreeNode from './TreeNode';
-import { formatStrategyValues, SHOW_ALL, SHOW_PARENT, SHOW_CHILD } from './utils/strategyUtil';
-import type { CheckedStrategy } from './utils/strategyUtil';
-import TreeSelectContext from './TreeSelectContext';
 import type { TreeSelectContextProps } from './TreeSelectContext';
-import LegacyContext from './LegacyContext';
-import useTreeData from './hooks/useTreeData';
-import { toArray, fillFieldNames, isNil } from './utils/valueUtil';
-import useCache from './hooks/useCache';
-import useRefFunc from './hooks/useRefFunc';
-import useDataEntities from './hooks/useDataEntities';
+import TreeSelectContext from './TreeSelectContext';
 import { fillAdditionalInfo, fillLegacyProps } from './utils/legacyUtil';
-import useCheckedKeys from './hooks/useCheckedKeys';
-import useFilterTreeData from './hooks/useFilterTreeData';
+import type { CheckedStrategy } from './utils/strategyUtil';
+import { formatStrategyValues, SHOW_ALL, SHOW_CHILD, SHOW_PARENT } from './utils/strategyUtil';
+import { fillFieldNames, isNil, toArray } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
-import warning from 'rc-util/lib/warning';
 
 export type OnInternalSelect = (value: RawValueType, info: { selected: boolean }) => void;
 
@@ -105,7 +105,7 @@ export interface LegacyDataNode extends DefaultOptionType {
 }
 export interface TreeSelectProps<
   ValueType = any,
-  OptionType extends BaseOptionType = DefaultOptionType
+  OptionType extends BaseOptionType = DefaultOptionType,
 > extends Omit<BaseSelectPropsWithoutPrivate, 'mode'> {
   prefixCls?: string;
   id?: string;
@@ -194,7 +194,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     treeNodeFilterProp = 'value',
 
     // Selector
-    showCheckedStrategy = SHOW_CHILD,
+    showCheckedStrategy,
     treeNodeLabelProp,
 
     //  Mode
@@ -245,6 +245,15 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const mergedMultiple = mergedCheckable || multiple;
 
   const [internalValue, setInternalValue] = useMergedState(defaultValue, { value });
+
+  // `multiple` && `!treeCheckable` should be show all
+  const mergedShowCheckedStrategy = React.useMemo(() => {
+    if (!treeCheckable) {
+      return SHOW_ALL;
+    }
+
+    return showCheckedStrategy || SHOW_CHILD;
+  }, [showCheckedStrategy, treeCheckable]);
 
   // ========================== Warning ===========================
   if (process.env.NODE_ENV !== 'production') {
@@ -357,7 +366,9 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           rawDisabled = entity.node.disabled;
         } else if (rawLabel === undefined) {
           // We try to find in current `labelInValue` value
-          const labelInValueItem = toLabeledValues(internalValue).find(labeledItem => labeledItem.value === rawValue);
+          const labelInValueItem = toLabeledValues(internalValue).find(
+            labeledItem => labeledItem.value === rawValue,
+          );
           rawLabel = labelInValueItem.label;
         }
 
@@ -373,10 +384,10 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   );
 
   // =========================== Values ===========================
-  const rawMixedLabeledValues = React.useMemo(() => toLabeledValues(internalValue), [
-    toLabeledValues,
-    internalValue,
-  ]);
+  const rawMixedLabeledValues = React.useMemo(
+    () => toLabeledValues(internalValue),
+    [toLabeledValues, internalValue],
+  );
 
   // Split value into full check and half check
   const [rawLabeledValues, rawHalfLabeledValues] = React.useMemo(() => {
@@ -395,9 +406,10 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   }, [rawMixedLabeledValues]);
 
   // const [mergedValues] = useCache(rawLabeledValues);
-  const rawValues = React.useMemo(() => rawLabeledValues.map(item => item.value), [
-    rawLabeledValues,
-  ]);
+  const rawValues = React.useMemo(
+    () => rawLabeledValues.map(item => item.value),
+    [rawLabeledValues],
+  );
 
   // Convert value to key. Will fill missed keys for conduct check.
   const [rawCheckedValues, rawHalfCheckedValues] = useCheckedKeys(
@@ -412,7 +424,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     // Collect keys which need to show
     const displayKeys = formatStrategyValues(
       rawCheckedValues,
-      showCheckedStrategy,
+      mergedShowCheckedStrategy,
       keyEntities,
       mergedFieldNames,
     );
@@ -447,7 +459,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     rawCheckedValues,
     rawLabeledValues,
     convert2LabelValues,
-    showCheckedStrategy,
+    mergedShowCheckedStrategy,
     keyEntities,
   ]);
 
@@ -474,7 +486,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         if (treeConduction) {
           const formattedKeyList = formatStrategyValues(
             newRawValues,
-            showCheckedStrategy,
+            mergedShowCheckedStrategy,
             keyEntities,
             mergedFieldNames,
           );
@@ -743,9 +755,9 @@ if (process.env.NODE_ENV !== 'production') {
   TreeSelect.displayName = 'TreeSelect';
 }
 
-const GenericTreeSelect = (TreeSelect as unknown) as (<
+const GenericTreeSelect = TreeSelect as unknown as (<
   ValueType = any,
-  OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType
+  OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType,
 >(
   props: React.PropsWithChildren<TreeSelectProps<ValueType, OptionType>> & {
     ref?: React.Ref<BaseSelectRef>;

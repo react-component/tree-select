@@ -38,23 +38,21 @@ export default (
     }
 
     function dig(list: DefaultOptionType[], keepAll: boolean = false) {
-      return list
-        .map(dataNode => {
-          const children = dataNode[fieldChildren];
+      return list.reduce((total, dataNode) => {
+        const children = dataNode[fieldChildren];
 
-          const match = keepAll || filterOptionFunc(searchValue, fillLegacyProps(dataNode));
-          const childList = dig(children || [], match);
+        const match = keepAll || filterOptionFunc(searchValue, fillLegacyProps(dataNode));
+        const childList = dig(children || [], match);
 
-          if (match || childList.length) {
-            return {
-              ...dataNode,
-              isLeaf: undefined,
-              [fieldChildren]: childList,
-            };
-          }
-          return null;
-        })
-        .filter(node => node);
+        if (match || childList.length) {
+          total.push({
+            ...dataNode,
+            isLeaf: undefined,
+            [fieldChildren]: childList,
+          });
+        }
+        return total;
+      }, []);
     }
 
     return dig(treeData);

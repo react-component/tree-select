@@ -59,19 +59,19 @@ const switcherIcon = obj => {
   );
 };
 
-const inputIcon = getSvg(bubblePath);
+const suffixIcon = getSvg(bubblePath);
 const clearIcon = getSvg(clearPath);
 const removeIcon = getSvg(clearPath);
 
 const iconProps = {
-  inputIcon,
+  suffixIcon,
   clearIcon,
   removeIcon,
   switcherIcon,
 };
 
 const iconPropsFunction = {
-  inputIcon: () => inputIcon,
+  suffixIcon: () => suffixIcon,
   clearIcon: () => clearIcon,
   removeIcon: () => removeIcon,
   switcherIcon,

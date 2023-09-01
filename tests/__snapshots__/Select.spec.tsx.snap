@@ -2,7 +2,7 @@
 
 exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
 <div
-  class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open"
+  class="rc-tree-select rc-tree-select-single rc-tree-select-open"
 >
   <div
     class="rc-tree-select-selector"
@@ -15,6 +15,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
         aria-controls="rc_select_TEST_OR_SSR_list"
         aria-expanded="true"
         aria-haspopup="listbox"
+        aria-label="Search"
         aria-owns="rc_select_TEST_OR_SSR_list"
         autocomplete="off"
         class="rc-tree-select-selection-search-input"
@@ -33,7 +34,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
   </div>
   <div
     class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
-    style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+    style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
   >
     <div>
       <div>
@@ -190,22 +191,12 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
       </div>
     </div>
   </div>
-  <span
-    aria-hidden="true"
-    class="rc-tree-select-arrow"
-    style="user-select: none;"
-    unselectable="on"
-  >
-    <span
-      class="rc-tree-select-arrow-icon"
-    />
-  </span>
 </div>
 `;
 
 exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`] = `
 <div
-  class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open"
+  class="rc-tree-select rc-tree-select-single rc-tree-select-open"
 >
   <div
     class="rc-tree-select-selector"
@@ -218,6 +209,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
         aria-controls="rc_select_TEST_OR_SSR_list"
         aria-expanded="true"
         aria-haspopup="listbox"
+        aria-label="Search"
         aria-owns="rc_select_TEST_OR_SSR_list"
         autocomplete="off"
         class="rc-tree-select-selection-search-input"
@@ -236,7 +228,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
   </div>
   <div
     class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
-    style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+    style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
   >
     <div>
       <div>
@@ -393,16 +385,6 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
       </div>
     </div>
   </div>
-  <span
-    aria-hidden="true"
-    class="rc-tree-select-arrow"
-    style="user-select: none;"
-    unselectable="on"
-  >
-    <span
-      class="rc-tree-select-arrow-icon"
-    />
-  </span>
 </div>
 `;
 
@@ -430,6 +412,7 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
             aria-controls="rc_select_TEST_OR_SSR_list"
             aria-expanded="false"
             aria-haspopup="listbox"
+            aria-label="Search"
             aria-owns="rc_select_TEST_OR_SSR_list"
             autocomplete="off"
             class="awesome-selection-search-input"
@@ -459,7 +442,7 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
 
 exports[`TreeSelect.basic render renders disabled correctly 1`] = `
 <div
-  class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-disabled"
+  class="rc-tree-select rc-tree-select-single rc-tree-select-disabled"
 >
   <div
     class="rc-tree-select-selector"
@@ -472,6 +455,7 @@ exports[`TreeSelect.basic render renders disabled correctly 1`] = `
         aria-controls="rc_select_TEST_OR_SSR_list"
         aria-expanded="false"
         aria-haspopup="listbox"
+        aria-label="Search"
         aria-owns="rc_select_TEST_OR_SSR_list"
         autocomplete="off"
         class="rc-tree-select-selection-search-input"
@@ -489,16 +473,6 @@ exports[`TreeSelect.basic render renders disabled correctly 1`] = `
       class="rc-tree-select-selection-placeholder"
     />
   </div>
-  <span
-    aria-hidden="true"
-    class="rc-tree-select-arrow"
-    style="user-select: none;"
-    unselectable="on"
-  >
-    <span
-      class="rc-tree-select-arrow-icon"
-    />
-  </span>
 </div>
 `;
 
@@ -525,6 +499,7 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
             aria-controls="rc_select_TEST_OR_SSR_list"
             aria-expanded="false"
             aria-haspopup="listbox"
+            aria-label="Search"
             aria-owns="rc_select_TEST_OR_SSR_list"
             autocomplete="off"
             class="rc-tree-select-selection-search-input"
@@ -555,7 +530,7 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
 exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
 <div>
   <div
-    class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open"
+    class="rc-tree-select rc-tree-select-single rc-tree-select-open"
   >
     <div
       class="rc-tree-select-selector"
@@ -568,6 +543,7 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
           aria-controls="rc_select_TEST_OR_SSR_list"
           aria-expanded="true"
           aria-haspopup="listbox"
+          aria-label="Search"
           aria-owns="rc_select_TEST_OR_SSR_list"
           autocomplete="off"
           class="rc-tree-select-selection-search-input"
@@ -586,7 +562,7 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
     </div>
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
-      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
     >
       <div>
         <div>
@@ -687,16 +663,6 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
         </div>
       </div>
     </div>
-    <span
-      aria-hidden="true"
-      class="rc-tree-select-arrow"
-      style="user-select: none;"
-      unselectable="on"
-    >
-      <span
-        class="rc-tree-select-arrow-icon"
-      />
-    </span>
   </div>
 </div>
 `;
@@ -704,7 +670,7 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
 exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
 <div>
   <div
-    class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open rc-tree-select-show-search"
+    class="rc-tree-select rc-tree-select-single rc-tree-select-open rc-tree-select-show-search"
   >
     <div
       class="rc-tree-select-selector"
@@ -717,6 +683,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
           aria-controls="rc_select_TEST_OR_SSR_list"
           aria-expanded="true"
           aria-haspopup="listbox"
+          aria-label="Search"
           aria-owns="rc_select_TEST_OR_SSR_list"
           autocomplete="off"
           class="rc-tree-select-selection-search-input"
@@ -733,7 +700,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
     </div>
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
-      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
     >
       <div>
         <div>
@@ -804,16 +771,6 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
         </div>
       </div>
     </div>
-    <span
-      aria-hidden="true"
-      class="rc-tree-select-arrow"
-      style="user-select: none;"
-      unselectable="on"
-    >
-      <span
-        class="rc-tree-select-arrow-icon"
-      />
-    </span>
   </div>
 </div>
 `;
@@ -821,7 +778,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
 exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
 <div>
   <div
-    class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open rc-tree-select-show-search"
+    class="rc-tree-select rc-tree-select-single rc-tree-select-open rc-tree-select-show-search"
   >
     <div
       class="rc-tree-select-selector"
@@ -834,6 +791,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
           aria-controls="rc_select_TEST_OR_SSR_list"
           aria-expanded="true"
           aria-haspopup="listbox"
+          aria-label="Search"
           aria-owns="rc_select_TEST_OR_SSR_list"
           autocomplete="off"
           class="rc-tree-select-selection-search-input"
@@ -850,7 +808,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
     </div>
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
-      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
     >
       <div>
         <div>
@@ -947,16 +905,6 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
         </div>
       </div>
     </div>
-    <span
-      aria-hidden="true"
-      class="rc-tree-select-arrow"
-      style="user-select: none;"
-      unselectable="on"
-    >
-      <span
-        class="rc-tree-select-arrow-icon"
-      />
-    </span>
   </div>
 </div>
 `;
@@ -964,7 +912,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
 exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
 <div>
   <div
-    class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open rc-tree-select-show-search"
+    class="rc-tree-select rc-tree-select-single rc-tree-select-open rc-tree-select-show-search"
   >
     <div
       class="rc-tree-select-selector"
@@ -977,6 +925,7 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
           aria-controls="rc_select_TEST_OR_SSR_list"
           aria-expanded="true"
           aria-haspopup="listbox"
+          aria-label="Search"
           aria-owns="rc_select_TEST_OR_SSR_list"
           autocomplete="off"
           class="rc-tree-select-selection-search-input"
@@ -993,7 +942,7 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
     </div>
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
-      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
     >
       <div>
         <div>
@@ -1090,23 +1039,13 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
         </div>
       </div>
     </div>
-    <span
-      aria-hidden="true"
-      class="rc-tree-select-arrow"
-      style="user-select: none;"
-      unselectable="on"
-    >
-      <span
-        class="rc-tree-select-arrow-icon"
-      />
-    </span>
   </div>
 </div>
 `;
 
 exports[`TreeSelect.basic search nodes renders search input 1`] = `
 <div
-  class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open rc-tree-select-show-search"
+  class="rc-tree-select rc-tree-select-single rc-tree-select-open rc-tree-select-show-search"
 >
   <div
     class="rc-tree-select-selector"
@@ -1119,6 +1058,7 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
         aria-controls="rc_select_TEST_OR_SSR_list"
         aria-expanded="true"
         aria-haspopup="listbox"
+        aria-label="Search"
         aria-owns="rc_select_TEST_OR_SSR_list"
         autocomplete="off"
         class="rc-tree-select-selection-search-input"
@@ -1134,7 +1074,7 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
   </div>
   <div
     class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
-    style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+    style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
   >
     <div>
       <div>
@@ -1231,15 +1171,5 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
       </div>
     </div>
   </div>
-  <span
-    aria-hidden="true"
-    class="rc-tree-select-arrow"
-    style="user-select: none;"
-    unselectable="on"
-  >
-    <span
-      class="rc-tree-select-arrow-icon"
-    />
-  </span>
 </div>
 `;
