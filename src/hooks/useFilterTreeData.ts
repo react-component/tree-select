@@ -38,7 +38,7 @@ export default (
     }
 
     function dig(list: DefaultOptionType[], keepAll: boolean = false) {
-      return list.reduce((total, dataNode) => {
+      return list.reduce<DefaultOptionType[]>((total, dataNode) => {
         const children = dataNode[fieldChildren];
 
         const match = keepAll || filterOptionFunc(searchValue, fillLegacyProps(dataNode));
