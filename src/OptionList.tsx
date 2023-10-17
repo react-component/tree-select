@@ -37,6 +37,7 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
     virtual,
     listHeight,
     listItemHeight,
+    listItemScrollOffset,
     treeData,
     fieldNames,
     onSelect,
@@ -224,6 +225,7 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
         treeData={memoTreeData as TreeDataNode[]}
         height={listHeight}
         itemHeight={listItemHeight}
+        itemScrollOffset={listItemScrollOffset}
         virtual={virtual !== false && dropdownMatchSelectWidth !== false}
         multiple={multiple}
         icon={treeIcon}

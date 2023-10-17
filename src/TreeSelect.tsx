@@ -159,6 +159,7 @@ export interface TreeSelectProps<
   virtual?: boolean;
   listHeight?: number;
   listItemHeight?: number;
+  listItemScrollOffset?: number;
   onDropdownVisibleChange?: (open: boolean) => void;
 
   // >>> Tree
@@ -225,6 +226,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     virtual,
     listHeight = 200,
     listItemHeight = 20,
+    listItemScrollOffset = 0,
+
     onDropdownVisibleChange,
     dropdownMatchSelectWidth = true,
 
@@ -663,6 +666,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       dropdownMatchSelectWidth,
       listHeight,
       listItemHeight,
+      listItemScrollOffset,
       treeData: filteredTreeData,
       fieldNames: mergedFieldNames,
       onSelect: onOptionSelect,
@@ -673,6 +677,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       dropdownMatchSelectWidth,
       listHeight,
       listItemHeight,
+      listItemScrollOffset,
       filteredTreeData,
       mergedFieldNames,
       onOptionSelect,
