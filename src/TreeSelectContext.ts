@@ -7,6 +7,7 @@ export interface TreeSelectContextProps {
   dropdownMatchSelectWidth?: boolean | number;
   listHeight: number;
   listItemHeight: number;
+  listItemScrollOffset?: number;
   treeData: DefaultOptionType[];
   fieldNames: InternalFieldName;
   onSelect: OnInternalSelect;
