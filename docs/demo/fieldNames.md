@@ -1,5 +1,5 @@
 ---
-title: FieldNames
+title: fieldNames
 nav:
   title: Demo
   path: /demo
