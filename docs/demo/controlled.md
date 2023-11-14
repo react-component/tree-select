@@ -1,3 +1,8 @@
-## controlled
+---
+title: controlled
+nav:
+  title: Demo
+  path: /demo
+---
 
-<code src="../../examples/controlled.tsx">
+<code src="../../examples/controlled.tsx"></code>
