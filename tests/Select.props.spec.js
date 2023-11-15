@@ -629,7 +629,6 @@ describe('TreeSelect.props', () => {
             />
           </div>,
         );
-        // expect(wrapper.find('.rc-tree-select-tree-title').text()).toEqual('Value 0-0');
         expect(wrapper.getSelection(0).text()).toBe('Value 0-0');
       });
     });
