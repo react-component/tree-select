@@ -161,7 +161,7 @@ export interface TreeSelectProps<
   listItemHeight?: number;
   listItemScrollOffset?: number;
   onDropdownVisibleChange?: (open: boolean) => void;
-  titleRender?: (node: ValueType) => React.ReactNode;
+  treeTitleRender?: (node: ValueType) => React.ReactNode;
 
   // >>> Tree
   treeLine?: boolean;
@@ -238,7 +238,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     showTreeIcon,
     switcherIcon,
     treeMotion,
-    titleRender,
+    treeTitleRender,
 
     ...restProps
   } = props;
@@ -440,7 +440,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     // Back fill with origin label
     const labeledValues = values.map(val => {
       const targetItem = rawLabeledValues.find(item => item.value === val);
-      const label = titleRender ? titleRender(targetItem) : targetItem?.label;
+      const label = treeTitleRender ? treeTitleRender(targetItem) : targetItem?.label;
       return {
         value: val,
         label,
@@ -674,7 +674,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       fieldNames: mergedFieldNames,
       onSelect: onOptionSelect,
       treeExpandAction,
-      titleRender,
+      treeTitleRender,
     }),
     [
       virtual,
@@ -686,7 +686,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       mergedFieldNames,
       onOptionSelect,
       treeExpandAction,
-      titleRender,
+      treeTitleRender,
     ],
   );
 

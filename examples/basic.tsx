@@ -387,7 +387,7 @@ class Demo extends React.Component {
           open
           style={{ width: 300 }}
           treeData={gData}
-          titleRender={node => node.label + 'ok'}
+          treeTitleRender={node => node.label + 'ok'}
         />
       </div>
     );

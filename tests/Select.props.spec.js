@@ -624,7 +624,7 @@ describe('TreeSelect.props', () => {
           <div>
             <TreeSelect
               defaultValue={'Value 0-0'}
-              titleRender={node => node.value}
+              treeTitleRender={node => node.value}
               treeData={treeData}
             />
           </div>,
