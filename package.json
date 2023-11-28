@@ -33,6 +33,7 @@
     "start": "dumi dev",
     "build": "dumi build",
     "compile": "father build",
+    "prepare": "dumi setup",
     "prepublishOnly": "npm run compile && np --yolo --no-publish --any-branch",
     "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.js",
     "prettier": "prettier '{src,tests}/**/*.{ts,tsx}' 'tests/**/*.js' --write",
@@ -48,12 +49,13 @@
     "@rc-component/trigger": "^1.5.0",
     "@testing-library/react": "^12.0.0",
     "@types/jest": "^26.0.5",
+    "@types/node": "^20.9.0",
     "@types/react": "^16.8.19",
     "@types/react-dom": "^16.8.4",
     "@types/warning": "^3.0.0",
     "@umijs/fabric": "^3.0.0",
     "cross-env": "^7.0.2",
-    "dumi": "^1.1.12",
+    "dumi": "^2.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.4.0",
@@ -67,7 +69,7 @@
     "rc-virtual-list": "^1.1.0",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
-    "typescript": "^3.5.2"
+    "typescript": "^5.0.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.10.1",

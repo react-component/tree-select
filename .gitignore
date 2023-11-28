@@ -1,4 +1,3 @@
-.storybook
 .doc
 *.iml
 *.log
@@ -29,8 +28,8 @@ coverage
 yarn.lock
 package-lock.json
 es/*
-# umi
-.umi
-.umi-production
-.umi-test
+# dumi
+.dumi/tmp
+.dumi/tmp-test
+.dumi/tmp-production
 .env.local
