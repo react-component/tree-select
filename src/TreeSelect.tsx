@@ -440,7 +440,13 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     // Back fill with origin label
     const labeledValues = values.map(val => {
       const targetItem = rawLabeledValues.find(item => item.value === val);
-      const label = treeTitleRender ? treeTitleRender(targetItem) : targetItem?.label;
+      let label;
+      // Ensure that when labelInValue is true, if label is undefined, it remains undefined.
+      if (labelInValue && targetItem.label !== undefined) {
+        label = targetItem.label
+      } else if (!labelInValue && treeTitleRender) {
+        label = treeTitleRender(targetItem);
+      }
       return {
         value: val,
         label,
