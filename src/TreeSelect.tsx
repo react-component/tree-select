@@ -443,7 +443,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       let label;
       // Ensure that when labelInValue is true, if label is undefined, it remains undefined.
       if (labelInValue && targetItem.label !== undefined) {
-        label = targetItem.label
+        label = targetItem.label;
       } else if (!labelInValue && treeTitleRender) {
         label = treeTitleRender(targetItem);
       }
