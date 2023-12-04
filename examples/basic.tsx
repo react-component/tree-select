@@ -1,8 +1,8 @@
-import '../assets/index.less';
-import React from 'react';
-import 'rc-dialog/assets/index.css';
 import Dialog from 'rc-dialog';
-import TreeSelect, { TreeNode, SHOW_PARENT } from '../src';
+import 'rc-dialog/assets/index.css';
+import React from 'react';
+import '../assets/index.less';
+import TreeSelect, { SHOW_PARENT, TreeNode } from '../src';
 import { gData } from './utils/dataUtil';
 
 function isLeaf(value) {
@@ -381,6 +381,14 @@ class Demo extends React.Component {
           </TreeNode>
           <TreeNode value="same value3" title="same title" key="0-3" />
         </TreeSelect>
+
+        <h2>title render</h2>
+        <TreeSelect<{ label: string }>
+          open
+          style={{ width: 300 }}
+          treeData={gData}
+          treeTitleRender={node => node.label + 'ok'}
+        />
       </div>
     );
   }

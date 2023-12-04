@@ -12,6 +12,7 @@ export interface TreeSelectContextProps {
   fieldNames: InternalFieldName;
   onSelect: OnInternalSelect;
   treeExpandAction?: ExpandAction;
+  treeTitleRender?: (node: any) => React.ReactNode;
 }
 
 const TreeSelectContext = React.createContext<TreeSelectContextProps>(null as any);

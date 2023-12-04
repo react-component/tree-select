@@ -161,6 +161,7 @@ export interface TreeSelectProps<
   listItemHeight?: number;
   listItemScrollOffset?: number;
   onDropdownVisibleChange?: (open: boolean) => void;
+  treeTitleRender?: (node: ValueType) => React.ReactNode;
 
   // >>> Tree
   treeLine?: boolean;
@@ -237,6 +238,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     showTreeIcon,
     switcherIcon,
     treeMotion,
+    treeTitleRender,
 
     ...restProps
   } = props;
@@ -438,9 +440,16 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     // Back fill with origin label
     const labeledValues = values.map(val => {
       const targetItem = rawLabeledValues.find(item => item.value === val);
+      let label;
+      // Ensure that when labelInValue is true, if label is undefined, it remains undefined.
+      if (labelInValue && targetItem.label !== undefined) {
+        label = targetItem.label;
+      } else if (!labelInValue && treeTitleRender) {
+        label = treeTitleRender(targetItem);
+      }
       return {
         value: val,
-        label: targetItem?.label,
+        label,
       };
     });
 
@@ -671,6 +680,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       fieldNames: mergedFieldNames,
       onSelect: onOptionSelect,
       treeExpandAction,
+      treeTitleRender,
     }),
     [
       virtual,
@@ -682,6 +692,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       mergedFieldNames,
       onOptionSelect,
       treeExpandAction,
+      treeTitleRender,
     ],
   );
 

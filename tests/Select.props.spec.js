@@ -1,7 +1,7 @@
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
-import React from 'react';
 import { mount } from 'enzyme';
 import Tree, { TreeNode } from 'rc-tree';
+import React from 'react';
 import TreeSelect, { SHOW_ALL, SHOW_CHILD, SHOW_PARENT, TreeNode as SelectNode } from '../src';
 
 // Promisify timeout to let jest catch works
@@ -610,6 +610,26 @@ describe('TreeSelect.props', () => {
           expect(onSelect).not.toHaveBeenCalled();
           expect(onDeselect).toHaveBeenCalledWith('smart', nodeMatcher(0));
         });
+      });
+    });
+
+    describe('title render', () => {
+      const treeData = [
+        { label: 'Label 0-0', value: 'Value 0-0', key: 'key 0-0' },
+        { label: 'Label 0-1', value: 'Value 0-1', key: 'key 0-1' },
+        { label: 'Label 1-0', value: 'Value 1-0', key: 'key 1-0' },
+      ];
+      it('basic', () => {
+        const wrapper = mount(
+          <div>
+            <TreeSelect
+              defaultValue={'Value 0-0'}
+              treeTitleRender={node => node.value}
+              treeData={treeData}
+            />
+          </div>,
+        );
+        expect(wrapper.getSelection(0).text()).toBe('Value 0-0');
       });
     });
   });

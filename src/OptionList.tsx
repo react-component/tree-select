@@ -43,6 +43,7 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
     onSelect,
     dropdownMatchSelectWidth,
     treeExpandAction,
+    treeTitleRender,
   } = React.useContext(TreeSelectContext);
 
   const {
@@ -241,6 +242,7 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
         checkedKeys={mergedCheckedKeys}
         selectedKeys={!checkable ? checkedKeys : []}
         defaultExpandAll={treeDefaultExpandAll}
+        titleRender={treeTitleRender}
         {...treeProps}
         // Proxy event out
         onActiveChange={setActiveKey}
