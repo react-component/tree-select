@@ -1,14 +1,14 @@
-import * as React from 'react';
-import KeyCode from 'rc-util/lib/KeyCode';
-import useMemo from 'rc-util/lib/hooks/useMemo';
-import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import { useBaseProps } from 'rc-select';
+import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import type { TreeProps } from 'rc-tree';
 import Tree from 'rc-tree';
 import type { EventDataNode, ScrollTo } from 'rc-tree/lib/interface';
-import type { TreeDataNode, Key } from './interface';
+import KeyCode from 'rc-util/lib/KeyCode';
+import useMemo from 'rc-util/lib/hooks/useMemo';
+import * as React from 'react';
 import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
+import type { Key, TreeDataNode } from './interface';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
 
 const HIDDEN_STYLE = {
@@ -30,7 +30,7 @@ interface TreeEventInfo {
 
 type ReviseRefOptionListProps = Omit<RefOptionListProps, 'scrollTo'> & { scrollTo: ScrollTo };
 
-const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, ref) => {
+const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_, ref) => {
   const { prefixCls, multiple, searchValue, toggleOpen, open, notFoundContent } = useBaseProps();
 
   const {
@@ -258,6 +258,9 @@ const OptionList: React.RefForwardingComponent<ReviseRefOptionListProps> = (_, r
 };
 
 const RefOptionList = React.forwardRef<ReviseRefOptionListProps>(OptionList);
-RefOptionList.displayName = 'OptionList';
+
+if (process.env.NODE_ENV !== 'production') {
+  RefOptionList.displayName = 'OptionList';
+}
 
 export default RefOptionList;
