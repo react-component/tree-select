@@ -7,7 +7,6 @@ export default defineConfig({
     logo: 'https://avatars0.githubusercontent.com/u/9441414?s=200&v=4',
   },
   exportStatic: {},
-  outputPath: '.doc',
   base: '/tree-select/',
   publicPath: '/tree-select/',
   styles: [
