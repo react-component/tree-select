@@ -1,15 +1,9 @@
 import * as React from 'react';
 import toArray from 'rc-util/lib/Children/toArray';
 import warning from 'rc-util/lib/warning';
-import type {
-  DataNode,
-  LegacyDataNode,
-  ChangeEventExtra,
-  InnerDataNode,
-  RawValueType,
-  LegacyCheckedNode,
-} from '../interface';
+import type { DataNode, ChangeEventExtra, RawValueType, LegacyCheckedNode } from '../interface';
 import TreeNode from '../TreeNode';
+import type { DefaultOptionType, FieldNames } from '../TreeSelect';
 
 export function convertChildrenToData(nodes: React.ReactNode): DataNode[] {
   return toArray(nodes)
@@ -36,13 +30,12 @@ export function convertChildrenToData(nodes: React.ReactNode): DataNode[] {
 
       return data;
     })
-    .filter((data) => data);
+    .filter(data => data);
 }
 
-export function fillLegacyProps(dataNode: DataNode): LegacyDataNode {
-  // Skip if not dataNode exist
+export function fillLegacyProps(dataNode: DataNode): any {
   if (!dataNode) {
-    return dataNode as LegacyDataNode;
+    return dataNode;
   }
 
   const cloneNode = { ...dataNode };
@@ -59,30 +52,36 @@ export function fillLegacyProps(dataNode: DataNode): LegacyDataNode {
     });
   }
 
-  return cloneNode as LegacyDataNode;
+  return cloneNode;
 }
 
 export function fillAdditionalInfo(
   extra: ChangeEventExtra,
   triggerValue: RawValueType,
   checkedValues: RawValueType[],
-  treeData: InnerDataNode[],
+  treeData: DefaultOptionType[],
   showPosition: boolean,
+  fieldNames: FieldNames,
 ) {
   let triggerNode: React.ReactNode = null;
   let nodeList: LegacyCheckedNode[] = null;
 
   function generateMap() {
-    function dig(list: InnerDataNode[], level = '0', parentIncluded = false) {
+    function dig(list: DefaultOptionType[], level = '0', parentIncluded = false) {
       return list
-        .map((dataNode, index) => {
+        .map((option, index) => {
           const pos = `${level}-${index}`;
-          const included = checkedValues.includes(dataNode.value);
-          const children = dig(dataNode.children || [], pos, included);
-          const node = <TreeNode {...dataNode}>{children.map((child) => child.node)}</TreeNode>;
+          const value = option[fieldNames.value];
+          const included = checkedValues.includes(value);
+          const children = dig(option[fieldNames.children] || [], pos, included);
+          const node = (
+            <TreeNode {...(option as Required<DefaultOptionType>)}>
+              {children.map(child => child.node)}
+            </TreeNode>
+          );
 
           // Link with trigger node
-          if (triggerValue === dataNode.value) {
+          if (triggerValue === value) {
             triggerNode = node;
           }
 
@@ -101,7 +100,7 @@ export function fillAdditionalInfo(
           }
           return null;
         })
-        .filter((node) => node);
+        .filter(node => node);
     }
 
     if (!nodeList) {

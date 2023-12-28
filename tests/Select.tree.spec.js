@@ -78,12 +78,23 @@ describe('TreeSelect.tree', () => {
     spy.mockRestore();
   });
 
+  it('warning if node undefined value', () => {
+    resetWarned();
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    mount(<TreeSelect treeData={[{ title: 'little' }]} />);
+    expect(spy).toHaveBeenCalledWith('Warning: TreeNode `value` is invalidate: undefined');
+    spy.mockRestore();
+  });
+
   it('warning if node has same value', () => {
     resetWarned();
     const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
     mount(
       <TreeSelect
-        treeData={[{ title: 'little', value: 'ttt' }, { title: 'bamboo', value: 'ttt' }]}
+        treeData={[
+          { title: 'little', value: 'ttt' },
+          { title: 'bamboo', value: 'ttt' },
+        ]}
       />,
     );
     expect(spy).toHaveBeenCalledWith('Warning: Same `value` exist in the tree: ttt');
@@ -124,5 +135,27 @@ describe('TreeSelect.tree', () => {
         expect(wrapper.find('.rc-tree-select-selection-item').text()).toEqual('Light');
       });
     });
+  });
+
+  it('Node icon', () => {
+    const wrapper = mount(
+      <TreeSelect open>
+        <SelectNode value="little" title="Little" icon={<span className="bamboo-light" />} />
+      </TreeSelect>,
+    );
+
+    expect(wrapper.exists('.bamboo-light')).toBeTruthy();
+  });
+
+  it('dynamic with filter should not show expand icon', () => {
+    const wrapper = mount(
+      <TreeSelect
+        open
+        treeData={[{ label: 'Bamboo', value: 'bamboo', isLeaf: false }]}
+        searchValue="boo"
+      />,
+    );
+
+    expect(wrapper.exists('.rc-tree-select-tree-icon__open')).toBeFalsy();
   });
 });

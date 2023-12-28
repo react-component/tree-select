@@ -54,7 +54,7 @@ online example: https://tree-select-react-component.vercel.app/
 |animation | dropdown animation name. only support slide-up now | String | '' |
 |transitionName | dropdown css animation name | String | '' |
 |choiceTransitionName | css animation name for selected items at multiple mode | String | '' |
-|dropdownMatchSelectWidth | whether dropdown's with is same with select. Default set `min-width` same as input | bool | - |
+|dropdownMatchSelectWidth | whether dropdown's with is same with select. Default set `min-width` same as input | bool | true |
 |dropdownClassName | additional className applied to dropdown | String | - |
 |dropdownStyle | additional style applied to dropdown | Object | {} |
 |dropdownPopupAlign | specify alignment for dropdown (alignConfig of [dom-align](https://github.com/yiminghe/dom-align)) | Object | - |
@@ -81,6 +81,7 @@ online example: https://tree-select-react-component.vercel.app/
 |treeDefaultExpandAll | default expand all treeNode | bool | false |
 |treeDefaultExpandedKeys | default expanded treeNode keys | Array<String> | - |
 |treeExpandedKeys | set tree expanded keys | Array<String> | - |
+|treeExpandAction | Tree open logic, optional: false \| `click` \| `doubleClick`, same as `expandAction` of `rc-tree` | string \| boolean | `click` |
 |treeCheckable | whether tree show checkbox (select callback will not fire) | bool | false |
 |treeCheckStrictly | check node precisely, parent and children nodes are not associated| bool | false |
 |filterTreeNode | whether filter treeNodes by input value. default filter by treeNode's treeNodeFilterProp prop's value | bool/Function(inputValue:string, treeNode:TreeNode) | Function |
@@ -91,7 +92,7 @@ online example: https://tree-select-react-component.vercel.app/
 |loadData | load data asynchronously | function(node) | - |
 |getPopupContainer | container which popup select menu rendered into | function(trigger:Node):Node | function(){return document.body;} |
 |autoClearSearchValue | auto clear search input value when multiple select is selected/deselected | boolean | true |
-| inputIcon | specify the select arrow icon | ReactNode \| (props: TreeProps) => ReactNode | - |
+| suffixIcon | specify the select arrow icon | ReactNode \| (props: TreeProps) => ReactNode | - |
 | clearIcon | specify the clear icon | ReactNode \| (props: TreeProps) => ReactNode | - |
 | removeIcon | specify the remove icon | ReactNode \| (props: TreeProps) => ReactNode | - |
 |switcherIcon| specify the switcher icon | ReactNode \| (props: TreeProps) => ReactNode | - |

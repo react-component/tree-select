@@ -24,7 +24,7 @@ class Demo extends React.Component {
     },
   };
 
-  onChange = (value) => {
+  onChange = value => {
     const { simpleTreeData } = this.state;
     if (value.length === 1) {
       // return;
@@ -41,7 +41,7 @@ class Demo extends React.Component {
   onDataChange = () => {
     const { simpleTreeData } = this.state;
     const data = simpleTreeData.slice();
-    data.forEach((i) => {
+    data.forEach(i => {
       if (i.key === 11) {
         // eslint-disable-next-line no-param-reassign
         delete i.disabled;
@@ -69,7 +69,6 @@ class Demo extends React.Component {
             offset: [0, 2],
           }}
           placeholder={<i>请下拉选择</i>}
-          searchPlaceholder="please search"
           treeLine
           maxTagTextLength={10}
           value={value}
@@ -85,7 +84,6 @@ class Demo extends React.Component {
           style={{ width: 300 }}
           dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
-          searchPlaceholder="please search"
           treeLine
           maxTagTextLength={10}
           inputValue={null}

@@ -1,54 +1,38 @@
-/* eslint-disable react/no-array-index-key */
+/* eslint-disable */
 
 import React from 'react';
-import TreeSelect, { TreeNode } from '../src';
+import TreeSelect from '../src';
 import '../assets/index.less';
 
-class Demo extends React.Component {
-  state = {
-    value: undefined,
-  };
+const { TreeNode, SHOW_ALL, SHOW_CHILD } = TreeSelect;
+const SelectNode = TreeNode;
 
-  onChange = value => {
-    console.log(value);
-    this.setState({ value });
-  };
+const treeData = [
+  { key: '0', value: '0', title: 'label0' },
+  { key: '1', value: '1', title: 'label1' },
+];
 
-  render() {
-    return (
-      <TreeSelect
-        showSearch
-        style={{ width: '100%' }}
-        value={this.state.value}
-        dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-        placeholder="Please select"
-        allowClear
-        treeDefaultExpandAll
-        onChange={this.onChange}
-        labelRender={entity => {
-          let current = entity;
-          const nodes = [];
+const children = [
+  <TreeNode key="0" value="0" title="label0" foo={0} />,
+  <TreeNode key="1" value="1" title="label1" foo={1} />,
+];
 
-          while (current) {
-            nodes.unshift(current.data.title);
-            current = current.parent;
-          }
+const createSelect = props => <TreeSelect treeData={treeData} labelInValue {...props} />;
 
-          return nodes.join('>');
-        }}
-      >
-        <TreeNode value="parent 1" title="parent 1" key="0-1">
-          <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
-            <TreeNode value="leaf1" title="my leaf" key="random" />
-            <TreeNode value="leaf2" title="your leaf" key="random1" />
-          </TreeNode>
-          <TreeNode value="parent 1-1" title="parent 1-1" key="random2">
-            <TreeNode value="sss" title={<b style={{ color: '#08c' }}>sss</b>} key="random3" />
-          </TreeNode>
-        </TreeNode>
-      </TreeSelect>
-    );
-  }
-}
+// export default () => (
+//   <TreeSelect
+//     defaultValue={['not-exist']}
+//     treeCheckable
+//     style={{ width: 300 }}
+//     onDeselect={console.error}
+//   />
+// );
 
-export default Demo;
+export default () =>
+  createSelect({
+    maxTagCount: 1,
+    defaultValue: {
+      value: '0',
+      label: '2333',
+    },
+  });

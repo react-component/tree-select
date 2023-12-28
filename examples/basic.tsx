@@ -1,8 +1,8 @@
-import '../assets/index.less';
-import React from 'react';
-import 'rc-dialog/assets/index.css';
 import Dialog from 'rc-dialog';
-import TreeSelect, { TreeNode, SHOW_PARENT } from '../src';
+import 'rc-dialog/assets/index.css';
+import React from 'react';
+import '../assets/index.less';
+import TreeSelect, { SHOW_PARENT, TreeNode } from '../src';
 import { gData } from './utils/dataUtil';
 
 function isLeaf(value) {
@@ -170,7 +170,6 @@ class Demo extends React.Component {
                 choiceTransitionName="rc-tree-select-selection__choice-zoom"
                 // dropdownStyle={{ maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
                 placeholder={<i>请下拉选择</i>}
-                searchPlaceholder="please search"
                 showSearch
                 allowClear
                 treeLine
@@ -192,7 +191,6 @@ class Demo extends React.Component {
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
-          searchPlaceholder="please search"
           showSearch
           allowClear
           treeLine
@@ -223,7 +221,6 @@ class Demo extends React.Component {
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
-          searchPlaceholder="please search"
           showSearch
           allowClear
           treeLine
@@ -241,7 +238,6 @@ class Demo extends React.Component {
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
-          searchPlaceholder="please search"
           multiple
           value={multipleValue}
           treeData={gData}
@@ -253,6 +249,8 @@ class Demo extends React.Component {
 
         <h2>check select</h2>
         <TreeSelect
+          open
+          allowClear
           className="check-select"
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
@@ -264,7 +262,6 @@ class Demo extends React.Component {
           }}
           onDropdownVisibleChange={this.onDropdownVisibleChange}
           placeholder={<i>请下拉选择</i>}
-          searchPlaceholder="please search"
           treeLine
           maxTagTextLength={10}
           value={value}
@@ -277,7 +274,7 @@ class Demo extends React.Component {
           onSelect={this.onSelect}
           maxTagCount="responsive"
           maxTagPlaceholder={valueList => {
-            console.log('Max Tag Rest Value:', valueList);
+            // console.log('Max Tag Rest Value:', valueList);
             return `${valueList.length} rest...`;
           }}
         />
@@ -289,7 +286,6 @@ class Demo extends React.Component {
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
-          searchPlaceholder="please search"
           showSearch
           allowClear
           treeLine
@@ -306,7 +302,6 @@ class Demo extends React.Component {
           style={{ width: 300 }}
           // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
-          // searchPlaceholder="please search"
           // treeLine
           maxTagTextLength={10}
           searchValue={simpleSearchValue}
@@ -386,6 +381,14 @@ class Demo extends React.Component {
           </TreeNode>
           <TreeNode value="same value3" title="same title" key="0-3" />
         </TreeSelect>
+
+        <h2>title render</h2>
+        <TreeSelect<{ label: string }>
+          open
+          style={{ width: 300 }}
+          treeData={gData}
+          treeTitleRender={node => node.label + 'ok'}
+        />
       </div>
     );
   }

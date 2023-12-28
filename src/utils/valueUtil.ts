@@ -1,19 +1,6 @@
-import { flattenTreeData } from 'rc-tree/lib/utils/treeUtil';
-import type { FlattenNode } from 'rc-tree/lib/interface';
-import type { FilterFunc } from 'rc-select/lib/interface/generator';
-import type {
-  FlattenDataNode,
-  Key,
-  RawValueType,
-  DataNode,
-  DefaultValueType,
-  LabelValueType,
-  LegacyDataNode,
-} from '../interface';
-import { fillLegacyProps } from './legacyUtil';
-import type { SkipType } from '../hooks/useKeyValueMapping';
-
-type CompatibleDataNode = Omit<FlattenDataNode, 'level'>;
+import type * as React from 'react';
+import type { DataNode, FieldNames } from '../interface';
+import type { DefaultOptionType, InternalFieldName } from '../TreeSelect';
 
 export function toArray<T>(value: T | T[]): T[] {
   if (Array.isArray(value)) {
@@ -22,195 +9,42 @@ export function toArray<T>(value: T | T[]): T[] {
   return value !== undefined ? [value] : [];
 }
 
-export function findValueOption(values: RawValueType[], options: CompatibleDataNode[]): DataNode[] {
-  const optionMap: Map<RawValueType, DataNode> = new Map();
+export function fillFieldNames(fieldNames?: FieldNames) {
+  const { label, value, children } = fieldNames || {};
 
-  options.forEach(flattenItem => {
-    const { data } = flattenItem;
-    optionMap.set(data.value, data);
-  });
+  const mergedValue = value || 'value';
 
-  return values.map(val => fillLegacyProps(optionMap.get(val)));
-}
-
-export function isValueDisabled(value: RawValueType, options: CompatibleDataNode[]): boolean {
-  const option = findValueOption([value], options)[0];
-  if (option) {
-    return option.disabled;
-  }
-
-  return false;
-}
-
-export function isCheckDisabled(node: DataNode) {
-  return node.disabled || node.disableCheckbox || node.checkable === false;
-}
-
-interface TreeDataNode {
-  key: Key;
-}
-
-function getLevel({ parent }: FlattenNode): number {
-  let level = 0;
-  let current = parent;
-
-  while (current) {
-    current = current.parent;
-    level += 1;
-  }
-
-  return level;
-}
-
-/**
- * Before reuse `rc-tree` logic, we need to add key since TreeSelect use `value` instead of `key`.
- */
-export function flattenOptions(options: DataNode[]): FlattenDataNode[] {
-  // Add missing key
-  function fillKey(list: DataNode[]): TreeDataNode[] {
-    return (list || []).map(node => {
-      const { value, key, children } = node;
-
-      const clone = {
-        ...node,
-        key: 'key' in node ? key : value,
-      };
-
-      if (children) {
-        clone.children = fillKey(children);
-      }
-
-      return clone;
-    });
-  }
-
-  const flattenList = flattenTreeData(fillKey(options), true);
-
-  const cacheMap = new Map<React.Key, FlattenDataNode>();
-  const flattenDateNodeList: (FlattenDataNode & { parentKey?: React.Key })[] = flattenList.map(
-    node => {
-      const { data } = node;
-      const { key } = data;
-
-      const flattenNode = {
-        key,
-        data,
-        level: getLevel(node),
-        parentKey: node.parent?.data.key,
-      };
-
-      cacheMap.set(key, flattenNode);
-
-      return flattenNode;
-    },
-  );
-
-  // Fill parent
-  flattenDateNodeList.forEach(flattenNode => {
-    // eslint-disable-next-line no-param-reassign
-    flattenNode.parent = cacheMap.get(flattenNode.parentKey);
-  });
-
-  return flattenDateNodeList;
-}
-
-function getDefaultFilterOption(optionFilterProp: string) {
-  return (searchValue: string, dataNode: LegacyDataNode) => {
-    const value = dataNode[optionFilterProp];
-
-    return String(value).toLowerCase().includes(String(searchValue).toLowerCase());
+  return {
+    _title: label ? [label] : ['title', 'label'],
+    value: mergedValue,
+    key: mergedValue,
+    children: children || 'children',
   };
 }
 
-/** Filter options and return a new options by the search text */
-export function filterOptions(
-  searchValue: string,
-  options: DataNode[],
-  {
-    optionFilterProp,
-    filterOption,
-  }: {
-    optionFilterProp: string;
-    filterOption: boolean | FilterFunc<LegacyDataNode>;
-  },
-): DataNode[] {
-  if (filterOption === false) {
-    return options;
-  }
-
-  let filterOptionFunc: FilterFunc<LegacyDataNode>;
-  if (typeof filterOption === 'function') {
-    filterOptionFunc = filterOption;
-  } else {
-    filterOptionFunc = getDefaultFilterOption(optionFilterProp);
-  }
-
-  function dig(list: DataNode[], keepAll: boolean = false) {
-    return list
-      .map(dataNode => {
-        const { children } = dataNode;
-
-        const match = keepAll || filterOptionFunc(searchValue, fillLegacyProps(dataNode));
-        const childList = dig(children || [], match);
-
-        if (match || childList.length) {
-          return {
-            ...dataNode,
-            children: childList,
-          };
-        }
-        return null;
-      })
-      .filter(node => node);
-  }
-
-  return dig(options);
+export function isCheckDisabled(node: DataNode) {
+  return !node || node.disabled || node.disableCheckbox || node.checkable === false;
 }
 
-export function getRawValueLabeled(
-  values: RawValueType[],
-  prevValue: DefaultValueType,
-  getEntityByValue: (
-    value: RawValueType,
-    skipType?: SkipType,
-    ignoreDisabledCheck?: boolean,
-  ) => FlattenDataNode,
-  getLabelProp: (entity: FlattenDataNode) => React.ReactNode,
-): LabelValueType[] {
-  const valueMap = new Map<RawValueType, LabelValueType>();
+/** Loop fetch all the keys exist in the tree */
+export function getAllKeys(treeData: DefaultOptionType[], fieldNames: InternalFieldName) {
+  const keys: React.Key[] = [];
 
-  toArray(prevValue).forEach(item => {
-    if (item && typeof item === 'object' && 'value' in item) {
-      valueMap.set(item.value, item);
-    }
-  });
-
-  return values.map(val => {
-    const item: LabelValueType = { value: val };
-    const entity = getEntityByValue(val, 'select', true);
-    const label = entity ? getLabelProp(entity) : val;
-
-    if (valueMap.has(val)) {
-      const labeledValue = valueMap.get(val);
-      item.label = 'label' in labeledValue ? labeledValue.label : label;
-      if ('halfChecked' in labeledValue) {
-        item.halfChecked = labeledValue.halfChecked;
+  function dig(list: DefaultOptionType[]) {
+    list.forEach(item => {
+      const children = item[fieldNames.children];
+      if (children) {
+        keys.push(item[fieldNames.value]);
+        dig(children);
       }
-    } else {
-      item.label = label;
-    }
+    });
+  }
 
-    return item;
-  });
+  dig(treeData);
+
+  return keys;
 }
 
-export function addValue(rawValues: RawValueType[], value: RawValueType) {
-  const values = new Set(rawValues);
-  values.add(value);
-  return Array.from(values);
-}
-export function removeValue(rawValues: RawValueType[], value: RawValueType) {
-  const values = new Set(rawValues);
-  values.delete(value);
-  return Array.from(values);
+export function isNil(val: any) {
+  return val === null || val === undefined;
 }
