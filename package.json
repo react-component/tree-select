@@ -9,14 +9,17 @@
     "tree-select"
   ],
   "homepage": "https://github.com/react-component/tree-select",
-  "author": "smith3816@gmail.com",
+  "bugs": {
+    "url": "https://github.com/react-component/tree-select/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/react-component/tree-select.git"
   },
-  "bugs": {
-    "url": "https://github.com/react-component/tree-select/issues"
-  },
+  "license": "MIT",
+  "author": "smith3816@gmail.com",
+  "main": "./lib/index",
+  "module": "./es/index",
   "files": [
     "es",
     "lib",
@@ -26,23 +29,23 @@
     "assets/*.png",
     "assets/*.gif"
   ],
-  "license": "MIT",
-  "main": "./lib/index",
-  "module": "./es/index",
   "scripts": {
-    "start": "dumi dev",
     "build": "dumi build",
     "compile": "father build",
+    "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.js",
+    "now-build": "npm run build",
     "prepare": "dumi setup",
     "prepublishOnly": "npm run compile && np --yolo --no-publish --any-branch",
-    "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.js",
     "prettier": "prettier '{src,tests}/**/*.{ts,tsx}' 'tests/**/*.js' --write",
-    "test": "rc-test",
-    "now-build": "npm run build"
+    "start": "dumi dev",
+    "test": "rc-test"
   },
-  "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+  "dependencies": {
+    "@babel/runtime": "^7.10.1",
+    "classnames": "2.x",
+    "rc-select": "~14.10.0",
+    "rc-tree": "~5.8.1",
+    "rc-util": "^5.16.1"
   },
   "devDependencies": {
     "@rc-component/father-plugin": "^1.0.0",
@@ -59,10 +62,13 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.4.0",
-    "eslint": "^7.1.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-jest": "^27.6.0",
+    "eslint-plugin-unicorn": "^50.0.1",
     "father": "^4.0.0",
     "glob": "^7.1.6",
     "np": "^7.5.0",
+    "prettier": "^3.1.1",
     "rc-dialog": "^7.5.7",
     "rc-field-form": "^1.0.0",
     "rc-test": "^7.0.4",
@@ -71,11 +77,8 @@
     "react-dom": "^16.8.0",
     "typescript": "^5.0.0"
   },
-  "dependencies": {
-    "@babel/runtime": "^7.10.1",
-    "classnames": "2.x",
-    "rc-select": "~14.10.0",
-    "rc-tree": "~5.8.1",
-    "rc-util": "^5.16.1"
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
   }
 }
