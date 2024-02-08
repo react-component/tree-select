@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { mount } from 'enzyme';
 import TreeSelect, { TreeNode } from '../src';
 
