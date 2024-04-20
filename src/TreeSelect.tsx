@@ -466,6 +466,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       ...item,
       label: item.label ?? item.value,
     }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     mergedFieldNames,
     mergedMultiple,

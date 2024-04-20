@@ -259,10 +259,10 @@ class Demo extends React.Component {
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           style={{ width: 300 }}
           // dropdownStyle={{ height: 200, overflow: 'auto' }}
-          dropdownPopupAlign={{
-            overflow: { adjustY: 0, adjustX: 0 },
-            offset: [0, 2],
-          }}
+          // dropdownPopupAlign={{
+          //   overflow: { adjustY: 0, adjustX: 0 },
+          //   offset: [0, 2],
+          // }}
           onDropdownVisibleChange={this.onDropdownVisibleChange}
           placeholder={<i>请下拉选择</i>}
           treeLine
