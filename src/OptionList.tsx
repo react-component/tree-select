@@ -44,6 +44,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     dropdownMatchSelectWidth,
     treeExpandAction,
     treeTitleRender,
+    onPopupScroll,
   } = React.useContext(TreeSelectContext);
 
   const {
@@ -252,6 +253,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         onLoad={onTreeLoad}
         filterTreeNode={filterTreeNode}
         expandAction={treeExpandAction}
+        onScroll={onPopupScroll}
       />
     </div>
   );

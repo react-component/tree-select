@@ -13,6 +13,7 @@ export interface TreeSelectContextProps {
   onSelect: OnInternalSelect;
   treeExpandAction?: ExpandAction;
   treeTitleRender?: (node: any) => React.ReactNode;
+  onPopupScroll?: React.UIEventHandler<HTMLDivElement>;
 }
 
 const TreeSelectContext = React.createContext<TreeSelectContextProps>(null as any);

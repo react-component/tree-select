@@ -75,6 +75,7 @@ online example: https://tree-select-react-component.vercel.app/
 |onSelect | called when select treeNode | function(value, node, extra) | - |
 |onSearch | called when input changed | function | - |
 |onTreeExpand | called when tree node expand | function(expandedKeys) | - |
+|onPopupScroll | called when popup scroll | function(event) | - |
 |showCheckedStrategy | `TreeSelect.SHOW_ALL`: show all checked treeNodes (Include parent treeNode). `TreeSelect.SHOW_PARENT`: show checked treeNodes (Just show parent treeNode). Default just show child. | enum{TreeSelect.SHOW_ALL, TreeSelect.SHOW_PARENT, TreeSelect.SHOW_CHILD } | TreeSelect.SHOW_CHILD |
 |treeIcon | show tree icon | bool | false |
 |treeLine | show tree line | bool | false |

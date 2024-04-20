@@ -212,6 +212,9 @@ class Demo extends React.Component {
             });
           }}
           onSelect={this.onSelect}
+          onPopupScroll={evt => {
+            console.log('[ onPopupScroll evt ] ===>', evt);
+          }}
         />
 
         <h2>single select (just select children)</h2>

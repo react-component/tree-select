@@ -240,6 +240,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     treeMotion,
     treeTitleRender,
 
+    onPopupScroll,
     ...restProps
   } = props;
 
@@ -681,6 +682,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       onSelect: onOptionSelect,
       treeExpandAction,
       treeTitleRender,
+      onPopupScroll,
     }),
     [
       virtual,
@@ -693,6 +695,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       onOptionSelect,
       treeExpandAction,
       treeTitleRender,
+      onPopupScroll,
     ],
   );
 
