@@ -392,6 +392,17 @@ class Demo extends React.Component {
           treeData={gData}
           treeTitleRender={node => node.label + 'ok'}
         />
+
+        <h2 style={{ marginTop: 140 }}>onPopupScroll</h2>
+        <TreeSelect
+          open
+          style={{ width: 300 }}
+          treeData={gData}
+          treeDefaultExpandAll
+          onPopupScroll={evt => {
+            console.log('[ onPopupScroll evt ] ===>', evt);
+          }}
+        />
       </div>
     );
   }

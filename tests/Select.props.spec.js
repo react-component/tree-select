@@ -241,6 +241,33 @@ describe('TreeSelect.props', () => {
     expect(handleSearch).toHaveBeenCalledWith('Search changed');
   });
 
+  it('onPopupScroll', async () => {
+    const handleScroll = jest.fn();
+    const wrapper = mount(
+      <TreeSelect open treeDefaultExpandAll onPopupScroll={handleScroll}>
+        <SelectNode value="Value 0" title="Title 0" key="key 0">
+          <SelectNode value="Value 0-0" title="Title 0-0" key="key 0-0" />
+          <SelectNode value="Value 0-1" title="Title 0-1" key="key 0-1" />
+          <SelectNode value="Value 0-2" title="Title 0-2" key="key 0-2" />
+        </SelectNode>
+
+        <SelectNode value="Value 1" title="Title 1" key="key 1">
+          <SelectNode value="Value 1-0" title="Title 1-0" key="key 1-0" />
+          <SelectNode value="Value 1-1" title="Title 1-1" key="key 1-1" />
+          <SelectNode value="Value 1-2" title="Title 1-2" key="key 1-2" />
+        </SelectNode>
+
+        <SelectNode value="Value 2" title="Title 2" key="key 2">
+          <SelectNode value="Value 2-0" title="Title 2-0" key="key 2-0" />
+          <SelectNode value="Value 2-1" title="Title 2-1" key="key 2-1" />
+          <SelectNode value="Value 2-2" title="Title 2-2" key="key 2-2" />
+        </SelectNode>
+      </TreeSelect>,
+    );
+
+    expect(wrapper.find('List').props().onScroll).toBeTruthy();
+  });
+
   it('showArrow', () => {
     const wrapper = mount(createOpenSelect({ suffixIcon: null }));
     expect(wrapper.find('.rc-tree-select-arrow').length).toBeFalsy();
