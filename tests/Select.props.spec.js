@@ -2,8 +2,7 @@
 import { mount } from 'enzyme';
 import Tree, { TreeNode } from 'rc-tree';
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
+import { render, fireEvent } from '@testing-library/react';
 
 import TreeSelect, { SHOW_ALL, SHOW_CHILD, SHOW_PARENT, TreeNode as SelectNode } from '../src';
 
@@ -245,45 +244,27 @@ describe('TreeSelect.props', () => {
   });
 
   it('onPopupScroll', async () => {
-    const handleScroll = jest.fn();
-    // act(() => {
+    const onPopupScroll = jest.fn();
     render(
-      <TreeSelect open treeDefaultExpandAll onPopupScroll={handleScroll}>
-        <SelectNode value="Value 0" title="Title 0">
-          <SelectNode value="Value 0-0" title="Title 0-0" />
-          <SelectNode value="Value 0-1" title="Title 0-1" />
-          <SelectNode value="Value 0-2" title="Title 0-2" />
-        </SelectNode>
-
-        <SelectNode value="Value 1" title="Title 1">
-          <SelectNode value="Value 1-0" title="Title 1-0" />
-          <SelectNode value="Value 1-1" title="Title 1-1" />
-          <SelectNode value="Value 1-2" title="Title 1-2" />
-        </SelectNode>
-
-        <SelectNode value="Value 2" title="Title 2">
-          <SelectNode value="Value 2-0" title="Title 2-0" />
-          <SelectNode value="Value 2-1" title="Title 2-1" />
-          <SelectNode value="Value 2-2" title="Title 2-2" />
-        </SelectNode>
-
-        <SelectNode value="Value 3" title="Title 3">
-          <SelectNode value="Value 3-0" title="Title 3-0" />
-          <SelectNode value="Value 3-1" title="Title 3-1" />
-          <SelectNode value="Value 3-2" title="Title 3-2" />
-        </SelectNode>
-      </TreeSelect>,
-    );
-    // });
-
-    await waitFor(
-      () =>
-        expect(document.body.querySelector('.rc-tree-select-tree-list')).toBeTruthy(),
-        // expect(document.body.querySelector('.rc-tree-select-tree-list-holder')).toBeTruthy(),
-      { timeout: 2000 },
+      <TreeSelect
+        open
+        treeDefaultExpandAll
+        onPopupScroll={onPopupScroll}
+        treeData={new Array(10).fill(0).map((_, index) => ({
+          title: `Title ${index}`,
+          value: index,
+        }))}
+      />,
     );
 
-    expect(document.body).toMatchSnapshot();
+    fireEvent.scroll(document.querySelector('.rc-tree-select-tree-list-holder'), {
+      scrollY: 100,
+    });
+
+    expect(onPopupScroll).toHaveBeenCalled();
+    expect(onPopupScroll.mock.calls[0][0].target).toBe(
+      document.querySelector('.rc-tree-select-tree-list-holder'),
+    );
   });
 
   it('showArrow', () => {
