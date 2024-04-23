@@ -3,7 +3,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import TreeSelect from '../../src';
 
-export default function focusTest(mode) {
+export default function focusTest(multiple = false) {
   let container;
 
   beforeEach(() => {
@@ -21,7 +21,7 @@ export default function focusTest(mode) {
     const treeRef = React.createRef();
 
     mount(
-      <TreeSelect {...{ [mode]: true }} onFocus={handleFocus} treeData={treeData} ref={treeRef} />,
+      <TreeSelect multiple={multiple} onFocus={handleFocus} treeData={treeData} ref={treeRef} />,
       { attachTo: container },
     );
 
@@ -35,7 +35,7 @@ export default function focusTest(mode) {
     const treeRef = React.createRef();
 
     mount(
-      <TreeSelect {...{ [mode]: true }} onBlur={handleBlur} treeData={treeData} ref={treeRef} />,
+      <TreeSelect multiple={multiple} onBlur={handleBlur} treeData={treeData} ref={treeRef} />,
       { attachTo: container },
     );
     treeRef.current.focus();
@@ -46,10 +46,9 @@ export default function focusTest(mode) {
   it('autoFocus', () => {
     const handleFocus = jest.fn();
     const treeData = [{ key: '0', value: '0', title: '0 label' }];
-    mount(
-      <TreeSelect {...{ [mode]: true }} autoFocus onFocus={handleFocus} treeData={treeData} />,
-      { attachTo: container },
-    );
+    mount(<TreeSelect multiple={multiple} autoFocus onFocus={handleFocus} treeData={treeData} />, {
+      attachTo: container,
+    });
     expect(handleFocus).toHaveBeenCalled();
   });
 }

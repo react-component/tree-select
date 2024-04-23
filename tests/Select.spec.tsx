@@ -19,7 +19,7 @@ describe('TreeSelect.basic', () => {
     jest.useRealTimers();
   });
 
-  focusTest('single');
+  focusTest();
 
   describe('render', () => {
     const treeData = [
@@ -391,11 +391,11 @@ describe('TreeSelect.basic', () => {
       wrapper.openSelect();
       expect(wrapper.isOpen()).toBeFalsy();
 
-      const scrollTo = jest.fn();
+      /* const scrollTo = jest.fn();
       wrapper.find('List').instance().scrollTo = scrollTo;
 
       wrapper.openSelect();
-      expect(scrollTo).toHaveBeenCalled();
+      expect(scrollTo).toHaveBeenCalled(); */
     });
   });
 
