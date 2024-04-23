@@ -244,7 +244,10 @@ describe('TreeSelect.props', () => {
   });
 
   it('onPopupScroll', async () => {
-    const onPopupScroll = jest.fn();
+    const onPopupScroll = jest.fn(e => {
+      // Prevents React from resetting its properties:
+      e.persist();
+    });
     render(
       <TreeSelect
         open

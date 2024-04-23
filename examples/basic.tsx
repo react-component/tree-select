@@ -427,7 +427,6 @@ class Demo extends React.Component {
             <TreeNode value="Value 3-2" title="Title 3-2" />
           </TreeNode>
         </TreeSelect>
-        ,
       </div>
     );
   }
