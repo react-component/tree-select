@@ -402,7 +402,32 @@ class Demo extends React.Component {
           onPopupScroll={evt => {
             console.log('[ onPopupScroll evt ] ===>', evt);
           }}
-        />
+        >
+          <TreeNode value="Value 0" title="Title 0">
+            <TreeNode value="Value 0-0" title="Title 0-0" />
+            <TreeNode value="Value 0-1" title="Title 0-1" />
+            <TreeNode value="Value 0-2" title="Title 0-2" />
+          </TreeNode>
+
+          <TreeNode value="Value 1" title="Title 1">
+            <TreeNode value="Value 1-0" title="Title 1-0" />
+            <TreeNode value="Value 1-1" title="Title 1-1" />
+            <TreeNode value="Value 1-2" title="Title 1-2" />
+          </TreeNode>
+
+          <TreeNode value="Value 2" title="Title 2">
+            <TreeNode value="Value 2-0" title="Title 2-0" />
+            <TreeNode value="Value 2-1" title="Title 2-1" />
+            <TreeNode value="Value 2-2" title="Title 2-2" />
+          </TreeNode>
+
+          <TreeNode value="Value 3" title="Title 3">
+            <TreeNode value="Value 3-0" title="Title 3-0" />
+            <TreeNode value="Value 3-1" title="Title 3-1" />
+            <TreeNode value="Value 3-2" title="Title 3-2" />
+          </TreeNode>
+        </TreeSelect>
+        ,
       </div>
     );
   }
