@@ -70,7 +70,7 @@
     "np": "^10.0.5",
     "prettier": "^3.1.1",
     "rc-dialog": "^7.5.7",
-    "rc-field-form": "^1.0.0",
+    "rc-field-form": "^2.0.0",
     "rc-test": "^7.0.4",
     "rc-virtual-list": "^1.1.0",
     "react": "^16.8.0",
