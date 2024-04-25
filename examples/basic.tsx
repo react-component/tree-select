@@ -213,7 +213,7 @@ class Demo extends React.Component {
           }}
           onSelect={this.onSelect}
           onPopupScroll={evt => {
-            console.log('[ onPopupScroll evt ] ===>', evt);
+            console.log('onPopupScroll:', evt.target);
           }}
         />
 
@@ -259,10 +259,10 @@ class Demo extends React.Component {
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           style={{ width: 300 }}
           // dropdownStyle={{ height: 200, overflow: 'auto' }}
-          // dropdownPopupAlign={{
-          //   overflow: { adjustY: 0, adjustX: 0 },
-          //   offset: [0, 2],
-          // }}
+          dropdownAlign={{
+            overflow: { adjustY: 0, adjustX: 0 },
+            offset: [0, 2],
+          }}
           onDropdownVisibleChange={this.onDropdownVisibleChange}
           placeholder={<i>请下拉选择</i>}
           treeLine
@@ -392,41 +392,6 @@ class Demo extends React.Component {
           treeData={gData}
           treeTitleRender={node => node.label + 'ok'}
         />
-
-        <h2 style={{ marginTop: 140 }}>onPopupScroll</h2>
-        <TreeSelect
-          open
-          style={{ width: 300 }}
-          treeData={gData}
-          treeDefaultExpandAll
-          onPopupScroll={evt => {
-            console.log('[ onPopupScroll evt ] ===>', evt);
-          }}
-        >
-          <TreeNode value="Value 0" title="Title 0">
-            <TreeNode value="Value 0-0" title="Title 0-0" />
-            <TreeNode value="Value 0-1" title="Title 0-1" />
-            <TreeNode value="Value 0-2" title="Title 0-2" />
-          </TreeNode>
-
-          <TreeNode value="Value 1" title="Title 1">
-            <TreeNode value="Value 1-0" title="Title 1-0" />
-            <TreeNode value="Value 1-1" title="Title 1-1" />
-            <TreeNode value="Value 1-2" title="Title 1-2" />
-          </TreeNode>
-
-          <TreeNode value="Value 2" title="Title 2">
-            <TreeNode value="Value 2-0" title="Title 2-0" />
-            <TreeNode value="Value 2-1" title="Title 2-1" />
-            <TreeNode value="Value 2-2" title="Title 2-2" />
-          </TreeNode>
-
-          <TreeNode value="Value 3" title="Title 3">
-            <TreeNode value="Value 3-0" title="Title 3-0" />
-            <TreeNode value="Value 3-1" title="Title 3-1" />
-            <TreeNode value="Value 3-2" title="Title 3-2" />
-          </TreeNode>
-        </TreeSelect>
       </div>
     );
   }
