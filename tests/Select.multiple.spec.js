@@ -7,7 +7,7 @@ import TreeSelect, { TreeNode } from '../src';
 import focusTest from './shared/focusTest';
 
 describe('TreeSelect.multiple', () => {
-  focusTest('multiple');
+  focusTest(true);
 
   const treeData = [
     { key: '0', value: '0', title: 'label0' },

@@ -157,110 +157,115 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
             </div>
             <div
               class="rc-tree-select-tree-list"
-              style="height: 200px;"
+              style="position: relative;"
             >
-              <div>
-                <div
-                  class="rc-tree-select-tree-list-holder-inner"
-                  style="display: flex; flex-direction: column;"
-                >
+              <div
+                class="rc-tree-select-tree-list-holder"
+                style="max-height: 200px; overflow-y: auto;"
+              >
+                <div>
                   <div
-                    aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
-                    draggable="false"
+                    class="rc-tree-select-tree-list-holder-inner"
+                    style="display: flex; flex-direction: column;"
                   >
-                    <span
-                      aria-hidden="true"
-                      class="rc-tree-select-tree-indent"
-                    />
-                    <span
-                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
-                    />
-                    <span
-                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
-                    />
-                    <span
-                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                      title="0"
+                    <div
+                      aria-grabbed="false"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
+                      draggable="false"
                     >
                       <span
-                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
                       />
                       <span
-                        class="rc-tree-select-tree-title"
+                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                      />
+                      <span
+                        class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                      />
+                      <span
+                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                        title="0"
                       >
-                        0
+                        <span
+                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
+                        />
+                        <span
+                          class="rc-tree-select-tree-title"
+                        >
+                          0
+                        </span>
                       </span>
-                    </span>
-                  </div>
-                  <div
-                    aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
-                    draggable="false"
-                  >
-                    <span
-                      aria-hidden="true"
-                      class="rc-tree-select-tree-indent"
+                    </div>
+                    <div
+                      aria-grabbed="false"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
+                      draggable="false"
                     >
                       <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                      />
-                    </span>
-                    <span
-                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
-                    />
-                    <span
-                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
-                    />
-                    <span
-                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                      title="0-0"
-                    >
-                      <span
-                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
-                      />
-                      <span
-                        class="rc-tree-select-tree-title"
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
                       >
-                        0-0
+                        <span
+                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                        />
                       </span>
-                    </span>
-                  </div>
-                  <div
-                    aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
-                    draggable="false"
-                  >
-                    <span
-                      aria-hidden="true"
-                      class="rc-tree-select-tree-indent"
-                    >
                       <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                       />
                       <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                      />
-                    </span>
-                    <span
-                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
-                    />
-                    <span
-                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
-                    />
-                    <span
-                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                      title="0-0-0"
-                    >
-                      <span
-                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                        class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
                       />
                       <span
-                        class="rc-tree-select-tree-title"
+                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                        title="0-0"
                       >
-                        0-0-0
+                        <span
+                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
+                        />
+                        <span
+                          class="rc-tree-select-tree-title"
+                        >
+                          0-0
+                        </span>
                       </span>
-                    </span>
+                    </div>
+                    <div
+                      aria-grabbed="false"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
+                      draggable="false"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
+                      >
+                        <span
+                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                        />
+                        <span
+                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                        />
+                      </span>
+                      <span
+                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                      />
+                      <span
+                        class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                      />
+                      <span
+                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                        title="0-0-0"
+                      >
+                        <span
+                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                        />
+                        <span
+                          class="rc-tree-select-tree-title"
+                        >
+                          0-0-0
+                        </span>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -352,110 +357,115 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
             </div>
             <div
               class="rc-tree-select-tree-list"
-              style="height: 200px;"
+              style="position: relative;"
             >
-              <div>
-                <div
-                  class="rc-tree-select-tree-list-holder-inner"
-                  style="display: flex; flex-direction: column;"
-                >
+              <div
+                class="rc-tree-select-tree-list-holder"
+                style="max-height: 200px; overflow-y: auto;"
+              >
+                <div>
                   <div
-                    aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
-                    draggable="false"
+                    class="rc-tree-select-tree-list-holder-inner"
+                    style="display: flex; flex-direction: column;"
                   >
-                    <span
-                      aria-hidden="true"
-                      class="rc-tree-select-tree-indent"
-                    />
-                    <span
-                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
-                    />
-                    <span
-                      class="rc-tree-select-tree-checkbox"
-                    />
-                    <span
-                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                      title="0"
+                    <div
+                      aria-grabbed="false"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                      draggable="false"
                     >
                       <span
-                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
                       />
                       <span
-                        class="rc-tree-select-tree-title"
+                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                      />
+                      <span
+                        class="rc-tree-select-tree-checkbox"
+                      />
+                      <span
+                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                        title="0"
                       >
-                        0
+                        <span
+                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
+                        />
+                        <span
+                          class="rc-tree-select-tree-title"
+                        >
+                          0
+                        </span>
                       </span>
-                    </span>
-                  </div>
-                  <div
-                    aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
-                    draggable="false"
-                  >
-                    <span
-                      aria-hidden="true"
-                      class="rc-tree-select-tree-indent"
+                    </div>
+                    <div
+                      aria-grabbed="false"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                      draggable="false"
                     >
                       <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                      />
-                    </span>
-                    <span
-                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
-                    />
-                    <span
-                      class="rc-tree-select-tree-checkbox"
-                    />
-                    <span
-                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                      title="0-0"
-                    >
-                      <span
-                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
-                      />
-                      <span
-                        class="rc-tree-select-tree-title"
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
                       >
-                        0-0
+                        <span
+                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                        />
                       </span>
-                    </span>
-                  </div>
-                  <div
-                    aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
-                    draggable="false"
-                  >
-                    <span
-                      aria-hidden="true"
-                      class="rc-tree-select-tree-indent"
-                    >
                       <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                       />
                       <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                      />
-                    </span>
-                    <span
-                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
-                    />
-                    <span
-                      class="rc-tree-select-tree-checkbox"
-                    />
-                    <span
-                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                      title="0-0-0"
-                    >
-                      <span
-                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                        class="rc-tree-select-tree-checkbox"
                       />
                       <span
-                        class="rc-tree-select-tree-title"
+                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                        title="0-0"
                       >
-                        0-0-0
+                        <span
+                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
+                        />
+                        <span
+                          class="rc-tree-select-tree-title"
+                        >
+                          0-0
+                        </span>
                       </span>
-                    </span>
+                    </div>
+                    <div
+                      aria-grabbed="false"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                      draggable="false"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
+                      >
+                        <span
+                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                        />
+                        <span
+                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                        />
+                      </span>
+                      <span
+                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                      />
+                      <span
+                        class="rc-tree-select-tree-checkbox"
+                      />
+                      <span
+                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                        title="0-0-0"
+                      >
+                        <span
+                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                        />
+                        <span
+                          class="rc-tree-select-tree-title"
+                        >
+                          0-0-0
+                        </span>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -625,110 +635,115 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
             </div>
             <div
               class="rc-tree-select-tree-list"
-              style="height: 200px;"
+              style="position: relative;"
             >
-              <div>
-                <div
-                  class="rc-tree-select-tree-list-holder-inner"
-                  style="display: flex; flex-direction: column;"
-                >
+              <div
+                class="rc-tree-select-tree-list-holder"
+                style="max-height: 200px; overflow-y: auto;"
+              >
+                <div>
                   <div
-                    aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
-                    draggable="false"
+                    class="rc-tree-select-tree-list-holder-inner"
+                    style="display: flex; flex-direction: column;"
                   >
-                    <span
-                      aria-hidden="true"
-                      class="rc-tree-select-tree-indent"
-                    />
-                    <span
-                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
-                    />
-                    <span
-                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
-                    />
-                    <span
-                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                      title="0"
+                    <div
+                      aria-grabbed="false"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
+                      draggable="false"
                     >
                       <span
-                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
                       />
                       <span
-                        class="rc-tree-select-tree-title"
+                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                      />
+                      <span
+                        class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                      />
+                      <span
+                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                        title="0"
                       >
-                        0
+                        <span
+                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
+                        />
+                        <span
+                          class="rc-tree-select-tree-title"
+                        >
+                          0
+                        </span>
                       </span>
-                    </span>
-                  </div>
-                  <div
-                    aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
-                    draggable="false"
-                  >
-                    <span
-                      aria-hidden="true"
-                      class="rc-tree-select-tree-indent"
+                    </div>
+                    <div
+                      aria-grabbed="false"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
+                      draggable="false"
                     >
                       <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                      />
-                    </span>
-                    <span
-                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
-                    />
-                    <span
-                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
-                    />
-                    <span
-                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                      title="0-0"
-                    >
-                      <span
-                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
-                      />
-                      <span
-                        class="rc-tree-select-tree-title"
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
                       >
-                        0-0
+                        <span
+                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                        />
                       </span>
-                    </span>
-                  </div>
-                  <div
-                    aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
-                    draggable="false"
-                  >
-                    <span
-                      aria-hidden="true"
-                      class="rc-tree-select-tree-indent"
-                    >
                       <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                       />
                       <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                      />
-                    </span>
-                    <span
-                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
-                    />
-                    <span
-                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
-                    />
-                    <span
-                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                      title="0-0-0"
-                    >
-                      <span
-                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                        class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
                       />
                       <span
-                        class="rc-tree-select-tree-title"
+                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                        title="0-0"
                       >
-                        0-0-0
+                        <span
+                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
+                        />
+                        <span
+                          class="rc-tree-select-tree-title"
+                        >
+                          0-0
+                        </span>
                       </span>
-                    </span>
+                    </div>
+                    <div
+                      aria-grabbed="false"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
+                      draggable="false"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
+                      >
+                        <span
+                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                        />
+                        <span
+                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                        />
+                      </span>
+                      <span
+                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                      />
+                      <span
+                        class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                      />
+                      <span
+                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                        title="0-0-0"
+                      >
+                        <span
+                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                        />
+                        <span
+                          class="rc-tree-select-tree-title"
+                        >
+                          0-0-0
+                        </span>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -817,110 +832,115 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
             </div>
             <div
               class="rc-tree-select-tree-list"
-              style="height: 200px;"
+              style="position: relative;"
             >
-              <div>
-                <div
-                  class="rc-tree-select-tree-list-holder-inner"
-                  style="display: flex; flex-direction: column;"
-                >
+              <div
+                class="rc-tree-select-tree-list-holder"
+                style="max-height: 200px; overflow-y: auto;"
+              >
+                <div>
                   <div
-                    aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node"
-                    draggable="false"
+                    class="rc-tree-select-tree-list-holder-inner"
+                    style="display: flex; flex-direction: column;"
                   >
-                    <span
-                      aria-hidden="true"
-                      class="rc-tree-select-tree-indent"
-                    />
-                    <span
-                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
-                    />
-                    <span
-                      class="rc-tree-select-tree-checkbox"
-                    />
-                    <span
-                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                      title="0"
+                    <div
+                      aria-grabbed="false"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node"
+                      draggable="false"
                     >
                       <span
-                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
                       />
                       <span
-                        class="rc-tree-select-tree-title"
+                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                      />
+                      <span
+                        class="rc-tree-select-tree-checkbox"
+                      />
+                      <span
+                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                        title="0"
                       >
-                        0
+                        <span
+                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
+                        />
+                        <span
+                          class="rc-tree-select-tree-title"
+                        >
+                          0
+                        </span>
                       </span>
-                    </span>
-                  </div>
-                  <div
-                    aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node"
-                    draggable="false"
-                  >
-                    <span
-                      aria-hidden="true"
-                      class="rc-tree-select-tree-indent"
+                    </div>
+                    <div
+                      aria-grabbed="false"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node"
+                      draggable="false"
                     >
                       <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                      />
-                    </span>
-                    <span
-                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
-                    />
-                    <span
-                      class="rc-tree-select-tree-checkbox"
-                    />
-                    <span
-                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                      title="0-0"
-                    >
-                      <span
-                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
-                      />
-                      <span
-                        class="rc-tree-select-tree-title"
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
                       >
-                        0-0
+                        <span
+                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                        />
                       </span>
-                    </span>
-                  </div>
-                  <div
-                    aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node"
-                    draggable="false"
-                  >
-                    <span
-                      aria-hidden="true"
-                      class="rc-tree-select-tree-indent"
-                    >
                       <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                       />
                       <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                      />
-                    </span>
-                    <span
-                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
-                    />
-                    <span
-                      class="rc-tree-select-tree-checkbox"
-                    />
-                    <span
-                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                      title="0-0-0"
-                    >
-                      <span
-                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                        class="rc-tree-select-tree-checkbox"
                       />
                       <span
-                        class="rc-tree-select-tree-title"
+                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                        title="0-0"
                       >
-                        0-0-0
+                        <span
+                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
+                        />
+                        <span
+                          class="rc-tree-select-tree-title"
+                        >
+                          0-0
+                        </span>
                       </span>
-                    </span>
+                    </div>
+                    <div
+                      aria-grabbed="false"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node"
+                      draggable="false"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
+                      >
+                        <span
+                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                        />
+                        <span
+                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                        />
+                      </span>
+                      <span
+                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                      />
+                      <span
+                        class="rc-tree-select-tree-checkbox"
+                      />
+                      <span
+                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                        title="0-0-0"
+                      >
+                        <span
+                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                        />
+                        <span
+                          class="rc-tree-select-tree-title"
+                        >
+                          0-0-0
+                        </span>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

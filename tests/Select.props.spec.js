@@ -2,6 +2,8 @@
 import { mount } from 'enzyme';
 import Tree, { TreeNode } from 'rc-tree';
 import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
+
 import TreeSelect, { SHOW_ALL, SHOW_CHILD, SHOW_PARENT, TreeNode as SelectNode } from '../src';
 
 // Promisify timeout to let jest catch works
@@ -239,6 +241,33 @@ describe('TreeSelect.props', () => {
     );
     wrapper.search('Search changed');
     expect(handleSearch).toHaveBeenCalledWith('Search changed');
+  });
+
+  it('onPopupScroll', async () => {
+    const onPopupScroll = jest.fn(e => {
+      // Prevents React from resetting its properties:
+      e.persist();
+    });
+    render(
+      <TreeSelect
+        open
+        treeDefaultExpandAll
+        onPopupScroll={onPopupScroll}
+        treeData={new Array(10).fill(0).map((_, index) => ({
+          title: `Title ${index}`,
+          value: index,
+        }))}
+      />,
+    );
+
+    fireEvent.scroll(document.querySelector('.rc-tree-select-tree-list-holder'), {
+      scrollY: 100,
+    });
+
+    expect(onPopupScroll).toHaveBeenCalled();
+    expect(onPopupScroll.mock.calls[0][0].target).toBe(
+      document.querySelector('.rc-tree-select-tree-list-holder'),
+    );
   });
 
   it('showArrow', () => {

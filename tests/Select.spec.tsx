@@ -6,9 +6,17 @@ import TreeSelect, { TreeNode } from '../src';
 import focusTest from './shared/focusTest';
 import { selectNode } from './util';
 
+const mockScrollTo = jest.fn();
+
+// Mock `useScrollTo` from `rc-virtual-list/lib/hooks/useScrollTo`
+jest.mock('rc-virtual-list/lib/hooks/useScrollTo', () => {
+  return () => mockScrollTo;
+});
+
 describe('TreeSelect.basic', () => {
   beforeEach(() => {
     jest.useFakeTimers();
+    mockScrollTo.mockReset();
   });
 
   beforeAll(() => {
@@ -19,7 +27,7 @@ describe('TreeSelect.basic', () => {
     jest.useRealTimers();
   });
 
-  focusTest('single');
+  focusTest();
 
   describe('render', () => {
     const treeData = [
@@ -391,11 +399,8 @@ describe('TreeSelect.basic', () => {
       wrapper.openSelect();
       expect(wrapper.isOpen()).toBeFalsy();
 
-      const scrollTo = jest.fn();
-      wrapper.find('List').instance().scrollTo = scrollTo;
-
       wrapper.openSelect();
-      expect(scrollTo).toHaveBeenCalled();
+      expect(mockScrollTo).toHaveBeenCalled();
     });
   });
 
@@ -525,7 +530,7 @@ describe('TreeSelect.basic', () => {
 
       keyDown(KeyCode.DOWN);
       expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('0 label');
-      
+
       keyDown(KeyCode.UP);
       expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('11 label');
     });

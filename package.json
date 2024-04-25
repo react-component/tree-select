@@ -72,7 +72,7 @@
     "rc-dialog": "^7.5.7",
     "rc-field-form": "^2.0.0",
     "rc-test": "^7.0.4",
-    "rc-virtual-list": "^1.1.0",
+    "rc-virtual-list": "^3.0.0",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "typescript": "^5.0.0"

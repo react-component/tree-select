@@ -44,6 +44,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     dropdownMatchSelectWidth,
     treeExpandAction,
     treeTitleRender,
+    onPopupScroll,
   } = React.useContext(TreeSelectContext);
 
   const {
@@ -70,6 +71,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   const memoTreeData = useMemo(
     () => treeData,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [open, treeData],
     (prev, next) => next[0] && prev[1] !== next[1],
   );
@@ -97,6 +99,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       treeRef.current?.scrollTo({ key: checkedKeys[0] });
       setActiveKey(checkedKeys[0]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   // ========================== Search ==========================
@@ -123,6 +126,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     if (searchValue) {
       setSearchExpandedKeys(getAllKeys(treeData, fieldNames));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
   const onInternalExpand = (keys: Key[]) => {
@@ -252,6 +256,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         onLoad={onTreeLoad}
         filterTreeNode={filterTreeNode}
         expandAction={treeExpandAction}
+        onScroll={onPopupScroll}
       />
     </div>
   );

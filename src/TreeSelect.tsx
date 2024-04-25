@@ -240,6 +240,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     treeMotion,
     treeTitleRender,
 
+    onPopupScroll,
     ...restProps
   } = props;
 
@@ -465,6 +466,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       ...item,
       label: item.label ?? item.value,
     }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     mergedFieldNames,
     mergedMultiple,
@@ -681,6 +683,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       onSelect: onOptionSelect,
       treeExpandAction,
       treeTitleRender,
+      onPopupScroll,
     }),
     [
       virtual,
@@ -693,6 +696,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       onOptionSelect,
       treeExpandAction,
       treeTitleRender,
+      onPopupScroll,
     ],
   );
 

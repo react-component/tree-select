@@ -212,6 +212,9 @@ class Demo extends React.Component {
             });
           }}
           onSelect={this.onSelect}
+          onPopupScroll={evt => {
+            console.log('onPopupScroll:', evt.target);
+          }}
         />
 
         <h2>single select (just select children)</h2>
@@ -256,7 +259,7 @@ class Demo extends React.Component {
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           style={{ width: 300 }}
           // dropdownStyle={{ height: 200, overflow: 'auto' }}
-          dropdownPopupAlign={{
+          dropdownAlign={{
             overflow: { adjustY: 0, adjustX: 0 },
             offset: [0, 2],
           }}
