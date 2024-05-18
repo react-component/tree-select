@@ -5,6 +5,7 @@ import React from 'react';
 import TreeSelect, { TreeNode } from '../src';
 import focusTest from './shared/focusTest';
 import { selectNode } from './util';
+import type { BaseSelectRef } from 'rc-select';
 
 const mockScrollTo = jest.fn();
 
@@ -627,5 +628,11 @@ describe('TreeSelect.basic', () => {
 
     wrapper.selectNode(1);
     expect(onChange).toHaveBeenCalledWith(['leaf1'], expect.anything(), expect.anything());
+  });
+
+  it('nativeElement', () => {
+    const treeSelectRef = React.createRef<BaseSelectRef>();
+    const { container } = render(<TreeSelect ref={treeSelectRef} />);
+    expect(treeSelectRef.current.nativeElement).toBe(container.querySelector('.rc-tree-select'));
   });
 });
