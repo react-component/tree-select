@@ -660,6 +660,39 @@ describe('TreeSelect.props', () => {
         );
         expect(wrapper.getSelection(0).text()).toBe('Value 0-0');
       });
+
+      it('with fieldNames', () => {
+        const wrapper = mount(
+          <div>
+            <TreeSelect
+              defaultValue={'parent'}
+              treeTitleRender={node => node.myLabel}
+              fieldNames={{
+                label: 'myLabel',
+                value: 'myValue',
+                children: 'myChildren',
+              }}
+              treeData={[
+                {
+                  myLabel: 'Parent',
+                  myValue: 'parent',
+                  myChildren: [
+                    {
+                      myLabel: 'Sub 1',
+                      myValue: 'sub_1',
+                    },
+                    {
+                      myLabel: 'Sub 2',
+                      myValue: 'sub_2',
+                    },
+                  ],
+                },
+              ]}
+            />
+          </div>,
+        );
+        expect(wrapper.getSelection(0).text()).toBe('Parent');
+      });
     });
   });
 });

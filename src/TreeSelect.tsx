@@ -368,7 +368,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
         // Fill missing label & status
         if (entity) {
-          rawLabel = rawLabel ?? getLabel(entity.node);
+          rawLabel = treeTitleRender ? treeTitleRender(entity.node) : rawLabel ?? getLabel(entity.node);
           rawDisabled = entity.node.disabled;
         } else if (rawLabel === undefined) {
           // We try to find in current `labelInValue` value
@@ -377,7 +377,6 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           );
           rawLabel = labelInValueItem.label;
         }
-
         return {
           label: rawLabel,
           value: rawValue,
