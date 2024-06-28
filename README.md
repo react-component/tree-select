@@ -2,24 +2,32 @@
 
 React TreeSelect Component
 
-[![NPM version][npm-image]][npm-url] [![dumi](https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square)](https://github.com/umijs/dumi) [![build status][github-actions-image]][github-actions-url] [![Test coverage][coveralls-image]][coveralls-url] [![Dependencies][david-image]][david-url] [![DevDependencies][david-dev-image]][david-dev-url] [![npm download][download-image]][download-url] [![bundle size][bundlephobia-image]][bundlephobia-url]
+<!-- prettier-ignore -->
+[![NPM version][npm-image]][npm-url]
+[![npm download][download-image]][download-url]
+[![build status][github-actions-image]][github-actions-url]
+[![Codecov][codecov-image]][codecov-url]
+[![bundle size][bundlephobia-image]][bundlephobia-url]
+[![dumi][dumi-image]][dumi-url]
 
 [npm-image]: http://img.shields.io/npm/v/rc-tree-select.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-tree-select
+[travis-image]: https://img.shields.io/travis/react-component/tree-select/master?style=flat-square
+[travis-url]: https://travis-ci.com/react-component/tree-select
 [github-actions-image]: https://github.com/react-component/tree-select/workflows/CI/badge.svg
 [github-actions-url]: https://github.com/react-component/tree-select/actions
-[circleci-image]: https://img.shields.io/circleci/react-component/tree-select/master?style=flat-square
-[circleci-url]: https://circleci.com/gh/react-component/tree-select
-[coveralls-image]: https://img.shields.io/coveralls/react-component/tree-select.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/react-component/tree-select?branch=master
+[codecov-image]: https://img.shields.io/codecov/c/github/react-component/tree-select/master.svg?style=flat-square
+[codecov-url]: https://app.codecov.io/gh/react-component/tree-select
 [david-url]: https://david-dm.org/react-component/tree-select
 [david-image]: https://david-dm.org/react-component/tree-select/status.svg?style=flat-square
 [david-dev-url]: https://david-dm.org/react-component/tree-select?type=dev
 [david-dev-image]: https://david-dm.org/react-component/tree-select/dev-status.svg?style=flat-square
 [download-image]: https://img.shields.io/npm/dm/rc-tree-select.svg?style=flat-square
 [download-url]: https://npmjs.org/package/rc-tree-select
-[bundlephobia-url]: https://bundlephobia.com/result?p=rc-tree-select
+[bundlephobia-url]: https://bundlephobia.com/package/rc-tree-select
 [bundlephobia-image]: https://badgen.net/bundlephobia/minzip/rc-tree-select
+[dumi-url]: https://github.com/umijs/dumi
+[dumi-image]: https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square
 
 ## Screenshots
 
