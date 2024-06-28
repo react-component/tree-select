@@ -449,9 +449,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       if (labelInValue && targetItem.label !== undefined) {
         label = targetItem.label;
       } else if (!labelInValue && treeTitleRender) {
-        if (!fieldNames) {
-          label = treeTitleRender(targetItem);
-        }
+        label = treeTitleRender(targetItem);
       }
       return {
         value: val,
@@ -460,6 +458,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     });
 
     const rawDisplayValues = convert2LabelValues(labeledValues);
+
     const firstVal = rawDisplayValues[0];
 
     if (!mergedMultiple && firstVal && isNil(firstVal.value) && isNil(firstVal.label)) {
