@@ -368,7 +368,11 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
         // Fill missing label & status
         if (entity) {
-          rawLabel = rawLabel ?? getLabel(entity.node);
+          if (treeTitleRender) {
+            rawLabel = treeTitleRender(entity.node);
+          } else {
+            rawLabel = rawLabel ?? getLabel(entity.node);
+          }
           rawDisabled = entity.node.disabled;
         } else if (rawLabel === undefined) {
           // We try to find in current `labelInValue` value
@@ -377,7 +381,6 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           );
           rawLabel = labelInValueItem.label;
         }
-
         return {
           label: rawLabel,
           value: rawValue,
@@ -446,7 +449,9 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       if (labelInValue && targetItem.label !== undefined) {
         label = targetItem.label;
       } else if (!labelInValue && treeTitleRender) {
-        label = treeTitleRender(targetItem);
+        if (!fieldNames) {
+          label = treeTitleRender(targetItem);
+        }
       }
       return {
         value: val,
@@ -455,7 +460,6 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     });
 
     const rawDisplayValues = convert2LabelValues(labeledValues);
-
     const firstVal = rawDisplayValues[0];
 
     if (!mergedMultiple && firstVal && isNil(firstVal.value) && isNil(firstVal.label)) {
