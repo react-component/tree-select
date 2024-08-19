@@ -30,7 +30,7 @@ class Demo extends React.Component {
 
   loadData = treeNode => {
     console.log('trigger load:', treeNode);
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       setTimeout(() => {
         let { treeData } = this.state;
         treeData = treeData.slice();
