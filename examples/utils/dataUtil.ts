@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus, no-mixed-operators, no-underscore-dangle */
 export function generateData(x = 3, y = 2, z = 1, gData = []) {
   // x：每一级下的节点总数。y：每级节点里有y个节点、存在子节点。z：树的level层级数（0表示一级）
-  function _loop(_level, _preKey, _tns) {
+  function _loop(_level, _preKey?, _tns?) {
     const preKey = _preKey || '0';
     const tns = _tns || gData;
 
@@ -88,7 +88,7 @@ export function getNewTreeData(treeData, curKey, child, level) {
 }
 
 function loopData(data, callback) {
-  const loop = (d, level = 0) => {
+  const loop = (d, level = '0') => {
     d.forEach((item, index) => {
       const pos = `${level}-${index}`;
       if (item.children) {

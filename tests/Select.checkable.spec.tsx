@@ -489,7 +489,7 @@ describe('TreeSelect.checkable', () => {
   describe('labelInValue', () => {
     it('basic', () => {
       const wrapper = mount(
-        <TreeSelect checkable labelInValue value={[{ value: '0-0' }]}>
+        <TreeSelect treeCheckable showCheckedStrategy="SHOW_PARENT" labelInValue value={[{ value: '0-0' }]}>
           <TreeNode key="0-0" value="0-0" title="0-0">
             <TreeNode key="0-0-0" value="0-0-0" title="0-0-0" />
           </TreeNode>
