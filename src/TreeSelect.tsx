@@ -390,7 +390,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
   // =========================== Values ===========================
   const rawMixedLabeledValues = React.useMemo(
-    () => toLabeledValues(internalValue),
+    () => toLabeledValues(internalValue === null ? [] : internalValue),
     [toLabeledValues, internalValue],
   );
 
