@@ -310,4 +310,42 @@ describe('TreeSelect.multiple', () => {
     ).map(ele => ele.textContent);
     expect(values).toEqual(['child1', 'child2', 'parent']);
   });
+
+  // https://github.com/ant-design/ant-design/issues/50578#issuecomment-2312130715
+  it('should not omit value when value is null', () => {
+    const { container } = render(
+      <TreeSelect
+        value={null}
+        multiple
+        placeholder="Fake placeholder"
+        treeData={[
+          {
+            label: 'parent',
+            value: 'parent',
+            children: [
+              {
+                label: 'child1',
+                value: 'child1',
+              },
+              {
+                label: 'child2',
+                value: 'child2',
+              },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    const values = Array.from(
+      container.querySelectorAll('.rc-tree-select-selection-item-content'),
+    ); //.map(ele => ele.textContent);
+
+    expect(values).toHaveLength(0);
+
+    const placeholder = container.querySelector('[class$=placeholder]');
+    expect(placeholder).toBeTruthy();
+    expect(placeholder.textContent).toBe('Fake placeholder');
+  });
+
 });
