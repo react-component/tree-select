@@ -487,7 +487,7 @@ describe('TreeSelect.props', () => {
     mount(
       <TreeSelect
         open
-        treeDefaultExpandAll
+        treeDefaultExpandedKeys={['0-0', '0-1']}
         loadData={loadData}
         treeLoadedKeys={['0-0']}
         treeData={[{ value: '0-0' }, { value: '0-1' }]}
