@@ -232,7 +232,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
                     </div>
                     <div
                       aria-grabbed="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
                       draggable="false"
                     >
                       <span
@@ -432,7 +432,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
                     </div>
                     <div
                       aria-grabbed="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
                       draggable="false"
                     >
                       <span
