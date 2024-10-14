@@ -1,4 +1,3 @@
-import type * as React from 'react';
 import type { InternalFieldName } from '../TreeSelect';
 import type { DataEntity } from 'rc-tree/lib/interface';
 import type { SafeKey } from '../interface';

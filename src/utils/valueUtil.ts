@@ -1,4 +1,3 @@
-import type * as React from 'react';
 import type { DataNode, FieldNames, SafeKey } from '../interface';
 import type { DefaultOptionType, InternalFieldName } from '../TreeSelect';
 

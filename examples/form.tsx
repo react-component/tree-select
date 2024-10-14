@@ -21,7 +21,7 @@ const errorStyle = {
 };
 
 class TreeSelectInput extends Component<{
-  onChange?: Function;
+  onChange?: (value: string[]) => void;
   style: React.CSSProperties;
 }> {
   onChange = (value, ...args) => {
@@ -105,11 +105,7 @@ const Demo = () => {
             >
               {(control, { errors }) => (
                 <div>
-                  <TreeSelectInput
-                    {...tProps}
-                    {...control}
-                    style={{ width: 300 }}
-                  />
+                  <TreeSelectInput {...tProps} {...control} style={{ width: 300 }} />
 
                   <p style={errorStyle}>{errors.join(',')}</p>
                 </div>
@@ -122,18 +118,11 @@ const Demo = () => {
           <div>
             <Field
               name="select"
-              rules={[
-                { required: true, type: 'array', message: 'select 需要必填' },
-              ]}
+              rules={[{ required: true, type: 'array', message: 'select 需要必填' }]}
             >
               {(control, { errors }) => (
                 <div>
-                  <Select
-                    style={{ width: 200 }}
-                    {...control}
-                    allowClear
-                    mode="multiple"
-                  >
+                  <Select style={{ width: 200 }} {...control} allowClear mode="multiple">
                     <Option value="jack">jack</Option>
                     <Option value="lucy">lucy</Option>
                     <Option value="disabled" disabled>
