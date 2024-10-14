@@ -1,26 +1,25 @@
 import type * as React from 'react';
+import type { SafeKey } from 'rc-tree/lib/interface';
+
+export type { SafeKey };
 
 export type SelectSource = 'option' | 'selection' | 'input' | 'clear';
 
-export type Key = string | number;
-
-export type RawValueType = string | number;
-
-export interface LabelValueType {
-  key?: Key;
-  value?: RawValueType;
+export interface LabeledValueType {
+  key?: SafeKey;
+  value?: SafeKey;
   label?: React.ReactNode;
   /** Only works on `treeCheckStrictly` */
   halfChecked?: boolean;
 }
 
-export type DefaultValueType = RawValueType | RawValueType[] | LabelValueType | LabelValueType[];
+export type DefaultValueType = SafeKey | SafeKey[] | LabeledValueType | LabeledValueType[];
 
 export interface DataNode {
-  value?: RawValueType;
+  value?: SafeKey;
   title?: React.ReactNode;
   label?: React.ReactNode;
-  key?: Key;
+  key?: SafeKey;
   disabled?: boolean;
   disableCheckbox?: boolean;
   checkable?: boolean;
@@ -31,8 +30,8 @@ export interface DataNode {
 }
 
 export interface InternalDataEntity {
-  key: Key;
-  value: RawValueType;
+  key: SafeKey;
+  value: SafeKey;
   title?: React.ReactNode;
   disableCheckbox?: boolean;
   disabled?: boolean;
@@ -47,22 +46,22 @@ export interface LegacyDataNode extends DataNode {
 }
 
 export interface TreeDataNode extends DataNode {
-  key: Key;
+  key: SafeKey;
   children?: TreeDataNode[];
 }
 
 export interface FlattenDataNode {
   data: InternalDataEntity;
-  key: Key;
-  value: RawValueType;
+  key: SafeKey;
+  value: SafeKey;
   level: number;
   parent?: FlattenDataNode;
 }
 
 export interface SimpleModeConfig {
-  id?: Key;
-  pId?: Key;
-  rootPId?: Key;
+  id?: SafeKey;
+  pId?: SafeKey;
+  rootPId?: SafeKey;
 }
 
 /** @deprecated This is only used for legacy compatible. Not works on new code. */
@@ -74,8 +73,8 @@ export interface LegacyCheckedNode {
 
 export interface ChangeEventExtra {
   /** @deprecated Please save prev value by control logic instead */
-  preValue: LabelValueType[];
-  triggerValue: RawValueType;
+  preValue: LabeledValueType[];
+  triggerValue: SafeKey;
   /** @deprecated Use `onSelect` or `onDeselect` instead. */
   selected?: boolean;
   /** @deprecated Use `onSelect` or `onDeselect` instead. */

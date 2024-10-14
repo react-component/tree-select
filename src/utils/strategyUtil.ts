@@ -1,7 +1,7 @@
 import type * as React from 'react';
 import type { InternalFieldName } from '../TreeSelect';
 import type { DataEntity } from 'rc-tree/lib/interface';
-import type { RawValueType, Key } from '../interface';
+import type { SafeKey } from '../interface';
 import { isCheckDisabled } from './valueUtil';
 
 export const SHOW_ALL = 'SHOW_ALL';
@@ -11,11 +11,11 @@ export const SHOW_CHILD = 'SHOW_CHILD';
 export type CheckedStrategy = typeof SHOW_ALL | typeof SHOW_PARENT | typeof SHOW_CHILD;
 
 export function formatStrategyValues(
-  values: React.Key[],
+  values: SafeKey[],
   strategy: CheckedStrategy,
-  keyEntities: Record<Key, DataEntity>,
+  keyEntities: Record<SafeKey, DataEntity>,
   fieldNames: InternalFieldName,
-): RawValueType[] {
+): SafeKey[] {
   const valueSet = new Set(values);
 
   if (strategy === SHOW_CHILD) {
