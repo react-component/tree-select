@@ -23,11 +23,11 @@ node_modules
 dist
 *.css
 build
-lib/*
+lib
 coverage
 yarn.lock
 package-lock.json
-es/*
+es
 # dumi
 .dumi/tmp
 .dumi/tmp-test
