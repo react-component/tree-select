@@ -1,13 +1,23 @@
-/* eslint-disable no-undef react/no-multi-comp */
-import React from 'react';
+import { render } from '@testing-library/react';
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
+import React from 'react';
 import TreeSelect, { TreeNode } from '../src';
 import focusTest from './shared/focusTest';
+import { selectNode } from './util';
+import type { BaseSelectRef } from 'rc-select';
+
+const mockScrollTo = jest.fn();
+
+// Mock `useScrollTo` from `rc-virtual-list/lib/hooks/useScrollTo`
+jest.mock('rc-virtual-list/lib/hooks/useScrollTo', () => {
+  return () => mockScrollTo;
+});
 
 describe('TreeSelect.basic', () => {
   beforeEach(() => {
     jest.useFakeTimers();
+    mockScrollTo.mockReset();
   });
 
   beforeAll(() => {
@@ -18,7 +28,7 @@ describe('TreeSelect.basic', () => {
     jest.useRealTimers();
   });
 
-  focusTest('single');
+  focusTest();
 
   describe('render', () => {
     const treeData = [
@@ -77,7 +87,7 @@ describe('TreeSelect.basic', () => {
     });
 
     it('renders TreeNode correctly', () => {
-      const wrapper = mount(
+      const { container } = render(
         <TreeSelect treeDefaultExpandAll open>
           <TreeNode key="0" value="0" title="0 label" />
           <TreeNode key="1" value="1" title="1 label">
@@ -86,11 +96,11 @@ describe('TreeSelect.basic', () => {
           </TreeNode>
         </TreeSelect>,
       );
-      expect(wrapper.render()).toMatchSnapshot();
+      expect(container.firstChild).toMatchSnapshot();
     });
 
     it('renders TreeNode correctly with falsy child', () => {
-      const wrapper = mount(
+      const { container } = render(
         <TreeSelect treeDefaultExpandAll open>
           <TreeNode key="0" value="0" title="0 label" />
           <TreeNode key="1" value="1" title="1 label">
@@ -100,11 +110,11 @@ describe('TreeSelect.basic', () => {
           </TreeNode>
         </TreeSelect>,
       );
-      expect(wrapper.render()).toMatchSnapshot();
+      expect(container.firstChild).toMatchSnapshot();
     });
 
     it('renders treeDataSimpleMode correctly', () => {
-      const wrapper = mount(
+      const { container } = render(
         <div>
           <TreeSelect
             treeData={[
@@ -117,7 +127,7 @@ describe('TreeSelect.basic', () => {
           />
         </div>,
       );
-      expect(wrapper.render()).toMatchSnapshot();
+      expect(container.firstChild).toMatchSnapshot();
     });
   });
 
@@ -214,11 +224,13 @@ describe('TreeSelect.basic', () => {
       { key: 'a', value: 'a', title: 'labela' },
       { key: 'b', value: 'b', title: 'labelb' },
     ];
-    const createSelect = props => <TreeSelect open showSearch treeData={treeData} {...props} />;
+    const createSelect = (props?: any) => (
+      <TreeSelect open showSearch treeData={treeData} {...props} />
+    );
 
     it('renders search input', () => {
-      const wrapper = mount(createSelect());
-      expect(wrapper.render()).toMatchSnapshot();
+      const { container } = render(createSelect());
+      expect(container.firstChild).toMatchSnapshot();
     });
 
     it('fires search event', () => {
@@ -229,11 +241,11 @@ describe('TreeSelect.basic', () => {
     });
 
     it('check tree changed by filter', () => {
-      const Wrapper = props => <div>{createSelect(props)}</div>;
-      const wrapper = mount(<Wrapper searchValue="a" treeDefaultExpandAll open />);
-      expect(wrapper.render()).toMatchSnapshot();
-      wrapper.setProps({ searchValue: '' });
-      expect(wrapper.render()).toMatchSnapshot();
+      const Wrapper = (props: any) => <div>{createSelect(props)}</div>;
+      const { container, rerender } = render(<Wrapper searchValue="a" treeDefaultExpandAll open />);
+      expect(container.firstChild).toMatchSnapshot();
+      rerender(<Wrapper searchValue="" treeDefaultExpandAll open />);
+      expect(container.firstChild).toMatchSnapshot();
     });
 
     it('search nodes by filterTreeNode', () => {
@@ -252,7 +264,7 @@ describe('TreeSelect.basic', () => {
     });
 
     it('filter node but not remove then', () => {
-      const wrapper = mount(
+      const { container } = render(
         <div>
           {createSelect({
             searchValue: 'a',
@@ -262,7 +274,7 @@ describe('TreeSelect.basic', () => {
           })}
         </div>,
       );
-      expect(wrapper.render()).toMatchSnapshot();
+      expect(container.firstChild).toMatchSnapshot();
     });
   });
 
@@ -283,10 +295,7 @@ describe('TreeSelect.basic', () => {
       </TreeSelect>,
     );
     wrapper.openSelect();
-    wrapper
-      .find('input')
-      .first()
-      .simulate('keyDown', { which: KeyCode.ESC });
+    wrapper.find('input').first().simulate('keyDown', { which: KeyCode.ESC });
     expect(wrapper.isOpen()).toBeFalsy();
   });
 
@@ -313,6 +322,7 @@ describe('TreeSelect.basic', () => {
     expect(
       wrapper
         .find('.rc-tree-select-tree-treenode')
+        .not('[aria-hidden]')
         .at(1)
         .hasClass('rc-tree-select-tree-treenode-switcher-open'),
     ).toBeTruthy();
@@ -329,7 +339,7 @@ describe('TreeSelect.basic', () => {
 
       wrapper.selectNode();
       wrapper.clearAll();
-      expect(wrapper.find('Select').props().value).toHaveLength(0);
+      expect(wrapper.find('BaseSelect').prop('displayValues')).toHaveLength(0);
     });
 
     it('has inputValue prop', () => {
@@ -357,7 +367,7 @@ describe('TreeSelect.basic', () => {
       wrapper.openSelect();
       wrapper.selectNode();
       wrapper.clearAll();
-      expect(wrapper.find('Select').props().value).toHaveLength(0);
+      expect(wrapper.find('BaseSelect').prop('displayValues')).toHaveLength(0);
     });
   });
 
@@ -372,10 +382,7 @@ describe('TreeSelect.basic', () => {
           </TreeSelect>,
         );
 
-        wrapper
-          .find('input')
-          .first()
-          .simulate('keyDown', { which: code });
+        wrapper.find('input').first().simulate('keyDown', { which: code });
         expect(wrapper.isOpen()).toBeTruthy();
       });
     });
@@ -393,11 +400,8 @@ describe('TreeSelect.basic', () => {
       wrapper.openSelect();
       expect(wrapper.isOpen()).toBeFalsy();
 
-      const scrollTo = jest.fn();
-      wrapper.find('List').instance().scrollTo = scrollTo;
-
       wrapper.openSelect();
-      expect(scrollTo).toHaveBeenCalled();
+      expect(mockScrollTo).toHaveBeenCalled();
     });
   });
 
@@ -414,18 +418,12 @@ describe('TreeSelect.basic', () => {
       );
 
       function keyDown(code) {
-        wrapper
-          .find('input')
-          .first()
-          .simulate('keyDown', { which: code });
+        wrapper.find('input').first().simulate('keyDown', { which: code });
         wrapper.update();
       }
 
       function keyUp(code) {
-        wrapper
-          .find('input')
-          .first()
-          .simulate('keyUp', { which: code });
+        wrapper.find('input').first().simulate('keyUp', { which: code });
         wrapper.update();
       }
 
@@ -447,6 +445,95 @@ describe('TreeSelect.basic', () => {
       keyDown(KeyCode.ENTER);
       keyUp(KeyCode.ENTER);
       matchValue(['parent', 'child']);
+    });
+
+    it('selectable works with keyboard operations', () => {
+      const onChange = jest.fn();
+      const wrapper = mount(
+        <TreeSelect
+          onChange={onChange}
+          treeDefaultExpandAll
+          treeData={[{ value: 'parent', children: [{ value: 'child', selectable: false }] }]}
+          multiple
+        />,
+      );
+
+      function keyDown(code) {
+        wrapper.find('input').first().simulate('keyDown', { which: code });
+        wrapper.update();
+      }
+
+      wrapper.openSelect();
+
+      keyDown(KeyCode.DOWN);
+      keyDown(KeyCode.ENTER);
+      expect(onChange).toHaveBeenCalledWith(['parent'], expect.anything(), expect.anything());
+      onChange.mockReset();
+
+      keyDown(KeyCode.UP);
+      keyDown(KeyCode.ENTER);
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
+    it('active index matches value', () => {
+      const wrapper = mount(
+        <TreeSelect
+          value={['10']}
+          treeDefaultExpandAll
+          treeData={[
+            { key: '0', value: '0', title: '0 label' },
+            {
+              key: '1',
+              value: '1',
+              title: '1 label',
+              children: [
+                { key: '10', value: '10', title: '10 label' },
+                { key: '11', value: '11', title: '11 label' },
+              ],
+            },
+          ]}
+        />,
+      );
+      wrapper.openSelect();
+      expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('10 label');
+    });
+
+    it('active index updates correctly with key operation', () => {
+      const wrapper = mount(
+        <TreeSelect
+          value={['10']}
+          treeDefaultExpandAll
+          treeData={[
+            { key: '0', value: '0', title: '0 label' },
+            {
+              key: '1',
+              value: '1',
+              title: '1 label',
+              children: [
+                { key: '10', value: '10', title: '10 label' },
+                { key: '11', value: '11', title: '11 label' },
+              ],
+            },
+          ]}
+        />,
+      );
+
+      function keyDown(code) {
+        wrapper.find('input').first().simulate('keyDown', { which: code });
+        wrapper.update();
+      }
+
+      wrapper.openSelect();
+      expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('10 label');
+
+      keyDown(KeyCode.DOWN);
+      expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('11 label');
+
+      keyDown(KeyCode.DOWN);
+      expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('0 label');
+
+      keyDown(KeyCode.UP);
+      expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('11 label');
     });
   });
 
@@ -485,5 +572,67 @@ describe('TreeSelect.basic', () => {
     });
     wrapper.update();
     expect(wrapper.find('.rc-tree-select-selection-item').text()).toEqual('bamboo');
+  });
+
+  it('should show parent if children were disabled', () => {
+    const onSelect = jest.fn();
+
+    const { container } = render(
+      <TreeSelect open treeDefaultExpandAll onSelect={onSelect}>
+        <TreeNode value="parent 1-0" title="parent 1-0">
+          <TreeNode value="leaf1" title="my leaf" disabled />
+          <TreeNode value="leaf2" title="your leaf" disabled />
+        </TreeNode>
+      </TreeSelect>,
+    );
+
+    selectNode();
+    expect(onSelect).toHaveBeenCalledWith('parent 1-0', expect.anything());
+    expect(container.querySelector('.rc-tree-select-selector').textContent).toBe('parent 1-0');
+  });
+
+  it('should not add new tag when key enter is pressed if nothing is active', () => {
+    const onSelect = jest.fn();
+
+    const wrapper = mount(
+      <TreeSelect open treeDefaultExpandAll multiple onSelect={onSelect}>
+        <TreeNode value="parent 1-0" title="parent 1-0">
+          <TreeNode value="leaf1" title="my leaf" disabled />
+          <TreeNode value="leaf2" title="your leaf" disabled />
+        </TreeNode>
+      </TreeSelect>,
+    );
+
+    wrapper.find('input').first().simulate('keydown', { which: KeyCode.ENTER });
+    expect(onSelect).not.toHaveBeenCalled();
+  });
+
+  it('should not select parent if some children is disabled', () => {
+    const onChange = jest.fn();
+
+    const wrapper = mount(
+      <TreeSelect
+        open
+        treeDefaultExpandAll
+        treeCheckable
+        multiple
+        showCheckedStrategy={TreeSelect.SHOW_CHILD}
+        onChange={onChange}
+      >
+        <TreeNode value="parent 1-0" title="parent 1-0">
+          <TreeNode value="leaf1" title="my leaf" />
+          <TreeNode value="leaf2" title="your leaf" disabled />
+        </TreeNode>
+      </TreeSelect>,
+    );
+
+    wrapper.selectNode(1);
+    expect(onChange).toHaveBeenCalledWith(['leaf1'], expect.anything(), expect.anything());
+  });
+
+  it('nativeElement', () => {
+    const treeSelectRef = React.createRef<BaseSelectRef>();
+    const { container } = render(<TreeSelect ref={treeSelectRef} />);
+    expect(treeSelectRef.current.nativeElement).toBe(container.querySelector('.rc-tree-select'));
   });
 });

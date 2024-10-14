@@ -14,14 +14,10 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
     this.find('.rc-tree-select-selector').simulate('mousedown');
   },
   selectNode(index = 0) {
-    this.find('.rc-tree-select-tree-node-content-wrapper')
-      .at(index)
-      .simulate('click');
+    this.find('.rc-tree-select-tree-node-content-wrapper').at(index).simulate('click');
   },
   switchNode(index = 0) {
-    this.find('.rc-tree-select-tree-switcher')
-      .at(index)
-      .simulate('click');
+    this.find('.rc-tree-select-tree-switcher').at(index).simulate('click');
   },
   getSelection(index) {
     const selections = this.find('.rc-tree-select-selection-item');
@@ -41,17 +37,12 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
       .simulate('click');
   },
   clearAll() {
-    return this.find('.rc-tree-select-clear')
-      .first()
-      .simulate('mouseDown');
+    return this.find('.rc-tree-select-clear').first().simulate('mouseDown');
   },
   search(text) {
-    this.find('input.rc-tree-select-selection-search-input').simulate(
-      'change',
-      {
-        target: { value: text },
-      },
-    );
+    this.find('input.rc-tree-select-selection-search-input').simulate('change', {
+      target: { value: text },
+    });
   },
   isOpen() {
     return this.find('.rc-tree-select').hasClass('rc-tree-select-open');

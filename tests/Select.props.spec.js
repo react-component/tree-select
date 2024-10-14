@@ -1,7 +1,9 @@
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
-import React from 'react';
 import { mount } from 'enzyme';
-import { TreeNode } from 'rc-tree';
+import Tree, { TreeNode } from 'rc-tree';
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
+
 import TreeSelect, { SHOW_ALL, SHOW_CHILD, SHOW_PARENT, TreeNode as SelectNode } from '../src';
 
 // Promisify timeout to let jest catch works
@@ -38,7 +40,7 @@ describe('TreeSelect.props', () => {
   });
 
   describe('filterTreeNode', () => {
-    it('function', () => {
+    it('as function', () => {
       function filterTreeNode(input, child) {
         return String(child.props.title).indexOf(input) !== -1;
       }
@@ -165,6 +167,32 @@ describe('TreeSelect.props', () => {
       );
       expect(wrapper.find('.rc-tree-select-selection-placeholder').text()).toBe('showMe');
     });
+
+    it('use user provided one', () => {
+      // Not exist
+      expect(
+        mount(
+          createSelect({
+            labelInValue: true,
+            value: { value: 'not-exist-value', label: 'Bamboo' },
+          }),
+        )
+          .getSelection(0)
+          .text(),
+      ).toBe('Bamboo');
+
+      // Exist not same
+      expect(
+        mount(
+          createSelect({
+            labelInValue: true,
+            value: { value: 'Value 1', label: 'Bamboo' },
+          }),
+        )
+          .getSelection(0)
+          .text(),
+      ).toBe('Bamboo');
+    });
   });
 
   it('onClick', () => {
@@ -215,8 +243,35 @@ describe('TreeSelect.props', () => {
     expect(handleSearch).toHaveBeenCalledWith('Search changed');
   });
 
+  it('onPopupScroll', async () => {
+    const onPopupScroll = jest.fn(e => {
+      // Prevents React from resetting its properties:
+      e.persist();
+    });
+    render(
+      <TreeSelect
+        open
+        treeDefaultExpandAll
+        onPopupScroll={onPopupScroll}
+        treeData={new Array(10).fill(0).map((_, index) => ({
+          title: `Title ${index}`,
+          value: index,
+        }))}
+      />,
+    );
+
+    fireEvent.scroll(document.querySelector('.rc-tree-select-tree-list-holder'), {
+      scrollY: 100,
+    });
+
+    expect(onPopupScroll).toHaveBeenCalled();
+    expect(onPopupScroll.mock.calls[0][0].target).toBe(
+      document.querySelector('.rc-tree-select-tree-list-holder'),
+    );
+  });
+
   it('showArrow', () => {
-    const wrapper = mount(createOpenSelect({ showArrow: false }));
+    const wrapper = mount(createOpenSelect({ suffixIcon: null }));
     expect(wrapper.find('.rc-tree-select-arrow').length).toBeFalsy();
   });
 
@@ -239,12 +294,9 @@ describe('TreeSelect.props', () => {
         dropdownStyle: style,
       }),
     );
-    expect(
-      wrapper
-        .find('.test-dropdownClassName')
-        .first()
-        .props().style,
-    ).toEqual(expect.objectContaining(style));
+    expect(wrapper.find('.test-dropdownClassName').first().props().style).toEqual(
+      expect.objectContaining(style),
+    );
   });
 
   it('notFoundContent', () => {
@@ -435,7 +487,7 @@ describe('TreeSelect.props', () => {
     mount(
       <TreeSelect
         open
-        treeDefaultExpandAll
+        treeDefaultExpandedKeys={['0-0', '0-1']}
         loadData={loadData}
         treeLoadedKeys={['0-0']}
         treeData={[{ value: '0-0' }, { value: '0-1' }]}
@@ -449,12 +501,7 @@ describe('TreeSelect.props', () => {
   it('getPopupContainer', () => {
     const getPopupContainer = trigger => trigger.parentNode;
     const wrapper = mount(createOpenSelect({ getPopupContainer }));
-    expect(
-      wrapper
-        .find('Trigger')
-        .first()
-        .props().getPopupContainer,
-    ).toBe(getPopupContainer);
+    expect(wrapper.find('Trigger').first().props().getPopupContainer).toBe(getPopupContainer);
   });
 
   it('set value not in the Tree', () => {
@@ -496,7 +543,7 @@ describe('TreeSelect.props', () => {
       });
 
     describe('single', () => {
-      it('click on tree', () => {
+      it('click on tree node', () => {
         const onSelect = jest.fn();
         const onDeselect = jest.fn();
         const wrapper = createDeselectWrapper({
@@ -507,6 +554,37 @@ describe('TreeSelect.props', () => {
         wrapper.selectNode(0);
         expect(onDeselect).not.toHaveBeenCalled();
         expect(onSelect).toHaveBeenCalledWith('smart', nodeMatcher(0));
+      });
+
+      it('dropdownMatchSelectWidth={false} should turn off virtual list', () => {
+        const wrapper = mount(
+          <TreeSelect style={{ width: 120 }} open treeDefaultExpandAll>
+            <TreeNode value="parent 1" title="parent 1">
+              <TreeNode value="parent 1-0 sdfsdfsdsdfsd" title="parent 1-0 sdfsdfsd">
+                <TreeNode value="leaf1  sdfsdf" title="leaf1" />
+                <TreeNode value="leaf2 sdfsdfsdf" title="leaf2" />
+              </TreeNode>
+              <TreeNode value="parent 1-1 sdfsdfsdf" title="parent 1-1 sdfsdfsd">
+                <TreeNode value="leaf3" title={<b style={{ color: '#08c' }}>leaf3</b>} />
+              </TreeNode>
+              <TreeNode value="parent 1-2 sdfsdfsdf" title="parent 1-2 sdfsdfsd">
+                <TreeNode value="leaf4" title={<b style={{ color: '#08c' }}>leaf3</b>} />
+              </TreeNode>
+              <TreeNode value="parent 1-3 sdfsdfsdf" title="parent 1-2 sdfsdfsd">
+                <TreeNode value="leaf5" title={<b style={{ color: '#08c' }}>leaf3</b>} />
+              </TreeNode>
+              <TreeNode value="parent 1-4 sdfsdfsdf" title="parent 1-4 sdfsdfsd">
+                <TreeNode value="leaf6" title={<b style={{ color: '#08c' }}>leaf3</b>} />
+              </TreeNode>
+              <TreeNode value="parent 1-5 2sdfsdfsdf" title="parent 1-5 sdfsdfsd">
+                <TreeNode value="leaf7" title={<b style={{ color: '#08c' }}>leaf3</b>} />
+              </TreeNode>
+            </TreeNode>
+          </TreeSelect>,
+        );
+        expect(wrapper.find(Tree).props().virtual).toBe(true);
+        wrapper.setProps({ dropdownMatchSelectWidth: false });
+        expect(wrapper.find(Tree).props().virtual).toBe(false);
       });
     });
 
@@ -561,6 +639,59 @@ describe('TreeSelect.props', () => {
           expect(onSelect).not.toHaveBeenCalled();
           expect(onDeselect).toHaveBeenCalledWith('smart', nodeMatcher(0));
         });
+      });
+    });
+
+    describe('title render', () => {
+      const treeData = [
+        { label: 'Label 0-0', value: 'Value 0-0', key: 'key 0-0' },
+        { label: 'Label 0-1', value: 'Value 0-1', key: 'key 0-1' },
+        { label: 'Label 1-0', value: 'Value 1-0', key: 'key 1-0' },
+      ];
+      it('basic', () => {
+        const wrapper = mount(
+          <div>
+            <TreeSelect
+              defaultValue={'Value 0-0'}
+              treeTitleRender={node => node.value}
+              treeData={treeData}
+            />
+          </div>,
+        );
+        expect(wrapper.getSelection(0).text()).toBe('Value 0-0');
+      });
+
+      it('with fieldNames', () => {
+        const wrapper = mount(
+          <div>
+            <TreeSelect
+              defaultValue={'parent'}
+              treeTitleRender={node => node.myLabel}
+              fieldNames={{
+                label: 'myLabel',
+                value: 'myValue',
+                children: 'myChildren',
+              }}
+              treeData={[
+                {
+                  myLabel: 'Parent',
+                  myValue: 'parent',
+                  myChildren: [
+                    {
+                      myLabel: 'Sub 1',
+                      myValue: 'sub_1',
+                    },
+                    {
+                      myLabel: 'Sub 2',
+                      myValue: 'sub_2',
+                    },
+                  ],
+                },
+              ]}
+            />
+          </div>,
+        );
+        expect(wrapper.getSelection(0).text()).toBe('Parent');
       });
     });
   });

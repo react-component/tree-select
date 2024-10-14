@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { IconType } from 'rc-tree/lib/interface';
-import { Key, LegacyDataNode } from './interface';
+import type { DataEntity, IconType } from 'rc-tree/lib/interface';
+import type { Key, LegacyDataNode, RawValueType } from './interface';
 
-interface ContextProps {
+interface LegacyContextProps {
   checkable: boolean | React.ReactNode;
   checkedKeys: Key[];
   halfCheckedKeys: Key[];
@@ -19,6 +19,10 @@ interface ContextProps {
   treeMotion: any;
   loadData: (treeNode: LegacyDataNode) => Promise<unknown>;
   onTreeLoad: (loadedKeys: Key[]) => void;
+
+  keyEntities: Record<RawValueType, DataEntity<any>>;
 }
 
-export const SelectContext = React.createContext<ContextProps>(null);
+const LegacySelectContext = React.createContext<LegacyContextProps>(null);
+
+export default LegacySelectContext;

@@ -1,32 +1,33 @@
 # rc-tree-select
----
 
 React TreeSelect Component
 
+<!-- prettier-ignore -->
 [![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
-[![Test coverage][coveralls-image]][coveralls-url]
-[![Dependencies][david-image]][david-url]
-[![DevDependencies][david-dev-image]][david-dev-url]
 [![npm download][download-image]][download-url]
+[![build status][github-actions-image]][github-actions-url]
+[![Codecov][codecov-image]][codecov-url]
 [![bundle size][bundlephobia-image]][bundlephobia-url]
+[![dumi][dumi-image]][dumi-url]
 
 [npm-image]: http://img.shields.io/npm/v/rc-tree-select.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-tree-select
 [travis-image]: https://img.shields.io/travis/react-component/tree-select/master?style=flat-square
-[travis-url]: https://travis-ci.org/react-component/tree-select
-[circleci-image]: https://img.shields.io/circleci/react-component/tree-select/master?style=flat-square
-[circleci-url]: https://circleci.com/gh/react-component/tree-select
-[coveralls-image]: https://img.shields.io/coveralls/react-component/tree-select.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/react-component/tree-select?branch=master
+[travis-url]: https://travis-ci.com/react-component/tree-select
+[github-actions-image]: https://github.com/react-component/tree-select/workflows/CI/badge.svg
+[github-actions-url]: https://github.com/react-component/tree-select/actions
+[codecov-image]: https://img.shields.io/codecov/c/github/react-component/tree-select/master.svg?style=flat-square
+[codecov-url]: https://app.codecov.io/gh/react-component/tree-select
 [david-url]: https://david-dm.org/react-component/tree-select
 [david-image]: https://david-dm.org/react-component/tree-select/status.svg?style=flat-square
 [david-dev-url]: https://david-dm.org/react-component/tree-select?type=dev
 [david-dev-image]: https://david-dm.org/react-component/tree-select/dev-status.svg?style=flat-square
 [download-image]: https://img.shields.io/npm/dm/rc-tree-select.svg?style=flat-square
 [download-url]: https://npmjs.org/package/rc-tree-select
-[bundlephobia-url]: https://bundlephobia.com/result?p=rc-tree-select
+[bundlephobia-url]: https://bundlephobia.com/package/rc-tree-select
 [bundlephobia-image]: https://badgen.net/bundlephobia/minzip/rc-tree-select
+[dumi-url]: https://github.com/umijs/dumi
+[dumi-image]: https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square
 
 ## Screenshots
 
@@ -44,7 +45,7 @@ npm start
 
 http://localhost:8000/examples/
 
-online example: http://react-component.github.io/tree-select/
+online example: https://tree-select-react-component.vercel.app/
 
 ## install
 
@@ -61,10 +62,9 @@ online example: http://react-component.github.io/tree-select/
 |animation | dropdown animation name. only support slide-up now | String | '' |
 |transitionName | dropdown css animation name | String | '' |
 |choiceTransitionName | css animation name for selected items at multiple mode | String | '' |
-|dropdownMatchSelectWidth | whether dropdown's with is same with select. Default set `min-width` same as input | bool | - |
+|dropdownMatchSelectWidth | whether dropdown's with is same with select. Default set `min-width` same as input | bool | true |
 |dropdownClassName | additional className applied to dropdown | String | - |
 |dropdownStyle | additional style applied to dropdown | Object | {} |
-|dropdownPopupAlign | specify alignment for dropdown (alignConfig of [dom-align](https://github.com/yiminghe/dom-align)) | Object | - |
 |onDropdownVisibleChange | control dropdown visible | function | `() => { return true; }` |
 |notFoundContent | specify content to show when no result matches. | String | 'Not Found' |
 |showSearch | whether show search input in single mode | bool | true |
@@ -82,12 +82,14 @@ online example: http://react-component.github.io/tree-select/
 |onSelect | called when select treeNode | function(value, node, extra) | - |
 |onSearch | called when input changed | function | - |
 |onTreeExpand | called when tree node expand | function(expandedKeys) | - |
+|onPopupScroll | called when popup scroll | function(event) | - |
 |showCheckedStrategy | `TreeSelect.SHOW_ALL`: show all checked treeNodes (Include parent treeNode). `TreeSelect.SHOW_PARENT`: show checked treeNodes (Just show parent treeNode). Default just show child. | enum{TreeSelect.SHOW_ALL, TreeSelect.SHOW_PARENT, TreeSelect.SHOW_CHILD } | TreeSelect.SHOW_CHILD |
 |treeIcon | show tree icon | bool | false |
 |treeLine | show tree line | bool | false |
 |treeDefaultExpandAll | default expand all treeNode | bool | false |
 |treeDefaultExpandedKeys | default expanded treeNode keys | Array<String> | - |
 |treeExpandedKeys | set tree expanded keys | Array<String> | - |
+|treeExpandAction | Tree open logic, optional: false \| `click` \| `doubleClick`, same as `expandAction` of `rc-tree` | string \| boolean | `click` |
 |treeCheckable | whether tree show checkbox (select callback will not fire) | bool | false |
 |treeCheckStrictly | check node precisely, parent and children nodes are not associated| bool | false |
 |filterTreeNode | whether filter treeNodes by input value. default filter by treeNode's treeNodeFilterProp prop's value | bool/Function(inputValue:string, treeNode:TreeNode) | Function |
@@ -98,7 +100,7 @@ online example: http://react-component.github.io/tree-select/
 |loadData | load data asynchronously | function(node) | - |
 |getPopupContainer | container which popup select menu rendered into | function(trigger:Node):Node | function(){return document.body;} |
 |autoClearSearchValue | auto clear search input value when multiple select is selected/deselected | boolean | true |
-| inputIcon | specify the select arrow icon | ReactNode \| (props: TreeProps) => ReactNode | - |
+| suffixIcon | specify the select arrow icon | ReactNode \| (props: TreeProps) => ReactNode | - |
 | clearIcon | specify the clear icon | ReactNode \| (props: TreeProps) => ReactNode | - |
 | removeIcon | specify the remove icon | ReactNode \| (props: TreeProps) => ReactNode | - |
 |switcherIcon| specify the switcher icon | ReactNode \| (props: TreeProps) => ReactNode | - |

@@ -1,8 +1,8 @@
-import '../assets/index.less';
-import React from 'react';
-import 'rc-dialog/assets/index.css';
 import Dialog from 'rc-dialog';
-import TreeSelect, { TreeNode, SHOW_PARENT } from '../src';
+import 'rc-dialog/assets/index.css';
+import React from 'react';
+import '../assets/index.less';
+import TreeSelect, { SHOW_PARENT, TreeNode } from '../src';
 import { gData } from './utils/dataUtil';
 
 function isLeaf(value) {
@@ -134,8 +134,7 @@ class Demo extends React.Component {
     return true;
   };
 
-  filterTreeNode = (input, child) =>
-    String(child.props.title).indexOf(input) === 0;
+  filterTreeNode = (input, child) => String(child.props.title).indexOf(input) === 0;
 
   render() {
     const {
@@ -152,11 +151,7 @@ class Demo extends React.Component {
     return (
       <div style={{ margin: 20 }}>
         <h2>tree-select in dialog</h2>
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={this.onClick}
-        >
+        <button type="button" className="btn btn-primary" onClick={this.onClick}>
           show dialog
         </button>
         {visible ? (
@@ -175,7 +170,6 @@ class Demo extends React.Component {
                 choiceTransitionName="rc-tree-select-selection__choice-zoom"
                 // dropdownStyle={{ maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
                 placeholder={<i>请下拉选择</i>}
-                searchPlaceholder="please search"
                 showSearch
                 allowClear
                 treeLine
@@ -197,7 +191,6 @@ class Demo extends React.Component {
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
-          searchPlaceholder="please search"
           showSearch
           allowClear
           treeLine
@@ -219,6 +212,9 @@ class Demo extends React.Component {
             });
           }}
           onSelect={this.onSelect}
+          onPopupScroll={evt => {
+            console.log('onPopupScroll:', evt.target);
+          }}
         />
 
         <h2>single select (just select children)</h2>
@@ -228,7 +224,6 @@ class Demo extends React.Component {
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
-          searchPlaceholder="please search"
           showSearch
           allowClear
           treeLine
@@ -246,7 +241,6 @@ class Demo extends React.Component {
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
-          searchPlaceholder="please search"
           multiple
           value={multipleValue}
           treeData={gData}
@@ -258,18 +252,19 @@ class Demo extends React.Component {
 
         <h2>check select</h2>
         <TreeSelect
+          open
+          allowClear
           className="check-select"
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           style={{ width: 300 }}
           // dropdownStyle={{ height: 200, overflow: 'auto' }}
-          dropdownPopupAlign={{
+          dropdownAlign={{
             overflow: { adjustY: 0, adjustX: 0 },
             offset: [0, 2],
           }}
           onDropdownVisibleChange={this.onDropdownVisibleChange}
           placeholder={<i>请下拉选择</i>}
-          searchPlaceholder="please search"
           treeLine
           maxTagTextLength={10}
           value={value}
@@ -280,9 +275,9 @@ class Demo extends React.Component {
           showCheckedStrategy={SHOW_PARENT}
           onChange={this.onChange}
           onSelect={this.onSelect}
-          maxTagCount={2}
+          maxTagCount="responsive"
           maxTagPlaceholder={valueList => {
-            console.log('Max Tag Rest Value:', valueList);
+            // console.log('Max Tag Rest Value:', valueList);
             return `${valueList.length} rest...`;
           }}
         />
@@ -294,7 +289,6 @@ class Demo extends React.Component {
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
-          searchPlaceholder="please search"
           showSearch
           allowClear
           treeLine
@@ -311,7 +305,6 @@ class Demo extends React.Component {
           style={{ width: 300 }}
           // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
-          // searchPlaceholder="please search"
           // treeLine
           maxTagTextLength={10}
           searchValue={simpleSearchValue}
@@ -368,12 +361,7 @@ class Demo extends React.Component {
           <TreeNode value="" title="parent 1" key="">
             <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-0">
               <TreeNode value="leaf1" title="my leaf" key="random" />
-              <TreeNode
-                value="leaf2"
-                title="your leaf"
-                key="random1"
-                disabled
-              />
+              <TreeNode value="leaf2" title="your leaf" key="random1" disabled />
             </TreeNode>
             <TreeNode value="parent 1-1" title="parent 1-1" key="0-1-1">
               <TreeNode
@@ -396,6 +384,14 @@ class Demo extends React.Component {
           </TreeNode>
           <TreeNode value="same value3" title="same title" key="0-3" />
         </TreeSelect>
+
+        <h2>title render</h2>
+        <TreeSelect<{ label: string }>
+          open
+          style={{ width: 300 }}
+          treeData={gData}
+          treeTitleRender={node => node.label + 'ok'}
+        />
       </div>
     );
   }

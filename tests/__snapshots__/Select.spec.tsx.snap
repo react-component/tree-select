@@ -2,7 +2,7 @@
 
 exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
 <div
-  class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open"
+  class="rc-tree-select rc-tree-select-single rc-tree-select-open"
 >
   <div
     class="rc-tree-select-selector"
@@ -11,7 +11,6 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
       class="rc-tree-select-selection-search"
     >
       <input
-        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
         aria-autocomplete="list"
         aria-controls="rc_select_TEST_OR_SSR_list"
         aria-expanded="true"
@@ -23,6 +22,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        type="search"
         unselectable="on"
         value=""
       />
@@ -31,28 +31,44 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
       class="rc-tree-select-selection-placeholder"
     />
   </div>
-  <div>
-    <div
-      class="rc-tree-select-dropdown"
-      style="opacity: 0; min-width: 0; width: 0px;"
-    >
+  <div
+    class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
+    style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
+  >
+    <div>
       <div>
-        <div>
+        <div
+          class="rc-tree-select-tree"
+          role="tree"
+        >
+          <div>
+            <input
+              aria-label="for screen reader"
+              disabled=""
+              style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+              value=""
+            />
+          </div>
           <div
-            class="rc-tree-select-tree"
+            aria-hidden="true"
+            class="rc-tree-select-tree-treenode"
+            style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
           >
             <div
-              role="tree"
+              class="rc-tree-select-tree-indent"
             >
-              <input
-                disabled=""
-                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
-                value=""
+              <div
+                class="rc-tree-select-tree-indent-unit"
               />
             </div>
+          </div>
+          <div
+            class="rc-tree-select-tree-list"
+            style="position: relative;"
+          >
             <div
-              class="rc-tree-select-tree-list"
-              style="height: 200px;"
+              class="rc-tree-select-tree-list-holder"
+              style="max-height: 200px; overflow-y: auto;"
             >
               <div>
                 <div
@@ -60,8 +76,14 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                   style="display: flex; flex-direction: column;"
                 >
                   <div
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                    aria-grabbed="false"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
+                    draggable="false"
                   >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    />
                     <span
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
                     />
@@ -80,8 +102,14 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                     </span>
                   </div>
                   <div
+                    aria-grabbed="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                    draggable="false"
                   >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    />
                     <span
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                     />
@@ -100,14 +128,16 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                     </span>
                   </div>
                   <div
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                    aria-grabbed="false"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
+                    draggable="false"
                   >
                     <span
                       aria-hidden="true"
                       class="rc-tree-select-tree-indent"
                     >
                       <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start"
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-end"
                       />
                     </span>
                     <span
@@ -128,7 +158,9 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                     </span>
                   </div>
                   <div
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                    aria-grabbed="false"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
+                    draggable="false"
                   >
                     <span
                       aria-hidden="true"
@@ -163,22 +195,12 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
       </div>
     </div>
   </div>
-  <span
-    aria-hidden="true"
-    class="rc-tree-select-arrow"
-    style="user-select: none;"
-    unselectable="on"
-  >
-    <span
-      class="rc-tree-select-arrow-icon"
-    />
-  </span>
 </div>
 `;
 
 exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`] = `
 <div
-  class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open"
+  class="rc-tree-select rc-tree-select-single rc-tree-select-open"
 >
   <div
     class="rc-tree-select-selector"
@@ -187,7 +209,6 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
       class="rc-tree-select-selection-search"
     >
       <input
-        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
         aria-autocomplete="list"
         aria-controls="rc_select_TEST_OR_SSR_list"
         aria-expanded="true"
@@ -199,6 +220,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        type="search"
         unselectable="on"
         value=""
       />
@@ -207,28 +229,44 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
       class="rc-tree-select-selection-placeholder"
     />
   </div>
-  <div>
-    <div
-      class="rc-tree-select-dropdown"
-      style="opacity: 0; min-width: 0; width: 0px;"
-    >
+  <div
+    class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
+    style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
+  >
+    <div>
       <div>
-        <div>
+        <div
+          class="rc-tree-select-tree"
+          role="tree"
+        >
+          <div>
+            <input
+              aria-label="for screen reader"
+              disabled=""
+              style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+              value=""
+            />
+          </div>
           <div
-            class="rc-tree-select-tree"
+            aria-hidden="true"
+            class="rc-tree-select-tree-treenode"
+            style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
           >
             <div
-              role="tree"
+              class="rc-tree-select-tree-indent"
             >
-              <input
-                disabled=""
-                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
-                value=""
+              <div
+                class="rc-tree-select-tree-indent-unit"
               />
             </div>
+          </div>
+          <div
+            class="rc-tree-select-tree-list"
+            style="position: relative;"
+          >
             <div
-              class="rc-tree-select-tree-list"
-              style="height: 200px;"
+              class="rc-tree-select-tree-list-holder"
+              style="max-height: 200px; overflow-y: auto;"
             >
               <div>
                 <div
@@ -236,8 +274,14 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                   style="display: flex; flex-direction: column;"
                 >
                   <div
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                    aria-grabbed="false"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
+                    draggable="false"
                   >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    />
                     <span
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
                     />
@@ -256,8 +300,14 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                     </span>
                   </div>
                   <div
+                    aria-grabbed="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                    draggable="false"
                   >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    />
                     <span
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                     />
@@ -276,14 +326,16 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                     </span>
                   </div>
                   <div
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                    aria-grabbed="false"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
+                    draggable="false"
                   >
                     <span
                       aria-hidden="true"
                       class="rc-tree-select-tree-indent"
                     >
                       <span
-                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start"
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-end"
                       />
                     </span>
                     <span
@@ -304,7 +356,9 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                     </span>
                   </div>
                   <div
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                    aria-grabbed="false"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
+                    draggable="false"
                   >
                     <span
                       aria-hidden="true"
@@ -339,16 +393,6 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
       </div>
     </div>
   </div>
-  <span
-    aria-hidden="true"
-    class="rc-tree-select-arrow"
-    style="user-select: none;"
-    unselectable="on"
-  >
-    <span
-      class="rc-tree-select-arrow-icon"
-    />
-  </span>
 </div>
 `;
 
@@ -360,32 +404,42 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
   <div
     class="awesome-selector"
   >
-    <span
-      class="awesome-selection-search"
-      style="width: 0px;"
+    <div
+      class="awesome-selection-overflow"
     >
-      <input
-        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
-        aria-autocomplete="list"
-        aria-controls="rc_select_TEST_OR_SSR_list"
-        aria-haspopup="listbox"
-        aria-owns="rc_select_TEST_OR_SSR_list"
-        autocomplete="off"
-        class="awesome-selection-search-input"
-        id="rc_select_TEST_OR_SSR"
-        readonly=""
-        role="combobox"
-        style="opacity: 0;"
-        unselectable="on"
-        value=""
-      />
-      <span
-        aria-hidden="true"
-        class="awesome-selection-search-mirror"
+      <div
+        class="awesome-selection-overflow-item awesome-selection-overflow-item-suffix"
+        style="opacity: 1;"
       >
-         
-      </span>
-    </span>
+        <div
+          class="awesome-selection-search"
+          style="width: 0px;"
+        >
+          <input
+            aria-autocomplete="list"
+            aria-controls="rc_select_TEST_OR_SSR_list"
+            aria-expanded="false"
+            aria-haspopup="listbox"
+            aria-owns="rc_select_TEST_OR_SSR_list"
+            autocomplete="off"
+            class="awesome-selection-search-input"
+            id="rc_select_TEST_OR_SSR"
+            readonly=""
+            role="combobox"
+            style="opacity: 0;"
+            type="search"
+            unselectable="on"
+            value=""
+          />
+          <span
+            aria-hidden="true"
+            class="awesome-selection-search-mirror"
+          >
+             
+          </span>
+        </div>
+      </div>
+    </div>
     <span
       class="awesome-selection-placeholder"
     />
@@ -395,7 +449,7 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
 
 exports[`TreeSelect.basic render renders disabled correctly 1`] = `
 <div
-  class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-disabled"
+  class="rc-tree-select rc-tree-select-single rc-tree-select-disabled"
 >
   <div
     class="rc-tree-select-selector"
@@ -404,7 +458,6 @@ exports[`TreeSelect.basic render renders disabled correctly 1`] = `
       class="rc-tree-select-selection-search"
     >
       <input
-        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
         aria-autocomplete="list"
         aria-controls="rc_select_TEST_OR_SSR_list"
         aria-expanded="false"
@@ -417,6 +470,7 @@ exports[`TreeSelect.basic render renders disabled correctly 1`] = `
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        type="search"
         unselectable="on"
         value=""
       />
@@ -425,16 +479,6 @@ exports[`TreeSelect.basic render renders disabled correctly 1`] = `
       class="rc-tree-select-selection-placeholder"
     />
   </div>
-  <span
-    aria-hidden="true"
-    class="rc-tree-select-arrow"
-    style="user-select: none;"
-    unselectable="on"
-  >
-    <span
-      class="rc-tree-select-arrow-icon"
-    />
-  </span>
 </div>
 `;
 
@@ -445,32 +489,42 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
   <div
     class="rc-tree-select-selector"
   >
-    <span
-      class="rc-tree-select-selection-search"
-      style="width: 0px;"
+    <div
+      class="rc-tree-select-selection-overflow"
     >
-      <input
-        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
-        aria-autocomplete="list"
-        aria-controls="rc_select_TEST_OR_SSR_list"
-        aria-haspopup="listbox"
-        aria-owns="rc_select_TEST_OR_SSR_list"
-        autocomplete="off"
-        class="rc-tree-select-selection-search-input"
-        id="rc_select_TEST_OR_SSR"
-        readonly=""
-        role="combobox"
-        style="opacity: 0;"
-        unselectable="on"
-        value=""
-      />
-      <span
-        aria-hidden="true"
-        class="rc-tree-select-selection-search-mirror"
+      <div
+        class="rc-tree-select-selection-overflow-item rc-tree-select-selection-overflow-item-suffix"
+        style="opacity: 1;"
       >
-         
-      </span>
-    </span>
+        <div
+          class="rc-tree-select-selection-search"
+          style="width: 0px;"
+        >
+          <input
+            aria-autocomplete="list"
+            aria-controls="rc_select_TEST_OR_SSR_list"
+            aria-expanded="false"
+            aria-haspopup="listbox"
+            aria-owns="rc_select_TEST_OR_SSR_list"
+            autocomplete="off"
+            class="rc-tree-select-selection-search-input"
+            id="rc_select_TEST_OR_SSR"
+            readonly=""
+            role="combobox"
+            style="opacity: 0;"
+            type="search"
+            unselectable="on"
+            value=""
+          />
+          <span
+            aria-hidden="true"
+            class="rc-tree-select-selection-search-mirror"
+          >
+             
+          </span>
+        </div>
+      </div>
+    </div>
     <span
       class="rc-tree-select-selection-placeholder"
     />
@@ -481,7 +535,7 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
 exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
 <div>
   <div
-    class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open"
+    class="rc-tree-select rc-tree-select-single rc-tree-select-open"
   >
     <div
       class="rc-tree-select-selector"
@@ -490,7 +544,6 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
         class="rc-tree-select-selection-search"
       >
         <input
-          aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
           aria-autocomplete="list"
           aria-controls="rc_select_TEST_OR_SSR_list"
           aria-expanded="true"
@@ -502,6 +555,7 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
           readonly=""
           role="combobox"
           style="opacity: 0;"
+          type="search"
           unselectable="on"
           value=""
         />
@@ -510,28 +564,44 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
         class="rc-tree-select-selection-placeholder"
       />
     </div>
-    <div>
-      <div
-        class="rc-tree-select-dropdown"
-        style="opacity: 0; min-width: 0; width: 0px;"
-      >
+    <div
+      class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
+    >
+      <div>
         <div>
-          <div>
+          <div
+            class="rc-tree-select-tree"
+            role="tree"
+          >
+            <div>
+              <input
+                aria-label="for screen reader"
+                disabled=""
+                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+                value=""
+              />
+            </div>
             <div
-              class="rc-tree-select-tree"
+              aria-hidden="true"
+              class="rc-tree-select-tree-treenode"
+              style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
             >
               <div
-                role="tree"
+                class="rc-tree-select-tree-indent"
               >
-                <input
-                  disabled=""
-                  style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
-                  value=""
+                <div
+                  class="rc-tree-select-tree-indent-unit"
                 />
               </div>
+            </div>
+            <div
+              class="rc-tree-select-tree-list"
+              style="position: relative;"
+            >
               <div
-                class="rc-tree-select-tree-list"
-                style="height: 200px;"
+                class="rc-tree-select-tree-list-holder"
+                style="max-height: 200px; overflow-y: auto;"
               >
                 <div>
                   <div
@@ -539,8 +609,14 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
                     style="display: flex; flex-direction: column;"
                   >
                     <div
+                      aria-grabbed="false"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                      draggable="false"
                     >
+                      <span
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
+                      />
                       <span
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                       />
@@ -559,7 +635,9 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
                       </span>
                     </div>
                     <div
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                      aria-grabbed="false"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
+                      draggable="false"
                     >
                       <span
                         aria-hidden="true"
@@ -594,16 +672,6 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
         </div>
       </div>
     </div>
-    <span
-      aria-hidden="true"
-      class="rc-tree-select-arrow"
-      style="user-select: none;"
-      unselectable="on"
-    >
-      <span
-        class="rc-tree-select-arrow-icon"
-      />
-    </span>
   </div>
 </div>
 `;
@@ -611,7 +679,7 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
 exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
 <div>
   <div
-    class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open rc-tree-select-show-search"
+    class="rc-tree-select rc-tree-select-single rc-tree-select-open rc-tree-select-show-search"
   >
     <div
       class="rc-tree-select-selector"
@@ -620,7 +688,6 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
         class="rc-tree-select-selection-search"
       >
         <input
-          aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
           aria-autocomplete="list"
           aria-controls="rc_select_TEST_OR_SSR_list"
           aria-expanded="true"
@@ -630,32 +697,53 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
           class="rc-tree-select-selection-search-input"
           id="rc_select_TEST_OR_SSR"
           role="combobox"
+          type="search"
           value="a"
         />
       </span>
+      <span
+        class="rc-tree-select-selection-placeholder"
+        style="visibility: hidden;"
+      />
     </div>
-    <div>
-      <div
-        class="rc-tree-select-dropdown"
-        style="opacity: 0; min-width: 0; width: 0px;"
-      >
+    <div
+      class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
+    >
+      <div>
         <div>
-          <div>
+          <div
+            class="rc-tree-select-tree"
+            role="tree"
+          >
+            <div>
+              <input
+                aria-label="for screen reader"
+                disabled=""
+                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+                value=""
+              />
+            </div>
             <div
-              class="rc-tree-select-tree"
+              aria-hidden="true"
+              class="rc-tree-select-tree-treenode"
+              style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
             >
               <div
-                role="tree"
+                class="rc-tree-select-tree-indent"
               >
-                <input
-                  disabled=""
-                  style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
-                  value=""
+                <div
+                  class="rc-tree-select-tree-indent-unit"
                 />
               </div>
+            </div>
+            <div
+              class="rc-tree-select-tree-list"
+              style="position: relative;"
+            >
               <div
-                class="rc-tree-select-tree-list"
-                style="height: 200px;"
+                class="rc-tree-select-tree-list-holder"
+                style="max-height: 200px; overflow-y: auto;"
               >
                 <div>
                   <div
@@ -663,8 +751,14 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
                     style="display: flex; flex-direction: column;"
                   >
                     <div
+                      aria-grabbed="false"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node"
+                      draggable="false"
                     >
+                      <span
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
+                      />
                       <span
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
                       />
@@ -690,16 +784,6 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
         </div>
       </div>
     </div>
-    <span
-      aria-hidden="true"
-      class="rc-tree-select-arrow"
-      style="user-select: none;"
-      unselectable="on"
-    >
-      <span
-        class="rc-tree-select-arrow-icon"
-      />
-    </span>
   </div>
 </div>
 `;
@@ -707,7 +791,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
 exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
 <div>
   <div
-    class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open rc-tree-select-show-search"
+    class="rc-tree-select rc-tree-select-single rc-tree-select-open rc-tree-select-show-search"
   >
     <div
       class="rc-tree-select-selector"
@@ -716,7 +800,6 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
         class="rc-tree-select-selection-search"
       >
         <input
-          aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
           aria-autocomplete="list"
           aria-controls="rc_select_TEST_OR_SSR_list"
           aria-expanded="true"
@@ -726,35 +809,53 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
           class="rc-tree-select-selection-search-input"
           id="rc_select_TEST_OR_SSR"
           role="combobox"
+          type="search"
           value=""
         />
       </span>
       <span
         class="rc-tree-select-selection-placeholder"
+        style=""
       />
     </div>
-    <div>
-      <div
-        class="rc-tree-select-dropdown"
-        style="opacity: 0; min-width: 0; width: 0px;"
-      >
+    <div
+      class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
+    >
+      <div>
         <div>
-          <div>
+          <div
+            class="rc-tree-select-tree"
+            role="tree"
+          >
+            <div>
+              <input
+                aria-label="for screen reader"
+                disabled=""
+                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+                value=""
+              />
+            </div>
             <div
-              class="rc-tree-select-tree"
+              aria-hidden="true"
+              class="rc-tree-select-tree-treenode"
+              style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
             >
               <div
-                role="tree"
+                class="rc-tree-select-tree-indent"
               >
-                <input
-                  disabled=""
-                  style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
-                  value=""
+                <div
+                  class="rc-tree-select-tree-indent-unit"
                 />
               </div>
+            </div>
+            <div
+              class="rc-tree-select-tree-list"
+              style="position: relative;"
+            >
               <div
-                class="rc-tree-select-tree-list"
-                style="height: 200px;"
+                class="rc-tree-select-tree-list-holder"
+                style="max-height: 200px; overflow-y: auto;"
               >
                 <div>
                   <div
@@ -762,8 +863,14 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
                     style="display: flex; flex-direction: column;"
                   >
                     <div
+                      aria-grabbed="false"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                      draggable="false"
                     >
+                      <span
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
+                      />
                       <span
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
                       />
@@ -782,8 +889,14 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
                       </span>
                     </div>
                     <div
+                      aria-grabbed="false"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
+                      draggable="false"
                     >
+                      <span
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
+                      />
                       <span
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
                       />
@@ -809,16 +922,6 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
         </div>
       </div>
     </div>
-    <span
-      aria-hidden="true"
-      class="rc-tree-select-arrow"
-      style="user-select: none;"
-      unselectable="on"
-    >
-      <span
-        class="rc-tree-select-arrow-icon"
-      />
-    </span>
   </div>
 </div>
 `;
@@ -826,7 +929,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
 exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
 <div>
   <div
-    class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open rc-tree-select-show-search"
+    class="rc-tree-select rc-tree-select-single rc-tree-select-open rc-tree-select-show-search"
   >
     <div
       class="rc-tree-select-selector"
@@ -835,7 +938,6 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
         class="rc-tree-select-selection-search"
       >
         <input
-          aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
           aria-autocomplete="list"
           aria-controls="rc_select_TEST_OR_SSR_list"
           aria-expanded="true"
@@ -845,32 +947,53 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
           class="rc-tree-select-selection-search-input"
           id="rc_select_TEST_OR_SSR"
           role="combobox"
+          type="search"
           value="a"
         />
       </span>
+      <span
+        class="rc-tree-select-selection-placeholder"
+        style="visibility: hidden;"
+      />
     </div>
-    <div>
-      <div
-        class="rc-tree-select-dropdown"
-        style="opacity: 0; min-width: 0; width: 0px;"
-      >
+    <div
+      class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
+    >
+      <div>
         <div>
-          <div>
+          <div
+            class="rc-tree-select-tree"
+            role="tree"
+          >
+            <div>
+              <input
+                aria-label="for screen reader"
+                disabled=""
+                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+                value=""
+              />
+            </div>
             <div
-              class="rc-tree-select-tree"
+              aria-hidden="true"
+              class="rc-tree-select-tree-treenode"
+              style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
             >
               <div
-                role="tree"
+                class="rc-tree-select-tree-indent"
               >
-                <input
-                  disabled=""
-                  style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
-                  value=""
+                <div
+                  class="rc-tree-select-tree-indent-unit"
                 />
               </div>
+            </div>
+            <div
+              class="rc-tree-select-tree-list"
+              style="position: relative;"
+            >
               <div
-                class="rc-tree-select-tree-list"
-                style="height: 200px;"
+                class="rc-tree-select-tree-list-holder"
+                style="max-height: 200px; overflow-y: auto;"
               >
                 <div>
                   <div
@@ -878,8 +1001,14 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
                     style="display: flex; flex-direction: column;"
                   >
                     <div
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open filter-node"
+                      aria-grabbed="false"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close filter-node"
+                      draggable="false"
                     >
+                      <span
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
+                      />
                       <span
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
                       />
@@ -898,8 +1027,14 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
                       </span>
                     </div>
                     <div
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                      aria-grabbed="false"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
+                      draggable="false"
                     >
+                      <span
+                        aria-hidden="true"
+                        class="rc-tree-select-tree-indent"
+                      />
                       <span
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
                       />
@@ -925,23 +1060,13 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
         </div>
       </div>
     </div>
-    <span
-      aria-hidden="true"
-      class="rc-tree-select-arrow"
-      style="user-select: none;"
-      unselectable="on"
-    >
-      <span
-        class="rc-tree-select-arrow-icon"
-      />
-    </span>
   </div>
 </div>
 `;
 
 exports[`TreeSelect.basic search nodes renders search input 1`] = `
 <div
-  class="rc-tree-select rc-tree-select-single rc-tree-select-show-arrow rc-tree-select-open rc-tree-select-show-search"
+  class="rc-tree-select rc-tree-select-single rc-tree-select-open rc-tree-select-show-search"
 >
   <div
     class="rc-tree-select-selector"
@@ -950,7 +1075,6 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
       class="rc-tree-select-selection-search"
     >
       <input
-        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
         aria-autocomplete="list"
         aria-controls="rc_select_TEST_OR_SSR_list"
         aria-expanded="true"
@@ -960,6 +1084,7 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
         class="rc-tree-select-selection-search-input"
         id="rc_select_TEST_OR_SSR"
         role="combobox"
+        type="search"
         value=""
       />
     </span>
@@ -967,28 +1092,44 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
       class="rc-tree-select-selection-placeholder"
     />
   </div>
-  <div>
-    <div
-      class="rc-tree-select-dropdown"
-      style="opacity: 0; min-width: 0; width: 0px;"
-    >
+  <div
+    class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
+    style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
+  >
+    <div>
       <div>
-        <div>
+        <div
+          class="rc-tree-select-tree"
+          role="tree"
+        >
+          <div>
+            <input
+              aria-label="for screen reader"
+              disabled=""
+              style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+              value=""
+            />
+          </div>
           <div
-            class="rc-tree-select-tree"
+            aria-hidden="true"
+            class="rc-tree-select-tree-treenode"
+            style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
           >
             <div
-              role="tree"
+              class="rc-tree-select-tree-indent"
             >
-              <input
-                disabled=""
-                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
-                value=""
+              <div
+                class="rc-tree-select-tree-indent-unit"
               />
             </div>
+          </div>
+          <div
+            class="rc-tree-select-tree-list"
+            style="position: relative;"
+          >
             <div
-              class="rc-tree-select-tree-list"
-              style="height: 200px;"
+              class="rc-tree-select-tree-list-holder"
+              style="max-height: 200px; overflow-y: auto;"
             >
               <div>
                 <div
@@ -996,8 +1137,14 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
                   style="display: flex; flex-direction: column;"
                 >
                   <div
+                    aria-grabbed="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
+                    draggable="false"
                   >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    />
                     <span
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
                     />
@@ -1016,8 +1163,14 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
                     </span>
                   </div>
                   <div
+                    aria-grabbed="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
+                    draggable="false"
                   >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    />
                     <span
                       class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
                     />
@@ -1043,15 +1196,5 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
       </div>
     </div>
   </div>
-  <span
-    aria-hidden="true"
-    class="rc-tree-select-arrow"
-    style="user-select: none;"
-    unselectable="on"
-  >
-    <span
-      class="rc-tree-select-arrow-icon"
-    />
-  </span>
 </div>
 `;

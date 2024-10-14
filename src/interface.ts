@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type * as React from 'react';
 
 export type SelectSource = 'option' | 'selection' | 'input' | 'clear';
 
@@ -30,11 +30,16 @@ export interface DataNode {
   [prop: string]: any;
 }
 
-export interface InnerDataNode extends DataNode {
+export interface InternalDataEntity {
   key: Key;
   value: RawValueType;
-  label?: React.ReactNode;
-  children?: InnerDataNode[];
+  title?: React.ReactNode;
+  disableCheckbox?: boolean;
+  disabled?: boolean;
+  children?: InternalDataEntity[];
+
+  /** Origin DataNode */
+  node: DataNode;
 }
 
 export interface LegacyDataNode extends DataNode {
@@ -47,9 +52,11 @@ export interface TreeDataNode extends DataNode {
 }
 
 export interface FlattenDataNode {
-  data: DataNode;
+  data: InternalDataEntity;
   key: Key;
+  value: RawValueType;
   level: number;
+  parent?: FlattenDataNode;
 }
 
 export interface SimpleModeConfig {
@@ -79,4 +86,10 @@ export interface ChangeEventExtra {
   triggerNode: React.ReactElement;
   /** @deprecated This prop not work as react node anymore. */
   allCheckedNodes: LegacyCheckedNode[];
+}
+
+export interface FieldNames {
+  value?: string;
+  label?: string;
+  children?: string;
 }
