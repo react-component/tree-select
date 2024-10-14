@@ -34,7 +34,7 @@
     "compile": "father build",
     "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.js",
     "now-build": "npm run build",
-    "prepare": "husky",
+    "prepare": "husky && dumi setup",
     "prepublishOnly": "npm run compile && np --yolo --no-publish --any-branch",
     "prettier": "prettier '{src,tests}/**/*.{ts,tsx}' 'tests/**/*.js' --write",
     "start": "dumi dev",
