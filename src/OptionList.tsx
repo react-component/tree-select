@@ -8,7 +8,7 @@ import useMemo from 'rc-util/lib/hooks/useMemo';
 import * as React from 'react';
 import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
-import type { Key, TreeDataNode } from './interface';
+import type { SafeKey, TreeDataNode } from './interface';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
 
 const HIDDEN_STYLE = {
@@ -23,7 +23,7 @@ const HIDDEN_STYLE = {
 };
 
 interface TreeEventInfo {
-  node: { key: Key };
+  node: { key: SafeKey };
   selected?: boolean;
   checked?: boolean;
 }
@@ -77,7 +77,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   );
 
   // ========================== Active ==========================
-  const [activeKey, setActiveKey] = React.useState<Key>(null);
+  const [activeKey, setActiveKey] = React.useState<SafeKey>(null);
   const activeEntity = keyEntities[activeKey];
 
   // ========================== Values ==========================
@@ -112,8 +112,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   };
 
   // =========================== Keys ===========================
-  const [expandedKeys, setExpandedKeys] = React.useState<Key[]>(treeDefaultExpandedKeys);
-  const [searchExpandedKeys, setSearchExpandedKeys] = React.useState<Key[]>(null);
+  const [expandedKeys, setExpandedKeys] = React.useState<SafeKey[]>(treeDefaultExpandedKeys);
+  const [searchExpandedKeys, setSearchExpandedKeys] = React.useState<SafeKey[]>(null);
 
   const mergedExpandedKeys = React.useMemo(() => {
     if (treeExpandedKeys) {
@@ -129,7 +129,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
-  const onInternalExpand = (keys: Key[]) => {
+  const onInternalExpand = (keys: SafeKey[]) => {
     setExpandedKeys(keys);
     setSearchExpandedKeys(keys);
 
@@ -143,7 +143,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     event.preventDefault();
   };
 
-  const onInternalSelect = (__: React.Key[], info: TreeEventInfo) => {
+  const onInternalSelect = (__: SafeKey[], info: TreeEventInfo) => {
     const { node } = info;
 
     if (checkable && isCheckDisabled(node)) {

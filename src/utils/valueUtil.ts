@@ -1,5 +1,4 @@
-import type * as React from 'react';
-import type { DataNode, FieldNames } from '../interface';
+import type { DataNode, FieldNames, SafeKey } from '../interface';
 import type { DefaultOptionType, InternalFieldName } from '../TreeSelect';
 
 export function toArray<T>(value: T | T[]): T[] {
@@ -28,7 +27,7 @@ export function isCheckDisabled(node: DataNode) {
 
 /** Loop fetch all the keys exist in the tree */
 export function getAllKeys(treeData: DefaultOptionType[], fieldNames: InternalFieldName) {
-  const keys: React.Key[] = [];
+  const keys: SafeKey[] = [];
 
   function dig(list: DefaultOptionType[]) {
     list.forEach(item => {

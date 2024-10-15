@@ -28,22 +28,9 @@ import type { CheckedStrategy } from './utils/strategyUtil';
 import { formatStrategyValues, SHOW_ALL, SHOW_CHILD, SHOW_PARENT } from './utils/strategyUtil';
 import { fillFieldNames, isNil, toArray } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
+import type { LabeledValueType, SafeKey, SelectSource, DefaultValueType } from './interface';
 
-export type OnInternalSelect = (value: RawValueType, info: { selected: boolean }) => void;
-
-export type RawValueType = string | number;
-
-export interface LabeledValueType {
-  key?: React.Key;
-  value?: RawValueType;
-  label?: React.ReactNode;
-  /** Only works on `treeCheckStrictly` */
-  halfChecked?: boolean;
-}
-
-export type SelectSource = 'option' | 'selection' | 'input' | 'clear';
-
-export type DraftValueType = RawValueType | LabeledValueType | (RawValueType | LabeledValueType)[];
+export type OnInternalSelect = (value: SafeKey, info: { selected: boolean }) => void;
 
 /** @deprecated This is only used for legacy compatible. Not works on new code. */
 export interface LegacyCheckedNode {
@@ -55,7 +42,7 @@ export interface LegacyCheckedNode {
 export interface ChangeEventExtra {
   /** @deprecated Please save prev value by control logic instead */
   preValue: LabeledValueType[];
-  triggerValue: RawValueType;
+  triggerValue: SafeKey;
   /** @deprecated Use `onSelect` or `onDeselect` instead. */
   selected?: boolean;
   /** @deprecated Use `onSelect` or `onDeselect` instead. */
@@ -79,9 +66,9 @@ export interface InternalFieldName extends Omit<FieldNames, 'label'> {
 }
 
 export interface SimpleModeConfig {
-  id?: React.Key;
-  pId?: React.Key;
-  rootPId?: React.Key;
+  id?: SafeKey;
+  pId?: SafeKey;
+  rootPId?: SafeKey;
 }
 
 export interface BaseOptionType {
@@ -93,10 +80,10 @@ export interface BaseOptionType {
 }
 
 export interface DefaultOptionType extends BaseOptionType {
-  value?: RawValueType;
-  title?: React.ReactNode;
+  value?: SafeKey;
+  title?: React.ReactNode | ((data: DefaultOptionType) => React.ReactNode);
   label?: React.ReactNode;
-  key?: React.Key;
+  key?: SafeKey;
   children?: DefaultOptionType[];
 }
 
@@ -109,6 +96,7 @@ export interface TreeSelectProps<
 > extends Omit<BaseSelectPropsWithoutPrivate, 'mode'> {
   prefixCls?: string;
   id?: string;
+  children?: React.ReactNode;
 
   // >>> Value
   value?: ValueType;
@@ -145,14 +133,14 @@ export interface TreeSelectProps<
   treeData?: OptionType[];
   treeDataSimpleMode?: boolean | SimpleModeConfig;
   loadData?: (dataNode: LegacyDataNode) => Promise<unknown>;
-  treeLoadedKeys?: React.Key[];
-  onTreeLoad?: (loadedKeys: React.Key[]) => void;
+  treeLoadedKeys?: SafeKey[];
+  onTreeLoad?: (loadedKeys: SafeKey[]) => void;
 
   // >>> Expanded
   treeDefaultExpandAll?: boolean;
-  treeExpandedKeys?: React.Key[];
-  treeDefaultExpandedKeys?: React.Key[];
-  onTreeExpand?: (expandedKeys: React.Key[]) => void;
+  treeExpandedKeys?: SafeKey[];
+  treeDefaultExpandedKeys?: SafeKey[];
+  onTreeExpand?: (expandedKeys: SafeKey[]) => void;
   treeExpandAction?: ExpandAction;
 
   // >>> Options
@@ -171,7 +159,7 @@ export interface TreeSelectProps<
   treeMotion?: any;
 }
 
-function isRawValue(value: RawValueType | LabeledValueType): value is RawValueType {
+function isRawValue(value: SafeKey | LabeledValueType): value is SafeKey {
   return !value || typeof value !== 'object';
 }
 
@@ -295,7 +283,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
   /** Get `missingRawValues` which not exist in the tree yet */
   const splitRawValues = React.useCallback(
-    (newRawValues: RawValueType[]) => {
+    (newRawValues: SafeKey[]) => {
       const missingRawValues = [];
       const existRawValues = [];
 
@@ -343,7 +331,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   );
 
   // ========================= Wrap Value =========================
-  const toLabeledValues = React.useCallback((draftValues: DraftValueType) => {
+  const toLabeledValues = React.useCallback((draftValues: DefaultValueType) => {
     const values = toArray(draftValues);
 
     return values.map(val => {
@@ -355,7 +343,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   }, []);
 
   const convert2LabelValues = React.useCallback(
-    (draftValues: DraftValueType) => {
+    (draftValues: DefaultValueType) => {
       const values = toLabeledValues(draftValues);
 
       return values.map(item => {
@@ -368,7 +356,9 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
         // Fill missing label & status
         if (entity) {
-          rawLabel = treeTitleRender ? treeTitleRender(entity.node) : rawLabel ?? getLabel(entity.node);
+          rawLabel = treeTitleRender
+            ? treeTitleRender(entity.node)
+            : (rawLabel ?? getLabel(entity.node));
           rawDisabled = entity.node.disabled;
         } else if (rawLabel === undefined) {
           // We try to find in current `labelInValue` value
@@ -475,8 +465,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   // =========================== Change ===========================
   const triggerChange = useRefFunc(
     (
-      newRawValues: RawValueType[],
-      extra: { triggerValue?: RawValueType; selected?: boolean },
+      newRawValues: SafeKey[],
+      extra: { triggerValue?: SafeKey; selected?: boolean },
       source: SelectSource,
     ) => {
       const labeledValues = convert2LabelValues(newRawValues);
@@ -489,7 +479,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
       // Generate rest parameters is costly, so only do it when necessary
       if (onChange) {
-        let eventValues: RawValueType[] = newRawValues;
+        let eventValues: SafeKey[] = newRawValues;
         if (treeConduction) {
           const formattedKeyList = formatStrategyValues(
             newRawValues,
@@ -508,7 +498,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           selected: undefined,
         };
 
-        let returnRawValues: (LabeledValueType | RawValueType)[] = eventValues;
+        let returnRawValues: (LabeledValueType | SafeKey)[] = eventValues;
 
         // We need fill half check back
         if (treeCheckStrictly) {
@@ -563,7 +553,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   // ========================== Options ===========================
   /** Trigger by option list */
   const onOptionSelect = React.useCallback(
-    (selectedKey: React.Key, { selected, source }: { selected: boolean; source: SelectSource }) => {
+    (selectedKey: SafeKey, { selected, source }: { selected: boolean; source: SelectSource }) => {
       const entity = keyEntities[selectedKey];
       const node = entity?.node;
       const selectedValue = node?.[mergedFieldNames.value] ?? selectedKey;
@@ -584,7 +574,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           const keyList = existRawValues.map(val => valueEntities.get(val).key);
 
           // Conduction by selected or not
-          let checkedKeys: React.Key[];
+          let checkedKeys: SafeKey[];
           if (selected) {
             ({ checkedKeys } = conductCheck(keyList, true, keyEntities));
           } else {

@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { convertDataToEntities } from 'rc-tree/lib/utils/treeUtil';
 import type { DataEntity } from 'rc-tree/lib/interface';
-import type { FieldNames, RawValueType } from '../TreeSelect';
+import type { FieldNames } from '../TreeSelect';
+import type { SafeKey } from '../interface';
 import warning from 'rc-util/lib/warning';
 import { isNil } from '../utils/valueUtil';
 
 export default (treeData: any, fieldNames: FieldNames) =>
   React.useMemo<{
-    valueEntities: Map<RawValueType, DataEntity>;
+    valueEntities: Map<SafeKey, DataEntity>;
     keyEntities: Record<string, DataEntity>;
   }>(() => {
     const collection = convertDataToEntities(treeData, {

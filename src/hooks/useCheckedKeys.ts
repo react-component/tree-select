@@ -1,17 +1,17 @@
 import * as React from 'react';
 import type { DataEntity } from 'rc-tree/lib/interface';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
-import type { LabeledValueType, RawValueType } from '../TreeSelect';
+import type { LabeledValueType, SafeKey } from '../interface';
 
 export default (
   rawLabeledValues: LabeledValueType[],
   rawHalfCheckedValues: LabeledValueType[],
   treeConduction: boolean,
-  keyEntities: Record<React.Key, DataEntity>,
+  keyEntities: Record<SafeKey, DataEntity>,
 ) =>
   React.useMemo(() => {
-    let checkedKeys: RawValueType[] = rawLabeledValues.map(({ value }) => value);
-    let halfCheckedKeys: RawValueType[] = rawHalfCheckedValues.map(({ value }) => value);
+    let checkedKeys: SafeKey[] = rawLabeledValues.map(({ value }) => value);
+    let halfCheckedKeys: SafeKey[] = rawHalfCheckedValues.map(({ value }) => value);
 
     const missingValues = checkedKeys.filter(key => !keyEntities[key]);
 
@@ -23,5 +23,6 @@ export default (
       // Checked keys should fill with missing keys which should de-duplicated
       Array.from(new Set([...missingValues, ...checkedKeys])),
       // Half checked keys
-      halfCheckedKeys];
+      halfCheckedKeys,
+    ];
   }, [rawLabeledValues, rawHalfCheckedValues, treeConduction, keyEntities]);
