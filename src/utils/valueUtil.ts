@@ -10,13 +10,10 @@ export function toArray<T>(value: T | T[]): T[] {
 
 export function fillFieldNames(fieldNames?: FieldNames) {
   const { label, value, children } = fieldNames || {};
-
-  const mergedValue = value || 'value';
-
   return {
     _title: label ? [label] : ['title', 'label'],
-    value: mergedValue,
-    key: mergedValue,
+    value: value || 'value',
+    key: value || 'value',
     children: children || 'children',
   };
 }
