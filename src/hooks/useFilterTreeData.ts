@@ -2,22 +2,18 @@ import * as React from 'react';
 import type { DefaultOptionType, InternalFieldName, TreeSelectProps } from '../TreeSelect';
 import { fillLegacyProps } from '../utils/legacyUtil';
 
-type GetFuncType<T> = T extends boolean ? never : T;
-type FilterFn = GetFuncType<TreeSelectProps['filterTreeNode']>;
+type FilterFn = NonNullable<TreeSelectProps['filterTreeNode']>;
 
-export default (
+const useFilterTreeData = (
   treeData: DefaultOptionType[],
   searchValue: string,
-  {
-    treeNodeFilterProp,
-    filterTreeNode,
-    fieldNames,
-  }: {
+  options: {
     fieldNames: InternalFieldName;
     treeNodeFilterProp: string;
     filterTreeNode: TreeSelectProps['filterTreeNode'];
   },
 ) => {
+  const { fieldNames, treeNodeFilterProp, filterTreeNode } = options;
   const { children: fieldChildren } = fieldNames;
 
   return React.useMemo(() => {
@@ -25,36 +21,30 @@ export default (
       return treeData;
     }
 
-    let filterOptionFunc: FilterFn;
-    if (typeof filterTreeNode === 'function') {
-      filterOptionFunc = filterTreeNode;
-    } else {
-      const upperStr = searchValue.toUpperCase();
-      filterOptionFunc = (_, dataNode) => {
-        const value = dataNode[treeNodeFilterProp];
+    const filterOptionFunc: FilterFn =
+      typeof filterTreeNode === 'function'
+        ? filterTreeNode
+        : (_, dataNode) =>
+            String(dataNode[treeNodeFilterProp]).toUpperCase().includes(searchValue.toUpperCase());
 
-        return String(value).toUpperCase().includes(upperStr);
-      };
-    }
+    const filterTreeNodes = (nodes: DefaultOptionType[], keepAll = false): DefaultOptionType[] =>
+      nodes.reduce<DefaultOptionType[]>((filtered, node) => {
+        const children = node[fieldChildren];
+        const isMatch = keepAll || filterOptionFunc(searchValue, fillLegacyProps(node));
+        const filteredChildren = filterTreeNodes(children || [], isMatch);
 
-    function dig(list: DefaultOptionType[], keepAll: boolean = false) {
-      return list.reduce<DefaultOptionType[]>((total, dataNode) => {
-        const children = dataNode[fieldChildren];
-
-        const match = keepAll || filterOptionFunc(searchValue, fillLegacyProps(dataNode));
-        const childList = dig(children || [], match);
-
-        if (match || childList.length) {
-          total.push({
-            ...dataNode,
+        if (isMatch || filteredChildren.length) {
+          filtered.push({
+            ...node,
             isLeaf: undefined,
-            [fieldChildren]: childList,
+            [fieldChildren]: filteredChildren,
           });
         }
-        return total;
+        return filtered;
       }, []);
-    }
 
-    return dig(treeData);
+    return filterTreeNodes(treeData);
   }, [treeData, searchValue, fieldChildren, treeNodeFilterProp, filterTreeNode]);
 };
+
+export default useFilterTreeData;
