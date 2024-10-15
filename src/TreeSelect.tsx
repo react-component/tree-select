@@ -353,7 +353,6 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         let rawDisabled: boolean | undefined;
 
         const entity = valueEntities.get(rawValue);
-        const a = entity.node;
 
         // Fill missing label & status
         if (entity) {
