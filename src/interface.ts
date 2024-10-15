@@ -13,11 +13,11 @@ export interface LabeledValueType {
   halfChecked?: boolean;
 }
 
-export type DefaultValueType = SafeKey | SafeKey[] | LabeledValueType | LabeledValueType[];
+export type DefaultValueType = SafeKey | LabeledValueType | (SafeKey | LabeledValueType)[];
 
 export interface DataNode {
   value?: SafeKey;
-  title?: React.ReactNode;
+  title?: React.ReactNode | ((data: DataNode) => React.ReactNode);
   label?: React.ReactNode;
   key?: SafeKey;
   disabled?: boolean;
@@ -32,7 +32,7 @@ export interface DataNode {
 export interface InternalDataEntity {
   key: SafeKey;
   value: SafeKey;
-  title?: React.ReactNode;
+  title?: React.ReactNode | ((data: InternalDataEntity) => React.ReactNode);
   disableCheckbox?: boolean;
   disabled?: boolean;
   children?: InternalDataEntity[];

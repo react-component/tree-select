@@ -33,7 +33,7 @@ export function convertChildrenToData(nodes: React.ReactNode): DataNode[] {
     .filter(data => data);
 }
 
-export function fillLegacyProps(dataNode: DataNode): any {
+export function fillLegacyProps(dataNode: DataNode) {
   if (!dataNode) {
     return dataNode;
   }
