@@ -25,22 +25,22 @@ export function isCheckDisabled(node: DataNode) {
   return !node || node.disabled || node.disableCheckbox || node.checkable === false;
 }
 
-/** Loop fetch all the keys exist in the tree */
-export function getAllKeys(treeData: DefaultOptionType[], fieldNames: InternalFieldName) {
+/** 递归获取树中所有存在的键 */
+export function getAllKeys(
+  treeData: DefaultOptionType[],
+  fieldNames: InternalFieldName,
+): SafeKey[] {
   const keys: SafeKey[] = [];
-
-  function dig(list: DefaultOptionType[]) {
-    list.forEach(item => {
-      const children = item[fieldNames.children];
-      if (children) {
-        keys.push(item[fieldNames.value]);
-        dig(children);
+  const traverseTree = (nodes: DefaultOptionType[]): void => {
+    nodes.forEach(node => {
+      keys.push(node[fieldNames.value]);
+      const children = node[fieldNames.children];
+      if (Array.isArray(children)) {
+        traverseTree(children);
       }
     });
-  }
-
-  dig(treeData);
-
+  };
+  traverseTree(treeData);
   return keys;
 }
 

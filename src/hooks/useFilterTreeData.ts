@@ -25,17 +25,11 @@ export default (
       return treeData;
     }
 
-    let filterOptionFunc: FilterFn;
-    if (typeof filterTreeNode === 'function') {
-      filterOptionFunc = filterTreeNode;
-    } else {
-      const upperStr = searchValue.toUpperCase();
-      filterOptionFunc = (_, dataNode) => {
-        const value = dataNode[treeNodeFilterProp];
-
-        return String(value).toUpperCase().includes(upperStr);
-      };
-    }
+    const filterOptionFunc: FilterFn =
+      typeof filterTreeNode === 'function'
+        ? filterTreeNode
+        : (_, dataNode) =>
+            String(dataNode[treeNodeFilterProp]).toUpperCase().includes(searchValue.toUpperCase());
 
     function dig(list: DefaultOptionType[], keepAll: boolean = false) {
       return list.reduce<DefaultOptionType[]>((total, dataNode) => {

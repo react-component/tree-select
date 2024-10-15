@@ -10,19 +10,20 @@ export default (
   keyEntities: Record<SafeKey, DataEntity>,
 ) =>
   React.useMemo(() => {
-    let checkedKeys: SafeKey[] = rawLabeledValues.map(({ value }) => value);
-    let halfCheckedKeys: SafeKey[] = rawHalfCheckedValues.map(({ value }) => value);
+    const getValues = (values: LabeledValueType[]) => values.map(({ value }) => value);
+    const checkedKeys = getValues(rawLabeledValues);
+    const halfCheckedKeys = getValues(rawHalfCheckedValues);
 
     const missingValues = checkedKeys.filter(key => !keyEntities[key]);
 
-    if (treeConduction) {
-      ({ checkedKeys, halfCheckedKeys } = conductCheck(checkedKeys, true, keyEntities));
-    }
+    const finalCheckedKeys = treeConduction
+      ? conductCheck(checkedKeys, true, keyEntities).checkedKeys
+      : checkedKeys;
 
     return [
-      // Checked keys should fill with missing keys which should de-duplicated
-      Array.from(new Set([...missingValues, ...checkedKeys])),
-      // Half checked keys
-      halfCheckedKeys,
+      Array.from(new Set([...missingValues, ...finalCheckedKeys])),
+      treeConduction
+        ? conductCheck(checkedKeys, true, keyEntities).halfCheckedKeys
+        : halfCheckedKeys,
     ];
   }, [rawLabeledValues, rawHalfCheckedValues, treeConduction, keyEntities]);
