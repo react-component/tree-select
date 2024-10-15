@@ -17,8 +17,8 @@ export function formatStrategyValues(
 ): SafeKey[] {
   const valueSet = new Set(values);
 
-  const strategyHandlers = {
-    [SHOW_CHILD]: (key: SafeKey) => {
+  if (strategy === SHOW_CHILD) {
+    return values.filter(key => {
       const entity = keyEntities[key];
       return (
         !entity ||
@@ -28,14 +28,14 @@ export function formatStrategyValues(
           ({ node }) => isCheckDisabled(node) || valueSet.has(node[fieldNames.value]),
         )
       );
-    },
-    [SHOW_PARENT]: (key: SafeKey) => {
+    });
+  }
+  if (strategy === SHOW_PARENT) {
+    return values.filter(key => {
       const entity = keyEntities[key];
-      const parent = entity?.parent;
+      const parent = entity ? entity.parent : null;
       return !parent || isCheckDisabled(parent.node) || !valueSet.has(parent.key);
-    },
-    [SHOW_ALL]: () => true,
-  };
-
-  return values.filter(strategyHandlers[strategy] || strategyHandlers[SHOW_ALL]);
+    });
+  }
+  return values;
 }

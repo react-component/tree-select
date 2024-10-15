@@ -1,14 +1,10 @@
 import type { DataNode, FieldNames, SafeKey } from '../interface';
 import type { DefaultOptionType, InternalFieldName } from '../TreeSelect';
 
-export function toArray<T>(value: T | T[]): T[] {
-  if (Array.isArray(value)) {
-    return value;
-  }
-  return value !== undefined ? [value] : [];
-}
+export const toArray = <T>(value: T | T[]): T[] =>
+  Array.isArray(value) ? value : value !== undefined ? [value] : [];
 
-export function fillFieldNames(fieldNames?: FieldNames) {
+export const fillFieldNames = (fieldNames?: FieldNames) => {
   const { label, value, children } = fieldNames || {};
   return {
     _title: label ? [label] : ['title', 'label'],
@@ -16,31 +12,30 @@ export function fillFieldNames(fieldNames?: FieldNames) {
     key: value || 'value',
     children: children || 'children',
   };
-}
+};
 
-export function isCheckDisabled(node: DataNode) {
-  return !node || node.disabled || node.disableCheckbox || node.checkable === false;
-}
+export const isCheckDisabled = (node: DataNode): boolean =>
+  !node || node.disabled || node.disableCheckbox || node.checkable === false;
 
-/** 递归获取树中所有存在的键 */
-export function getAllKeys(
+export const getAllKeys = (
   treeData: DefaultOptionType[],
   fieldNames: InternalFieldName,
-): SafeKey[] {
+): SafeKey[] => {
   const keys: SafeKey[] = [];
-  const traverseTree = (nodes: DefaultOptionType[]): void => {
-    nodes.forEach(node => {
-      keys.push(node[fieldNames.value]);
-      const children = node[fieldNames.children];
-      if (Array.isArray(children)) {
-        traverseTree(children);
+
+  const dig = (list: DefaultOptionType[]): void => {
+    list.forEach(item => {
+      const children = item[fieldNames.children];
+      if (children) {
+        keys.push(item[fieldNames.value]);
+        dig(children);
       }
     });
   };
-  traverseTree(treeData);
-  return keys;
-}
 
-export function isNil(val: any) {
-  return val === null || val === undefined;
-}
+  dig(treeData);
+
+  return keys;
+};
+
+export const isNil = (val: any): boolean => val === null || val === undefined;
