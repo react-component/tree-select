@@ -20,29 +20,21 @@ export function formatStrategyValues(
   if (strategy === SHOW_CHILD) {
     return values.filter(key => {
       const entity = keyEntities[key];
-
-      if (
-        entity &&
-        entity.children &&
-        entity.children.some(({ node }) => valueSet.has(node[fieldNames.value])) &&
-        entity.children.every(
+      return (
+        !entity ||
+        !entity.children ||
+        !entity.children.some(({ node }) => valueSet.has(node[fieldNames.value])) ||
+        !entity.children.every(
           ({ node }) => isCheckDisabled(node) || valueSet.has(node[fieldNames.value]),
         )
-      ) {
-        return false;
-      }
-      return true;
+      );
     });
   }
   if (strategy === SHOW_PARENT) {
     return values.filter(key => {
       const entity = keyEntities[key];
       const parent = entity ? entity.parent : null;
-
-      if (parent && !isCheckDisabled(parent.node) && valueSet.has(parent.key)) {
-        return false;
-      }
-      return true;
+      return !parent || isCheckDisabled(parent.node) || !valueSet.has(parent.key);
     });
   }
   return values;
