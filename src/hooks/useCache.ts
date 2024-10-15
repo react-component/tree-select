@@ -16,8 +16,7 @@ export default (values: LabeledValueType[]): [LabeledValueType[]] => {
 
     const filledValues = values.map(item => {
       const { value, label } = item;
-      const cachedLabel = valueLabels.get(value);
-      const mergedLabel = label ?? cachedLabel;
+      const mergedLabel = label ?? valueLabels.get(value);
 
       // Save in cache
       valueLabelsCache.set(value, mergedLabel);
