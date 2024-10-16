@@ -1,4 +1,4 @@
-import type { BaseSelectProps, BaseSelectPropsWithoutPrivate, BaseSelectRef } from 'rc-select';
+import type { BaseSelectPropsWithoutPrivate, BaseSelectRef } from 'rc-select';
 import { BaseSelect } from 'rc-select';
 import useId from 'rc-select/lib/hooks/useId';
 import type { IconType } from 'rc-tree/lib/interface';
@@ -212,7 +212,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     postState: search => search || '',
   });
 
-  const onInternalSearch: BaseSelectProps['onSearch'] = searchText => {
+  const onInternalSearch = searchText => {
     setSearchValue(searchText);
     onSearch?.(searchText);
   };
@@ -581,21 +581,19 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   );
 
   // ====================== Display Change ========================
-  const onDisplayValuesChange = useRefFunc<BaseSelectProps['onDisplayValuesChange']>(
-    (newValues, info) => {
-      const newRawValues = newValues.map(item => item.value);
+  const onDisplayValuesChange = useRefFunc((newValues, info) => {
+    const newRawValues = newValues.map(item => item.value);
 
-      if (info.type === 'clear') {
-        triggerChange(newRawValues, {}, 'selection');
-        return;
-      }
+    if (info.type === 'clear') {
+      triggerChange(newRawValues, {}, 'selection');
+      return;
+    }
 
-      // TreeSelect only have multiple mode which means display change only has remove
-      if (info.values.length) {
-        onOptionSelect(info.values[0].value, { selected: false, source: 'selection' });
-      }
-    },
-  );
+    // TreeSelect only have multiple mode which means display change only has remove
+    if (info.values.length) {
+      onOptionSelect(info.values[0].value, { selected: false, source: 'selection' });
+    }
+  });
 
   // ========================== Context ===========================
   const treeSelectContext = React.useMemo<TreeSelectContextProps>(
