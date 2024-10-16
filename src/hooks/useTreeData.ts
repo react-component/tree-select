@@ -1,7 +1,6 @@
 import * as React from 'react';
 import type { DataNode, SimpleModeConfig } from '../interface';
 import { convertChildrenToData } from '../utils/legacyUtil';
-import type { DefaultOptionType } from '../TreeSelect';
 
 function buildTreeStructure(nodes: DataNode[], config: SimpleModeConfig): DataNode[] {
   const { id, pId, rootPId } = config;
@@ -37,7 +36,7 @@ export default function useTreeData(
   treeData: DataNode[],
   children: React.ReactNode,
   simpleMode: boolean | SimpleModeConfig,
-): DefaultOptionType[] {
+): DataNode[] {
   return React.useMemo(() => {
     if (treeData) {
       if (simpleMode) {

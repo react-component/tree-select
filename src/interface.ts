@@ -1,12 +1,12 @@
 import type * as React from 'react';
-import type { SafeKey } from 'rc-tree/lib/interface';
+import type { SafeKey, Key, DataNode, FieldNames } from 'rc-tree/lib/interface';
 
-export type { SafeKey };
+export type { SafeKey, Key, DataNode, FieldNames };
 
 export type SelectSource = 'option' | 'selection' | 'input' | 'clear';
 
 export interface LabeledValueType {
-  key?: SafeKey;
+  key?: Key;
   value?: SafeKey;
   label?: React.ReactNode;
   /** Only works on `treeCheckStrictly` */
@@ -15,44 +15,13 @@ export interface LabeledValueType {
 
 export type DefaultValueType = SafeKey | LabeledValueType | (SafeKey | LabeledValueType)[];
 
-export interface DataNode {
-  value?: SafeKey;
-  title?: React.ReactNode | ((data: DataNode) => React.ReactNode);
-  label?: React.ReactNode;
-  key?: SafeKey;
-  disabled?: boolean;
-  disableCheckbox?: boolean;
-  checkable?: boolean;
-  children?: DataNode[];
-
-  /** Customize data info */
-  [prop: string]: any;
-}
-
-export interface InternalDataEntity {
-  key: SafeKey;
-  value: SafeKey;
-  title?: React.ReactNode | ((data: InternalDataEntity) => React.ReactNode);
-  disableCheckbox?: boolean;
-  disabled?: boolean;
-  children?: InternalDataEntity[];
-
-  /** Origin DataNode */
-  node: DataNode;
-}
-
 export interface LegacyDataNode extends DataNode {
   props: any;
 }
 
-export interface TreeDataNode extends DataNode {
-  key: SafeKey;
-  children?: TreeDataNode[];
-}
-
 export interface FlattenDataNode {
-  data: InternalDataEntity;
-  key: SafeKey;
+  data: DataNode;
+  key: Key;
   value: SafeKey;
   level: number;
   parent?: FlattenDataNode;
@@ -85,10 +54,4 @@ export interface ChangeEventExtra {
   triggerNode: React.ReactElement;
   /** @deprecated This prop not work as react node anymore. */
   allCheckedNodes: LegacyCheckedNode[];
-}
-
-export interface FieldNames {
-  value?: string;
-  label?: string;
-  children?: string;
 }

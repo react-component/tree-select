@@ -1,5 +1,5 @@
 import type { DataNode, FieldNames, SafeKey } from '../interface';
-import type { DefaultOptionType, InternalFieldName } from '../TreeSelect';
+import type { FieldNames } from '../TreeSelect';
 
 export const toArray = <T>(value: T | T[]): T[] =>
   Array.isArray(value) ? value : value !== undefined ? [value] : [];
@@ -17,13 +17,10 @@ export const fillFieldNames = (fieldNames?: FieldNames) => {
 export const isCheckDisabled = (node: DataNode): boolean =>
   !node || node.disabled || node.disableCheckbox || node.checkable === false;
 
-export const getAllKeys = (
-  treeData: DefaultOptionType[],
-  fieldNames: InternalFieldName,
-): SafeKey[] => {
+export const getAllKeys = (treeData: DataNode[], fieldNames: FieldNames): SafeKey[] => {
   const keys: SafeKey[] = [];
 
-  const dig = (list: DefaultOptionType[]): void => {
+  const dig = (list: DataNode[]): void => {
     list.forEach(item => {
       const children = item[fieldNames.children];
       if (children) {

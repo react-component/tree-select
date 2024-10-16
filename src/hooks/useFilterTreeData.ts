@@ -1,14 +1,15 @@
 import * as React from 'react';
-import type { DefaultOptionType, InternalFieldName, TreeSelectProps } from '../TreeSelect';
+import type { TreeSelectProps } from '../TreeSelect';
+import type { DataNode, FieldNames } from '../interface';
 import { fillLegacyProps } from '../utils/legacyUtil';
 
 type FilterFn = NonNullable<TreeSelectProps['filterTreeNode']>;
 
 const useFilterTreeData = (
-  treeData: DefaultOptionType[],
+  treeData: DataNode[],
   searchValue: string,
   options: {
-    fieldNames: InternalFieldName;
+    fieldNames: FieldNames;
     treeNodeFilterProp: string;
     filterTreeNode: TreeSelectProps['filterTreeNode'];
   },
@@ -27,8 +28,8 @@ const useFilterTreeData = (
         : (_, dataNode) =>
             String(dataNode[treeNodeFilterProp]).toUpperCase().includes(searchValue.toUpperCase());
 
-    const filterTreeNodes = (nodes: DefaultOptionType[], keepAll = false): DefaultOptionType[] =>
-      nodes.reduce<DefaultOptionType[]>((filtered, node) => {
+    const filterTreeNodes = (nodes: DataNode[], keepAll = false): DataNode[] =>
+      nodes.reduce<DataNode[]>((filtered, node) => {
         const children = node[fieldChildren];
         const isMatch = keepAll || filterOptionFunc(searchValue, fillLegacyProps(node));
         const filteredChildren = filterTreeNodes(children || [], isMatch);
