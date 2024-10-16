@@ -8,7 +8,7 @@ import useMemo from 'rc-util/lib/hooks/useMemo';
 import * as React from 'react';
 import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
-import type { SafeKey, TreeDataNode } from './interface';
+import type { Key, SafeKey } from './interface';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
 
 const HIDDEN_STYLE = {
@@ -23,7 +23,7 @@ const HIDDEN_STYLE = {
 };
 
 interface TreeEventInfo {
-  node: { key: SafeKey };
+  node: { key: Key };
   selected?: boolean;
   checked?: boolean;
 }
@@ -77,8 +77,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   );
 
   // ========================== Active ==========================
-  const [activeKey, setActiveKey] = React.useState<SafeKey>(null);
-  const activeEntity = keyEntities[activeKey];
+  const [activeKey, setActiveKey] = React.useState<Key>(null);
+  const activeEntity = keyEntities[activeKey as SafeKey];
 
   // ========================== Values ==========================
   const mergedCheckedKeys = React.useMemo(() => {
@@ -112,8 +112,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   };
 
   // =========================== Keys ===========================
-  const [expandedKeys, setExpandedKeys] = React.useState<SafeKey[]>(treeDefaultExpandedKeys);
-  const [searchExpandedKeys, setSearchExpandedKeys] = React.useState<SafeKey[]>(null);
+  const [expandedKeys, setExpandedKeys] = React.useState<Key[]>(treeDefaultExpandedKeys);
+  const [searchExpandedKeys, setSearchExpandedKeys] = React.useState<Key[]>(null);
 
   const mergedExpandedKeys = React.useMemo(() => {
     if (treeExpandedKeys) {
@@ -129,7 +129,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
-  const onInternalExpand = (keys: SafeKey[]) => {
+  const onInternalExpand = (keys: Key[]) => {
     setExpandedKeys(keys);
     setSearchExpandedKeys(keys);
 
@@ -143,7 +143,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     event.preventDefault();
   };
 
-  const onInternalSelect = (__: SafeKey[], info: TreeEventInfo) => {
+  const onInternalSelect = (__: Key[], info: TreeEventInfo) => {
     const { node } = info;
 
     if (checkable && isCheckDisabled(node)) {
@@ -227,7 +227,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         ref={treeRef}
         focusable={false}
         prefixCls={`${prefixCls}-tree`}
-        treeData={memoTreeData as TreeDataNode[]}
+        treeData={memoTreeData}
         height={listHeight}
         itemHeight={listItemHeight}
         itemScrollOffset={listItemScrollOffset}

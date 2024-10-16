@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { ExpandAction } from 'rc-tree/lib/Tree';
-import type { DefaultOptionType, InternalFieldName, OnInternalSelect } from './TreeSelect';
+import type { DataNode, FieldNames, Key } from './interface';
 
 export interface TreeSelectContextProps {
   virtual?: boolean;
@@ -8,9 +8,9 @@ export interface TreeSelectContextProps {
   listHeight: number;
   listItemHeight: number;
   listItemScrollOffset?: number;
-  treeData: DefaultOptionType[];
-  fieldNames: InternalFieldName;
-  onSelect: OnInternalSelect;
+  treeData: DataNode[];
+  fieldNames: FieldNames;
+  onSelect: (value: Key, info: { selected: boolean }) => void;
   treeExpandAction?: ExpandAction;
   treeTitleRender?: (node: any) => React.ReactNode;
   onPopupScroll?: React.UIEventHandler<HTMLDivElement>;

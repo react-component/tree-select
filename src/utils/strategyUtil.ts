@@ -1,6 +1,5 @@
-import type { InternalFieldName } from '../TreeSelect';
 import type { DataEntity } from 'rc-tree/lib/interface';
-import type { SafeKey } from '../interface';
+import type { SafeKey, FieldNames } from '../interface';
 import { isCheckDisabled } from './valueUtil';
 
 export const SHOW_ALL = 'SHOW_ALL';
@@ -13,7 +12,7 @@ export function formatStrategyValues(
   values: SafeKey[],
   strategy: CheckedStrategy,
   keyEntities: Record<SafeKey, DataEntity>,
-  fieldNames: InternalFieldName,
+  fieldNames: FieldNames,
 ): SafeKey[] {
   const valueSet = new Set(values);
 
@@ -34,7 +33,7 @@ export function formatStrategyValues(
     return values.filter(key => {
       const entity = keyEntities[key];
       const parent = entity ? entity.parent : null;
-      return !parent || isCheckDisabled(parent.node) || !valueSet.has(parent.key);
+      return !parent || isCheckDisabled(parent.node) || !valueSet.has(parent.key as SafeKey);
     });
   }
   return values;

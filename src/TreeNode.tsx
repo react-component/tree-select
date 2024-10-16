@@ -1,9 +1,9 @@
 /* istanbul ignore file */
 import type * as React from 'react';
-import type { DataNode, SafeKey } from './interface';
+import type { DataNode, Key } from './interface';
 
 export interface TreeNodeProps extends Omit<DataNode, 'children'> {
-  value: SafeKey;
+  value: Key;
   children?: React.ReactNode;
 }
 

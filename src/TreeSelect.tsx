@@ -1,9 +1,4 @@
-import type {
-  BaseSelectProps,
-  BaseSelectPropsWithoutPrivate,
-  BaseSelectRef,
-  SelectProps,
-} from 'rc-select';
+import type { BaseSelectPropsWithoutPrivate, BaseSelectRef } from 'rc-select';
 import { BaseSelect } from 'rc-select';
 import useId from 'rc-select/lib/hooks/useId';
 import type { IconType } from 'rc-tree/lib/interface';
@@ -28,72 +23,21 @@ import type { CheckedStrategy } from './utils/strategyUtil';
 import { formatStrategyValues, SHOW_ALL, SHOW_CHILD, SHOW_PARENT } from './utils/strategyUtil';
 import { fillFieldNames, isNil, toArray } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
-import type { LabeledValueType, SafeKey, SelectSource, DefaultValueType } from './interface';
+import type {
+  LabeledValueType,
+  SafeKey,
+  Key,
+  DataNode,
+  SimpleModeConfig,
+  ChangeEventExtra,
+  SelectSource,
+  DefaultValueType,
+  FieldNames,
+  LegacyDataNode,
+} from './interface';
 
-export type OnInternalSelect = (value: SafeKey, info: { selected: boolean }) => void;
-
-/** @deprecated This is only used for legacy compatible. Not works on new code. */
-export interface LegacyCheckedNode {
-  pos: string;
-  node: React.ReactElement;
-  children?: LegacyCheckedNode[];
-}
-
-export interface ChangeEventExtra {
-  /** @deprecated Please save prev value by control logic instead */
-  preValue: LabeledValueType[];
-  triggerValue: SafeKey;
-  /** @deprecated Use `onSelect` or `onDeselect` instead. */
-  selected?: boolean;
-  /** @deprecated Use `onSelect` or `onDeselect` instead. */
-  checked?: boolean;
-
-  // Not sure if exist user still use this. We have to keep but not recommend user to use
-  /** @deprecated This prop not work as react node anymore. */
-  triggerNode: React.ReactElement;
-  /** @deprecated This prop not work as react node anymore. */
-  allCheckedNodes: LegacyCheckedNode[];
-}
-
-export interface FieldNames {
-  value?: string;
-  label?: string;
-  children?: string;
-}
-
-export interface InternalFieldName extends Omit<FieldNames, 'label'> {
-  _title: string[];
-}
-
-export interface SimpleModeConfig {
-  id?: SafeKey;
-  pId?: SafeKey;
-  rootPId?: SafeKey;
-}
-
-export interface BaseOptionType {
-  disabled?: boolean;
-  checkable?: boolean;
-  disableCheckbox?: boolean;
-  children?: BaseOptionType[];
-  [name: string]: any;
-}
-
-export interface DefaultOptionType extends BaseOptionType {
-  value?: SafeKey;
-  title?: React.ReactNode | ((data: DefaultOptionType) => React.ReactNode);
-  label?: React.ReactNode;
-  key?: SafeKey;
-  children?: DefaultOptionType[];
-}
-
-export interface LegacyDataNode extends DefaultOptionType {
-  props: any;
-}
-export interface TreeSelectProps<
-  ValueType = any,
-  OptionType extends BaseOptionType = DefaultOptionType,
-> extends Omit<BaseSelectPropsWithoutPrivate, 'mode'> {
+export interface TreeSelectProps<ValueType = any, OptionType extends DataNode = DataNode>
+  extends Omit<BaseSelectPropsWithoutPrivate, 'mode'> {
   prefixCls?: string;
   id?: string;
   children?: React.ReactNode;
@@ -109,12 +53,12 @@ export interface TreeSelectProps<
   inputValue?: string;
   onSearch?: (value: string) => void;
   autoClearSearchValue?: boolean;
-  filterTreeNode?: boolean | ((inputValue: string, treeNode: DefaultOptionType) => boolean);
+  filterTreeNode?: boolean | ((inputValue: string, treeNode: DataNode) => boolean);
   treeNodeFilterProp?: string;
 
   // >>> Select
-  onSelect?: SelectProps<ValueType, OptionType>['onSelect'];
-  onDeselect?: SelectProps<ValueType, OptionType>['onDeselect'];
+  onSelect?: (value: ValueType, option: OptionType) => void;
+  onDeselect?: (value: ValueType, option: OptionType) => void;
 
   // >>> Selector
   showCheckedStrategy?: CheckedStrategy;
@@ -255,7 +199,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   }
 
   // ========================= FieldNames =========================
-  const mergedFieldNames: InternalFieldName = React.useMemo(
+  const mergedFieldNames: FieldNames = React.useMemo(
     () => fillFieldNames(fieldNames),
     /* eslint-disable react-hooks/exhaustive-deps */
     [JSON.stringify(fieldNames)],
@@ -268,7 +212,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     postState: search => search || '',
   });
 
-  const onInternalSearch: BaseSelectProps['onSearch'] = searchText => {
+  const onInternalSearch = searchText => {
     setSearchValue(searchText);
     onSearch?.(searchText);
   };
@@ -310,7 +254,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
   // =========================== Label ============================
   const getLabel = React.useCallback(
-    (item: DefaultOptionType) => {
+    (item: DataNode) => {
       if (item) {
         if (treeNodeLabelProp) {
           return item[treeNodeLabelProp];
@@ -418,7 +362,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const displayValues = React.useMemo(() => {
     // Collect keys which need to show
     const displayKeys = formatStrategyValues(
-      rawCheckedValues,
+      rawCheckedValues as SafeKey[],
       mergedShowCheckedStrategy,
       keyEntities,
       mergedFieldNames,
@@ -574,7 +518,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           const keyList = existRawValues.map(val => valueEntities.get(val).key);
 
           // Conduction by selected or not
-          let checkedKeys: SafeKey[];
+          let checkedKeys: Key[];
           if (selected) {
             ({ checkedKeys } = conductCheck(keyList, true, keyEntities));
           } else {
@@ -588,7 +532,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           // Fill back of keys
           newRawValues = [
             ...missingRawValues,
-            ...checkedKeys.map(key => keyEntities[key].node[mergedFieldNames.value]),
+            ...checkedKeys.map(key => keyEntities[key as SafeKey].node[mergedFieldNames.value]),
           ];
         }
         triggerChange(newRawValues, { selected, triggerValue: selectedValue }, source || 'option');
@@ -637,21 +581,19 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   );
 
   // ====================== Display Change ========================
-  const onDisplayValuesChange = useRefFunc<BaseSelectProps['onDisplayValuesChange']>(
-    (newValues, info) => {
-      const newRawValues = newValues.map(item => item.value);
+  const onDisplayValuesChange = useRefFunc((newValues, info) => {
+    const newRawValues = newValues.map(item => item.value);
 
-      if (info.type === 'clear') {
-        triggerChange(newRawValues, {}, 'selection');
-        return;
-      }
+    if (info.type === 'clear') {
+      triggerChange(newRawValues, {}, 'selection');
+      return;
+    }
 
-      // TreeSelect only have multiple mode which means display change only has remove
-      if (info.values.length) {
-        onOptionSelect(info.values[0].value, { selected: false, source: 'selection' });
-      }
-    },
-  );
+    // TreeSelect only have multiple mode which means display change only has remove
+    if (info.values.length) {
+      onOptionSelect(info.values[0].value, { selected: false, source: 'selection' });
+    }
+  });
 
   // ========================== Context ===========================
   const treeSelectContext = React.useMemo<TreeSelectContextProps>(
@@ -760,7 +702,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const GenericTreeSelect = TreeSelect as unknown as (<
   ValueType = any,
-  OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType,
+  OptionType extends DataNode = DataNode,
 >(
   props: React.PropsWithChildren<TreeSelectProps<ValueType, OptionType>> & {
     ref?: React.Ref<BaseSelectRef>;

@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { convertDataToEntities } from 'rc-tree/lib/utils/treeUtil';
 import type { DataEntity } from 'rc-tree/lib/interface';
-import type { FieldNames } from '../TreeSelect';
-import type { SafeKey } from '../interface';
+import type { SafeKey, FieldNames } from '../interface';
 import warning from 'rc-util/lib/warning';
 import { isNil } from '../utils/valueUtil';
 

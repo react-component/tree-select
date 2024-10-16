@@ -1,24 +1,24 @@
 import * as React from 'react';
 import type { DataEntity, IconType } from 'rc-tree/lib/interface';
-import type { LegacyDataNode, SafeKey } from './interface';
+import type { LegacyDataNode, SafeKey, Key } from './interface';
 
 interface LegacyContextProps {
   checkable: boolean | React.ReactNode;
-  checkedKeys: SafeKey[];
-  halfCheckedKeys: SafeKey[];
-  treeExpandedKeys: SafeKey[];
-  treeDefaultExpandedKeys: SafeKey[];
-  onTreeExpand: (keys: SafeKey[]) => void;
+  checkedKeys: Key[];
+  halfCheckedKeys: Key[];
+  treeExpandedKeys: Key[];
+  treeDefaultExpandedKeys: Key[];
+  onTreeExpand: (keys: Key[]) => void;
   treeDefaultExpandAll: boolean;
   treeIcon: IconType;
   showTreeIcon: boolean;
   switcherIcon: IconType;
   treeLine: boolean;
   treeNodeFilterProp: string;
-  treeLoadedKeys: SafeKey[];
+  treeLoadedKeys: Key[];
   treeMotion: any;
   loadData: (treeNode: LegacyDataNode) => Promise<unknown>;
-  onTreeLoad: (loadedKeys: SafeKey[]) => void;
+  onTreeLoad: (loadedKeys: Key[]) => void;
 
   keyEntities: Record<SafeKey, DataEntity<any>>;
 }
