@@ -1,7 +1,13 @@
 import type * as React from 'react';
-import type { SafeKey, Key, DataNode } from 'rc-tree/lib/interface';
+import type { SafeKey, Key, DataNode as TreeDataNode } from 'rc-tree/lib/interface';
 
-export type { SafeKey, Key, DataNode };
+export type { SafeKey, Key };
+
+export interface DataNode extends Record<string, any>, Omit<TreeDataNode, 'key' | 'children'> {
+  key?: Key;
+  value?: SafeKey;
+  children?: DataNode[];
+}
 
 export type SelectSource = 'option' | 'selection' | 'input' | 'clear';
 
@@ -60,4 +66,5 @@ export interface FieldNames {
   value?: string;
   label?: string;
   children?: string;
+  _title?: string[];
 }
