@@ -1,5 +1,4 @@
 import type { DataNode, FieldNames, SafeKey } from '../interface';
-import type { FieldNames } from '../TreeSelect';
 
 export const toArray = <T>(value: T | T[]): T[] =>
   Array.isArray(value) ? value : value !== undefined ? [value] : [];

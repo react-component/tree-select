@@ -1,7 +1,7 @@
 import type * as React from 'react';
-import type { SafeKey, Key, DataNode, FieldNames } from 'rc-tree/lib/interface';
+import type { SafeKey, Key, DataNode } from 'rc-tree/lib/interface';
 
-export type { SafeKey, Key, DataNode, FieldNames };
+export type { SafeKey, Key, DataNode };
 
 export type SelectSource = 'option' | 'selection' | 'input' | 'clear';
 
@@ -54,4 +54,10 @@ export interface ChangeEventExtra {
   triggerNode: React.ReactElement;
   /** @deprecated This prop not work as react node anymore. */
   allCheckedNodes: LegacyCheckedNode[];
+}
+
+export interface FieldNames {
+  value?: string;
+  label?: string;
+  children?: string;
 }

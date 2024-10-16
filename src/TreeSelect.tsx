@@ -31,7 +31,6 @@ import warningProps from './utils/warningPropsUtil';
 import type {
   LabeledValueType,
   SafeKey,
-  Key,
   DataNode,
   SimpleModeConfig,
   ChangeEventExtra,

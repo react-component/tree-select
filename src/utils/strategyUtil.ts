@@ -1,6 +1,5 @@
-import type { FieldNames } from '../TreeSelect';
 import type { DataEntity } from 'rc-tree/lib/interface';
-import type { SafeKey, Key } from '../interface';
+import type { SafeKey, FieldNames } from '../interface';
 import { isCheckDisabled } from './valueUtil';
 
 export const SHOW_ALL = 'SHOW_ALL';

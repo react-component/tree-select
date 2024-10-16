@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { DataEntity } from 'rc-tree/lib/interface';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
-import type { LabeledValueType, SafeKey } from '../interface';
+import type { LabeledValueType, SafeKey, Key } from '../interface';
 
 const useCheckedKeys = (
   rawLabeledValues: LabeledValueType[],
@@ -10,13 +10,12 @@ const useCheckedKeys = (
   keyEntities: Record<SafeKey, DataEntity>,
 ) => {
   return React.useMemo(() => {
-    const extractValues = (values: LabeledValueType[]): SafeKey[] =>
-      values.map(({ value }) => value);
+    const extractValues = (values: LabeledValueType[]): Key[] => values.map(({ value }) => value);
 
     const checkedKeys = extractValues(rawLabeledValues);
     const halfCheckedKeys = extractValues(rawHalfCheckedValues);
 
-    const missingValues = checkedKeys.filter(key => !keyEntities[key]);
+    const missingValues = checkedKeys.filter(key => !keyEntities[key as SafeKey]);
 
     let finalCheckedKeys = checkedKeys;
     let finalHalfCheckedKeys = halfCheckedKeys;
