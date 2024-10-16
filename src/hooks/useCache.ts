@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { LabeledValueType, RawValueType } from '../TreeSelect';
+import type { LabeledValueType, SafeKey } from '../interface';
 
 /**
  * This function will try to call requestIdleCallback if available to save performance.
@@ -7,16 +7,16 @@ import type { LabeledValueType, RawValueType } from '../TreeSelect';
  */
 export default (values: LabeledValueType[]): [LabeledValueType[]] => {
   const cacheRef = React.useRef({
-    valueLabels: new Map<RawValueType, React.ReactNode>(),
+    valueLabels: new Map<SafeKey, React.ReactNode>(),
   });
 
   return React.useMemo(() => {
     const { valueLabels } = cacheRef.current;
-    const valueLabelsCache = new Map<RawValueType, React.ReactNode>();
+    const valueLabelsCache = new Map<SafeKey, React.ReactNode>();
 
     const filledValues = values.map(item => {
-      const { value } = item;
-      const mergedLabel = item.label ?? valueLabels.get(value);
+      const { value, label } = item;
+      const mergedLabel = label ?? valueLabels.get(value);
 
       // Save in cache
       valueLabelsCache.set(value, mergedLabel);

@@ -1,36 +1,25 @@
-import type * as React from 'react';
-import type { DataNode, FieldNames } from '../interface';
-import type { DefaultOptionType, InternalFieldName } from '../TreeSelect';
+import type { DataNode, FieldNames, SafeKey } from '../interface';
 
-export function toArray<T>(value: T | T[]): T[] {
-  if (Array.isArray(value)) {
-    return value;
-  }
-  return value !== undefined ? [value] : [];
-}
+export const toArray = <T>(value: T | T[]): T[] =>
+  Array.isArray(value) ? value : value !== undefined ? [value] : [];
 
-export function fillFieldNames(fieldNames?: FieldNames) {
+export const fillFieldNames = (fieldNames?: FieldNames) => {
   const { label, value, children } = fieldNames || {};
-
-  const mergedValue = value || 'value';
-
   return {
     _title: label ? [label] : ['title', 'label'],
-    value: mergedValue,
-    key: mergedValue,
+    value: value || 'value',
+    key: value || 'value',
     children: children || 'children',
   };
-}
+};
 
-export function isCheckDisabled(node: DataNode) {
-  return !node || node.disabled || node.disableCheckbox || node.checkable === false;
-}
+export const isCheckDisabled = (node: DataNode): boolean =>
+  !node || node.disabled || node.disableCheckbox || node.checkable === false;
 
-/** Loop fetch all the keys exist in the tree */
-export function getAllKeys(treeData: DefaultOptionType[], fieldNames: InternalFieldName) {
-  const keys: React.Key[] = [];
+export const getAllKeys = (treeData: DataNode[], fieldNames: FieldNames): SafeKey[] => {
+  const keys: SafeKey[] = [];
 
-  function dig(list: DefaultOptionType[]) {
+  const dig = (list: DataNode[]): void => {
     list.forEach(item => {
       const children = item[fieldNames.children];
       if (children) {
@@ -38,13 +27,11 @@ export function getAllKeys(treeData: DefaultOptionType[], fieldNames: InternalFi
         dig(children);
       }
     });
-  }
+  };
 
   dig(treeData);
 
   return keys;
-}
+};
 
-export function isNil(val: any) {
-  return val === null || val === undefined;
-}
+export const isNil = (val: any): boolean => val === null || val === undefined;

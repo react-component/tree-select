@@ -1,9 +1,14 @@
 import * as React from 'react';
 import toArray from 'rc-util/lib/Children/toArray';
 import warning from 'rc-util/lib/warning';
-import type { DataNode, ChangeEventExtra, RawValueType, LegacyCheckedNode } from '../interface';
+import type {
+  DataNode,
+  ChangeEventExtra,
+  SafeKey,
+  LegacyCheckedNode,
+  FieldNames,
+} from '../interface';
 import TreeNode from '../TreeNode';
-import type { DefaultOptionType, FieldNames } from '../TreeSelect';
 
 export function convertChildrenToData(nodes: React.ReactNode): DataNode[] {
   return toArray(nodes)
@@ -33,7 +38,7 @@ export function convertChildrenToData(nodes: React.ReactNode): DataNode[] {
     .filter(data => data);
 }
 
-export function fillLegacyProps(dataNode: DataNode): any {
+export function fillLegacyProps(dataNode: DataNode) {
   if (!dataNode) {
     return dataNode;
   }
@@ -57,9 +62,9 @@ export function fillLegacyProps(dataNode: DataNode): any {
 
 export function fillAdditionalInfo(
   extra: ChangeEventExtra,
-  triggerValue: RawValueType,
-  checkedValues: RawValueType[],
-  treeData: DefaultOptionType[],
+  triggerValue: SafeKey,
+  checkedValues: SafeKey[],
+  treeData: DataNode[],
   showPosition: boolean,
   fieldNames: FieldNames,
 ) {
@@ -67,7 +72,7 @@ export function fillAdditionalInfo(
   let nodeList: LegacyCheckedNode[] = null;
 
   function generateMap() {
-    function dig(list: DefaultOptionType[], level = '0', parentIncluded = false) {
+    function dig(list: DataNode[], level = '0', parentIncluded = false) {
       return list
         .map((option, index) => {
           const pos = `${level}-${index}`;
@@ -75,7 +80,7 @@ export function fillAdditionalInfo(
           const included = checkedValues.includes(value);
           const children = dig(option[fieldNames.children] || [], pos, included);
           const node = (
-            <TreeNode {...(option as Required<DefaultOptionType>)}>
+            <TreeNode {...(option as Required<DataNode>)}>
               {children.map(child => child.node)}
             </TreeNode>
           );

@@ -1,27 +1,33 @@
 import * as React from 'react';
 import type { DataEntity } from 'rc-tree/lib/interface';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
-import type { LabeledValueType, RawValueType } from '../TreeSelect';
+import type { LabeledValueType, SafeKey, Key } from '../interface';
 
-export default (
+const useCheckedKeys = (
   rawLabeledValues: LabeledValueType[],
   rawHalfCheckedValues: LabeledValueType[],
   treeConduction: boolean,
-  keyEntities: Record<React.Key, DataEntity>,
-) =>
-  React.useMemo(() => {
-    let checkedKeys: RawValueType[] = rawLabeledValues.map(({ value }) => value);
-    let halfCheckedKeys: RawValueType[] = rawHalfCheckedValues.map(({ value }) => value);
+  keyEntities: Record<SafeKey, DataEntity>,
+) => {
+  return React.useMemo(() => {
+    const extractValues = (values: LabeledValueType[]): Key[] => values.map(({ value }) => value);
 
-    const missingValues = checkedKeys.filter(key => !keyEntities[key]);
+    const checkedKeys = extractValues(rawLabeledValues);
+    const halfCheckedKeys = extractValues(rawHalfCheckedValues);
+
+    const missingValues = checkedKeys.filter(key => !keyEntities[key as SafeKey]);
+
+    let finalCheckedKeys = checkedKeys;
+    let finalHalfCheckedKeys = halfCheckedKeys;
 
     if (treeConduction) {
-      ({ checkedKeys, halfCheckedKeys } = conductCheck(checkedKeys, true, keyEntities));
+      const conductResult = conductCheck(checkedKeys, true, keyEntities);
+      finalCheckedKeys = conductResult.checkedKeys;
+      finalHalfCheckedKeys = conductResult.halfCheckedKeys;
     }
 
-    return [
-      // Checked keys should fill with missing keys which should de-duplicated
-      Array.from(new Set([...missingValues, ...checkedKeys])),
-      // Half checked keys
-      halfCheckedKeys];
+    return [Array.from(new Set([...missingValues, ...finalCheckedKeys])), finalHalfCheckedKeys];
   }, [rawLabeledValues, rawHalfCheckedValues, treeConduction, keyEntities]);
+};
+
+export default useCheckedKeys;

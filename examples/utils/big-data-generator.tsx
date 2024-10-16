@@ -2,7 +2,7 @@ import React from 'react';
 import { generateData, calcTotal } from './dataUtil';
 
 interface GenProps {
-  onGen: Function;
+  onGen: (data: any[]) => void;
   x: number;
   y: number;
   z: number;

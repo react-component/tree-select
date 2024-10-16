@@ -8,7 +8,7 @@ import useMemo from 'rc-util/lib/hooks/useMemo';
 import * as React from 'react';
 import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
-import type { Key, TreeDataNode } from './interface';
+import type { Key, SafeKey } from './interface';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
 
 const HIDDEN_STYLE = {
@@ -78,7 +78,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   // ========================== Active ==========================
   const [activeKey, setActiveKey] = React.useState<Key>(null);
-  const activeEntity = keyEntities[activeKey];
+  const activeEntity = keyEntities[activeKey as SafeKey];
 
   // ========================== Values ==========================
   const mergedCheckedKeys = React.useMemo(() => {
@@ -143,7 +143,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     event.preventDefault();
   };
 
-  const onInternalSelect = (__: React.Key[], info: TreeEventInfo) => {
+  const onInternalSelect = (__: Key[], info: TreeEventInfo) => {
     const { node } = info;
 
     if (checkable && isCheckDisabled(node)) {
@@ -237,7 +237,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         ref={treeRef}
         focusable={false}
         prefixCls={`${prefixCls}-tree`}
-        treeData={memoTreeData as TreeDataNode[]}
+        treeData={memoTreeData}
         height={listHeight}
         itemHeight={listItemHeight}
         itemScrollOffset={listItemScrollOffset}
