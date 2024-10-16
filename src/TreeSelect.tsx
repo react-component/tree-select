@@ -31,6 +31,7 @@ import warningProps from './utils/warningPropsUtil';
 import type {
   LabeledValueType,
   SafeKey,
+  Key,
   DataNode,
   SimpleModeConfig,
   ChangeEventExtra,
@@ -40,7 +41,7 @@ import type {
   LegacyDataNode,
 } from './interface';
 
-export interface TreeSelectProps<ValueType = any, OptionType extends BaseOptionType = DataNode>
+export interface TreeSelectProps<ValueType = any, OptionType extends DataNode = DataNode>
   extends Omit<BaseSelectPropsWithoutPrivate, 'mode'> {
   prefixCls?: string;
   id?: string;
@@ -366,7 +367,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const displayValues = React.useMemo(() => {
     // Collect keys which need to show
     const displayKeys = formatStrategyValues(
-      rawCheckedValues,
+      rawCheckedValues as SafeKey[],
       mergedShowCheckedStrategy,
       keyEntities,
       mergedFieldNames,
@@ -522,7 +523,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           const keyList = existRawValues.map(val => valueEntities.get(val).key);
 
           // Conduction by selected or not
-          let checkedKeys: SafeKey[];
+          let checkedKeys: Key[];
           if (selected) {
             ({ checkedKeys } = conductCheck(keyList, true, keyEntities));
           } else {
@@ -536,7 +537,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           // Fill back of keys
           newRawValues = [
             ...missingRawValues,
-            ...checkedKeys.map(key => keyEntities[key].node[mergedFieldNames.value]),
+            ...checkedKeys.map(key => keyEntities[key as SafeKey].node[mergedFieldNames.value]),
           ];
         }
         triggerChange(newRawValues, { selected, triggerValue: selectedValue }, source || 'option');
@@ -708,7 +709,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const GenericTreeSelect = TreeSelect as unknown as (<
   ValueType = any,
-  OptionType extends BaseOptionType | DataNode = DataNode,
+  OptionType extends DataNode = DataNode,
 >(
   props: React.PropsWithChildren<TreeSelectProps<ValueType, OptionType>> & {
     ref?: React.Ref<BaseSelectRef>;
