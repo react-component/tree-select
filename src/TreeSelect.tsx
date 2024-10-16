@@ -1,9 +1,4 @@
-import type {
-  BaseSelectProps,
-  BaseSelectPropsWithoutPrivate,
-  BaseSelectRef,
-  SelectProps,
-} from 'rc-select';
+import type { BaseSelectProps, BaseSelectPropsWithoutPrivate, BaseSelectRef } from 'rc-select';
 import { BaseSelect } from 'rc-select';
 import useId from 'rc-select/lib/hooks/useId';
 import type { IconType } from 'rc-tree/lib/interface';
@@ -62,8 +57,8 @@ export interface TreeSelectProps<ValueType = any, OptionType extends DataNode = 
   treeNodeFilterProp?: string;
 
   // >>> Select
-  onSelect?: SelectProps<ValueType, OptionType>['onSelect'];
-  onDeselect?: SelectProps<ValueType, OptionType>['onDeselect'];
+  onSelect?: (value: ValueType, option: OptionType) => void;
+  onDeselect?: (value: ValueType, option: OptionType) => void;
 
   // >>> Selector
   showCheckedStrategy?: CheckedStrategy;
