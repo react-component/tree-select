@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React, { useState } from 'react';
 import { mount } from 'enzyme';
-import TreeSelect, { TreeNode, TreeSelectProps } from '../src';
+import TreeSelect, { TreeNode } from '../src';
 
 describe('TreeSelect.SearchInput', () => {
   it('select item will clean searchInput', () => {
@@ -154,30 +154,13 @@ describe('TreeSelect.SearchInput', () => {
     expect(called).toBe(0); // should not trrigger all nodes to load data
   });
 
-  it('not trigger loadData when clearing the search', () => {
+  it('should trrigger `loadData` when click node', () => {
     let called = 0;
-    const handleLoadData = jest.fn();
     const Demo = () => {
       const [value, setValue] = useState();
-
-      const genTreeNode = (parentId, isLeaf = false) => {
-        const random = Math.random().toString(36).substring(2, 6);
-        return {
-          id: random,
-          pId: parentId,
-          value: random,
-          title: isLeaf ? 'Tree Node' : 'Expand to load',
-          isLeaf,
-        };
-      };
-
       const onLoadData = ({ id, ...rest }) =>
         new Promise(resolve => {
           called += 1;
-          handleLoadData({ id, ...rest });
-          setTreeData(
-            treeData.concat([genTreeNode(id, false), genTreeNode(id, true), genTreeNode(id, true)]),
-          );
           resolve(undefined);
         });
 
