@@ -8,28 +8,32 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
     class="rc-tree-select-selector"
   >
     <span
-      class="rc-tree-select-selection-search"
+      class="rc-tree-select-selection-wrap"
     >
-      <input
-        aria-autocomplete="list"
-        aria-controls="rc_select_TEST_OR_SSR_list"
-        aria-expanded="true"
-        aria-haspopup="listbox"
-        aria-owns="rc_select_TEST_OR_SSR_list"
-        autocomplete="off"
-        class="rc-tree-select-selection-search-input"
-        id="rc_select_TEST_OR_SSR"
-        readonly=""
-        role="combobox"
-        style="opacity: 0;"
-        type="search"
-        unselectable="on"
-        value=""
+      <span
+        class="rc-tree-select-selection-search"
+      >
+        <input
+          aria-autocomplete="list"
+          aria-controls="rc_select_TEST_OR_SSR_list"
+          aria-expanded="true"
+          aria-haspopup="listbox"
+          aria-owns="rc_select_TEST_OR_SSR_list"
+          autocomplete="off"
+          class="rc-tree-select-selection-search-input"
+          id="rc_select_TEST_OR_SSR"
+          readonly=""
+          role="combobox"
+          style="opacity: 0;"
+          type="search"
+          unselectable="on"
+          value=""
+        />
+      </span>
+      <span
+        class="rc-tree-select-selection-placeholder"
       />
     </span>
-    <span
-      class="rc-tree-select-selection-placeholder"
-    />
   </div>
   <div
     class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
@@ -206,28 +210,32 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
     class="rc-tree-select-selector"
   >
     <span
-      class="rc-tree-select-selection-search"
+      class="rc-tree-select-selection-wrap"
     >
-      <input
-        aria-autocomplete="list"
-        aria-controls="rc_select_TEST_OR_SSR_list"
-        aria-expanded="true"
-        aria-haspopup="listbox"
-        aria-owns="rc_select_TEST_OR_SSR_list"
-        autocomplete="off"
-        class="rc-tree-select-selection-search-input"
-        id="rc_select_TEST_OR_SSR"
-        readonly=""
-        role="combobox"
-        style="opacity: 0;"
-        type="search"
-        unselectable="on"
-        value=""
+      <span
+        class="rc-tree-select-selection-search"
+      >
+        <input
+          aria-autocomplete="list"
+          aria-controls="rc_select_TEST_OR_SSR_list"
+          aria-expanded="true"
+          aria-haspopup="listbox"
+          aria-owns="rc_select_TEST_OR_SSR_list"
+          autocomplete="off"
+          class="rc-tree-select-selection-search-input"
+          id="rc_select_TEST_OR_SSR"
+          readonly=""
+          role="combobox"
+          style="opacity: 0;"
+          type="search"
+          unselectable="on"
+          value=""
+        />
+      </span>
+      <span
+        class="rc-tree-select-selection-placeholder"
       />
     </span>
-    <span
-      class="rc-tree-select-selection-placeholder"
-    />
   </div>
   <div
     class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
@@ -404,45 +412,49 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
   <div
     class="awesome-selector"
   >
-    <div
-      class="awesome-selection-overflow"
+    <span
+      class="awesome-selection-wrap"
     >
       <div
-        class="awesome-selection-overflow-item awesome-selection-overflow-item-suffix"
-        style="opacity: 1;"
+        class="awesome-selection-overflow"
       >
         <div
-          class="awesome-selection-search"
-          style="width: 0px;"
+          class="awesome-selection-overflow-item awesome-selection-overflow-item-suffix"
+          style="opacity: 1;"
         >
-          <input
-            aria-autocomplete="list"
-            aria-controls="rc_select_TEST_OR_SSR_list"
-            aria-expanded="false"
-            aria-haspopup="listbox"
-            aria-owns="rc_select_TEST_OR_SSR_list"
-            autocomplete="off"
-            class="awesome-selection-search-input"
-            id="rc_select_TEST_OR_SSR"
-            readonly=""
-            role="combobox"
-            style="opacity: 0;"
-            type="search"
-            unselectable="on"
-            value=""
-          />
-          <span
-            aria-hidden="true"
-            class="awesome-selection-search-mirror"
+          <div
+            class="awesome-selection-search"
+            style="width: 0px;"
           >
-             
-          </span>
+            <input
+              aria-autocomplete="list"
+              aria-controls="rc_select_TEST_OR_SSR_list"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              aria-owns="rc_select_TEST_OR_SSR_list"
+              autocomplete="off"
+              class="awesome-selection-search-input"
+              id="rc_select_TEST_OR_SSR"
+              readonly=""
+              role="combobox"
+              style="opacity: 0;"
+              type="search"
+              unselectable="on"
+              value=""
+            />
+            <span
+              aria-hidden="true"
+              class="awesome-selection-search-mirror"
+            >
+               
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-    <span
-      class="awesome-selection-placeholder"
-    />
+      <span
+        class="awesome-selection-placeholder"
+      />
+    </span>
   </div>
 </div>
 `;
@@ -455,29 +467,33 @@ exports[`TreeSelect.basic render renders disabled correctly 1`] = `
     class="rc-tree-select-selector"
   >
     <span
-      class="rc-tree-select-selection-search"
+      class="rc-tree-select-selection-wrap"
     >
-      <input
-        aria-autocomplete="list"
-        aria-controls="rc_select_TEST_OR_SSR_list"
-        aria-expanded="false"
-        aria-haspopup="listbox"
-        aria-owns="rc_select_TEST_OR_SSR_list"
-        autocomplete="off"
-        class="rc-tree-select-selection-search-input"
-        disabled=""
-        id="rc_select_TEST_OR_SSR"
-        readonly=""
-        role="combobox"
-        style="opacity: 0;"
-        type="search"
-        unselectable="on"
-        value=""
+      <span
+        class="rc-tree-select-selection-search"
+      >
+        <input
+          aria-autocomplete="list"
+          aria-controls="rc_select_TEST_OR_SSR_list"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          aria-owns="rc_select_TEST_OR_SSR_list"
+          autocomplete="off"
+          class="rc-tree-select-selection-search-input"
+          disabled=""
+          id="rc_select_TEST_OR_SSR"
+          readonly=""
+          role="combobox"
+          style="opacity: 0;"
+          type="search"
+          unselectable="on"
+          value=""
+        />
+      </span>
+      <span
+        class="rc-tree-select-selection-placeholder"
       />
     </span>
-    <span
-      class="rc-tree-select-selection-placeholder"
-    />
   </div>
 </div>
 `;
@@ -489,45 +505,49 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
   <div
     class="rc-tree-select-selector"
   >
-    <div
-      class="rc-tree-select-selection-overflow"
+    <span
+      class="rc-tree-select-selection-wrap"
     >
       <div
-        class="rc-tree-select-selection-overflow-item rc-tree-select-selection-overflow-item-suffix"
-        style="opacity: 1;"
+        class="rc-tree-select-selection-overflow"
       >
         <div
-          class="rc-tree-select-selection-search"
-          style="width: 0px;"
+          class="rc-tree-select-selection-overflow-item rc-tree-select-selection-overflow-item-suffix"
+          style="opacity: 1;"
         >
-          <input
-            aria-autocomplete="list"
-            aria-controls="rc_select_TEST_OR_SSR_list"
-            aria-expanded="false"
-            aria-haspopup="listbox"
-            aria-owns="rc_select_TEST_OR_SSR_list"
-            autocomplete="off"
-            class="rc-tree-select-selection-search-input"
-            id="rc_select_TEST_OR_SSR"
-            readonly=""
-            role="combobox"
-            style="opacity: 0;"
-            type="search"
-            unselectable="on"
-            value=""
-          />
-          <span
-            aria-hidden="true"
-            class="rc-tree-select-selection-search-mirror"
+          <div
+            class="rc-tree-select-selection-search"
+            style="width: 0px;"
           >
-             
-          </span>
+            <input
+              aria-autocomplete="list"
+              aria-controls="rc_select_TEST_OR_SSR_list"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              aria-owns="rc_select_TEST_OR_SSR_list"
+              autocomplete="off"
+              class="rc-tree-select-selection-search-input"
+              id="rc_select_TEST_OR_SSR"
+              readonly=""
+              role="combobox"
+              style="opacity: 0;"
+              type="search"
+              unselectable="on"
+              value=""
+            />
+            <span
+              aria-hidden="true"
+              class="rc-tree-select-selection-search-mirror"
+            >
+               
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-    <span
-      class="rc-tree-select-selection-placeholder"
-    />
+      <span
+        class="rc-tree-select-selection-placeholder"
+      />
+    </span>
   </div>
 </div>
 `;
@@ -541,28 +561,32 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
       class="rc-tree-select-selector"
     >
       <span
-        class="rc-tree-select-selection-search"
+        class="rc-tree-select-selection-wrap"
       >
-        <input
-          aria-autocomplete="list"
-          aria-controls="rc_select_TEST_OR_SSR_list"
-          aria-expanded="true"
-          aria-haspopup="listbox"
-          aria-owns="rc_select_TEST_OR_SSR_list"
-          autocomplete="off"
-          class="rc-tree-select-selection-search-input"
-          id="rc_select_TEST_OR_SSR"
-          readonly=""
-          role="combobox"
-          style="opacity: 0;"
-          type="search"
-          unselectable="on"
-          value=""
+        <span
+          class="rc-tree-select-selection-search"
+        >
+          <input
+            aria-autocomplete="list"
+            aria-controls="rc_select_TEST_OR_SSR_list"
+            aria-expanded="true"
+            aria-haspopup="listbox"
+            aria-owns="rc_select_TEST_OR_SSR_list"
+            autocomplete="off"
+            class="rc-tree-select-selection-search-input"
+            id="rc_select_TEST_OR_SSR"
+            readonly=""
+            role="combobox"
+            style="opacity: 0;"
+            type="search"
+            unselectable="on"
+            value=""
+          />
+        </span>
+        <span
+          class="rc-tree-select-selection-placeholder"
         />
       </span>
-      <span
-        class="rc-tree-select-selection-placeholder"
-      />
     </div>
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
@@ -685,26 +709,30 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
       class="rc-tree-select-selector"
     >
       <span
-        class="rc-tree-select-selection-search"
+        class="rc-tree-select-selection-wrap"
       >
-        <input
-          aria-autocomplete="list"
-          aria-controls="rc_select_TEST_OR_SSR_list"
-          aria-expanded="true"
-          aria-haspopup="listbox"
-          aria-owns="rc_select_TEST_OR_SSR_list"
-          autocomplete="off"
-          class="rc-tree-select-selection-search-input"
-          id="rc_select_TEST_OR_SSR"
-          role="combobox"
-          type="search"
-          value="a"
+        <span
+          class="rc-tree-select-selection-search"
+        >
+          <input
+            aria-autocomplete="list"
+            aria-controls="rc_select_TEST_OR_SSR_list"
+            aria-expanded="true"
+            aria-haspopup="listbox"
+            aria-owns="rc_select_TEST_OR_SSR_list"
+            autocomplete="off"
+            class="rc-tree-select-selection-search-input"
+            id="rc_select_TEST_OR_SSR"
+            role="combobox"
+            type="search"
+            value="a"
+          />
+        </span>
+        <span
+          class="rc-tree-select-selection-placeholder"
+          style="visibility: hidden;"
         />
       </span>
-      <span
-        class="rc-tree-select-selection-placeholder"
-        style="visibility: hidden;"
-      />
     </div>
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
@@ -797,26 +825,30 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
       class="rc-tree-select-selector"
     >
       <span
-        class="rc-tree-select-selection-search"
+        class="rc-tree-select-selection-wrap"
       >
-        <input
-          aria-autocomplete="list"
-          aria-controls="rc_select_TEST_OR_SSR_list"
-          aria-expanded="true"
-          aria-haspopup="listbox"
-          aria-owns="rc_select_TEST_OR_SSR_list"
-          autocomplete="off"
-          class="rc-tree-select-selection-search-input"
-          id="rc_select_TEST_OR_SSR"
-          role="combobox"
-          type="search"
-          value=""
+        <span
+          class="rc-tree-select-selection-search"
+        >
+          <input
+            aria-autocomplete="list"
+            aria-controls="rc_select_TEST_OR_SSR_list"
+            aria-expanded="true"
+            aria-haspopup="listbox"
+            aria-owns="rc_select_TEST_OR_SSR_list"
+            autocomplete="off"
+            class="rc-tree-select-selection-search-input"
+            id="rc_select_TEST_OR_SSR"
+            role="combobox"
+            type="search"
+            value=""
+          />
+        </span>
+        <span
+          class="rc-tree-select-selection-placeholder"
+          style=""
         />
       </span>
-      <span
-        class="rc-tree-select-selection-placeholder"
-        style=""
-      />
     </div>
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
@@ -935,26 +967,30 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
       class="rc-tree-select-selector"
     >
       <span
-        class="rc-tree-select-selection-search"
+        class="rc-tree-select-selection-wrap"
       >
-        <input
-          aria-autocomplete="list"
-          aria-controls="rc_select_TEST_OR_SSR_list"
-          aria-expanded="true"
-          aria-haspopup="listbox"
-          aria-owns="rc_select_TEST_OR_SSR_list"
-          autocomplete="off"
-          class="rc-tree-select-selection-search-input"
-          id="rc_select_TEST_OR_SSR"
-          role="combobox"
-          type="search"
-          value="a"
+        <span
+          class="rc-tree-select-selection-search"
+        >
+          <input
+            aria-autocomplete="list"
+            aria-controls="rc_select_TEST_OR_SSR_list"
+            aria-expanded="true"
+            aria-haspopup="listbox"
+            aria-owns="rc_select_TEST_OR_SSR_list"
+            autocomplete="off"
+            class="rc-tree-select-selection-search-input"
+            id="rc_select_TEST_OR_SSR"
+            role="combobox"
+            type="search"
+            value="a"
+          />
+        </span>
+        <span
+          class="rc-tree-select-selection-placeholder"
+          style="visibility: hidden;"
         />
       </span>
-      <span
-        class="rc-tree-select-selection-placeholder"
-        style="visibility: hidden;"
-      />
     </div>
     <div
       class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
@@ -1072,25 +1108,29 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
     class="rc-tree-select-selector"
   >
     <span
-      class="rc-tree-select-selection-search"
+      class="rc-tree-select-selection-wrap"
     >
-      <input
-        aria-autocomplete="list"
-        aria-controls="rc_select_TEST_OR_SSR_list"
-        aria-expanded="true"
-        aria-haspopup="listbox"
-        aria-owns="rc_select_TEST_OR_SSR_list"
-        autocomplete="off"
-        class="rc-tree-select-selection-search-input"
-        id="rc_select_TEST_OR_SSR"
-        role="combobox"
-        type="search"
-        value=""
+      <span
+        class="rc-tree-select-selection-search"
+      >
+        <input
+          aria-autocomplete="list"
+          aria-controls="rc_select_TEST_OR_SSR_list"
+          aria-expanded="true"
+          aria-haspopup="listbox"
+          aria-owns="rc_select_TEST_OR_SSR_list"
+          autocomplete="off"
+          class="rc-tree-select-selection-search-input"
+          id="rc_select_TEST_OR_SSR"
+          role="combobox"
+          type="search"
+          value=""
+        />
+      </span>
+      <span
+        class="rc-tree-select-selection-placeholder"
       />
     </span>
-    <span
-      class="rc-tree-select-selection-placeholder"
-    />
   </div>
   <div
     class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
