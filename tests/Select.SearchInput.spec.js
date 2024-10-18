@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React, { useState } from 'react';
 import { mount } from 'enzyme';
-import TreeSelect, { TreeNode } from '../src';
+import TreeSelect, { TreeNode, TreeSelectProps } from '../src';
 
 describe('TreeSelect.SearchInput', () => {
   it('select item will clean searchInput', () => {
@@ -19,12 +19,7 @@ describe('TreeSelect.SearchInput', () => {
 
     wrapper.selectNode();
     expect(onSearch).not.toHaveBeenCalled();
-    expect(
-      wrapper
-        .find('input')
-        .first()
-        .props().value,
-    ).toBeFalsy();
+    expect(wrapper.find('input').first().props().value).toBeFalsy();
   });
 
   it('expandedKeys', () => {
@@ -51,10 +46,7 @@ describe('TreeSelect.SearchInput', () => {
     expect(wrapper.find('NodeList').prop('expandedKeys')).toEqual(['bamboo', 'light']);
 
     function search(value) {
-      wrapper
-        .find('input')
-        .first()
-        .simulate('change', { target: { value } });
+      wrapper.find('input').first().simulate('change', { target: { value } });
       wrapper.update();
     }
 
@@ -85,8 +77,8 @@ describe('TreeSelect.SearchInput', () => {
           { id: 1, pId: 0, value: '1', title: 'Expand to load' },
           { id: 2, pId: 0, value: '2', title: 'Expand to load' },
           { id: 3, pId: 0, value: '3', title: 'Tree Node', isLeaf: true },
-        ])
-      }
+        ]);
+      };
 
       const genTreeNode = (parentId, isLeaf = false) => {
         const random = Math.random().toString(36).substring(2, 6);
@@ -100,22 +92,16 @@ describe('TreeSelect.SearchInput', () => {
       };
 
       const onLoadData = ({ id, ...rest }) =>
-        new Promise((resolve) => {
-          setTimeout(() => {
-            called += 1;
-            handleLoadData({ id, ...rest });
-            setTreeData(
-              treeData.concat([
-                genTreeNode(id, false),
-                genTreeNode(id, true),
-                genTreeNode(id, true),
-              ])
-            );
-            resolve(undefined);
-          }, 300);
+        new Promise(resolve => {
+          called += 1;
+          handleLoadData({ id, ...rest });
+          setTreeData(
+            treeData.concat([genTreeNode(id, false), genTreeNode(id, true), genTreeNode(id, true)]),
+          );
+          resolve(undefined);
         });
 
-      const onChange = (newValue) => {
+      const onChange = newValue => {
         setValue(newValue);
       };
 
@@ -130,7 +116,6 @@ describe('TreeSelect.SearchInput', () => {
             treeData={treeData}
             treeNodeFilterProp="title"
             showSearch
-            filterTreeNode={false}
           />
           <button onClick={addDefaultTreeData}>设置数据</button>
         </>
@@ -141,10 +126,7 @@ describe('TreeSelect.SearchInput', () => {
     expect(handleLoadData).not.toHaveBeenCalled();
 
     function search(value) {
-      wrapper
-        .find('input')
-        .first()
-        .simulate('change', { target: { value } });
+      wrapper.find('input').first().simulate('change', { target: { value } });
       wrapper.update();
     }
     search('Tree Node');
@@ -165,5 +147,72 @@ describe('TreeSelect.SearchInput', () => {
     search('');
     expect(handleLoadData).not.toHaveBeenCalled();
     expect(called).toBe(0);
+
+    search('ex');
+    const nodes = wrapper.find(`[title="${'Expand to load'}"]`).hostNodes();
+    nodes.first().simulate('click');
+    expect(called).toBe(0); // should not trrigger all nodes to load data
+  });
+
+  it('not trigger loadData when clearing the search', () => {
+    let called = 0;
+    const handleLoadData = jest.fn();
+    const Demo = () => {
+      const [value, setValue] = useState();
+
+      const genTreeNode = (parentId, isLeaf = false) => {
+        const random = Math.random().toString(36).substring(2, 6);
+        return {
+          id: random,
+          pId: parentId,
+          value: random,
+          title: isLeaf ? 'Tree Node' : 'Expand to load',
+          isLeaf,
+        };
+      };
+
+      const onLoadData = ({ id, ...rest }) =>
+        new Promise(resolve => {
+          called += 1;
+          handleLoadData({ id, ...rest });
+          setTreeData(
+            treeData.concat([genTreeNode(id, false), genTreeNode(id, true), genTreeNode(id, true)]),
+          );
+          resolve(undefined);
+        });
+
+      const onChange = newValue => {
+        setValue(newValue);
+      };
+
+      return (
+        <TreeSelect
+          treeDataSimpleMode
+          value={value}
+          placeholder="Please select"
+          onChange={onChange}
+          loadData={onLoadData}
+          treeData={[
+            { id: 1, pId: 0, value: '1', title: 'Expand to load' },
+            { id: 2, pId: 0, value: '2', title: 'Expand to load' },
+            { id: 3, pId: 0, value: '3', title: 'Tree Node', isLeaf: true },
+          ]}
+          treeNodeFilterProp="title"
+          treeExpandAction="click"
+          showSearch
+        />
+      );
+    };
+    const wrapper = mount(<Demo />);
+
+    function search(value) {
+      wrapper.find('input').first().simulate('change', { target: { value } });
+      wrapper.update();
+    }
+
+    search('ex');
+    const nodes = wrapper.find(`[title="${'Expand to load'}"]`).hostNodes();
+    nodes.first().simulate('click');
+    expect(called).toBe(1);
   });
 });
