@@ -196,14 +196,25 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     onKeyUp: () => {},
   }));
 
-  const loadDataFun = React.useMemo(() => {
-    // should not pass `loadData` when expandedKeys is not changed
-    if (!searchValue && searchExpandedKeys?.length && !mergedExpandedKeys) {
-      return null;
-    }
+  const loadDataFun = useMemo(
+    () => {
+      return searchValue ? null : (loadData as any);
+    },
+    [searchValue, treeExpandedKeys || expandedKeys],
+    (pre, next) => {
+      const [preSearchValue] = pre;
+      const [nextSearchValue, nextExcludeSearchExpandedKeys] = next;
 
-    return searchValue ? null : (loadData as any);
-  }, [searchValue, searchExpandedKeys?.length, mergedExpandedKeys, loadData]);
+      if (preSearchValue !== nextSearchValue) {
+        // should not pass `loadData` when expandedKeys is not changed
+        if (!nextSearchValue && !nextExcludeSearchExpandedKeys) {
+          return false;
+        }
+        return true;
+      }
+      return false;
+    },
+  );
 
   // ========================== Render ==========================
   if (memoTreeData.length === 0) {
