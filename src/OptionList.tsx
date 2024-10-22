@@ -205,14 +205,14 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       const [preSearchValue] = pre;
       const [nextSearchValue, nextExcludeSearchExpandedKeys] = next;
 
-      if (preSearchValue !== nextSearchValue) {
+      if (
+        preSearchValue === nextSearchValue ||
         // should not pass `loadData` when expandedKeys is not changed
-        if (!nextSearchValue && !nextExcludeSearchExpandedKeys) {
-          return false;
-        }
-        return true;
+        (!nextSearchValue && !nextExcludeSearchExpandedKeys)
+      ) {
+        return false;
       }
-      return false;
+      return true;
     },
   );
 
