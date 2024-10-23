@@ -199,14 +199,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   const loadDataFun = useMemo(
     () => searchValue ? null : (loadData as any),
     [searchValue, treeExpandedKeys || expandedKeys],
-    (pre, next) => {
-      const [preSearchValue] = pre;
-      const [nextSearchValue, nextExcludeSearchExpandedKeys] = next;
-
-      return (
-        preSearchValue !== nextSearchValue && !!(nextSearchValue || nextExcludeSearchExpandedKeys)
-      );
-    },
+    ([preSearchValue], [nextSearchValue, nextExcludeSearchExpandedKeys]) =>
+      preSearchValue !== nextSearchValue && (nextSearchValue || nextExcludeSearchExpandedKeys)
   );
 
   // ========================== Render ==========================
