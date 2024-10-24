@@ -196,6 +196,13 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     onKeyUp: () => {},
   }));
 
+  const loadDataFun = useMemo(
+    () => searchValue ? null : (loadData as any),
+    [searchValue, treeExpandedKeys || expandedKeys],
+    ([preSearchValue], [nextSearchValue, nextExcludeSearchExpandedKeys]) =>
+      preSearchValue !== nextSearchValue && !!(nextSearchValue || nextExcludeSearchExpandedKeys)
+  );
+
   // ========================== Render ==========================
   if (memoTreeData.length === 0) {
     return (
@@ -237,7 +244,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         showIcon={showTreeIcon}
         switcherIcon={switcherIcon}
         showLine={treeLine}
-        loadData={searchValue ? null : (loadData as any)}
+        loadData={loadDataFun}
         motion={treeMotion}
         activeKey={activeKey}
         // We handle keys by out instead tree self
