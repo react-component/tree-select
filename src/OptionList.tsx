@@ -159,6 +159,21 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     }
   };
 
+  const getFirstMatchNode = (nodes: EventDataNode<any>[]): EventDataNode<any> | null => {
+    for (const node of nodes) {
+      if (filterTreeNode(node) && !node.disabled) {
+        return node;
+      }
+      if (node[fieldNames.children]) {
+        const matchInChildren = getFirstMatchNode(node[fieldNames.children]);
+        if (matchInChildren) {
+          return matchInChildren;
+        }
+      }
+    }
+    return null;
+  };
+
   // ========================= Keyboard =========================
   React.useImperativeHandle(ref, () => ({
     scrollTo: treeRef.current?.scrollTo,
@@ -175,7 +190,18 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
         // >>> Select item
         case KeyCode.ENTER: {
-          if (activeEntity) {
+          if (searchValue) {
+            const firstMatchNode = getFirstMatchNode(memoTreeData);
+
+            if (firstMatchNode) {
+              if (firstMatchNode.selectable !== false) {
+                onInternalSelect(null, {
+                  node: { key: firstMatchNode[fieldNames.value] },
+                  selected: !checkedKeys.includes(firstMatchNode[fieldNames.value]),
+                });
+              }
+            }
+          } else if (activeEntity) {
             const { selectable, value } = activeEntity?.node || {};
             if (selectable !== false) {
               onInternalSelect(null, {
@@ -197,10 +223,10 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   }));
 
   const loadDataFun = useMemo(
-    () => searchValue ? null : (loadData as any),
+    () => (searchValue ? null : (loadData as any)),
     [searchValue, treeExpandedKeys || expandedKeys],
     ([preSearchValue], [nextSearchValue, nextExcludeSearchExpandedKeys]) =>
-      preSearchValue !== nextSearchValue && !!(nextSearchValue || nextExcludeSearchExpandedKeys)
+      preSearchValue !== nextSearchValue && !!(nextSearchValue || nextExcludeSearchExpandedKeys),
   );
 
   // ========================== Render ==========================
