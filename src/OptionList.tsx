@@ -102,41 +102,20 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
-  // ========================== Search ==========================
-  const lowerSearchValue = String(searchValue).toLowerCase();
-  const filterTreeNode = (treeNode: EventDataNode<any>) => {
-    if (!lowerSearchValue) {
-      return false;
-    }
-    return String(treeNode[treeNodeFilterProp]).toLowerCase().includes(lowerSearchValue);
-  };
-
-  // =========================== Keys ===========================
-  const [expandedKeys, setExpandedKeys] = React.useState<Key[]>(treeDefaultExpandedKeys);
-  const [searchExpandedKeys, setSearchExpandedKeys] = React.useState<Key[]>(null);
-
-  const mergedExpandedKeys = React.useMemo(() => {
-    if (treeExpandedKeys) {
-      return [...treeExpandedKeys];
-    }
-    return searchValue ? searchExpandedKeys : expandedKeys;
-  }, [expandedKeys, searchExpandedKeys, treeExpandedKeys, searchValue]);
-
+  // =========================== Search Effect ===========================
   React.useEffect(() => {
     if (searchValue) {
       setSearchExpandedKeys(getAllKeys(treeData, fieldNames));
+
+      const firstMatchNode = getFirstMatchNode(memoTreeData);
+      if (firstMatchNode) {
+        setActiveKey(firstMatchNode[fieldNames.value]);
+      } else {
+        setActiveKey(null);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
-
-  const onInternalExpand = (keys: Key[]) => {
-    setExpandedKeys(keys);
-    setSearchExpandedKeys(keys);
-
-    if (onTreeExpand) {
-      onTreeExpand(keys);
-    }
-  };
 
   // ========================== Events ==========================
   const onListMouseDown: React.MouseEventHandler<HTMLDivElement> = event => {
@@ -159,7 +138,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     }
   };
 
-  const getFirstMatchNode = (nodes: EventDataNode<any>[]): EventDataNode<any> | null => {
+  const getFirstMatchNode = (nodes: EventDataNode<any>): EventDataNode<any> | null => {
     for (const node of nodes) {
       if (filterTreeNode(node) && !node.disabled) {
         return node;
@@ -172,6 +151,35 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       }
     }
     return null;
+  };
+
+  // ========================== Search ==========================
+  const lowerSearchValue = String(searchValue).toLowerCase();
+  const filterTreeNode = (treeNode: EventDataNode<any>) => {
+    if (!lowerSearchValue) {
+      return false;
+    }
+    return String(treeNode[treeNodeFilterProp]).toLowerCase().includes(lowerSearchValue);
+  };
+
+  // =========================== Keys ===========================
+  const [expandedKeys, setExpandedKeys] = React.useState<Key[]>(treeDefaultExpandedKeys);
+  const [searchExpandedKeys, setSearchExpandedKeys] = React.useState<Key[]>(null);
+
+  const mergedExpandedKeys = React.useMemo(() => {
+    if (treeExpandedKeys) {
+      return [...treeExpandedKeys];
+    }
+    return searchValue ? searchExpandedKeys : expandedKeys;
+  }, [expandedKeys, searchExpandedKeys, treeExpandedKeys, searchValue]);
+
+  const onInternalExpand = (keys: Key[]) => {
+    setExpandedKeys(keys);
+    setSearchExpandedKeys(keys);
+
+    if (onTreeExpand) {
+      onTreeExpand(keys);
+    }
   };
 
   // ========================= Keyboard =========================
@@ -190,18 +198,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
         // >>> Select item
         case KeyCode.ENTER: {
-          if (searchValue) {
-            const firstMatchNode = getFirstMatchNode(memoTreeData);
-
-            if (firstMatchNode) {
-              if (firstMatchNode.selectable !== false) {
-                onInternalSelect(null, {
-                  node: { key: firstMatchNode[fieldNames.value] },
-                  selected: !checkedKeys.includes(firstMatchNode[fieldNames.value]),
-                });
-              }
-            }
-          } else if (activeEntity) {
+          if (activeEntity) {
             const { selectable, value } = activeEntity?.node || {};
             if (selectable !== false) {
               onInternalSelect(null, {

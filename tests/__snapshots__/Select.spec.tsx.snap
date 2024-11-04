@@ -740,8 +740,14 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
     >
       <div>
         <div>
+          <span
+            aria-live="assertive"
+            style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+          >
+            a
+          </span>
           <div
-            class="rc-tree-select-tree"
+            class="rc-tree-select-tree rc-tree-select-tree-active-focused"
             role="tree"
           >
             <div>
@@ -780,7 +786,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
                   >
                     <div
                       aria-grabbed="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last filter-node"
                       draggable="false"
                     >
                       <span
@@ -856,8 +862,14 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
     >
       <div>
         <div>
+          <span
+            aria-live="assertive"
+            style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+          >
+            a
+          </span>
           <div
-            class="rc-tree-select-tree"
+            class="rc-tree-select-tree rc-tree-select-tree-active-focused"
             role="tree"
           >
             <div>
@@ -896,7 +908,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
                   >
                     <div
                       aria-grabbed="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active"
                       draggable="false"
                     >
                       <span
@@ -998,8 +1010,14 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
     >
       <div>
         <div>
+          <span
+            aria-live="assertive"
+            style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+          >
+            a
+          </span>
           <div
-            class="rc-tree-select-tree"
+            class="rc-tree-select-tree rc-tree-select-tree-active-focused"
             role="tree"
           >
             <div>
@@ -1038,7 +1056,7 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
                   >
                     <div
                       aria-grabbed="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close filter-node"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-active filter-node"
                       draggable="false"
                     >
                       <span

@@ -620,8 +620,14 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
     >
       <div>
         <div>
+          <span
+            aria-live="assertive"
+            style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+          >
+            0
+          </span>
           <div
-            class="rc-tree-select-tree"
+            class="rc-tree-select-tree rc-tree-select-tree-active-focused"
             role="tree"
           >
             <div>
@@ -660,7 +666,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
                   >
                     <div
                       aria-grabbed="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last filter-node"
                       draggable="false"
                     >
                       <span
@@ -821,8 +827,14 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
     >
       <div>
         <div>
+          <span
+            aria-live="assertive"
+            style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+          >
+            0
+          </span>
           <div
-            class="rc-tree-select-tree"
+            class="rc-tree-select-tree rc-tree-select-tree-active-focused"
             role="tree"
           >
             <div>
@@ -861,7 +873,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
                   >
                     <div
                       aria-grabbed="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last filter-node"
                       draggable="false"
                     >
                       <span

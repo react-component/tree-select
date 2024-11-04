@@ -292,5 +292,27 @@ describe('TreeSelect.SearchInput', () => {
       wrapper.find('input').first().simulate('keyDown', { which: KeyCode.ENTER });
       expect(onSelect).not.toHaveBeenCalled();
     });
+
+    it('should activate first matched node when searching', () => {
+      const wrapper = mount(
+        <TreeSelect
+          showSearch
+          open
+          treeData={[
+            { value: '1', label: '1' },
+            { value: '2', label: '2', disabled: true },
+            { value: '3', label: '3' },
+          ]}
+        />,
+      );
+
+      // When searching, first matched non-disabled node should be activated
+      wrapper.search('1');
+      expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('1');
+
+      // Should skip disabled nodes
+      wrapper.search('2');
+      expect(wrapper.find('.rc-tree-select-tree-treenode-active').length).toBe(0);
+    });
   });
 });
