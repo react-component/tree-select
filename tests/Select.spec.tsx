@@ -609,22 +609,6 @@ describe('TreeSelect.basic', () => {
     expect(container.querySelector('.rc-tree-select-selector').textContent).toBe('parent 1-0');
   });
 
-  // it('should not add new tag when key enter is pressed if nothing is active', () => {
-  //   const onSelect = jest.fn();
-
-  //   const wrapper = mount(
-  //     <TreeSelect open treeDefaultExpandAll multiple onSelect={onSelect}>
-  //       <TreeNode value="parent 1-0" title="parent 1-0">
-  //         <TreeNode value="leaf1" title="my leaf" disabled />
-  //         <TreeNode value="leaf2" title="your leaf" disabled />
-  //       </TreeNode>
-  //     </TreeSelect>,
-  //   );
-
-  //   wrapper.find('input').first().simulate('keydown', { which: KeyCode.ENTER });
-  //   expect(onSelect).not.toHaveBeenCalled();
-  // });
-
   it('should not select parent if some children is disabled', () => {
     const onChange = jest.fn();
 
