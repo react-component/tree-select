@@ -95,7 +95,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   // ========================== Get First Selectable Node ==========================
   const getFirstSelectableNode = (nodes: EventDataNode<any>): EventDataNode<any> | null => {
     for (const node of nodes) {
-      if (node.selectable !== false) {
+      if (node.selectable !== false && !node.disabled) {
         return node;
       }
       if (node[fieldNames.children]) {

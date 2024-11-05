@@ -536,7 +536,7 @@ describe('TreeSelect.basic', () => {
       expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('11 label');
     });
 
-    it('should active first option when dropdown is opened', () => {
+    it('should active first un-disabled option when dropdown is opened', () => {
       const treeData = [
         { key: '0', value: '0', title: '0 label', disabled: true },
         { key: '1', value: '1', title: '1 label' },
@@ -551,7 +551,7 @@ describe('TreeSelect.basic', () => {
 
       const activeNode = wrapper.find('.rc-tree-select-tree-treenode-active');
       expect(activeNode).toHaveLength(1);
-      expect(activeNode.text()).toBe('0 label');
+      expect(activeNode.text()).toBe('1 label');
     });
   });
 
