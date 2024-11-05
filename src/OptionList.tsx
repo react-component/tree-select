@@ -162,16 +162,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     nodes: EventDataNode<any>[],
     searchVal?: string,
   ): EventDataNode<any> | null => {
-    // 使用 mergedExpandedKeys 而不是 true
-    // 这样可以保持与实际展示状态一致
-    const flattenedNodes = flattenTreeData(
-      nodes,
-      // 搜索时展开所有节点以便搜索，否则使用当前展开状态
-      searchVal ? true : mergedExpandedKeys,
-      fieldNames,
-    );
+    const flattenedNodes = flattenTreeData(nodes, mergedExpandedKeys, fieldNames);
 
-    // 查找第一个匹配的节点
     const matchedNode = flattenedNodes.find(node => {
       const rawNode = node.data as EventDataNode<any>;
       if (rawNode.disabled || rawNode.selectable === false) {
