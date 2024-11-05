@@ -379,7 +379,7 @@ class Demo extends React.Component {
         </TreeSelect>
         <h2>title render</h2>
         <TreeSelect<{ label: string }>
-          // open
+          open
           style={{ width: 300 }}
           treeData={gData}
           treeTitleRender={node => node.label + 'ok'}
