@@ -76,7 +76,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     (prev, next) => next[0] && prev[1] !== next[1],
   );
 
-  // ========================== Active ==========================
+  // ========================== Active Key Effect ==========================
   const [activeKey, setActiveKey] = React.useState<Key>(null);
   const activeEntity = keyEntities[activeKey as SafeKey];
 
@@ -93,37 +93,57 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   }, [checkable, checkedKeys, halfCheckedKeys]);
 
   // ========================== Get First Selectable Node ==========================
-  const getFirstSelectableNode = (nodes: EventDataNode<any>): EventDataNode<any> | null => {
+  const getFirstMatchingNode = (
+    nodes: EventDataNode<any>,
+    predicate: (node: EventDataNode<any>) => boolean,
+  ): EventDataNode<any> | null => {
     for (const node of nodes) {
-      if (node.selectable !== false && !node.disabled) {
+      if (predicate(node)) {
         return node;
       }
       if (node[fieldNames.children]) {
-        const selectableInChildren = getFirstSelectableNode(node[fieldNames.children]);
-        if (selectableInChildren) {
-          return selectableInChildren;
+        const matchInChildren = getFirstMatchingNode(node[fieldNames.children], predicate);
+        if (matchInChildren) {
+          return matchInChildren;
         }
       }
     }
     return null;
   };
 
-  // ========================== Scroll ==========================
+  const getFirstSelectableNode = (nodes: EventDataNode<any>): EventDataNode<any> | null =>
+    getFirstMatchingNode(nodes, node => node.selectable !== false && !node.disabled);
+
+  const getFirstMatchNode = (nodes: EventDataNode<any>): EventDataNode<any> | null =>
+    getFirstMatchingNode(nodes, node => filterTreeNode(node) && !node.disabled);
+
+  // ========================== Active Key Effect ==========================
   React.useEffect(() => {
+    if (searchValue) {
+      const firstMatchNode = getFirstMatchNode(memoTreeData);
+      setActiveKey(firstMatchNode ? firstMatchNode[fieldNames.value] : null);
+      return;
+    }
+
     if (open) {
-      // Single mode should scroll to current key
       if (!multiple && checkedKeys.length) {
-        treeRef.current?.scrollTo({ key: checkedKeys[0] });
         setActiveKey(checkedKeys[0]);
       } else {
-        // Otherwise, activate the first selectable node
         const firstSelectableNode = getFirstSelectableNode(memoTreeData);
         if (firstSelectableNode) {
           setActiveKey(firstSelectableNode[fieldNames.value]);
         }
       }
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setActiveKey(null);
+  }, [open, searchValue]);
+
+  // ========================== Scroll Effect ==========================
+  React.useEffect(() => {
+    if (open && !multiple && checkedKeys.length) {
+      treeRef.current?.scrollTo({ key: checkedKeys[0] });
+    }
   }, [open]);
 
   // ========================== Events ==========================
@@ -176,34 +196,11 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     }
   };
 
-  const getFirstMatchNode = (nodes: EventDataNode<any>): EventDataNode<any> | null => {
-    for (const node of nodes) {
-      if (filterTreeNode(node) && !node.disabled) {
-        return node;
-      }
-      if (node[fieldNames.children]) {
-        const matchInChildren = getFirstMatchNode(node[fieldNames.children]);
-        if (matchInChildren) {
-          return matchInChildren;
-        }
-      }
-    }
-    return null;
-  };
-
-  // =========================== Search Effect ===========================
+  // ========================== Search Effect ==========================
   React.useEffect(() => {
     if (searchValue) {
       setSearchExpandedKeys(getAllKeys(treeData, fieldNames));
-
-      const firstMatchNode = getFirstMatchNode(memoTreeData);
-      if (firstMatchNode) {
-        setActiveKey(firstMatchNode[fieldNames.value]);
-      } else {
-        setActiveKey(null);
-      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
   // ========================= Keyboard =========================
