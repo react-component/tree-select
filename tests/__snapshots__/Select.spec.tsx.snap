@@ -41,8 +41,14 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
   >
     <div>
       <div>
+        <span
+          aria-live="assertive"
+          style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+        >
+          0
+        </span>
         <div
-          class="rc-tree-select-tree"
+          class="rc-tree-select-tree rc-tree-select-tree-active-focused"
           role="tree"
         >
           <div>
@@ -81,7 +87,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                 >
                   <div
                     aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-active"
                     draggable="false"
                   >
                     <span
@@ -243,8 +249,14 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
   >
     <div>
       <div>
+        <span
+          aria-live="assertive"
+          style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+        >
+          0
+        </span>
         <div
-          class="rc-tree-select-tree"
+          class="rc-tree-select-tree rc-tree-select-tree-active-focused"
           role="tree"
         >
           <div>
@@ -283,7 +295,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                 >
                   <div
                     aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-active"
                     draggable="false"
                   >
                     <span
@@ -594,8 +606,14 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
     >
       <div>
         <div>
+          <span
+            aria-live="assertive"
+            style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+          >
+            0
+          </span>
           <div
-            class="rc-tree-select-tree"
+            class="rc-tree-select-tree rc-tree-select-tree-active-focused"
             role="tree"
           >
             <div>
@@ -634,7 +652,7 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
                   >
                     <div
                       aria-grabbed="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last"
                       draggable="false"
                     >
                       <span
@@ -1156,8 +1174,14 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
   >
     <div>
       <div>
+        <span
+          aria-live="assertive"
+          style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+        >
+          a
+        </span>
         <div
-          class="rc-tree-select-tree"
+          class="rc-tree-select-tree rc-tree-select-tree-active-focused"
           role="tree"
         >
           <div>
@@ -1196,7 +1220,7 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
                 >
                   <div
                     aria-grabbed="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-active"
                     draggable="false"
                   >
                     <span

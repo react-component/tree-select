@@ -92,12 +92,36 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     };
   }, [checkable, checkedKeys, halfCheckedKeys]);
 
+  // ========================== Get First Selectable Node ==========================
+  const getFirstSelectableNode = (nodes: EventDataNode<any>): EventDataNode<any> | null => {
+    for (const node of nodes) {
+      if (node.selectable !== false) {
+        return node;
+      }
+      if (node[fieldNames.children]) {
+        const selectableInChildren = getFirstSelectableNode(node[fieldNames.children]);
+        if (selectableInChildren) {
+          return selectableInChildren;
+        }
+      }
+    }
+    return null;
+  };
+
   // ========================== Scroll ==========================
   React.useEffect(() => {
-    // Single mode should scroll to current key
-    if (open && !multiple && checkedKeys.length) {
-      treeRef.current?.scrollTo({ key: checkedKeys[0] });
-      setActiveKey(checkedKeys[0]);
+    if (open) {
+      // Single mode should scroll to current key
+      if (!multiple && checkedKeys.length) {
+        treeRef.current?.scrollTo({ key: checkedKeys[0] });
+        setActiveKey(checkedKeys[0]);
+      } else {
+        // Otherwise, activate the first selectable node
+        const firstSelectableNode = getFirstSelectableNode(memoTreeData);
+        if (firstSelectableNode) {
+          setActiveKey(firstSelectableNode[fieldNames.value]);
+        }
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
@@ -199,8 +223,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         // >>> Select item
         case KeyCode.ENTER: {
           if (activeEntity) {
-            const { selectable, value } = activeEntity?.node || {};
-            if (selectable !== false) {
+            const { selectable, value, disabled } = activeEntity?.node || {};
+            if (selectable !== false && !disabled) {
               onInternalSelect(null, {
                 node: { key: activeKey },
                 selected: !checkedKeys.includes(value),

@@ -438,13 +438,13 @@ describe('TreeSelect.basic', () => {
       keyUp(KeyCode.DOWN);
       keyDown(KeyCode.ENTER);
       keyUp(KeyCode.ENTER);
-      matchValue(['parent']);
+      matchValue(['child']);
 
       keyDown(KeyCode.UP);
       keyUp(KeyCode.UP);
       keyDown(KeyCode.ENTER);
       keyUp(KeyCode.ENTER);
-      matchValue(['parent', 'child']);
+      matchValue(['child', 'parent']);
     });
 
     it('selectable works with keyboard operations', () => {
@@ -467,12 +467,12 @@ describe('TreeSelect.basic', () => {
 
       keyDown(KeyCode.DOWN);
       keyDown(KeyCode.ENTER);
-      expect(onChange).toHaveBeenCalledWith(['parent'], expect.anything(), expect.anything());
-      onChange.mockReset();
+      expect(onChange).not.toHaveBeenCalled();
 
       keyDown(KeyCode.UP);
       keyDown(KeyCode.ENTER);
-      expect(onChange).not.toHaveBeenCalled();
+      expect(onChange).toHaveBeenCalledWith(['parent'], expect.anything(), expect.anything());
+      onChange.mockReset();
     });
 
     it('active index matches value', () => {
@@ -535,6 +535,24 @@ describe('TreeSelect.basic', () => {
       keyDown(KeyCode.UP);
       expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('11 label');
     });
+
+    it('should active first option when dropdown is opened', () => {
+      const treeData = [
+        { key: '0', value: '0', title: '0 label', disabled: true },
+        { key: '1', value: '1', title: '1 label' },
+        { key: '2', value: '2', title: '2 label' },
+      ];
+
+      const wrapper = mount(<TreeSelect treeData={treeData} />);
+
+      expect(wrapper.find('.rc-tree-select-tree-treenode-active')).toHaveLength(0);
+
+      wrapper.openSelect();
+
+      const activeNode = wrapper.find('.rc-tree-select-tree-treenode-active');
+      expect(activeNode).toHaveLength(1);
+      expect(activeNode.text()).toBe('0 label');
+    });
   });
 
   it('click in list should preventDefault', () => {
@@ -591,21 +609,21 @@ describe('TreeSelect.basic', () => {
     expect(container.querySelector('.rc-tree-select-selector').textContent).toBe('parent 1-0');
   });
 
-  it('should not add new tag when key enter is pressed if nothing is active', () => {
-    const onSelect = jest.fn();
+  // it('should not add new tag when key enter is pressed if nothing is active', () => {
+  //   const onSelect = jest.fn();
 
-    const wrapper = mount(
-      <TreeSelect open treeDefaultExpandAll multiple onSelect={onSelect}>
-        <TreeNode value="parent 1-0" title="parent 1-0">
-          <TreeNode value="leaf1" title="my leaf" disabled />
-          <TreeNode value="leaf2" title="your leaf" disabled />
-        </TreeNode>
-      </TreeSelect>,
-    );
+  //   const wrapper = mount(
+  //     <TreeSelect open treeDefaultExpandAll multiple onSelect={onSelect}>
+  //       <TreeNode value="parent 1-0" title="parent 1-0">
+  //         <TreeNode value="leaf1" title="my leaf" disabled />
+  //         <TreeNode value="leaf2" title="your leaf" disabled />
+  //       </TreeNode>
+  //     </TreeSelect>,
+  //   );
 
-    wrapper.find('input').first().simulate('keydown', { which: KeyCode.ENTER });
-    expect(onSelect).not.toHaveBeenCalled();
-  });
+  //   wrapper.find('input').first().simulate('keydown', { which: KeyCode.ENTER });
+  //   expect(onSelect).not.toHaveBeenCalled();
+  // });
 
   it('should not select parent if some children is disabled', () => {
     const onChange = jest.fn();

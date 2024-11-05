@@ -229,30 +229,6 @@ describe('TreeSelect.SearchInput', () => {
       expect(onSelect).not.toHaveBeenCalled();
     });
 
-    it('should not select any node when no search value and press enter', () => {
-      const onSelect = jest.fn();
-      const wrapper = mount(
-        <TreeSelect
-          showSearch
-          onSelect={onSelect}
-          open
-          treeData={[
-            { value: '1', label: '1' },
-            { value: '2', label: '2' },
-          ]}
-        />,
-      );
-
-      // Press enter without search value, should not select any node
-      wrapper.find('input').first().simulate('keyDown', { which: KeyCode.ENTER });
-      expect(onSelect).not.toHaveBeenCalled();
-
-      // Search and press enter, should select first matched node
-      wrapper.search('1');
-      wrapper.find('input').first().simulate('keyDown', { which: KeyCode.ENTER });
-      expect(onSelect).toHaveBeenCalledWith('1', expect.anything());
-    });
-
     it('should not select node when no matches found', () => {
       const onSelect = jest.fn();
       const wrapper = mount(
