@@ -92,53 +92,6 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     };
   }, [checkable, checkedKeys, halfCheckedKeys]);
 
-  // ========================== Get First Selectable Node ==========================
-  const getFirstMatchingNode = (
-    nodes: EventDataNode<any>,
-    predicate: (node: EventDataNode<any>) => boolean,
-  ): EventDataNode<any> | null => {
-    for (const node of nodes) {
-      if (predicate(node)) {
-        return node;
-      }
-      if (node[fieldNames.children]) {
-        const matchInChildren = getFirstMatchingNode(node[fieldNames.children], predicate);
-        if (matchInChildren) {
-          return matchInChildren;
-        }
-      }
-    }
-    return null;
-  };
-
-  const getFirstSelectableNode = (nodes: EventDataNode<any>): EventDataNode<any> | null =>
-    getFirstMatchingNode(nodes, node => node.selectable !== false && !node.disabled);
-
-  const getFirstMatchNode = (nodes: EventDataNode<any>): EventDataNode<any> | null =>
-    getFirstMatchingNode(nodes, node => filterTreeNode(node) && !node.disabled);
-
-  // ========================== Active Key Effect ==========================
-  React.useEffect(() => {
-    if (searchValue) {
-      const firstMatchNode = getFirstMatchNode(memoTreeData);
-      setActiveKey(firstMatchNode ? firstMatchNode[fieldNames.value] : null);
-      return;
-    }
-
-    if (open) {
-      if (!multiple && checkedKeys.length) {
-        setActiveKey(checkedKeys[0]);
-      } else {
-        const firstSelectableNode = getFirstSelectableNode(memoTreeData);
-        if (firstSelectableNode) {
-          setActiveKey(firstSelectableNode[fieldNames.value]);
-        }
-      }
-      return;
-    }
-    setActiveKey(null);
-  }, [open, searchValue]);
-
   // ========================== Scroll Effect ==========================
   React.useEffect(() => {
     if (open && !multiple && checkedKeys.length) {
@@ -202,6 +155,53 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       setSearchExpandedKeys(getAllKeys(treeData, fieldNames));
     }
   }, [searchValue]);
+
+  // ========================== Get First Selectable Node ==========================
+  const getFirstMatchingNode = (
+    nodes: EventDataNode<any>,
+    predicate: (node: EventDataNode<any>) => boolean,
+  ): EventDataNode<any> | null => {
+    for (const node of nodes) {
+      if (predicate(node)) {
+        return node;
+      }
+      if (node[fieldNames.children]) {
+        const matchInChildren = getFirstMatchingNode(node[fieldNames.children], predicate);
+        if (matchInChildren) {
+          return matchInChildren;
+        }
+      }
+    }
+    return null;
+  };
+
+  const getFirstSelectableNode = (nodes: EventDataNode<any>): EventDataNode<any> | null =>
+    getFirstMatchingNode(nodes, node => node.selectable !== false && !node.disabled);
+
+  const getFirstMatchNode = (nodes: EventDataNode<any>): EventDataNode<any> | null =>
+    getFirstMatchingNode(nodes, node => filterTreeNode(node) && !node.disabled);
+
+  // ========================== Active Key Effect ==========================
+  React.useEffect(() => {
+    if (searchValue) {
+      const firstMatchNode = getFirstMatchNode(memoTreeData);
+      setActiveKey(firstMatchNode ? firstMatchNode[fieldNames.value] : null);
+      return;
+    }
+
+    if (open) {
+      if (!multiple && checkedKeys.length) {
+        setActiveKey(checkedKeys[0]);
+      } else {
+        const firstSelectableNode = getFirstSelectableNode(memoTreeData);
+        if (firstSelectableNode) {
+          setActiveKey(firstSelectableNode[fieldNames.value]);
+        }
+      }
+      return;
+    }
+    setActiveKey(null);
+  }, [open, searchValue]);
 
   // ========================= Keyboard =========================
   React.useImperativeHandle(ref, () => ({
