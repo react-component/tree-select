@@ -102,21 +102,6 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
-  // =========================== Search Effect ===========================
-  React.useEffect(() => {
-    if (searchValue) {
-      setSearchExpandedKeys(getAllKeys(treeData, fieldNames));
-
-      const firstMatchNode = getFirstMatchNode(memoTreeData);
-      if (firstMatchNode) {
-        setActiveKey(firstMatchNode[fieldNames.value]);
-      } else {
-        setActiveKey(null);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchValue]);
-
   // ========================== Events ==========================
   const onListMouseDown: React.MouseEventHandler<HTMLDivElement> = event => {
     event.preventDefault();
@@ -136,21 +121,6 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     if (!multiple) {
       toggleOpen(false);
     }
-  };
-
-  const getFirstMatchNode = (nodes: EventDataNode<any>): EventDataNode<any> | null => {
-    for (const node of nodes) {
-      if (filterTreeNode(node) && !node.disabled) {
-        return node;
-      }
-      if (node[fieldNames.children]) {
-        const matchInChildren = getFirstMatchNode(node[fieldNames.children]);
-        if (matchInChildren) {
-          return matchInChildren;
-        }
-      }
-    }
-    return null;
   };
 
   // ========================== Search ==========================
@@ -181,6 +151,36 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       onTreeExpand(keys);
     }
   };
+
+  const getFirstMatchNode = (nodes: EventDataNode<any>): EventDataNode<any> | null => {
+    for (const node of nodes) {
+      if (filterTreeNode(node) && !node.disabled) {
+        return node;
+      }
+      if (node[fieldNames.children]) {
+        const matchInChildren = getFirstMatchNode(node[fieldNames.children]);
+        if (matchInChildren) {
+          return matchInChildren;
+        }
+      }
+    }
+    return null;
+  };
+
+  // =========================== Search Effect ===========================
+  React.useEffect(() => {
+    if (searchValue) {
+      setSearchExpandedKeys(getAllKeys(treeData, fieldNames));
+
+      const firstMatchNode = getFirstMatchNode(memoTreeData);
+      if (firstMatchNode) {
+        setActiveKey(firstMatchNode[fieldNames.value]);
+      } else {
+        setActiveKey(null);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchValue]);
 
   // ========================= Keyboard =========================
   React.useImperativeHandle(ref, () => ({
