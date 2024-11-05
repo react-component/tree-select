@@ -25,6 +25,7 @@ dist
 build
 lib
 coverage
+.vscode
 yarn.lock
 package-lock.json
 es
