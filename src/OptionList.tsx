@@ -159,48 +159,58 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   // ========================== Get First Selectable Node ==========================
   const getFirstMatchingNode = (
     nodes: EventDataNode<any>[],
-    predicate: (node: EventDataNode<any>) => boolean,
+    searchValue?: string,
   ): EventDataNode<any> | null => {
-    for (const node of nodes) {
-      if (predicate(node)) {
-        return node;
-      }
-      if (node[fieldNames.children]) {
-        const matchInChildren = getFirstMatchingNode(node[fieldNames.children], predicate);
-        if (matchInChildren) {
-          return matchInChildren;
+    const findNode = (nodeList: EventDataNode<any>[]): EventDataNode<any> | null => {
+      for (const node of nodeList) {
+        if (node.disabled || node.selectable === false) {
+          continue;
+        }
+
+        if (searchValue) {
+          if (filterTreeNode(node)) {
+            return node;
+          }
+        } else if (!node.disabled && node.selectable !== false) {
+          return node;
+        }
+
+        if (node[fieldNames.children]) {
+          const matchInChildren = findNode(node[fieldNames.children]);
+          if (matchInChildren) {
+            return matchInChildren;
+          }
         }
       }
-    }
-    return null;
+      return null;
+    };
+
+    return findNode(nodes);
   };
-
-  const getFirstSelectableNode = (nodes: EventDataNode<any>): EventDataNode<any> | null =>
-    getFirstMatchingNode(nodes, node => node.selectable !== false && !node.disabled);
-
-  const getFirstMatchNode = (nodes: EventDataNode<any>): EventDataNode<any> | null =>
-    getFirstMatchingNode(nodes, node => filterTreeNode(node) && !node.disabled);
 
   // ========================== Active Key Effect ==========================
   React.useEffect(() => {
-    if (searchValue) {
-      const firstMatchNode = getFirstMatchNode(memoTreeData);
-      setActiveKey(firstMatchNode ? firstMatchNode[fieldNames.value] : null);
+    if (!open) {
+      setActiveKey(null);
       return;
     }
 
-    if (open) {
-      if (!multiple && checkedKeys.length) {
-        setActiveKey(checkedKeys[0]);
-      } else {
-        const firstSelectableNode = getFirstSelectableNode(memoTreeData);
-        if (firstSelectableNode) {
-          setActiveKey(firstSelectableNode[fieldNames.value]);
-        }
-      }
+    // Prioritize activating the searched node
+    if (searchValue) {
+      const firstNode = getFirstMatchingNode(memoTreeData, searchValue);
+      setActiveKey(firstNode ? firstNode[fieldNames.value] : null);
       return;
     }
-    setActiveKey(null);
+
+    // If no search value, activate the first checked node
+    if (!multiple && checkedKeys.length) {
+      setActiveKey(checkedKeys[0]);
+      return;
+    }
+
+    // If no search value and no checked nodes, activate the first node
+    const firstNode = getFirstMatchingNode(memoTreeData, '');
+    setActiveKey(firstNode ? firstNode[fieldNames.value] : null);
   }, [open, searchValue]);
 
   // ========================= Keyboard =========================

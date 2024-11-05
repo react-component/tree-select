@@ -216,7 +216,6 @@ class Demo extends React.Component {
             console.log('onPopupScroll:', evt.target);
           }}
         />
-
         <h2>single select (just select children)</h2>
         <TreeSelect
           style={{ width: 300 }}
@@ -233,7 +232,6 @@ class Demo extends React.Component {
           filterTreeNode={false}
           onChange={this.onChangeChildren}
         />
-
         <h2>multiple select</h2>
         <TreeSelect
           style={{ width: 300 }}
@@ -249,7 +247,6 @@ class Demo extends React.Component {
           onSelect={this.onSelect}
           allowClear
         />
-
         <h2>check select</h2>
         <TreeSelect
           open
@@ -281,7 +278,6 @@ class Demo extends React.Component {
             return `${valueList.length} rest...`;
           }}
         />
-
         <h2>labelInValue & show path</h2>
         <TreeSelect
           style={{ width: 500 }}
@@ -299,7 +295,6 @@ class Demo extends React.Component {
           filterTreeNode={false}
           onChange={this.onChangeLV}
         />
-
         <h2>use treeDataSimpleMode</h2>
         <TreeSelect
           style={{ width: 300 }}
@@ -323,7 +318,6 @@ class Demo extends React.Component {
             this.onSelect(...args);
           }}
         />
-
         <h2>Testing in extreme conditions (Boundary conditions test) </h2>
         <TreeSelect
           style={{ width: 200 }}
@@ -347,7 +341,6 @@ class Demo extends React.Component {
           ]}
           onChange={(val, ...args) => console.log(val, ...args)}
         />
-
         <h2>use TreeNode Component (not recommend)</h2>
         <TreeSelect
           style={{ width: 200 }}
@@ -384,13 +377,22 @@ class Demo extends React.Component {
           </TreeNode>
           <TreeNode value="same value3" title="same title" key="0-3" />
         </TreeSelect>
-
         <h2>title render</h2>
         <TreeSelect<{ label: string }>
-          open
+          // open
           style={{ width: 300 }}
           treeData={gData}
           treeTitleRender={node => node.label + 'ok'}
+        />
+        <h2>disabled node</h2>
+        <TreeSelect
+          showSearch
+          onSelect={val => console.log(val)}
+          treeData={[
+            { value: '1', label: '1' },
+            { value: '2', label: '2', disabled: true },
+            { value: '3', label: '3' },
+          ]}
         />
       </div>
     );

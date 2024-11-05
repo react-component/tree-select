@@ -206,8 +206,8 @@ describe('TreeSelect.SearchInput', () => {
       const wrapper = mount(
         <TreeSelect
           showSearch
-          onSelect={onSelect}
           open
+          onSelect={onSelect}
           treeData={[
             { value: '1', label: '1' },
             { value: '2', label: '2', disabled: true },
@@ -220,13 +220,18 @@ describe('TreeSelect.SearchInput', () => {
       wrapper.search('1');
       wrapper.find('input').first().simulate('keyDown', { which: KeyCode.ENTER });
       expect(onSelect).toHaveBeenCalledWith('1', expect.anything());
-
       onSelect.mockReset();
 
       // Search disabled node and press enter, should not select
       wrapper.search('2');
       wrapper.find('input').first().simulate('keyDown', { which: KeyCode.ENTER });
       expect(onSelect).not.toHaveBeenCalled();
+      onSelect.mockReset();
+
+      wrapper.search('3');
+      wrapper.find('input').first().simulate('keyDown', { which: KeyCode.ENTER });
+      expect(onSelect).toHaveBeenCalledWith('3', expect.anything());
+      onSelect.mockReset();
     });
 
     it('should not select node when no matches found', () => {
