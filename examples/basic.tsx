@@ -384,16 +384,6 @@ class Demo extends React.Component {
           treeData={gData}
           treeTitleRender={node => node.label + 'ok'}
         />
-        <h2>disabled node</h2>
-        <TreeSelect
-          showSearch
-          onSelect={val => console.log(val)}
-          treeData={[
-            { value: '1', label: '1' },
-            { value: '2', label: '2', disabled: true },
-            { value: '3', label: '3' },
-          ]}
-        />
       </div>
     );
   }
