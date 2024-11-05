@@ -158,7 +158,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   // ========================== Get First Selectable Node ==========================
   const getFirstMatchingNode = (
-    nodes: EventDataNode<any>,
+    nodes: EventDataNode<any>[],
     predicate: (node: EventDataNode<any>) => boolean,
   ): EventDataNode<any> | null => {
     for (const node of nodes) {
