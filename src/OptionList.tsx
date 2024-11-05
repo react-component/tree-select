@@ -10,6 +10,7 @@ import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
 import type { Key, SafeKey } from './interface';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
+import { flattenTreeData } from 'rc-tree/lib/utils/treeUtil';
 
 const HIDDEN_STYLE = {
   width: 0,
@@ -76,7 +77,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     (prev, next) => next[0] && prev[1] !== next[1],
   );
 
-  // ========================== Active Key Effect ==========================
+  // ========================== Active Key ==========================
   const [activeKey, setActiveKey] = React.useState<Key>(null);
   const activeEntity = keyEntities[activeKey as SafeKey];
 
@@ -161,31 +162,24 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     nodes: EventDataNode<any>[],
     searchVal?: string,
   ): EventDataNode<any> | null => {
-    const findNode = (nodeList: EventDataNode<any>[]): EventDataNode<any> | null => {
-      for (const node of nodeList) {
-        if (node.disabled || node.selectable === false) {
-          continue;
-        }
+    // Flatten the tree structure
+    const flattenedNodes = flattenTreeData(nodes, true, fieldNames);
 
-        if (searchVal) {
-          if (filterTreeNode(node)) {
-            return node;
-          }
-        } else if (!node.disabled && node.selectable !== false) {
-          return node;
-        }
-
-        if (node[fieldNames.children]) {
-          const matchInChildren = findNode(node[fieldNames.children]);
-          if (matchInChildren) {
-            return matchInChildren;
-          }
-        }
+    // Iterate through the flattened array to find the first matching node
+    const matchedNode = flattenedNodes.find(node => {
+      const rawNode = node.data as EventDataNode<any>;
+      if (rawNode.disabled || rawNode.selectable === false) {
+        return false;
       }
-      return null;
-    };
 
-    return findNode(nodes);
+      if (searchVal) {
+        return filterTreeNode(rawNode);
+      }
+
+      return true;
+    });
+
+    return matchedNode ? (matchedNode.data as EventDataNode<any>) : null;
   };
 
   // ========================== Active Key Effect ==========================
