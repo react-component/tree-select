@@ -157,14 +157,15 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     }
   }, [searchValue]);
 
-  // ========================== Get First Selectable Node ==========================
-  const getFirstMatchingNode = (
-    nodes: EventDataNode<any>[],
-    searchVal?: string,
-  ): EventDataNode<any> | null => {
-    const flattenedNodes = flattenTreeData(nodes, mergedExpandedKeys, fieldNames);
+  // ========================== Flatten Tree Data ==========================
+  const flattenedTreeData = React.useMemo(() => {
+    const expandKeys = searchValue ? true : mergedExpandedKeys;
+    return flattenTreeData(memoTreeData, expandKeys, fieldNames);
+  }, [memoTreeData, searchValue, mergedExpandedKeys]);
 
-    const matchedNode = flattenedNodes.find(node => {
+  // ========================== Get First Selectable Node ==========================
+  const getFirstMatchingNode = (searchVal?: string): EventDataNode<any> | null => {
+    const matchedNode = flattenedTreeData.find(node => {
       const rawNode = node.data as EventDataNode<any>;
       if (rawNode.disabled || rawNode.selectable === false) {
         return false;
@@ -189,7 +190,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
     // Prioritize activating the searched node
     if (searchValue) {
-      const firstNode = getFirstMatchingNode(memoTreeData, searchValue);
+      const firstNode = getFirstMatchingNode(searchValue);
       setActiveKey(firstNode ? firstNode[fieldNames.value] : null);
       return;
     }
@@ -201,7 +202,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     }
 
     // If no search value and no checked nodes, activate the first node
-    const firstNode = getFirstMatchingNode(memoTreeData, '');
+    const firstNode = getFirstMatchingNode();
     setActiveKey(firstNode ? firstNode[fieldNames.value] : null);
   }, [open, searchValue]);
 
