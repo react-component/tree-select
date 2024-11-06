@@ -179,23 +179,27 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     if (!open) {
       return;
     }
+    let nextActiveKey = null;
 
-    // // Prioritize activating the searched node
-    if (searchValue) {
+    const getFirstNode = () => {
       const firstNode = getFirstMatchingNode(memoTreeData);
-      setActiveKey(firstNode ? firstNode[fieldNames.value] : null);
-      return;
+      return firstNode ? firstNode[fieldNames.value] : null;
+    };
+
+    // search mode active first node
+    if (searchValue) {
+      nextActiveKey = getFirstNode();
+    }
+    // single mode active first checked node
+    else if (!multiple && checkedKeys.length) {
+      nextActiveKey = checkedKeys[0];
+    }
+    // default active first node
+    else {
+      nextActiveKey = getFirstNode();
     }
 
-    // If no search value, activate the first checked node
-    if (!multiple && checkedKeys.length) {
-      setActiveKey(checkedKeys[0]);
-      return;
-    }
-
-    // If no search value and no checked nodes, activate the first node
-    const firstNode = getFirstMatchingNode(memoTreeData);
-    setActiveKey(firstNode ? firstNode[fieldNames.value] : null);
+    setActiveKey(nextActiveKey);
   }, [open, searchValue]);
 
   // ========================= Keyboard =========================
