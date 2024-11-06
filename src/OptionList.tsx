@@ -10,7 +10,6 @@ import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
 import type { Key, SafeKey } from './interface';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
-import { flattenTreeData } from 'rc-tree/lib/utils/treeUtil';
 
 const HIDDEN_STYLE = {
   width: 0,
@@ -77,10 +76,6 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     (prev, next) => next[0] && prev[1] !== next[1],
   );
 
-  // ========================== Active Key ==========================
-  const [activeKey, setActiveKey] = React.useState<Key>(null);
-  const activeEntity = keyEntities[activeKey as SafeKey];
-
   // ========================== Values ==========================
   const mergedCheckedKeys = React.useMemo(() => {
     if (!checkable) {
@@ -93,7 +88,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     };
   }, [checkable, checkedKeys, halfCheckedKeys]);
 
-  // ========================== Scroll Effect ==========================
+  // ========================== Scroll ==========================
   React.useEffect(() => {
     // Single mode should scroll to current key
     if (open && !multiple && checkedKeys.length) {
@@ -123,15 +118,6 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     }
   };
 
-  // ========================== Search ==========================
-  const lowerSearchValue = String(searchValue).toLowerCase();
-  const filterTreeNode = (treeNode: EventDataNode<any>) => {
-    if (!lowerSearchValue) {
-      return false;
-    }
-    return String(treeNode[treeNodeFilterProp]).toLowerCase().includes(lowerSearchValue);
-  };
-
   // =========================== Keys ===========================
   const [expandedKeys, setExpandedKeys] = React.useState<Key[]>(treeDefaultExpandedKeys);
   const [searchExpandedKeys, setSearchExpandedKeys] = React.useState<Key[]>(null);
@@ -152,7 +138,15 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     }
   };
 
-  // ========================== Search Effect ==========================
+  // ========================== Search ==========================
+  const lowerSearchValue = String(searchValue).toLowerCase();
+  const filterTreeNode = (treeNode: EventDataNode<any>) => {
+    if (!lowerSearchValue) {
+      return false;
+    }
+    return String(treeNode[treeNodeFilterProp]).toLowerCase().includes(lowerSearchValue);
+  };
+
   React.useEffect(() => {
     if (searchValue) {
       setSearchExpandedKeys(getAllKeys(treeData, fieldNames));
@@ -161,25 +155,14 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   }, [searchValue]);
 
   // ========================== Get First Selectable Node ==========================
-  const getFirstMatchingNode = (
-    nodes: EventDataNode<any>[],
-    searchVal?: string,
-  ): EventDataNode<any> | null => {
+  const getFirstMatchingNode = (nodes: EventDataNode<any>[]): EventDataNode<any> | null => {
     for (const node of nodes) {
-      if (node.disabled || node.selectable === false) {
-        continue;
-      }
-
-      if (searchVal) {
-        if (filterTreeNode(node)) {
-          return node;
-        }
-      } else {
+      if (!node.disabled && node.selectable !== false) {
         return node;
       }
 
       if (node[fieldNames.children]) {
-        const matchInChildren = getFirstMatchingNode(node[fieldNames.children], searchVal);
+        const matchInChildren = getFirstMatchingNode(node[fieldNames.children]);
         if (matchInChildren) {
           return matchInChildren;
         }
@@ -188,16 +171,18 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     return null;
   };
 
-  // ========================== Active Key Effect ==========================
+  // ========================== Active ==========================
+  const [activeKey, setActiveKey] = React.useState<Key>(null);
+  const activeEntity = keyEntities[activeKey as SafeKey];
+
   React.useEffect(() => {
     if (!open) {
-      setActiveKey(null);
       return;
     }
 
-    // Prioritize activating the searched node
+    // // Prioritize activating the searched node
     if (searchValue) {
-      const firstNode = getFirstMatchingNode(treeData, searchValue);
+      const firstNode = getFirstMatchingNode(memoTreeData);
       setActiveKey(firstNode ? firstNode[fieldNames.value] : null);
       return;
     }
@@ -209,7 +194,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     }
 
     // If no search value and no checked nodes, activate the first node
-    const firstNode = getFirstMatchingNode(treeData);
+    const firstNode = getFirstMatchingNode(memoTreeData);
     setActiveKey(firstNode ? firstNode[fieldNames.value] : null);
   }, [open, searchValue]);
 
