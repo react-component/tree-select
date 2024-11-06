@@ -186,16 +186,10 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       return firstNode ? firstNode[fieldNames.value] : null;
     };
 
-    // search mode active first node
-    if (searchValue) {
-      nextActiveKey = getFirstNode();
-    }
     // single mode active first checked node
-    else if (!multiple && checkedKeys.length) {
+    if (!multiple && checkedKeys.length && !searchValue) {
       nextActiveKey = checkedKeys[0];
-    }
-    // default active first node
-    else {
+    } else {
       nextActiveKey = getFirstNode();
     }
 
