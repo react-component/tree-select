@@ -160,27 +160,32 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
-  // ========================== Flatten Tree Data ==========================
-  const flattenedTreeData = React.useMemo(() => {
-    return flattenTreeData(memoTreeData, mergedExpandedKeys, fieldNames);
-  }, [memoTreeData, mergedExpandedKeys]);
-
   // ========================== Get First Selectable Node ==========================
-  const getFirstMatchingNode = (searchVal?: string): EventDataNode<any> | null => {
-    const matchedNode = flattenedTreeData.find(node => {
-      const rawNode = node.data as EventDataNode<any>;
-      if (rawNode.disabled || rawNode.selectable === false) {
-        return false;
+  const getFirstMatchingNode = (
+    nodes: EventDataNode<any>[],
+    searchVal?: string,
+  ): EventDataNode<any> | null => {
+    for (const node of nodes) {
+      if (node.disabled || node.selectable === false) {
+        continue;
       }
 
       if (searchVal) {
-        return filterTreeNode(rawNode);
+        if (filterTreeNode(node)) {
+          return node;
+        }
+      } else {
+        return node;
       }
 
-      return true;
-    });
-
-    return matchedNode ? (matchedNode.data as EventDataNode<any>) : null;
+      if (node[fieldNames.children]) {
+        const matchInChildren = getFirstMatchingNode(node[fieldNames.children], searchVal);
+        if (matchInChildren) {
+          return matchInChildren;
+        }
+      }
+    }
+    return null;
   };
 
   // ========================== Active Key Effect ==========================
@@ -192,7 +197,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
     // Prioritize activating the searched node
     if (searchValue) {
-      const firstNode = getFirstMatchingNode(searchValue);
+      const firstNode = getFirstMatchingNode(treeData, searchValue);
       setActiveKey(firstNode ? firstNode[fieldNames.value] : null);
       return;
     }
@@ -204,7 +209,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     }
 
     // If no search value and no checked nodes, activate the first node
-    const firstNode = getFirstMatchingNode();
+    const firstNode = getFirstMatchingNode(treeData);
     setActiveKey(firstNode ? firstNode[fieldNames.value] : null);
   }, [open, searchValue]);
 
