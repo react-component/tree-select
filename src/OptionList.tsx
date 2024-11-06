@@ -95,9 +95,11 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   // ========================== Scroll Effect ==========================
   React.useEffect(() => {
+    // Single mode should scroll to current key
     if (open && !multiple && checkedKeys.length) {
       treeRef.current?.scrollTo({ key: checkedKeys[0] });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   // ========================== Events ==========================
@@ -155,13 +157,13 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     if (searchValue) {
       setSearchExpandedKeys(getAllKeys(treeData, fieldNames));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
   // ========================== Flatten Tree Data ==========================
   const flattenedTreeData = React.useMemo(() => {
-    const expandKeys = searchValue ? true : mergedExpandedKeys;
-    return flattenTreeData(memoTreeData, expandKeys, fieldNames);
-  }, [memoTreeData, searchValue, mergedExpandedKeys]);
+    return flattenTreeData(memoTreeData, mergedExpandedKeys, fieldNames);
+  }, [memoTreeData, mergedExpandedKeys]);
 
   // ========================== Get First Selectable Node ==========================
   const getFirstMatchingNode = (searchVal?: string): EventDataNode<any> | null => {
