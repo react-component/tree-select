@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React, { useState } from 'react';
 import { mount } from 'enzyme';
+import { render, fireEvent } from '@testing-library/react';
 import TreeSelect, { TreeNode } from '../src';
 import KeyCode from 'rc-util/lib/KeyCode';
 
@@ -203,7 +204,7 @@ describe('TreeSelect.SearchInput', () => {
   describe('keyboard events', () => {
     it('should select first matched node when press enter', () => {
       const onSelect = jest.fn();
-      const wrapper = mount(
+      const { getByRole } = render(
         <TreeSelect
           showSearch
           open
@@ -217,26 +218,26 @@ describe('TreeSelect.SearchInput', () => {
       );
 
       // Search and press enter, should select first matched non-disabled node
-      wrapper.search('1');
-      wrapper.find('input').first().simulate('keyDown', { which: KeyCode.ENTER });
+      const input = getByRole('combobox');
+      fireEvent.change(input, { target: { value: '1' } });
+      fireEvent.keyDown(input, { keyCode: KeyCode.ENTER });
       expect(onSelect).toHaveBeenCalledWith('1', expect.anything());
       onSelect.mockReset();
 
       // Search disabled node and press enter, should not select
-      wrapper.search('2');
-      wrapper.find('input').first().simulate('keyDown', { which: KeyCode.ENTER });
+      fireEvent.change(input, { target: { value: '2' } });
+      fireEvent.keyDown(input, { keyCode: KeyCode.ENTER });
       expect(onSelect).not.toHaveBeenCalled();
       onSelect.mockReset();
 
-      wrapper.search('3');
-      wrapper.find('input').first().simulate('keyDown', { which: KeyCode.ENTER });
+      fireEvent.change(input, { target: { value: '3' } });
+      fireEvent.keyDown(input, { keyCode: KeyCode.ENTER });
       expect(onSelect).toHaveBeenCalledWith('3', expect.anything());
-      onSelect.mockReset();
     });
 
     it('should not select node when no matches found', () => {
       const onSelect = jest.fn();
-      const wrapper = mount(
+      const { getByRole } = render(
         <TreeSelect
           showSearch
           onSelect={onSelect}
@@ -249,14 +250,15 @@ describe('TreeSelect.SearchInput', () => {
       );
 
       // Search non-existent value and press enter, should not select any node
-      wrapper.search('not-exist');
-      wrapper.find('input').first().simulate('keyDown', { which: KeyCode.ENTER });
+      const input = getByRole('combobox');
+      fireEvent.change(input, { target: { value: 'not-exist' } });
+      fireEvent.keyDown(input, { keyCode: KeyCode.ENTER });
       expect(onSelect).not.toHaveBeenCalled();
     });
 
     it('should ignore enter press when all matched nodes are disabled', () => {
       const onSelect = jest.fn();
-      const wrapper = mount(
+      const { getByRole } = render(
         <TreeSelect
           showSearch
           onSelect={onSelect}
@@ -269,13 +271,14 @@ describe('TreeSelect.SearchInput', () => {
       );
 
       // When all matched nodes are disabled, press enter should not select any node
-      wrapper.search('1');
-      wrapper.find('input').first().simulate('keyDown', { which: KeyCode.ENTER });
+      const input = getByRole('combobox');
+      fireEvent.change(input, { target: { value: '1' } });
+      fireEvent.keyDown(input, { keyCode: KeyCode.ENTER });
       expect(onSelect).not.toHaveBeenCalled();
     });
 
     it('should activate first matched node when searching', () => {
-      const wrapper = mount(
+      const { getByRole, container } = render(
         <TreeSelect
           showSearch
           open
@@ -288,12 +291,15 @@ describe('TreeSelect.SearchInput', () => {
       );
 
       // When searching, first matched non-disabled node should be activated
-      wrapper.search('1');
-      expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('1');
+      const input = getByRole('combobox');
+      fireEvent.change(input, { target: { value: '1' } });
+      expect(container.querySelector('.rc-tree-select-tree-treenode-active')).toHaveTextContent(
+        '1',
+      );
 
       // Should skip disabled nodes
-      wrapper.search('2');
-      expect(wrapper.find('.rc-tree-select-tree-treenode-active').length).toBe(0);
+      fireEvent.change(input, { target: { value: '2' } });
+      expect(container.querySelectorAll('.rc-tree-select-tree-treenode-active')).toHaveLength(0);
     });
   });
 });
