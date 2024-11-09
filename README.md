@@ -97,6 +97,7 @@ online example: https://tree-select-react-component.vercel.app/
 |treeNodeLabelProp | which prop value of treeNode will render as content of select | String | 'title' |
 |treeData | treeNodes data Array, if set it then you need not to construct children TreeNode. (value should be unique across the whole array) | array<{value,label,children, [disabled,selectable]}> | [] |
 |treeDataSimpleMode | enable simple mode of treeData.(treeData should be like this: [{id:1, pId:0, value:'1', label:"test1",...},...], `pId` is parent node's id) | bool/object{id:'id', pId:'pId', rootPId:null} | false |
+|treeTitleRender | Custom render nodes | (nodeData: OptionType) => ReactNode |
 |loadData | load data asynchronously | function(node) | - |
 |getPopupContainer | container which popup select menu rendered into | function(trigger:Node):Node | function(){return document.body;} |
 |autoClearSearchValue | auto clear search input value when multiple select is selected/deselected | boolean | true |
