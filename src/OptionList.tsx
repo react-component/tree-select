@@ -86,6 +86,13 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   const [activeKey, setActiveKey] = React.useState<Key>(null);
   const activeEntity = keyEntities[activeKey as SafeKey];
 
+  const onActiveChange = (key: Key) => {
+    if (isOverMaxCount && !checkedKeys.includes(key)) {
+      return;
+    }
+    setActiveKey(key);
+  };
+
   // ========================== Values ==========================
   const mergedCheckedKeys = React.useMemo(() => {
     if (!checkable) {
@@ -267,7 +274,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         titleRender={treeTitleRender}
         {...treeProps}
         // Proxy event out
-        onActiveChange={setActiveKey}
+        onActiveChange={onActiveChange}
         onSelect={onInternalSelect}
         onCheck={onInternalSelect}
         onExpand={onInternalExpand}
