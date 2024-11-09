@@ -279,6 +279,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         onCheck={onInternalSelect}
         onExpand={onInternalExpand}
         onLoad={onTreeLoad}
+        disabled={isOverMaxCount}
         filterTreeNode={filterTreeNode}
         expandAction={treeExpandAction}
         onScroll={onPopupScroll}
