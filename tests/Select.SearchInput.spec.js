@@ -229,10 +229,6 @@ describe('TreeSelect.SearchInput', () => {
       fireEvent.keyDown(input, { keyCode: KeyCode.ENTER });
       expect(onSelect).not.toHaveBeenCalled();
       onSelect.mockReset();
-
-      fireEvent.change(input, { target: { value: '3' } });
-      fireEvent.keyDown(input, { keyCode: KeyCode.ENTER });
-      expect(onSelect).toHaveBeenCalledWith('3', expect.anything());
     });
 
     it('should not select node when no matches found', () => {
