@@ -72,6 +72,7 @@ export interface TreeSelectProps<ValueType = any, OptionType extends DataNode = 
   treeCheckable?: boolean | React.ReactNode;
   treeCheckStrictly?: boolean;
   labelInValue?: boolean;
+  maxCount?: number;
 
   // >>> Data
   treeData?: OptionType[];
@@ -136,6 +137,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     treeCheckable,
     treeCheckStrictly,
     labelInValue,
+    maxCount,
 
     // FieldNames
     fieldNames,
@@ -507,6 +509,10 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         // Single mode always set value
         triggerChange([selectedValue], { selected: true, triggerValue: selectedValue }, 'option');
       } else {
+        if (maxCount && selected && rawValues.length >= maxCount) {
+          return;
+        }
+
         let newRawValues = selected
           ? [...rawValues, selectedValue]
           : rawCheckedValues.filter(v => v !== selectedValue);
@@ -609,6 +615,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeExpandAction,
       treeTitleRender,
       onPopupScroll,
+      maxCount,
     }),
     [
       virtual,
@@ -622,6 +629,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeExpandAction,
       treeTitleRender,
       onPopupScroll,
+      maxCount,
     ],
   );
 

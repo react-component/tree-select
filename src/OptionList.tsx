@@ -9,7 +9,7 @@ import * as React from 'react';
 import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
 import type { Key, SafeKey } from './interface';
-import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
+import { getAllKeys, isCheckDisabled, isValidCount } from './utils/valueUtil';
 
 const HIDDEN_STYLE = {
   width: 0,
@@ -45,6 +45,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     treeExpandAction,
     treeTitleRender,
     onPopupScroll,
+    maxCount,
   } = React.useContext(TreeSelectContext);
 
   const {
@@ -74,6 +75,11 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [open, treeData],
     (prev, next) => next[0] && prev[1] !== next[1],
+  );
+
+  const isOverMaxCount = React.useMemo<boolean>(
+    () => multiple && isValidCount(maxCount) && checkedKeys.length >= maxCount,
+    [checkedKeys, maxCount, multiple],
   );
 
   // ========================== Active ==========================
@@ -150,8 +156,13 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       return;
     }
 
+    const isSelected = !checkedKeys.includes(node.key);
+    if (maxCount && isSelected && checkedKeys.length >= maxCount) {
+      return;
+    }
+
     onSelect(node.key, {
-      selected: !checkedKeys.includes(node.key),
+      selected: isSelected,
     });
 
     if (!multiple) {
@@ -197,10 +208,10 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   }));
 
   const loadDataFun = useMemo(
-    () => searchValue ? null : (loadData as any),
+    () => (searchValue ? null : (loadData as any)),
     [searchValue, treeExpandedKeys || expandedKeys],
     ([preSearchValue], [nextSearchValue, nextExcludeSearchExpandedKeys]) =>
-      preSearchValue !== nextSearchValue && !!(nextSearchValue || nextExcludeSearchExpandedKeys)
+      preSearchValue !== nextSearchValue && !!(nextSearchValue || nextExcludeSearchExpandedKeys),
   );
 
   // ========================== Render ==========================

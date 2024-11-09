@@ -35,3 +35,6 @@ export const getAllKeys = (treeData: DataNode[], fieldNames: FieldNames): SafeKe
 };
 
 export const isNil = (val: any): boolean => val === null || val === undefined;
+
+export const isValidCount = (value?: number) =>
+  typeof value !== 'undefined' && !Number.isNaN(value);
