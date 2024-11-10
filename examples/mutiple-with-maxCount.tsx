@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TreeSelect from '../src';
 
 export default () => {
+  const [value, setValue] = useState<string[]>(['1']);
+
   const treeData = [
     {
       key: '1',
@@ -31,15 +33,33 @@ export default () => {
       title: '4',
     },
   ];
-  const onChange = () => {};
+
+  const onChange = (value: string[]) => {
+    setValue(value);
+  };
 
   return (
-    <TreeSelect
-      style={{ width: 300 }}
-      multiple
-      maxCount={3}
-      treeData={treeData}
-      onChange={onChange}
-    />
+    <>
+      <h2>multiple with maxCount</h2>
+      <TreeSelect
+        style={{ width: 300 }}
+        multiple
+        maxCount={3}
+        treeData={treeData}
+        onChange={onChange}
+        value={value}
+      />
+
+      <h2>checkable with maxCount</h2>
+      <TreeSelect
+        style={{ width: 300 }}
+        multiple
+        treeCheckable
+        maxCount={3}
+        treeData={treeData}
+        onChange={onChange}
+        value={value}
+      />
+    </>
   );
 };
