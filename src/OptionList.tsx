@@ -82,6 +82,19 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     [checkedKeys, maxCount, multiple],
   );
 
+  const traverse = (nodes: EventDataNode<any>[]): EventDataNode<any>[] => {
+    return nodes.map(node => ({
+      ...node,
+      disabled: isOverMaxCount && !checkedKeys.includes(node.key as SafeKey) ? true : node.disabled,
+      children: node.children ? traverse(node.children) : undefined,
+    }));
+  };
+
+  const processedTreeData = React.useMemo(
+    () => traverse(memoTreeData),
+    [memoTreeData, isOverMaxCount, checkedKeys],
+  );
+
   // ========================== Active ==========================
   const [activeKey, setActiveKey] = React.useState<Key>(null);
   const activeEntity = keyEntities[activeKey as SafeKey];
@@ -252,7 +265,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         ref={treeRef}
         focusable={false}
         prefixCls={`${prefixCls}-tree`}
-        treeData={memoTreeData}
+        treeData={processedTreeData}
         height={listHeight}
         itemHeight={listItemHeight}
         itemScrollOffset={listItemScrollOffset}
@@ -279,7 +292,6 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         onCheck={onInternalSelect}
         onExpand={onInternalExpand}
         onLoad={onTreeLoad}
-        disabled={isOverMaxCount}
         filterTreeNode={filterTreeNode}
         expandAction={treeExpandAction}
         onScroll={onPopupScroll}

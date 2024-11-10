@@ -564,6 +564,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       onDeselect,
       rawCheckedValues,
       rawHalfCheckedValues,
+      maxCount,
     ],
   );
 
