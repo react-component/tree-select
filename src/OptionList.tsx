@@ -128,10 +128,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       return;
     }
 
-    const isSelected = !checkedKeys.includes(node.key);
-
     onSelect(node.key, {
-      selected: isSelected,
+      selected: !checkedKeys.includes(node.key),
     });
 
     if (!multiple) {
