@@ -3,6 +3,7 @@ import TreeSelect from '../src';
 
 export default () => {
   const [value, setValue] = useState<string[]>(['1']);
+  const [checkValue, setCheckValue] = useState<string[]>(['1']);
 
   const treeData = [
     {
@@ -14,6 +15,11 @@ export default () => {
           key: '1-1',
           value: '1-1',
           title: '1-1',
+        },
+        {
+          key: '1-2',
+          value: '1-2',
+          title: '1-2',
         },
       ],
     },
@@ -38,6 +44,10 @@ export default () => {
     setValue(val);
   };
 
+  const onCheckChange = (val: string[]) => {
+    setCheckValue(val);
+  };
+
   return (
     <>
       <h2>multiple with maxCount</h2>
@@ -48,11 +58,22 @@ export default () => {
         style={{ width: 300 }}
         multiple
         treeCheckable
-        treeCheckStrictly
         maxCount={3}
         treeData={treeData}
         onChange={onChange}
         value={value}
+      />
+
+      <h2>checkable with maxCount and treeCheckStrictly</h2>
+      <TreeSelect
+        style={{ width: 300 }}
+        multiple
+        treeCheckable
+        treeCheckStrictly
+        maxCount={3}
+        treeData={treeData}
+        onChange={onCheckChange}
+        value={checkValue}
       />
     </>
   );
