@@ -102,6 +102,43 @@ describe('TreeSelect.maxCount', () => {
     selectOptions(container, ['0 label', '1 label', '2 label', '3 label']);
     expect(handleChange).toHaveBeenCalledTimes(4);
   });
+
+  it('should respect maxCount when checking parent node in treeCheckable mode', () => {
+    const treeData = [
+      {
+        key: '0',
+        value: '0',
+        title: 'parent',
+        children: [
+          { key: '0-0', value: '0-0', title: 'child 1' },
+          { key: '0-1', value: '0-1', title: 'child 2' },
+          { key: '0-2', value: '0-2', title: 'child 3' },
+        ],
+      },
+    ];
+
+    const handleChange = jest.fn();
+    const { container } = render(
+      <TreeSelect
+        treeData={treeData}
+        treeCheckable
+        multiple
+        maxCount={2}
+        onChange={handleChange}
+        open
+      />,
+    );
+
+    // Try to check parent node which would select all children
+    const checkbox = container.querySelector('.rc-tree-select-tree-checkbox');
+    fireEvent.click(checkbox);
+
+    // onChange should not be called since it would exceed maxCount
+    expect(handleChange).not.toHaveBeenCalled();
+
+    // Parent node should still be unchecked
+    expect(checkbox).not.toHaveClass('rc-tree-select-tree-checkbox-checked');
+  });
 });
 
 describe('TreeSelect.maxCount keyboard operations', () => {

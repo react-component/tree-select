@@ -415,6 +415,15 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       extra: { triggerValue?: SafeKey; selected?: boolean },
       source: SelectSource,
     ) => {
+      // if treeCheckable and not treeCheckStrictly, check if exceed maxCount
+      if (treeCheckable && !treeCheckStrictly && maxCount !== undefined) {
+        const { checkedKeys } = conductCheck(newRawValues, true, keyEntities);
+
+        if (checkedKeys.length > maxCount) {
+          return;
+        }
+      }
+
       const labeledValues = convert2LabelValues(newRawValues);
       setInternalValue(labeledValues);
 
