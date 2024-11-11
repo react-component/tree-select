@@ -76,10 +76,6 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     (prev, next) => next[0] && prev[1] !== next[1],
   );
 
-  // ========================== Active ==========================
-  const [activeKey, setActiveKey] = React.useState<Key>(null);
-  const activeEntity = keyEntities[activeKey as SafeKey];
-
   // ========================== Values ==========================
   const mergedCheckedKeys = React.useMemo(() => {
     if (!checkable) {
@@ -97,46 +93,9 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // Single mode should scroll to current key
     if (open && !multiple && checkedKeys.length) {
       treeRef.current?.scrollTo({ key: checkedKeys[0] });
-      setActiveKey(checkedKeys[0]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
-
-  // ========================== Search ==========================
-  const lowerSearchValue = String(searchValue).toLowerCase();
-  const filterTreeNode = (treeNode: EventDataNode<any>) => {
-    if (!lowerSearchValue) {
-      return false;
-    }
-    return String(treeNode[treeNodeFilterProp]).toLowerCase().includes(lowerSearchValue);
-  };
-
-  // =========================== Keys ===========================
-  const [expandedKeys, setExpandedKeys] = React.useState<Key[]>(treeDefaultExpandedKeys);
-  const [searchExpandedKeys, setSearchExpandedKeys] = React.useState<Key[]>(null);
-
-  const mergedExpandedKeys = React.useMemo(() => {
-    if (treeExpandedKeys) {
-      return [...treeExpandedKeys];
-    }
-    return searchValue ? searchExpandedKeys : expandedKeys;
-  }, [expandedKeys, searchExpandedKeys, treeExpandedKeys, searchValue]);
-
-  React.useEffect(() => {
-    if (searchValue) {
-      setSearchExpandedKeys(getAllKeys(treeData, fieldNames));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchValue]);
-
-  const onInternalExpand = (keys: Key[]) => {
-    setExpandedKeys(keys);
-    setSearchExpandedKeys(keys);
-
-    if (onTreeExpand) {
-      onTreeExpand(keys);
-    }
-  };
 
   // ========================== Events ==========================
   const onListMouseDown: React.MouseEventHandler<HTMLDivElement> = event => {
@@ -159,6 +118,92 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     }
   };
 
+  // =========================== Keys ===========================
+  const [expandedKeys, setExpandedKeys] = React.useState<Key[]>(treeDefaultExpandedKeys);
+  const [searchExpandedKeys, setSearchExpandedKeys] = React.useState<Key[]>(null);
+
+  const mergedExpandedKeys = React.useMemo(() => {
+    if (treeExpandedKeys) {
+      return [...treeExpandedKeys];
+    }
+    return searchValue ? searchExpandedKeys : expandedKeys;
+  }, [expandedKeys, searchExpandedKeys, treeExpandedKeys, searchValue]);
+
+  const onInternalExpand = (keys: Key[]) => {
+    setExpandedKeys(keys);
+    setSearchExpandedKeys(keys);
+
+    if (onTreeExpand) {
+      onTreeExpand(keys);
+    }
+  };
+
+  // ========================== Search ==========================
+  const lowerSearchValue = String(searchValue).toLowerCase();
+  const filterTreeNode = (treeNode: EventDataNode<any>) => {
+    if (!lowerSearchValue) {
+      return false;
+    }
+    return String(treeNode[treeNodeFilterProp]).toLowerCase().includes(lowerSearchValue);
+  };
+
+  React.useEffect(() => {
+    if (searchValue) {
+      setSearchExpandedKeys(getAllKeys(treeData, fieldNames));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchValue]);
+
+  // ========================== Get First Selectable Node ==========================
+  const getFirstMatchingNode = (nodes: EventDataNode<any>[]): EventDataNode<any> | null => {
+    for (const node of nodes) {
+      if (node.disabled || node.selectable === false) {
+        continue;
+      }
+
+      if (searchValue) {
+        if (filterTreeNode(node)) {
+          return node;
+        }
+      } else {
+        return node;
+      }
+
+      if (node[fieldNames.children]) {
+        const matchInChildren = getFirstMatchingNode(node[fieldNames.children]);
+        if (matchInChildren) {
+          return matchInChildren;
+        }
+      }
+    }
+    return null;
+  };
+
+  // ========================== Active ==========================
+  const [activeKey, setActiveKey] = React.useState<Key>(null);
+  const activeEntity = keyEntities[activeKey as SafeKey];
+
+  React.useEffect(() => {
+    if (!open) {
+      return;
+    }
+    let nextActiveKey = null;
+
+    const getFirstNode = () => {
+      const firstNode = getFirstMatchingNode(memoTreeData);
+      return firstNode ? firstNode[fieldNames.value] : null;
+    };
+
+    // single mode active first checked node
+    if (!multiple && checkedKeys.length && !searchValue) {
+      nextActiveKey = checkedKeys[0];
+    } else {
+      nextActiveKey = getFirstNode();
+    }
+
+    setActiveKey(nextActiveKey);
+  }, [open, searchValue]);
+
   // ========================= Keyboard =========================
   React.useImperativeHandle(ref, () => ({
     scrollTo: treeRef.current?.scrollTo,
@@ -176,8 +221,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         // >>> Select item
         case KeyCode.ENTER: {
           if (activeEntity) {
-            const { selectable, value } = activeEntity?.node || {};
-            if (selectable !== false) {
+            const { selectable, value, disabled } = activeEntity?.node || {};
+            if (selectable !== false && !disabled) {
               onInternalSelect(null, {
                 node: { key: activeKey },
                 selected: !checkedKeys.includes(value),
@@ -197,10 +242,10 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   }));
 
   const loadDataFun = useMemo(
-    () => searchValue ? null : (loadData as any),
+    () => (searchValue ? null : (loadData as any)),
     [searchValue, treeExpandedKeys || expandedKeys],
     ([preSearchValue], [nextSearchValue, nextExcludeSearchExpandedKeys]) =>
-      preSearchValue !== nextSearchValue && !!(nextSearchValue || nextExcludeSearchExpandedKeys)
+      preSearchValue !== nextSearchValue && !!(nextSearchValue || nextExcludeSearchExpandedKeys),
   );
 
   // ========================== Render ==========================
