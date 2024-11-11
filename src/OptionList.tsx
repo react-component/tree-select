@@ -177,9 +177,6 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     }
 
     const isSelected = !checkedKeys.includes(node.key);
-    if (maxCount && isSelected && checkedKeys.length >= maxCount) {
-      return;
-    }
 
     onSelect(node.key, {
       selected: isSelected,
