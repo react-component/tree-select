@@ -221,14 +221,22 @@ describe('TreeSelect.SearchInput', () => {
       const input = getByRole('combobox');
       fireEvent.change(input, { target: { value: '1' } });
       fireEvent.keyDown(input, { keyCode: KeyCode.ENTER });
+      fireEvent.keyUp(input, { keyCode: KeyCode.ENTER });
       expect(onSelect).toHaveBeenCalledWith('1', expect.anything());
       onSelect.mockReset();
 
       // Search disabled node and press enter, should not select
       fireEvent.change(input, { target: { value: '2' } });
       fireEvent.keyDown(input, { keyCode: KeyCode.ENTER });
+      fireEvent.keyUp(input, { keyCode: KeyCode.ENTER });
       expect(onSelect).not.toHaveBeenCalled();
       onSelect.mockReset();
+
+      // Search and press enter, should select first matched non-disabled node
+      fireEvent.change(input, { target: { value: '3' } });
+      fireEvent.keyDown(input, { keyCode: KeyCode.ENTER });
+      fireEvent.keyUp(input, { keyCode: KeyCode.ENTER });
+      expect(onSelect).toHaveBeenCalledWith('3', expect.anything());
     });
 
     it('should not select node when no matches found', () => {
