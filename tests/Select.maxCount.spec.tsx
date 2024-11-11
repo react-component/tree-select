@@ -154,4 +154,19 @@ describe('TreeSelect.maxCount keyboard operations', () => {
       '2 label',
     );
   });
+
+  it('should be able to unselect after reaching maxCount', () => {
+    const { container } = render(
+      <TreeSelect treeData={treeData} multiple open maxCount={3} defaultValue={['0', '1', '2']} />,
+    );
+
+    const input = container.querySelector('input');
+
+    // cancel first selection
+    keyDown(input, KeyCode.ENTER);
+    keyUp(input, KeyCode.ENTER);
+
+    // verify only two options are selected
+    expect(container.querySelectorAll('.rc-tree-select-tree-treenode-selected')).toHaveLength(2);
+  });
 });
