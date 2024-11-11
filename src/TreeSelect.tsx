@@ -94,7 +94,7 @@ export interface TreeSelectProps<ValueType = any, OptionType extends DataNode = 
   listItemHeight?: number;
   listItemScrollOffset?: number;
   onDropdownVisibleChange?: (open: boolean) => void;
-  treeTitleRender?: (node: ValueType) => React.ReactNode;
+  treeTitleRender?: (node: OptionType) => React.ReactNode;
 
   // >>> Tree
   treeLine?: boolean;

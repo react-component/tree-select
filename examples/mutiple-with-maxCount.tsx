@@ -34,8 +34,8 @@ export default () => {
     },
   ];
 
-  const onChange = (value: string[]) => {
-    setValue(value);
+  const onChange = (val: string[]) => {
+    setValue(val);
   };
 
   return (

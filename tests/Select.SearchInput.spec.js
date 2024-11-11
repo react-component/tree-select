@@ -1,7 +1,9 @@
 /* eslint-disable no-undef */
 import React, { useState } from 'react';
 import { mount } from 'enzyme';
+import { render, fireEvent } from '@testing-library/react';
 import TreeSelect, { TreeNode } from '../src';
+import KeyCode from 'rc-util/lib/KeyCode';
 
 describe('TreeSelect.SearchInput', () => {
   it('select item will clean searchInput', () => {
@@ -197,5 +199,103 @@ describe('TreeSelect.SearchInput', () => {
     const nodes = wrapper.find(`[title="${'Expand to load'}"]`).hostNodes();
     nodes.first().simulate('click');
     expect(called).toBe(1);
+  });
+
+  describe('keyboard events', () => {
+    it('should select first matched node when press enter', () => {
+      const onSelect = jest.fn();
+      const { getByRole } = render(
+        <TreeSelect
+          showSearch
+          open
+          onSelect={onSelect}
+          treeData={[
+            { value: '1', label: '1' },
+            { value: '2', label: '2', disabled: true },
+            { value: '3', label: '3' },
+          ]}
+        />,
+      );
+
+      // Search and press enter, should select first matched non-disabled node
+      const input = getByRole('combobox');
+      fireEvent.change(input, { target: { value: '1' } });
+      fireEvent.keyDown(input, { keyCode: KeyCode.ENTER });
+      expect(onSelect).toHaveBeenCalledWith('1', expect.anything());
+      onSelect.mockReset();
+
+      // Search disabled node and press enter, should not select
+      fireEvent.change(input, { target: { value: '2' } });
+      fireEvent.keyDown(input, { keyCode: KeyCode.ENTER });
+      expect(onSelect).not.toHaveBeenCalled();
+      onSelect.mockReset();
+    });
+
+    it('should not select node when no matches found', () => {
+      const onSelect = jest.fn();
+      const { getByRole } = render(
+        <TreeSelect
+          showSearch
+          onSelect={onSelect}
+          open
+          treeData={[
+            { value: '1', label: '1' },
+            { value: '2', label: '2' },
+          ]}
+        />,
+      );
+
+      // Search non-existent value and press enter, should not select any node
+      const input = getByRole('combobox');
+      fireEvent.change(input, { target: { value: 'not-exist' } });
+      fireEvent.keyDown(input, { keyCode: KeyCode.ENTER });
+      expect(onSelect).not.toHaveBeenCalled();
+    });
+
+    it('should ignore enter press when all matched nodes are disabled', () => {
+      const onSelect = jest.fn();
+      const { getByRole } = render(
+        <TreeSelect
+          showSearch
+          onSelect={onSelect}
+          open
+          treeData={[
+            { value: '1', label: '1', disabled: true },
+            { value: '2', label: '2', disabled: true },
+          ]}
+        />,
+      );
+
+      // When all matched nodes are disabled, press enter should not select any node
+      const input = getByRole('combobox');
+      fireEvent.change(input, { target: { value: '1' } });
+      fireEvent.keyDown(input, { keyCode: KeyCode.ENTER });
+      expect(onSelect).not.toHaveBeenCalled();
+    });
+
+    it('should activate first matched node when searching', () => {
+      const { getByRole, container } = render(
+        <TreeSelect
+          showSearch
+          open
+          treeData={[
+            { value: '1', label: '1' },
+            { value: '2', label: '2', disabled: true },
+            { value: '3', label: '3' },
+          ]}
+        />,
+      );
+
+      // When searching, first matched non-disabled node should be activated
+      const input = getByRole('combobox');
+      fireEvent.change(input, { target: { value: '1' } });
+      expect(container.querySelector('.rc-tree-select-tree-treenode-active')).toHaveTextContent(
+        '1',
+      );
+
+      // Should skip disabled nodes
+      fireEvent.change(input, { target: { value: '2' } });
+      expect(container.querySelectorAll('.rc-tree-select-tree-treenode-active')).toHaveLength(0);
+    });
   });
 });
