@@ -9,7 +9,7 @@ import * as React from 'react';
 import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
 import type { Key, SafeKey } from './interface';
-import { getAllKeys, isCheckDisabled, isValidCount } from './utils/valueUtil';
+import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
 
 const HIDDEN_STYLE = {
   width: 0,
@@ -46,6 +46,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     treeTitleRender,
     onPopupScroll,
     maxCount,
+    displayValues,
   } = React.useContext(TreeSelectContext);
 
   const {
@@ -75,24 +76,6 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [open, treeData],
     (prev, next) => next[0] && prev[1] !== next[1],
-  );
-
-  const isOverMaxCount = React.useMemo<boolean>(
-    () => multiple && isValidCount(maxCount) && checkedKeys.length >= maxCount,
-    [checkedKeys, maxCount, multiple],
-  );
-
-  const traverse = (nodes: EventDataNode<any>[]): EventDataNode<any>[] => {
-    return nodes.map(node => ({
-      ...node,
-      disabled: isOverMaxCount && !checkedKeys.includes(node.key as SafeKey) ? true : node.disabled,
-      children: node.children ? traverse(node.children) : undefined,
-    }));
-  };
-
-  const processedTreeData = React.useMemo(
-    () => traverse(memoTreeData),
-    [memoTreeData, isOverMaxCount, checkedKeys],
   );
 
   // ========================== Values ==========================
@@ -202,13 +185,6 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   const [activeKey, setActiveKey] = React.useState<Key>(null);
   const activeEntity = keyEntities[activeKey as SafeKey];
 
-  const onActiveChange = (key: Key) => {
-    if (isOverMaxCount && !checkedKeys.includes(key)) {
-      return;
-    }
-    setActiveKey(key);
-  };
-
   React.useEffect(() => {
     if (!open) {
       return;
@@ -274,8 +250,36 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       preSearchValue !== nextSearchValue && !!(nextSearchValue || nextExcludeSearchExpandedKeys),
   );
 
+  const onActiveChange = (key: Key) => {
+    if (isOverMaxCount && !displayValues?.some(v => v.value === key)) {
+      return;
+    }
+    setActiveKey(key);
+  };
+
+  const isOverMaxCount = React.useMemo<boolean>(
+    () => multiple && maxCount !== undefined && displayValues?.length >= maxCount,
+    [multiple, maxCount, displayValues?.length],
+  );
+
+  const traverse = (nodes: EventDataNode<any>[]): EventDataNode<any>[] => {
+    return nodes.map(node => ({
+      ...node,
+      disabled:
+        isOverMaxCount && !displayValues?.some(v => v.value === node[fieldNames.value])
+          ? true
+          : node.disabled,
+      children: node.children ? traverse(node.children) : undefined,
+    }));
+  };
+
+  const processedTreeData = React.useMemo(
+    () => traverse(memoTreeData),
+    [memoTreeData, isOverMaxCount, displayValues, fieldNames],
+  );
+
   // ========================== Render ==========================
-  if (memoTreeData.length === 0) {
+  if (processedTreeData.length === 0) {
     return (
       <div role="listbox" className={`${prefixCls}-empty`} onMouseDown={onListMouseDown}>
         {notFoundContent}

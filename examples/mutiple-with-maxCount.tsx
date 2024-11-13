@@ -21,6 +21,11 @@ export default () => {
           value: '1-2',
           title: '1-2',
         },
+        {
+          key: '1-3',
+          value: '1-3',
+          title: '1-3',
+        },
       ],
     },
     {
@@ -58,7 +63,10 @@ export default () => {
         style={{ width: 300 }}
         multiple
         treeCheckable
-        maxCount={3}
+        // showCheckedStrategy="SHOW_ALL"
+        showCheckedStrategy="SHOW_PARENT"
+        // showCheckedStrategy="SHOW_CHILD"
+        maxCount={4}
         treeData={treeData}
         onChange={onChange}
         value={value}

@@ -415,11 +415,16 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       extra: { triggerValue?: SafeKey; selected?: boolean },
       source: SelectSource,
     ) => {
-      // if treeCheckable and not treeCheckStrictly, check if exceed maxCount
-      if (treeCheckable && !treeCheckStrictly && maxCount !== undefined) {
-        const { checkedKeys } = conductCheck(newRawValues, true, keyEntities);
+      // if multiple and maxCount is set, check if exceed maxCount
+      if (mergedMultiple && maxCount !== undefined) {
+        const formattedKeyList = formatStrategyValues(
+          newRawValues,
+          mergedShowCheckedStrategy,
+          keyEntities,
+          mergedFieldNames,
+        );
 
-        if (checkedKeys.length > maxCount) {
+        if (formattedKeyList.length > maxCount) {
           return;
         }
       }
@@ -622,6 +627,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeTitleRender,
       onPopupScroll,
       maxCount,
+      displayValues: cachedDisplayValues,
     }),
     [
       virtual,
@@ -636,6 +642,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeTitleRender,
       onPopupScroll,
       maxCount,
+      cachedDisplayValues,
     ],
   );
 
