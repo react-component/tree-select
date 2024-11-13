@@ -310,6 +310,24 @@ describe('TreeSelect.props', () => {
   });
 
   describe('showCheckedStrategy', () => {
+    const treeData = {
+      key: 'key 0',
+      title: 'Title 0',
+      value: 'Value 0',
+      children: [
+        {
+          key: 'key 0-0',
+          title: 'Title 0-0',
+          value: 'Value 0-0',
+        },
+        {
+          key: 'key 0-1',
+          title: 'Title 0-1',
+          value: 'Value 0-1',
+        },
+      ],
+    };
+
     const testList = [
       {
         strategy: SHOW_ALL,
@@ -324,7 +342,7 @@ describe('TreeSelect.props', () => {
             }),
           ],
           checked: true,
-          option: expect.anything(),
+          option: expect.objectContaining(treeData),
           preValue: [],
           triggerNode: expect.anything(),
           triggerValue: 'Value 0',
@@ -343,7 +361,7 @@ describe('TreeSelect.props', () => {
             }),
           ],
           checked: true,
-          option: expect.anything(),
+          option: expect.objectContaining(treeData),
           preValue: [],
           triggerNode: expect.anything(),
           triggerValue: 'Value 0',
@@ -362,7 +380,7 @@ describe('TreeSelect.props', () => {
             }),
           ],
           checked: true,
-          option: expect.anything(),
+          option: expect.objectContaining(treeData),
           preValue: [],
           triggerNode: expect.anything(),
           triggerValue: 'Value 0',

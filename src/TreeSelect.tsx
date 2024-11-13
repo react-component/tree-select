@@ -415,7 +415,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const triggerChange = useRefFunc(
     (
       newRawValues: SafeKey[],
-      extra: { triggerValue?: SafeKey; selected?: boolean; option?: DefaultOptionType },
+      extra: { triggerValue?: SafeKey; selected?: boolean; nodes?: DefaultOptionType },
       source: SelectSource,
     ) => {
       const labeledValues = convert2LabelValues(newRawValues);
@@ -461,7 +461,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           // [Legacy] Always return as array contains label & value
           preValue: rawLabeledValues,
           triggerValue,
-          option: extra.option,
+          option: extra.nodes,
         } as ChangeEventExtra & { option?: DefaultOptionType };
 
         // [Legacy] Fill legacy data if user query.
@@ -513,7 +513,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         // Single mode always set value
         triggerChange(
           [selectedValue],
-          { selected: true, triggerValue: selectedValue, option: node as DefaultOptionType },
+          { selected: true, triggerValue: selectedValue, nodes: node as DefaultOptionType },
           'option',
         );
       } else {
@@ -547,7 +547,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         }
         triggerChange(
           newRawValues,
-          { selected, triggerValue: selectedValue, option: node as DefaultOptionType },
+          { selected, triggerValue: selectedValue, nodes: node as DefaultOptionType },
           source || 'option',
         );
       }
