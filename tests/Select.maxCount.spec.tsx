@@ -207,3 +207,170 @@ describe('TreeSelect.maxCount keyboard operations', () => {
     expect(container.querySelectorAll('.rc-tree-select-tree-treenode-selected')).toHaveLength(2);
   });
 });
+
+describe('TreeSelect.maxCount with different strategies', () => {
+  const treeData = [
+    {
+      key: '0',
+      value: '0',
+      title: 'parent',
+      children: [
+        { key: '0-0', value: '0-0', title: 'child 1' },
+        { key: '0-1', value: '0-1', title: 'child 2' },
+        { key: '0-2', value: '0-2', title: 'child 3' },
+      ],
+    },
+  ];
+
+  it('should respect maxCount with SHOW_PARENT strategy', () => {
+    const handleChange = jest.fn();
+    const { container } = render(
+      <TreeSelect
+        treeData={treeData}
+        treeCheckable
+        treeDefaultExpandAll
+        multiple
+        maxCount={1}
+        showCheckedStrategy={TreeSelect.SHOW_PARENT}
+        onChange={handleChange}
+        open
+      />,
+    );
+
+    // Select parent node - should work as it only shows as one option
+    const parentCheckbox = within(container).getByText('parent');
+    fireEvent.click(parentCheckbox);
+    expect(handleChange).toHaveBeenCalledTimes(1);
+  });
+
+  it('should respect maxCount with SHOW_CHILD strategy', () => {
+    const handleChange = jest.fn();
+    const { container } = render(
+      <TreeSelect
+        treeData={treeData}
+        treeCheckable
+        treeDefaultExpandAll
+        multiple
+        maxCount={2}
+        showCheckedStrategy={TreeSelect.SHOW_CHILD}
+        onChange={handleChange}
+        open
+      />,
+    );
+
+    // Select parent node - should not work as it would show three children
+    const parentCheckbox = within(container).getByText('parent');
+    fireEvent.click(parentCheckbox);
+    expect(handleChange).not.toHaveBeenCalled();
+
+    // Select individual children - should work until maxCount
+    const childCheckboxes = within(container).getAllByText(/child/);
+    fireEvent.click(childCheckboxes[0]); // first child
+    fireEvent.click(childCheckboxes[1]); // second child
+    expect(handleChange).toHaveBeenCalledTimes(2);
+
+    // Try to select third child - should not work
+    fireEvent.click(childCheckboxes[2]);
+    expect(handleChange).toHaveBeenCalledTimes(2);
+  });
+
+  it('should respect maxCount with SHOW_ALL strategy', () => {
+    const handleChange = jest.fn();
+    const { container } = render(
+      <TreeSelect
+        treeData={treeData}
+        treeCheckable
+        treeDefaultExpandAll
+        multiple
+        maxCount={2}
+        showCheckedStrategy={TreeSelect.SHOW_ALL}
+        onChange={handleChange}
+        open
+      />,
+    );
+
+    // Select parent node - should not work as it would show both parent and children
+    const parentCheckbox = within(container).getByText('parent');
+    fireEvent.click(parentCheckbox);
+    expect(handleChange).not.toHaveBeenCalled();
+
+    // Select individual children
+    const childCheckboxes = within(container).getAllByText(/child/);
+    fireEvent.click(childCheckboxes[0]);
+    fireEvent.click(childCheckboxes[1]);
+    expect(handleChange).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('TreeSelect.maxCount with treeCheckStrictly', () => {
+  const treeData = [
+    {
+      key: '0',
+      value: '0',
+      title: 'parent',
+      children: [
+        { key: '0-0', value: '0-0', title: 'child 1' },
+        { key: '0-1', value: '0-1', title: 'child 2' },
+      ],
+    },
+  ];
+
+  it('should count parent and children separately when treeCheckStrictly is true', () => {
+    const handleChange = jest.fn();
+    const { container } = render(
+      <TreeSelect
+        treeData={treeData}
+        treeCheckable
+        treeCheckStrictly
+        treeDefaultExpandAll
+        multiple
+        maxCount={2}
+        onChange={handleChange}
+        open
+      />,
+    );
+
+    // Select parent and one child - should work as they are counted separately
+    const parentCheckbox = within(container).getByText('parent');
+    const checkboxes = within(container).getAllByText(/child/);
+    fireEvent.click(parentCheckbox);
+    fireEvent.click(checkboxes[0]); // first child
+    expect(handleChange).toHaveBeenCalledTimes(2);
+
+    // Try to select second child - should not work as maxCount is reached
+    fireEvent.click(checkboxes[1]);
+    expect(handleChange).toHaveBeenCalledTimes(2);
+  });
+
+  it('should allow deselecting when maxCount is reached', () => {
+    const handleChange = jest.fn();
+    const { container } = render(
+      <TreeSelect
+        treeData={treeData}
+        treeCheckable
+        treeCheckStrictly
+        treeDefaultExpandAll
+        multiple
+        maxCount={2}
+        onChange={handleChange}
+        open
+      />,
+    );
+
+    const parentCheckbox = within(container).getByText('parent');
+    const checkboxes = within(container).getAllByText(/child/);
+
+    // Select parent and first child
+    fireEvent.click(parentCheckbox);
+    fireEvent.click(checkboxes[0]);
+    expect(handleChange).toHaveBeenCalledTimes(2);
+
+    // Deselect parent
+    fireEvent.click(parentCheckbox);
+    expect(handleChange).toHaveBeenCalledTimes(3);
+
+    // Now should be able to select second child
+    fireEvent.click(checkboxes[1]);
+    expect(handleChange).toHaveBeenCalledTimes(4);
+  });
+});
