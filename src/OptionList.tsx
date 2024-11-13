@@ -250,17 +250,17 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       preSearchValue !== nextSearchValue && !!(nextSearchValue || nextExcludeSearchExpandedKeys),
   );
 
+  const isOverMaxCount = React.useMemo<boolean>(
+    () => multiple && maxCount !== undefined && displayValues?.length >= maxCount,
+    [multiple, maxCount, displayValues?.length],
+  );
+
   const onActiveChange = (key: Key) => {
     if (isOverMaxCount && !displayValues?.some(v => v.value === key)) {
       return;
     }
     setActiveKey(key);
   };
-
-  const isOverMaxCount = React.useMemo<boolean>(
-    () => multiple && maxCount !== undefined && displayValues?.length >= maxCount,
-    [multiple, maxCount, displayValues?.length],
-  );
 
   const traverse = (nodes: EventDataNode<any>[]): EventDataNode<any>[] => {
     return nodes.map(node => ({
