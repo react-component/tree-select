@@ -613,17 +613,33 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   });
 
   // ========================== Context ===========================
-  const treeSelectContext = React.useMemo<TreeSelectContextProps>(() => {
-    const isOverMaxCount =
-      mergedMultiple && maxCount !== undefined && cachedDisplayValues?.length >= maxCount;
+  const isOverMaxCount =
+    mergedMultiple && maxCount !== undefined && cachedDisplayValues?.length >= maxCount;
 
+  const traverse = (nodes: DataNode[]): DataNode[] => {
+    return nodes.map(node => ({
+      ...node,
+      disabled:
+        isOverMaxCount && !cachedDisplayValues?.some(v => v.value === node.value)
+          ? true
+          : node.disabled,
+      children: node.children ? traverse(node.children) : undefined,
+    }));
+  };
+
+  const processedTreeData = React.useMemo(
+    () => traverse(filteredTreeData),
+    [filteredTreeData, isOverMaxCount],
+  );
+
+  const treeSelectContext = React.useMemo<TreeSelectContextProps>(() => {
     return {
       virtual,
       dropdownMatchSelectWidth,
       listHeight,
       listItemHeight,
       listItemScrollOffset,
-      treeData: filteredTreeData,
+      treeData: processedTreeData,
       fieldNames: mergedFieldNames,
       onSelect: onOptionSelect,
       treeExpandAction,
@@ -638,7 +654,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     listHeight,
     listItemHeight,
     listItemScrollOffset,
-    filteredTreeData,
+    processedTreeData,
     mergedFieldNames,
     onOptionSelect,
     treeExpandAction,

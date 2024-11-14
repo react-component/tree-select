@@ -56,7 +56,13 @@ export default () => {
   return (
     <>
       <h2>multiple with maxCount</h2>
-      <TreeSelect style={{ width: 300 }} multiple maxCount={3} treeData={treeData} />
+      <TreeSelect
+        style={{ width: 300 }}
+        fieldNames={{ value: 'value', label: 'title' }}
+        multiple
+        maxCount={3}
+        treeData={treeData}
+      />
 
       <h2>checkable with maxCount</h2>
       <TreeSelect

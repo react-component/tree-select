@@ -257,24 +257,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     setActiveKey(key);
   };
 
-  const traverse = (nodes: EventDataNode<any>[]): EventDataNode<any>[] => {
-    return nodes.map(node => ({
-      ...node,
-      disabled:
-        isOverMaxCount && !displayValues?.some(v => v.value === node[fieldNames.value])
-          ? true
-          : node.disabled,
-      children: node.children ? traverse(node.children) : undefined,
-    }));
-  };
-
-  const processedTreeData = React.useMemo(
-    () => traverse(memoTreeData),
-    [memoTreeData, isOverMaxCount],
-  );
-
   // ========================== Render ==========================
-  if (processedTreeData.length === 0) {
+  if (memoTreeData.length === 0) {
     return (
       <div role="listbox" className={`${prefixCls}-empty`} onMouseDown={onListMouseDown}>
         {notFoundContent}
@@ -304,7 +288,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         ref={treeRef}
         focusable={false}
         prefixCls={`${prefixCls}-tree`}
-        treeData={processedTreeData}
+        treeData={memoTreeData}
         height={listHeight}
         itemHeight={listItemHeight}
         itemScrollOffset={listItemScrollOffset}
