@@ -613,8 +613,11 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   });
 
   // ========================== Context ===========================
-  const treeSelectContext = React.useMemo<TreeSelectContextProps>(
-    () => ({
+  const treeSelectContext = React.useMemo<TreeSelectContextProps>(() => {
+    const isOverMaxCount =
+      mergedMultiple && maxCount !== undefined && cachedDisplayValues?.length >= maxCount;
+
+    return {
       virtual,
       dropdownMatchSelectWidth,
       listHeight,
@@ -626,25 +629,25 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeExpandAction,
       treeTitleRender,
       onPopupScroll,
-      maxCount,
       displayValues: cachedDisplayValues,
-    }),
-    [
-      virtual,
-      dropdownMatchSelectWidth,
-      listHeight,
-      listItemHeight,
-      listItemScrollOffset,
-      filteredTreeData,
-      mergedFieldNames,
-      onOptionSelect,
-      treeExpandAction,
-      treeTitleRender,
-      onPopupScroll,
-      maxCount,
-      cachedDisplayValues,
-    ],
-  );
+      isOverMaxCount,
+    };
+  }, [
+    virtual,
+    dropdownMatchSelectWidth,
+    listHeight,
+    listItemHeight,
+    listItemScrollOffset,
+    filteredTreeData,
+    mergedFieldNames,
+    onOptionSelect,
+    treeExpandAction,
+    treeTitleRender,
+    onPopupScroll,
+    maxCount,
+    cachedDisplayValues,
+    mergedMultiple,
+  ]);
 
   // ======================= Legacy Context =======================
   const legacyContext = React.useMemo(

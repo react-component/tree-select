@@ -14,8 +14,8 @@ export interface TreeSelectContextProps {
   treeExpandAction?: ExpandAction;
   treeTitleRender?: (node: any) => React.ReactNode;
   onPopupScroll?: React.UIEventHandler<HTMLDivElement>;
-  maxCount?: number;
   displayValues?: LabeledValueType[];
+  isOverMaxCount?: boolean;
 }
 
 const TreeSelectContext = React.createContext<TreeSelectContextProps>(null as any);

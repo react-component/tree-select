@@ -45,8 +45,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     treeExpandAction,
     treeTitleRender,
     onPopupScroll,
-    maxCount,
     displayValues,
+    isOverMaxCount,
   } = React.useContext(TreeSelectContext);
 
   const {
@@ -250,11 +250,6 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       preSearchValue !== nextSearchValue && !!(nextSearchValue || nextExcludeSearchExpandedKeys),
   );
 
-  const isOverMaxCount = React.useMemo<boolean>(
-    () => multiple && maxCount !== undefined && displayValues?.length >= maxCount,
-    [multiple, maxCount, displayValues?.length],
-  );
-
   const onActiveChange = (key: Key) => {
     if (isOverMaxCount && !displayValues?.some(v => v.value === key)) {
       return;
@@ -275,7 +270,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   const processedTreeData = React.useMemo(
     () => traverse(memoTreeData),
-    [memoTreeData, isOverMaxCount, displayValues, fieldNames],
+    [memoTreeData, isOverMaxCount],
   );
 
   // ========================== Render ==========================
