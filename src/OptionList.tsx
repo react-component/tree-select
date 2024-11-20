@@ -206,6 +206,53 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     setActiveKey(nextActiveKey);
   }, [open, searchValue]);
 
+  const getNextMatchingNode = (
+    nodes: EventDataNode<any>[],
+    currentKey: Key | null,
+    direction: 'next' | 'prev' = 'next',
+  ): EventDataNode<any> | null => {
+    const availableNodes: EventDataNode<any>[] = [];
+
+    const collectNodes = (nodeList: EventDataNode<any>[]) => {
+      nodeList.forEach(node => {
+        if (!node.disabled && node.selectable !== false) {
+          // only collect selected nodes
+          if (displayValues?.some(v => v.value === node[fieldNames.value])) {
+            availableNodes.push(node);
+          }
+        }
+        if (node[fieldNames.children]) {
+          collectNodes(node[fieldNames.children]);
+        }
+      });
+    };
+
+    collectNodes(nodes);
+
+    if (availableNodes.length === 0) {
+      return null;
+    }
+
+    // if no current selected node, return first available node
+    if (!currentKey) {
+      return availableNodes[0];
+    }
+
+    const currentIndex = availableNodes.findIndex(node => node[fieldNames.value] === currentKey);
+
+    // if current node is not in available nodes list, return first node
+    if (currentIndex === -1) {
+      return availableNodes[0];
+    }
+
+    const nextIndex =
+      direction === 'next'
+        ? (currentIndex + 1) % availableNodes.length
+        : (currentIndex - 1 + availableNodes.length) % availableNodes.length;
+
+    return availableNodes[nextIndex];
+  };
+
   // ========================= Keyboard =========================
   React.useImperativeHandle(ref, () => ({
     scrollTo: treeRef.current?.scrollTo,
@@ -217,7 +264,18 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         case KeyCode.DOWN:
         case KeyCode.LEFT:
         case KeyCode.RIGHT:
-          treeRef.current?.onKeyDown(event as React.KeyboardEvent<HTMLDivElement>);
+          if (isOverMaxCount) {
+            event.preventDefault();
+            const direction = which === KeyCode.UP || which === KeyCode.LEFT ? 'prev' : 'next';
+            const nextNode = getNextMatchingNode(memoTreeData, activeKey, direction);
+            if (nextNode) {
+              setActiveKey(nextNode[fieldNames.value]);
+              // ensure scroll to visible area
+              treeRef.current?.scrollTo({ key: nextNode[fieldNames.value] });
+            }
+          } else {
+            treeRef.current?.onKeyDown(event as React.KeyboardEvent<HTMLDivElement>);
+          }
           break;
 
         // >>> Select item
@@ -251,10 +309,15 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   );
 
   const onActiveChange = (key: Key) => {
-    if (isOverMaxCount && !displayValues?.some(v => v.value === key)) {
+    if (!isOverMaxCount) {
+      setActiveKey(key);
       return;
     }
-    setActiveKey(key);
+
+    const nextNode = getNextMatchingNode(memoTreeData, key);
+    if (nextNode) {
+      setActiveKey(nextNode[fieldNames.value]);
+    }
   };
 
   // ========================== Render ==========================
