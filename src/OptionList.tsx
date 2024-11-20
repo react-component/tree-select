@@ -181,31 +181,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     return null;
   };
 
-  // ========================== Active ==========================
-  const [activeKey, setActiveKey] = React.useState<Key>(null);
-  const activeEntity = keyEntities[activeKey as SafeKey];
-
-  React.useEffect(() => {
-    if (!open) {
-      return;
-    }
-    let nextActiveKey = null;
-
-    const getFirstNode = () => {
-      const firstNode = getFirstMatchingNode(memoTreeData);
-      return firstNode ? firstNode[fieldNames.value] : null;
-    };
-
-    // single mode active first checked node
-    if (!multiple && checkedKeys.length && !searchValue) {
-      nextActiveKey = checkedKeys[0];
-    } else {
-      nextActiveKey = getFirstNode();
-    }
-
-    setActiveKey(nextActiveKey);
-  }, [open, searchValue]);
-
+  // ========================== Get Next Matching Node ==========================
   const getNextMatchingNode = (
     nodes: EventDataNode<any>[],
     currentKey: Key | null,
@@ -252,6 +228,31 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
     return availableNodes[nextIndex];
   };
+
+  // ========================== Active ==========================
+  const [activeKey, setActiveKey] = React.useState<Key>(null);
+  const activeEntity = keyEntities[activeKey as SafeKey];
+
+  React.useEffect(() => {
+    if (!open) {
+      return;
+    }
+    let nextActiveKey = null;
+
+    const getFirstNode = () => {
+      const firstNode = getFirstMatchingNode(memoTreeData);
+      return firstNode ? firstNode[fieldNames.value] : null;
+    };
+
+    // single mode active first checked node
+    if (!multiple && checkedKeys.length && !searchValue) {
+      nextActiveKey = checkedKeys[0];
+    } else {
+      nextActiveKey = getFirstNode();
+    }
+
+    setActiveKey(nextActiveKey);
+  }, [open, searchValue]);
 
   // ========================= Keyboard =========================
   React.useImperativeHandle(ref, () => ({
