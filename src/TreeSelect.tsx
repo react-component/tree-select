@@ -415,15 +415,15 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       extra: { triggerValue?: SafeKey; selected?: boolean },
       source: SelectSource,
     ) => {
+      const formattedKeyList = formatStrategyValues(
+        newRawValues,
+        mergedShowCheckedStrategy,
+        keyEntities,
+        mergedFieldNames,
+      );
+
       // if multiple and maxCount is set, check if exceed maxCount
       if (mergedMultiple && maxCount !== undefined) {
-        const formattedKeyList = formatStrategyValues(
-          newRawValues,
-          mergedShowCheckedStrategy,
-          keyEntities,
-          mergedFieldNames,
-        );
-
         if (formattedKeyList.length > maxCount) {
           return;
         }
@@ -441,12 +441,6 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       if (onChange) {
         let eventValues: SafeKey[] = newRawValues;
         if (treeConduction) {
-          const formattedKeyList = formatStrategyValues(
-            newRawValues,
-            mergedShowCheckedStrategy,
-            keyEntities,
-            mergedFieldNames,
-          );
           eventValues = formattedKeyList.map(key => {
             const entity = valueEntities.get(key);
             return entity ? entity.node[mergedFieldNames.value] : key;

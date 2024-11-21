@@ -151,7 +151,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   React.useEffect(() => {
     if (searchValue) {
-      setSearchExpandedKeys(getAllKeys(treeData, fieldNames));
+      setSearchExpandedKeys(getAllKeys(memoTreeData, fieldNames));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
