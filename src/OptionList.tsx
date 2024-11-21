@@ -10,6 +10,7 @@ import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
 import type { Key, SafeKey } from './interface';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
+import { useEvent } from 'rc-util';
 
 const HIDDEN_STYLE = {
   width: 0,
@@ -241,17 +242,13 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     onKeyUp: () => {},
   }));
 
+  const syncLoadData = useEvent(loadData);
+
   const loadDataFun = useMemo(
-    () => (searchValue ? null : (loadData as any)),
-    [loadData, searchValue, treeExpandedKeys || expandedKeys],
-    (
-      [prevLoadData, preSearchValue],
-      [nextLoadData, nextSearchValue, nextExcludeSearchExpandedKeys],
-    ) =>
-      // `loadData` changed
-      prevLoadData !== nextLoadData ||
-      // `searchValue` changed and not in search mode
-      (preSearchValue !== nextSearchValue && !!(nextSearchValue || nextExcludeSearchExpandedKeys)),
+    () => (searchValue ? null : (syncLoadData as any)),
+    [searchValue, treeExpandedKeys || expandedKeys],
+    ([preSearchValue], [nextSearchValue, nextExcludeSearchExpandedKeys]) =>
+      preSearchValue !== nextSearchValue && !!(nextSearchValue || nextExcludeSearchExpandedKeys),
   );
 
   // ========================== Render ==========================
