@@ -10,7 +10,6 @@ import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
 import type { Key, SafeKey } from './interface';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
-import { useEvent } from 'rc-util';
 
 const HIDDEN_STYLE = {
   width: 0,
