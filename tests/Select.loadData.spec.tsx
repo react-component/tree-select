@@ -1,16 +1,11 @@
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
-import Tree, { TreeNode } from 'rc-tree';
 import React from 'react';
 import { render, fireEvent, act } from '@testing-library/react';
 
-import TreeSelect, { SHOW_ALL, SHOW_CHILD, SHOW_PARENT, TreeNode as SelectNode } from '../src';
-import { selectNode } from './util';
+import TreeSelect from '../src';
 
 describe('TreeSelect.loadData', () => {
   it('keep sync', async () => {
-    let renderTimes = 0;
-    let calledLastId: number | null = null;
-
     const Demo = () => {
       const [treeData, setTreeData] = React.useState([
         {
@@ -20,17 +15,15 @@ describe('TreeSelect.loadData', () => {
         },
       ]);
 
-      renderTimes += 1;
-      const renderId = renderTimes;
-
       const loadData = async () => {
-        calledLastId = renderId;
+        const nextId = treeData.length;
+
         setTreeData([
           ...treeData,
           {
-            title: `${renderId}`,
-            value: renderId,
-            isLeaf: true,
+            title: `${nextId}`,
+            value: nextId,
+            isLeaf: false,
           },
         ]);
       };
@@ -40,18 +33,14 @@ describe('TreeSelect.loadData', () => {
 
     render(<Demo />);
 
-    console.log(document.body.innerHTML);
-
-    fireEvent.click(document.querySelector('.rc-tree-select-tree-switcher_close'));
-    await act(async () => {
-      await Promise.resolve();
-    });
-    expect(calledLastId).toBe(renderTimes);
-
-    fireEvent.click(document.querySelector('.rc-tree-select-tree-switcher_close'));
-    await act(async () => {
-      await Promise.resolve();
-    });
-    expect(calledLastId).toBe(renderTimes);
+    for (let i = 0; i < 5; i += 1) {
+      fireEvent.click(document.querySelector('.rc-tree-select-tree-switcher_close'));
+      await act(async () => {
+        await Promise.resolve();
+      });
+      expect(
+        document.querySelectorAll('.rc-tree-select-tree-list .rc-tree-select-tree-treenode'),
+      ).toHaveLength(2 + i);
+    }
   });
 });
