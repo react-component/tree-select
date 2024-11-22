@@ -156,6 +156,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
+  // >>> Disabled Strategy
   const disabledStrategy = (node: DataNode) => {
     if (node.disabled) {
       return true;
