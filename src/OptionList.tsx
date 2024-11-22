@@ -8,7 +8,7 @@ import useMemo from 'rc-util/lib/hooks/useMemo';
 import * as React from 'react';
 import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
-import type { Key, SafeKey } from './interface';
+import type { DataNode, Key, SafeKey } from './interface';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
 
 const HIDDEN_STYLE = {
@@ -155,6 +155,21 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
+
+  const disabledStrategy = (node: DataNode) => {
+    if (node.disabled) {
+      return true;
+    }
+
+    if (isOverMaxCount) {
+      const selectedValues = displayValues?.map(v => v.value) || [];
+      if (!selectedValues.includes(node[fieldNames.value])) {
+        return true;
+      }
+    }
+
+    return undefined;
+  };
 
   // ========================== Get First Selectable Node ==========================
   const getFirstMatchingNode = (nodes: EventDataNode<any>[]): EventDataNode<any> | null => {
@@ -385,6 +400,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         filterTreeNode={filterTreeNode}
         expandAction={treeExpandAction}
         onScroll={onPopupScroll}
+        disabledStrategy={disabledStrategy}
       />
     </div>
   );
