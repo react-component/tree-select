@@ -314,13 +314,6 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   const syncLoadData = hasLoadDataFn ? loadData : null;
 
-  const onActiveChange = (key: Key) => {
-    if (!isOverMaxCount) {
-      setActiveKey(key);
-      return;
-    }
-  };
-
   // ========================== Render ==========================
   if (memoTreeData.length === 0) {
     return (
@@ -374,7 +367,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         titleRender={treeTitleRender}
         {...treeProps}
         // Proxy event out
-        onActiveChange={onActiveChange}
+        onActiveChange={setActiveKey}
         onSelect={onInternalSelect}
         onCheck={onInternalSelect}
         onExpand={onInternalExpand}
