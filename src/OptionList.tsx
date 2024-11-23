@@ -158,9 +158,9 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   // >>> Disabled Strategy
   const disabledStrategy = (node: DataNode) => {
-    if (node.disabled) {
-      return true;
-    }
+    // if (node.disabled) {
+    //   return true;
+    // }
 
     if (isOverMaxCount) {
       const selectedValues = displayValues?.map(v => v.value) || [];
@@ -206,19 +206,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   ): EventDataNode<any> | null => {
     const availableNodes = availableNodesRef.current;
 
-    if (availableNodes.length === 0) {
-      return null;
-    }
-
-    if (!currentKey) {
-      return availableNodes[0];
-    }
-
     const currentIndex = availableNodes.findIndex(node => node[fieldNames.value] === currentKey);
-
-    if (currentIndex === -1) {
-      return availableNodes[0];
-    }
 
     const nextIndex =
       direction === 'next'
@@ -332,11 +320,6 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     if (!isOverMaxCount) {
       setActiveKey(key);
       return;
-    }
-
-    const nextNode = getNextMatchingNode(key);
-    if (nextNode) {
-      setActiveKey(nextNode[fieldNames.value]);
     }
   };
 

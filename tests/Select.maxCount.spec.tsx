@@ -206,6 +206,76 @@ describe('TreeSelect.maxCount keyboard operations', () => {
     // verify only two options are selected
     expect(container.querySelectorAll('.rc-tree-select-tree-treenode-selected')).toHaveLength(2);
   });
+
+  it('should cycle through selected options when maxCount is reached', () => {
+    const { container } = render(
+      <TreeSelect treeData={treeData} multiple open maxCount={2} value={['0', '2']} />,
+    );
+
+    const input = container.querySelector('input');
+
+    keyDown(input, KeyCode.DOWN);
+    expect(
+      container.querySelector('.rc-tree-select-tree-treenode.rc-tree-select-tree-treenode-active')
+        ?.textContent,
+    ).toBe('2 label');
+
+    // Move down again to cycle back to the first selected item
+    keyDown(input, KeyCode.DOWN);
+    expect(
+      container.querySelector('.rc-tree-select-tree-treenode.rc-tree-select-tree-treenode-active')
+        ?.textContent,
+    ).toBe('0 label');
+  });
+
+  it('should cycle through selected options in reverse when using UP key', () => {
+    const { container } = render(
+      <TreeSelect treeData={treeData} multiple open maxCount={2} value={['0', '2']} />,
+    );
+
+    const input = container.querySelector('input');
+
+    // Initially activate the last selected item
+    keyDown(input, KeyCode.UP);
+    expect(
+      container.querySelector('.rc-tree-select-tree-treenode.rc-tree-select-tree-treenode-active')
+        ?.textContent,
+    ).toBe('2 label');
+
+    // Move up again to cycle back to the first selected item
+    keyDown(input, KeyCode.UP);
+    expect(
+      container.querySelector('.rc-tree-select-tree-treenode.rc-tree-select-tree-treenode-active')
+        ?.textContent,
+    ).toBe('0 label');
+
+    // Move up again to cycle back to the last selected item
+    keyDown(input, KeyCode.UP);
+    expect(
+      container.querySelector('.rc-tree-select-tree-treenode.rc-tree-select-tree-treenode-active')
+        ?.textContent,
+    ).toBe('2 label');
+  });
+
+  it('should handle LEFT/RIGHT keys correctly when maxCount is reached', () => {
+    const { container } = render(
+      <TreeSelect treeData={treeData} multiple open maxCount={2} value={['0', '2']} />,
+    );
+
+    const input = container.querySelector('input');
+
+    keyDown(input, KeyCode.RIGHT);
+    expect(
+      container.querySelector('.rc-tree-select-tree-treenode.rc-tree-select-tree-treenode-active')
+        ?.textContent,
+    ).toBe('2 label');
+
+    keyDown(input, KeyCode.LEFT);
+    expect(
+      container.querySelector('.rc-tree-select-tree-treenode.rc-tree-select-tree-treenode-active')
+        ?.textContent,
+    ).toBe('0 label');
+  });
 });
 
 describe('TreeSelect.maxCount with different strategies', () => {
