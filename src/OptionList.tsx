@@ -158,10 +158,6 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   // >>> Disabled Strategy
   const disabledStrategy = (node: DataNode) => {
-    // if (node.disabled) {
-    //   return true;
-    // }
-
     if (isOverMaxCount) {
       const selectedValues = displayValues?.map(v => v.value) || [];
       if (!selectedValues.includes(node[fieldNames.value])) {
@@ -309,12 +305,14 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     onKeyUp: () => {},
   }));
 
-  const loadDataFun = useMemo(
-    () => (searchValue ? null : (loadData as any)),
+  const hasLoadDataFn = useMemo(
+    () => (searchValue ? false : true),
     [searchValue, treeExpandedKeys || expandedKeys],
     ([preSearchValue], [nextSearchValue, nextExcludeSearchExpandedKeys]) =>
       preSearchValue !== nextSearchValue && !!(nextSearchValue || nextExcludeSearchExpandedKeys),
   );
+
+  const syncLoadData = hasLoadDataFn ? loadData : null;
 
   const onActiveChange = (key: Key) => {
     if (!isOverMaxCount) {
@@ -364,7 +362,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         showIcon={showTreeIcon}
         switcherIcon={switcherIcon}
         showLine={treeLine}
-        loadData={loadDataFun}
+        loadData={syncLoadData}
         motion={treeMotion}
         activeKey={activeKey}
         // We handle keys by out instead tree self
