@@ -78,6 +78,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     (prev, next) => next[0] && prev[1] !== next[1],
   );
 
+  const memoDisplayValues = React.useMemo(() => displayValues?.map(v => v.value), [displayValues]);
+
   // ========================== Values ==========================
   const mergedCheckedKeys = React.useMemo(() => {
     if (!checkable) {
@@ -159,7 +161,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   // >>> Disabled Strategy
   const disabledStrategy = (node: DataNode) => {
     if (isOverMaxCount) {
-      const selectedValues = displayValues?.map(v => v.value) || [];
+      const selectedValues = memoDisplayValues;
       if (!selectedValues.includes(node[fieldNames.value])) {
         return true;
       }
@@ -214,7 +216,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   React.useEffect(() => {
     const nodes: EventDataNode<any>[] = [];
-    const selectedValueSet = new Set(displayValues?.map(v => v.value));
+    const selectedValueSet = new Set(memoDisplayValues);
 
     const collectNodes = (nodeList: EventDataNode<any>[]) => {
       nodeList.forEach(node => {
@@ -231,7 +233,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
     collectNodes(memoTreeData);
     availableNodesRef.current = nodes;
-  }, [displayValues, memoTreeData]);
+  }, [memoDisplayValues, memoTreeData]);
 
   // ========================== Active ==========================
   const [activeKey, setActiveKey] = React.useState<Key>(null);
