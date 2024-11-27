@@ -2,6 +2,7 @@ import { useBaseProps } from 'rc-select';
 import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import type { TreeProps } from 'rc-tree';
 import Tree from 'rc-tree';
+import { InternalContext } from 'rc-tree';
 import type { EventDataNode, ScrollTo } from 'rc-tree/lib/interface';
 import KeyCode from 'rc-util/lib/KeyCode';
 import useMemo from 'rc-util/lib/hooks/useMemo';
@@ -158,8 +159,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
-  // >>> Disabled Strategy
-  const disabledStrategy = (node: DataNode) => {
+  const nodeDisabled = (node: DataNode) => {
     if (isOverMaxCount) {
       const selectedValues = memoDisplayValues;
       if (!selectedValues.includes(node[fieldNames.value])) {
@@ -342,43 +342,43 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
           {activeEntity.node.value}
         </span>
       )}
-
-      <Tree
-        ref={treeRef}
-        focusable={false}
-        prefixCls={`${prefixCls}-tree`}
-        treeData={memoTreeData}
-        height={listHeight}
-        itemHeight={listItemHeight}
-        itemScrollOffset={listItemScrollOffset}
-        virtual={virtual !== false && dropdownMatchSelectWidth !== false}
-        multiple={multiple}
-        icon={treeIcon}
-        showIcon={showTreeIcon}
-        switcherIcon={switcherIcon}
-        showLine={treeLine}
-        loadData={syncLoadData}
-        motion={treeMotion}
-        activeKey={activeKey}
-        // We handle keys by out instead tree self
-        checkable={checkable}
-        checkStrictly
-        checkedKeys={mergedCheckedKeys}
-        selectedKeys={!checkable ? checkedKeys : []}
-        defaultExpandAll={treeDefaultExpandAll}
-        titleRender={treeTitleRender}
-        {...treeProps}
-        // Proxy event out
-        onActiveChange={setActiveKey}
-        onSelect={onInternalSelect}
-        onCheck={onInternalSelect}
-        onExpand={onInternalExpand}
-        onLoad={onTreeLoad}
-        filterTreeNode={filterTreeNode}
-        expandAction={treeExpandAction}
-        onScroll={onPopupScroll}
-        disabledStrategy={disabledStrategy}
-      />
+      <InternalContext.Provider value={{ nodeDisabled }}>
+        <Tree
+          ref={treeRef}
+          focusable={false}
+          prefixCls={`${prefixCls}-tree`}
+          treeData={memoTreeData}
+          height={listHeight}
+          itemHeight={listItemHeight}
+          itemScrollOffset={listItemScrollOffset}
+          virtual={virtual !== false && dropdownMatchSelectWidth !== false}
+          multiple={multiple}
+          icon={treeIcon}
+          showIcon={showTreeIcon}
+          switcherIcon={switcherIcon}
+          showLine={treeLine}
+          loadData={syncLoadData}
+          motion={treeMotion}
+          activeKey={activeKey}
+          // We handle keys by out instead tree self
+          checkable={checkable}
+          checkStrictly
+          checkedKeys={mergedCheckedKeys}
+          selectedKeys={!checkable ? checkedKeys : []}
+          defaultExpandAll={treeDefaultExpandAll}
+          titleRender={treeTitleRender}
+          {...treeProps}
+          // Proxy event out
+          onActiveChange={setActiveKey}
+          onSelect={onInternalSelect}
+          onCheck={onInternalSelect}
+          onExpand={onInternalExpand}
+          onLoad={onTreeLoad}
+          filterTreeNode={filterTreeNode}
+          expandAction={treeExpandAction}
+          onScroll={onPopupScroll}
+        />
+      </InternalContext.Provider>
     </div>
   );
 };
