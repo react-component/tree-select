@@ -2,7 +2,7 @@ import { useBaseProps } from 'rc-select';
 import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import type { TreeProps } from 'rc-tree';
 import Tree from 'rc-tree';
-import { InternalContext } from 'rc-tree';
+import { UnstableContext } from 'rc-tree';
 import type { EventDataNode, ScrollTo } from 'rc-tree/lib/interface';
 import KeyCode from 'rc-util/lib/KeyCode';
 import useMemo from 'rc-util/lib/hooks/useMemo';
@@ -342,7 +342,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
           {activeEntity.node.value}
         </span>
       )}
-      <InternalContext.Provider value={{ nodeDisabled }}>
+      <UnstableContext.Provider value={{ nodeDisabled }}>
         <Tree
           ref={treeRef}
           focusable={false}
@@ -378,7 +378,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
           expandAction={treeExpandAction}
           onScroll={onPopupScroll}
         />
-      </InternalContext.Provider>
+      </UnstableContext.Provider>
     </div>
   );
 };
