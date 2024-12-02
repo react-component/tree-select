@@ -200,7 +200,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   const getNextMatchingNode = (
     currentKey: Key | null,
-    direction: 'next' | 'prev' = 'next',
+    direction: 'next' | 'prev',
   ): EventDataNode<any> | null => {
     const availableNodes = availableNodesRef.current;
 
