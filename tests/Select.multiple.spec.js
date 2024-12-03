@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { render } from '@testing-library/react';
+import { render, fireEvent, within } from '@testing-library/react';
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import React from 'react';
@@ -32,7 +32,10 @@ describe('TreeSelect.multiple', () => {
 
   it('remove by backspace key', () => {
     const wrapper = mount(createSelect({ defaultValue: ['0', '1'] }));
-    wrapper.find('input').first().simulate('keyDown', { which: KeyCode.BACKSPACE, key: 'Backspace' });
+    wrapper
+      .find('input')
+      .first()
+      .simulate('keyDown', { which: KeyCode.BACKSPACE, key: 'Backspace' });
     expect(wrapper.getSelection()).toHaveLength(1);
     expect(wrapper.getSelection(0).text()).toBe('label0');
   });
@@ -59,9 +62,15 @@ describe('TreeSelect.multiple', () => {
       }
     }
     const wrapper = mount(<App />);
-    wrapper.find('input').first().simulate('keyDown', { which: KeyCode.BACKSPACE, key: 'Backspace' });
+    wrapper
+      .find('input')
+      .first()
+      .simulate('keyDown', { which: KeyCode.BACKSPACE, key: 'Backspace' });
     wrapper.selectNode(1);
-    wrapper.find('input').first().simulate('keyDown', { which: KeyCode.BACKSPACE, key: 'Backspace' });
+    wrapper
+      .find('input')
+      .first()
+      .simulate('keyDown', { which: KeyCode.BACKSPACE, key: 'Backspace' });
     expect(wrapper.getSelection()).toHaveLength(1);
     expect(wrapper.getSelection(0).text()).toBe('label0');
   });
@@ -337,9 +346,7 @@ describe('TreeSelect.multiple', () => {
       />,
     );
 
-    const values = Array.from(
-      container.querySelectorAll('.rc-tree-select-selection-item-content'),
-    ); //.map(ele => ele.textContent);
+    const values = Array.from(container.querySelectorAll('.rc-tree-select-selection-item-content')); //.map(ele => ele.textContent);
 
     expect(values).toHaveLength(0);
 
@@ -347,5 +354,4 @@ describe('TreeSelect.multiple', () => {
     expect(placeholder).toBeTruthy();
     expect(placeholder.textContent).toBe('Fake placeholder');
   });
-
 });

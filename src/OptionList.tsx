@@ -2,14 +2,16 @@ import { useBaseProps } from 'rc-select';
 import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import type { TreeProps } from 'rc-tree';
 import Tree from 'rc-tree';
+import { UnstableContext } from 'rc-tree';
 import type { EventDataNode, ScrollTo } from 'rc-tree/lib/interface';
 import KeyCode from 'rc-util/lib/KeyCode';
 import useMemo from 'rc-util/lib/hooks/useMemo';
 import * as React from 'react';
 import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
-import type { Key, SafeKey } from './interface';
+import type { DataNode, Key, SafeKey } from './interface';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
+import { useEvent } from 'rc-util';
 
 const HIDDEN_STYLE = {
   width: 0,
@@ -45,6 +47,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     treeExpandAction,
     treeTitleRender,
     onPopupScroll,
+    displayValues,
+    isOverMaxCount,
   } = React.useContext(TreeSelectContext);
 
   const {
@@ -74,6 +78,11 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [open, treeData],
     (prev, next) => next[0] && prev[1] !== next[1],
+  );
+
+  const memoRawValues = React.useMemo(
+    () => (displayValues || []).map(v => v.value),
+    [displayValues],
   );
 
   // ========================== Values ==========================
@@ -154,6 +163,10 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
+  const nodeDisabled = useEvent((node: DataNode) => {
+    return isOverMaxCount && !memoRawValues.includes(node[fieldNames.value]);
+  });
+
   // ========================== Get First Selectable Node ==========================
   const getFirstMatchingNode = (nodes: EventDataNode<any>[]): EventDataNode<any> | null => {
     for (const node of nodes) {
@@ -221,8 +234,9 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         // >>> Select item
         case KeyCode.ENTER: {
           if (activeEntity) {
+            const isNodeDisabled = nodeDisabled(activeEntity.node);
             const { selectable, value, disabled } = activeEntity?.node || {};
-            if (selectable !== false && !disabled) {
+            if (selectable !== false && !disabled && !isNodeDisabled) {
               onInternalSelect(null, {
                 node: { key: activeKey },
                 selected: !checkedKeys.includes(value),
@@ -276,42 +290,43 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
           {activeEntity.node.value}
         </span>
       )}
-
-      <Tree
-        ref={treeRef}
-        focusable={false}
-        prefixCls={`${prefixCls}-tree`}
-        treeData={memoTreeData}
-        height={listHeight}
-        itemHeight={listItemHeight}
-        itemScrollOffset={listItemScrollOffset}
-        virtual={virtual !== false && dropdownMatchSelectWidth !== false}
-        multiple={multiple}
-        icon={treeIcon}
-        showIcon={showTreeIcon}
-        switcherIcon={switcherIcon}
-        showLine={treeLine}
-        loadData={syncLoadData}
-        motion={treeMotion}
-        activeKey={activeKey}
-        // We handle keys by out instead tree self
-        checkable={checkable}
-        checkStrictly
-        checkedKeys={mergedCheckedKeys}
-        selectedKeys={!checkable ? checkedKeys : []}
-        defaultExpandAll={treeDefaultExpandAll}
-        titleRender={treeTitleRender}
-        {...treeProps}
-        // Proxy event out
-        onActiveChange={setActiveKey}
-        onSelect={onInternalSelect}
-        onCheck={onInternalSelect}
-        onExpand={onInternalExpand}
-        onLoad={onTreeLoad}
-        filterTreeNode={filterTreeNode}
-        expandAction={treeExpandAction}
-        onScroll={onPopupScroll}
-      />
+      <UnstableContext.Provider value={{ nodeDisabled }}>
+        <Tree
+          ref={treeRef}
+          focusable={false}
+          prefixCls={`${prefixCls}-tree`}
+          treeData={memoTreeData}
+          height={listHeight}
+          itemHeight={listItemHeight}
+          itemScrollOffset={listItemScrollOffset}
+          virtual={virtual !== false && dropdownMatchSelectWidth !== false}
+          multiple={multiple}
+          icon={treeIcon}
+          showIcon={showTreeIcon}
+          switcherIcon={switcherIcon}
+          showLine={treeLine}
+          loadData={syncLoadData}
+          motion={treeMotion}
+          activeKey={activeKey}
+          // We handle keys by out instead tree self
+          checkable={checkable}
+          checkStrictly
+          checkedKeys={mergedCheckedKeys}
+          selectedKeys={!checkable ? checkedKeys : []}
+          defaultExpandAll={treeDefaultExpandAll}
+          titleRender={treeTitleRender}
+          {...treeProps}
+          // Proxy event out
+          onActiveChange={setActiveKey}
+          onSelect={onInternalSelect}
+          onCheck={onInternalSelect}
+          onExpand={onInternalExpand}
+          onLoad={onTreeLoad}
+          filterTreeNode={filterTreeNode}
+          expandAction={treeExpandAction}
+          onScroll={onPopupScroll}
+        />
+      </UnstableContext.Provider>
     </div>
   );
 };

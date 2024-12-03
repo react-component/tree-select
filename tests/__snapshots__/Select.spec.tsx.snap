@@ -49,7 +49,6 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
         </span>
         <div
           class="rc-tree-select-tree rc-tree-select-tree-active-focused"
-          role="tree"
         >
           <div>
             <input
@@ -74,6 +73,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
           </div>
           <div
             class="rc-tree-select-tree-list"
+            role="tree"
             style="position: relative;"
           >
             <div
@@ -86,9 +86,10 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                   style="display: flex; flex-direction: column;"
                 >
                   <div
-                    aria-grabbed="false"
+                    aria-expanded="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-active"
                     draggable="false"
+                    role="treeitem"
                   >
                     <span
                       aria-hidden="true"
@@ -112,9 +113,10 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                     </span>
                   </div>
                   <div
-                    aria-grabbed="false"
+                    aria-expanded="true"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
                     draggable="false"
+                    role="treeitem"
                   >
                     <span
                       aria-hidden="true"
@@ -138,9 +140,10 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                     </span>
                   </div>
                   <div
-                    aria-grabbed="false"
+                    aria-expanded="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
                     draggable="false"
+                    role="treeitem"
                   >
                     <span
                       aria-hidden="true"
@@ -168,9 +171,10 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                     </span>
                   </div>
                   <div
-                    aria-grabbed="false"
+                    aria-expanded="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
                     draggable="false"
+                    role="treeitem"
                   >
                     <span
                       aria-hidden="true"
@@ -257,7 +261,6 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
         </span>
         <div
           class="rc-tree-select-tree rc-tree-select-tree-active-focused"
-          role="tree"
         >
           <div>
             <input
@@ -282,6 +285,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
           </div>
           <div
             class="rc-tree-select-tree-list"
+            role="tree"
             style="position: relative;"
           >
             <div
@@ -294,9 +298,10 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                   style="display: flex; flex-direction: column;"
                 >
                   <div
-                    aria-grabbed="false"
+                    aria-expanded="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-active"
                     draggable="false"
+                    role="treeitem"
                   >
                     <span
                       aria-hidden="true"
@@ -320,9 +325,10 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                     </span>
                   </div>
                   <div
-                    aria-grabbed="false"
+                    aria-expanded="true"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
                     draggable="false"
+                    role="treeitem"
                   >
                     <span
                       aria-hidden="true"
@@ -346,9 +352,10 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                     </span>
                   </div>
                   <div
-                    aria-grabbed="false"
+                    aria-expanded="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
                     draggable="false"
+                    role="treeitem"
                   >
                     <span
                       aria-hidden="true"
@@ -376,9 +383,10 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                     </span>
                   </div>
                   <div
-                    aria-grabbed="false"
+                    aria-expanded="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
                     draggable="false"
+                    role="treeitem"
                   >
                     <span
                       aria-hidden="true"
@@ -614,7 +622,6 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
           </span>
           <div
             class="rc-tree-select-tree rc-tree-select-tree-active-focused"
-            role="tree"
           >
             <div>
               <input
@@ -639,6 +646,7 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
             </div>
             <div
               class="rc-tree-select-tree-list"
+              role="tree"
               style="position: relative;"
             >
               <div
@@ -651,9 +659,10 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
                     style="display: flex; flex-direction: column;"
                   >
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="true"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -677,9 +686,10 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
                       </span>
                     </div>
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="false"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -766,7 +776,6 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
           </span>
           <div
             class="rc-tree-select-tree rc-tree-select-tree-active-focused"
-            role="tree"
           >
             <div>
               <input
@@ -791,6 +800,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
             </div>
             <div
               class="rc-tree-select-tree-list"
+              role="tree"
               style="position: relative;"
             >
               <div
@@ -803,9 +813,10 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
                     style="display: flex; flex-direction: column;"
                   >
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="true"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last filter-node"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -888,7 +899,6 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
           </span>
           <div
             class="rc-tree-select-tree rc-tree-select-tree-active-focused"
-            role="tree"
           >
             <div>
               <input
@@ -913,6 +923,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
             </div>
             <div
               class="rc-tree-select-tree-list"
+              role="tree"
               style="position: relative;"
             >
               <div
@@ -925,9 +936,10 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
                     style="display: flex; flex-direction: column;"
                   >
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="true"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -951,9 +963,10 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
                       </span>
                     </div>
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="false"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -1036,7 +1049,6 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
           </span>
           <div
             class="rc-tree-select-tree rc-tree-select-tree-active-focused"
-            role="tree"
           >
             <div>
               <input
@@ -1061,6 +1073,7 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
             </div>
             <div
               class="rc-tree-select-tree-list"
+              role="tree"
               style="position: relative;"
             >
               <div
@@ -1073,9 +1086,10 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
                     style="display: flex; flex-direction: column;"
                   >
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="false"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-active filter-node"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -1099,9 +1113,10 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
                       </span>
                     </div>
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="false"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -1182,7 +1197,6 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
         </span>
         <div
           class="rc-tree-select-tree rc-tree-select-tree-active-focused"
-          role="tree"
         >
           <div>
             <input
@@ -1207,6 +1221,7 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
           </div>
           <div
             class="rc-tree-select-tree-list"
+            role="tree"
             style="position: relative;"
           >
             <div
@@ -1219,9 +1234,10 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
                   style="display: flex; flex-direction: column;"
                 >
                   <div
-                    aria-grabbed="false"
+                    aria-expanded="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-active"
                     draggable="false"
+                    role="treeitem"
                   >
                     <span
                       aria-hidden="true"
@@ -1245,9 +1261,10 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
                     </span>
                   </div>
                   <div
-                    aria-grabbed="false"
+                    aria-expanded="false"
                     class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
                     draggable="false"
+                    role="treeitem"
                   >
                     <span
                       aria-hidden="true"

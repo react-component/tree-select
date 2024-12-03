@@ -72,6 +72,7 @@ export interface TreeSelectProps<ValueType = any, OptionType extends DataNode = 
   treeCheckable?: boolean | React.ReactNode;
   treeCheckStrictly?: boolean;
   labelInValue?: boolean;
+  maxCount?: number;
 
   // >>> Data
   treeData?: OptionType[];
@@ -136,6 +137,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     treeCheckable,
     treeCheckStrictly,
     labelInValue,
+    maxCount,
 
     // FieldNames
     fieldNames,
@@ -413,6 +415,20 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       extra: { triggerValue?: SafeKey; selected?: boolean },
       source: SelectSource,
     ) => {
+      const formattedKeyList = formatStrategyValues(
+        newRawValues,
+        mergedShowCheckedStrategy,
+        keyEntities,
+        mergedFieldNames,
+      );
+
+      // if multiple and maxCount is set, check if exceed maxCount
+      if (mergedMultiple && maxCount !== undefined) {
+        if (formattedKeyList.length > maxCount) {
+          return;
+        }
+      }
+
       const labeledValues = convert2LabelValues(newRawValues);
       setInternalValue(labeledValues);
 
@@ -425,12 +441,6 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       if (onChange) {
         let eventValues: SafeKey[] = newRawValues;
         if (treeConduction) {
-          const formattedKeyList = formatStrategyValues(
-            newRawValues,
-            mergedShowCheckedStrategy,
-            keyEntities,
-            mergedFieldNames,
-          );
           eventValues = formattedKeyList.map(key => {
             const entity = valueEntities.get(key);
             return entity ? entity.node[mergedFieldNames.value] : key;
@@ -558,6 +568,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       onDeselect,
       rawCheckedValues,
       rawHalfCheckedValues,
+      maxCount,
     ],
   );
 
@@ -596,8 +607,11 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   });
 
   // ========================== Context ===========================
-  const treeSelectContext = React.useMemo<TreeSelectContextProps>(
-    () => ({
+  const isOverMaxCount =
+    mergedMultiple && maxCount !== undefined && cachedDisplayValues?.length >= maxCount;
+
+  const treeSelectContext = React.useMemo<TreeSelectContextProps>(() => {
+    return {
       virtual,
       dropdownMatchSelectWidth,
       listHeight,
@@ -609,21 +623,25 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeExpandAction,
       treeTitleRender,
       onPopupScroll,
-    }),
-    [
-      virtual,
-      dropdownMatchSelectWidth,
-      listHeight,
-      listItemHeight,
-      listItemScrollOffset,
-      filteredTreeData,
-      mergedFieldNames,
-      onOptionSelect,
-      treeExpandAction,
-      treeTitleRender,
-      onPopupScroll,
-    ],
-  );
+      displayValues: cachedDisplayValues,
+      isOverMaxCount,
+    };
+  }, [
+    virtual,
+    dropdownMatchSelectWidth,
+    listHeight,
+    listItemHeight,
+    listItemScrollOffset,
+    filteredTreeData,
+    mergedFieldNames,
+    onOptionSelect,
+    treeExpandAction,
+    treeTitleRender,
+    onPopupScroll,
+    maxCount,
+    cachedDisplayValues,
+    mergedMultiple,
+  ]);
 
   // ======================= Legacy Context =======================
   const legacyContext = React.useMemo(

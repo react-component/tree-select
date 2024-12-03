@@ -142,7 +142,6 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
           </span>
           <div
             class="rc-tree-select-tree rc-tree-select-tree-active-focused"
-            role="tree"
           >
             <div>
               <input
@@ -167,6 +166,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
             </div>
             <div
               class="rc-tree-select-tree-list"
+              role="tree"
               style="position: relative;"
             >
               <div
@@ -179,9 +179,10 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
                     style="display: flex; flex-direction: column;"
                   >
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="true"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -191,7 +192,10 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                       />
                       <span
+                        aria-checked="true"
+                        aria-label="Select 0"
                         class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                        role="checkbox"
                       />
                       <span
                         class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
@@ -208,9 +212,10 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
                       </span>
                     </div>
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="true"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -224,7 +229,10 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                       />
                       <span
+                        aria-checked="true"
+                        aria-label="Select 0-0"
                         class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                        role="checkbox"
                       />
                       <span
                         class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
@@ -241,9 +249,10 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
                       </span>
                     </div>
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="false"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -260,7 +269,10 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
                       />
                       <span
+                        aria-checked="true"
+                        aria-label="Select 0-0-0"
                         class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                        role="checkbox"
                       />
                       <span
                         class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
@@ -352,7 +364,6 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
           </span>
           <div
             class="rc-tree-select-tree rc-tree-select-tree-active-focused"
-            role="tree"
           >
             <div>
               <input
@@ -377,6 +388,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
             </div>
             <div
               class="rc-tree-select-tree-list"
+              role="tree"
               style="position: relative;"
             >
               <div
@@ -389,9 +401,10 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
                     style="display: flex; flex-direction: column;"
                   >
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="true"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -401,7 +414,10 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                       />
                       <span
+                        aria-checked="false"
+                        aria-label="Select 0"
                         class="rc-tree-select-tree-checkbox"
+                        role="checkbox"
                       />
                       <span
                         class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
@@ -418,9 +434,10 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
                       </span>
                     </div>
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="true"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -434,7 +451,10 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                       />
                       <span
+                        aria-checked="false"
+                        aria-label="Select 0-0"
                         class="rc-tree-select-tree-checkbox"
+                        role="checkbox"
                       />
                       <span
                         class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
@@ -451,9 +471,10 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
                       </span>
                     </div>
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="false"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -470,7 +491,10 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
                       />
                       <span
+                        aria-checked="false"
+                        aria-label="Select 0-0-0"
                         class="rc-tree-select-tree-checkbox"
+                        role="checkbox"
                       />
                       <span
                         class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
@@ -640,7 +664,6 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
           </span>
           <div
             class="rc-tree-select-tree rc-tree-select-tree-active-focused"
-            role="tree"
           >
             <div>
               <input
@@ -665,6 +688,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
             </div>
             <div
               class="rc-tree-select-tree-list"
+              role="tree"
               style="position: relative;"
             >
               <div
@@ -677,9 +701,10 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
                     style="display: flex; flex-direction: column;"
                   >
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="true"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last filter-node"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -689,7 +714,10 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                       />
                       <span
+                        aria-checked="true"
+                        aria-label="Select 0"
                         class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                        role="checkbox"
                       />
                       <span
                         class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
@@ -706,9 +734,10 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
                       </span>
                     </div>
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="true"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -722,7 +751,10 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                       />
                       <span
+                        aria-checked="true"
+                        aria-label="Select 0-0"
                         class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                        role="checkbox"
                       />
                       <span
                         class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
@@ -739,9 +771,10 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
                       </span>
                     </div>
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="true"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -758,7 +791,10 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
                       />
                       <span
+                        aria-checked="true"
+                        aria-label="Select 0-0-0"
                         class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                        role="checkbox"
                       />
                       <span
                         class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
@@ -847,7 +883,6 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
           </span>
           <div
             class="rc-tree-select-tree rc-tree-select-tree-active-focused"
-            role="tree"
           >
             <div>
               <input
@@ -872,6 +907,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
             </div>
             <div
               class="rc-tree-select-tree-list"
+              role="tree"
               style="position: relative;"
             >
               <div
@@ -884,9 +920,10 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
                     style="display: flex; flex-direction: column;"
                   >
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="true"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last filter-node"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -896,7 +933,10 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                       />
                       <span
+                        aria-checked="false"
+                        aria-label="Select 0"
                         class="rc-tree-select-tree-checkbox"
+                        role="checkbox"
                       />
                       <span
                         class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
@@ -913,9 +953,10 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
                       </span>
                     </div>
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="true"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -929,7 +970,10 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
                       />
                       <span
+                        aria-checked="false"
+                        aria-label="Select 0-0"
                         class="rc-tree-select-tree-checkbox"
+                        role="checkbox"
                       />
                       <span
                         class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
@@ -946,9 +990,10 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
                       </span>
                     </div>
                     <div
-                      aria-grabbed="false"
+                      aria-expanded="true"
                       class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node"
                       draggable="false"
+                      role="treeitem"
                     >
                       <span
                         aria-hidden="true"
@@ -965,7 +1010,10 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
                         class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
                       />
                       <span
+                        aria-checked="false"
+                        aria-label="Select 0-0-0"
                         class="rc-tree-select-tree-checkbox"
+                        role="checkbox"
                       />
                       <span
                         class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
