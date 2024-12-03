@@ -195,46 +195,6 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     return null;
   };
 
-  // ========================== Get Next Matching Node ==========================
-  const availableNodesRef = React.useRef<EventDataNode<any>[]>([]);
-
-  const getNextMatchingNode = (
-    currentKey: Key | null,
-    direction: 'next' | 'prev',
-  ): EventDataNode<any> | null => {
-    const availableNodes = availableNodesRef.current;
-
-    const currentIndex = availableNodes.findIndex(node => node[fieldNames.value] === currentKey);
-
-    const nextIndex =
-      direction === 'next'
-        ? (currentIndex + 1) % availableNodes.length
-        : (currentIndex - 1 + availableNodes.length) % availableNodes.length;
-
-    return availableNodes[nextIndex];
-  };
-
-  React.useEffect(() => {
-    const nodes: EventDataNode<any>[] = [];
-    const selectedValueSet = new Set(memoDisplayValues);
-
-    const collectNodes = (nodeList: EventDataNode<any>[]) => {
-      nodeList.forEach(node => {
-        if (!node.disabled && node.selectable !== false) {
-          if (selectedValueSet.has(node[fieldNames.value])) {
-            nodes.push(node);
-          }
-        }
-        if (node[fieldNames.children]) {
-          collectNodes(node[fieldNames.children]);
-        }
-      });
-    };
-
-    collectNodes(memoTreeData);
-    availableNodesRef.current = nodes;
-  }, [memoDisplayValues, memoTreeData]);
-
   // ========================== Active ==========================
   const [activeKey, setActiveKey] = React.useState<Key>(null);
   const activeEntity = keyEntities[activeKey as SafeKey];
@@ -271,24 +231,15 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         case KeyCode.DOWN:
         case KeyCode.LEFT:
         case KeyCode.RIGHT:
-          if (isOverMaxCount) {
-            event.preventDefault();
-            const direction = which === KeyCode.UP || which === KeyCode.LEFT ? 'prev' : 'next';
-            const nextNode = getNextMatchingNode(activeKey, direction);
-            if (nextNode) {
-              setActiveKey(nextNode[fieldNames.value]);
-              treeRef.current?.scrollTo({ key: nextNode[fieldNames.value] });
-            }
-          } else {
-            treeRef.current?.onKeyDown(event as React.KeyboardEvent<HTMLDivElement>);
-          }
+          treeRef.current?.onKeyDown(event as React.KeyboardEvent<HTMLDivElement>);
           break;
 
         // >>> Select item
         case KeyCode.ENTER: {
           if (activeEntity) {
+            const isNodeDisabled = nodeDisabled(activeEntity.node);
             const { selectable, value, disabled } = activeEntity?.node || {};
-            if (selectable !== false && !disabled) {
+            if (selectable !== false && !disabled && !isNodeDisabled) {
               onInternalSelect(null, {
                 node: { key: activeKey },
                 selected: !checkedKeys.includes(value),
