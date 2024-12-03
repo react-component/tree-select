@@ -11,6 +11,7 @@ import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
 import type { DataNode, Key, SafeKey } from './interface';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
+import { useEvent } from 'rc-util';
 
 const HIDDEN_STYLE = {
   width: 0,
@@ -79,7 +80,10 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     (prev, next) => next[0] && prev[1] !== next[1],
   );
 
-  const memoDisplayValues = React.useMemo(() => displayValues?.map(v => v.value), [displayValues]);
+  const memoDisplayValues = React.useMemo(
+    () => (displayValues || []).map(v => v.value),
+    [displayValues],
+  );
 
   // ========================== Values ==========================
   const mergedCheckedKeys = React.useMemo(() => {
@@ -154,21 +158,17 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   React.useEffect(() => {
     if (searchValue) {
-      setSearchExpandedKeys(getAllKeys(memoTreeData, fieldNames));
+      setSearchExpandedKeys(getAllKeys(treeData, fieldNames));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
-  const nodeDisabled = (node: DataNode) => {
-    if (isOverMaxCount) {
-      const selectedValues = memoDisplayValues;
-      if (!selectedValues.includes(node[fieldNames.value])) {
-        return true;
-      }
+  const nodeDisabled = useEvent((node: DataNode) => {
+    if (isOverMaxCount && !memoDisplayValues.includes(node[fieldNames.value])) {
+      return true;
     }
-
-    return undefined;
-  };
+    return false;
+  });
 
   // ========================== Get First Selectable Node ==========================
   const getFirstMatchingNode = (nodes: EventDataNode<any>[]): EventDataNode<any> | null => {
