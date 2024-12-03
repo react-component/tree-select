@@ -80,7 +80,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     (prev, next) => next[0] && prev[1] !== next[1],
   );
 
-  const memoDisplayValues = React.useMemo(
+  const memoRawValues = React.useMemo(
     () => (displayValues || []).map(v => v.value),
     [displayValues],
   );
@@ -164,10 +164,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   }, [searchValue]);
 
   const nodeDisabled = useEvent((node: DataNode) => {
-    if (isOverMaxCount && !memoDisplayValues.includes(node[fieldNames.value])) {
-      return true;
-    }
-    return false;
+    return isOverMaxCount && !memoRawValues.includes(node[fieldNames.value]);
   });
 
   // ========================== Get First Selectable Node ==========================
