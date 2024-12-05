@@ -20,6 +20,20 @@ export default () => {
           key: '1-2',
           value: '1-2',
           title: '1-2',
+          disabled: true,
+          children: [
+            {
+              key: '1-2-1',
+              value: '1-2-1',
+              title: '1-2-1',
+              disabled: true,
+            },
+            {
+              key: '1-2-2',
+              value: '1-2-2',
+              title: '1-2-2',
+            },
+          ],
         },
         {
           key: '1-3',
@@ -70,8 +84,7 @@ export default () => {
         multiple
         treeCheckable
         // showCheckedStrategy="SHOW_ALL"
-        showCheckedStrategy="SHOW_PARENT"
-        // showCheckedStrategy="SHOW_CHILD"
+        // showCheckedStrategy="SHOW_PARENT"
         maxCount={4}
         treeData={treeData}
         onChange={onChange}

@@ -12,6 +12,8 @@ import TreeSelectContext from './TreeSelectContext';
 import type { DataNode, Key, SafeKey } from './interface';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
 import { useEvent } from 'rc-util';
+import { formatStrategyValues } from './utils/strategyUtil';
+import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 
 const HIDDEN_STYLE = {
   width: 0,
@@ -49,6 +51,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     onPopupScroll,
     displayValues,
     isOverMaxCount,
+    maxCount,
+    showCheckedStrategy,
   } = React.useContext(TreeSelectContext);
 
   const {
@@ -164,7 +168,57 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   }, [searchValue]);
 
   const nodeDisabled = useEvent((node: DataNode) => {
-    return isOverMaxCount && !memoRawValues.includes(node[fieldNames.value]);
+    // Always enable selected nodes
+    if (checkedKeys.includes(node[fieldNames.value])) {
+      return false;
+    }
+
+    // Get all selectable keys under current node considering conduction rules
+    const getSelectableKeys = (nodes: DataNode[]) => {
+      const keys: Key[] = [];
+      const traverse = (n: DataNode) => {
+        if (!n.disabled) {
+          keys.push(n[fieldNames.value]);
+          // Only traverse children if node is not disabled
+          if (Array.isArray(n.children)) {
+            n.children.forEach(traverse);
+          }
+        }
+      };
+      nodes.forEach(traverse);
+      return keys;
+    };
+
+    const selectableNodeValues = getSelectableKeys([node]);
+
+    // Simulate checked state after selecting current node
+    const simulatedCheckedKeys = [...checkedKeys, ...selectableNodeValues];
+
+    const { checkedKeys: conductedKeys } = conductCheck(simulatedCheckedKeys, true, keyEntities);
+
+    // Calculate display keys based on strategy
+    const simulatedDisplayKeys = formatStrategyValues(
+      conductedKeys as SafeKey[],
+      showCheckedStrategy,
+      keyEntities,
+      fieldNames,
+    );
+
+    const currentDisplayKeys = formatStrategyValues(
+      checkedKeys as SafeKey[],
+      showCheckedStrategy,
+      keyEntities,
+      fieldNames,
+    );
+
+    const newDisplayValuesCount = simulatedDisplayKeys.length - currentDisplayKeys.length;
+
+    // Check if selecting this node would exceed maxCount
+    if (isOverMaxCount || memoRawValues.length + newDisplayValuesCount > maxCount) {
+      return true;
+    }
+
+    return false;
   });
 
   // ========================== Get First Selectable Node ==========================

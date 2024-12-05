@@ -625,6 +625,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       onPopupScroll,
       displayValues: cachedDisplayValues,
       isOverMaxCount,
+      maxCount,
+      showCheckedStrategy: mergedShowCheckedStrategy,
     };
   }, [
     virtual,
@@ -641,6 +643,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     maxCount,
     cachedDisplayValues,
     mergedMultiple,
+    mergedShowCheckedStrategy,
   ]);
 
   // ======================= Legacy Context =======================
