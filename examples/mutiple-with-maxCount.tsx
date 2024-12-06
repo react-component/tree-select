@@ -77,7 +77,6 @@ export default () => {
         maxCount={3}
         treeData={treeData}
       />
-
       <h2>checkable with maxCount</h2>
       <TreeSelect
         style={{ width: 300 }}
@@ -90,7 +89,6 @@ export default () => {
         onChange={onChange}
         value={value}
       />
-
       <h2>checkable with maxCount and treeCheckStrictly</h2>
       <TreeSelect
         style={{ width: 300 }}

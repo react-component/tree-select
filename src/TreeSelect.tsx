@@ -422,6 +422,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         mergedFieldNames,
       );
 
+      console.log('triggerChange');
+
       const labeledValues = convert2LabelValues(newRawValues);
       setInternalValue(labeledValues);
 
@@ -616,7 +618,6 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeExpandAction,
       treeTitleRender,
       onPopupScroll,
-      displayValues: cachedDisplayValues,
       isOverMaxCount,
       maxCount,
       showCheckedStrategy: mergedShowCheckedStrategy,
@@ -634,7 +635,6 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     treeTitleRender,
     onPopupScroll,
     maxCount,
-    cachedDisplayValues,
     mergedMultiple,
     mergedShowCheckedStrategy,
   ]);
