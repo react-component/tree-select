@@ -422,8 +422,6 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         mergedFieldNames,
       );
 
-      console.log('triggerChange');
-
       const labeledValues = convert2LabelValues(newRawValues);
       setInternalValue(labeledValues);
 
