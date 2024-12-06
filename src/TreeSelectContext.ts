@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { ExpandAction } from 'rc-tree/lib/Tree';
-import type { DataNode, FieldNames, Key, LabeledValueType } from './interface';
+import type { DataNode, FieldNames, Key } from './interface';
 import { CheckedStrategy } from './utils/strategyUtil';
 
 export interface TreeSelectContextProps {

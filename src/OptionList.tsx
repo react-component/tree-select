@@ -175,15 +175,15 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     resetCache();
   }, [checkedKeys, maxCount]);
 
-  const getSelectableKeys = (targetNode: DataNode, fieldNames: FieldNames): Key[] => {
-    const keys = [targetNode[fieldNames.value]];
+  const getSelectableKeys = (targetNode: DataNode, names: FieldNames): Key[] => {
+    const keys = [targetNode[names.value]];
     if (!Array.isArray(targetNode.children)) {
       return keys;
     }
 
     return targetNode.children.reduce((acc, child) => {
       if (!child.disabled) {
-        acc.push(...getSelectableKeys(child, fieldNames));
+        acc.push(...getSelectableKeys(child, names));
       }
       return acc;
     }, keys);
