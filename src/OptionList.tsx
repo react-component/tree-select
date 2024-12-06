@@ -9,9 +9,11 @@ import useMemo from 'rc-util/lib/hooks/useMemo';
 import * as React from 'react';
 import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
-import type { DataNode, Key, SafeKey } from './interface';
+import type { DataNode, FieldNames, Key, SafeKey } from './interface';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
 import { useEvent } from 'rc-util';
+import { formatStrategyValues } from './utils/strategyUtil';
+import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 
 const HIDDEN_STYLE = {
   width: 0,
@@ -47,8 +49,9 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     treeExpandAction,
     treeTitleRender,
     onPopupScroll,
-    displayValues,
     isOverMaxCount,
+    maxCount,
+    showCheckedStrategy,
   } = React.useContext(TreeSelectContext);
 
   const {
@@ -78,11 +81,6 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [open, treeData],
     (prev, next) => next[0] && prev[1] !== next[1],
-  );
-
-  const memoRawValues = React.useMemo(
-    () => (displayValues || []).map(v => v.value),
-    [displayValues],
   );
 
   // ========================== Values ==========================
@@ -163,8 +161,69 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
+  const disabledCacheRef = React.useRef(new Map<Key, boolean>());
+  const lastCheckedKeysRef = React.useRef<Key[]>([]);
+  const lastMaxCountRef = React.useRef<number>(null);
+
+  const resetCache = React.useCallback(() => {
+    disabledCacheRef.current.clear();
+    lastCheckedKeysRef.current = [...checkedKeys];
+    lastMaxCountRef.current = maxCount;
+  }, [checkedKeys, maxCount]);
+
+  React.useEffect(() => {
+    resetCache();
+  }, [checkedKeys, maxCount]);
+
+  const getSelectableKeys = (targetNode: DataNode, names: FieldNames): Key[] => {
+    const keys = [targetNode[names.value]];
+    if (!Array.isArray(targetNode.children)) {
+      return keys;
+    }
+
+    return targetNode.children.reduce((acc, child) => {
+      if (!child.disabled) {
+        acc.push(...getSelectableKeys(child, names));
+      }
+      return acc;
+    }, keys);
+  };
+
   const nodeDisabled = useEvent((node: DataNode) => {
-    return isOverMaxCount && !memoRawValues.includes(node[fieldNames.value]);
+    const nodeValue = node[fieldNames.value];
+
+    if (checkedKeys.includes(nodeValue)) {
+      return false;
+    }
+
+    if (isOverMaxCount) {
+      return true;
+    }
+
+    const cacheKey = `${nodeValue}-${checkedKeys.join(',')}-${maxCount}`;
+
+    // check cache
+    if (disabledCacheRef.current.has(cacheKey)) {
+      return disabledCacheRef.current.get(cacheKey);
+    }
+
+    // calculate disabled state
+    const selectableNodeKeys = getSelectableKeys(node, fieldNames);
+    const simulatedCheckedKeys = [...checkedKeys, ...selectableNodeKeys];
+    const { checkedKeys: conductedKeys } = conductCheck(simulatedCheckedKeys, true, keyEntities);
+    const simulatedDisplayValues = formatStrategyValues(
+      conductedKeys as SafeKey[],
+      showCheckedStrategy,
+      keyEntities,
+      fieldNames,
+    );
+
+    const isDisabled = simulatedDisplayValues.length > maxCount;
+
+    // update cache
+    disabledCacheRef.current.set(cacheKey, isDisabled);
+
+    return isDisabled;
   });
 
   // ========================== Get First Selectable Node ==========================
