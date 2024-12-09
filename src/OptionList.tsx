@@ -13,7 +13,6 @@ import type { DataNode, FieldNames, Key, SafeKey } from './interface';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
 import { useEvent } from 'rc-util';
 import { formatStrategyValues } from './utils/strategyUtil';
-import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 
 const HIDDEN_STYLE = {
   width: 0,
@@ -210,9 +209,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // calculate disabled state
     const selectableNodeKeys = getSelectableKeys(node, fieldNames);
     const simulatedCheckedKeys = [...checkedKeys, ...selectableNodeKeys];
-    const { checkedKeys: conductedKeys } = conductCheck(simulatedCheckedKeys, true, keyEntities);
     const simulatedDisplayValues = formatStrategyValues(
-      conductedKeys as SafeKey[],
+      simulatedCheckedKeys as SafeKey[],
       showCheckedStrategy,
       keyEntities,
       fieldNames,
