@@ -408,6 +408,17 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
   const [cachedDisplayValues] = useCache(displayValues);
 
+  // ========================== MaxCount ==========================
+  const mergedMaxCount = React.useMemo(() => {
+    if (
+      mergedMultiple &&
+      (mergedShowCheckedStrategy === 'SHOW_CHILD' || treeCheckStrictly || !treeCheckable)
+    ) {
+      return maxCount;
+    }
+    return null;
+  }, [maxCount, mergedMultiple, treeCheckStrictly, mergedShowCheckedStrategy, treeCheckable]);
+
   // =========================== Change ===========================
   const triggerChange = useRefFunc(
     (
@@ -423,7 +434,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       );
 
       // Not allow pass with `maxCount`
-      if (maxCount && formattedKeyList.length > maxCount) {
+      if (mergedMaxCount && formattedKeyList.length > mergedMaxCount) {
         return;
       }
 

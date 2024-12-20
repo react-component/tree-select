@@ -180,6 +180,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       return false;
     }
 
+    console.log('--->', node);
+
     if (leftMaxCount === null) {
       return false;
     }
