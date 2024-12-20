@@ -226,6 +226,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const mergedTreeData = useTreeData(treeData, children, treeDataSimpleMode);
 
   const { keyEntities, valueEntities } = useDataEntities(mergedTreeData, mergedFieldNames);
+  console.log('-->', valueEntities);
 
   /** Get `missingRawValues` which not exist in the tree yet */
   const splitRawValues = React.useCallback(
@@ -630,7 +631,9 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeTitleRender,
       onPopupScroll,
       leftMaxCount: maxCount ? maxCount - cachedDisplayValues.length : null,
-      showCheckedStrategy: mergedShowCheckedStrategy,
+      leafCountOnly:
+        mergedShowCheckedStrategy === 'SHOW_CHILD' && !treeCheckStrictly && !!treeCheckable,
+      valueEntities,
     };
   }, [
     virtual,
@@ -647,6 +650,9 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     maxCount,
     cachedDisplayValues.length,
     mergedShowCheckedStrategy,
+    treeCheckStrictly,
+    treeCheckable,
+    valueEntities,
   ]);
 
   // ======================= Legacy Context =======================

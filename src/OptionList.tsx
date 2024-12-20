@@ -49,7 +49,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     treeTitleRender,
     onPopupScroll,
     leftMaxCount,
-    showCheckedStrategy,
+    leafCountOnly,
+    valueEntities,
   } = React.useContext(TreeSelectContext);
 
   const {
@@ -180,10 +181,14 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       return false;
     }
 
-    console.log('--->', node);
+    // console.log('--->', node);
 
     if (leftMaxCount === null) {
       return false;
+    }
+
+    if (!leafCountOnly && leftMaxCount <= 0) {
+      return true;
     }
 
     // const cacheKey = `${nodeValue}-${checkedKeys.join(',')}-${maxCount}`;

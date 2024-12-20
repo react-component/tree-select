@@ -10,6 +10,8 @@ function warningProps(props: TreeSelectProps & { searchPlaceholder?: string }) {
     labelInValue,
     value,
     multiple,
+    showCheckedStrategy,
+    maxCount,
   } = props;
 
   warning(!searchPlaceholder, '`searchPlaceholder` has been removed.');
@@ -20,7 +22,7 @@ function warningProps(props: TreeSelectProps & { searchPlaceholder?: string }) {
 
   if (labelInValue || treeCheckStrictly) {
     warning(
-      toArray(value).every((val) => val && typeof val === 'object' && 'value' in val),
+      toArray(value).every(val => val && typeof val === 'object' && 'value' in val),
       'Invalid prop `value` supplied to `TreeSelect`. You should use { label: string, value: string | number } or [{ label: string, value: string | number }] instead.',
     );
   }
@@ -32,6 +34,13 @@ function warningProps(props: TreeSelectProps & { searchPlaceholder?: string }) {
     );
   } else {
     warning(!Array.isArray(value), '`value` should not be array when `TreeSelect` is single mode.');
+  }
+
+  if (maxCount && (showCheckedStrategy === 'SHOW_ALL' || showCheckedStrategy === 'SHOW_PARENT')) {
+    warning(
+      false,
+      '`maxCount` not work with `showCheckedStrategy=SHOW_ALL` or `showCheckedStrategy=SHOW_PARENT`.',
+    );
   }
 }
 

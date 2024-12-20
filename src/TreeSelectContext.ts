@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { ExpandAction } from 'rc-tree/lib/Tree';
 import type { DataNode, FieldNames, Key } from './interface';
-import type { CheckedStrategy } from './utils/strategyUtil';
+import type useDataEntities from './hooks/useDataEntities';
 
 export interface TreeSelectContextProps {
   virtual?: boolean;
@@ -15,8 +15,12 @@ export interface TreeSelectContextProps {
   treeExpandAction?: ExpandAction;
   treeTitleRender?: (node: any) => React.ReactNode;
   onPopupScroll?: React.UIEventHandler<HTMLDivElement>;
-  leftMaxCount?: number | null;
-  showCheckedStrategy?: CheckedStrategy;
+
+  // For `maxCount` usage
+  leftMaxCount: number | null;
+  /** When `true`, only take leaf node as count, or take all as count with `maxCount` limitation */
+  leafCountOnly: boolean;
+  valueEntities: ReturnType<typeof useDataEntities>['valueEntities'];
 }
 
 const TreeSelectContext = React.createContext<TreeSelectContextProps>(null as any);
