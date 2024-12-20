@@ -422,6 +422,11 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         mergedFieldNames,
       );
 
+      // Not allow pass with `maxCount`
+      if (maxCount && formattedKeyList.length > maxCount) {
+        return;
+      }
+
       const labeledValues = convert2LabelValues(newRawValues);
       setInternalValue(labeledValues);
 
@@ -600,9 +605,6 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   });
 
   // ========================== Context ===========================
-  const isOverMaxCount =
-    mergedMultiple && maxCount !== undefined && cachedDisplayValues?.length >= maxCount;
-
   const treeSelectContext = React.useMemo<TreeSelectContextProps>(() => {
     return {
       virtual,
@@ -616,8 +618,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeExpandAction,
       treeTitleRender,
       onPopupScroll,
-      isOverMaxCount,
-      maxCount,
+      leftMaxCount: maxCount ? maxCount - cachedDisplayValues.length : null,
       showCheckedStrategy: mergedShowCheckedStrategy,
     };
   }, [
@@ -633,7 +634,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     treeTitleRender,
     onPopupScroll,
     maxCount,
-    mergedMultiple,
+    cachedDisplayValues.length,
     mergedShowCheckedStrategy,
   ]);
 

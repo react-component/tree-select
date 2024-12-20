@@ -80,7 +80,6 @@ export default () => {
       <h2>checkable with maxCount</h2>
       <TreeSelect
         style={{ width: 300 }}
-        multiple
         treeCheckable
         // showCheckedStrategy="SHOW_ALL"
         // showCheckedStrategy="SHOW_PARENT"

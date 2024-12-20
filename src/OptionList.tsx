@@ -48,8 +48,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     treeExpandAction,
     treeTitleRender,
     onPopupScroll,
-    isOverMaxCount,
-    maxCount,
+    leftMaxCount,
     showCheckedStrategy,
   } = React.useContext(TreeSelectContext);
 
@@ -160,33 +159,19 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
-  const disabledCacheRef = React.useRef(new Map<Key, boolean>());
-  const lastCheckedKeysRef = React.useRef<Key[]>([]);
-  const lastMaxCountRef = React.useRef<number>(null);
+  // const getSelectableKeys = (targetNode: DataNode, names: FieldNames): Key[] => {
+  //   const keys = [targetNode[names.value]];
+  //   if (!Array.isArray(targetNode.children)) {
+  //     return keys;
+  //   }
 
-  const resetCache = React.useCallback(() => {
-    disabledCacheRef.current.clear();
-    lastCheckedKeysRef.current = [...checkedKeys];
-    lastMaxCountRef.current = maxCount;
-  }, [checkedKeys, maxCount]);
-
-  React.useEffect(() => {
-    resetCache();
-  }, [checkedKeys, maxCount]);
-
-  const getSelectableKeys = (targetNode: DataNode, names: FieldNames): Key[] => {
-    const keys = [targetNode[names.value]];
-    if (!Array.isArray(targetNode.children)) {
-      return keys;
-    }
-
-    return targetNode.children.reduce((acc, child) => {
-      if (!child.disabled) {
-        acc.push(...getSelectableKeys(child, names));
-      }
-      return acc;
-    }, keys);
-  };
+  //   return targetNode.children.reduce((acc, child) => {
+  //     if (!child.disabled) {
+  //       acc.push(...getSelectableKeys(child, names));
+  //     }
+  //     return acc;
+  //   }, keys);
+  // };
 
   const nodeDisabled = useEvent((node: DataNode) => {
     const nodeValue = node[fieldNames.value];
@@ -195,33 +180,35 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       return false;
     }
 
-    if (isOverMaxCount) {
-      return true;
+    if (leftMaxCount === null) {
+      return false;
     }
 
-    const cacheKey = `${nodeValue}-${checkedKeys.join(',')}-${maxCount}`;
+    // const cacheKey = `${nodeValue}-${checkedKeys.join(',')}-${maxCount}`;
 
-    // check cache
-    if (disabledCacheRef.current.has(cacheKey)) {
-      return disabledCacheRef.current.get(cacheKey);
-    }
+    // // check cache
+    // if (disabledCacheRef.current.has(cacheKey)) {
+    //   return disabledCacheRef.current.get(cacheKey);
+    // }
 
-    // calculate disabled state
-    const selectableNodeKeys = getSelectableKeys(node, fieldNames);
-    const simulatedCheckedKeys = [...checkedKeys, ...selectableNodeKeys];
-    const simulatedDisplayValues = formatStrategyValues(
-      simulatedCheckedKeys as SafeKey[],
-      showCheckedStrategy,
-      keyEntities,
-      fieldNames,
-    );
+    // // calculate disabled state
+    // const selectableNodeKeys = getSelectableKeys(node, fieldNames);
+    // const simulatedCheckedKeys = [...checkedKeys, ...selectableNodeKeys];
+    // const simulatedDisplayValues = formatStrategyValues(
+    //   simulatedCheckedKeys as SafeKey[],
+    //   showCheckedStrategy,
+    //   keyEntities,
+    //   fieldNames,
+    // );
 
-    const isDisabled = simulatedDisplayValues.length > maxCount;
+    // const isDisabled = simulatedDisplayValues.length > maxCount;
 
-    // update cache
-    disabledCacheRef.current.set(cacheKey, isDisabled);
+    // // update cache
+    // disabledCacheRef.current.set(cacheKey, isDisabled);
 
-    return isDisabled;
+    // return isDisabled;
+
+    return false;
   });
 
   // ========================== Get First Selectable Node ==========================
