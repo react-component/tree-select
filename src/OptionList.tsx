@@ -160,19 +160,38 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
-  // const getSelectableKeys = (targetNode: DataNode, names: FieldNames): Key[] => {
-  //   const keys = [targetNode[names.value]];
-  //   if (!Array.isArray(targetNode.children)) {
-  //     return keys;
-  //   }
+  // ========================= Disabled =========================
+  const disabledCacheRef = React.useRef<Map<string, boolean>>(new Map());
 
-  //   return targetNode.children.reduce((acc, child) => {
-  //     if (!child.disabled) {
-  //       acc.push(...getSelectableKeys(child, names));
-  //     }
-  //     return acc;
-  //   }, keys);
-  // };
+  // Clear cache if `leftMaxCount` changed
+  React.useEffect(() => {
+    if (leftMaxCount) {
+      disabledCacheRef.current.clear();
+    }
+  }, [leftMaxCount]);
+
+  function getDisabledWithCache(node: DataNode) {
+    const value = node[fieldNames.value];
+    if (!disabledCacheRef.current.has(value)) {
+      const entity = valueEntities.get(value);
+      const isLeaf = (entity.children || []).length === 0;
+
+      if (!isLeaf) {
+        const checkableChildren = entity.children.filter(
+          childTreeNode =>
+            !childTreeNode.node.disabled &&
+            !childTreeNode.node.disableCheckbox &&
+            !checkedKeys.includes(childTreeNode.node[fieldNames.value]),
+        );
+
+        const checkableChildrenCount = checkableChildren.length;
+        disabledCacheRef.current.set(value, checkableChildrenCount > leftMaxCount);
+      } else {
+        disabledCacheRef.current.set(value, false);
+      }
+    }
+    return disabledCacheRef.current.get(value);
+  }
 
   const nodeDisabled = useEvent((node: DataNode) => {
     const nodeValue = node[fieldNames.value];
@@ -181,39 +200,18 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       return false;
     }
 
-    // console.log('--->', node);
-
     if (leftMaxCount === null) {
       return false;
     }
 
-    if (!leafCountOnly && leftMaxCount <= 0) {
+    if (leftMaxCount <= 0) {
       return true;
     }
 
-    // const cacheKey = `${nodeValue}-${checkedKeys.join(',')}-${maxCount}`;
-
-    // // check cache
-    // if (disabledCacheRef.current.has(cacheKey)) {
-    //   return disabledCacheRef.current.get(cacheKey);
-    // }
-
-    // // calculate disabled state
-    // const selectableNodeKeys = getSelectableKeys(node, fieldNames);
-    // const simulatedCheckedKeys = [...checkedKeys, ...selectableNodeKeys];
-    // const simulatedDisplayValues = formatStrategyValues(
-    //   simulatedCheckedKeys as SafeKey[],
-    //   showCheckedStrategy,
-    //   keyEntities,
-    //   fieldNames,
-    // );
-
-    // const isDisabled = simulatedDisplayValues.length > maxCount;
-
-    // // update cache
-    // disabledCacheRef.current.set(cacheKey, isDisabled);
-
-    // return isDisabled;
+    // This is a low performance calculation
+    if (leafCountOnly && leftMaxCount) {
+      return getDisabledWithCache(node);
+    }
 
     return false;
   });

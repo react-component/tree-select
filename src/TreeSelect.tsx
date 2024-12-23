@@ -226,7 +226,6 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const mergedTreeData = useTreeData(treeData, children, treeDataSimpleMode);
 
   const { keyEntities, valueEntities } = useDataEntities(mergedTreeData, mergedFieldNames);
-  console.log('-->', valueEntities);
 
   /** Get `missingRawValues` which not exist in the tree yet */
   const splitRawValues = React.useCallback(
