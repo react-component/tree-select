@@ -629,7 +629,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeExpandAction,
       treeTitleRender,
       onPopupScroll,
-      leftMaxCount: maxCount ? maxCount - cachedDisplayValues.length : null,
+      leftMaxCount: maxCount === undefined ? null : maxCount - cachedDisplayValues.length,
       leafCountOnly:
         mergedShowCheckedStrategy === 'SHOW_CHILD' && !treeCheckStrictly && !!treeCheckable,
       valueEntities,

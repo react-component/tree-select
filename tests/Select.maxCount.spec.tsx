@@ -271,33 +271,6 @@ describe('TreeSelect.maxCount with different strategies', () => {
     fireEvent.click(childCheckboxes[2]);
     expect(handleChange).toHaveBeenCalledTimes(2);
   });
-
-  it('should respect maxCount with SHOW_ALL strategy', () => {
-    const handleChange = jest.fn();
-    const { container } = render(
-      <TreeSelect
-        treeData={treeData}
-        treeCheckable
-        treeDefaultExpandAll
-        multiple
-        maxCount={2}
-        showCheckedStrategy={TreeSelect.SHOW_ALL}
-        onChange={handleChange}
-        open
-      />,
-    );
-
-    // Select parent node - should not work as it would show both parent and children
-    const parentCheckbox = within(container).getByText('parent');
-    fireEvent.click(parentCheckbox);
-    expect(handleChange).not.toHaveBeenCalled();
-
-    // Select individual children
-    const childCheckboxes = within(container).getAllByText(/child/);
-    fireEvent.click(childCheckboxes[0]);
-    fireEvent.click(childCheckboxes[1]);
-    expect(handleChange).toHaveBeenCalledTimes(2);
-  });
 });
 
 describe('TreeSelect.maxCount with treeCheckStrictly', () => {

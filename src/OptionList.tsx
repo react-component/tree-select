@@ -9,10 +9,9 @@ import useMemo from 'rc-util/lib/hooks/useMemo';
 import * as React from 'react';
 import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
-import type { DataNode, FieldNames, Key, SafeKey } from './interface';
+import type { DataNode, Key, SafeKey } from './interface';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
 import { useEvent } from 'rc-util';
-import { formatStrategyValues } from './utils/strategyUtil';
 
 const HIDDEN_STYLE = {
   width: 0,
