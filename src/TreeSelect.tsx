@@ -34,6 +34,7 @@ import type {
   DefaultValueType,
   FieldNames,
   LegacyDataNode,
+  DefaultOptionType,
 } from './interface';
 
 export interface TreeSelectProps<ValueType = any, OptionType extends DataNode = DataNode>
@@ -45,7 +46,11 @@ export interface TreeSelectProps<ValueType = any, OptionType extends DataNode = 
   // >>> Value
   value?: ValueType;
   defaultValue?: ValueType;
-  onChange?: (value: ValueType, labelList: React.ReactNode[], extra: ChangeEventExtra) => void;
+  onChange?: (
+    value: ValueType,
+    labelList: React.ReactNode[],
+    extra: ChangeEventExtra & { option?: DefaultOptionType },
+  ) => void;
 
   // >>> Search
   searchValue?: string;
@@ -423,7 +428,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const triggerChange = useRefFunc(
     (
       newRawValues: SafeKey[],
-      extra: { triggerValue?: SafeKey; selected?: boolean },
+      extra: { triggerValue?: SafeKey; selected?: boolean; nodes?: DefaultOptionType },
       source: SelectSource,
     ) => {
       const formattedKeyList = formatStrategyValues(
@@ -475,7 +480,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           // [Legacy] Always return as array contains label & value
           preValue: rawLabeledValues,
           triggerValue,
-        } as ChangeEventExtra;
+          option: extra.nodes,
+        } as ChangeEventExtra & { option?: DefaultOptionType };
 
         // [Legacy] Fill legacy data if user query.
         // This is expansive that we only fill when user query
@@ -524,7 +530,11 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       // Never be falsy but keep it safe
       if (!mergedMultiple) {
         // Single mode always set value
-        triggerChange([selectedValue], { selected: true, triggerValue: selectedValue }, 'option');
+        triggerChange(
+          [selectedValue],
+          { selected: true, triggerValue: selectedValue, nodes: node as DefaultOptionType },
+          'option',
+        );
       } else {
         let newRawValues = selected
           ? [...rawValues, selectedValue]
@@ -554,7 +564,11 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
             ...checkedKeys.map(key => keyEntities[key as SafeKey].node[mergedFieldNames.value]),
           ];
         }
-        triggerChange(newRawValues, { selected, triggerValue: selectedValue }, source || 'option');
+        triggerChange(
+          newRawValues,
+          { selected, triggerValue: selectedValue, nodes: node as DefaultOptionType },
+          source || 'option',
+        );
       }
 
       // Trigger select event
