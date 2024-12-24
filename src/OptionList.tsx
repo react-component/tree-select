@@ -162,10 +162,18 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   // ========================= Disabled =========================
   const disabledCacheRef = React.useRef<Map<string, boolean>>(new Map());
 
-  // Clear cache if `leftMaxCount` changed
+  // Force update is needed since clearing cache alone doesn't trigger
+  // a recalculation of node disabled states
+  const [, setForceUpdate] = React.useState({});
+
+  // When leftMaxCount changes, we need to:
+  // 1. Clear the disabled state cache
+  // 2. Trigger a re-render to recalculate all node disabled states
+  // This ensures parent nodes are properly disabled when max count is reached
   React.useEffect(() => {
     if (leftMaxCount) {
       disabledCacheRef.current.clear();
+      setForceUpdate({});
     }
   }, [leftMaxCount]);
 
