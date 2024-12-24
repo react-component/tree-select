@@ -71,4 +71,25 @@ describe('TreeSelect.warning', () => {
       'Warning: Second param of `onDropdownVisibleChange` has been removed.',
     );
   });
+
+  it('warns on using maxCount with showCheckedStrategy=SHOW_ALL when treeCheckStrictly=false', () => {
+    mount(<TreeSelect maxCount={2} showCheckedStrategy="SHOW_ALL" />);
+    expect(spy).toHaveBeenCalledWith(
+      'Warning: `maxCount` not work with `showCheckedStrategy=SHOW_ALL` (when `treeCheckStrictly=false`) or `showCheckedStrategy=SHOW_PARENT`.',
+    );
+  });
+
+  it('warns on using maxCount with showCheckedStrategy=SHOW_PARENT', () => {
+    mount(<TreeSelect maxCount={2} showCheckedStrategy="SHOW_PARENT" />);
+    expect(spy).toHaveBeenCalledWith(
+      'Warning: `maxCount` not work with `showCheckedStrategy=SHOW_ALL` (when `treeCheckStrictly=false`) or `showCheckedStrategy=SHOW_PARENT`.',
+    );
+  });
+
+  it('does not warn on using maxCount with showCheckedStrategy=SHOW_ALL when treeCheckStrictly=true', () => {
+    mount(<TreeSelect maxCount={2} showCheckedStrategy="SHOW_ALL" treeCheckStrictly />);
+    expect(spy).not.toHaveBeenCalledWith(
+      'Warning: `maxCount` not work with `showCheckedStrategy=SHOW_ALL` (when `treeCheckStrictly=false`) or `showCheckedStrategy=SHOW_PARENT`.',
+    );
+  });
 });

@@ -408,6 +408,17 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
   const [cachedDisplayValues] = useCache(displayValues);
 
+  // ========================== MaxCount ==========================
+  const mergedMaxCount = React.useMemo(() => {
+    if (
+      mergedMultiple &&
+      (mergedShowCheckedStrategy === 'SHOW_CHILD' || treeCheckStrictly || !treeCheckable)
+    ) {
+      return maxCount;
+    }
+    return null;
+  }, [maxCount, mergedMultiple, treeCheckStrictly, mergedShowCheckedStrategy, treeCheckable]);
+
   // =========================== Change ===========================
   const triggerChange = useRefFunc(
     (
@@ -422,11 +433,9 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         mergedFieldNames,
       );
 
-      // if multiple and maxCount is set, check if exceed maxCount
-      if (mergedMultiple && maxCount !== undefined) {
-        if (formattedKeyList.length > maxCount) {
-          return;
-        }
+      // Not allow pass with `maxCount`
+      if (mergedMaxCount && formattedKeyList.length > mergedMaxCount) {
+        return;
       }
 
       const labeledValues = convert2LabelValues(newRawValues);
@@ -607,9 +616,6 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   });
 
   // ========================== Context ===========================
-  const isOverMaxCount =
-    mergedMultiple && maxCount !== undefined && cachedDisplayValues?.length >= maxCount;
-
   const treeSelectContext = React.useMemo<TreeSelectContextProps>(() => {
     return {
       virtual,
@@ -623,8 +629,10 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeExpandAction,
       treeTitleRender,
       onPopupScroll,
-      displayValues: cachedDisplayValues,
-      isOverMaxCount,
+      leftMaxCount: maxCount === undefined ? null : maxCount - cachedDisplayValues.length,
+      leafCountOnly:
+        mergedShowCheckedStrategy === 'SHOW_CHILD' && !treeCheckStrictly && !!treeCheckable,
+      valueEntities,
     };
   }, [
     virtual,
@@ -639,8 +647,11 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     treeTitleRender,
     onPopupScroll,
     maxCount,
-    cachedDisplayValues,
-    mergedMultiple,
+    cachedDisplayValues.length,
+    mergedShowCheckedStrategy,
+    treeCheckStrictly,
+    treeCheckable,
+    valueEntities,
   ]);
 
   // ======================= Legacy Context =======================

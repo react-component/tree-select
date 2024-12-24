@@ -47,8 +47,9 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     treeExpandAction,
     treeTitleRender,
     onPopupScroll,
-    displayValues,
-    isOverMaxCount,
+    leftMaxCount,
+    leafCountOnly,
+    valueEntities,
   } = React.useContext(TreeSelectContext);
 
   const {
@@ -78,11 +79,6 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [open, treeData],
     (prev, next) => next[0] && prev[1] !== next[1],
-  );
-
-  const memoRawValues = React.useMemo(
-    () => (displayValues || []).map(v => v.value),
-    [displayValues],
   );
 
   // ========================== Values ==========================
@@ -163,8 +159,60 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
+  // ========================= Disabled =========================
+  const disabledCacheRef = React.useRef<Map<string, boolean>>(new Map());
+
+  // Clear cache if `leftMaxCount` changed
+  React.useEffect(() => {
+    if (leftMaxCount) {
+      disabledCacheRef.current.clear();
+    }
+  }, [leftMaxCount]);
+
+  function getDisabledWithCache(node: DataNode) {
+    const value = node[fieldNames.value];
+    if (!disabledCacheRef.current.has(value)) {
+      const entity = valueEntities.get(value);
+      const isLeaf = (entity.children || []).length === 0;
+
+      if (!isLeaf) {
+        const checkableChildren = entity.children.filter(
+          childTreeNode =>
+            !childTreeNode.node.disabled &&
+            !childTreeNode.node.disableCheckbox &&
+            !checkedKeys.includes(childTreeNode.node[fieldNames.value]),
+        );
+
+        const checkableChildrenCount = checkableChildren.length;
+        disabledCacheRef.current.set(value, checkableChildrenCount > leftMaxCount);
+      } else {
+        disabledCacheRef.current.set(value, false);
+      }
+    }
+    return disabledCacheRef.current.get(value);
+  }
+
   const nodeDisabled = useEvent((node: DataNode) => {
-    return isOverMaxCount && !memoRawValues.includes(node[fieldNames.value]);
+    const nodeValue = node[fieldNames.value];
+
+    if (checkedKeys.includes(nodeValue)) {
+      return false;
+    }
+
+    if (leftMaxCount === null) {
+      return false;
+    }
+
+    if (leftMaxCount <= 0) {
+      return true;
+    }
+
+    // This is a low performance calculation
+    if (leafCountOnly && leftMaxCount) {
+      return getDisabledWithCache(node);
+    }
+
+    return false;
   });
 
   // ========================== Get First Selectable Node ==========================

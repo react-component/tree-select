@@ -271,33 +271,6 @@ describe('TreeSelect.maxCount with different strategies', () => {
     fireEvent.click(childCheckboxes[2]);
     expect(handleChange).toHaveBeenCalledTimes(2);
   });
-
-  it('should respect maxCount with SHOW_ALL strategy', () => {
-    const handleChange = jest.fn();
-    const { container } = render(
-      <TreeSelect
-        treeData={treeData}
-        treeCheckable
-        treeDefaultExpandAll
-        multiple
-        maxCount={2}
-        showCheckedStrategy={TreeSelect.SHOW_ALL}
-        onChange={handleChange}
-        open
-      />,
-    );
-
-    // Select parent node - should not work as it would show both parent and children
-    const parentCheckbox = within(container).getByText('parent');
-    fireEvent.click(parentCheckbox);
-    expect(handleChange).not.toHaveBeenCalled();
-
-    // Select individual children
-    const childCheckboxes = within(container).getAllByText(/child/);
-    fireEvent.click(childCheckboxes[0]);
-    fireEvent.click(childCheckboxes[1]);
-    expect(handleChange).toHaveBeenCalledTimes(2);
-  });
 });
 
 describe('TreeSelect.maxCount with treeCheckStrictly', () => {
@@ -370,5 +343,134 @@ describe('TreeSelect.maxCount with treeCheckStrictly', () => {
     // Now should be able to select second child
     fireEvent.click(checkboxes[1]);
     expect(handleChange).toHaveBeenCalledTimes(4);
+  });
+});
+
+describe('TreeSelect.maxCount with complex scenarios', () => {
+  const complexTreeData = [
+    {
+      key: 'asia',
+      value: 'asia',
+      title: 'Asia',
+      children: [
+        {
+          key: 'china',
+          value: 'china',
+          title: 'China',
+          children: [
+            { key: 'beijing', value: 'beijing', title: 'Beijing' },
+            { key: 'shanghai', value: 'shanghai', title: 'Shanghai' },
+            { key: 'guangzhou', value: 'guangzhou', title: 'Guangzhou' },
+          ],
+        },
+        {
+          key: 'japan',
+          value: 'japan',
+          title: 'Japan',
+          children: [
+            { key: 'tokyo', value: 'tokyo', title: 'Tokyo' },
+            { key: 'osaka', value: 'osaka', title: 'Osaka' },
+          ],
+        },
+      ],
+    },
+    {
+      key: 'europe',
+      value: 'europe',
+      title: 'Europe',
+      children: [
+        {
+          key: 'uk',
+          value: 'uk',
+          title: 'United Kingdom',
+          children: [
+            { key: 'london', value: 'london', title: 'London' },
+            { key: 'manchester', value: 'manchester', title: 'Manchester' },
+          ],
+        },
+        {
+          key: 'france',
+          value: 'france',
+          title: 'France',
+          disabled: true,
+          children: [
+            { key: 'paris', value: 'paris', title: 'Paris' },
+            { key: 'lyon', value: 'lyon', title: 'Lyon' },
+          ],
+        },
+      ],
+    },
+  ];
+
+  it('should handle complex tree structure with maxCount correctly', () => {
+    const handleChange = jest.fn();
+    const { getByRole } = render(
+      <TreeSelect
+        treeData={complexTreeData}
+        treeCheckable
+        treeDefaultExpandAll
+        multiple
+        maxCount={3}
+        onChange={handleChange}
+        open
+      />,
+    );
+
+    const container = getByRole('tree');
+
+    // 选择一个顶层节点
+    const asiaNode = within(container).getByText('Asia');
+    fireEvent.click(asiaNode);
+    expect(handleChange).not.toHaveBeenCalled(); // 不应该触发，因为会超过 maxCount
+
+    // 选择叶子节点
+    const beijingNode = within(container).getByText('Beijing');
+    const shanghaiNode = within(container).getByText('Shanghai');
+    const tokyoNode = within(container).getByText('Tokyo');
+    const londonNode = within(container).getByText('London');
+
+    fireEvent.click(beijingNode);
+    fireEvent.click(shanghaiNode);
+    fireEvent.click(tokyoNode);
+    expect(handleChange).toHaveBeenCalledTimes(3);
+
+    // 尝试选择第四个节点，应该被阻止
+    fireEvent.click(londonNode);
+    expect(handleChange).toHaveBeenCalledTimes(3);
+
+    // 验证禁用状态
+    expect(londonNode.closest('div')).toHaveClass('rc-tree-select-tree-treenode-disabled');
+  });
+
+  it('should handle maxCount with mixed selection strategies', () => {
+    const handleChange = jest.fn();
+
+    const { getByRole } = render(
+      <TreeSelect
+        treeData={complexTreeData}
+        treeCheckable
+        treeDefaultExpandAll
+        multiple
+        maxCount={3}
+        onChange={handleChange}
+        defaultValue={['uk']}
+        open
+      />,
+    );
+
+    const container = getByRole('tree');
+
+    const tokyoNode = within(container).getByText('Tokyo');
+    fireEvent.click(tokyoNode);
+
+    // because UK node will show two children, so it will trigger one change
+    expect(handleChange).toHaveBeenCalledTimes(1);
+
+    const beijingNode = within(container).getByText('Beijing');
+    fireEvent.click(beijingNode);
+
+    // should not trigger change
+    expect(handleChange).toHaveBeenCalledTimes(1);
+    expect(beijingNode.closest('div')).toHaveClass('rc-tree-select-tree-treenode-disabled');
   });
 });
