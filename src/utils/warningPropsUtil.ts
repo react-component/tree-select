@@ -36,10 +36,14 @@ function warningProps(props: TreeSelectProps & { searchPlaceholder?: string }) {
     warning(!Array.isArray(value), '`value` should not be array when `TreeSelect` is single mode.');
   }
 
-  if (maxCount && (showCheckedStrategy === 'SHOW_ALL' || showCheckedStrategy === 'SHOW_PARENT')) {
+  if (
+    maxCount &&
+    ((showCheckedStrategy === 'SHOW_ALL' && !treeCheckStrictly) ||
+      showCheckedStrategy === 'SHOW_PARENT')
+  ) {
     warning(
       false,
-      '`maxCount` not work with `showCheckedStrategy=SHOW_ALL` or `showCheckedStrategy=SHOW_PARENT`.',
+      '`maxCount` not work with `showCheckedStrategy=SHOW_ALL` (when `treeCheckStrictly=false`) or `showCheckedStrategy=SHOW_PARENT`.',
     );
   }
 }
