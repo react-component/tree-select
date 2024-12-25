@@ -161,7 +161,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   // ========================= Disabled =========================
   // Cache disabled states in React state to ensure re-render when cache updates
-  const [disabledCache, setDisabledCache] = React.useState<Map<string, boolean>>(new Map());
+  const [disabledCache, setDisabledCache] = React.useState<Map<string, boolean>>(() => new Map());
 
   React.useEffect(() => {
     if (leftMaxCount) {
@@ -184,13 +184,9 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         );
 
         const checkableChildrenCount = checkableChildren.length;
-        const newCache = new Map(disabledCache);
-        newCache.set(value, checkableChildrenCount > leftMaxCount);
-        setDisabledCache(newCache);
+        disabledCache.set(value, checkableChildrenCount > leftMaxCount);
       } else {
-        const newCache = new Map(disabledCache);
-        newCache.set(value, false);
-        setDisabledCache(newCache);
+        disabledCache.set(value, false);
       }
     }
     return disabledCache.get(value);
