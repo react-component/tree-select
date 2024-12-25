@@ -160,18 +160,18 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   }, [searchValue]);
 
   // ========================= Disabled =========================
-  const disabledCacheRef = React.useRef<Map<string, boolean>>(new Map());
+  // Cache disabled states in React state to ensure re-render when cache updates
+  const [disabledCache, setDisabledCache] = React.useState<Map<string, boolean>>(() => new Map());
 
-  // Clear cache if `leftMaxCount` changed
   React.useEffect(() => {
     if (leftMaxCount) {
-      disabledCacheRef.current.clear();
+      setDisabledCache(new Map());
     }
   }, [leftMaxCount]);
 
   function getDisabledWithCache(node: DataNode) {
     const value = node[fieldNames.value];
-    if (!disabledCacheRef.current.has(value)) {
+    if (!disabledCache.has(value)) {
       const entity = valueEntities.get(value);
       const isLeaf = (entity.children || []).length === 0;
 
@@ -184,12 +184,12 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         );
 
         const checkableChildrenCount = checkableChildren.length;
-        disabledCacheRef.current.set(value, checkableChildrenCount > leftMaxCount);
+        disabledCache.set(value, checkableChildrenCount > leftMaxCount);
       } else {
-        disabledCacheRef.current.set(value, false);
+        disabledCache.set(value, false);
       }
     }
-    return disabledCacheRef.current.get(value);
+    return disabledCache.get(value);
   }
 
   const nodeDisabled = useEvent((node: DataNode) => {
