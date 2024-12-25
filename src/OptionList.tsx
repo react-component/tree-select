@@ -160,26 +160,18 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   }, [searchValue]);
 
   // ========================= Disabled =========================
-  const disabledCacheRef = React.useRef<Map<string, boolean>>(new Map());
+  // Cache disabled states in React state to ensure re-render when cache updates
+  const [disabledCache, setDisabledCache] = React.useState<Map<string, boolean>>(new Map());
 
-  // Force update is needed since clearing cache alone doesn't trigger
-  // a recalculation of node disabled states
-  const [, setForceUpdate] = React.useState({});
-
-  // When leftMaxCount changes, we need to:
-  // 1. Clear the disabled state cache
-  // 2. Trigger a re-render to recalculate all node disabled states
-  // This ensures parent nodes are properly disabled when max count is reached
   React.useEffect(() => {
     if (leftMaxCount) {
-      disabledCacheRef.current.clear();
-      setForceUpdate({});
+      setDisabledCache(new Map());
     }
   }, [leftMaxCount]);
 
   function getDisabledWithCache(node: DataNode) {
     const value = node[fieldNames.value];
-    if (!disabledCacheRef.current.has(value)) {
+    if (!disabledCache.has(value)) {
       const entity = valueEntities.get(value);
       const isLeaf = (entity.children || []).length === 0;
 
@@ -192,12 +184,16 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
         );
 
         const checkableChildrenCount = checkableChildren.length;
-        disabledCacheRef.current.set(value, checkableChildrenCount > leftMaxCount);
+        const newCache = new Map(disabledCache);
+        newCache.set(value, checkableChildrenCount > leftMaxCount);
+        setDisabledCache(newCache);
       } else {
-        disabledCacheRef.current.set(value, false);
+        const newCache = new Map(disabledCache);
+        newCache.set(value, false);
+        setDisabledCache(newCache);
       }
     }
-    return disabledCacheRef.current.get(value);
+    return disabledCache.get(value);
   }
 
   const nodeDisabled = useEvent((node: DataNode) => {
