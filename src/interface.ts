@@ -3,6 +3,19 @@ import type { SafeKey, Key, DataNode as TreeDataNode } from 'rc-tree/lib/interfa
 
 export type { SafeKey, Key };
 
+export interface BaseOptionType {
+  disabled?: boolean;
+  className?: string;
+  title?: string;
+  [name: string]: any;
+}
+
+export interface DefaultOptionType extends BaseOptionType {
+  label?: React.ReactNode;
+  value?: string | number | null;
+  children?: Omit<DefaultOptionType, 'children'>[];
+}
+
 export interface DataNode extends Record<string, any>, Omit<TreeDataNode, 'key' | 'children'> {
   key?: Key;
   value?: SafeKey;
