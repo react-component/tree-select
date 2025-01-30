@@ -56,7 +56,7 @@
     "@testing-library/react": "^12.1.5",
     "@types/jest": "^29.5.13",
     "@types/node": "^22.7.5",
-    "@types/react": "^18.3.11",
+    "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.1",
     "@types/warning": "^3.0.3",
     "@umijs/fabric": "^4.0.1",
