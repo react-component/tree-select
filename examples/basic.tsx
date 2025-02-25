@@ -259,7 +259,7 @@ class Demo extends React.Component {
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           style={{ width: 300 }}
           // dropdownStyle={{ height: 200, overflow: 'auto' }}
-          dropdownAlign={{
+          popupAlign={{
             overflow: { adjustY: 0, adjustX: 0 },
             offset: [0, 2],
           }}
@@ -327,7 +327,7 @@ class Demo extends React.Component {
         <h2>Testing in extreme conditions (Boundary conditions test) </h2>
         <TreeSelect
           style={{ width: 200 }}
-          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+          popupStyle={{ maxHeight: 200, overflow: 'auto' }}
           defaultValue="leaf1"
           multiple
           treeCheckable

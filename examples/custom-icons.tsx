@@ -86,7 +86,7 @@ function Demo() {
         placeholder={<span>Please Select</span>}
         transitionName="rc-tree-select-dropdown-slide-up"
         style={{ width: 300 }}
-        dropdownStyle={{ maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
+        popupStyle={{ maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
         showSearch
         allowClear
         {...iconProps}
@@ -99,7 +99,7 @@ function Demo() {
         placeholder={<span>Please Select</span>}
         transitionName="rc-tree-select-dropdown-slide-up"
         style={{ width: 300 }}
-        dropdownStyle={{ maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
+        popupStyle={{ maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
         showSearch
         allowClear
         {...iconPropsFunction}

@@ -82,7 +82,7 @@ class Demo extends React.Component {
         <h2>use treeDataSimpleMode</h2>
         <TreeSelect
           style={{ width: 300 }}
-          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+          popupStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           treeLine
           maxTagTextLength={10}

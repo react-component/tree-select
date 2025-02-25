@@ -62,8 +62,8 @@ describe('TreeSelect.basic', () => {
     it('renders tree correctly', () => {
       const wrapper = mount(
         <TreeSelect
-          dropdownClassName="awesome"
-          dropdownStyle={{ width: 300 }}
+          popupClassName="awesome"
+          popupStyle={{ width: 300 }}
           multiple
           treeCheckable
           treeDefaultExpandAll
