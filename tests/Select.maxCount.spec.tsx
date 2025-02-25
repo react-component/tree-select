@@ -104,7 +104,7 @@ describe('TreeSelect.maxCount', () => {
   });
 
   it('should respect maxCount when checking parent node in treeCheckable mode', () => {
-    const treeData = [
+    const data = [
       {
         key: '0',
         value: '0',
@@ -120,7 +120,7 @@ describe('TreeSelect.maxCount', () => {
     const handleChange = jest.fn();
     const { container } = render(
       <TreeSelect
-        treeData={treeData}
+        treeData={data}
         treeCheckable
         multiple
         maxCount={2}

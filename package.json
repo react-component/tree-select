@@ -46,7 +46,7 @@
   "dependencies": {
     "classnames": "2.x",
     "@rc-component/select": "~1.0.0",
-    "rc-tree": "~5.13.0",
+    "rc-tree": "~5.13.1",
     "@rc-component/util": "^1.2.1"
   },
   "devDependencies": {
