@@ -263,6 +263,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     }
 
     setActiveKey(nextActiveKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, searchValue]);
 
   // ========================= Keyboard =========================
@@ -305,6 +306,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   const hasLoadDataFn = useMemo(
     () => (searchValue ? false : true),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [searchValue, treeExpandedKeys || expandedKeys],
     ([preSearchValue], [nextSearchValue, nextExcludeSearchExpandedKeys]) =>
       preSearchValue !== nextSearchValue && !!(nextSearchValue || nextExcludeSearchExpandedKeys),
