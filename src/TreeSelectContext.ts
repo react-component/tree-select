@@ -5,7 +5,7 @@ import type useDataEntities from './hooks/useDataEntities';
 
 export interface TreeSelectContextProps {
   virtual?: boolean;
-  dropdownMatchSelectWidth?: boolean | number;
+  popupMatchSelectWidth?: boolean | number;
   listHeight: number;
   listItemHeight: number;
   listItemScrollOffset?: number;

@@ -1,17 +1,17 @@
-import { useBaseProps } from 'rc-select';
-import type { RefOptionListProps } from 'rc-select/lib/OptionList';
+import { useBaseProps } from '@rc-component/select';
+import type { RefOptionListProps } from '@rc-component/select/lib/OptionList';
 import type { TreeProps } from 'rc-tree';
 import Tree from 'rc-tree';
 import { UnstableContext } from 'rc-tree';
 import type { EventDataNode, ScrollTo } from 'rc-tree/lib/interface';
-import KeyCode from 'rc-util/lib/KeyCode';
-import useMemo from 'rc-util/lib/hooks/useMemo';
+import KeyCode from '@rc-component/util/lib/KeyCode';
+import useMemo from '@rc-component/util/lib/hooks/useMemo';
 import * as React from 'react';
 import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
 import type { DataNode, Key, SafeKey } from './interface';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
-import { useEvent } from 'rc-util';
+import { useEvent } from '@rc-component/util';
 
 const HIDDEN_STYLE = {
   width: 0,
@@ -43,7 +43,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     treeData,
     fieldNames,
     onSelect,
-    dropdownMatchSelectWidth,
+    popupMatchSelectWidth,
     treeExpandAction,
     treeTitleRender,
     onPopupScroll,
@@ -263,6 +263,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     }
 
     setActiveKey(nextActiveKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, searchValue]);
 
   // ========================= Keyboard =========================
@@ -305,6 +306,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   const hasLoadDataFn = useMemo(
     () => (searchValue ? false : true),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [searchValue, treeExpandedKeys || expandedKeys],
     ([preSearchValue], [nextSearchValue, nextExcludeSearchExpandedKeys]) =>
       preSearchValue !== nextSearchValue && !!(nextSearchValue || nextExcludeSearchExpandedKeys),
@@ -347,7 +349,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
           height={listHeight}
           itemHeight={listItemHeight}
           itemScrollOffset={listItemScrollOffset}
-          virtual={virtual !== false && dropdownMatchSelectWidth !== false}
+          virtual={virtual !== false && popupMatchSelectWidth !== false}
           multiple={multiple}
           icon={treeIcon}
           showIcon={showTreeIcon}

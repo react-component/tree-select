@@ -1,11 +1,10 @@
-import type { BaseSelectPropsWithoutPrivate, BaseSelectRef } from 'rc-select';
-import { BaseSelect } from 'rc-select';
-import useId from 'rc-select/lib/hooks/useId';
+import type { BaseSelectPropsWithoutPrivate, BaseSelectRef } from '@rc-component/select';
+import { BaseSelect } from '@rc-component/select';
+import useId from '@rc-component/select/lib/hooks/useId';
 import type { IconType } from 'rc-tree/lib/interface';
 import type { ExpandAction } from 'rc-tree/lib/Tree';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
-import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import warning from 'rc-util/lib/warning';
+import useMergedState from '@rc-component/util/lib/hooks/useMergedState';
 import * as React from 'react';
 import useCache from './hooks/useCache';
 import useCheckedKeys from './hooks/useCheckedKeys';
@@ -93,7 +92,7 @@ export interface TreeSelectProps<ValueType = any, OptionType extends DataNode = 
   listHeight?: number;
   listItemHeight?: number;
   listItemScrollOffset?: number;
-  onDropdownVisibleChange?: (open: boolean) => void;
+  onPopupVisibleChange?: (open: boolean) => void;
   treeTitleRender?: (node: OptionType) => React.ReactNode;
 
   // >>> Tree
@@ -163,8 +162,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     listItemHeight = 20,
     listItemScrollOffset = 0,
 
-    onDropdownVisibleChange,
-    dropdownMatchSelectWidth = true,
+    onPopupVisibleChange,
+    popupMatchSelectWidth = true,
 
     // Tree
     treeLine,
@@ -582,22 +581,13 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   );
 
   // ========================== Dropdown ==========================
-  const onInternalDropdownVisibleChange = React.useCallback(
+  const onInternalPopupVisibleChange = React.useCallback(
     (open: boolean) => {
-      if (onDropdownVisibleChange) {
-        const legacyParam = {};
-
-        Object.defineProperty(legacyParam, 'documentClickClose', {
-          get() {
-            warning(false, 'Second param of `onDropdownVisibleChange` has been removed.');
-            return false;
-          },
-        });
-
-        (onDropdownVisibleChange as any)(open, legacyParam);
+      if (onPopupVisibleChange) {
+        onPopupVisibleChange(open);
       }
     },
-    [onDropdownVisibleChange],
+    [onPopupVisibleChange],
   );
 
   // ====================== Display Change ========================
@@ -619,7 +609,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const treeSelectContext = React.useMemo<TreeSelectContextProps>(() => {
     return {
       virtual,
-      dropdownMatchSelectWidth,
+      popupMatchSelectWidth,
       listHeight,
       listItemHeight,
       listItemScrollOffset,
@@ -636,7 +626,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     };
   }, [
     virtual,
-    dropdownMatchSelectWidth,
+    popupMatchSelectWidth,
     listHeight,
     listItemHeight,
     listItemScrollOffset,
@@ -716,8 +706,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           // >>> Options
           OptionList={OptionList}
           emptyOptions={!mergedTreeData.length}
-          onDropdownVisibleChange={onInternalDropdownVisibleChange}
-          dropdownMatchSelectWidth={dropdownMatchSelectWidth}
+          onPopupVisibleChange={onInternalPopupVisibleChange}
+          popupMatchSelectWidth={popupMatchSelectWidth}
         />
       </LegacyContext.Provider>
     </TreeSelectContext.Provider>

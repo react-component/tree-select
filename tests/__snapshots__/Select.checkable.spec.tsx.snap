@@ -250,7 +250,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
                     </div>
                     <div
                       aria-expanded="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last rc-tree-select-tree-treenode-leaf"
                       draggable="false"
                       role="treeitem"
                     >
@@ -472,7 +472,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
                     </div>
                     <div
                       aria-expanded="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last rc-tree-select-tree-treenode-leaf"
                       draggable="false"
                       role="treeitem"
                     >
@@ -772,7 +772,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
                     </div>
                     <div
                       aria-expanded="true"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node rc-tree-select-tree-treenode-leaf"
                       draggable="false"
                       role="treeitem"
                     >
@@ -991,7 +991,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
                     </div>
                     <div
                       aria-expanded="true"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node rc-tree-select-tree-treenode-leaf"
                       draggable="false"
                       role="treeitem"
                     >

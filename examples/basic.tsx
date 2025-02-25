@@ -124,7 +124,7 @@ class Demo extends React.Component {
     console.log(args);
   };
 
-  onDropdownVisibleChange = visible => {
+  onPopupVisibleChange = visible => {
     const { value } = this.state;
     console.log(visible, value);
     if (Array.isArray(value) && value.length > 1 && value.length < 3) {
@@ -205,8 +205,8 @@ class Demo extends React.Component {
             console.log('onChange', val, ...args);
             this.setState({ value: val });
           }}
-          onDropdownVisibleChange={v => {
-            console.log('single onDropdownVisibleChange', v);
+          onPopupVisibleChange={v => {
+            console.log('single onPopupVisibleChange', v);
             this.setState({
               tsOpen: v,
             });
@@ -259,11 +259,11 @@ class Demo extends React.Component {
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           style={{ width: 300 }}
           // dropdownStyle={{ height: 200, overflow: 'auto' }}
-          dropdownAlign={{
+          popupAlign={{
             overflow: { adjustY: 0, adjustX: 0 },
             offset: [0, 2],
           }}
-          onDropdownVisibleChange={this.onDropdownVisibleChange}
+          onPopupVisibleChange={this.onPopupVisibleChange}
           placeholder={<i>请下拉选择</i>}
           treeLine
           maxTagTextLength={10}
@@ -327,7 +327,7 @@ class Demo extends React.Component {
         <h2>Testing in extreme conditions (Boundary conditions test) </h2>
         <TreeSelect
           style={{ width: 200 }}
-          dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
+          popupStyle={{ maxHeight: 200, overflow: 'auto' }}
           defaultValue="leaf1"
           multiple
           treeCheckable

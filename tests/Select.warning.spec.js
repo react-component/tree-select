@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { resetWarned } from 'rc-util/lib/warning';
+import { resetWarned } from '@rc-component/util/lib/warning';
 import TreeSelect from '../src';
 
 describe('TreeSelect.warning', () => {
@@ -53,22 +53,6 @@ describe('TreeSelect.warning', () => {
     mount(<TreeSelect treeCheckStrictly labelInValue={false} />);
     expect(spy).toHaveBeenCalledWith(
       'Warning: `treeCheckStrictly` will force set `labelInValue` to `true`.',
-    );
-  });
-
-  it('documentClickClose should removed', () => {
-    const wrapper = mount(
-      <TreeSelect
-        onDropdownVisibleChange={(_, { documentClickClose }) => {
-          expect(documentClickClose).toBeFalsy();
-        }}
-      />,
-    );
-
-    wrapper.openSelect();
-
-    expect(spy).toHaveBeenCalledWith(
-      'Warning: Second param of `onDropdownVisibleChange` has been removed.',
     );
   });
 

@@ -1,11 +1,11 @@
 import { render } from '@testing-library/react';
 import { mount } from 'enzyme';
-import KeyCode from 'rc-util/lib/KeyCode';
+import KeyCode from '@rc-component/util/lib/KeyCode';
 import React from 'react';
 import TreeSelect, { TreeNode } from '../src';
 import focusTest from './shared/focusTest';
 import { selectNode } from './util';
-import type { BaseSelectRef } from 'rc-select';
+import type { BaseSelectRef } from '@rc-component/select';
 
 const mockScrollTo = jest.fn();
 
@@ -60,17 +60,18 @@ describe('TreeSelect.basic', () => {
     });
 
     it('renders tree correctly', () => {
-      const wrapper = mount(
+      const { container } = render(
         <TreeSelect
-          dropdownClassName="awesome"
-          dropdownStyle={{ width: 300 }}
+          popupClassName="awesome"
+          popupStyle={{ width: 300 }}
           multiple
           treeCheckable
           treeDefaultExpandAll
           treeData={treeData}
+          open
         />,
       );
-      expect(wrapper.render()).toMatchSnapshot();
+      expect(container).toMatchSnapshot();
     });
 
     it('not crash if no children', () => {
