@@ -1,11 +1,11 @@
 import { render } from '@testing-library/react';
 import { mount } from 'enzyme';
-import KeyCode from 'rc-util/lib/KeyCode';
+import KeyCode from '@rc-component/util/lib/KeyCode';
 import React from 'react';
 import TreeSelect, { TreeNode } from '../src';
 import focusTest from './shared/focusTest';
 import { selectNode } from './util';
-import type { BaseSelectRef } from 'rc-select';
+import type { BaseSelectRef } from '@rc-component/select';
 
 const mockScrollTo = jest.fn();
 

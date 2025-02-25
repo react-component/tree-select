@@ -2,7 +2,7 @@ import * as React from 'react';
 import { convertDataToEntities } from 'rc-tree/lib/utils/treeUtil';
 import type { DataEntity } from 'rc-tree/lib/interface';
 import type { SafeKey, FieldNames } from '../interface';
-import warning from 'rc-util/lib/warning';
+import warning from '@rc-component/util/lib/warning';
 import { isNil } from '../utils/valueUtil';
 
 export default (treeData: any, fieldNames: FieldNames) =>

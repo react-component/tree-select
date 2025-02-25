@@ -1,5 +1,5 @@
 import { render, fireEvent, within } from '@testing-library/react';
-import KeyCode from 'rc-util/lib/KeyCode';
+import KeyCode from '@rc-component/util/lib/KeyCode';
 import { keyDown, keyUp } from './util';
 import React from 'react';
 import TreeSelect from '../src';

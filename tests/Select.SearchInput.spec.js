@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { mount } from 'enzyme';
 import { render, fireEvent } from '@testing-library/react';
 import TreeSelect, { TreeNode } from '../src';
-import KeyCode from 'rc-util/lib/KeyCode';
+import KeyCode from '@rc-component/util/lib/KeyCode';
 
 describe('TreeSelect.SearchInput', () => {
   it('select item will clean searchInput', () => {

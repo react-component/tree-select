@@ -1,7 +1,7 @@
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
 import React from 'react';
 import { mount } from 'enzyme';
-import { resetWarned } from 'rc-util/lib/warning';
+import { resetWarned } from '@rc-component/util/lib/warning';
 import TreeSelect, { TreeNode as SelectNode } from '../src';
 
 describe('TreeSelect.tree', () => {

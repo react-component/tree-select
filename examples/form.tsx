@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Select from 'rc-select';
+import Select from '@rc-component/select';
 import Form, { useForm, Field } from 'rc-field-form';
 import TreeSelect from '../src';
-import 'rc-select/assets/index.less';
+import '@rc-component/select/assets/index.less';
 import '../assets/index.less';
 import { gData } from './utils/dataUtil';
 
