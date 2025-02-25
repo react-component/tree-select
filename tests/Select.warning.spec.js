@@ -56,22 +56,6 @@ describe('TreeSelect.warning', () => {
     );
   });
 
-  it('documentClickClose should removed', () => {
-    const wrapper = mount(
-      <TreeSelect
-        onDropdownVisibleChange={(_, { documentClickClose }) => {
-          expect(documentClickClose).toBeFalsy();
-        }}
-      />,
-    );
-
-    wrapper.openSelect();
-
-    expect(spy).toHaveBeenCalledWith(
-      'Warning: Second param of `onDropdownVisibleChange` has been removed.',
-    );
-  });
-
   it('warns on using maxCount with showCheckedStrategy=SHOW_ALL when treeCheckStrictly=false', () => {
     mount(<TreeSelect maxCount={2} showCheckedStrategy="SHOW_ALL" />);
     expect(spy).toHaveBeenCalledWith(

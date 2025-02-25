@@ -4,7 +4,7 @@ import TreeSelect, { TreeNode } from '../src';
 
 function Demo() {
   return (
-    <TreeSelect style={{ width: 120 }} dropdownMatchSelectWidth={false} treeDefaultExpandAll>
+    <TreeSelect style={{ width: 120 }} popupMatchSelectWidth={false} treeDefaultExpandAll>
       <TreeNode value="parent 1" title="parent 1">
         <TreeNode value="parent 1-0 sdfsdfsdsdfsd" title="parent 1-0 sdfsdfsd">
           <TreeNode value="leaf1  sdfsdf" title="leaf1" />

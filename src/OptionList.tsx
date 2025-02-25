@@ -43,7 +43,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     treeData,
     fieldNames,
     onSelect,
-    dropdownMatchSelectWidth,
+    popupMatchSelectWidth,
     treeExpandAction,
     treeTitleRender,
     onPopupScroll,
@@ -347,7 +347,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
           height={listHeight}
           itemHeight={listItemHeight}
           itemScrollOffset={listItemScrollOffset}
-          virtual={virtual !== false && dropdownMatchSelectWidth !== false}
+          virtual={virtual !== false && popupMatchSelectWidth !== false}
           multiple={multiple}
           icon={treeIcon}
           showIcon={showTreeIcon}

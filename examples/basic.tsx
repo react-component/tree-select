@@ -124,7 +124,7 @@ class Demo extends React.Component {
     console.log(args);
   };
 
-  onDropdownVisibleChange = visible => {
+  onPopupVisibleChange = visible => {
     const { value } = this.state;
     console.log(visible, value);
     if (Array.isArray(value) && value.length > 1 && value.length < 3) {
@@ -205,8 +205,8 @@ class Demo extends React.Component {
             console.log('onChange', val, ...args);
             this.setState({ value: val });
           }}
-          onDropdownVisibleChange={v => {
-            console.log('single onDropdownVisibleChange', v);
+          onPopupVisibleChange={v => {
+            console.log('single onPopupVisibleChange', v);
             this.setState({
               tsOpen: v,
             });
@@ -263,7 +263,7 @@ class Demo extends React.Component {
             overflow: { adjustY: 0, adjustX: 0 },
             offset: [0, 2],
           }}
-          onDropdownVisibleChange={this.onDropdownVisibleChange}
+          onPopupVisibleChange={this.onPopupVisibleChange}
           placeholder={<i>请下拉选择</i>}
           treeLine
           maxTagTextLength={10}

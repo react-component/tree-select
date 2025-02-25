@@ -60,7 +60,7 @@ describe('TreeSelect.basic', () => {
     });
 
     it('renders tree correctly', () => {
-      const wrapper = mount(
+      const { container } = render(
         <TreeSelect
           popupClassName="awesome"
           popupStyle={{ width: 300 }}
@@ -68,9 +68,10 @@ describe('TreeSelect.basic', () => {
           treeCheckable
           treeDefaultExpandAll
           treeData={treeData}
+          open
         />,
       );
-      expect(wrapper.render()).toMatchSnapshot();
+      expect(container).toMatchSnapshot();
     });
 
     it('not crash if no children', () => {

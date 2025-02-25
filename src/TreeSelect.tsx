@@ -93,7 +93,7 @@ export interface TreeSelectProps<ValueType = any, OptionType extends DataNode = 
   listHeight?: number;
   listItemHeight?: number;
   listItemScrollOffset?: number;
-  onDropdownVisibleChange?: (open: boolean) => void;
+  onPopupVisibleChange?: (open: boolean) => void;
   treeTitleRender?: (node: OptionType) => React.ReactNode;
 
   // >>> Tree
@@ -163,8 +163,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     listItemHeight = 20,
     listItemScrollOffset = 0,
 
-    onDropdownVisibleChange,
-    dropdownMatchSelectWidth = true,
+    onPopupVisibleChange,
+    popupMatchSelectWidth = true,
 
     // Tree
     treeLine,
@@ -582,22 +582,13 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   );
 
   // ========================== Dropdown ==========================
-  const onInternalDropdownVisibleChange = React.useCallback(
+  const onInternalPopupVisibleChange = React.useCallback(
     (open: boolean) => {
-      if (onDropdownVisibleChange) {
-        const legacyParam = {};
-
-        Object.defineProperty(legacyParam, 'documentClickClose', {
-          get() {
-            warning(false, 'Second param of `onDropdownVisibleChange` has been removed.');
-            return false;
-          },
-        });
-
-        (onDropdownVisibleChange as any)(open, legacyParam);
+      if (onPopupVisibleChange) {
+        onPopupVisibleChange(open);
       }
     },
-    [onDropdownVisibleChange],
+    [onPopupVisibleChange],
   );
 
   // ====================== Display Change ========================
@@ -619,7 +610,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const treeSelectContext = React.useMemo<TreeSelectContextProps>(() => {
     return {
       virtual,
-      dropdownMatchSelectWidth,
+      popupMatchSelectWidth,
       listHeight,
       listItemHeight,
       listItemScrollOffset,
@@ -636,7 +627,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     };
   }, [
     virtual,
-    dropdownMatchSelectWidth,
+    popupMatchSelectWidth,
     listHeight,
     listItemHeight,
     listItemScrollOffset,
@@ -716,8 +707,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           // >>> Options
           OptionList={OptionList}
           emptyOptions={!mergedTreeData.length}
-          onDropdownVisibleChange={onInternalDropdownVisibleChange}
-          dropdownMatchSelectWidth={dropdownMatchSelectWidth}
+          onPopupVisibleChange={onInternalPopupVisibleChange}
+          popupMatchSelectWidth={popupMatchSelectWidth}
         />
       </LegacyContext.Provider>
     </TreeSelectContext.Provider>

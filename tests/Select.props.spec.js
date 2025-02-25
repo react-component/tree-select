@@ -556,7 +556,7 @@ describe('TreeSelect.props', () => {
         expect(onSelect).toHaveBeenCalledWith('smart', nodeMatcher(0));
       });
 
-      it('dropdownMatchSelectWidth={false} should turn off virtual list', () => {
+      it('popupMatchSelectWidth={false} should turn off virtual list', () => {
         const wrapper = mount(
           <TreeSelect style={{ width: 120 }} open treeDefaultExpandAll>
             <TreeNode value="parent 1" title="parent 1">
@@ -583,7 +583,7 @@ describe('TreeSelect.props', () => {
           </TreeSelect>,
         );
         expect(wrapper.find(Tree).props().virtual).toBe(true);
-        wrapper.setProps({ dropdownMatchSelectWidth: false });
+        wrapper.setProps({ popupMatchSelectWidth: false });
         expect(wrapper.find(Tree).props().virtual).toBe(false);
       });
     });
