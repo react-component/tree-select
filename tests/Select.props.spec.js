@@ -275,26 +275,26 @@ describe('TreeSelect.props', () => {
     expect(wrapper.find('.rc-tree-select-arrow').length).toBeFalsy();
   });
 
-  it('dropdownClassName', () => {
+  it('popupClassName', () => {
     const wrapper = mount(
       createOpenSelect({
-        dropdownClassName: 'test-dropdownClassName',
+        popupClassName: 'test-popupClassName',
       }),
     );
-    expect(wrapper.find('.test-dropdownClassName').length).toBeTruthy();
+    expect(wrapper.find('.test-popupClassName').length).toBeTruthy();
   });
 
-  it('dropdownStyle', () => {
+  it('popupStyle', () => {
     const style = {
       background: 'red',
     };
     const wrapper = mount(
       createOpenSelect({
-        dropdownClassName: 'test-dropdownClassName',
-        dropdownStyle: style,
+        popupClassName: 'test-popupClassName',
+        popupStyle: style,
       }),
     );
-    expect(wrapper.find('.test-dropdownClassName').first().props().style).toEqual(
+    expect(wrapper.find('.test-popupClassName').first().props().style).toEqual(
       expect.objectContaining(style),
     );
   });

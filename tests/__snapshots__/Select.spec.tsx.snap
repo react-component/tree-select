@@ -87,7 +87,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                 >
                   <div
                     aria-expanded="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-active"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf"
                     draggable="false"
                     role="treeitem"
                   >
@@ -141,7 +141,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                   </div>
                   <div
                     aria-expanded="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf"
                     draggable="false"
                     role="treeitem"
                   >
@@ -172,7 +172,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
                   </div>
                   <div
                     aria-expanded="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last rc-tree-select-tree-treenode-leaf"
                     draggable="false"
                     role="treeitem"
                   >
@@ -299,7 +299,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                 >
                   <div
                     aria-expanded="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-active"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf"
                     draggable="false"
                     role="treeitem"
                   >
@@ -353,7 +353,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                   </div>
                   <div
                     aria-expanded="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf"
                     draggable="false"
                     role="treeitem"
                   >
@@ -384,7 +384,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
                   </div>
                   <div
                     aria-expanded="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last rc-tree-select-tree-treenode-leaf"
                     draggable="false"
                     role="treeitem"
                   >
@@ -521,6 +521,8 @@ exports[`TreeSelect.basic render renders disabled correctly 1`] = `
 exports[`TreeSelect.basic render renders tree correctly 1`] = `
 <div
   class="rc-tree-select rc-tree-select-multiple rc-tree-select-show-search"
+  dropdownclassname="awesome"
+  dropdownstyle="[object Object]"
 >
   <div
     class="rc-tree-select-selector"
@@ -687,7 +689,7 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
                     </div>
                     <div
                       aria-expanded="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last rc-tree-select-tree-treenode-leaf"
                       draggable="false"
                       role="treeitem"
                     >
@@ -814,7 +816,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
                   >
                     <div
                       aria-expanded="true"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last filter-node"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last filter-node rc-tree-select-tree-treenode-leaf"
                       draggable="false"
                       role="treeitem"
                     >
@@ -937,7 +939,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
                   >
                     <div
                       aria-expanded="true"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf"
                       draggable="false"
                       role="treeitem"
                     >
@@ -964,7 +966,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
                     </div>
                     <div
                       aria-expanded="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last rc-tree-select-tree-treenode-leaf"
                       draggable="false"
                       role="treeitem"
                     >
@@ -1087,7 +1089,7 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
                   >
                     <div
                       aria-expanded="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-active filter-node"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-active filter-node rc-tree-select-tree-treenode-leaf"
                       draggable="false"
                       role="treeitem"
                     >
@@ -1114,7 +1116,7 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
                     </div>
                     <div
                       aria-expanded="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
+                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last rc-tree-select-tree-treenode-leaf"
                       draggable="false"
                       role="treeitem"
                     >
@@ -1235,7 +1237,7 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
                 >
                   <div
                     aria-expanded="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-active"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf"
                     draggable="false"
                     role="treeitem"
                   >
@@ -1262,7 +1264,7 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
                   </div>
                   <div
                     aria-expanded="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last rc-tree-select-tree-treenode-leaf"
                     draggable="false"
                     role="treeitem"
                   >
