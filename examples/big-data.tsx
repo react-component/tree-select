@@ -54,7 +54,6 @@ class Demo extends React.Component {
             <h3>normal check</h3>
             <TreeSelect
               style={{ width: 300 }}
-              // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
               treeData={gData}
               treeLine
               value={value}
@@ -68,7 +67,6 @@ class Demo extends React.Component {
             <h3>checkStrictly</h3>
             <TreeSelect
               style={{ width: 300 }}
-              // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
               treeData={gData1}
               treeLine
               value={value1}

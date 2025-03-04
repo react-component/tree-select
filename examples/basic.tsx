@@ -155,20 +155,13 @@ class Demo extends React.Component {
           show dialog
         </button>
         {visible ? (
-          <Dialog
-            visible={visible}
-            animation="zoom"
-            maskAnimation="fade"
-            onClose={this.onClose}
-            // style={{ width: 600, height: 400, overflow: 'auto' }}
-          >
+          <Dialog visible={visible} animation="zoom" maskAnimation="fade" onClose={this.onClose}>
             <div style={{ height: 600, paddingTop: 100 }}>
               <TreeSelect
                 getPopupContainer={triggerNode => triggerNode.parentNode}
                 style={{ width: 300 }}
                 transitionName="rc-tree-select-dropdown-slide-up"
                 choiceTransitionName="rc-tree-select-selection__choice-zoom"
-                // dropdownStyle={{ maxHeight: 200, overflow: 'auto', zIndex: 1500 }}
                 placeholder={<i>请下拉选择</i>}
                 showSearch
                 allowClear
@@ -189,7 +182,6 @@ class Demo extends React.Component {
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
-          // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           showSearch
           allowClear
@@ -222,7 +214,6 @@ class Demo extends React.Component {
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
-          // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           showSearch
           allowClear
@@ -239,7 +230,6 @@ class Demo extends React.Component {
           style={{ width: 300 }}
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
-          // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           multiple
           value={multipleValue}
@@ -258,7 +248,6 @@ class Demo extends React.Component {
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
           style={{ width: 300 }}
-          // dropdownStyle={{ height: 200, overflow: 'auto' }}
           popupAlign={{
             overflow: { adjustY: 0, adjustX: 0 },
             offset: [0, 2],
@@ -287,7 +276,6 @@ class Demo extends React.Component {
           style={{ width: 500 }}
           transitionName="rc-tree-select-dropdown-slide-up"
           choiceTransitionName="rc-tree-select-selection__choice-zoom"
-          // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           showSearch
           allowClear
@@ -303,7 +291,6 @@ class Demo extends React.Component {
         <h2>use treeDataSimpleMode</h2>
         <TreeSelect
           style={{ width: 300 }}
-          // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           placeholder={<i>请下拉选择</i>}
           // treeLine
           maxTagTextLength={10}
@@ -351,7 +338,6 @@ class Demo extends React.Component {
         <h2>use TreeNode Component (not recommend)</h2>
         <TreeSelect
           style={{ width: 200 }}
-          // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           defaultValue="leaf1"
           treeDefaultExpandAll
           treeNodeFilterProp="title"

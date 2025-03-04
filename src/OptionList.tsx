@@ -1,9 +1,9 @@
 import { useBaseProps } from '@rc-component/select';
 import type { RefOptionListProps } from '@rc-component/select/lib/OptionList';
-import type { TreeProps } from 'rc-tree';
-import Tree from 'rc-tree';
-import { UnstableContext } from 'rc-tree';
-import type { EventDataNode, ScrollTo } from 'rc-tree/lib/interface';
+import type { TreeProps } from '@rc-component/tree';
+import Tree from '@rc-component/tree';
+import { UnstableContext } from '@rc-component/tree';
+import type { EventDataNode, ScrollTo } from '@rc-component/tree/lib/interface';
 import KeyCode from '@rc-component/util/lib/KeyCode';
 import useMemo from '@rc-component/util/lib/hooks/useMemo';
 import * as React from 'react';

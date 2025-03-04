@@ -1,9 +1,9 @@
 import type { BaseSelectPropsWithoutPrivate, BaseSelectRef } from '@rc-component/select';
 import { BaseSelect } from '@rc-component/select';
 import useId from '@rc-component/select/lib/hooks/useId';
-import type { IconType } from 'rc-tree/lib/interface';
-import type { ExpandAction } from 'rc-tree/lib/Tree';
-import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
+import type { IconType } from '@rc-component/tree/lib/interface';
+import type { ExpandAction } from '@rc-component/tree/lib/Tree';
+import { conductCheck } from '@rc-component/tree/lib/utils/conductUtil';
 import useMergedState from '@rc-component/util/lib/hooks/useMergedState';
 import * as React from 'react';
 import useCache from './hooks/useCache';

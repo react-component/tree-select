@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ExpandAction } from 'rc-tree/lib/Tree';
+import type { ExpandAction } from '@rc-component/tree/lib/Tree';
 import type { DataNode, FieldNames, Key } from './interface';
 import type useDataEntities from './hooks/useDataEntities';
 

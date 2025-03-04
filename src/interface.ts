@@ -1,5 +1,5 @@
 import type * as React from 'react';
-import type { SafeKey, Key, DataNode as TreeDataNode } from 'rc-tree/lib/interface';
+import type { SafeKey, Key, DataNode as TreeDataNode } from '@rc-component/tree/lib/interface';
 
 export type { SafeKey, Key };
 

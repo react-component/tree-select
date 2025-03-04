@@ -1,6 +1,6 @@
 import * as React from 'react';
-import type { DataEntity } from 'rc-tree/lib/interface';
-import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
+import type { DataEntity } from '@rc-component/tree/lib/interface';
+import { conductCheck } from '@rc-component/tree/lib/utils/conductUtil';
 import type { LabeledValueType, SafeKey, Key } from '../interface';
 
 const useCheckedKeys = (
