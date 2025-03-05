@@ -1,6 +1,6 @@
 import '../assets/index.less';
 import React from 'react';
-import 'rc-dialog/assets/index.css';
+import '@rc-component/dialog/assets/index.css';
 import TreeSelect, { TreeNode } from '../src';
 
 class Demo extends React.Component {

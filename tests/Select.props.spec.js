@@ -1,6 +1,6 @@
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
 import { mount } from 'enzyme';
-import Tree, { TreeNode } from 'rc-tree';
+import Tree, { TreeNode } from '@rc-component/tree';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 
