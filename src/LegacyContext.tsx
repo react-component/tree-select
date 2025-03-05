@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { DataEntity, IconType } from 'rc-tree/lib/interface';
+import type { DataEntity, IconType } from '@rc-component/tree/lib/interface';
 import type { LegacyDataNode, SafeKey, Key } from './interface';
 
 interface LegacyContextProps {

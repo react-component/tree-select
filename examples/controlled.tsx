@@ -1,6 +1,6 @@
 import '../assets/index.less';
 import React from 'react';
-import 'rc-dialog/assets/index.css';
+import '@rc-component/dialog/assets/index.css';
 import TreeSelect, { TreeNode } from '../src';
 
 class Demo extends React.Component {
@@ -28,19 +28,13 @@ class Demo extends React.Component {
         <h2>Conrolled treeExpandedKeys</h2>
         <TreeSelect
           style={{ width: 200 }}
-          // dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
           treeExpandedKeys={treeExpandedKeys}
           onTreeExpand={this.onTreeExpand}
         >
           <TreeNode value="" title="parent 1" key="000">
             <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-0">
               <TreeNode value="leaf1" title="my leaf" key="random" />
-              <TreeNode
-                value="leaf2"
-                title="your leaf"
-                key="random1"
-                disabled
-              />
+              <TreeNode value="leaf2" title="your leaf" key="random1" disabled />
             </TreeNode>
             <TreeNode value="parent 1-1" title="parent 1-1" key="0-1-1">
               <TreeNode
