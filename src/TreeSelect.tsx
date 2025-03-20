@@ -174,6 +174,9 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     treeTitleRender,
 
     onPopupScroll,
+
+    classNames: treeSelectClassNames,
+    styles,
     ...restProps
   } = props;
 
@@ -623,6 +626,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       leafCountOnly:
         mergedShowCheckedStrategy === 'SHOW_CHILD' && !treeCheckStrictly && !!treeCheckable,
       valueEntities,
+      classNames: treeSelectClassNames,
+      styles,
     };
   }, [
     virtual,
@@ -642,6 +647,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     treeCheckStrictly,
     treeCheckable,
     valueEntities,
+    treeSelectClassNames,
+    styles,
   ]);
 
   // ======================= Legacy Context =======================
@@ -693,6 +700,16 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         <BaseSelect
           ref={ref}
           {...restProps}
+          classNames={{
+            prefix: treeSelectClassNames?.prefix,
+            suffix: treeSelectClassNames?.suffix,
+            input: treeSelectClassNames?.input,
+          }}
+          styles={{
+            prefix: styles?.prefix,
+            suffix: styles?.suffix,
+            input: styles?.input,
+          }}
           // >>> MISC
           id={mergedId}
           prefixCls={prefixCls}
