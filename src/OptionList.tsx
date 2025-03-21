@@ -50,6 +50,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     leftMaxCount,
     leafCountOnly,
     valueEntities,
+    classNames: treeClassNames,
+    styles,
   } = React.useContext(TreeSelectContext);
 
   const {
@@ -342,6 +344,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       )}
       <UnstableContext.Provider value={{ nodeDisabled }}>
         <Tree
+          classNames={treeClassNames}
+          styles={styles}
           ref={treeRef}
           focusable={false}
           prefixCls={`${prefixCls}-tree`}
