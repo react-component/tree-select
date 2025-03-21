@@ -638,4 +638,71 @@ describe('TreeSelect.basic', () => {
     const { container } = render(<TreeSelect ref={treeSelectRef} />);
     expect(treeSelectRef.current.nativeElement).toBe(container.querySelector('.rc-tree-select'));
   });
+
+  it('support classNames and styles', () => {
+    const treeData = [
+      {
+        value: 'parent 1',
+        title: 'parent 1',
+        children: [
+          {
+            value: 'parent 1-0',
+            title: 'parent 1-0',
+            children: [
+              {
+                value: 'leaf1',
+                title: 'my leaf',
+              },
+              {
+                value: 'leaf2',
+                title: 'your leaf',
+              },
+            ],
+          },
+        ],
+      },
+    ];
+    const customClassNames = {
+      prefix: 'test-prefix',
+      input: 'test-input',
+      suffix: 'test-suffix',
+      item: 'test-item',
+      itemTitle: 'test-item-title',
+    };
+    const customStyles = {
+      prefix: { color: 'green' },
+      input: { color: 'blue' },
+      suffix: { color: 'yellow' },
+      item: { color: 'black' },
+      itemTitle: { color: 'purple' },
+    };
+    const { container } = render(
+      <TreeSelect
+        classNames={customClassNames}
+        styles={customStyles}
+        showSearch
+        prefix="Prefix"
+        open
+        suffixIcon={() => <div>icon</div>}
+        placeholder="Please select"
+        treeDefaultExpandAll
+        treeData={treeData}
+      />,
+    );
+    const prefix = container.querySelector('.rc-tree-select-prefix');
+    const input = container.querySelector('.rc-tree-select-selection-search-input');
+    const suffix = container.querySelector('.rc-tree-select-arrow');
+    const itemTitle = container.querySelector('.rc-tree-select-tree-title');
+    const item = container.querySelector(`.${customClassNames.item}`);
+    expect(prefix).toHaveClass(customClassNames.prefix);
+    expect(input).toHaveClass(customClassNames.input);
+    expect(suffix).toHaveClass(customClassNames.suffix);
+    expect(itemTitle).toHaveClass(customClassNames.itemTitle);
+
+    expect(prefix).toHaveStyle(customStyles.prefix);
+    expect(input).toHaveStyle(customStyles.input);
+    expect(suffix).toHaveStyle(customStyles.suffix);
+    expect(itemTitle).toHaveStyle(customStyles.itemTitle);
+    expect(item).toHaveStyle(customStyles.item);
+  });
 });

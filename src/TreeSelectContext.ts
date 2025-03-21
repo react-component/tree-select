@@ -3,7 +3,7 @@ import type { ExpandAction } from '@rc-component/tree/lib/Tree';
 import type { DataNode, FieldNames, Key } from './interface';
 import type useDataEntities from './hooks/useDataEntities';
 
-export type SemanticName = 'itemIcon' | 'item' | 'itemTitle' | 'input' | 'prefix' | 'suffix';
+export type SemanticName = 'item' | 'itemTitle' | 'input' | 'prefix' | 'suffix';
 export interface TreeSelectContextProps {
   virtual?: boolean;
   popupMatchSelectWidth?: boolean | number;
