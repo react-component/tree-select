@@ -178,32 +178,45 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       const isLeaf = (entity.children || []).length === 0;
 
       if (!isLeaf) {
-        const getLeafCheckableCount = (children: DataEntity<DataNode>[]): number => {
-          return children.reduce((count, current) => {
-            const currentValue = current.node[fieldNames.value];
-            const currentEntity = valueEntities.get(currentValue);
-            const isCurrentLeaf = (currentEntity.children || []).length === 0;
+        const visited = new Set<string>();
+        const stack: DataEntity<DataNode>[] = [entity];
+        let checkableCount = 0;
 
-            if (isCurrentLeaf) {
-              if (
-                !current.node.disabled &&
-                !current.node.disableCheckbox &&
-                !checkedKeys.includes(currentValue)
-              ) {
-                return count + 1;
+        while (stack.length > 0) {
+          const currentEntity = stack.pop();
+          const currentValue = currentEntity.node[fieldNames.value];
+
+          if (visited.has(currentValue)) {
+            continue;
+          }
+          visited.add(currentValue);
+
+          const isCurrentLeaf = (currentEntity.children || []).length === 0;
+          const isDisabled =
+            currentEntity.node.disabled ||
+            currentEntity.node.disableCheckbox ||
+            checkedKeys.includes(currentValue);
+
+          if (isCurrentLeaf) {
+            if (!isDisabled) {
+              checkableCount++;
+
+              // break early
+              if (checkableCount > leftMaxCount) {
+                disabledCache.set(value, true);
+                break;
               }
-            } else if (
-              !current.node.disabled &&
-              !current.node.disableCheckbox &&
-              !checkedKeys.includes(currentValue)
-            ) {
-              return count + getLeafCheckableCount(currentEntity.children);
             }
-            return count;
-          }, 0);
-        };
-        const checkableChildrenCount = getLeafCheckableCount(entity.children);
-        disabledCache.set(value, checkableChildrenCount > leftMaxCount);
+            continue;
+          }
+
+          if (!isDisabled) {
+            for (let i = currentEntity.children.length - 1; i >= 0; i--) {
+              stack.push(currentEntity.children[i]);
+            }
+          }
+        }
+        disabledCache.set(value, checkableCount > leftMaxCount);
       } else {
         disabledCache.set(value, false);
       }
