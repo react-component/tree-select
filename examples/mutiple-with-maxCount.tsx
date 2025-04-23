@@ -2,61 +2,60 @@ import React, { useState } from 'react';
 import TreeSelect from '../src';
 
 export default () => {
-  const [value, setValue] = useState<string[]>();
-  const [checkValue, setCheckValue] = useState<string[]>();
+  const [value, setValue] = useState<string[]>(['1']);
+  const [checkValue, setCheckValue] = useState<string[]>(['1']);
 
   const treeData = [
     {
-      title: 'Parent 1',
-      value: 'parent1',
+      key: '1',
+      value: '1',
+      title: '1',
       children: [
         {
-          title: 'Child 1-1',
-          value: 'child1-1',
+          key: '1-1',
+          value: '1-1',
+          title: '1-1',
         },
         {
-          title: 'Child 1-2',
-          value: 'child1-2',
+          key: '1-2',
+          value: '1-2',
+          title: '1-2',
+          disabled: true,
           children: [
             {
-              title: 'Child 1-2-1',
-              value: 'child1-2-1',
-              children: [
-                {
-                  title: 'child 1-2-1-1',
-                  value: 'child1-2-1-1',
-                  children: [
-                    {
-                      title: 'child 1-2-1-1-1',
-                      value: 'child1-2-1-1-1',
-                    },
-                  ],
-                },
-                {
-                  title: 'child 1-2-1-2',
-                  value: 'child1-2-1-2',
-                },
-                {
-                  title: 'child 1-2-1-3',
-                  value: 'child1-2-1-3',
-                },
-              ],
+              key: '1-2-1',
+              value: '1-2-1',
+              title: '1-2-1',
+              disabled: true,
             },
             {
-              title: 'Child 1-2-2',
-              value: 'child1-2-2',
-            },
-            {
-              title: 'Child 1-2-3',
-              value: 'child1-2-3',
-            },
-            {
-              title: 'Child 1-2-4',
-              value: 'child1-2-4',
+              key: '1-2-2',
+              value: '1-2-2',
+              title: '1-2-2',
             },
           ],
         },
+        {
+          key: '1-3',
+          value: '1-3',
+          title: '1-3',
+        },
       ],
+    },
+    {
+      key: '2',
+      value: '2',
+      title: '2',
+    },
+    {
+      key: '3',
+      value: '3',
+      title: '3',
+    },
+    {
+      key: '4',
+      value: '4',
+      title: '4',
     },
   ];
 
@@ -70,17 +69,35 @@ export default () => {
 
   return (
     <>
-      <h2>maxCount = 3</h2>
+      <h2>multiple with maxCount</h2>
+      <TreeSelect
+        style={{ width: 300 }}
+        fieldNames={{ value: 'value', label: 'title' }}
+        multiple
+        maxCount={3}
+        treeData={treeData}
+      />
+      <h2>checkable with maxCount</h2>
       <TreeSelect
         style={{ width: 300 }}
         treeCheckable
-        multiple
         // showCheckedStrategy="SHOW_ALL"
         // showCheckedStrategy="SHOW_PARENT"
-        maxCount={3}
+        maxCount={4}
         treeData={treeData}
         onChange={onChange}
         value={value}
+      />
+      <h2>checkable with maxCount and treeCheckStrictly</h2>
+      <TreeSelect
+        style={{ width: 300 }}
+        multiple
+        treeCheckable
+        treeCheckStrictly
+        maxCount={3}
+        treeData={treeData}
+        onChange={onCheckChange}
+        value={checkValue}
       />
     </>
   );
