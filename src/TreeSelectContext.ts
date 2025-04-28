@@ -2,8 +2,8 @@ import * as React from 'react';
 import type { ExpandAction } from '@rc-component/tree/lib/Tree';
 import type { DataNode, FieldNames, Key } from './interface';
 import type useDataEntities from './hooks/useDataEntities';
+import { TreeSelectProps } from './TreeSelect';
 
-export type SemanticName = 'item' | 'itemTitle' | 'input' | 'prefix' | 'suffix';
 export interface TreeSelectContextProps {
   virtual?: boolean;
   popupMatchSelectWidth?: boolean | number;
@@ -22,8 +22,8 @@ export interface TreeSelectContextProps {
   /** When `true`, only take leaf node as count, or take all as count with `maxCount` limitation */
   leafCountOnly: boolean;
   valueEntities: ReturnType<typeof useDataEntities>['valueEntities'];
-  styles?: Partial<Record<SemanticName, React.CSSProperties>>;
-  classNames?: Partial<Record<SemanticName, string>>;
+  classNames: TreeSelectProps['classNames'];
+  styles: TreeSelectProps['styles'];
 }
 
 const TreeSelectContext = React.createContext<TreeSelectContextProps>(null as any);
