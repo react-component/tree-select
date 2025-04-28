@@ -705,4 +705,45 @@ describe('TreeSelect.basic', () => {
     expect(itemTitle).toHaveStyle(customStyles.itemTitle);
     expect(item).toHaveStyle(customStyles.item);
   });
+
+  it('labelRender', () => {
+    const onLabelRender = jest.fn();
+    const labelRender = props => {
+      const { label, value } = props;
+      onLabelRender();
+      return `${label}-${value}`;
+    };
+    const { container } = render(
+      <TreeSelect
+        treeData={[{ label: 'realLabel', value: 'a' }]}
+        value="a"
+        labelRender={labelRender}
+      />,
+    );
+
+    expect(onLabelRender).toHaveBeenCalled();
+    expect(container.querySelector('.rc-tree-select-selector').textContent).toEqual('realLabel-a');
+  });
+
+  it('labelRender when value is not in treeData', () => {
+    const onLabelRender = jest.fn();
+    const treeData = [{ label: 'realLabel', value: 'b' }];
+    const labelRender = props => {
+      const { label, value } = props;
+      // current value is in treeData
+      if (treeData.find(item => item.value === value)) {
+        return label;
+      } else {
+        // current value is not in treeData
+        onLabelRender();
+        return `${label || 'fakeLabel'}-${value}`;
+      }
+    };
+    const { container } = render(
+      <TreeSelect value="a" labelRender={labelRender} treeData={treeData} />,
+    );
+
+    expect(onLabelRender).toHaveBeenCalled();
+    expect(container.querySelector('.rc-tree-select-selector').textContent).toEqual('fakeLabel-a');
+  });
 });
