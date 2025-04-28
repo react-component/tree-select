@@ -101,6 +101,7 @@ export interface TreeSelectProps<ValueType = any, OptionType extends DataNode = 
   listItemScrollOffset?: number;
   onPopupVisibleChange?: (open: boolean) => void;
   treeTitleRender?: (node: OptionType) => React.ReactNode;
+  labelRender?: (props: LabeledValueType) => React.ReactNode;
 
   // >>> Tree
   treeLine?: boolean;
@@ -168,6 +169,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     listHeight = 200,
     listItemHeight = 20,
     listItemScrollOffset = 0,
+    labelRender,
 
     onPopupVisibleChange,
     popupMatchSelectWidth = true,
@@ -402,7 +404,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
     return rawDisplayValues.map(item => ({
       ...item,
-      label: item.label ?? item.value,
+      label: (typeof labelRender === 'function' ? labelRender(item) : item.label) ?? item.value,
     }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -413,6 +415,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     convert2LabelValues,
     mergedShowCheckedStrategy,
     keyEntities,
+    labelRender,
   ]);
 
   const [cachedDisplayValues] = useCache(displayValues);
