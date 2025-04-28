@@ -344,8 +344,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
       )}
       <UnstableContext.Provider value={{ nodeDisabled }}>
         <Tree
-          classNames={treeClassNames}
-          styles={styles}
+          classNames={treeClassNames?.popup}
+          styles={styles?.popup}
           ref={treeRef}
           focusable={false}
           prefixCls={`${prefixCls}-tree`}

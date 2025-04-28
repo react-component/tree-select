@@ -666,15 +666,19 @@ describe('TreeSelect.basic', () => {
       prefix: 'test-prefix',
       input: 'test-input',
       suffix: 'test-suffix',
-      item: 'test-item',
-      itemTitle: 'test-item-title',
+      popup: {
+        item: 'test-item',
+        itemTitle: 'test-item-title',
+      },
     };
     const customStyles = {
       prefix: { color: 'green' },
       input: { color: 'blue' },
       suffix: { color: 'yellow' },
-      item: { color: 'black' },
-      itemTitle: { color: 'purple' },
+      popup: {
+        item: { color: 'black' },
+        itemTitle: { color: 'purple' },
+      },
     };
     const { container } = render(
       <TreeSelect
@@ -693,16 +697,16 @@ describe('TreeSelect.basic', () => {
     const input = container.querySelector('.rc-tree-select-selection-search-input');
     const suffix = container.querySelector('.rc-tree-select-arrow');
     const itemTitle = container.querySelector('.rc-tree-select-tree-title');
-    const item = container.querySelector(`.${customClassNames.item}`);
+    const item = container.querySelector(`.${customClassNames.popup.item}`);
     expect(prefix).toHaveClass(customClassNames.prefix);
     expect(input).toHaveClass(customClassNames.input);
     expect(suffix).toHaveClass(customClassNames.suffix);
-    expect(itemTitle).toHaveClass(customClassNames.itemTitle);
+    expect(itemTitle).toHaveClass(customClassNames.popup.itemTitle);
 
     expect(prefix).toHaveStyle(customStyles.prefix);
     expect(input).toHaveStyle(customStyles.input);
     expect(suffix).toHaveStyle(customStyles.suffix);
-    expect(itemTitle).toHaveStyle(customStyles.itemTitle);
-    expect(item).toHaveStyle(customStyles.item);
+    expect(itemTitle).toHaveStyle(customStyles.popup.itemTitle);
+    expect(item).toHaveStyle(customStyles.popup.item);
   });
 });

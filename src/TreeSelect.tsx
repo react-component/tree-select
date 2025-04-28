@@ -35,12 +35,19 @@ import type {
   LegacyDataNode,
 } from './interface';
 
+export type SemanticName = 'input' | 'prefix' | 'suffix';
+export type PopupSemantic = 'item' | 'itemTitle';
 export interface TreeSelectProps<ValueType = any, OptionType extends DataNode = DataNode>
-  extends Omit<BaseSelectPropsWithoutPrivate, 'mode'> {
+  extends Omit<BaseSelectPropsWithoutPrivate, 'mode' | 'classNames' | 'styles'> {
   prefixCls?: string;
   id?: string;
   children?: React.ReactNode;
-
+  styles?: Partial<Record<SemanticName, React.CSSProperties>> & {
+    popup?: Partial<Record<PopupSemantic, React.CSSProperties>>;
+  };
+  classNames?: Partial<Record<SemanticName, string>> & {
+    popup?: Partial<Record<PopupSemantic, string>>;
+  };
   // >>> Value
   value?: ValueType;
   defaultValue?: ValueType;
