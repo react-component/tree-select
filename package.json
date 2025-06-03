@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "classnames": "2.x",
-    "@rc-component/select": "~1.0.2",
+    "@rc-component/select": "~1.0.7",
     "@rc-component/tree": "~1.0.1",
     "@rc-component/util": "^1.2.1"
   },
