@@ -1,6 +1,6 @@
 import type { BaseSelectPropsWithoutPrivate, BaseSelectRef } from '@rc-component/select';
 import { BaseSelect } from '@rc-component/select';
-import useId from '@rc-component/select/lib/hooks/useId';
+import useId from '@rc-component/util/lib/hooks/useId';
 import type { IconType } from '@rc-component/tree/lib/interface';
 import type { ExpandAction } from '@rc-component/tree/lib/Tree';
 import { conductCheck } from '@rc-component/tree/lib/utils/conductUtil';
