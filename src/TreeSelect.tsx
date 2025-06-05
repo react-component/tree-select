@@ -37,8 +37,17 @@ import type {
 
 export type SemanticName = 'input' | 'prefix' | 'suffix';
 export type PopupSemantic = 'item' | 'itemTitle';
+interface SearchConfig {
+  searchValue?: string;
+  /** @deprecated Use `searchValue` instead */
+  inputValue?: string;
+  onSearch?: (value: string) => void;
+  autoClearSearchValue?: boolean;
+  filterTreeNode?: boolean | ((inputValue: string, treeNode: DataNode) => boolean);
+  treeNodeFilterProp?: string;
+}
 export interface TreeSelectProps<ValueType = any, OptionType extends DataNode = DataNode>
-  extends Omit<BaseSelectPropsWithoutPrivate, 'mode' | 'classNames' | 'styles'> {
+  extends Omit<BaseSelectPropsWithoutPrivate, 'mode' | 'classNames' | 'styles' | 'showSearch'> {
   prefixCls?: string;
   id?: string;
   children?: React.ReactNode;
@@ -54,12 +63,18 @@ export interface TreeSelectProps<ValueType = any, OptionType extends DataNode = 
   onChange?: (value: ValueType, labelList: React.ReactNode[], extra: ChangeEventExtra) => void;
 
   // >>> Search
+  showSearch?: boolean | SearchConfig;
+  /** @deprecated Use `showSearch.searchValue` instead */
   searchValue?: string;
   /** @deprecated Use `searchValue` instead */
   inputValue?: string;
+  /** @deprecated Use `showSearch.onSearch` instead */
   onSearch?: (value: string) => void;
+  /** @deprecated Use `showSearch.autoClearSearchValue` instead */
   autoClearSearchValue?: boolean;
+  /** @deprecated Use `showSearch.filterTreeNode` instead */
   filterTreeNode?: boolean | ((inputValue: string, treeNode: DataNode) => boolean);
+  /** @deprecated Use `showSearch.treeNodeFilterProp` instead */
   treeNodeFilterProp?: string;
 
   // >>> Select
@@ -127,12 +142,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     onDeselect,
 
     // Search
-    searchValue,
-    inputValue,
-    onSearch,
-    autoClearSearchValue = true,
-    filterTreeNode,
-    treeNodeFilterProp = 'value',
+    showSearch,
 
     // Selector
     showCheckedStrategy,
@@ -192,6 +202,28 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const mergedCheckable = treeCheckable || treeCheckStrictly;
   const mergedLabelInValue = treeCheckStrictly || labelInValue;
   const mergedMultiple = mergedCheckable || multiple;
+
+  const legacySearchProps = [
+    'searchValue',
+    'inputValue',
+    'onSearch',
+    'autoClearSearchValue',
+    'filterTreeNode',
+    'treeNodeFilterProp',
+  ];
+  const legacyShowSearch: SearchConfig = {};
+  legacySearchProps.forEach(propsName => {
+    legacyShowSearch[propsName] = props?.[propsName];
+  });
+  const mergedShowSearch = typeof showSearch === 'object' ? showSearch : legacyShowSearch;
+  const {
+    searchValue,
+    inputValue,
+    onSearch,
+    autoClearSearchValue = true,
+    filterTreeNode,
+    treeNodeFilterProp = 'value',
+  } = mergedShowSearch;
 
   const [internalValue, setInternalValue] = useMergedState(defaultValue, { value });
 
@@ -725,6 +757,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           displayValues={cachedDisplayValues}
           onDisplayValuesChange={onDisplayValuesChange}
           // >>> Search
+          {...mergedShowSearch}
+          showSearch={showSearch === undefined ? undefined : !!showSearch}
           searchValue={mergedSearchValue}
           onSearch={onInternalSearch}
           // >>> Options
