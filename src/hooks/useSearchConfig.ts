@@ -26,13 +26,11 @@ export default function useSearchConfig(showSearch, props) {
     return [true, searchConfig];
   }, [
     showSearch,
-    props?.filterOption,
     props?.searchValue,
-    props?.optionFilterProp,
-    props?.optionLabelProp,
-    props?.filterSort,
+    props?.inputValue,
     props?.onSearch,
     props?.autoClearSearchValue,
-    props?.tokenSeparators,
+    props?.filterTreeNode,
+    props?.treeNodeFilterProp,
   ]);
 }
