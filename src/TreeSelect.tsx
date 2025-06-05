@@ -34,10 +34,11 @@ import type {
   FieldNames,
   LegacyDataNode,
 } from './interface';
+import useSearchConfig from './hooks/useSearchConfig';
 
 export type SemanticName = 'input' | 'prefix' | 'suffix';
 export type PopupSemantic = 'item' | 'itemTitle';
-interface SearchConfig {
+export interface SearchConfig {
   searchValue?: string;
   /** @deprecated Use `searchValue` instead */
   inputValue?: string;
@@ -203,19 +204,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const mergedLabelInValue = treeCheckStrictly || labelInValue;
   const mergedMultiple = mergedCheckable || multiple;
 
-  const legacySearchProps = [
-    'searchValue',
-    'inputValue',
-    'onSearch',
-    'autoClearSearchValue',
-    'filterTreeNode',
-    'treeNodeFilterProp',
-  ];
-  const legacyShowSearch: SearchConfig = {};
-  legacySearchProps.forEach(propsName => {
-    legacyShowSearch[propsName] = props?.[propsName];
-  });
-  const mergedShowSearch = typeof showSearch === 'object' ? showSearch : legacyShowSearch;
+  const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch, props);
   const {
     searchValue,
     inputValue,
@@ -223,7 +212,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     autoClearSearchValue = true,
     filterTreeNode,
     treeNodeFilterProp = 'value',
-  } = mergedShowSearch;
+  } = searchConfig;
 
   const [internalValue, setInternalValue] = useMergedState(defaultValue, { value });
 
@@ -757,8 +746,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           displayValues={cachedDisplayValues}
           onDisplayValuesChange={onDisplayValuesChange}
           // >>> Search
-          {...mergedShowSearch}
-          showSearch={showSearch === undefined ? undefined : !!showSearch}
+          {...searchConfig}
+          showSearch={mergedShowSearch}
           searchValue={mergedSearchValue}
           onSearch={onInternalSearch}
           // >>> Options
