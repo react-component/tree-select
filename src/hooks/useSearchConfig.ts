@@ -1,14 +1,11 @@
-import type { SearchConfig } from '@/TreeSelect';
+import type { SearchConfig, TreeSelectProps } from '@/TreeSelect';
 import * as React from 'react';
-const legacySearchProps = [
-  'searchValue',
-  'onSearch',
-  'autoClearSearchValue',
-  'filterTreeNode',
-  'treeNodeFilterProp',
-];
+
 // Convert `showSearch` to unique config
-export default function useSearchConfig(showSearch: boolean | SearchConfig, props: any) {
+export default function useSearchConfig(
+  showSearch: boolean | SearchConfig,
+  props: TreeSelectProps,
+) {
   const {
     searchValue,
     inputValue,
@@ -18,24 +15,27 @@ export default function useSearchConfig(showSearch: boolean | SearchConfig, prop
     treeNodeFilterProp,
   } = props;
   return React.useMemo<[boolean | undefined, SearchConfig]>(() => {
-    const legacyShowSearch: SearchConfig = {};
-    legacySearchProps.forEach(name => {
-      const val = props?.[name];
-      if (val !== undefined) {
-        legacyShowSearch[name] = val;
-      }
-      if (name === 'searchValue') {
-        legacyShowSearch[name] = val ?? props?.inputValue;
-      }
-    });
-    const searchConfig: SearchConfig =
-      typeof showSearch === 'object' ? showSearch : legacyShowSearch;
-    if (showSearch === undefined) {
-      return [undefined, searchConfig];
+    const legacysearchConfig: SearchConfig = {
+      searchValue: searchValue ?? inputValue,
+      onSearch,
+      autoClearSearchValue,
+      filterTreeNode,
+      treeNodeFilterProp,
+    };
+
+    if (showSearch === undefined || showSearch === true) {
+      return [showSearch as boolean, legacysearchConfig];
     }
+
     if (!showSearch) {
       return [false, {}];
     }
+
+    const searchConfig = {
+      ...legacysearchConfig,
+      ...showSearch,
+    };
+
     return [true, searchConfig];
   }, [
     showSearch,
