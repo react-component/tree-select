@@ -40,8 +40,6 @@ export type SemanticName = 'input' | 'prefix' | 'suffix';
 export type PopupSemantic = 'item' | 'itemTitle';
 export interface SearchConfig {
   searchValue?: string;
-  /** @deprecated Use `searchValue` instead */
-  inputValue?: string;
   onSearch?: (value: string) => void;
   autoClearSearchValue?: boolean;
   filterTreeNode?: boolean | ((inputValue: string, treeNode: DataNode) => boolean);
@@ -207,7 +205,6 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch, props);
   const {
     searchValue,
-    inputValue,
     onSearch,
     autoClearSearchValue = true,
     filterTreeNode,
@@ -240,7 +237,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
   // =========================== Search ===========================
   const [mergedSearchValue, setSearchValue] = useMergedState('', {
-    value: searchValue !== undefined ? searchValue : inputValue,
+    value: searchValue,
     postState: search => search || '',
   });
 

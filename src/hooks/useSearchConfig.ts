@@ -2,7 +2,6 @@ import type { SearchConfig } from '@/TreeSelect';
 import * as React from 'react';
 const legacySearchProps = [
   'searchValue',
-  'inputValue',
   'onSearch',
   'autoClearSearchValue',
   'filterTreeNode',
@@ -22,7 +21,12 @@ export default function useSearchConfig(showSearch: boolean | SearchConfig, prop
     const legacyShowSearch: SearchConfig = {};
     legacySearchProps.forEach(name => {
       const val = props?.[name];
-      if (val !== undefined) legacyShowSearch[name] = val;
+      if (val !== undefined) {
+        legacyShowSearch[name] = val;
+      }
+      if (name === 'searchValue') {
+        legacyShowSearch[name] = val ?? props?.inputValue;
+      }
     });
     const searchConfig: SearchConfig =
       typeof showSearch === 'object' ? showSearch : legacyShowSearch;
