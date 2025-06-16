@@ -17,7 +17,7 @@ export default function useSearchConfig(showSearch: boolean | SearchConfig, prop
     filterTreeNode,
     treeNodeFilterProp,
   } = props;
-  return React.useMemo<[boolean, SearchConfig]>(() => {
+  return React.useMemo<[boolean | undefined, SearchConfig]>(() => {
     const legacyShowSearch: SearchConfig = {};
     legacySearchProps.forEach(name => {
       const val = props?.[name];
