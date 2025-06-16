@@ -9,11 +9,20 @@ const legacySearchProps = [
   'treeNodeFilterProp',
 ];
 // Convert `showSearch` to unique config
-export default function useSearchConfig(showSearch, props) {
+export default function useSearchConfig(showSearch: boolean | SearchConfig, props: any) {
+  const {
+    searchValue,
+    inputValue,
+    onSearch,
+    autoClearSearchValue,
+    filterTreeNode,
+    treeNodeFilterProp,
+  } = props;
   return React.useMemo<[boolean, SearchConfig]>(() => {
     const legacyShowSearch: SearchConfig = {};
-    legacySearchProps.forEach(propsName => {
-      legacyShowSearch[propsName] = props?.[propsName];
+    legacySearchProps.forEach(name => {
+      const val = props?.[name];
+      if (val !== undefined) legacyShowSearch[name] = val;
     });
     const searchConfig: SearchConfig =
       typeof showSearch === 'object' ? showSearch : legacyShowSearch;
@@ -26,11 +35,11 @@ export default function useSearchConfig(showSearch, props) {
     return [true, searchConfig];
   }, [
     showSearch,
-    props?.searchValue,
-    props?.inputValue,
-    props?.onSearch,
-    props?.autoClearSearchValue,
-    props?.filterTreeNode,
-    props?.treeNodeFilterProp,
+    searchValue,
+    inputValue,
+    onSearch,
+    autoClearSearchValue,
+    filterTreeNode,
+    treeNodeFilterProp,
   ]);
 }

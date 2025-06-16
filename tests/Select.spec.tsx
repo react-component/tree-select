@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { mount } from 'enzyme';
 import KeyCode from '@rc-component/util/lib/KeyCode';
 import React from 'react';
@@ -708,5 +708,132 @@ describe('TreeSelect.basic', () => {
     expect(suffix).toHaveStyle(customStyles.suffix);
     expect(itemTitle).toHaveStyle(customStyles.popup.itemTitle);
     expect(item).toHaveStyle(customStyles.popup.item);
+  });
+
+  describe('combine showSearch', () => {
+    const treeData = [
+      { key: '0', value: 'a', title: '0 label' },
+      {
+        key: '1',
+        value: 'b',
+        title: '1 label',
+        children: [
+          { key: '10', value: 'ba', title: '10 label' },
+          { key: '11', value: 'bb', title: '11 label' },
+        ],
+      },
+    ];
+    it('searchValue and onSearch', () => {
+      const currentSearchFn = jest.fn();
+      const legacySearchFn = jest.fn();
+      const { container } = render(
+        <>
+          <div id="test1">
+            <TreeSelect
+              showSearch
+              searchValue="1-10"
+              onSearch={currentSearchFn}
+              open
+              treeDefaultExpandAll
+              treeData={treeData}
+            />
+          </div>
+          <div id="test2">
+            <TreeSelect
+              showSearch={{ searchValue: '1-10', onSearch: legacySearchFn }}
+              open
+              treeDefaultExpandAll
+              treeData={treeData}
+            />
+          </div>
+        </>,
+      );
+      const legacyInput = container.querySelector<HTMLInputElement>('#test1 input');
+      const currentInput = container.querySelector<HTMLInputElement>('#test2 input');
+      fireEvent.change(legacyInput, { target: { value: '2' } });
+      fireEvent.change(currentInput, { target: { value: '2' } });
+      expect(currentSearchFn).toHaveBeenCalledWith('2');
+      expect(legacySearchFn).toHaveBeenCalledWith('2');
+    });
+    it('treeNodeFilterProp and autoClearSearchValue', () => {
+      const { container } = render(
+        <>
+          <div id="test1">
+            <TreeSelect
+              showSearch
+              open
+              treeDefaultExpandAll
+              treeData={treeData}
+              autoClearSearchValue={false}
+              treeNodeFilterProp="value"
+            />
+          </div>
+          <div id="test2">
+            <TreeSelect
+              showSearch={{
+                autoClearSearchValue: false,
+                treeNodeFilterProp: 'value',
+              }}
+              open
+              treeDefaultExpandAll
+              treeData={treeData}
+            />
+          </div>
+        </>,
+      );
+      const legacyInput = container.querySelector<HTMLInputElement>('#test1 input');
+      const currentInput = container.querySelector<HTMLInputElement>('#test2 input');
+      fireEvent.change(legacyInput, { target: { value: 'a' } });
+      fireEvent.change(currentInput, { target: { value: 'a' } });
+      const legacyItem = container.querySelector<HTMLInputElement>(
+        '#test1 .rc-tree-select-tree-title',
+      );
+      const currentItem = container.querySelector<HTMLInputElement>(
+        '#test2 .rc-tree-select-tree-title',
+      );
+
+      expect(legacyInput).toHaveValue('a');
+      expect(currentInput).toHaveValue('a');
+      fireEvent.click(legacyItem);
+      fireEvent.click(currentItem);
+      const valueSpan = container.querySelectorAll<HTMLSpanElement>(
+        ' .rc-tree-select-selection-item',
+      );
+
+      expect(valueSpan[0]).toHaveTextContent('0 label');
+      expect(valueSpan[1]).toHaveTextContent('0 label');
+    });
+    it('filterTreeNode', () => {
+      const { container } = render(
+        <>
+          <div id="test1">
+            <TreeSelect
+              showSearch
+              open
+              treeDefaultExpandAll
+              treeData={treeData}
+              filterTreeNode={(inputValue, node) => node.value === inputValue}
+            />
+          </div>
+          <div id="test2">
+            <TreeSelect
+              showSearch={{
+                filterTreeNode: (inputValue, node) => node.value === inputValue,
+              }}
+              open
+              treeDefaultExpandAll
+              treeData={treeData}
+            />
+          </div>
+        </>,
+      );
+      const legacyInput = container.querySelector<HTMLInputElement>('#test1 input');
+      const currentInput = container.querySelector<HTMLInputElement>('#test2 input');
+      fireEvent.change(legacyInput, { target: { value: 'bb' } });
+      fireEvent.change(currentInput, { target: { value: 'bb' } });
+      const options = container.querySelectorAll<HTMLDivElement>(' .rc-tree-select-tree-title');
+
+      expect(options).toHaveLength(4);
+    });
   });
 });
