@@ -65,7 +65,7 @@ export interface TreeSelectProps<ValueType = any, OptionType extends DataNode = 
   showSearch?: boolean | SearchConfig;
   /** @deprecated Use `showSearch.searchValue` instead */
   searchValue?: string;
-  /** @deprecated Use `searchValue` instead */
+  /** @deprecated Use `showSearch.searchValue` instead */
   inputValue?: string;
   /** @deprecated Use `showSearch.onSearch` instead */
   onSearch?: (value: string) => void;
