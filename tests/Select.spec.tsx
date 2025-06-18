@@ -835,5 +835,21 @@ describe('TreeSelect.basic', () => {
 
       expect(options).toHaveLength(4);
     });
+    it.only.each([
+      // [description, props, shouldExist]
+      ['showSearch=false ', { showSearch: false }, false],
+      ['showSearch=undefined ', {}, false],
+      ['showSearch=true', { showSearch: true }, true],
+    ])('%s', (_, props: { showSearch?: boolean; mode?: 'tags' }, shouldExist) => {
+      const { container } = render(
+        <TreeSelect open treeDefaultExpandAll treeData={treeData} {...props} />,
+      );
+      const inputNode = container.querySelector('input');
+      if (shouldExist) {
+        expect(inputNode).not.toHaveAttribute('readonly');
+      } else {
+        expect(inputNode).toHaveAttribute('readonly');
+      }
+    });
   });
 });
