@@ -835,7 +835,7 @@ describe('TreeSelect.basic', () => {
 
       expect(options).toHaveLength(4);
     });
-    it.only.each([
+    it.each([
       // [description, props, shouldExist]
       ['showSearch=false ', { showSearch: false }, false],
       ['showSearch=undefined ', {}, false],
