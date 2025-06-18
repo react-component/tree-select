@@ -15,26 +15,21 @@ export default function useSearchConfig(
     treeNodeFilterProp,
   } = props;
   return React.useMemo<[boolean | undefined, SearchConfig]>(() => {
-    const legacysearchConfig: SearchConfig = {
+    const searchConfig: SearchConfig = {
       searchValue: searchValue ?? inputValue,
       onSearch,
       autoClearSearchValue,
       filterTreeNode,
       treeNodeFilterProp,
+      ...(typeof showSearch === 'object' ? showSearch : {}),
     };
-
-    if (showSearch === undefined || showSearch === true) {
-      return [showSearch as boolean, legacysearchConfig];
-    }
-
-    if (!showSearch) {
+    if (showSearch === false) {
       return [false, {}];
     }
 
-    const searchConfig = {
-      ...legacysearchConfig,
-      ...showSearch,
-    };
+    if (showSearch === undefined) {
+      return [undefined, searchConfig];
+    }
 
     return [true, searchConfig];
   }, [
