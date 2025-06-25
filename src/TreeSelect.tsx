@@ -128,8 +128,6 @@ function isRawValue(value: SafeKey | LabeledValueType): value is SafeKey {
   return !value || typeof value !== 'object';
 }
 
-const OMIT_DOM_PROPS = ['treeNodeFilterProp', 'filterTreeNode'];
-
 const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref) => {
   const {
     id,
@@ -144,7 +142,12 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
     // Search
     showSearch,
-
+    searchValue: legacySearchValue,
+    inputValue: legacyinputValue,
+    onSearch: legacyOnSearch,
+    autoClearSearchValue: legacyAutoClearSearchValue,
+    filterTreeNode: legacyFilterTreeNode,
+    treeNodeFilterProp: legacytreeNodeFilterProp,
     // Selector
     showCheckedStrategy,
     treeNodeLabelProp,
@@ -204,7 +207,15 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const mergedLabelInValue = treeCheckStrictly || labelInValue;
   const mergedMultiple = mergedCheckable || multiple;
 
-  const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch, props);
+  const searchProps = {
+    searchValue: legacySearchValue,
+    inputValue: legacyinputValue,
+    onSearch: legacyOnSearch,
+    autoClearSearchValue: legacyAutoClearSearchValue,
+    filterTreeNode: legacyFilterTreeNode,
+    treeNodeFilterProp: legacytreeNodeFilterProp,
+  };
+  const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch, searchProps);
   const {
     searchValue,
     onSearch,
@@ -745,13 +756,12 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           displayValues={cachedDisplayValues}
           onDisplayValuesChange={onDisplayValuesChange}
           // >>> Search
-          {...searchConfig}
+          autoClearSearchValue={autoClearSearchValue}
           showSearch={mergedShowSearch}
           searchValue={mergedSearchValue}
           onSearch={onInternalSearch}
           // >>> Options
           OptionList={OptionList}
-          omitDomProps={OMIT_DOM_PROPS}
           emptyOptions={!mergedTreeData.length}
           onPopupVisibleChange={onInternalPopupVisibleChange}
           popupMatchSelectWidth={popupMatchSelectWidth}
