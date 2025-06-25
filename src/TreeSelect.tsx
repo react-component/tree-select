@@ -142,7 +142,12 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
     // Search
     showSearch,
-
+    searchValue: legacySearchValue,
+    inputValue: legacyinputValue,
+    onSearch: legacyOnSearch,
+    autoClearSearchValue: legacyAutoClearSearchValue,
+    filterTreeNode: legacyFilterTreeNode,
+    treeNodeFilterProp: legacytreeNodeFilterProp,
     // Selector
     showCheckedStrategy,
     treeNodeLabelProp,
@@ -202,7 +207,15 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const mergedLabelInValue = treeCheckStrictly || labelInValue;
   const mergedMultiple = mergedCheckable || multiple;
 
-  const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch, props);
+  const searchProps = {
+    searchValue: legacySearchValue,
+    inputValue: legacyinputValue,
+    onSearch: legacyOnSearch,
+    autoClearSearchValue: legacyAutoClearSearchValue,
+    filterTreeNode: legacyFilterTreeNode,
+    treeNodeFilterProp: legacytreeNodeFilterProp,
+  };
+  const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch, searchProps);
   const {
     searchValue,
     onSearch,
@@ -743,7 +756,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           displayValues={cachedDisplayValues}
           onDisplayValuesChange={onDisplayValuesChange}
           // >>> Search
-          {...searchConfig}
+          autoClearSearchValue={autoClearSearchValue}
           showSearch={mergedShowSearch}
           searchValue={mergedSearchValue}
           onSearch={onInternalSearch}
