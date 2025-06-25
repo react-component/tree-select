@@ -1,4 +1,4 @@
-import type { SearchConfig, TreeSelectProps } from '@/TreeSelect';
+import type { SearchConfig } from '@/TreeSelect';
 import * as React from 'react';
 
 // Convert `showSearch` to unique config
