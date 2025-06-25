@@ -128,6 +128,8 @@ function isRawValue(value: SafeKey | LabeledValueType): value is SafeKey {
   return !value || typeof value !== 'object';
 }
 
+const OMIT_DOM_PROPS = ['treeNodeFilterProp', 'filterTreeNode'];
+
 const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref) => {
   const {
     id,
@@ -749,6 +751,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           onSearch={onInternalSearch}
           // >>> Options
           OptionList={OptionList}
+          omitDomProps={OMIT_DOM_PROPS}
           emptyOptions={!mergedTreeData.length}
           onPopupVisibleChange={onInternalPopupVisibleChange}
           popupMatchSelectWidth={popupMatchSelectWidth}
