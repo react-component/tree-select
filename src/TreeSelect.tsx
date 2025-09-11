@@ -4,7 +4,7 @@ import useId from '@rc-component/util/lib/hooks/useId';
 import type { IconType } from '@rc-component/tree/lib/interface';
 import type { ExpandAction } from '@rc-component/tree/lib/Tree';
 import { conductCheck } from '@rc-component/tree/lib/utils/conductUtil';
-import useMergedState from '@rc-component/util/lib/hooks/useMergedState';
+import useControlledState from '@rc-component/util/lib/hooks/useControlledState';
 import * as React from 'react';
 import useCache from './hooks/useCache';
 import useCheckedKeys from './hooks/useCheckedKeys';
@@ -224,7 +224,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     treeNodeFilterProp = 'value',
   } = searchConfig;
 
-  const [internalValue, setInternalValue] = useMergedState(defaultValue, { value });
+  const [internalValue, setInternalValue] = useControlledState(defaultValue, value);
 
   // `multiple` && `!treeCheckable` should be show all
   const mergedShowCheckedStrategy = React.useMemo(() => {
@@ -249,10 +249,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   );
 
   // =========================== Search ===========================
-  const [mergedSearchValue, setSearchValue] = useMergedState('', {
-    value: searchValue,
-    postState: search => search || '',
-  });
+  const [internalSearchValue, setSearchValue] = useControlledState('', searchValue);
+  const mergedSearchValue = internalSearchValue || '';
 
   const onInternalSearch = searchText => {
     setSearchValue(searchText);
