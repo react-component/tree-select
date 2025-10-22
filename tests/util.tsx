@@ -28,3 +28,11 @@ export function expectOpen(element: HTMLElement, open = true) {
   });
   return expect(!!element.querySelector('.rc-tree-select-open')).toBe(open);
 }
+
+export function search(element: HTMLElement, value: string) {
+  const input = element.querySelector('input')!;
+  fireEvent.change(input, { target: { value } });
+  act(() => {
+    jest.advanceTimersByTime(10000);
+  });
+}
