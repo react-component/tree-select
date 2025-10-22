@@ -3,7 +3,7 @@ import { fireEvent, render } from '@testing-library/react';
 import { mount } from 'enzyme';
 import React from 'react';
 import TreeSelect, { SHOW_ALL, SHOW_PARENT, TreeNode } from '../src';
-import { clearSelection, search, selectNode } from './util';
+import { clearSelection, search, selectNode, triggerOpen } from './util';
 
 describe('TreeSelect.checkable', () => {
   it('allow clear when controlled', () => {
@@ -210,7 +210,9 @@ describe('TreeSelect.checkable', () => {
     expect(wrapper.getSelection()).toHaveLength(0);
   });
 
-  it('clear selected value and input value', async () => {
+  it('clear selected value and input value', () => {
+    jest.useFakeTimers();
+
     const treeData = [
       {
         key: '0',
@@ -228,12 +230,23 @@ describe('TreeSelect.checkable', () => {
         showCheckedStrategy={SHOW_PARENT}
       />,
     );
-    wrapper.openSelect();
-    wrapper.selectNode(0);
-    wrapper.search('foo');
-    wrapper.clearAll();
-    expect(wrapper.getSelection()).toHaveLength(0);
-    expect(wrapper.find('input').first().props().value).toBe('');
+
+    triggerOpen(container);
+    selectNode(0);
+    search(container, 'foo');
+
+    // Clear all using mouseDown (same as wrapper.clearAll())
+    const clearButton = container.querySelector('.rc-tree-select-clear')!;
+    fireEvent.mouseDown(clearButton);
+
+    // Check that no items are selected
+    expect(container.querySelectorAll('.rc-tree-select-selection-item')).toHaveLength(0);
+
+    // Check that input value is cleared
+    const input = container.querySelector('input') as HTMLInputElement;
+    expect(input.value).toBe('');
+
+    jest.useRealTimers();
   });
 
   describe('uncheck', () => {
