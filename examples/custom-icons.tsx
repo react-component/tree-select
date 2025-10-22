@@ -71,9 +71,9 @@ const iconProps = {
 };
 
 const iconPropsFunction = {
-  suffixIcon: () => suffixIcon,
-  clearIcon: () => clearIcon,
-  removeIcon: () => removeIcon,
+  suffixIcon,
+  clearIcon,
+  removeIcon,
   switcherIcon,
 };
 

@@ -1,12 +1,22 @@
 /* eslint-disable no-undef */
-import { render, fireEvent, within } from '@testing-library/react';
+import { render, fireEvent, within, screen } from '@testing-library/react';
 import { mount } from 'enzyme';
 import KeyCode from '@rc-component/util/lib/KeyCode';
 import React from 'react';
 import TreeSelect, { TreeNode } from '../src';
 import focusTest from './shared/focusTest';
+import { selectNode, clearSelection, search, expectOpen, triggerOpen } from './util';
 
 describe('TreeSelect.multiple', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
+  });
+
   focusTest(true);
 
   const treeData = [
@@ -129,14 +139,29 @@ describe('TreeSelect.multiple', () => {
   });
 
   it('do not open tree when close button click', () => {
-    const wrapper = mount(createSelect());
-    wrapper.openSelect();
-    wrapper.selectNode(0);
-    wrapper.selectNode(1);
-    wrapper.openSelect();
-    wrapper.clearSelection(0);
-    expect(wrapper.isOpen()).toBeFalsy();
-    expect(wrapper.getSelection()).toHaveLength(1);
+    const { container } = render(createSelect());
+
+    // Open the select dropdown
+    triggerOpen(container);
+
+    // Select two nodes
+    selectNode(0);
+    selectNode(1);
+
+    // Check selections exist
+    expect(container.querySelectorAll('.rc-tree-select-selection-item')).toHaveLength(2);
+
+    // Open again to ensure dropdown is open
+    triggerOpen(container);
+
+    // Clear one selection - this should NOT open the dropdown
+    clearSelection(container, 0);
+
+    // Check that only one selection remains
+    expect(container.querySelectorAll('.rc-tree-select-selection-item')).toHaveLength(1);
+
+    // Check that dropdown is closed after clearing
+    expectOpen(container, false);
   });
 
   describe('maxTagCount', () => {
@@ -239,8 +264,8 @@ describe('TreeSelect.multiple', () => {
   // https://github.com/ant-design/ant-design/issues/12315
   it('select searched node', () => {
     const onChange = jest.fn();
-    const wrapper = mount(
-      <TreeSelect value={['leaf1']} multiple onChange={onChange}>
+    const { container } = render(
+      <TreeSelect value={['leaf1']} multiple onChange={onChange} open>
         <TreeNode value="parent 1" title="parent 1" key="0-1">
           <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
             <TreeNode value="leaf1" title="my leaf" key="random" />
@@ -252,8 +277,12 @@ describe('TreeSelect.multiple', () => {
       </TreeSelect>,
     );
 
-    wrapper.search('sss');
-    wrapper.selectNode(2);
+    // Search for 'sss'
+    search(container, 'sss');
+
+    // Find and click on the searched node - use selectNode from util with correct index
+    selectNode(2); // The sss node should be at index 2 after search filtering
+
     expect(onChange).toHaveBeenCalledWith(['leaf1', 'sss'], expect.anything(), expect.anything());
   });
 

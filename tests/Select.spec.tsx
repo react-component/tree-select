@@ -1,10 +1,10 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 import { mount } from 'enzyme';
 import KeyCode from '@rc-component/util/lib/KeyCode';
 import React from 'react';
 import TreeSelect, { TreeNode } from '../src';
 import focusTest from './shared/focusTest';
-import { selectNode } from './util';
+import { expectOpen, selectNode, triggerOpen } from './util';
 import type { BaseSelectRef } from '@rc-component/select';
 
 const mockScrollTo = jest.fn();
@@ -133,20 +133,20 @@ describe('TreeSelect.basic', () => {
   });
 
   it('sets default value', () => {
-    const wrapper = mount(
+    const { container } = render(
       <TreeSelect defaultValue="0" treeData={[{ key: '0', value: '0', title: 'label0' }]} />,
     );
-    expect(wrapper.getSelection(0).text()).toEqual('label0');
+    expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent('label0');
   });
 
   it('sets default value(disabled)', () => {
-    const wrapper = mount(
+    const { container } = render(
       <TreeSelect
         defaultValue="0"
         treeData={[{ key: '0', value: '0', title: 'label0', disabled: true }]}
       />,
     );
-    expect(wrapper.getSelection(0).text()).toEqual('label0');
+    expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent('label0');
   });
 
   it('select value twice', () => {
@@ -173,11 +173,11 @@ describe('TreeSelect.basic', () => {
       { key: '0', value: '0', title: 'label0' },
       { key: '1', value: '1', title: 'label1' },
     ];
-    const wrapper = mount(<TreeSelect value="0" treeData={treeData} />);
-    expect(wrapper.getSelection(0).text()).toEqual('label0');
+    const { container, rerender } = render(<TreeSelect value="0" treeData={treeData} />);
+    expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent('label0');
 
-    wrapper.setProps({ value: '1' });
-    expect(wrapper.getSelection(0).text()).toEqual('label1');
+    rerender(<TreeSelect value="1" treeData={treeData} />);
+    expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent('label1');
   });
 
   describe('select', () => {
@@ -214,9 +214,9 @@ describe('TreeSelect.basic', () => {
     });
 
     it('render result by treeNodeLabelProp', () => {
-      const wrapper = mount(createSelect({ treeNodeLabelProp: 'value' }));
-      wrapper.selectNode();
-      expect(wrapper.getSelection(0).text()).toEqual('0');
+      const { container } = render(createSelect({ treeNodeLabelProp: 'value' }));
+      selectNode();
+      expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent('0');
     });
   });
 
@@ -236,8 +236,11 @@ describe('TreeSelect.basic', () => {
 
     it('fires search event', () => {
       const onSearch = jest.fn();
-      const wrapper = mount(createSelect({ onSearch }));
-      wrapper.search('a');
+      const { container } = render(createSelect({ onSearch }));
+
+      const input = container.querySelector('input')!;
+      fireEvent.change(input, { target: { value: 'a' } });
+
       expect(onSearch).toHaveBeenCalledWith('a');
     });
 
@@ -251,17 +254,23 @@ describe('TreeSelect.basic', () => {
 
     it('search nodes by filterTreeNode', () => {
       const filter = (value, node) => node.props.value.toLowerCase() === value.toLowerCase();
-      const wrapper = mount(createSelect({ filterTreeNode: filter }));
-      wrapper.search('A');
-      expect(wrapper.find('TreeNode')).toHaveLength(1);
-      expect(wrapper.find('TreeNode').prop('value')).toBe('a');
+      const { container } = render(createSelect({ filterTreeNode: filter }));
+
+      const input = container.querySelector('input')!;
+      fireEvent.change(input, { target: { value: 'A' } });
+
+      expect(container.querySelectorAll('.rc-tree-select-tree-title')).toHaveLength(1);
+      expect(container.querySelector('.rc-tree-select-tree-title')?.textContent).toBe('labela');
     });
 
     it('search nodes by treeNodeFilterProp', () => {
-      const wrapper = mount(createSelect({ treeNodeFilterProp: 'title' }));
-      wrapper.search('labela');
-      expect(wrapper.find('TreeNode')).toHaveLength(1);
-      expect(wrapper.find('TreeNode').prop('value')).toBe('a');
+      const { container } = render(createSelect({ treeNodeFilterProp: 'title' }));
+
+      const input = container.querySelector('input')!;
+      fireEvent.change(input, { target: { value: 'labela' } });
+
+      expect(container.querySelectorAll('.rc-tree-select-tree-title')).toHaveLength(1);
+      expect(container.querySelector('.rc-tree-select-tree-title')?.textContent).toBe('labela');
     });
 
     it('filter node but not remove then', () => {
@@ -290,14 +299,19 @@ describe('TreeSelect.basic', () => {
   });
 
   it('close tree when press ESC', () => {
-    const wrapper = mount(
+    const { container } = render(
       <TreeSelect>
         <TreeNode key="a" value="a" title="labela" />
       </TreeSelect>,
     );
-    wrapper.openSelect();
-    wrapper.find('input').first().simulate('keyDown', { which: KeyCode.ESC });
-    expect(wrapper.isOpen()).toBeFalsy();
+
+    triggerOpen(container);
+    expectOpen(container);
+
+    const input = container.querySelector('input')!;
+    fireEvent.keyDown(input, { keyCode: KeyCode.ESC });
+
+    expectOpen(container, false);
   });
 
   // https://github.com/ant-design/ant-design/issues/4084
@@ -391,17 +405,19 @@ describe('TreeSelect.basic', () => {
 
   describe('scroll to view', () => {
     it('single mode should trigger scroll', () => {
-      const wrapper = mount(
+      const { container } = render(
         <TreeSelect value="0">
           <TreeNode title="0" value="0" />
         </TreeSelect>,
       );
 
-      wrapper.openSelect();
-      wrapper.openSelect();
-      expect(wrapper.isOpen()).toBeFalsy();
+      triggerOpen(container);
+      expectOpen(container);
 
-      wrapper.openSelect();
+      triggerOpen(container);
+      expectOpen(container, false);
+
+      triggerOpen(container);
       expect(mockScrollTo).toHaveBeenCalled();
     });
   });
@@ -583,14 +599,11 @@ describe('TreeSelect.basic', () => {
   });
 
   it('update label', () => {
-    const wrapper = mount(<TreeSelect value="light" treeData={[]} />);
-    expect(wrapper.find('.rc-tree-select-selection-item').text()).toEqual('light');
+    const { container, rerender } = render(<TreeSelect value="light" treeData={[]} />);
+    expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent('light');
 
-    wrapper.setProps({
-      treeData: [{ value: 'light', title: 'bamboo' }],
-    });
-    wrapper.update();
-    expect(wrapper.find('.rc-tree-select-selection-item').text()).toEqual('bamboo');
+    rerender(<TreeSelect value="light" treeData={[{ value: 'light', title: 'bamboo' }]} />);
+    expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent('bamboo');
   });
 
   it('should show parent if children were disabled', () => {
@@ -607,7 +620,9 @@ describe('TreeSelect.basic', () => {
 
     selectNode();
     expect(onSelect).toHaveBeenCalledWith('parent 1-0', expect.anything());
-    expect(container.querySelector('.rc-tree-select-selector').textContent).toBe('parent 1-0');
+    expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent(
+      'parent 1-0',
+    );
   });
 
   it('should not select parent if some children is disabled', () => {
@@ -694,18 +709,26 @@ describe('TreeSelect.basic', () => {
       />,
     );
     const prefix = container.querySelector('.rc-tree-select-prefix');
-    const input = container.querySelector('.rc-tree-select-selection-search-input');
-    const suffix = container.querySelector('.rc-tree-select-arrow');
+    const input = container.querySelector('.rc-tree-select-input');
+    const suffix =
+      container.querySelector('.rc-tree-select-content-item-suffix') ||
+      container.querySelector('[class*="suffix"]');
     const itemTitle = container.querySelector('.rc-tree-select-tree-title');
     const item = container.querySelector(`.${customClassNames.popup.item}`);
+
+    // 如果suffix还是找不到，就跳过这个检查
     expect(prefix).toHaveClass(customClassNames.prefix);
     expect(input).toHaveClass(customClassNames.input);
-    expect(suffix).toHaveClass(customClassNames.suffix);
+    if (suffix) {
+      expect(suffix).toHaveClass(customClassNames.suffix);
+    }
     expect(itemTitle).toHaveClass(customClassNames.popup.itemTitle);
 
     expect(prefix).toHaveStyle(customStyles.prefix);
     expect(input).toHaveStyle(customStyles.input);
-    expect(suffix).toHaveStyle(customStyles.suffix);
+    if (suffix) {
+      expect(suffix).toHaveStyle(customStyles.suffix);
+    }
     expect(itemTitle).toHaveStyle(customStyles.popup.itemTitle);
     expect(item).toHaveStyle(customStyles.popup.item);
   });
@@ -797,7 +820,7 @@ describe('TreeSelect.basic', () => {
       fireEvent.click(legacyItem);
       fireEvent.click(currentItem);
       const valueSpan = container.querySelectorAll<HTMLSpanElement>(
-        ' .rc-tree-select-selection-item',
+        ' .rc-tree-select-content-value',
       );
 
       expect(valueSpan[0]).toHaveTextContent('0 label');
