@@ -64,12 +64,17 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
   style="width: 300px;"
 >
   <div
-    class="awesome-placeholder"
-    style="visibility: visible;"
-  />
-  <div
     class="awesome-content"
   >
+    <div
+      class="awesome-content-item awesome-content-item-prefix"
+      style="opacity: 1;"
+    >
+      <div
+        class="awesome-placeholder"
+        style="visibility: visible;"
+      />
+    </div>
     <div
       class="awesome-content-item awesome-content-item-suffix"
       style="opacity: 1;"
@@ -130,12 +135,17 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
     class="rc-tree-select rc-tree-select-multiple rc-tree-select-open"
   >
     <div
-      class="rc-tree-select-placeholder"
-      style="visibility: visible;"
-    />
-    <div
       class="rc-tree-select-content"
     >
+      <div
+        class="rc-tree-select-content-item rc-tree-select-content-item-prefix"
+        style="opacity: 1;"
+      >
+        <div
+          class="rc-tree-select-placeholder"
+          style="visibility: visible;"
+        />
+      </div>
       <div
         class="rc-tree-select-content-item rc-tree-select-content-item-suffix"
         style="opacity: 1;"

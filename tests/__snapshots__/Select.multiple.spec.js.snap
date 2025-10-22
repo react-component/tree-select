@@ -5,12 +5,17 @@ exports[`TreeSelect.multiple can hide search box by showSearch = false 1`] = `
   class="rc-tree-select rc-tree-select-multiple"
 >
   <div
-    class="rc-tree-select-placeholder"
-    style="visibility: visible;"
-  />
-  <div
     class="rc-tree-select-content"
   >
+    <div
+      class="rc-tree-select-content-item rc-tree-select-content-item-prefix"
+      style="opacity: 1;"
+    >
+      <div
+        class="rc-tree-select-placeholder"
+        style="visibility: visible;"
+      />
+    </div>
     <div
       class="rc-tree-select-content-item rc-tree-select-content-item-suffix"
       style="opacity: 1;"
