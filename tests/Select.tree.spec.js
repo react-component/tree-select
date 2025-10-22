@@ -1,8 +1,10 @@
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
 import React from 'react';
-import { mount } from 'enzyme';
+import { render, fireEvent, act } from '@testing-library/react';
 import { resetWarned } from '@rc-component/util/lib/warning';
 import TreeSelect, { TreeNode as SelectNode } from '../src';
+import { selectNode, triggerOpen, expectOpen } from './util';
+import { mount } from 'enzyme';
 
 describe('TreeSelect.tree', () => {
   const createSelect = props => (
@@ -71,7 +73,7 @@ describe('TreeSelect.tree', () => {
   it('warning if node key are not same as value', () => {
     resetWarned();
     const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    mount(<TreeSelect treeData={[{ title: 'little', value: 'ttt', key: 'little' }]} />);
+    render(<TreeSelect treeData={[{ title: 'little', value: 'ttt', key: 'little' }]} />);
     expect(spy).toHaveBeenCalledWith(
       'Warning: `key` or `value` with TreeNode must be the same or you can remove one of them. key: little, value: ttt.',
     );
@@ -81,7 +83,7 @@ describe('TreeSelect.tree', () => {
   it('warning if node undefined value', () => {
     resetWarned();
     const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    mount(<TreeSelect treeData={[{ title: 'little' }]} />);
+    render(<TreeSelect treeData={[{ title: 'little' }]} />);
     expect(spy).toHaveBeenCalledWith('Warning: TreeNode `value` is invalidate: undefined');
     spy.mockRestore();
   });
@@ -89,7 +91,7 @@ describe('TreeSelect.tree', () => {
   it('warning if node has same value', () => {
     resetWarned();
     const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    mount(
+    render(
       <TreeSelect
         treeData={[
           { title: 'little', value: 'ttt' },
@@ -103,13 +105,14 @@ describe('TreeSelect.tree', () => {
 
   // https://github.com/ant-design/ant-design/issues/14597
   it('empty string is also a value', () => {
-    const wrapper = mount(
+    const { container } = render(
       <TreeSelect placeholder="Please select" value="">
         <SelectNode key="" value="" title="empty string" />
       </TreeSelect>,
     );
 
-    expect(wrapper.getSelection(0).text()).toEqual('empty string');
+    const selectionContent = container.querySelector('.rc-tree-select-content-value');
+    expect(selectionContent?.textContent).toEqual('empty string');
   });
 
   describe('treeNodeLabelProp', () => {
@@ -121,7 +124,7 @@ describe('TreeSelect.tree', () => {
       },
     ].forEach(({ name, ...restProps }) => {
       it(name, () => {
-        const wrapper = mount(
+        const { container } = render(
           <TreeSelect
             open
             treeDefaultExpandAll
@@ -131,24 +134,28 @@ describe('TreeSelect.tree', () => {
           />,
         );
 
-        expect(wrapper.find('.rc-tree-select-tree-title').text()).toEqual('a light');
-        expect(wrapper.find('.rc-tree-select-selection-item').text()).toEqual('Light');
+        expect(container.querySelector('.rc-tree-select-tree-title')?.textContent).toEqual(
+          'a light',
+        );
+        expect(container.querySelector('.rc-tree-select-content-value')?.textContent).toEqual(
+          'Light',
+        );
       });
     });
   });
 
   it('Node icon', () => {
-    const wrapper = mount(
+    const { container } = render(
       <TreeSelect open>
         <SelectNode value="little" title="Little" icon={<span className="bamboo-light" />} />
       </TreeSelect>,
     );
 
-    expect(wrapper.exists('.bamboo-light')).toBeTruthy();
+    expect(container.querySelector('.bamboo-light')).toBeTruthy();
   });
 
   it('dynamic with filter should not show expand icon', () => {
-    const wrapper = mount(
+    const { container } = render(
       <TreeSelect
         open
         treeData={[{ label: 'Bamboo', value: 'bamboo', isLeaf: false }]}
@@ -156,6 +163,6 @@ describe('TreeSelect.tree', () => {
       />,
     );
 
-    expect(wrapper.exists('.rc-tree-select-tree-icon__open')).toBeFalsy();
+    expect(container.querySelector('.rc-tree-select-tree-icon__open')).toBeFalsy();
   });
 });

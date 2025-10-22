@@ -40,7 +40,7 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
     return this.find('.rc-tree-select-clear').first().simulate('mouseDown');
   },
   search(text) {
-    this.find('input.rc-tree-select-selection-search-input').simulate('change', {
+    this.find('input.rc-tree-select-input').simulate('change', {
       target: { value: text },
     });
   },
