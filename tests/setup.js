@@ -11,7 +11,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 Object.assign(Enzyme.ReactWrapper.prototype, {
   openSelect() {
-    this.find('.rc-tree-select-selector').simulate('mousedown');
+    this.find('.rc-tree-select').first().simulate('mousedown');
   },
   selectNode(index = 0) {
     this.find('.rc-tree-select-tree-node-content-wrapper').at(index).simulate('click');
@@ -45,6 +45,32 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
     });
   },
   isOpen() {
-    return this.find('.rc-tree-select').hasClass('rc-tree-select-open');
+    return this.find('.rc-tree-select').first().hasClass('rc-tree-select-open');
   },
 });
+
+window.MessageChannel = class {
+  constructor() {
+    const createPort = () => {
+      const port = {
+        onmessage: null,
+        postMessage: message => {
+          setTimeout(() => {
+            if (port._target && typeof port._target.onmessage === 'function') {
+              port._target.onmessage({ data: message });
+            }
+          }, 0);
+        },
+        _target: null,
+      };
+      return port;
+    };
+
+    const port1 = createPort();
+    const port2 = createPort();
+    port1._target = port2;
+    port2._target = port1;
+    this.port1 = port1;
+    this.port2 = port2;
+  }
+};

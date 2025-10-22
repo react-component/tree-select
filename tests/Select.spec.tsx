@@ -1,10 +1,10 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 import { mount } from 'enzyme';
 import KeyCode from '@rc-component/util/lib/KeyCode';
 import React from 'react';
 import TreeSelect, { TreeNode } from '../src';
 import focusTest from './shared/focusTest';
-import { selectNode } from './util';
+import { expectOpen, selectNode, triggerOpen } from './util';
 import type { BaseSelectRef } from '@rc-component/select';
 
 const mockScrollTo = jest.fn();
@@ -258,10 +258,13 @@ describe('TreeSelect.basic', () => {
     });
 
     it('search nodes by treeNodeFilterProp', () => {
-      const wrapper = mount(createSelect({ treeNodeFilterProp: 'title' }));
-      wrapper.search('labela');
-      expect(wrapper.find('TreeNode')).toHaveLength(1);
-      expect(wrapper.find('TreeNode').prop('value')).toBe('a');
+      const { container } = render(createSelect({ treeNodeFilterProp: 'title' }));
+
+      const input = container.querySelector('input')!;
+      fireEvent.change(input, { target: { value: 'labela' } });
+
+      expect(container.querySelectorAll('.rc-tree-select-tree-title')).toHaveLength(1);
+      expect(container.querySelector('.rc-tree-select-tree-title')?.textContent).toBe('labela');
     });
 
     it('filter node but not remove then', () => {
@@ -290,14 +293,19 @@ describe('TreeSelect.basic', () => {
   });
 
   it('close tree when press ESC', () => {
-    const wrapper = mount(
+    const { container } = render(
       <TreeSelect>
         <TreeNode key="a" value="a" title="labela" />
       </TreeSelect>,
     );
-    wrapper.openSelect();
-    wrapper.find('input').first().simulate('keyDown', { which: KeyCode.ESC });
-    expect(wrapper.isOpen()).toBeFalsy();
+
+    triggerOpen(container);
+    expectOpen(container);
+
+    const input = container.querySelector('input')!;
+    fireEvent.keyDown(input, { keyCode: KeyCode.ESC });
+
+    expectOpen(container, false);
   });
 
   // https://github.com/ant-design/ant-design/issues/4084
@@ -391,17 +399,19 @@ describe('TreeSelect.basic', () => {
 
   describe('scroll to view', () => {
     it('single mode should trigger scroll', () => {
-      const wrapper = mount(
+      const { container } = render(
         <TreeSelect value="0">
           <TreeNode title="0" value="0" />
         </TreeSelect>,
       );
 
-      wrapper.openSelect();
-      wrapper.openSelect();
-      expect(wrapper.isOpen()).toBeFalsy();
+      triggerOpen(container);
+      expectOpen(container);
 
-      wrapper.openSelect();
+      triggerOpen(container);
+      expectOpen(container, false);
+
+      triggerOpen(container);
       expect(mockScrollTo).toHaveBeenCalled();
     });
   });
@@ -584,13 +594,13 @@ describe('TreeSelect.basic', () => {
 
   it('update label', () => {
     const wrapper = mount(<TreeSelect value="light" treeData={[]} />);
-    expect(wrapper.find('.rc-tree-select-selection-item').text()).toEqual('light');
+    expect(wrapper.find('.rc-tree-select-content-value').text()).toEqual('light');
 
     wrapper.setProps({
       treeData: [{ value: 'light', title: 'bamboo' }],
     });
     wrapper.update();
-    expect(wrapper.find('.rc-tree-select-selection-item').text()).toEqual('bamboo');
+    expect(wrapper.find('.rc-tree-select-content-value').text()).toEqual('bamboo');
   });
 
   it('should show parent if children were disabled', () => {
@@ -607,7 +617,9 @@ describe('TreeSelect.basic', () => {
 
     selectNode();
     expect(onSelect).toHaveBeenCalledWith('parent 1-0', expect.anything());
-    expect(container.querySelector('.rc-tree-select-selector').textContent).toBe('parent 1-0');
+    expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent(
+      'parent 1-0',
+    );
   });
 
   it('should not select parent if some children is disabled', () => {
@@ -797,7 +809,7 @@ describe('TreeSelect.basic', () => {
       fireEvent.click(legacyItem);
       fireEvent.click(currentItem);
       const valueSpan = container.querySelectorAll<HTMLSpanElement>(
-        ' .rc-tree-select-selection-item',
+        ' .rc-tree-select-content-value',
       );
 
       expect(valueSpan[0]).toHaveTextContent('0 label');
