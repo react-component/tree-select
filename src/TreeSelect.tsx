@@ -1,4 +1,5 @@
 import type { BaseSelectPropsWithoutPrivate, BaseSelectRef } from '@rc-component/select';
+import type { BaseSelectSemanticName } from '@rc-component/select/lib/BaseSelect';
 import { BaseSelect } from '@rc-component/select';
 import useId from '@rc-component/util/lib/hooks/useId';
 import type { IconType } from '@rc-component/tree/lib/interface';
@@ -36,7 +37,7 @@ import type {
 } from './interface';
 import useSearchConfig from './hooks/useSearchConfig';
 
-export type SemanticName = 'input' | 'prefix' | 'suffix';
+export type SemanticName = BaseSelectSemanticName;
 export type PopupSemantic = 'item' | 'itemTitle';
 export interface SearchConfig {
   searchValue?: string;
@@ -736,16 +737,8 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         <BaseSelect
           ref={ref}
           {...restProps}
-          classNames={{
-            prefix: treeSelectClassNames?.prefix,
-            suffix: treeSelectClassNames?.suffix,
-            input: treeSelectClassNames?.input,
-          }}
-          styles={{
-            prefix: styles?.prefix,
-            suffix: styles?.suffix,
-            input: styles?.input,
-          }}
+          classNames={treeSelectClassNames}
+          styles={styles}
           // >>> MISC
           id={mergedId}
           prefixCls={prefixCls}
