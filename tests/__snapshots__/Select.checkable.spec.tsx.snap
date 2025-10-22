@@ -3,291 +3,261 @@
 exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1`] = `
 <div>
   <div
-    class="rc-tree-select rc-tree-select-multiple rc-tree-select-open rc-tree-select-show-search"
+    class="rc-tree-select rc-tree-select-multiple rc-tree-select-open"
   >
     <div
-      class="rc-tree-select-selector"
+      class="rc-tree-select-content"
     >
-      <span
-        class="rc-tree-select-selection-wrap"
+      <div
+        class="rc-tree-select-content-item"
+        style="opacity: 1;"
       >
-        <div
-          class="rc-tree-select-selection-overflow"
+        <span
+          class="rc-tree-select-selection-item"
+          title="0"
         >
-          <div
-            class="rc-tree-select-selection-overflow-item"
-            style="opacity: 1;"
-          >
-            <span
-              class="rc-tree-select-selection-item"
-              title="0"
-            >
-              <span
-                class="rc-tree-select-selection-item-content"
-              >
-                0
-              </span>
-              <span
-                aria-hidden="true"
-                class="rc-tree-select-selection-item-remove"
-                style="user-select: none;"
-                unselectable="on"
-              >
-                <span
-                  class="rc-tree-select-selection-item-remove-icon"
-                >
-                  ×
-                </span>
-              </span>
-            </span>
-          </div>
-          <div
-            class="rc-tree-select-selection-overflow-item"
-            style="opacity: 1;"
-          >
-            <span
-              class="rc-tree-select-selection-item"
-              title="0-0"
-            >
-              <span
-                class="rc-tree-select-selection-item-content"
-              >
-                0-0
-              </span>
-              <span
-                aria-hidden="true"
-                class="rc-tree-select-selection-item-remove"
-                style="user-select: none;"
-                unselectable="on"
-              >
-                <span
-                  class="rc-tree-select-selection-item-remove-icon"
-                >
-                  ×
-                </span>
-              </span>
-            </span>
-          </div>
-          <div
-            class="rc-tree-select-selection-overflow-item"
-            style="opacity: 1;"
-          >
-            <span
-              class="rc-tree-select-selection-item"
-              title="0-0-0"
-            >
-              <span
-                class="rc-tree-select-selection-item-content"
-              >
-                0-0-0
-              </span>
-              <span
-                aria-hidden="true"
-                class="rc-tree-select-selection-item-remove"
-                style="user-select: none;"
-                unselectable="on"
-              >
-                <span
-                  class="rc-tree-select-selection-item-remove-icon"
-                >
-                  ×
-                </span>
-              </span>
-            </span>
-          </div>
-          <div
-            class="rc-tree-select-selection-overflow-item rc-tree-select-selection-overflow-item-suffix"
-            style="opacity: 1;"
-          >
-            <div
-              class="rc-tree-select-selection-search"
-              style="width: 0px;"
-            >
-              <input
-                aria-autocomplete="list"
-                aria-controls="test-id_list"
-                aria-expanded="true"
-                aria-haspopup="listbox"
-                aria-owns="test-id_list"
-                autocomplete="off"
-                class="rc-tree-select-selection-search-input"
-                id="test-id"
-                role="combobox"
-                style=""
-                type="search"
-                value=""
-              />
-              <span
-                aria-hidden="true"
-                class="rc-tree-select-selection-search-mirror"
-              >
-                 
-              </span>
-            </div>
-          </div>
-        </div>
-      </span>
-    </div>
-    <div
-      class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
-      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
-    >
-      <div>
-        <div>
           <span
-            aria-live="assertive"
-            style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+            class="rc-tree-select-selection-item-content"
           >
             0
           </span>
-          <div
-            class="rc-tree-select-tree rc-tree-select-tree-active-focused"
+          <span
+            aria-hidden="true"
+            class="rc-tree-select-selection-item-remove"
+            style="user-select: none;"
+            unselectable="on"
           >
-            <div>
-              <input
-                aria-label="for screen reader"
-                disabled=""
-                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
-                value=""
+            ×
+          </span>
+        </span>
+      </div>
+      <div
+        class="rc-tree-select-content-item"
+        style="opacity: 1;"
+      >
+        <span
+          class="rc-tree-select-selection-item"
+          title="0-0"
+        >
+          <span
+            class="rc-tree-select-selection-item-content"
+          >
+            0-0
+          </span>
+          <span
+            aria-hidden="true"
+            class="rc-tree-select-selection-item-remove"
+            style="user-select: none;"
+            unselectable="on"
+          >
+            ×
+          </span>
+        </span>
+      </div>
+      <div
+        class="rc-tree-select-content-item"
+        style="opacity: 1;"
+      >
+        <span
+          class="rc-tree-select-selection-item"
+          title="0-0-0"
+        >
+          <span
+            class="rc-tree-select-selection-item-content"
+          >
+            0-0-0
+          </span>
+          <span
+            aria-hidden="true"
+            class="rc-tree-select-selection-item-remove"
+            style="user-select: none;"
+            unselectable="on"
+          >
+            ×
+          </span>
+        </span>
+      </div>
+      <div
+        class="rc-tree-select-content-item rc-tree-select-content-item-suffix"
+        style="opacity: 1;"
+      >
+        <input
+          aria-autocomplete="list"
+          aria-controls="test-id_list"
+          aria-expanded="true"
+          aria-haspopup="listbox"
+          aria-owns="test-id_list"
+          autocomplete="off"
+          class="rc-tree-select-input"
+          id="test-id"
+          readonly=""
+          role="combobox"
+          style="--select-input-width: 0;"
+          type="search"
+          value=""
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
+    style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
+  >
+    <div>
+      <div>
+        <span
+          aria-live="assertive"
+          style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+        >
+          0
+        </span>
+        <div
+          class="rc-tree-select-tree rc-tree-select-tree-active-focused"
+        >
+          <div>
+            <input
+              aria-label="for screen reader"
+              disabled=""
+              style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+              value=""
+            />
+          </div>
+          <div
+            aria-hidden="true"
+            class="rc-tree-select-tree-treenode"
+            style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
+          >
+            <div
+              class="rc-tree-select-tree-indent"
+            >
+              <div
+                class="rc-tree-select-tree-indent-unit"
               />
             </div>
+          </div>
+          <div
+            class="rc-tree-select-tree-list"
+            role="tree"
+            style="position: relative;"
+          >
             <div
-              aria-hidden="true"
-              class="rc-tree-select-tree-treenode"
-              style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
+              class="rc-tree-select-tree-list-holder"
+              style="max-height: 200px; overflow-y: auto;"
             >
-              <div
-                class="rc-tree-select-tree-indent"
-              >
+              <div>
                 <div
-                  class="rc-tree-select-tree-indent-unit"
-                />
-              </div>
-            </div>
-            <div
-              class="rc-tree-select-tree-list"
-              role="tree"
-              style="position: relative;"
-            >
-              <div
-                class="rc-tree-select-tree-list-holder"
-                style="max-height: 200px; overflow-y: auto;"
-              >
-                <div>
+                  class="rc-tree-select-tree-list-holder-inner"
+                  style="display: flex; flex-direction: column;"
+                >
                   <div
-                    class="rc-tree-select-tree-list-holder-inner"
-                    style="display: flex; flex-direction: column;"
+                    aria-expanded="true"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last"
+                    draggable="false"
+                    role="treeitem"
                   >
-                    <div
-                      aria-expanded="true"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last"
-                      draggable="false"
-                      role="treeitem"
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    />
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                    />
+                    <span
+                      aria-checked="true"
+                      aria-label="Select 0"
+                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                      role="checkbox"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                      title="0"
                     >
                       <span
-                        aria-hidden="true"
-                        class="rc-tree-select-tree-indent"
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
                       />
                       <span
-                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
-                      />
-                      <span
-                        aria-checked="true"
-                        aria-label="Select 0"
-                        class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
-                        role="checkbox"
-                      />
-                      <span
-                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                        title="0"
+                        class="rc-tree-select-tree-title"
                       >
-                        <span
-                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
-                        />
-                        <span
-                          class="rc-tree-select-tree-title"
-                        >
-                          0
-                        </span>
+                        0
                       </span>
-                    </div>
-                    <div
-                      aria-expanded="true"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
-                      draggable="false"
-                      role="treeitem"
+                    </span>
+                  </div>
+                  <div
+                    aria-expanded="true"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last"
+                    draggable="false"
+                    role="treeitem"
+                  >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
                     >
                       <span
-                        aria-hidden="true"
-                        class="rc-tree-select-tree-indent"
-                      >
-                        <span
-                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                        />
-                      </span>
-                      <span
-                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
                       />
-                      <span
-                        aria-checked="true"
-                        aria-label="Select 0-0"
-                        class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
-                        role="checkbox"
-                      />
-                      <span
-                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                        title="0-0"
-                      >
-                        <span
-                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
-                        />
-                        <span
-                          class="rc-tree-select-tree-title"
-                        >
-                          0-0
-                        </span>
-                      </span>
-                    </div>
-                    <div
-                      aria-expanded="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last rc-tree-select-tree-treenode-leaf"
-                      draggable="false"
-                      role="treeitem"
+                    </span>
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                    />
+                    <span
+                      aria-checked="true"
+                      aria-label="Select 0-0"
+                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                      role="checkbox"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                      title="0-0"
                     >
                       <span
-                        aria-hidden="true"
-                        class="rc-tree-select-tree-indent"
-                      >
-                        <span
-                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                        />
-                        <span
-                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                        />
-                      </span>
-                      <span
-                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
                       />
                       <span
-                        aria-checked="true"
-                        aria-label="Select 0-0-0"
-                        class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
-                        role="checkbox"
+                        class="rc-tree-select-tree-title"
+                      >
+                        0-0
+                      </span>
+                    </span>
+                  </div>
+                  <div
+                    aria-expanded="false"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last rc-tree-select-tree-treenode-leaf"
+                    draggable="false"
+                    role="treeitem"
+                  >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    >
+                      <span
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
                       />
                       <span
-                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                        title="0-0-0"
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                      />
+                    </span>
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                    />
+                    <span
+                      aria-checked="true"
+                      aria-label="Select 0-0-0"
+                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                      role="checkbox"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                      title="0-0-0"
+                    >
+                      <span
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                      />
+                      <span
+                        class="rc-tree-select-tree-title"
                       >
-                        <span
-                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
-                        />
-                        <span
-                          class="rc-tree-select-tree-title"
-                        >
-                          0-0-0
-                        </span>
+                        0-0-0
                       </span>
-                    </div>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -303,213 +273,196 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
 exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2`] = `
 <div>
   <div
-    class="rc-tree-select rc-tree-select-multiple rc-tree-select-open rc-tree-select-show-search"
+    class="rc-tree-select rc-tree-select-multiple rc-tree-select-open"
   >
     <div
-      class="rc-tree-select-selector"
+      class="rc-tree-select-placeholder"
+      style="visibility: visible;"
+    />
+    <div
+      class="rc-tree-select-content"
     >
-      <span
-        class="rc-tree-select-selection-wrap"
+      <div
+        class="rc-tree-select-content-item rc-tree-select-content-item-suffix"
+        style="opacity: 1;"
       >
-        <div
-          class="rc-tree-select-selection-overflow"
+        <input
+          aria-autocomplete="list"
+          aria-controls="test-id_list"
+          aria-expanded="true"
+          aria-haspopup="listbox"
+          aria-owns="test-id_list"
+          autocomplete="off"
+          class="rc-tree-select-input"
+          id="test-id"
+          readonly=""
+          role="combobox"
+          style="--select-input-width: 0;"
+          type="search"
+          value=""
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
+    style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
+  >
+    <div>
+      <div>
+        <span
+          aria-live="assertive"
+          style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
         >
+          0
+        </span>
+        <div
+          class="rc-tree-select-tree rc-tree-select-tree-active-focused"
+        >
+          <div>
+            <input
+              aria-label="for screen reader"
+              disabled=""
+              style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+              value=""
+            />
+          </div>
           <div
-            class="rc-tree-select-selection-overflow-item rc-tree-select-selection-overflow-item-suffix"
-            style="opacity: 1;"
+            aria-hidden="true"
+            class="rc-tree-select-tree-treenode"
+            style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
           >
             <div
-              class="rc-tree-select-selection-search"
-              style="width: 0px;"
+              class="rc-tree-select-tree-indent"
             >
-              <input
-                aria-autocomplete="list"
-                aria-controls="test-id_list"
-                aria-expanded="true"
-                aria-haspopup="listbox"
-                aria-owns="test-id_list"
-                autocomplete="off"
-                class="rc-tree-select-selection-search-input"
-                id="test-id"
-                role="combobox"
-                style=""
-                type="search"
-                value=""
+              <div
+                class="rc-tree-select-tree-indent-unit"
               />
-              <span
-                aria-hidden="true"
-                class="rc-tree-select-selection-search-mirror"
-              >
-                 
-              </span>
             </div>
           </div>
-        </div>
-        <span
-          class="rc-tree-select-selection-placeholder"
-        />
-      </span>
-    </div>
-    <div
-      class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
-      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
-    >
-      <div>
-        <div>
-          <span
-            aria-live="assertive"
-            style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
-          >
-            0
-          </span>
           <div
-            class="rc-tree-select-tree rc-tree-select-tree-active-focused"
+            class="rc-tree-select-tree-list"
+            role="tree"
+            style="position: relative;"
           >
-            <div>
-              <input
-                aria-label="for screen reader"
-                disabled=""
-                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
-                value=""
-              />
-            </div>
             <div
-              aria-hidden="true"
-              class="rc-tree-select-tree-treenode"
-              style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
+              class="rc-tree-select-tree-list-holder"
+              style="max-height: 200px; overflow-y: auto;"
             >
-              <div
-                class="rc-tree-select-tree-indent"
-              >
+              <div>
                 <div
-                  class="rc-tree-select-tree-indent-unit"
-                />
-              </div>
-            </div>
-            <div
-              class="rc-tree-select-tree-list"
-              role="tree"
-              style="position: relative;"
-            >
-              <div
-                class="rc-tree-select-tree-list-holder"
-                style="max-height: 200px; overflow-y: auto;"
-              >
-                <div>
+                  class="rc-tree-select-tree-list-holder-inner"
+                  style="display: flex; flex-direction: column;"
+                >
                   <div
-                    class="rc-tree-select-tree-list-holder-inner"
-                    style="display: flex; flex-direction: column;"
+                    aria-expanded="true"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last"
+                    draggable="false"
+                    role="treeitem"
                   >
-                    <div
-                      aria-expanded="true"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last"
-                      draggable="false"
-                      role="treeitem"
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    />
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                    />
+                    <span
+                      aria-checked="false"
+                      aria-label="Select 0"
+                      class="rc-tree-select-tree-checkbox"
+                      role="checkbox"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                      title="0"
                     >
                       <span
-                        aria-hidden="true"
-                        class="rc-tree-select-tree-indent"
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
                       />
                       <span
-                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
-                      />
-                      <span
-                        aria-checked="false"
-                        aria-label="Select 0"
-                        class="rc-tree-select-tree-checkbox"
-                        role="checkbox"
-                      />
-                      <span
-                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                        title="0"
+                        class="rc-tree-select-tree-title"
                       >
-                        <span
-                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
-                        />
-                        <span
-                          class="rc-tree-select-tree-title"
-                        >
-                          0
-                        </span>
+                        0
                       </span>
-                    </div>
-                    <div
-                      aria-expanded="true"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
-                      draggable="false"
-                      role="treeitem"
+                    </span>
+                  </div>
+                  <div
+                    aria-expanded="true"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last"
+                    draggable="false"
+                    role="treeitem"
+                  >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
                     >
                       <span
-                        aria-hidden="true"
-                        class="rc-tree-select-tree-indent"
-                      >
-                        <span
-                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                        />
-                      </span>
-                      <span
-                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
                       />
-                      <span
-                        aria-checked="false"
-                        aria-label="Select 0-0"
-                        class="rc-tree-select-tree-checkbox"
-                        role="checkbox"
-                      />
-                      <span
-                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                        title="0-0"
-                      >
-                        <span
-                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
-                        />
-                        <span
-                          class="rc-tree-select-tree-title"
-                        >
-                          0-0
-                        </span>
-                      </span>
-                    </div>
-                    <div
-                      aria-expanded="false"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last rc-tree-select-tree-treenode-leaf"
-                      draggable="false"
-                      role="treeitem"
+                    </span>
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                    />
+                    <span
+                      aria-checked="false"
+                      aria-label="Select 0-0"
+                      class="rc-tree-select-tree-checkbox"
+                      role="checkbox"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                      title="0-0"
                     >
                       <span
-                        aria-hidden="true"
-                        class="rc-tree-select-tree-indent"
-                      >
-                        <span
-                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                        />
-                        <span
-                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                        />
-                      </span>
-                      <span
-                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
                       />
                       <span
-                        aria-checked="false"
-                        aria-label="Select 0-0-0"
-                        class="rc-tree-select-tree-checkbox"
-                        role="checkbox"
+                        class="rc-tree-select-tree-title"
+                      >
+                        0-0
+                      </span>
+                    </span>
+                  </div>
+                  <div
+                    aria-expanded="false"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-leaf-last rc-tree-select-tree-treenode-leaf"
+                    draggable="false"
+                    role="treeitem"
+                  >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    >
+                      <span
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
                       />
                       <span
-                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                        title="0-0-0"
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                      />
+                    </span>
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                    />
+                    <span
+                      aria-checked="false"
+                      aria-label="Select 0-0-0"
+                      class="rc-tree-select-tree-checkbox"
+                      role="checkbox"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                      title="0-0-0"
+                    >
+                      <span
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                      />
+                      <span
+                        class="rc-tree-select-tree-title"
                       >
-                        <span
-                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
-                        />
-                        <span
-                          class="rc-tree-select-tree-title"
-                        >
-                          0-0-0
-                        </span>
+                        0-0-0
                       </span>
-                    </div>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -525,291 +478,261 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
 exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
 <div>
   <div
-    class="rc-tree-select rc-tree-select-multiple rc-tree-select-open rc-tree-select-show-search"
+    class="rc-tree-select rc-tree-select-multiple rc-tree-select-open"
   >
     <div
-      class="rc-tree-select-selector"
+      class="rc-tree-select-content"
     >
-      <span
-        class="rc-tree-select-selection-wrap"
+      <div
+        class="rc-tree-select-content-item"
+        style="opacity: 1;"
       >
-        <div
-          class="rc-tree-select-selection-overflow"
+        <span
+          class="rc-tree-select-selection-item"
+          title="0"
         >
-          <div
-            class="rc-tree-select-selection-overflow-item"
-            style="opacity: 1;"
-          >
-            <span
-              class="rc-tree-select-selection-item"
-              title="0"
-            >
-              <span
-                class="rc-tree-select-selection-item-content"
-              >
-                0
-              </span>
-              <span
-                aria-hidden="true"
-                class="rc-tree-select-selection-item-remove"
-                style="user-select: none;"
-                unselectable="on"
-              >
-                <span
-                  class="rc-tree-select-selection-item-remove-icon"
-                >
-                  ×
-                </span>
-              </span>
-            </span>
-          </div>
-          <div
-            class="rc-tree-select-selection-overflow-item"
-            style="opacity: 1;"
-          >
-            <span
-              class="rc-tree-select-selection-item"
-              title="0-0"
-            >
-              <span
-                class="rc-tree-select-selection-item-content"
-              >
-                0-0
-              </span>
-              <span
-                aria-hidden="true"
-                class="rc-tree-select-selection-item-remove"
-                style="user-select: none;"
-                unselectable="on"
-              >
-                <span
-                  class="rc-tree-select-selection-item-remove-icon"
-                >
-                  ×
-                </span>
-              </span>
-            </span>
-          </div>
-          <div
-            class="rc-tree-select-selection-overflow-item"
-            style="opacity: 1;"
-          >
-            <span
-              class="rc-tree-select-selection-item"
-              title="0-0-0"
-            >
-              <span
-                class="rc-tree-select-selection-item-content"
-              >
-                0-0-0
-              </span>
-              <span
-                aria-hidden="true"
-                class="rc-tree-select-selection-item-remove"
-                style="user-select: none;"
-                unselectable="on"
-              >
-                <span
-                  class="rc-tree-select-selection-item-remove-icon"
-                >
-                  ×
-                </span>
-              </span>
-            </span>
-          </div>
-          <div
-            class="rc-tree-select-selection-overflow-item rc-tree-select-selection-overflow-item-suffix"
-            style="opacity: 1;"
-          >
-            <div
-              class="rc-tree-select-selection-search"
-              style="width: 0px;"
-            >
-              <input
-                aria-autocomplete="list"
-                aria-controls="test-id_list"
-                aria-expanded="true"
-                aria-haspopup="listbox"
-                aria-owns="test-id_list"
-                autocomplete="off"
-                class="rc-tree-select-selection-search-input"
-                id="test-id"
-                role="combobox"
-                style=""
-                type="search"
-                value="0"
-              />
-              <span
-                aria-hidden="true"
-                class="rc-tree-select-selection-search-mirror"
-              >
-                0 
-              </span>
-            </div>
-          </div>
-        </div>
-      </span>
-    </div>
-    <div
-      class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
-      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
-    >
-      <div>
-        <div>
           <span
-            aria-live="assertive"
-            style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+            class="rc-tree-select-selection-item-content"
           >
             0
           </span>
-          <div
-            class="rc-tree-select-tree rc-tree-select-tree-active-focused"
+          <span
+            aria-hidden="true"
+            class="rc-tree-select-selection-item-remove"
+            style="user-select: none;"
+            unselectable="on"
           >
-            <div>
-              <input
-                aria-label="for screen reader"
-                disabled=""
-                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
-                value=""
+            ×
+          </span>
+        </span>
+      </div>
+      <div
+        class="rc-tree-select-content-item"
+        style="opacity: 1;"
+      >
+        <span
+          class="rc-tree-select-selection-item"
+          title="0-0"
+        >
+          <span
+            class="rc-tree-select-selection-item-content"
+          >
+            0-0
+          </span>
+          <span
+            aria-hidden="true"
+            class="rc-tree-select-selection-item-remove"
+            style="user-select: none;"
+            unselectable="on"
+          >
+            ×
+          </span>
+        </span>
+      </div>
+      <div
+        class="rc-tree-select-content-item"
+        style="opacity: 1;"
+      >
+        <span
+          class="rc-tree-select-selection-item"
+          title="0-0-0"
+        >
+          <span
+            class="rc-tree-select-selection-item-content"
+          >
+            0-0-0
+          </span>
+          <span
+            aria-hidden="true"
+            class="rc-tree-select-selection-item-remove"
+            style="user-select: none;"
+            unselectable="on"
+          >
+            ×
+          </span>
+        </span>
+      </div>
+      <div
+        class="rc-tree-select-content-item rc-tree-select-content-item-suffix"
+        style="opacity: 1;"
+      >
+        <input
+          aria-autocomplete="list"
+          aria-controls="test-id_list"
+          aria-expanded="true"
+          aria-haspopup="listbox"
+          aria-owns="test-id_list"
+          autocomplete="off"
+          class="rc-tree-select-input"
+          id="test-id"
+          readonly=""
+          role="combobox"
+          style="--select-input-width: 0;"
+          type="search"
+          value=""
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
+    style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
+  >
+    <div>
+      <div>
+        <span
+          aria-live="assertive"
+          style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+        >
+          0
+        </span>
+        <div
+          class="rc-tree-select-tree rc-tree-select-tree-active-focused"
+        >
+          <div>
+            <input
+              aria-label="for screen reader"
+              disabled=""
+              style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+              value=""
+            />
+          </div>
+          <div
+            aria-hidden="true"
+            class="rc-tree-select-tree-treenode"
+            style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
+          >
+            <div
+              class="rc-tree-select-tree-indent"
+            >
+              <div
+                class="rc-tree-select-tree-indent-unit"
               />
             </div>
+          </div>
+          <div
+            class="rc-tree-select-tree-list"
+            role="tree"
+            style="position: relative;"
+          >
             <div
-              aria-hidden="true"
-              class="rc-tree-select-tree-treenode"
-              style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
+              class="rc-tree-select-tree-list-holder"
+              style="max-height: 200px; overflow-y: auto;"
             >
-              <div
-                class="rc-tree-select-tree-indent"
-              >
+              <div>
                 <div
-                  class="rc-tree-select-tree-indent-unit"
-                />
-              </div>
-            </div>
-            <div
-              class="rc-tree-select-tree-list"
-              role="tree"
-              style="position: relative;"
-            >
-              <div
-                class="rc-tree-select-tree-list-holder"
-                style="max-height: 200px; overflow-y: auto;"
-              >
-                <div>
+                  class="rc-tree-select-tree-list-holder-inner"
+                  style="display: flex; flex-direction: column;"
+                >
                   <div
-                    class="rc-tree-select-tree-list-holder-inner"
-                    style="display: flex; flex-direction: column;"
+                    aria-expanded="true"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last filter-node"
+                    draggable="false"
+                    role="treeitem"
                   >
-                    <div
-                      aria-expanded="true"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last filter-node"
-                      draggable="false"
-                      role="treeitem"
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    />
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                    />
+                    <span
+                      aria-checked="true"
+                      aria-label="Select 0"
+                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                      role="checkbox"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                      title="0"
                     >
                       <span
-                        aria-hidden="true"
-                        class="rc-tree-select-tree-indent"
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
                       />
                       <span
-                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
-                      />
-                      <span
-                        aria-checked="true"
-                        aria-label="Select 0"
-                        class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
-                        role="checkbox"
-                      />
-                      <span
-                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                        title="0"
+                        class="rc-tree-select-tree-title"
                       >
-                        <span
-                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
-                        />
-                        <span
-                          class="rc-tree-select-tree-title"
-                        >
-                          0
-                        </span>
+                        0
                       </span>
-                    </div>
-                    <div
-                      aria-expanded="true"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
-                      draggable="false"
-                      role="treeitem"
+                    </span>
+                  </div>
+                  <div
+                    aria-expanded="true"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node"
+                    draggable="false"
+                    role="treeitem"
+                  >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
                     >
                       <span
-                        aria-hidden="true"
-                        class="rc-tree-select-tree-indent"
-                      >
-                        <span
-                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                        />
-                      </span>
-                      <span
-                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
                       />
-                      <span
-                        aria-checked="true"
-                        aria-label="Select 0-0"
-                        class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
-                        role="checkbox"
-                      />
-                      <span
-                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                        title="0-0"
-                      >
-                        <span
-                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
-                        />
-                        <span
-                          class="rc-tree-select-tree-title"
-                        >
-                          0-0
-                        </span>
-                      </span>
-                    </div>
-                    <div
-                      aria-expanded="true"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node rc-tree-select-tree-treenode-leaf"
-                      draggable="false"
-                      role="treeitem"
+                    </span>
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                    />
+                    <span
+                      aria-checked="true"
+                      aria-label="Select 0-0"
+                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                      role="checkbox"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                      title="0-0"
                     >
                       <span
-                        aria-hidden="true"
-                        class="rc-tree-select-tree-indent"
-                      >
-                        <span
-                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                        />
-                        <span
-                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                        />
-                      </span>
-                      <span
-                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
                       />
                       <span
-                        aria-checked="true"
-                        aria-label="Select 0-0-0"
-                        class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
-                        role="checkbox"
+                        class="rc-tree-select-tree-title"
+                      >
+                        0-0
+                      </span>
+                    </span>
+                  </div>
+                  <div
+                    aria-expanded="true"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-checkbox-checked rc-tree-select-tree-treenode-leaf-last filter-node rc-tree-select-tree-treenode-leaf"
+                    draggable="false"
+                    role="treeitem"
+                  >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    >
+                      <span
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
                       />
                       <span
-                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                        title="0-0-0"
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                      />
+                    </span>
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                    />
+                    <span
+                      aria-checked="true"
+                      aria-label="Select 0-0-0"
+                      class="rc-tree-select-tree-checkbox rc-tree-select-tree-checkbox-checked"
+                      role="checkbox"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                      title="0-0-0"
+                    >
+                      <span
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                      />
+                      <span
+                        class="rc-tree-select-tree-title"
                       >
-                        <span
-                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
-                        />
-                        <span
-                          class="rc-tree-select-tree-title"
-                        >
-                          0-0-0
-                        </span>
+                        0-0-0
                       </span>
-                    </div>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -825,210 +748,196 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
 exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
 <div>
   <div
-    class="rc-tree-select rc-tree-select-multiple rc-tree-select-open rc-tree-select-show-search"
+    class="rc-tree-select rc-tree-select-multiple rc-tree-select-open"
   >
     <div
-      class="rc-tree-select-selector"
+      class="rc-tree-select-placeholder"
+      style="visibility: hidden;"
+    />
+    <div
+      class="rc-tree-select-content"
     >
-      <span
-        class="rc-tree-select-selection-wrap"
+      <div
+        class="rc-tree-select-content-item rc-tree-select-content-item-suffix"
+        style="opacity: 1;"
       >
-        <div
-          class="rc-tree-select-selection-overflow"
+        <input
+          aria-autocomplete="list"
+          aria-controls="test-id_list"
+          aria-expanded="true"
+          aria-haspopup="listbox"
+          aria-owns="test-id_list"
+          autocomplete="off"
+          class="rc-tree-select-input"
+          id="test-id"
+          readonly=""
+          role="combobox"
+          style="--select-input-width: 0;"
+          type="search"
+          value=""
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
+    style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
+  >
+    <div>
+      <div>
+        <span
+          aria-live="assertive"
+          style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
         >
+          0
+        </span>
+        <div
+          class="rc-tree-select-tree rc-tree-select-tree-active-focused"
+        >
+          <div>
+            <input
+              aria-label="for screen reader"
+              disabled=""
+              style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
+              value=""
+            />
+          </div>
           <div
-            class="rc-tree-select-selection-overflow-item rc-tree-select-selection-overflow-item-suffix"
-            style="opacity: 1;"
+            aria-hidden="true"
+            class="rc-tree-select-tree-treenode"
+            style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
           >
             <div
-              class="rc-tree-select-selection-search"
-              style="width: 0px;"
+              class="rc-tree-select-tree-indent"
             >
-              <input
-                aria-autocomplete="list"
-                aria-controls="test-id_list"
-                aria-expanded="true"
-                aria-haspopup="listbox"
-                aria-owns="test-id_list"
-                autocomplete="off"
-                class="rc-tree-select-selection-search-input"
-                id="test-id"
-                role="combobox"
-                style=""
-                type="search"
-                value="0"
+              <div
+                class="rc-tree-select-tree-indent-unit"
               />
-              <span
-                aria-hidden="true"
-                class="rc-tree-select-selection-search-mirror"
-              >
-                0 
-              </span>
             </div>
           </div>
-        </div>
-      </span>
-    </div>
-    <div
-      class="rc-tree-select-dropdown rc-tree-select-dropdown-placement-bottomLeft"
-      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
-    >
-      <div>
-        <div>
-          <span
-            aria-live="assertive"
-            style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
-          >
-            0
-          </span>
           <div
-            class="rc-tree-select-tree rc-tree-select-tree-active-focused"
+            class="rc-tree-select-tree-list"
+            role="tree"
+            style="position: relative;"
           >
-            <div>
-              <input
-                aria-label="for screen reader"
-                disabled=""
-                style="width: 0px; height: 0px; display: flex; overflow: hidden; opacity: 0; border: 0px; padding: 0px; margin: 0px;"
-                value=""
-              />
-            </div>
             <div
-              aria-hidden="true"
-              class="rc-tree-select-tree-treenode"
-              style="position: absolute; pointer-events: none; visibility: hidden; height: 0px; overflow: hidden; border: 0px; padding: 0px;"
+              class="rc-tree-select-tree-list-holder"
+              style="max-height: 200px; overflow-y: auto;"
             >
-              <div
-                class="rc-tree-select-tree-indent"
-              >
+              <div>
                 <div
-                  class="rc-tree-select-tree-indent-unit"
-                />
-              </div>
-            </div>
-            <div
-              class="rc-tree-select-tree-list"
-              role="tree"
-              style="position: relative;"
-            >
-              <div
-                class="rc-tree-select-tree-list-holder"
-                style="max-height: 200px; overflow-y: auto;"
-              >
-                <div>
+                  class="rc-tree-select-tree-list-holder-inner"
+                  style="display: flex; flex-direction: column;"
+                >
                   <div
-                    class="rc-tree-select-tree-list-holder-inner"
-                    style="display: flex; flex-direction: column;"
+                    aria-expanded="true"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last filter-node"
+                    draggable="false"
+                    role="treeitem"
                   >
-                    <div
-                      aria-expanded="true"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf-last filter-node"
-                      draggable="false"
-                      role="treeitem"
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    />
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                    />
+                    <span
+                      aria-checked="false"
+                      aria-label="Select 0"
+                      class="rc-tree-select-tree-checkbox"
+                      role="checkbox"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                      title="0"
                     >
                       <span
-                        aria-hidden="true"
-                        class="rc-tree-select-tree-indent"
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
                       />
                       <span
-                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
-                      />
-                      <span
-                        aria-checked="false"
-                        aria-label="Select 0"
-                        class="rc-tree-select-tree-checkbox"
-                        role="checkbox"
-                      />
-                      <span
-                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                        title="0"
+                        class="rc-tree-select-tree-title"
                       >
-                        <span
-                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
-                        />
-                        <span
-                          class="rc-tree-select-tree-title"
-                        >
-                          0
-                        </span>
+                        0
                       </span>
-                    </div>
-                    <div
-                      aria-expanded="true"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node"
-                      draggable="false"
-                      role="treeitem"
+                    </span>
+                  </div>
+                  <div
+                    aria-expanded="true"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node"
+                    draggable="false"
+                    role="treeitem"
+                  >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
                     >
                       <span
-                        aria-hidden="true"
-                        class="rc-tree-select-tree-indent"
-                      >
-                        <span
-                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                        />
-                      </span>
-                      <span
-                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
                       />
-                      <span
-                        aria-checked="false"
-                        aria-label="Select 0-0"
-                        class="rc-tree-select-tree-checkbox"
-                        role="checkbox"
-                      />
-                      <span
-                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
-                        title="0-0"
-                      >
-                        <span
-                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
-                        />
-                        <span
-                          class="rc-tree-select-tree-title"
-                        >
-                          0-0
-                        </span>
-                      </span>
-                    </div>
-                    <div
-                      aria-expanded="true"
-                      class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node rc-tree-select-tree-treenode-leaf"
-                      draggable="false"
-                      role="treeitem"
+                    </span>
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher_open"
+                    />
+                    <span
+                      aria-checked="false"
+                      aria-label="Select 0-0"
+                      class="rc-tree-select-tree-checkbox"
+                      role="checkbox"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-open"
+                      title="0-0"
                     >
                       <span
-                        aria-hidden="true"
-                        class="rc-tree-select-tree-indent"
-                      >
-                        <span
-                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                        />
-                        <span
-                          class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
-                        />
-                      </span>
-                      <span
-                        class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__open"
                       />
                       <span
-                        aria-checked="false"
-                        aria-label="Select 0-0-0"
-                        class="rc-tree-select-tree-checkbox"
-                        role="checkbox"
+                        class="rc-tree-select-tree-title"
+                      >
+                        0-0
+                      </span>
+                    </span>
+                  </div>
+                  <div
+                    aria-expanded="true"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-leaf-last filter-node rc-tree-select-tree-treenode-leaf"
+                    draggable="false"
+                    role="treeitem"
+                  >
+                    <span
+                      aria-hidden="true"
+                      class="rc-tree-select-tree-indent"
+                    >
+                      <span
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
                       />
                       <span
-                        class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
-                        title="0-0-0"
+                        class="rc-tree-select-tree-indent-unit rc-tree-select-tree-indent-unit-start rc-tree-select-tree-indent-unit-end"
+                      />
+                    </span>
+                    <span
+                      class="rc-tree-select-tree-switcher rc-tree-select-tree-switcher-noop"
+                    />
+                    <span
+                      aria-checked="false"
+                      aria-label="Select 0-0-0"
+                      class="rc-tree-select-tree-checkbox"
+                      role="checkbox"
+                    />
+                    <span
+                      class="rc-tree-select-tree-node-content-wrapper rc-tree-select-tree-node-content-wrapper-normal"
+                      title="0-0-0"
+                    >
+                      <span
+                        class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
+                      />
+                      <span
+                        class="rc-tree-select-tree-title"
                       >
-                        <span
-                          class="rc-tree-select-tree-iconEle rc-tree-select-tree-icon__docu"
-                        />
-                        <span
-                          class="rc-tree-select-tree-title"
-                        >
-                          0-0-0
-                        </span>
+                        0-0-0
                       </span>
-                    </div>
+                    </span>
                   </div>
                 </div>
               </div>
