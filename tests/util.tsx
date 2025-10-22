@@ -36,3 +36,8 @@ export function search(element: HTMLElement, value: string) {
     jest.advanceTimersByTime(10000);
   });
 }
+
+export function clearSelection(element: HTMLElement, index = 0) {
+  const removeButton = element.querySelectorAll('.rc-tree-select-selection-item-remove')[index];
+  fireEvent.click(removeButton);
+}
