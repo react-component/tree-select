@@ -316,6 +316,8 @@ describe('TreeSelect.checkable', () => {
     });
 
     it('check in filter', () => {
+      jest.useFakeTimers();
+
       const treeData = [
         {
           key: 'P001',
@@ -344,14 +346,20 @@ describe('TreeSelect.checkable', () => {
           ],
         },
       ];
-      const wrapper = mount(<TreeSelect treeCheckable treeData={treeData} open />);
-      wrapper.search('58');
-      wrapper.selectNode(2);
-      expect(wrapper.getSelection()).toHaveLength(1);
 
-      wrapper.search('59');
-      wrapper.selectNode(2);
-      expect(wrapper.getSelection()).toHaveLength(2);
+      const { container } = render(<TreeSelect treeCheckable treeData={treeData} open />);
+
+      // Search for '58' and select the found node
+      search(container, '58');
+      selectNode(2);
+      expect(container.querySelectorAll('.rc-tree-select-selection-item')).toHaveLength(1);
+
+      // Search for '59' and select another node
+      search(container, '59');
+      selectNode(2);
+      expect(container.querySelectorAll('.rc-tree-select-selection-item')).toHaveLength(2);
+
+      jest.useRealTimers();
     });
   });
 
