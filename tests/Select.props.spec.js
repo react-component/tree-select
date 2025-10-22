@@ -60,7 +60,9 @@ describe('TreeSelect.props', () => {
     it('false', () => {
       const { container } = render(createOpenSelect({ filterTreeNode: false, showSearch: true }));
       search(container, 'Title 1');
-      expect(container.querySelectorAll('.rc-tree-select-tree-treenode')).toHaveLength(4);
+      expect(
+        container.querySelectorAll('.rc-tree-select-tree-treenode:not([aria-hidden="true"])'),
+      ).toHaveLength(4);
     });
   });
 
