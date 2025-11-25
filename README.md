@@ -48,7 +48,7 @@ online example: https://tree-select-react-component.vercel.app/
 
 ## install
 
-[![rc-tree-select](https://nodei.co/npm/rc-tree-select.png)](https://npmjs.org/package/rc-tree-select)
+[![rc-tree-select](https://nodei.co/npm/@rc-component/tree-select.png)](https://npmjs.org/package/@rc-component/tree-select)
 
 ## API
 
