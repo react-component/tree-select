@@ -1,6 +1,6 @@
-# rc-tree-select
+# @rc-component/tree-select
 
-React TreeSelect Component
+React TreeSelect Component.
 
 <!-- prettier-ignore -->
 [![NPM version][npm-image]][npm-url]
@@ -14,8 +14,8 @@ React TreeSelect Component
 [npm-url]: http://npmjs.org/package/rc-tree-select
 [travis-image]: https://img.shields.io/travis/react-component/tree-select/master?style=flat-square
 [travis-url]: https://travis-ci.com/react-component/tree-select
-[github-actions-image]: https://github.com/react-component/tree-select/workflows/CI/badge.svg
-[github-actions-url]: https://github.com/react-component/tree-select/actions
+[github-actions-image]: https://github.com/react-component/tree-select/actions/workflows/react-component-ci.yml/badge.svg
+[github-actions-url]: https://github.com/react-component/tree-select/actions/workflows/react-component-ci.yml
 [codecov-image]: https://img.shields.io/codecov/c/github/react-component/tree-select/master.svg?style=flat-square
 [codecov-url]: https://app.codecov.io/gh/react-component/tree-select
 [david-url]: https://david-dm.org/react-component/tree-select
