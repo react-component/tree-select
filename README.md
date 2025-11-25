@@ -10,8 +10,8 @@ React TreeSelect Component.
 [![bundle size][bundlephobia-image]][bundlephobia-url]
 [![dumi][dumi-image]][dumi-url]
 
-[npm-image]: http://img.shields.io/npm/v/rc-tree-select.svg?style=flat-square
-[npm-url]: http://npmjs.org/package/rc-tree-select
+[npm-image]: http://img.shields.io/npm/v/@rc-component/tree-select.svg?style=flat-square
+[npm-url]: http://npmjs.org/package/@rc-component/tree-select
 [travis-image]: https://img.shields.io/travis/react-component/tree-select/master?style=flat-square
 [travis-url]: https://travis-ci.com/react-component/tree-select
 [github-actions-image]: https://github.com/react-component/tree-select/actions/workflows/react-component-ci.yml/badge.svg
@@ -22,10 +22,10 @@ React TreeSelect Component.
 [david-image]: https://david-dm.org/react-component/tree-select/status.svg?style=flat-square
 [david-dev-url]: https://david-dm.org/react-component/tree-select?type=dev
 [david-dev-image]: https://david-dm.org/react-component/tree-select/dev-status.svg?style=flat-square
-[download-image]: https://img.shields.io/npm/dm/rc-tree-select.svg?style=flat-square
-[download-url]: https://npmjs.org/package/rc-tree-select
-[bundlephobia-url]: https://bundlephobia.com/package/rc-tree-select
-[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/rc-tree-select
+[download-image]: https://img.shields.io/npm/dm/@rc-component/tree-select.svg?style=flat-square
+[download-url]: https://npmjs.org/package/@rc-component/tree-select
+[bundlephobia-url]: https://bundlephobia.com/package/@rc-component/tree-select
+[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/@rc-component/tree-select
 [dumi-url]: https://github.com/umijs/dumi
 [dumi-image]: https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square
 
@@ -48,7 +48,7 @@ online example: https://tree-select-react-component.vercel.app/
 
 ## install
 
-[![rc-tree-select](https://nodei.co/npm/@rc-component/tree-select.png)](https://npmjs.org/package/@rc-component/tree-select)
+[![@rc-component/tree-select](https://nodei.co/npm/@rc-component/tree-select.png)](https://npmjs.org/package/@rc-component/tree-select)
 
 ## API
 
@@ -137,4 +137,4 @@ http://localhost:8000/node_modules/rc-server/node_modules/node-jscover/lib/front
 
 ## License
 
-rc-tree-select is released under the MIT license.
+@rc-component/tree-select is released under the MIT license.
