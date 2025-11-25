@@ -23,7 +23,6 @@
   "files": [
     "es",
     "lib",
-    "dist",
     "assets/*.less",
     "assets/*.css",
     "assets/*.png",
