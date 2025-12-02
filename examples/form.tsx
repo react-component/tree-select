@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Select from '@rc-component/select';
-import Form, { useForm, Field } from 'rc-field-form';
+import Form, { useForm, Field } from '@rc-component/form';
 import TreeSelect from '../src';
 import '@rc-component/select/assets/index.less';
 import '../assets/index.less';

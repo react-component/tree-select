@@ -1,4 +1,4 @@
-import { render, fireEvent, act } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { mount } from 'enzyme';
 import KeyCode from '@rc-component/util/lib/KeyCode';
 import React from 'react';
@@ -9,8 +9,8 @@ import type { BaseSelectRef } from '@rc-component/select';
 
 const mockScrollTo = jest.fn();
 
-// Mock `useScrollTo` from `rc-virtual-list/lib/hooks/useScrollTo`
-jest.mock('rc-virtual-list/lib/hooks/useScrollTo', () => {
+// Mock `useScrollTo` from `@rc-component/virtual-list/lib/hooks/useScrollTo`
+jest.mock('@rc-component/virtual-list/lib/hooks/useScrollTo', () => {
   return () => mockScrollTo;
 });
 
