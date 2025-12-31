@@ -81,10 +81,8 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
     >
       <input
         aria-autocomplete="list"
-        aria-controls="test-id_list"
         aria-expanded="false"
         aria-haspopup="listbox"
-        aria-owns="test-id_list"
         autocomplete="off"
         class="awesome-input"
         id="test-id"
@@ -112,10 +110,8 @@ exports[`TreeSelect.basic render renders disabled correctly 1`] = `
     />
     <input
       aria-autocomplete="list"
-      aria-controls="test-id_list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      aria-owns="test-id_list"
       autocomplete="off"
       class="rc-tree-select-input"
       disabled=""
