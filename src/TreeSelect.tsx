@@ -565,7 +565,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
         // Single mode always set value
         triggerChange([selectedValue], { selected: true, triggerValue: selectedValue }, 'option');
       } else {
-        let newRawValues = selected
+        let newRawValues = selected && selectedValue !== null
           ? [...rawValues, selectedValue]
           : rawCheckedValues.filter(v => v !== selectedValue);
 
