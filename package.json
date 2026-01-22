@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@rc-component/select": "~1.5.0",
-    "@rc-component/tree": "~1.1.0",
+    "@rc-component/tree": "~1.2.0",
     "@rc-component/util": "^1.4.0",
     "clsx": "^2.1.1"
   },
