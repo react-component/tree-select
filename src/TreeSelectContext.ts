@@ -1,8 +1,7 @@
 import * as React from 'react';
-import type { ExpandAction } from '@rc-component/tree/lib/Tree';
-import type { DataNode, FieldNames, Key } from './interface';
+import type { DataNode, FieldNames, Key, ExpandAction } from './interface';
 import type useDataEntities from './hooks/useDataEntities';
-import { TreeSelectProps } from './TreeSelect';
+import type { TreeSelectProps } from './TreeSelect';
 
 export interface TreeSelectContextProps {
   virtual?: boolean;

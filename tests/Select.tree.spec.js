@@ -1,10 +1,9 @@
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
 import React from 'react';
 import { render, fireEvent, act } from '@testing-library/react';
-import { resetWarned } from '@rc-component/util/lib/warning';
+import { resetWarned } from '@rc-component/util';
 import TreeSelect, { TreeNode as SelectNode } from '../src';
-import { selectNode, triggerOpen, expectOpen } from './util';
-import { mount } from 'enzyme';
+import { getVisibleTreeNodes, selectNode, triggerOpen, expectOpen } from './util';
 
 describe('TreeSelect.tree', () => {
   const createSelect = props => (
@@ -58,16 +57,24 @@ describe('TreeSelect.tree', () => {
       }
     }
 
-    const wrapper = mount(<Test />);
+    const { container } = render(<Test />);
 
-    wrapper.switchNode();
-    expect(wrapper.find('Tree').props().expandedKeys).toEqual(['0-0']);
+    fireEvent.click(document.querySelectorAll('.rc-tree-select-tree-switcher')[0]);
+    expect(
+      getVisibleTreeNodes()[0].classList.contains('rc-tree-select-tree-treenode-switcher-open'),
+    ).toBe(true);
 
-    wrapper.switchNode(2);
-    expect(wrapper.find('Tree').props().expandedKeys).toEqual(['0-0', '0-0-1']);
+    fireEvent.click(document.querySelectorAll('.rc-tree-select-tree-switcher')[2]);
+    expect(
+      getVisibleTreeNodes()[2].classList.contains('rc-tree-select-tree-treenode-switcher-open'),
+    ).toBe(true);
 
-    wrapper.find('button.reset').simulate('click');
-    expect(wrapper.find('Tree').props().expandedKeys).toEqual([]);
+    fireEvent.click(container.querySelector('button.reset'));
+    expect(
+      getVisibleTreeNodes().some(node =>
+        node.classList.contains('rc-tree-select-tree-treenode-switcher-open'),
+      ),
+    ).toBe(false);
   });
 
   it('warning if node key are not same as value', () => {
@@ -111,7 +118,7 @@ describe('TreeSelect.tree', () => {
       </TreeSelect>,
     );
 
-    const selectionContent = container.querySelector('.rc-tree-select-content-value');
+    const selectionContent = container.querySelector('.rc-tree-select-content');
     expect(selectionContent?.textContent).toEqual('empty string');
   });
 
@@ -137,9 +144,7 @@ describe('TreeSelect.tree', () => {
         expect(container.querySelector('.rc-tree-select-tree-title')?.textContent).toEqual(
           'a light',
         );
-        expect(container.querySelector('.rc-tree-select-content-value')?.textContent).toEqual(
-          'Light',
-        );
+        expect(container.querySelector('.rc-tree-select-content')?.textContent).toEqual('Light');
       });
     });
   });

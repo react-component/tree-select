@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import TreeSelect from '../../src';
 
 export default function focusTest(multiple = false) {
@@ -20,9 +20,9 @@ export default function focusTest(multiple = false) {
     const treeData = [{ key: '0', value: '0', title: '0 label' }];
     const treeRef = React.createRef();
 
-    mount(
+    render(
       <TreeSelect multiple={multiple} onFocus={handleFocus} treeData={treeData} ref={treeRef} />,
-      { attachTo: container },
+      { container },
     );
 
     treeRef.current.focus();
@@ -34,9 +34,9 @@ export default function focusTest(multiple = false) {
     const treeData = [{ key: '0', value: '0', title: '0 label' }];
     const treeRef = React.createRef();
 
-    mount(
+    render(
       <TreeSelect multiple={multiple} onBlur={handleBlur} treeData={treeData} ref={treeRef} />,
-      { attachTo: container },
+      { container },
     );
     treeRef.current.focus();
     treeRef.current.blur();
@@ -46,8 +46,8 @@ export default function focusTest(multiple = false) {
   it('autoFocus', () => {
     const handleFocus = jest.fn();
     const treeData = [{ key: '0', value: '0', title: '0 label' }];
-    mount(<TreeSelect multiple={multiple} autoFocus onFocus={handleFocus} treeData={treeData} />, {
-      attachTo: container,
+    render(<TreeSelect multiple={multiple} autoFocus onFocus={handleFocus} treeData={treeData} />, {
+      container,
     });
     expect(handleFocus).toHaveBeenCalled();
   });

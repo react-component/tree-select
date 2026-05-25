@@ -1,6 +1,5 @@
 import * as React from 'react';
-import toArray from '@rc-component/util/lib/Children/toArray';
-import warning from '@rc-component/util/lib/warning';
+import { toArray, warning } from '@rc-component/util';
 import type {
   DataNode,
   ChangeEventExtra,
