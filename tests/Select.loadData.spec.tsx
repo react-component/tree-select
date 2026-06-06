@@ -43,4 +43,28 @@ describe('TreeSelect.loadData', () => {
       ).toHaveLength(2 + i);
     }
   });
+
+  it('keeps load switcher after clearing search value', () => {
+    const loadData = jest.fn(() => Promise.resolve());
+    const { container } = render(
+      <TreeSelect
+        open
+        showSearch
+        treeDataSimpleMode
+        loadData={loadData}
+        treeData={[{ id: 1, pId: 0, value: '1', title: 'Parent' }]}
+      />,
+    );
+
+    const input = container.querySelector('input')!;
+
+    expect(container.querySelector('.rc-tree-select-tree-switcher_close')).toBeTruthy();
+
+    fireEvent.change(input, { target: { value: '1' } });
+    fireEvent.change(input, { target: { value: '' } });
+
+    expect(loadData).not.toHaveBeenCalled();
+    expect(container.querySelector('.rc-tree-select-tree-switcher_close')).toBeTruthy();
+    expect(container.querySelector('.rc-tree-select-tree-switcher-noop')).toBeFalsy();
+  });
 });
