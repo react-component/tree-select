@@ -326,8 +326,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   const hasLoadDataFn = useMemo(
     () => (searchValue ? false : true),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [searchValue, treeExpandedKeys || expandedKeys],
+    [searchValue],
     ([preSearchValue], [nextSearchValue]) => preSearchValue !== nextSearchValue,
   );
 

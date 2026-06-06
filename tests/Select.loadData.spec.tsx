@@ -44,7 +44,7 @@ describe('TreeSelect.loadData', () => {
     }
   });
 
-  it('keeps load switcher after clearing search value', () => {
+  it('keeps load switcher after clearing search value', async () => {
     const loadData = jest.fn(() => Promise.resolve());
     const { container } = render(
       <TreeSelect
@@ -66,5 +66,12 @@ describe('TreeSelect.loadData', () => {
     expect(loadData).not.toHaveBeenCalled();
     expect(container.querySelector('.rc-tree-select-tree-switcher_close')).toBeTruthy();
     expect(container.querySelector('.rc-tree-select-tree-switcher-noop')).toBeFalsy();
+
+    fireEvent.click(container.querySelector('.rc-tree-select-tree-switcher_close')!);
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    expect(loadData).toHaveBeenCalledTimes(1);
   });
 });
