@@ -1,17 +1,14 @@
 import { useBaseProps } from '@rc-component/select';
-import type { RefOptionListProps } from '@rc-component/select/lib/OptionList';
 import type { TreeProps } from '@rc-component/tree';
 import Tree from '@rc-component/tree';
 import { UnstableContext } from '@rc-component/tree';
-import type { EventDataNode, ScrollTo } from '@rc-component/tree/lib/interface';
-import KeyCode from '@rc-component/util/lib/KeyCode';
-import useMemo from '@rc-component/util/lib/hooks/useMemo';
+import type { EventDataNode } from '@rc-component/tree';
+import { KeyCode, useEvent, useMemo } from '@rc-component/util';
 import * as React from 'react';
 import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
 import type { DataNode, Key, SafeKey } from './interface';
 import { getAllKeys, isCheckDisabled } from './utils/valueUtil';
-import { useEvent } from '@rc-component/util';
 
 const HIDDEN_STYLE = {
   width: 0,
@@ -29,6 +26,14 @@ interface TreeEventInfo {
   selected?: boolean;
   checked?: boolean;
 }
+
+interface RefOptionListProps {
+  onKeyDown: React.KeyboardEventHandler;
+  onKeyUp: React.KeyboardEventHandler;
+  scrollTo?: (args: unknown) => void;
+}
+
+type ScrollTo = NonNullable<React.ComponentRef<typeof Tree>['scrollTo']>;
 
 type ReviseRefOptionListProps = Omit<RefOptionListProps, 'scrollTo'> & { scrollTo: ScrollTo };
 

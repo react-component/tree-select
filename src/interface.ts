@@ -1,7 +1,13 @@
 import type * as React from 'react';
-import type { SafeKey, Key, DataNode as TreeDataNode } from '@rc-component/tree/lib/interface';
+import type { DataNode as TreeDataNode, TreeProps } from '@rc-component/tree';
 
-export type { SafeKey, Key };
+export type Key = React.Key;
+
+export type SafeKey = Exclude<Key, bigint>;
+
+export type ExpandAction = TreeProps['expandAction'];
+
+export type IconType = TreeProps['icon'];
 
 export interface DataNode extends Record<string, any>, Omit<TreeDataNode, 'key' | 'children'> {
   key?: Key;

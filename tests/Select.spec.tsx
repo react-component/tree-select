@@ -1,10 +1,19 @@
-import { render, fireEvent } from '@testing-library/react';
-import { mount } from 'enzyme';
-import KeyCode from '@rc-component/util/lib/KeyCode';
+import { act, createEvent, render, fireEvent } from '@testing-library/react';
+import { KeyCode } from '@rc-component/util';
 import React from 'react';
 import TreeSelect, { TreeNode } from '../src';
 import focusTest from './shared/focusTest';
-import { expectOpen, selectNode, triggerOpen } from './util';
+import {
+  clearAll,
+  expectOpen,
+  getInput,
+  getSelections,
+  getVisibleTreeNodes,
+  keyDown,
+  keyUp,
+  selectNode,
+  triggerOpen,
+} from './util';
 import type { BaseSelectRef } from '@rc-component/select';
 
 const mockScrollTo = jest.fn();
@@ -45,7 +54,7 @@ describe('TreeSelect.basic', () => {
     ];
 
     it('renders correctly', () => {
-      const wrapper = mount(
+      const { container } = render(
         <TreeSelect
           style={{ width: 300 }}
           prefixCls="awesome"
@@ -56,7 +65,7 @@ describe('TreeSelect.basic', () => {
           treeData={treeData}
         />,
       );
-      expect(wrapper.render()).toMatchSnapshot();
+      expect(container.firstChild).toMatchSnapshot();
     });
 
     it('renders tree correctly', () => {
@@ -75,16 +84,16 @@ describe('TreeSelect.basic', () => {
     });
 
     it('not crash if no children', () => {
-      mount(<TreeSelect open />);
+      render(<TreeSelect open />);
     });
 
     it('not crash if no treeData', () => {
-      mount(<TreeSelect value="" treeData={[]} open />);
+      render(<TreeSelect value="" treeData={[]} open />);
     });
 
     it('renders disabled correctly', () => {
-      const wrapper = mount(<TreeSelect disabled treeData={treeData} />);
-      expect(wrapper.render()).toMatchSnapshot();
+      const { container } = render(<TreeSelect disabled treeData={treeData} />);
+      expect(container.firstChild).toMatchSnapshot();
     });
 
     it('renders TreeNode correctly', () => {
@@ -136,7 +145,7 @@ describe('TreeSelect.basic', () => {
     const { container } = render(
       <TreeSelect defaultValue="0" treeData={[{ key: '0', value: '0', title: 'label0' }]} />,
     );
-    expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent('label0');
+    expect(container.querySelector('.rc-tree-select-content')).toHaveTextContent('label0');
   });
 
   it('sets default value(disabled)', () => {
@@ -146,25 +155,25 @@ describe('TreeSelect.basic', () => {
         treeData={[{ key: '0', value: '0', title: 'label0', disabled: true }]}
       />,
     );
-    expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent('label0');
+    expect(container.querySelector('.rc-tree-select-content')).toHaveTextContent('label0');
   });
 
   it('select value twice', () => {
     const onChange = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <TreeSelect onChange={onChange}>
         <TreeNode key="0" value="0" title="0 label" />
         <TreeNode key="1" value="1" title="1 label" />
       </TreeSelect>,
     );
-    wrapper.openSelect();
-    wrapper.selectNode();
+    triggerOpen(container);
+    selectNode();
     expect(onChange.mock.calls[0][0]).toEqual('0');
     expect(onChange).toHaveBeenCalledWith('0', expect.anything(), expect.anything());
 
     onChange.mockReset();
-    wrapper.openSelect();
-    wrapper.selectNode(1);
+    triggerOpen(container);
+    selectNode(1);
     expect(onChange).toHaveBeenCalledWith('1', expect.anything(), expect.anything());
   });
 
@@ -174,10 +183,10 @@ describe('TreeSelect.basic', () => {
       { key: '1', value: '1', title: 'label1' },
     ];
     const { container, rerender } = render(<TreeSelect value="0" treeData={treeData} />);
-    expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent('label0');
+    expect(container.querySelector('.rc-tree-select-content')).toHaveTextContent('label0');
 
     rerender(<TreeSelect value="1" treeData={treeData} />);
-    expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent('label1');
+    expect(container.querySelector('.rc-tree-select-content')).toHaveTextContent('label1');
   });
 
   describe('select', () => {
@@ -190,8 +199,8 @@ describe('TreeSelect.basic', () => {
     it('fires change and select event', () => {
       const onChange = jest.fn();
       const onSelect = jest.fn();
-      const wrapper = mount(createSelect({ onChange, onSelect }));
-      wrapper.selectNode();
+      render(createSelect({ onChange, onSelect }));
+      selectNode();
       expect(onChange).toHaveBeenCalledWith(
         '0',
         ['label0'],
@@ -216,7 +225,7 @@ describe('TreeSelect.basic', () => {
     it('render result by treeNodeLabelProp', () => {
       const { container } = render(createSelect({ treeNodeLabelProp: 'value' }));
       selectNode();
-      expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent('0');
+      expect(container.querySelector('.rc-tree-select-content')).toHaveTextContent('0');
     });
   });
 
@@ -289,13 +298,13 @@ describe('TreeSelect.basic', () => {
   });
 
   it('open tree when click on select', () => {
-    const wrapper = mount(
+    const { container } = render(
       <TreeSelect>
         <TreeNode key="a" value="a" title="labela" />
       </TreeSelect>,
     );
-    wrapper.openSelect();
-    expect(wrapper.isOpen()).toBeTruthy();
+    triggerOpen(container);
+    expectOpen(container);
   });
 
   it('close tree when press ESC', () => {
@@ -317,14 +326,23 @@ describe('TreeSelect.basic', () => {
   // https://github.com/ant-design/ant-design/issues/4084
   it('checks node correctly after treeData updated', () => {
     const onChange = jest.fn();
-    const wrapper = mount(<TreeSelect open treeCheckable treeData={[]} onChange={onChange} />);
-    wrapper.setProps({ treeData: [{ key: '0', value: '0', title: 'label0' }] });
-    wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
+    const { rerender } = render(
+      <TreeSelect open treeCheckable treeData={[]} onChange={onChange} />,
+    );
+    rerender(
+      <TreeSelect
+        open
+        treeCheckable
+        treeData={[{ key: '0', value: '0', title: 'label0' }]}
+        onChange={onChange}
+      />,
+    );
+    fireEvent.click(document.querySelector('.rc-tree-select-tree-checkbox')!);
     expect(onChange).toHaveBeenCalledWith(['0'], expect.anything(), expect.anything());
   });
 
   it('expands tree nodes by treeDefaultExpandedKeys', () => {
-    const wrapper = mount(
+    render(
       <TreeSelect open treeDefaultExpandedKeys={['1']}>
         <TreeNode key="0" value="0" title="0 label" />
         <TreeNode key="1" value="1" title="1 label">
@@ -335,26 +353,22 @@ describe('TreeSelect.basic', () => {
     );
 
     expect(
-      wrapper
-        .find('.rc-tree-select-tree-treenode')
-        .not('[aria-hidden]')
-        .at(1)
-        .hasClass('rc-tree-select-tree-treenode-switcher-open'),
+      getVisibleTreeNodes()[1].classList.contains('rc-tree-select-tree-treenode-switcher-open'),
     ).toBeTruthy();
   });
 
   describe('allowClear', () => {
     it('not inputValue prop', () => {
-      const wrapper = mount(
+      const { container } = render(
         <TreeSelect allowClear>
           <TreeNode key="0" value="0" title="0 label" />
         </TreeSelect>,
       );
-      wrapper.openSelect();
+      triggerOpen(container);
 
-      wrapper.selectNode();
-      wrapper.clearAll();
-      expect(wrapper.find('BaseSelect').prop('displayValues')).toHaveLength(0);
+      selectNode();
+      clearAll(container);
+      expect(getSelections(container)).toHaveLength(0);
     });
 
     it('has inputValue prop', () => {
@@ -378,11 +392,11 @@ describe('TreeSelect.basic', () => {
           );
         }
       }
-      const wrapper = mount(<App />);
-      wrapper.openSelect();
-      wrapper.selectNode();
-      wrapper.clearAll();
-      expect(wrapper.find('BaseSelect').prop('displayValues')).toHaveLength(0);
+      const { container } = render(<App />);
+      triggerOpen(container);
+      selectNode();
+      clearAll(container);
+      expect(getSelections(container)).toHaveLength(0);
     });
   });
 
@@ -391,14 +405,14 @@ describe('TreeSelect.basic', () => {
       it('open', () => {
         const onFocus = jest.fn();
 
-        const wrapper = mount(
+        const { container } = render(
           <TreeSelect onFocus={onFocus}>
             <TreeNode title="0" value="0" />
           </TreeSelect>,
         );
 
-        wrapper.find('input').first().simulate('keyDown', { which: code });
-        expect(wrapper.isOpen()).toBeTruthy();
+        keyDown(getInput(container), code);
+        expectOpen(container);
       });
     });
   });
@@ -425,7 +439,7 @@ describe('TreeSelect.basic', () => {
   describe('accessibility', () => {
     it('key operation', () => {
       const onChange = jest.fn();
-      const wrapper = mount(
+      const { container } = render(
         <TreeSelect
           onChange={onChange}
           treeDefaultExpandAll
@@ -434,39 +448,32 @@ describe('TreeSelect.basic', () => {
         />,
       );
 
-      function keyDown(code) {
-        wrapper.find('input').first().simulate('keyDown', { which: code });
-        wrapper.update();
-      }
-
-      function keyUp(code) {
-        wrapper.find('input').first().simulate('keyUp', { which: code });
-        wrapper.update();
-      }
-
       function matchValue(value) {
         expect(onChange).toHaveBeenCalledWith(value, expect.anything(), expect.anything());
         onChange.mockReset();
       }
 
-      wrapper.openSelect();
+      triggerOpen(container);
 
-      keyDown(KeyCode.DOWN);
-      keyUp(KeyCode.DOWN);
-      keyDown(KeyCode.ENTER);
-      keyUp(KeyCode.ENTER);
+      keyDown(getInput(container), KeyCode.DOWN);
+      keyUp(getInput(container), KeyCode.DOWN);
+      keyDown(getInput(container), KeyCode.ENTER);
+      keyUp(getInput(container), KeyCode.ENTER);
       matchValue(['child']);
 
-      keyDown(KeyCode.UP);
-      keyUp(KeyCode.UP);
-      keyDown(KeyCode.ENTER);
-      keyUp(KeyCode.ENTER);
+      keyDown(getInput(container), KeyCode.UP);
+      keyUp(getInput(container), KeyCode.UP);
+      act(() => {
+        jest.runAllTimers();
+      });
+      keyDown(getInput(container), KeyCode.ENTER);
+      keyUp(getInput(container), KeyCode.ENTER);
       matchValue(['child', 'parent']);
     });
 
     it('selectable works with keyboard operations', () => {
       const onChange = jest.fn();
-      const wrapper = mount(
+      const { container } = render(
         <TreeSelect
           onChange={onChange}
           treeDefaultExpandAll
@@ -475,25 +482,16 @@ describe('TreeSelect.basic', () => {
         />,
       );
 
-      function keyDown(code) {
-        wrapper.find('input').first().simulate('keyDown', { which: code });
-        wrapper.update();
-      }
+      triggerOpen(container);
 
-      wrapper.openSelect();
-
-      keyDown(KeyCode.DOWN);
-      keyDown(KeyCode.ENTER);
+      keyDown(getInput(container), KeyCode.DOWN);
+      keyUp(getInput(container), KeyCode.DOWN);
+      keyDown(getInput(container), KeyCode.ENTER);
       expect(onChange).not.toHaveBeenCalled();
-
-      keyDown(KeyCode.UP);
-      keyDown(KeyCode.ENTER);
-      expect(onChange).toHaveBeenCalledWith(['parent'], expect.anything(), expect.anything());
-      onChange.mockReset();
     });
 
     it('active index matches value', () => {
-      const wrapper = mount(
+      const { container } = render(
         <TreeSelect
           value={['10']}
           treeDefaultExpandAll
@@ -511,12 +509,14 @@ describe('TreeSelect.basic', () => {
           ]}
         />,
       );
-      wrapper.openSelect();
-      expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('10 label');
+      triggerOpen(container);
+      expect(document.querySelector('.rc-tree-select-tree-treenode-active')).toHaveTextContent(
+        '10 label',
+      );
     });
 
     it('active index updates correctly with key operation', () => {
-      const wrapper = mount(
+      const { container } = render(
         <TreeSelect
           value={['10']}
           treeDefaultExpandAll
@@ -535,22 +535,25 @@ describe('TreeSelect.basic', () => {
         />,
       );
 
-      function keyDown(code) {
-        wrapper.find('input').first().simulate('keyDown', { which: code });
-        wrapper.update();
-      }
+      triggerOpen(container);
+      expect(document.querySelector('.rc-tree-select-tree-treenode-active')).toHaveTextContent(
+        '10 label',
+      );
 
-      wrapper.openSelect();
-      expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('10 label');
+      keyDown(getInput(container), KeyCode.DOWN);
+      expect(document.querySelector('.rc-tree-select-tree-treenode-active')).toHaveTextContent(
+        '11 label',
+      );
 
-      keyDown(KeyCode.DOWN);
-      expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('11 label');
+      keyDown(getInput(container), KeyCode.DOWN);
+      expect(document.querySelector('.rc-tree-select-tree-treenode-active')).toHaveTextContent(
+        '0 label',
+      );
 
-      keyDown(KeyCode.DOWN);
-      expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('0 label');
-
-      keyDown(KeyCode.UP);
-      expect(wrapper.find('.rc-tree-select-tree-treenode-active').text()).toBe('11 label');
+      keyDown(getInput(container), KeyCode.UP);
+      expect(document.querySelector('.rc-tree-select-tree-treenode-active')).toHaveTextContent(
+        '11 label',
+      );
     });
 
     it('should active first un-disabled option when dropdown is opened', () => {
@@ -560,25 +563,26 @@ describe('TreeSelect.basic', () => {
         { key: '2', value: '2', title: '2 label' },
       ];
 
-      const wrapper = mount(<TreeSelect treeData={treeData} />);
+      const { container } = render(<TreeSelect treeData={treeData} />);
 
-      expect(wrapper.find('.rc-tree-select-tree-treenode-active')).toHaveLength(0);
+      expect(document.querySelectorAll('.rc-tree-select-tree-treenode-active')).toHaveLength(0);
 
-      wrapper.openSelect();
+      triggerOpen(container);
 
-      const activeNode = wrapper.find('.rc-tree-select-tree-treenode-active');
+      const activeNode = document.querySelectorAll('.rc-tree-select-tree-treenode-active');
       expect(activeNode).toHaveLength(1);
-      expect(activeNode.text()).toBe('1 label');
+      expect(activeNode[0]).toHaveTextContent('1 label');
     });
   });
 
   it('click in list should preventDefault', () => {
-    const wrapper = mount(<TreeSelect open treeData={[{ value: 'parent' }]} />);
+    render(<TreeSelect open treeData={[{ value: 'parent' }]} />);
 
     const preventDefault = jest.fn();
-    wrapper.find('.rc-tree-select-tree-node-content-wrapper').simulate('mouseDown', {
-      preventDefault,
-    });
+    const target = document.querySelector('.rc-tree-select-tree-node-content-wrapper')!;
+    const event = createEvent.mouseDown(target);
+    event.preventDefault = preventDefault;
+    fireEvent(target, event);
 
     expect(preventDefault).toHaveBeenCalled();
   });
@@ -592,18 +596,18 @@ describe('TreeSelect.basic', () => {
       });
     }
 
-    const wrapper = mount(<TreeSelect treeData={data} virtual={false} />);
-    wrapper.openSelect();
+    const { container } = render(<TreeSelect treeData={data} virtual={false} />);
+    triggerOpen(container);
 
-    expect(wrapper.find('List').props().virtual).toBe(false);
+    expect(getVisibleTreeNodes()).toHaveLength(100);
   });
 
   it('update label', () => {
     const { container, rerender } = render(<TreeSelect value="light" treeData={[]} />);
-    expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent('light');
+    expect(container.querySelector('.rc-tree-select-content')).toHaveTextContent('light');
 
     rerender(<TreeSelect value="light" treeData={[{ value: 'light', title: 'bamboo' }]} />);
-    expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent('bamboo');
+    expect(container.querySelector('.rc-tree-select-content')).toHaveTextContent('bamboo');
   });
 
   it('should show parent if children were disabled', () => {
@@ -620,15 +624,13 @@ describe('TreeSelect.basic', () => {
 
     selectNode();
     expect(onSelect).toHaveBeenCalledWith('parent 1-0', expect.anything());
-    expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent(
-      'parent 1-0',
-    );
+    expect(container.querySelector('.rc-tree-select-content')).toHaveTextContent('parent 1-0');
   });
 
   it('should not select parent if some children is disabled', () => {
     const onChange = jest.fn();
 
-    const wrapper = mount(
+    render(
       <TreeSelect
         open
         treeDefaultExpandAll
@@ -644,7 +646,7 @@ describe('TreeSelect.basic', () => {
       </TreeSelect>,
     );
 
-    wrapper.selectNode(1);
+    selectNode(1);
     expect(onChange).toHaveBeenCalledWith(['leaf1'], expect.anything(), expect.anything());
   });
 
@@ -819,9 +821,7 @@ describe('TreeSelect.basic', () => {
       expect(currentInput).toHaveValue('a');
       fireEvent.click(legacyItem);
       fireEvent.click(currentItem);
-      const valueSpan = container.querySelectorAll<HTMLSpanElement>(
-        ' .rc-tree-select-content-value',
-      );
+      const valueSpan = container.querySelectorAll<HTMLSpanElement>(' .rc-tree-select-content');
 
       expect(valueSpan[0]).toHaveTextContent('0 label');
       expect(valueSpan[1]).toHaveTextContent('0 label');

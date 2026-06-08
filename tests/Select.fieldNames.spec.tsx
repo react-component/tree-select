@@ -1,12 +1,13 @@
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
 import React from 'react';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import type { TreeSelectProps } from '../src';
 import TreeSelect from '../src';
+import { selectNode } from './util';
 
 describe('TreeSelect.FieldNames', () => {
   function mountTreeSelect(props?: TreeSelectProps) {
-    return mount(
+    return render(
       <TreeSelect
         treeDefaultExpandAll
         treeData={[
@@ -37,16 +38,16 @@ describe('TreeSelect.FieldNames', () => {
 
   it('render correctly', () => {
     const onChange = jest.fn();
-    const wrapper = mountTreeSelect({ onChange, open: true });
-    wrapper.selectNode(1);
+    mountTreeSelect({ onChange, open: true });
+    selectNode(1);
 
     expect(onChange).toHaveBeenCalledWith('sub_1', ['Sub 1'], expect.anything());
   });
 
   it('labelInValue', () => {
     const onChange = jest.fn();
-    const wrapper = mountTreeSelect({ onChange, open: true, labelInValue: true });
-    wrapper.selectNode(2);
+    mountTreeSelect({ onChange, open: true, labelInValue: true });
+    selectNode(2);
 
     expect(onChange).toHaveBeenCalledWith(
       { label: 'Sub 2', value: 'sub_2' },
@@ -57,12 +58,12 @@ describe('TreeSelect.FieldNames', () => {
 
   it('multiple', () => {
     const onChange = jest.fn();
-    const wrapper = mountTreeSelect({ onChange, open: true, multiple: true });
+    mountTreeSelect({ onChange, open: true, multiple: true });
 
-    wrapper.selectNode(1);
+    selectNode(1);
 
     onChange.mockReset();
-    wrapper.selectNode(2);
+    selectNode(2);
 
     expect(onChange).toHaveBeenCalledWith(
       ['sub_1', 'sub_2'],
@@ -73,9 +74,9 @@ describe('TreeSelect.FieldNames', () => {
 
   it('onSelect', () => {
     const onSelect = jest.fn();
-    const wrapper = mountTreeSelect({ onSelect, open: true });
+    mountTreeSelect({ onSelect, open: true });
 
-    wrapper.selectNode(0);
+    selectNode(0);
 
     expect(onSelect).toHaveBeenCalledWith('parent', {
       myChildren: [

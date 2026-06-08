@@ -1,6 +1,6 @@
 import * as React from 'react';
-import type { DataEntity, IconType } from '@rc-component/tree/lib/interface';
-import type { LegacyDataNode, SafeKey, Key } from './interface';
+import type { LegacyDataNode, SafeKey, Key, IconType } from './interface';
+import type { DataEntity } from './hooks/useDataEntities';
 
 interface LegacyContextProps {
   checkable: boolean | React.ReactNode;
@@ -20,7 +20,7 @@ interface LegacyContextProps {
   loadData: (treeNode: LegacyDataNode) => Promise<unknown>;
   onTreeLoad: (loadedKeys: Key[]) => void;
 
-  keyEntities: Record<SafeKey, DataEntity<any>>;
+  keyEntities: Record<SafeKey, DataEntity>;
 }
 
 const LegacySelectContext = React.createContext<LegacyContextProps>(null);

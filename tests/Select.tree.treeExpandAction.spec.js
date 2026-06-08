@@ -1,6 +1,6 @@
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
 import React from 'react';
-import { mount } from 'enzyme';
+import { fireEvent, render } from '@testing-library/react';
 import TreeSelect from '../src';
 
 describe('treeExpandAction with selectable props', () => {
@@ -48,19 +48,19 @@ describe('treeExpandAction with selectable props', () => {
     },
   ];
 
-  const clickNodeTitle = (wrapper, title) => {
-    wrapper.find(`[title="${title}"]`).hostNodes().simulate('click');
+  const clickNodeTitle = title => {
+    fireEvent.click(document.querySelector(`[title="${title}"]`));
   };
 
-  const doubleClickNodeTitle = (wrapper, title) => {
-    wrapper.find(`[title="${title}"]`).hostNodes().simulate('doubleClick');
+  const doubleClickNodeTitle = title => {
+    fireEvent.doubleClick(document.querySelector(`[title="${title}"]`));
   };
 
   it('title expandable when selectable is false and treeExpandAction is "click"', () => {
     const onSelect = jest.fn();
     const onTreeExpand = jest.fn();
 
-    const wrapper = mount(
+    render(
       <TreeSelect
         open
         treeExpandAction="click"
@@ -70,21 +70,21 @@ describe('treeExpandAction with selectable props', () => {
       />,
     );
 
-    clickNodeTitle(wrapper, '0-0');
+    clickNodeTitle('0-0');
     expect(onSelect).not.toHaveBeenCalled();
     expect(onTreeExpand).toHaveBeenCalledWith(['0-0']);
 
     onSelect.mockReset();
     onTreeExpand.mockReset();
 
-    clickNodeTitle(wrapper, '0-0-1');
+    clickNodeTitle('0-0-1');
     expect(onSelect).not.toHaveBeenCalled();
     expect(onTreeExpand).toHaveBeenCalledWith(['0-0', '0-0-1']);
 
     onSelect.mockReset();
     onTreeExpand.mockReset();
 
-    clickNodeTitle(wrapper, '0-0-1');
+    clickNodeTitle('0-0-1');
     expect(onSelect).not.toHaveBeenCalled();
     expect(onTreeExpand).toHaveBeenCalledWith(['0-0']);
   });
@@ -93,7 +93,7 @@ describe('treeExpandAction with selectable props', () => {
     const onSelect = jest.fn();
     const onTreeExpand = jest.fn();
 
-    const wrapper = mount(
+    render(
       <TreeSelect
         open
         treeExpandAction="doubleClick"
@@ -103,21 +103,21 @@ describe('treeExpandAction with selectable props', () => {
       />,
     );
 
-    doubleClickNodeTitle(wrapper, '0-0');
+    doubleClickNodeTitle('0-0');
     expect(onSelect).not.toHaveBeenCalled();
     expect(onTreeExpand).toHaveBeenCalledWith(['0-0']);
 
     onSelect.mockReset();
     onTreeExpand.mockReset();
 
-    doubleClickNodeTitle(wrapper, '0-0-1');
+    doubleClickNodeTitle('0-0-1');
     expect(onSelect).not.toHaveBeenCalled();
     expect(onTreeExpand).toHaveBeenCalledWith(['0-0', '0-0-1']);
 
     onSelect.mockReset();
     onTreeExpand.mockReset();
 
-    doubleClickNodeTitle(wrapper, '0-0-1');
+    doubleClickNodeTitle('0-0-1');
     expect(onSelect).not.toHaveBeenCalled();
     expect(onTreeExpand).toHaveBeenCalledWith(['0-0']);
   });
@@ -126,7 +126,7 @@ describe('treeExpandAction with selectable props', () => {
     const onSelect = jest.fn();
     const onTreeExpand = jest.fn();
 
-    const wrapper = mount(
+    render(
       <TreeSelect
         open
         treeExpandAction={false}
@@ -137,7 +137,7 @@ describe('treeExpandAction with selectable props', () => {
       />,
     );
 
-    clickNodeTitle(wrapper, '0-0-1');
+    clickNodeTitle('0-0-1');
     expect(onSelect).not.toHaveBeenCalled();
     expect(onTreeExpand).not.toHaveBeenCalled();
   });

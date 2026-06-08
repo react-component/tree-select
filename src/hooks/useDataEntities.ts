@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { convertDataToEntities } from '@rc-component/tree/lib/utils/treeUtil';
-import type { DataEntity } from '@rc-component/tree/lib/interface';
+import { convertDataToEntities } from '@rc-component/tree';
 import type { SafeKey, FieldNames } from '../interface';
-import warning from '@rc-component/util/lib/warning';
+import { warning } from '@rc-component/util';
 import { isNil } from '../utils/valueUtil';
+
+export type DataEntity = ReturnType<typeof convertDataToEntities>['keyEntities'][string];
 
 export default (treeData: any, fieldNames: FieldNames) =>
   React.useMemo<{

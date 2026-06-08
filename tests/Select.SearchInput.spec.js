@@ -1,31 +1,31 @@
 /* eslint-disable no-undef */
 import React, { useState } from 'react';
-import { mount } from 'enzyme';
 import { render, fireEvent } from '@testing-library/react';
 import TreeSelect, { TreeNode } from '../src';
-import KeyCode from '@rc-component/util/lib/KeyCode';
+import { KeyCode } from '@rc-component/util';
+import { getInput, search, selectNode } from './util';
 
 describe('TreeSelect.SearchInput', () => {
   it('select item will clean searchInput', () => {
     const onSearch = jest.fn();
 
-    const wrapper = mount(
+    const { container } = render(
       <TreeSelect onSearch={onSearch} open>
         <TreeNode value="test" />
       </TreeSelect>,
     );
 
-    wrapper.search('test');
+    search(container, 'test');
     expect(onSearch).toHaveBeenCalledWith('test');
     onSearch.mockReset();
 
-    wrapper.selectNode();
+    selectNode();
     expect(onSearch).not.toHaveBeenCalled();
-    expect(wrapper.find('input').first().props().value).toBeFalsy();
+    expect(getInput(container).value).toBeFalsy();
   });
 
   it('expandedKeys', () => {
-    const wrapper = mount(
+    const { container } = render(
       <TreeSelect
         open
         showSearch
@@ -45,26 +45,19 @@ describe('TreeSelect.SearchInput', () => {
       />,
     );
 
-    expect(wrapper.find('NodeList').prop('expandedKeys')).toEqual(['bamboo', 'light']);
-
-    function search(value) {
-      wrapper.find('input').first().simulate('change', { target: { value } });
-      wrapper.update();
-    }
-
-    function listProps() {
-      return wrapper.find('NodeList').props();
-    }
+    expect(container).toHaveTextContent('111');
+    expect(container).toHaveTextContent('222');
 
     // Clean up
-    search('bambooA');
+    search(container, 'bambooA');
 
     // Return back
-    search('bamboo');
+    search(container, 'bamboo');
 
     // Back to default
-    search('');
-    expect(listProps().expandedKeys).toEqual(['bamboo', 'light']);
+    search(container, '');
+    expect(container).toHaveTextContent('111');
+    expect(container).toHaveTextContent('222');
   });
 
   it('not trigger loadData when clearing the search', () => {
@@ -123,36 +116,35 @@ describe('TreeSelect.SearchInput', () => {
         </>
       );
     };
-    const wrapper = mount(<Demo />);
-    expect(wrapper.find('button').length).toBe(1);
+    const { container } = render(<Demo />);
+    expect(container.querySelector('button')).toBeTruthy();
     expect(handleLoadData).not.toHaveBeenCalled();
 
-    function search(value) {
-      wrapper.find('input').first().simulate('change', { target: { value } });
-      wrapper.update();
+    function searchValue(value) {
+      search(container, value);
     }
-    search('Tree Node');
+    searchValue('Tree Node');
     expect(handleLoadData).not.toHaveBeenCalled();
 
-    search('');
+    searchValue('');
     expect(handleLoadData).not.toHaveBeenCalled();
 
-    expect(wrapper.find('.rc-tree-select-empty').length).toBe(1);
+    expect(container.querySelector('.rc-tree-select-empty')).toBeTruthy();
 
-    wrapper.find('button').simulate('click');
-    expect(wrapper.find('.rc-tree-select-empty').length).toBe(0);
-    expect(wrapper.find('.rc-tree-select-tree').length).toBe(1);
+    fireEvent.click(container.querySelector('button'));
+    expect(container.querySelector('.rc-tree-select-empty')).toBeFalsy();
+    expect(container.querySelector('.rc-tree-select-tree')).toBeTruthy();
 
-    search('Tree Node');
+    searchValue('Tree Node');
     expect(handleLoadData).not.toHaveBeenCalled();
 
-    search('');
+    searchValue('');
     expect(handleLoadData).not.toHaveBeenCalled();
     expect(called).toBe(0);
 
-    search('ex');
-    const nodes = wrapper.find(`[title="${'Expand to load'}"]`).hostNodes();
-    nodes.first().simulate('click');
+    searchValue('ex');
+    const node = document.querySelector('[title="Expand to load"]');
+    fireEvent.click(node);
     expect(called).toBe(0); // should not trrigger all nodes to load data
   });
 
@@ -188,16 +180,15 @@ describe('TreeSelect.SearchInput', () => {
         />
       );
     };
-    const wrapper = mount(<Demo />);
+    const { container } = render(<Demo />);
 
-    function search(value) {
-      wrapper.find('input').first().simulate('change', { target: { value } });
-      wrapper.update();
+    function searchValue(value) {
+      search(container, value);
     }
 
-    search('ex');
-    const nodes = wrapper.find(`[title="${'Expand to load'}"]`).hostNodes();
-    nodes.first().simulate('click');
+    searchValue('ex');
+    const node = document.querySelector('[title="Expand to load"]');
+    fireEvent.click(node);
     expect(called).toBe(1);
   });
 

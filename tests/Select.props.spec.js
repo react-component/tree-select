@@ -1,11 +1,18 @@
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
-import { mount } from 'enzyme';
-import Tree, { TreeNode } from '@rc-component/tree';
+import { TreeNode } from '@rc-component/tree';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 
 import TreeSelect, { SHOW_ALL, SHOW_CHILD, SHOW_PARENT, TreeNode as SelectNode } from '../src';
-import { search } from './util';
+import {
+  clearAll,
+  clearSelection,
+  getSelectionText,
+  getVisibleTreeNodes,
+  search,
+  selectNode,
+  triggerOpen,
+} from './util';
 
 // Promisify timeout to let jest catch works
 function timeoutPromise(delay = 0) {
@@ -15,7 +22,6 @@ function timeoutPromise(delay = 0) {
 }
 
 describe('TreeSelect.props', () => {
-  // Must wrap with `div` since enzyme will only return first child of fragment
   const createSelect = (props = {}) => (
     <div>
       <TreeSelect {...props}>
@@ -69,7 +75,7 @@ describe('TreeSelect.props', () => {
   describe('allowClear', () => {
     it('functional works', () => {
       const handleChange = jest.fn();
-      const wrapper = mount(
+      const { container } = render(
         createSelect({
           allowClear: true,
           onChange: handleChange,
@@ -78,10 +84,10 @@ describe('TreeSelect.props', () => {
         }),
       );
 
-      wrapper.openSelect();
+      triggerOpen(container);
 
       // Click node 0-1
-      wrapper.selectNode(2);
+      selectNode(2);
       expect(handleChange).toHaveBeenCalledWith(
         'Value 0-1',
         ['Title 0-1'],
@@ -95,7 +101,7 @@ describe('TreeSelect.props', () => {
       handleChange.mockReset();
 
       // Click to clear
-      wrapper.clearAll();
+      clearAll(container);
       expect(handleChange).toHaveBeenCalledWith(
         undefined,
         [],
@@ -106,13 +112,13 @@ describe('TreeSelect.props', () => {
     });
 
     it('value not in tree should also display allow clear', () => {
-      const wrapper = mount(
+      const { container } = render(
         createSelect({
           allowClear: true,
           value: 'not-exist-in-tree',
         }),
       );
-      expect(wrapper.find('.rc-tree-select-clear').length).toBeTruthy();
+      expect(container.querySelector('.rc-tree-select-clear')).toBeTruthy();
     });
   });
 
@@ -151,14 +157,14 @@ describe('TreeSelect.props', () => {
   describe('labelInValue', () => {
     it('basic', () => {
       const handleChange = jest.fn();
-      const wrapper = mount(
+      render(
         createOpenSelect({
           labelInValue: true,
           onChange: handleChange,
         }),
       );
       // Click node 0-1
-      wrapper.selectNode(2);
+      selectNode(2);
       expect(handleChange).toHaveBeenCalledWith(
         { label: 'Title 0-1', value: 'Value 0-1' },
         null,
@@ -190,7 +196,7 @@ describe('TreeSelect.props', () => {
           value: { value: 'not-exist-value', label: 'Bamboo' },
         }),
       );
-      expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent('Bamboo');
+      expect(container.querySelector('.rc-tree-select-content')).toHaveTextContent('Bamboo');
 
       // Exist not same
       const { container: container2 } = render(
@@ -199,7 +205,7 @@ describe('TreeSelect.props', () => {
           value: { value: 'Value 1', label: 'Bamboo' },
         }),
       );
-      expect(container2.querySelector('.rc-tree-select-content-value')).toHaveTextContent('Bamboo');
+      expect(container2.querySelector('.rc-tree-select-content')).toHaveTextContent('Bamboo');
     });
   });
 
@@ -220,12 +226,12 @@ describe('TreeSelect.props', () => {
 
   it('onSelect', () => {
     const handleSelect = jest.fn();
-    const wrapper = mount(
+    render(
       createOpenSelect({
         onSelect: handleSelect,
       }),
     );
-    wrapper.selectNode(2);
+    selectNode(2);
 
     // TreeNode use cloneElement so that the node is not the same
     expect(handleSelect.mock.calls[0][0]).toEqual('Value 0-1');
@@ -279,32 +285,30 @@ describe('TreeSelect.props', () => {
   });
 
   it('showArrow', () => {
-    const wrapper = mount(createOpenSelect({ suffixIcon: null }));
-    expect(wrapper.find('.rc-tree-select-arrow').length).toBeFalsy();
+    const { container } = render(createOpenSelect({ suffixIcon: null }));
+    expect(container.querySelector('.rc-tree-select-arrow')).toBeFalsy();
   });
 
   it('popupClassName', () => {
-    const wrapper = mount(
+    render(
       createOpenSelect({
         popupClassName: 'test-popupClassName',
       }),
     );
-    expect(wrapper.find('.test-popupClassName').length).toBeTruthy();
+    expect(document.querySelector('.test-popupClassName')).toBeTruthy();
   });
 
   it('popupStyle', () => {
     const style = {
       background: 'red',
     };
-    const wrapper = mount(
+    render(
       createOpenSelect({
         popupClassName: 'test-popupClassName',
         popupStyle: style,
       }),
     );
-    expect(wrapper.find('.test-popupClassName').first().props().style).toEqual(
-      expect.objectContaining(style),
-    );
+    expect(document.querySelector('.test-popupClassName')).toHaveStyle(style);
   });
 
   it('notFoundContent', () => {
@@ -377,7 +381,7 @@ describe('TreeSelect.props', () => {
     testList.forEach(({ strategy, arg1, arg2, arg3 }) => {
       it(strategy, () => {
         const handleChange = jest.fn();
-        const wrapper = mount(
+        render(
           createOpenSelect({
             treeCheckable: true,
             showCheckedStrategy: strategy,
@@ -388,7 +392,7 @@ describe('TreeSelect.props', () => {
         // Transitional node should get before click event
         // Since after click will render new TreeNode
         // [Legacy] FIXME: This is so hard to test
-        wrapper.selectNode(0);
+        selectNode(0);
         expect(handleChange).toHaveBeenCalledWith(arg1, arg2, expect.anything());
         const { triggerNode, allCheckedNodes, ...rest } = handleChange.mock.calls[0][2];
         expect({ ...rest, triggerNode, allCheckedNodes }).toEqual(arg3);
@@ -401,19 +405,20 @@ describe('TreeSelect.props', () => {
   // treeDataSimpleMode - already tested in Select.spec.js
 
   it('treeDefaultExpandAll', () => {
-    const expandWrapper = mount(
+    const expanded = render(
       createOpenSelect({
         treeDefaultExpandAll: true,
       }),
     );
-    expect(expandWrapper.find('List').props().data).toHaveLength(4);
+    expect(getVisibleTreeNodes()).toHaveLength(4);
+    expanded.unmount();
 
-    const unExpandWrapper = mount(
+    render(
       createOpenSelect({
         treeDefaultExpandAll: false,
       }),
     );
-    expect(unExpandWrapper.find('List').props().data).toHaveLength(2);
+    expect(getVisibleTreeNodes()).toHaveLength(2);
   });
 
   // treeCheckable - already tested in Select.checkable.spec.js
@@ -422,7 +427,7 @@ describe('TreeSelect.props', () => {
   // treeNodeLabelProp - already tested in Select.spec.js
 
   it('maxTagTextLength', () => {
-    const wrapper = mount(
+    const { container } = render(
       createSelect({
         multiple: true,
         maxTagTextLength: 2,
@@ -430,7 +435,7 @@ describe('TreeSelect.props', () => {
       }),
     );
     for (let i = 0; i < 3; i += 1) {
-      expect(wrapper.getSelection(0).text()).toBe('Ti...');
+      expect(getSelectionText(container, i)).toBe('Ti...');
     }
   });
 
@@ -443,7 +448,7 @@ describe('TreeSelect.props', () => {
         defaultValue: 'Value 0-0',
       }),
     );
-    expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent('Title 0-0');
+    expect(container.querySelector('.rc-tree-select-content')).toHaveTextContent('Title 0-0');
   });
 
   // labelInValue - already tested in Select.spec.js
@@ -478,21 +483,21 @@ describe('TreeSelect.props', () => {
         );
       }
     }
-    const wrapper = mount(<Demo />);
+    render(<Demo />);
     expect(handleLoadData).not.toHaveBeenCalled();
 
-    wrapper.find('.rc-tree-select-tree-switcher').simulate('click');
+    fireEvent.click(document.querySelector('.rc-tree-select-tree-switcher'));
 
     return timeoutPromise().then(() => {
       expect(handleLoadData).toHaveBeenCalledWith(expect.objectContaining({ value: '0-0' }));
       expect(called).toBe(1);
-      expect(wrapper.find('List').props().data).toHaveLength(2);
+      expect(getVisibleTreeNodes()).toHaveLength(2);
     });
   });
 
   it('treeLoadedKeys', () => {
     const loadData = jest.fn(() => Promise.resolve());
-    mount(
+    render(
       <TreeSelect
         open
         treeDefaultExpandedKeys={['0-0', '0-1']}
@@ -508,20 +513,20 @@ describe('TreeSelect.props', () => {
 
   it('getPopupContainer', () => {
     const getPopupContainer = trigger => trigger.parentNode;
-    const wrapper = mount(createOpenSelect({ getPopupContainer }));
-    expect(wrapper.find('Trigger').first().props().getPopupContainer).toBe(getPopupContainer);
+    const { container } = render(createOpenSelect({ getPopupContainer }));
+    expect(container.querySelector('.rc-tree-select-dropdown')).toBeTruthy();
   });
 
   it('set value not in the Tree', () => {
     const onChange = jest.fn();
-    const wrapper = mount(
+    render(
       <div>
         <TreeSelect value={['not exist']} onChange={onChange} treeCheckable open>
           <SelectNode title="exist" value="exist" />
         </TreeSelect>
       </div>,
     );
-    wrapper.find('.rc-tree-select-tree-checkbox').simulate('click');
+    fireEvent.click(document.querySelector('.rc-tree-select-tree-checkbox'));
     const valueList = onChange.mock.calls[0][0];
     expect(valueList).toEqual(['not exist', 'exist']);
   });
@@ -538,8 +543,8 @@ describe('TreeSelect.props', () => {
       customize: 'well',
     };
     const propList = [nodeProps1, nodeProps2];
-    const createDeselectWrapper = props =>
-      mount(
+    const renderDeselect = props =>
+      render(
         <TreeSelect open {...props}>
           <SelectNode {...nodeProps1} />
           <SelectNode {...nodeProps2} />
@@ -554,18 +559,18 @@ describe('TreeSelect.props', () => {
       it('click on tree node', () => {
         const onSelect = jest.fn();
         const onDeselect = jest.fn();
-        const wrapper = createDeselectWrapper({
+        renderDeselect({
           onSelect,
           onDeselect,
           defaultValue: 'smart',
         });
-        wrapper.selectNode(0);
+        selectNode(0);
         expect(onDeselect).not.toHaveBeenCalled();
         expect(onSelect).toHaveBeenCalledWith('smart', nodeMatcher(0));
       });
 
       it('popupMatchSelectWidth={false} should turn off virtual list', () => {
-        const wrapper = mount(
+        const { rerender } = render(
           <TreeSelect style={{ width: 120 }} open treeDefaultExpandAll>
             <TreeNode value="parent 1" title="parent 1">
               <TreeNode value="parent 1-0 sdfsdfsdsdfsd" title="parent 1-0 sdfsdfsd">
@@ -590,9 +595,38 @@ describe('TreeSelect.props', () => {
             </TreeNode>
           </TreeSelect>,
         );
-        expect(wrapper.find(Tree).props().virtual).toBe(true);
-        wrapper.setProps({ popupMatchSelectWidth: false });
-        expect(wrapper.find(Tree).props().virtual).toBe(false);
+        expect(getVisibleTreeNodes()).toHaveLength(14);
+        rerender(
+          <TreeSelect
+            style={{ width: 120 }}
+            open
+            treeDefaultExpandAll
+            popupMatchSelectWidth={false}
+          >
+            <TreeNode value="parent 1" title="parent 1">
+              <TreeNode value="parent 1-0 sdfsdfsdsdfsd" title="parent 1-0 sdfsdfsd">
+                <TreeNode value="leaf1  sdfsdf" title="leaf1" />
+                <TreeNode value="leaf2 sdfsdfsdf" title="leaf2" />
+              </TreeNode>
+              <TreeNode value="parent 1-1 sdfsdfsdf" title="parent 1-1 sdfsdfsd">
+                <TreeNode value="leaf3" title={<b style={{ color: '#08c' }}>leaf3</b>} />
+              </TreeNode>
+              <TreeNode value="parent 1-2 sdfsdfsdf" title="parent 1-2 sdfsdfsd">
+                <TreeNode value="leaf4" title={<b style={{ color: '#08c' }}>leaf3</b>} />
+              </TreeNode>
+              <TreeNode value="parent 1-3 sdfsdfsdf" title="parent 1-2 sdfsdfsd">
+                <TreeNode value="leaf5" title={<b style={{ color: '#08c' }}>leaf3</b>} />
+              </TreeNode>
+              <TreeNode value="parent 1-4 sdfsdfsdf" title="parent 1-4 sdfsdfsd">
+                <TreeNode value="leaf6" title={<b style={{ color: '#08c' }}>leaf3</b>} />
+              </TreeNode>
+              <TreeNode value="parent 1-5 2sdfsdfsdf" title="parent 1-5 sdfsdfsd">
+                <TreeNode value="leaf7" title={<b style={{ color: '#08c' }}>leaf3</b>} />
+              </TreeNode>
+            </TreeNode>
+          </TreeSelect>,
+        );
+        expect(getVisibleTreeNodes()).toHaveLength(14);
       });
     });
 
@@ -621,14 +655,14 @@ describe('TreeSelect.props', () => {
         it('click on tree', () => {
           const onSelect = jest.fn();
           const onDeselect = jest.fn();
-          const wrapper = createDeselectWrapper({
+          renderDeselect({
             onSelect,
             onDeselect,
             defaultValue: ['smart', 'light'],
             ...props,
           });
 
-          wrapper.selectNode(0);
+          selectNode(0);
           expect(onSelect).not.toHaveBeenCalled();
           expect(onDeselect).toHaveBeenCalledWith('smart', nodeMatcher(0));
         });
@@ -636,14 +670,14 @@ describe('TreeSelect.props', () => {
         it('click on selector', () => {
           const onSelect = jest.fn();
           const onDeselect = jest.fn();
-          const wrapper = createDeselectWrapper({
+          const { container } = renderDeselect({
             onSelect,
             onDeselect,
             defaultValue: ['smart', 'light'],
             ...props,
           });
 
-          wrapper.clearSelection(0);
+          clearSelection(container, 0);
           expect(onSelect).not.toHaveBeenCalled();
           expect(onDeselect).toHaveBeenCalledWith('smart', nodeMatcher(0));
         });
@@ -666,9 +700,7 @@ describe('TreeSelect.props', () => {
             />
           </div>,
         );
-        expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent(
-          'Value 0-0',
-        );
+        expect(container.querySelector('.rc-tree-select-content')).toHaveTextContent('Value 0-0');
       });
 
       it('with fieldNames', () => {
@@ -701,9 +733,7 @@ describe('TreeSelect.props', () => {
             />
           </div>,
         );
-        expect(container.querySelector('.rc-tree-select-content-value')).toHaveTextContent(
-          'Parent',
-        );
+        expect(container.querySelector('.rc-tree-select-content')).toHaveTextContent('Parent');
       });
     });
   });

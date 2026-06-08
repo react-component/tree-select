@@ -1,11 +1,7 @@
 import type { BaseSelectPropsWithoutPrivate, BaseSelectRef } from '@rc-component/select';
-import type { BaseSelectSemanticName } from '@rc-component/select/lib/BaseSelect';
 import { BaseSelect } from '@rc-component/select';
-import useId from '@rc-component/util/lib/hooks/useId';
-import type { IconType } from '@rc-component/tree/lib/interface';
-import type { ExpandAction } from '@rc-component/tree/lib/Tree';
-import { conductCheck } from '@rc-component/tree/lib/utils/conductUtil';
-import useControlledState from '@rc-component/util/lib/hooks/useControlledState';
+import { conductCheck } from '@rc-component/tree';
+import { useControlledState, useId } from '@rc-component/util';
 import * as React from 'react';
 import useCache from './hooks/useCache';
 import useCheckedKeys from './hooks/useCheckedKeys';
@@ -28,6 +24,8 @@ import type {
   SafeKey,
   Key,
   DataNode,
+  ExpandAction,
+  IconType,
   SimpleModeConfig,
   ChangeEventExtra,
   SelectSource,
@@ -37,7 +35,7 @@ import type {
 } from './interface';
 import useSearchConfig from './hooks/useSearchConfig';
 
-export type SemanticName = BaseSelectSemanticName;
+export type SemanticName = keyof NonNullable<BaseSelectPropsWithoutPrivate['classNames']>;
 export type PopupSemantic = 'item' | 'itemTitle';
 export interface SearchConfig {
   searchValue?: string;
@@ -46,8 +44,10 @@ export interface SearchConfig {
   filterTreeNode?: boolean | ((inputValue: string, treeNode: DataNode) => boolean);
   treeNodeFilterProp?: string;
 }
-export interface TreeSelectProps<ValueType = any, OptionType extends DataNode = DataNode>
-  extends Omit<BaseSelectPropsWithoutPrivate, 'mode' | 'classNames' | 'styles' | 'showSearch'> {
+export interface TreeSelectProps<
+  ValueType = any,
+  OptionType extends DataNode = DataNode,
+> extends Omit<BaseSelectPropsWithoutPrivate, 'mode' | 'classNames' | 'styles' | 'showSearch'> {
   prefixCls?: string;
   id?: string;
   children?: React.ReactNode;

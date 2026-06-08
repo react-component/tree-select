@@ -1,11 +1,19 @@
 /* eslint-disable no-undef */
 import { render, fireEvent, within, screen } from '@testing-library/react';
-import { mount } from 'enzyme';
-import KeyCode from '@rc-component/util/lib/KeyCode';
+import { KeyCode } from '@rc-component/util';
 import React from 'react';
 import TreeSelect, { TreeNode } from '../src';
 import focusTest from './shared/focusTest';
-import { selectNode, clearSelection, search, expectOpen, triggerOpen } from './util';
+import {
+  selectNode,
+  clearSelection,
+  search,
+  expectOpen,
+  triggerOpen,
+  getInput,
+  getSelections,
+  getSelectionText,
+} from './util';
 
 describe('TreeSelect.multiple', () => {
   beforeEach(() => {
@@ -26,28 +34,25 @@ describe('TreeSelect.multiple', () => {
   const createSelect = props => <TreeSelect treeData={treeData} multiple {...props} />;
 
   it('select multiple nodes', () => {
-    const wrapper = mount(createSelect({ open: true }));
-    wrapper.selectNode(0);
-    wrapper.selectNode(1);
-    expect(wrapper.getSelection(0).text()).toBe('label0');
-    expect(wrapper.getSelection(1).text()).toBe('label1');
+    const { container } = render(createSelect({ open: true }));
+    selectNode(0);
+    selectNode(1);
+    expect(getSelectionText(container, 0)).toBe('label0');
+    expect(getSelectionText(container, 1)).toBe('label1');
   });
 
   it('remove selected node', () => {
-    const wrapper = mount(createSelect({ defaultValue: ['0', '1'] }));
-    wrapper.clearSelection();
-    expect(wrapper.getSelection()).toHaveLength(1);
-    expect(wrapper.getSelection(0).text()).toBe('label1');
+    const { container } = render(createSelect({ defaultValue: ['0', '1'] }));
+    clearSelection(container);
+    expect(getSelections(container)).toHaveLength(1);
+    expect(getSelectionText(container, 0)).toBe('label1');
   });
 
   it('remove by backspace key', () => {
-    const wrapper = mount(createSelect({ defaultValue: ['0', '1'] }));
-    wrapper
-      .find('input')
-      .first()
-      .simulate('keyDown', { which: KeyCode.BACKSPACE, key: 'Backspace' });
-    expect(wrapper.getSelection()).toHaveLength(1);
-    expect(wrapper.getSelection(0).text()).toBe('label0');
+    const { container } = render(createSelect({ defaultValue: ['0', '1'] }));
+    fireEvent.keyDown(getInput(container), { which: KeyCode.BACKSPACE, key: 'Backspace' });
+    expect(getSelections(container)).toHaveLength(1);
+    expect(getSelectionText(container, 0)).toBe('label0');
   });
 
   // https://github.com/react-component/tree-select/issues/47
@@ -71,18 +76,12 @@ describe('TreeSelect.multiple', () => {
         });
       }
     }
-    const wrapper = mount(<App />);
-    wrapper
-      .find('input')
-      .first()
-      .simulate('keyDown', { which: KeyCode.BACKSPACE, key: 'Backspace' });
-    wrapper.selectNode(1);
-    wrapper
-      .find('input')
-      .first()
-      .simulate('keyDown', { which: KeyCode.BACKSPACE, key: 'Backspace' });
-    expect(wrapper.getSelection()).toHaveLength(1);
-    expect(wrapper.getSelection(0).text()).toBe('label0');
+    const { container } = render(<App />);
+    fireEvent.keyDown(getInput(container), { which: KeyCode.BACKSPACE, key: 'Backspace' });
+    selectNode(1);
+    fireEvent.keyDown(getInput(container), { which: KeyCode.BACKSPACE, key: 'Backspace' });
+    expect(getSelections(container)).toHaveLength(1);
+    expect(getSelectionText(container, 0)).toBe('label0');
   });
 
   // TODO: Check preVal, it's not correct
@@ -92,7 +91,7 @@ describe('TreeSelect.multiple', () => {
       <TreeNode key="0" value="0" title="label0" foo={0} />,
       <TreeNode key="1" value="1" title="label1" foo={1} />,
     ];
-    const wrapper = mount(
+    const { container } = render(
       createSelect({
         open: true,
         value: ['0', '1'],
@@ -103,7 +102,7 @@ describe('TreeSelect.multiple', () => {
       }),
     );
 
-    wrapper.clearSelection(1);
+    clearSelection(container, 1);
 
     expect(handleChange.mock.calls[0][2].allCheckedNodes[0].props).toBeTruthy();
 
@@ -121,21 +120,21 @@ describe('TreeSelect.multiple', () => {
   });
 
   it('renders clear button', () => {
-    const wrapper = mount(createSelect({ allowClear: true, value: ['0'] }));
+    const { container } = render(createSelect({ allowClear: true, value: ['0'] }));
 
-    expect(wrapper.find('.rc-tree-select-clear').length).toBeTruthy();
+    expect(container.querySelector('.rc-tree-select-clear')).toBeTruthy();
   });
 
   it('should focus and clear search input after select and unselect item', () => {
-    const wrapper = mount(createSelect());
+    const { container } = render(createSelect());
 
-    wrapper.search('0');
-    wrapper.selectNode(0);
-    expect(wrapper.find('input').first().props().value).toBe('');
+    search(container, '0');
+    selectNode(0);
+    expect(getInput(container).value).toBe('');
 
-    wrapper.search('0');
-    wrapper.selectNode(0);
-    expect(wrapper.find('input').first().props().value).toBe('');
+    search(container, '0');
+    selectNode(0);
+    expect(getInput(container).value).toBe('');
   });
 
   it('do not open tree when close button click', () => {
@@ -166,62 +165,62 @@ describe('TreeSelect.multiple', () => {
 
   describe('maxTagCount', () => {
     it('legal', () => {
-      const wrapper = mount(
+      const { container } = render(
         createSelect({
           maxTagCount: 1,
           value: ['0', '1'],
         }),
       );
 
-      expect(wrapper.getSelection()).toHaveLength(2);
-      expect(wrapper.getSelection(1).text()).toBe('+ 1 ...');
+      expect(getSelections(container)).toHaveLength(2);
+      expect(getSelectionText(container, 1)).toBe('+ 1 ...');
     });
 
     it('illegal', () => {
-      const wrapper = mount(
+      const { container } = render(
         createSelect({
           maxTagCount: 1,
           value: ['0', 'not exist'],
         }),
       );
 
-      expect(wrapper.getSelection()).toHaveLength(2);
-      expect(wrapper.getSelection(1).text()).toBe('+ 1 ...');
+      expect(getSelections(container)).toHaveLength(2);
+      expect(getSelectionText(container, 1)).toBe('+ 1 ...');
     });
 
     it('zero', () => {
-      const wrapper = mount(
+      const { container } = render(
         createSelect({
           maxTagCount: 0,
           value: ['0', '1'],
         }),
       );
 
-      expect(wrapper.getSelection()).toHaveLength(1);
-      expect(wrapper.getSelection(0).text()).toBe('+ 2 ...');
+      expect(getSelections(container)).toHaveLength(1);
+      expect(getSelectionText(container, 0)).toBe('+ 2 ...');
     });
 
     describe('maxTagPlaceholder', () => {
       it('string', () => {
-        const wrapper = mount(
+        const { container } = render(
           createSelect({
             maxTagCount: 1,
             value: ['0', '1'],
             maxTagPlaceholder: 'bamboo',
           }),
         );
-        expect(wrapper.getSelection(1).text()).toBe('bamboo');
+        expect(getSelectionText(container, 1)).toBe('bamboo');
       });
 
       it('function', () => {
-        const wrapper = mount(
+        const { container } = render(
           createSelect({
             maxTagCount: 1,
             value: ['0', '1'],
             maxTagPlaceholder: list => `${list.length} bamboo...`,
           }),
         );
-        expect(wrapper.getSelection(1).text()).toBe('1 bamboo...');
+        expect(getSelectionText(container, 1)).toBe('1 bamboo...');
       });
     });
   });
@@ -243,7 +242,7 @@ describe('TreeSelect.multiple', () => {
 
     const onChange = jest.fn();
 
-    const wrapper = mount(
+    render(
       createSelect({
         open: true,
         treeCheckable: true,
@@ -253,11 +252,11 @@ describe('TreeSelect.multiple', () => {
       }),
     );
 
-    wrapper.selectNode(0);
+    selectNode(0);
     expect(onChange).toHaveBeenCalledWith([4, 0], expect.anything(), expect.anything());
     onChange.mockReset();
 
-    wrapper.selectNode(1);
+    selectNode(1);
     expect(onChange).toHaveBeenCalledWith([4, 0, 2, 3], expect.anything(), expect.anything());
   });
 
@@ -287,25 +286,25 @@ describe('TreeSelect.multiple', () => {
   });
 
   it('do not crash when value has empty string', () => {
-    const wrapper = mount(
+    const { container } = render(
       <TreeSelect multiple value={['']}>
         <TreeNode value="" title="empty str" key="empty str" />
       </TreeSelect>,
     );
 
-    expect(wrapper.getSelection()).toHaveLength(1);
+    expect(getSelections(container)).toHaveLength(1);
   });
 
   it('can hide search box by showSearch = false', () => {
-    const wrapper = mount(<TreeSelect multiple showSearch={false} />);
+    const { container } = render(<TreeSelect multiple showSearch={false} />);
 
-    expect(wrapper.render()).toMatchSnapshot();
+    expect(container.firstChild).toMatchSnapshot();
   });
 
   it('not exist value should can be remove', () => {
     const onChange = jest.fn();
     const onDeselect = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <TreeSelect
         treeCheckable
         value={['not-exist']}
@@ -313,7 +312,7 @@ describe('TreeSelect.multiple', () => {
         onDeselect={onDeselect}
       />,
     );
-    wrapper.clearSelection(0);
+    clearSelection(container, 0);
 
     expect(onChange).toHaveBeenCalledWith([], expect.anything(), expect.anything());
     expect(onDeselect).toHaveBeenCalledWith('not-exist', undefined);

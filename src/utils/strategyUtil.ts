@@ -1,5 +1,5 @@
-import type { DataEntity } from '@rc-component/tree/lib/interface';
 import type { SafeKey, FieldNames } from '../interface';
+import type { DataEntity } from '../hooks/useDataEntities';
 import { isCheckDisabled } from './valueUtil';
 
 export const SHOW_ALL = 'SHOW_ALL';
