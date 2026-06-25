@@ -87,13 +87,13 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
           aria-expanded="true"
           aria-haspopup="listbox"
           aria-owns="test-id_list"
-          autocomplete="off"
+          autocomplete="new-password"
           class="rc-tree-select-input"
           id="test-id"
           readonly=""
           role="combobox"
           style="--select-input-width: 0;"
-          type="search"
+          type="text"
           value=""
         />
       </div>
@@ -301,13 +301,13 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
           aria-expanded="true"
           aria-haspopup="listbox"
           aria-owns="test-id_list"
-          autocomplete="off"
+          autocomplete="new-password"
           class="rc-tree-select-input"
           id="test-id"
           readonly=""
           role="combobox"
           style="--select-input-width: 0;"
-          type="search"
+          type="text"
           value=""
         />
       </div>
@@ -575,13 +575,13 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
           aria-expanded="true"
           aria-haspopup="listbox"
           aria-owns="test-id_list"
-          autocomplete="off"
+          autocomplete="new-password"
           class="rc-tree-select-input"
           id="test-id"
           readonly=""
           role="combobox"
           style="--select-input-width: 0;"
-          type="search"
+          type="text"
           value=""
         />
       </div>
@@ -789,13 +789,13 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
           aria-expanded="true"
           aria-haspopup="listbox"
           aria-owns="test-id_list"
-          autocomplete="off"
+          autocomplete="new-password"
           class="rc-tree-select-input"
           id="test-id"
           readonly=""
           role="combobox"
           style="--select-input-width: 0;"
-          type="search"
+          type="text"
           value=""
         />
       </div>
