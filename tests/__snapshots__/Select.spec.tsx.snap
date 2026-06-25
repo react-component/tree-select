@@ -17,12 +17,12 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
       aria-expanded="true"
       aria-haspopup="listbox"
       aria-owns="test-id_list"
-      autocomplete="off"
+      autocomplete="new-password"
       class="rc-tree-select-input"
       id="test-id"
       readonly=""
       role="combobox"
-      type="search"
+      type="text"
       value=""
     />
   </div>
@@ -46,12 +46,12 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
       aria-expanded="true"
       aria-haspopup="listbox"
       aria-owns="test-id_list"
-      autocomplete="off"
+      autocomplete="new-password"
       class="rc-tree-select-input"
       id="test-id"
       readonly=""
       role="combobox"
-      type="search"
+      type="text"
       value=""
     />
   </div>
@@ -83,13 +83,13 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
         aria-autocomplete="list"
         aria-expanded="false"
         aria-haspopup="listbox"
-        autocomplete="off"
+        autocomplete="new-password"
         class="awesome-input"
         id="test-id"
         readonly=""
         role="combobox"
         style="--select-input-width: 0;"
-        type="search"
+        type="text"
         value=""
       />
     </div>
@@ -112,13 +112,13 @@ exports[`TreeSelect.basic render renders disabled correctly 1`] = `
       aria-autocomplete="list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      autocomplete="off"
+      autocomplete="new-password"
       class="rc-tree-select-input"
       disabled=""
       id="test-id"
       readonly=""
       role="combobox"
-      type="search"
+      type="text"
       value=""
     />
   </div>
@@ -152,13 +152,13 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
           aria-expanded="true"
           aria-haspopup="listbox"
           aria-owns="test-id_list"
-          autocomplete="off"
+          autocomplete="new-password"
           class="rc-tree-select-input"
           id="test-id"
           readonly=""
           role="combobox"
           style="--select-input-width: 0;"
-          type="search"
+          type="text"
           value=""
         />
       </div>
@@ -389,12 +389,12 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
         aria-expanded="true"
         aria-haspopup="listbox"
         aria-owns="test-id_list"
-        autocomplete="off"
+        autocomplete="new-password"
         class="rc-tree-select-input"
         id="test-id"
         readonly=""
         role="combobox"
-        type="search"
+        type="text"
         value=""
       />
     </div>
@@ -534,11 +534,11 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
         aria-expanded="true"
         aria-haspopup="listbox"
         aria-owns="test-id_list"
-        autocomplete="off"
+        autocomplete="new-password"
         class="rc-tree-select-input"
         id="test-id"
         role="combobox"
-        type="search"
+        type="text"
         value="a"
       />
     </div>
@@ -644,11 +644,11 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
         aria-expanded="true"
         aria-haspopup="listbox"
         aria-owns="test-id_list"
-        autocomplete="off"
+        autocomplete="new-password"
         class="rc-tree-select-input"
         id="test-id"
         role="combobox"
-        type="search"
+        type="text"
         value=""
       />
     </div>
@@ -783,11 +783,11 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
         aria-expanded="true"
         aria-haspopup="listbox"
         aria-owns="test-id_list"
-        autocomplete="off"
+        autocomplete="new-password"
         class="rc-tree-select-input"
         id="test-id"
         role="combobox"
-        type="search"
+        type="text"
         value="a"
       />
     </div>
@@ -921,11 +921,11 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
       aria-expanded="true"
       aria-haspopup="listbox"
       aria-owns="test-id_list"
-      autocomplete="off"
+      autocomplete="new-password"
       class="rc-tree-select-input"
       id="test-id"
       role="combobox"
-      type="search"
+      type="text"
       value=""
     />
   </div>
