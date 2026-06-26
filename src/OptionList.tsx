@@ -138,8 +138,21 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     if (treeExpandedKeys) {
       return [...treeExpandedKeys];
     }
-    return searchValue ? searchExpandedKeys : expandedKeys;
-  }, [expandedKeys, searchExpandedKeys, treeExpandedKeys, searchValue]);
+    if (searchValue) {
+      return searchExpandedKeys;
+    }
+    if (searchExpandedKeys && loadData && !treeDefaultExpandAll) {
+      return expandedKeys || [];
+    }
+    return expandedKeys;
+  }, [
+    expandedKeys,
+    searchExpandedKeys,
+    treeExpandedKeys,
+    searchValue,
+    loadData,
+    treeDefaultExpandAll,
+  ]);
 
   const onInternalExpand = (keys: Key[]) => {
     setExpandedKeys(keys);
@@ -313,10 +326,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   const hasLoadDataFn = useMemo(
     () => (searchValue ? false : true),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [searchValue, treeExpandedKeys || expandedKeys],
-    ([preSearchValue], [nextSearchValue, nextExcludeSearchExpandedKeys]) =>
-      preSearchValue !== nextSearchValue && !!(nextSearchValue || nextExcludeSearchExpandedKeys),
+    [searchValue],
+    ([preSearchValue], [nextSearchValue]) => preSearchValue !== nextSearchValue,
   );
 
   const syncLoadData = hasLoadDataFn ? loadData : null;
