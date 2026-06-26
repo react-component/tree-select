@@ -32,7 +32,6 @@
     "build": "dumi build",
     "compile": "father build",
     "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.js",
-    "now-build": "npm run build",
     "prepare": "husky && dumi setup",
     "prepublishOnly": "npm run compile && rc-np",
     "prettier": "prettier --write --ignore-unknown .",
