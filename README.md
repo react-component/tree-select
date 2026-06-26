@@ -1,140 +1,192 @@
-# @rc-component/tree-select
+<div align="center">
+  <h1>@rc-component/tree-select</h1>
+  <p>🌳 React TreeSelect component for choosing values from tree data, with search, checkable nodes, async loading, and virtual scrolling.</p>
 
-React TreeSelect Component.
+  <p>
+    <a href="https://npmjs.org/package/@rc-component/tree-select"><img alt="NPM version" src="https://img.shields.io/npm/v/@rc-component/tree-select.svg?style=flat-square"></a>
+    <a href="https://npmjs.org/package/@rc-component/tree-select"><img alt="npm downloads" src="https://img.shields.io/npm/dm/@rc-component/tree-select.svg?style=flat-square"></a>
+    <a href="https://github.com/react-component/tree-select/actions/workflows/react-component-ci.yml"><img alt="build status" src="https://github.com/react-component/tree-select/actions/workflows/react-component-ci.yml/badge.svg"></a>
+    <a href="https://app.codecov.io/gh/react-component/tree-select"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/react-component/tree-select/master.svg?style=flat-square"></a>
+    <a href="https://bundlephobia.com/package/@rc-component/tree-select"><img alt="bundle size" src="https://img.shields.io/bundlephobia/minzip/@rc-component/tree-select?style=flat-square"></a>
+    <a href="https://github.com/umijs/dumi"><img alt="dumi" src="https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square"></a>
+  </p>
+</div>
 
-<!-- prettier-ignore -->
-[![NPM version][npm-image]][npm-url]
-[![npm download][download-image]][download-url]
-[![build status][github-actions-image]][github-actions-url]
-[![Codecov][codecov-image]][codecov-url]
-[![bundle size][bundlephobia-image]][bundlephobia-url]
-[![dumi][dumi-image]][dumi-url]
+<p align="center">
+  <sub>
+    <a href="https://ant.design">
+      <img alt="Ant Design" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" height="16">
+    </a>
+    Part of the <a href="https://ant.design">Ant Design</a> ecosystem.
+  </sub>
+</p>
 
-[npm-image]: http://img.shields.io/npm/v/@rc-component/tree-select.svg?style=flat-square
-[npm-url]: http://npmjs.org/package/@rc-component/tree-select
-[travis-image]: https://img.shields.io/travis/react-component/tree-select/master?style=flat-square
-[travis-url]: https://travis-ci.com/react-component/tree-select
-[github-actions-image]: https://github.com/react-component/tree-select/actions/workflows/react-component-ci.yml/badge.svg
-[github-actions-url]: https://github.com/react-component/tree-select/actions/workflows/react-component-ci.yml
-[codecov-image]: https://img.shields.io/codecov/c/github/react-component/tree-select/master.svg?style=flat-square
-[codecov-url]: https://app.codecov.io/gh/react-component/tree-select
-[david-url]: https://david-dm.org/react-component/tree-select
-[david-image]: https://david-dm.org/react-component/tree-select/status.svg?style=flat-square
-[david-dev-url]: https://david-dm.org/react-component/tree-select?type=dev
-[david-dev-image]: https://david-dm.org/react-component/tree-select/dev-status.svg?style=flat-square
-[download-image]: https://img.shields.io/npm/dm/@rc-component/tree-select.svg?style=flat-square
-[download-url]: https://npmjs.org/package/@rc-component/tree-select
-[bundlephobia-url]: https://bundlephobia.com/package/@rc-component/tree-select
-[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/@rc-component/tree-select
-[dumi-url]: https://github.com/umijs/dumi
-[dumi-image]: https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square
+## Highlights
 
-## Screenshots
+| Area      | Support                                                   |
+| --------- | --------------------------------------------------------- |
+| Data      | Tree data, simple mode, custom field names                |
+| Selection | Single, multiple, checkable, strict check, label-in-value |
+| Search    | Controlled search, custom filter, auto clear              |
+| Loading   | Async tree loading and controlled loaded keys             |
+| Scale     | Virtual scrolling with configurable list metrics          |
 
-<img src="https://os.alipayobjects.com/rmsportal/HUhyhmpWyiGKnZF.png" width="288"/>
+## Install
 
-## Development
-
+```bash
+npm install @rc-component/tree-select
 ```
+
+## Usage
+
+```tsx | pure
+import TreeSelect from '@rc-component/tree-select';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+
+const treeData = [
+  {
+    title: 'Parent',
+    value: 'parent',
+    children: [
+      {
+        title: 'Child',
+        value: 'child',
+      },
+    ],
+  },
+];
+
+createRoot(document.getElementById('root')!).render(
+  <TreeSelect treeData={treeData} placeholder="Select a node" />,
+);
+```
+
+## Examples
+
+```bash
 npm install
 npm start
 ```
 
-## Example
-
-http://localhost:8000/examples/
-
-online example: https://tree-select-react-component.vercel.app/
-
-## install
-
-[![@rc-component/tree-select](https://nodei.co/npm/@rc-component/tree-select.png)](https://npmjs.org/package/@rc-component/tree-select)
+Open <http://localhost:8000/examples/> locally, or visit the online example:
+<https://tree-select-react-component.vercel.app/>.
 
 ## API
 
-### TreeSelect props
+### TreeSelect
 
-| name                    | description                                                                                                                                                                         | type                                                                                                                                                                                                                           | default                           |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------- |
-| className               | additional css class of root dom node                                                                                                                                               | String                                                                                                                                                                                                                         | ''                                |
-| prefixCls               | prefix class                                                                                                                                                                        | String                                                                                                                                                                                                                         | ''                                |
-| animation               | dropdown animation name. only support slide-up now                                                                                                                                  | String                                                                                                                                                                                                                         | ''                                |
-| transitionName          | dropdown css animation name                                                                                                                                                         | String                                                                                                                                                                                                                         | ''                                |
-| choiceTransitionName    | css animation name for selected items at multiple mode                                                                                                                              | String                                                                                                                                                                                                                         | ''                                |
-| popupMatchSelectWidth   | whether dropdown's with is same with select. Default set `min-width` same as input                                                                                                  | bool                                                                                                                                                                                                                           | true                              |
-| dropdownClassName       | additional className applied to dropdown                                                                                                                                            | String                                                                                                                                                                                                                         | -                                 |
-| dropdownStyle           | additional style applied to dropdown                                                                                                                                                | Object                                                                                                                                                                                                                         | {}                                |
-| onPopupVisibleChange    | control dropdown visible                                                                                                                                                            | function                                                                                                                                                                                                                       | `() => { return true; }`          |
-| notFoundContent         | specify content to show when no result matches.                                                                                                                                     | String                                                                                                                                                                                                                         | 'Not Found'                       |
-| showSearch              | whether show search input in single mode                                                                                                                                            | bool                                                                                                                                                                                                                           | true                              |
-| allowClear              | whether allowClear                                                                                                                                                                  | bool                                                                                                                                                                                                                           | false                             |
-| maxTagTextLength        | max tag text length to show                                                                                                                                                         | number                                                                                                                                                                                                                         | -                                 |
-| maxTagCount             | max tag count to show                                                                                                                                                               | number                                                                                                                                                                                                                         | -                                 |
-| maxCount                | Limit the maximum number of items that can be selected in multiple mode                                                                                                             | number                                                                                                                                                                                                                         | -                                 |
-| maxTagPlaceholder       | placeholder for omitted values                                                                                                                                                      | ReactNode/function(omittedValues)                                                                                                                                                                                              | -                                 |
-| multiple                | whether multiple select (true when enable treeCheckable)                                                                                                                            | bool                                                                                                                                                                                                                           | false                             |
-| disabled                | whether disabled select                                                                                                                                                             | bool                                                                                                                                                                                                                           | false                             |
-| searchValue             | work with `onSearch` to make search value controlled.                                                                                                                               | string                                                                                                                                                                                                                         | ''                                |
-| defaultValue            | initial selected treeNode(s)                                                                                                                                                        | same as value type                                                                                                                                                                                                             | -                                 |
-| value                   | current selected treeNode(s).                                                                                                                                                       | normal: String/Array<String>. labelInValue: {value:String,label:React.Node}/Array<{value,label}>. treeCheckStrictly(halfChecked default false): {value:String,label:React.Node, halfChecked}/Array<{value,label,halfChecked}>. | -                                 |
-| labelInValue            | whether to embed label in value, see above value type                                                                                                                               | Bool                                                                                                                                                                                                                           | false                             |
-| onChange                | called when select treeNode or input value change                                                                                                                                   | function(value, label(null), extra)                                                                                                                                                                                            | -                                 |
-| onSelect                | called when select treeNode                                                                                                                                                         | function(value, node, extra)                                                                                                                                                                                                   | -                                 |
-| onSearch                | called when input changed                                                                                                                                                           | function                                                                                                                                                                                                                       | -                                 |
-| onTreeExpand            | called when tree node expand                                                                                                                                                        | function(expandedKeys)                                                                                                                                                                                                         | -                                 |
-| onPopupScroll           | called when popup scroll                                                                                                                                                            | function(event)                                                                                                                                                                                                                | -                                 |
-| showCheckedStrategy     | `TreeSelect.SHOW_ALL`: show all checked treeNodes (Include parent treeNode). `TreeSelect.SHOW_PARENT`: show checked treeNodes (Just show parent treeNode). Default just show child. | enum{TreeSelect.SHOW_ALL, TreeSelect.SHOW_PARENT, TreeSelect.SHOW_CHILD }                                                                                                                                                      | TreeSelect.SHOW_CHILD             |
-| treeIcon                | show tree icon                                                                                                                                                                      | bool                                                                                                                                                                                                                           | false                             |
-| treeLine                | show tree line                                                                                                                                                                      | bool                                                                                                                                                                                                                           | false                             |
-| treeDefaultExpandAll    | default expand all treeNode                                                                                                                                                         | bool                                                                                                                                                                                                                           | false                             |
-| treeDefaultExpandedKeys | default expanded treeNode keys                                                                                                                                                      | Array<String>                                                                                                                                                                                                                  | -                                 |
-| treeExpandedKeys        | set tree expanded keys                                                                                                                                                              | Array<String>                                                                                                                                                                                                                  | -                                 |
-| treeExpandAction        | Tree open logic, optional: false \| `click` \| `doubleClick`, same as `expandAction` of `rc-tree`                                                                                   | string \| boolean                                                                                                                                                                                                              | `click`                           |
-| treeCheckable           | whether tree show checkbox (select callback will not fire)                                                                                                                          | bool                                                                                                                                                                                                                           | false                             |
-| treeCheckStrictly       | check node precisely, parent and children nodes are not associated                                                                                                                  | bool                                                                                                                                                                                                                           | false                             |
-| filterTreeNode          | whether filter treeNodes by input value. default filter by treeNode's treeNodeFilterProp prop's value                                                                               | bool/Function(inputValue:string, treeNode:TreeNode)                                                                                                                                                                            | Function                          |
-| treeNodeFilterProp      | which prop value of treeNode will be used for filter if filterTreeNode return true                                                                                                  | String                                                                                                                                                                                                                         | 'value'                           |
-| treeNodeLabelProp       | which prop value of treeNode will render as content of select                                                                                                                       | String                                                                                                                                                                                                                         | 'title'                           |
-| treeData                | treeNodes data Array, if set it then you need not to construct children TreeNode. (value should be unique across the whole array)                                                   | array<{value,label,children, [disabled,selectable]}>                                                                                                                                                                           | []                                |
-| treeDataSimpleMode      | enable simple mode of treeData.(treeData should be like this: [{id:1, pId:0, value:'1', label:"test1",...},...], `pId` is parent node's id)                                         | bool/object{id:'id', pId:'pId', rootPId:null}                                                                                                                                                                                  | false                             |
-| treeTitleRender         | Custom render nodes                                                                                                                                                                 | (nodeData: OptionType) => ReactNode                                                                                                                                                                                            |
-| loadData                | load data asynchronously                                                                                                                                                            | function(node)                                                                                                                                                                                                                 | -                                 |
-| getPopupContainer       | container which popup select menu rendered into                                                                                                                                     | function(trigger:Node):Node                                                                                                                                                                                                    | function(){return document.body;} |
-| autoClearSearchValue    | auto clear search input value when multiple select is selected/deselected                                                                                                           | boolean                                                                                                                                                                                                                        | true                              |
-| suffixIcon              | specify the select arrow icon                                                                                                                                                       | ReactNode \| (props: TreeProps) => ReactNode                                                                                                                                                                                   | -                                 |
-| clearIcon               | specify the clear icon                                                                                                                                                              | ReactNode \| (props: TreeProps) => ReactNode                                                                                                                                                                                   | -                                 |
-| removeIcon              | specify the remove icon                                                                                                                                                             | ReactNode \| (props: TreeProps) => ReactNode                                                                                                                                                                                   | -                                 |
-| switcherIcon            | specify the switcher icon                                                                                                                                                           | ReactNode \| (props: TreeProps) => ReactNode                                                                                                                                                                                   | -                                 |
-| virtual                 | Disable virtual when `false`                                                                                                                                                        | false                                                                                                                                                                                                                          | -                                 |
+TreeSelect also accepts public props from `@rc-component/select` `BaseSelect`, except
+for the internal `mode`, `classNames`, `styles`, and `showSearch` props that are
+redefined by TreeSelect.
 
-### TreeNode props
+| Name                    | Description                                                    | Type                                                                                                       | Default                                                            |
+| ----------------------- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| autoClearSearchValue    | Deprecated. Use `showSearch.autoClearSearchValue` instead.     | boolean                                                                                                    | true                                                               |
+| classNames              | Semantic class names.                                          | `Partial<Record<SemanticName, string>> & { popup?: Partial<Record<PopupSemantic, string>> }`               | -                                                                  |
+| defaultValue            | Initial selected value.                                        | `ValueType`                                                                                                | -                                                                  |
+| fieldNames              | Customize field names for tree data.                           | `FieldNames`                                                                                               | -                                                                  |
+| filterTreeNode          | Deprecated. Use `showSearch.filterTreeNode` instead.           | boolean \| `(inputValue: string, treeNode: DataNode) => boolean`                                           | -                                                                  |
+| inputValue              | Deprecated. Use `showSearch.searchValue` instead.              | string                                                                                                     | -                                                                  |
+| labelInValue            | Whether to return labeled value objects instead of raw values. | boolean                                                                                                    | false                                                              |
+| listHeight              | Popup list height.                                             | number                                                                                                     | 200                                                                |
+| listItemHeight          | Popup list item height.                                        | number                                                                                                     | 20                                                                 |
+| listItemScrollOffset    | Popup list item scroll offset.                                 | number                                                                                                     | 0                                                                  |
+| loadData                | Load tree data asynchronously.                                 | `(dataNode: LegacyDataNode) => Promise<unknown>`                                                           | -                                                                  |
+| maxCount                | Maximum selected item count in multiple or checkable mode.     | number                                                                                                     | -                                                                  |
+| multiple                | Enable multiple selection.                                     | boolean                                                                                                    | false                                                              |
+| onChange                | Called when selected value changes.                            | `(value: ValueType, labelList: ReactNode[], extra: ChangeEventExtra) => void`                              | -                                                                  |
+| onDeselect              | Called when a value is deselected.                             | `(value: ValueType, option: OptionType) => void`                                                           | -                                                                  |
+| onPopupVisibleChange    | Called when popup visibility changes.                          | `(open: boolean) => void`                                                                                  | -                                                                  |
+| onSearch                | Deprecated. Use `showSearch.onSearch` instead.                 | `(value: string) => void`                                                                                  | -                                                                  |
+| onSelect                | Called when a value is selected.                               | `(value: ValueType, option: OptionType) => void`                                                           | -                                                                  |
+| onTreeExpand            | Called when expanded tree keys change.                         | `(expandedKeys: SafeKey[]) => void`                                                                        | -                                                                  |
+| onTreeLoad              | Called when async loaded keys change.                          | `(loadedKeys: SafeKey[]) => void`                                                                          | -                                                                  |
+| searchValue             | Deprecated. Use `showSearch.searchValue` instead.              | string                                                                                                     | -                                                                  |
+| showCheckedStrategy     | Configure how checked values are displayed.                    | `SHOW_ALL` \| `SHOW_PARENT` \| `SHOW_CHILD`                                                                | `SHOW_CHILD` when `treeCheckable` is enabled, otherwise `SHOW_ALL` |
+| showSearch              | Enable search or configure search behavior.                    | boolean \| `SearchConfig`                                                                                  | -                                                                  |
+| showTreeIcon            | Whether to show tree icons.                                    | boolean                                                                                                    | false                                                              |
+| styles                  | Semantic styles.                                               | `Partial<Record<SemanticName, CSSProperties>> & { popup?: Partial<Record<PopupSemantic, CSSProperties>> }` | -                                                                  |
+| switcherIcon            | Custom tree switcher icon.                                     | `IconType`                                                                                                 | -                                                                  |
+| treeCheckable           | Whether to show checkboxes in the tree.                        | boolean \| ReactNode                                                                                       | false                                                              |
+| treeCheckStrictly       | Check tree nodes precisely without parent-child association.   | boolean                                                                                                    | false                                                              |
+| treeData                | Tree node data.                                                | `OptionType[]`                                                                                             | -                                                                  |
+| treeDataSimpleMode      | Enable simple tree data mode.                                  | boolean \| `SimpleModeConfig`                                                                              | false                                                              |
+| treeDefaultExpandAll    | Expand all tree nodes by default.                              | boolean                                                                                                    | false                                                              |
+| treeDefaultExpandedKeys | Initial expanded tree keys.                                    | `SafeKey[]`                                                                                                | -                                                                  |
+| treeExpandAction        | Expand action for tree nodes.                                  | false \| `click` \| `doubleClick`                                                                          | `click`                                                            |
+| treeExpandedKeys        | Controlled expanded tree keys.                                 | `SafeKey[]`                                                                                                | -                                                                  |
+| treeIcon                | Custom tree icon.                                              | `IconType`                                                                                                 | -                                                                  |
+| treeLine                | Whether to show tree lines.                                    | boolean                                                                                                    | false                                                              |
+| treeLoadedKeys          | Controlled loaded tree keys.                                   | `SafeKey[]`                                                                                                | -                                                                  |
+| treeMotion              | Tree motion config.                                            | any                                                                                                        | -                                                                  |
+| treeNodeFilterProp      | Deprecated. Use `showSearch.treeNodeFilterProp` instead.       | string                                                                                                     | `value`                                                            |
+| treeNodeLabelProp       | Tree node prop rendered as selected label.                     | string                                                                                                     | `title`                                                            |
+| treeTitleRender         | Custom tree node title renderer.                               | `(node: OptionType) => ReactNode`                                                                          | -                                                                  |
+| value                   | Controlled selected value.                                     | `ValueType`                                                                                                | -                                                                  |
+| virtual                 | Disable virtual scrolling when set to `false`.                 | boolean                                                                                                    | -                                                                  |
 
-> note: you'd better to use `treeData` instead of using TreeNode.
+### SearchConfig
 
-| name     | description                                                               | type           | default |
-| -------- | ------------------------------------------------------------------------- | -------------- | ------- |
-| disabled | disable treeNode                                                          | bool           | false   |
-| key      | it's value must be unique across the tree's all TreeNode, you must set it | String         | -       |
-| value    | default as treeNodeFilterProp (be unique across the tree's all TreeNode)  | String         | ''      |
-| title    | tree/subTree's title                                                      | String/element | '---'   |
-| isLeaf   | whether it's leaf node                                                    | bool           | false   |
+| Name                 | Description                                                         | Type                                                             | Default |
+| -------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------- | ------- |
+| autoClearSearchValue | Clear search input after selecting or deselecting in multiple mode. | boolean                                                          | true    |
+| filterTreeNode       | Filter tree nodes by search input.                                  | boolean \| `(inputValue: string, treeNode: DataNode) => boolean` | -       |
+| onSearch             | Called when search input changes.                                   | `(value: string) => void`                                        | -       |
+| searchValue          | Controlled search input value.                                      | string                                                           | -       |
+| treeNodeFilterProp   | Tree node prop used for filtering when `filterTreeNode` is enabled. | string                                                           | `value` |
 
-## note
+### DataNode
 
-1. Optimization tips(when there are large amounts of data, like more than 5000 nodes)
-   - Do not Expand all nodes.
-   - Recommend not exist many `TreeSelect` components in a page at the same time.
-   - Recommend not use `treeCheckable` mode, or use `treeCheckStrictly`.
-2. In `treeCheckable` mode, It has the same effect when click `x`(node in Selection box) or uncheck in the treeNode(in dropdown panel), but the essence is not the same. So, even if both of them trigger `onChange` method, but the parameters (the third parameter) are different. （中文：在`treeCheckable`模式下，已选择节点上的`x`删除操作、和相应 treeNode 节点上 checkbox 的 uncheck 操作，最终效果相同，但本质不一样。前者跟弹出的 tree 组件可以“毫无关系”（例如 dropdown 没展开过，tree 也就没渲染好），而后者是 tree 组件上的节点 uncheck 事件。所以、即便两者都会触发`onChange`方法、但它们的参数（第三个参数）是不同的。）
+| Name     | Description            | Type         | Default |
+| -------- | ---------------------- | ------------ | ------- |
+| children | Child tree nodes.      | `DataNode[]` | -       |
+| disabled | Disable the tree node. | boolean      | false   |
+| key      | Unique tree node key.  | `React.Key`  | -       |
+| title    | Tree node title.       | ReactNode    | -       |
+| value    | Tree node value.       | `SafeKey`    | -       |
 
-## Test Case
+### TreeNode
 
-http://localhost:8000/tests/runner.html?coverage
+Using `treeData` is recommended. `TreeNode` is kept for legacy usage.
 
-## Coverage
+| Name     | Description                   | Type      | Default |
+| -------- | ----------------------------- | --------- | ------- |
+| disabled | Disable the tree node.        | boolean   | false   |
+| isLeaf   | Mark the node as a leaf node. | boolean   | false   |
+| key      | Unique tree node key.         | React.Key | -       |
+| title    | Tree node title.              | ReactNode | -       |
+| value    | Tree node value.              | SafeKey   | -       |
 
-http://localhost:8000/node_modules/rc-server/node_modules/node-jscover/lib/front-end/jscoverage.html?w=http://localhost:8000/tests/runner.html?coverage
+## Notes
+
+For large trees, avoid expanding all nodes by default. Prefer virtual scrolling,
+keep the number of simultaneous TreeSelect instances low, and use
+`treeCheckStrictly` when checkable mode has many nodes.
+
+In `treeCheckable` mode, removing a selected item from the selector and
+unchecking the matching tree node produce the same selected values, but they are
+different interactions. Both trigger `onChange`, and the `extra` argument may
+therefore differ.
+
+## Development
+
+```bash
+npm install
+npm start
+npm test
+npm run lint
+npm run compile
+```
+
+## Release
+
+```bash
+npm publish
+```
+
+The `prepublishOnly` script runs `npm run compile && rc-np` before publishing.
 
 ## License
 
-@rc-component/tree-select is released under the MIT license.
+`@rc-component/tree-select` is released under the MIT license.
