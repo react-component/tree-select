@@ -1,7 +1,6 @@
 <div align="center">
   <h1>@rc-component/tree-select</h1>
-  <p><sub>Part of the Ant Design ecosystem.</sub></p>
-  <img alt="Ant Design" height="32" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" />
+  <p><sub><img alt="Ant Design" height="14" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" style="vertical-align: -0.125em;" /> Part of the Ant Design ecosystem.</sub></p>
   <p>🌳 React TreeSelect component for choosing values from tree data, with search, checkable nodes, async loading, and virtual scrolling.</p>
 
   <p>
