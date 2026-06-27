@@ -1,5 +1,6 @@
 <div align="center">
   <h1>@rc-component/tree-select</h1>
+  <p><sub>Part of the Ant Design ecosystem.</sub></p>
   <img alt="Ant Design" height="32" src="https://gw.alipayobjects.com/zos/bmw-prod/ae669a89-0c24-40ff-a91d-2b83497170f6.svg" />
   <p>🌳 React TreeSelect component for choosing values from tree data, with search, checkable nodes, async loading, and virtual scrolling.</p>
 
@@ -13,14 +14,6 @@
   </p>
 </div>
 
-<p align="center">
-  <sub>
-    <a href="https://ant.design">
-      <img alt="Ant Design" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" height="16">
-    </a>
-    Part of the Ant Design ecosystem.
-  </sub>
-</p>
 
 ## Highlights
 
@@ -42,8 +35,6 @@ npm install @rc-component/tree-select
 
 ```tsx | pure
 import TreeSelect from '@rc-component/tree-select';
-import React from 'react';
-import { createRoot } from 'react-dom/client';
 
 const treeData = [
   {
@@ -58,9 +49,7 @@ const treeData = [
   },
 ];
 
-createRoot(document.getElementById('root')!).render(
-  <TreeSelect treeData={treeData} placeholder="Select a node" />,
-);
+export default () => <TreeSelect treeData={treeData} placeholder="Select a node" />;
 ```
 
 ## Examples
