@@ -1,8 +1,8 @@
 <div align="center">
   <h1>@rc-component/tree-select</h1>
-  <p><sub>Part of the Ant Design ecosystem.</sub></p>
+  <p><sub>Ant Design 生态的一部分。</sub></p>
   <img alt="Ant Design" height="32" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" />
-  <p>🌳 React TreeSelect component for choosing values from tree data, with search, checkable nodes, async loading, and virtual scrolling.</p>
+  <p>🌲 React 树选择组件，结合树形数据、多选、搜索和下拉交互。</p>
 
   <p>
     <a href="https://npmjs.org/package/@rc-component/tree-select"><img alt="NPM version" src="https://img.shields.io/npm/v/@rc-component/tree-select.svg?style=flat-square"></a>
@@ -14,12 +14,12 @@
   </p>
 </div>
 
-<p align="center">English | <a href="./README.zh-CN.md">简体中文</a></p>
+<p align="center"><a href="./README.md">English</a> | 简体中文</p>
 
 
-## Highlights
+## 特性
 
-| Area      | Support                                                   |
+| 范围 | 支持 |
 | --------- | --------------------------------------------------------- |
 | Data      | Tree data, simple mode, custom field names                |
 | Selection | Single, multiple, checkable, strict check, label-in-value |
@@ -27,13 +27,13 @@
 | Loading   | Async tree loading and controlled loaded keys             |
 | Scale     | Virtual scrolling with configurable list metrics          |
 
-## Install
+## 安装
 
 ```bash
 npm install @rc-component/tree-select
 ```
 
-## Usage
+## 使用
 
 ```tsx | pure
 import TreeSelect from '@rc-component/tree-select';
@@ -54,7 +54,7 @@ const treeData = [
 export default () => <TreeSelect treeData={treeData} placeholder="Select a node" />;
 ```
 
-## Examples
+## 示例
 
 ```bash
 npm install
@@ -72,7 +72,7 @@ TreeSelect also accepts public props from `@rc-component/select` `BaseSelect`, e
 for the internal `mode`, `classNames`, `styles`, and `showSearch` props that are
 redefined by TreeSelect.
 
-| Name                    | Description                                                    | Type                                                                                                       | Default                                                            |
+| 名称 | 说明 | 类型 | 默认值 |
 | ----------------------- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
 | autoClearSearchValue    | Deprecated. Use `showSearch.autoClearSearchValue` instead.     | boolean                                                                                                    | true                                                               |
 | classNames              | Semantic class names.                                          | `Partial<Record<SemanticName, string>> & { popup?: Partial<Record<PopupSemantic, string>> }`               | -                                                                  |
@@ -120,7 +120,7 @@ redefined by TreeSelect.
 
 ### SearchConfig
 
-| Name                 | Description                                                         | Type                                                             | Default |
+| 名称 | 说明 | 类型 | 默认值 |
 | -------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------- | ------- |
 | autoClearSearchValue | Clear search input after selecting or deselecting in multiple mode. | boolean                                                          | true    |
 | filterTreeNode       | Filter tree nodes by search input.                                  | boolean \| `(inputValue: string, treeNode: DataNode) => boolean` | -       |
@@ -130,7 +130,7 @@ redefined by TreeSelect.
 
 ### DataNode
 
-| Name     | Description            | Type         | Default |
+| 名称 | 说明 | 类型 | 默认值 |
 | -------- | ---------------------- | ------------ | ------- |
 | children | Child tree nodes.      | `DataNode[]` | -       |
 | disabled | Disable the tree node. | boolean      | false   |
@@ -142,7 +142,7 @@ redefined by TreeSelect.
 
 Using `treeData` is recommended. `TreeNode` is kept for legacy usage.
 
-| Name     | Description                   | Type      | Default |
+| 名称 | 说明 | 类型 | 默认值 |
 | -------- | ----------------------------- | --------- | ------- |
 | disabled | Disable the tree node.        | boolean   | false   |
 | isLeaf   | Mark the node as a leaf node. | boolean   | false   |
@@ -150,7 +150,7 @@ Using `treeData` is recommended. `TreeNode` is kept for legacy usage.
 | title    | Tree node title.              | ReactNode | -       |
 | value    | Tree node value.              | SafeKey   | -       |
 
-## Notes
+## 说明
 
 For large trees, avoid expanding all nodes by default. Prefer virtual scrolling,
 keep the number of simultaneous TreeSelect instances low, and use
@@ -161,7 +161,7 @@ unchecking the matching tree node produce the same selected values, but they are
 different interactions. Both trigger `onChange`, and the `extra` argument may
 therefore differ.
 
-## Development
+## 本地开发
 
 ```bash
 npm install
@@ -171,7 +171,7 @@ npm run lint
 npm run compile
 ```
 
-## Release
+## 发布
 
 ```bash
 npm run prepublishOnly
@@ -179,6 +179,6 @@ npm run prepublishOnly
 
 The release flow is handled by `@rc-component/np` through the `rc-np` command after the package build.
 
-## License
+## 许可证
 
 @rc-component/tree-select is released under the [MIT](./LICENSE.md) license.
