@@ -55,12 +55,14 @@ export default () => <TreeSelect treeData={treeData} placeholder="Select a node"
 
 ## 示例
 
+运行本地 dumi 站点：
+
 ```bash
 npm install
 npm start
 ```
 
-本地打开 <http://localhost:8000/examples/>，或访问在线示例：<https://tree-select-react-component.vercel.app/>。
+然后打开 `http://localhost:8000`。
 
 ## API
 
