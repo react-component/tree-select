@@ -8,7 +8,7 @@
     "react-tree-select",
     "tree-select"
   ],
-  "homepage": "https://github.com/react-component/tree-select",
+  "homepage": "https://react-component.github.io/tree-select",
   "bugs": {
     "url": "https://github.com/react-component/tree-select/issues"
   },
@@ -82,5 +82,8 @@
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
