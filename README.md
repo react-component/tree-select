@@ -15,7 +15,6 @@
 
 <p align="center">English | <a href="./README.zh-CN.md">简体中文</a></p>
 
-
 ## Highlights
 
 | Area      | Support                                                   |
@@ -170,6 +169,8 @@ npm test
 npm run lint
 npm run compile
 ```
+
+The dumi site runs at `http://localhost:8000` by default.
 
 ## Release
 
