@@ -15,16 +15,15 @@
 
 <p align="center"><a href="./README.md">English</a> | 简体中文</p>
 
-
 ## 特性
 
-| 范围 | 支持 |
-| --------- | --------------------------------------------------------- |
-| 数据      | 树数据、简单模式和自定义字段名                |
+| 范围 | 支持                               |
+| ---- | ---------------------------------- |
+| 数据 | 树数据、简单模式和自定义字段名     |
 | 选择 | 单选、多选、勾选、严格勾选和标注值 |
-| 搜索    | 受控搜索、自定义过滤和自动清除              |
-| 加载   | 异步树加载和受控 loaded keys             |
-| 规模     | 支持可配置列表指标的虚拟滚动          |
+| 搜索 | 受控搜索、自定义过滤和自动清除     |
+| 加载 | 异步树加载和受控 loaded keys       |
+| 规模 | 支持可配置列表指标的虚拟滚动       |
 
 ## 安装
 
@@ -70,83 +69,83 @@ npm start
 
 TreeSelect 还接受来自 `@rc-component/select` `BaseSelect` 的公共属性，但内部使用的 `mode`、`classNames`、`styles` 和由 TreeSelect 重新定义的 `showSearch` 除外。
 
-| 名称 | 说明 | 类型 | 默认值 |
-| ----------------------- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| autoClearSearchValue    | 已弃用。请改用 `showSearch.autoClearSearchValue`。     | boolean                                                                                                    | true                                                               |
-| classNames              | 语义className。                                          | `Partial<Record<SemanticName, string>> & { popup?: Partial<Record<PopupSemantic, string>> }`               | -                                                                  |
-| defaultValue            | 初始选中值。                                        | `ValueType`                                                                                                | -                                                                  |
-| fieldNames              | 自定义树数据的字段名称。                           | `FieldNames`                                                                                               | -                                                                  |
-| filterTreeNode          | 已弃用。请改用 `showSearch.filterTreeNode`。           | boolean \| `(inputValue: string, treeNode: DataNode) => boolean`                                           | -                                                                  |
-| inputValue              | 已弃用。请改用 `showSearch.searchValue`。              | string                                                                                                     | -                                                                  |
-| labelInValue            | 是否返回标记值对象而不是原始值。 | boolean                                                                                                    | false                                                              |
-| listHeight              | 弹层列表高度。                                             | number                                                                                                     | 200                                                                |
-| listItemHeight          | 弹层列表项的高度。                                        | number                                                                                                     | 20                                                                 |
-| listItemScrollOffset    | 弹层列表项滚动偏移。                                 | number                                                                                                     | 0                                                                  |
-| loadData                | 异步加载树数据。                                 | `(dataNode: LegacyDataNode) => Promise<unknown>`                                                           | -                                                                  |
-| maxCount                | 多重或可检查模式下的最大选定项目数。     | number                                                                                                     | -                                                                  |
-| multiple                | 启用多项选择。                                     | boolean                                                                                                    | false                                                              |
-| onChange                | 当选定值更改时调用。                            | `(value: ValueType, labelList: ReactNode[], extra: ChangeEventExtra) => void`                              | -                                                                  |
-| onDeselect              | 当取消选择某个值时调用。                             | `(value: ValueType, option: OptionType) => void`                                                           | -                                                                  |
-| onPopupVisibleChange    | 当弹层窗口可见性发生变化时调用。                          | `(open: boolean) => void`                                                                                  | -                                                                  |
-| onSearch                | 已弃用。请改用 `showSearch.onSearch`。                 | `(value: string) => void`                                                                                  | -                                                                  |
-| onSelect                | 选择值时调用。                               | `(value: ValueType, option: OptionType) => void`                                                           | -                                                                  |
-| onTreeExpand            | 当扩展树键更改时调用。                         | `(expandedKeys: SafeKey[]) => void`                                                                        | -                                                                  |
-| onTreeLoad              | 当异步加载的键发生变化时调用。                          | `(loadedKeys: SafeKey[]) => void`                                                                          | -                                                                  |
-| searchValue             | 已弃用。请改用 `showSearch.searchValue`。              | string                                                                                                     | -                                                                  |
-| showCheckedStrategy     | 配置检查值的显示方式。                    | `SHOW_ALL` \| `SHOW_PARENT` \| `SHOW_CHILD`                                                                | 当 `treeCheckable` 使能时为 `SHOW_CHILD`，否则为 `SHOW_ALL` |
-| showSearch              | 启用搜索或配置搜索行为。                    | boolean \| `SearchConfig`                                                                                  | -                                                                  |
-| showTreeIcon            | 是否显示树形图标。                                    | boolean                                                                                                    | false                                                              |
-| styles                  | 语义化样式。                                               | `Partial<Record<SemanticName, CSSProperties>> & { popup?: Partial<Record<PopupSemantic, CSSProperties>> }` | -                                                                  |
-| switcherIcon            | 自定义树切换器图标。                                     | `IconType`                                                                                                 | -                                                                  |
-| treeCheckable           | 是否在树中显示复选框。                        | boolean \| ReactNode                                                                                       | false                                                              |
-| treeCheckStrictly       | 精确检查树节点，无需父子关联。   | boolean                                                                                                    | false                                                              |
-| treeData                | 树节点数据。                                                | `OptionType[]`                                                                                             | -                                                                  |
-| treeDataSimpleMode      | 启用简单树数据模式。                                  | boolean \| `SimpleModeConfig`                                                                              | false                                                              |
-| treeDefaultExpandAll    | 默认展开所有树节点。                              | boolean                                                                                                    | false                                                              |
-| treeDefaultExpandedKeys | 初始扩展树键。                                    | `SafeKey[]`                                                                                                | -                                                                  |
-| treeExpandAction        | 树节点展开触发行为。                                  | false \| `click` \| `doubleClick`                                                                          | `click`                                                            |
-| treeExpandedKeys        | 受控的扩展树键。                                 | `SafeKey[]`                                                                                                | -                                                                  |
-| treeIcon                | 自定义树图标。                                              | `IconType`                                                                                                 | -                                                                  |
-| treeLine                | 是否显示树线。                                    | boolean                                                                                                    | false                                                              |
-| treeLoadedKeys          | 受控加载的树键。                                   | `SafeKey[]`                                                                                                | -                                                                  |
-| treeMotion              | 树运动配置。                                            | any                                                                                                        | -                                                                  |
-| treeNodeFilterProp      | 已弃用。请改用 `showSearch.treeNodeFilterProp`。       | string                                                                                                     | `value`                                                            |
-| treeNodeLabelProp       | 作为选中标签渲染的树节点属性。                     | string                                                                                                     | `title`                                                            |
-| treeTitleRender         | 自定义树节点标题渲染器。                               | `(node: OptionType) => ReactNode`                                                                          | -                                                                  |
-| value                   | 受控选中值。                                     | `ValueType`                                                                                                | -                                                                  |
-| virtual                 | 设置为 `false` 时禁用虚拟滚动。                 | boolean                                                                                                    | -                                                                  |
+| 名称                    | 说明                                               | 类型                                                                                                       | 默认值                                                      |
+| ----------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| autoClearSearchValue    | 已弃用。请改用 `showSearch.autoClearSearchValue`。 | boolean                                                                                                    | true                                                        |
+| classNames              | 语义 className。                                   | `Partial<Record<SemanticName, string>> & { popup?: Partial<Record<PopupSemantic, string>> }`               | -                                                           |
+| defaultValue            | 初始选中值。                                       | `ValueType`                                                                                                | -                                                           |
+| fieldNames              | 自定义树数据的字段名称。                           | `FieldNames`                                                                                               | -                                                           |
+| filterTreeNode          | 已弃用。请改用 `showSearch.filterTreeNode`。       | boolean \| `(inputValue: string, treeNode: DataNode) => boolean`                                           | -                                                           |
+| inputValue              | 已弃用。请改用 `showSearch.searchValue`。          | string                                                                                                     | -                                                           |
+| labelInValue            | 是否返回标记值对象而不是原始值。                   | boolean                                                                                                    | false                                                       |
+| listHeight              | 弹层列表高度。                                     | number                                                                                                     | 200                                                         |
+| listItemHeight          | 弹层列表项的高度。                                 | number                                                                                                     | 20                                                          |
+| listItemScrollOffset    | 弹层列表项滚动偏移。                               | number                                                                                                     | 0                                                           |
+| loadData                | 异步加载树数据。                                   | `(dataNode: LegacyDataNode) => Promise<unknown>`                                                           | -                                                           |
+| maxCount                | 多重或可检查模式下的最大选定项目数。               | number                                                                                                     | -                                                           |
+| multiple                | 启用多项选择。                                     | boolean                                                                                                    | false                                                       |
+| onChange                | 当选定值更改时调用。                               | `(value: ValueType, labelList: ReactNode[], extra: ChangeEventExtra) => void`                              | -                                                           |
+| onDeselect              | 当取消选择某个值时调用。                           | `(value: ValueType, option: OptionType) => void`                                                           | -                                                           |
+| onPopupVisibleChange    | 当弹层窗口可见性发生变化时调用。                   | `(open: boolean) => void`                                                                                  | -                                                           |
+| onSearch                | 已弃用。请改用 `showSearch.onSearch`。             | `(value: string) => void`                                                                                  | -                                                           |
+| onSelect                | 选择值时调用。                                     | `(value: ValueType, option: OptionType) => void`                                                           | -                                                           |
+| onTreeExpand            | 当扩展树键更改时调用。                             | `(expandedKeys: SafeKey[]) => void`                                                                        | -                                                           |
+| onTreeLoad              | 当异步加载的键发生变化时调用。                     | `(loadedKeys: SafeKey[]) => void`                                                                          | -                                                           |
+| searchValue             | 已弃用。请改用 `showSearch.searchValue`。          | string                                                                                                     | -                                                           |
+| showCheckedStrategy     | 配置检查值的显示方式。                             | `SHOW_ALL` \| `SHOW_PARENT` \| `SHOW_CHILD`                                                                | 当 `treeCheckable` 使能时为 `SHOW_CHILD`，否则为 `SHOW_ALL` |
+| showSearch              | 启用搜索或配置搜索行为。                           | boolean \| `SearchConfig`                                                                                  | -                                                           |
+| showTreeIcon            | 是否显示树形图标。                                 | boolean                                                                                                    | false                                                       |
+| styles                  | 语义化样式。                                       | `Partial<Record<SemanticName, CSSProperties>> & { popup?: Partial<Record<PopupSemantic, CSSProperties>> }` | -                                                           |
+| switcherIcon            | 自定义树切换器图标。                               | `IconType`                                                                                                 | -                                                           |
+| treeCheckable           | 是否在树中显示复选框。                             | boolean \| ReactNode                                                                                       | false                                                       |
+| treeCheckStrictly       | 精确检查树节点，无需父子关联。                     | boolean                                                                                                    | false                                                       |
+| treeData                | 树节点数据。                                       | `OptionType[]`                                                                                             | -                                                           |
+| treeDataSimpleMode      | 启用简单树数据模式。                               | boolean \| `SimpleModeConfig`                                                                              | false                                                       |
+| treeDefaultExpandAll    | 默认展开所有树节点。                               | boolean                                                                                                    | false                                                       |
+| treeDefaultExpandedKeys | 初始扩展树键。                                     | `SafeKey[]`                                                                                                | -                                                           |
+| treeExpandAction        | 树节点展开触发行为。                               | false \| `click` \| `doubleClick`                                                                          | `click`                                                     |
+| treeExpandedKeys        | 受控的扩展树键。                                   | `SafeKey[]`                                                                                                | -                                                           |
+| treeIcon                | 自定义树图标。                                     | `IconType`                                                                                                 | -                                                           |
+| treeLine                | 是否显示树线。                                     | boolean                                                                                                    | false                                                       |
+| treeLoadedKeys          | 受控加载的树键。                                   | `SafeKey[]`                                                                                                | -                                                           |
+| treeMotion              | 树运动配置。                                       | any                                                                                                        | -                                                           |
+| treeNodeFilterProp      | 已弃用。请改用 `showSearch.treeNodeFilterProp`。   | string                                                                                                     | `value`                                                     |
+| treeNodeLabelProp       | 作为选中标签渲染的树节点属性。                     | string                                                                                                     | `title`                                                     |
+| treeTitleRender         | 自定义树节点标题渲染器。                           | `(node: OptionType) => ReactNode`                                                                          | -                                                           |
+| value                   | 受控选中值。                                       | `ValueType`                                                                                                | -                                                           |
+| virtual                 | 设置为 `false` 时禁用虚拟滚动。                    | boolean                                                                                                    | -                                                           |
 
 ### SearchConfig
 
-| 名称 | 说明 | 类型 | 默认值 |
-| -------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------- | ------- |
-| autoClearSearchValue | 在多种模式下选择或取消选择后清除搜索输入。 | boolean                                                          | true    |
-| filterTreeNode       | 根据搜索输入过滤树节点。                                  | boolean \| `(inputValue: string, treeNode: DataNode) => boolean` | -       |
-| onSearch             | 当搜索输入更改时调用。                                   | `(value: string) => void`                                        | -       |
-| searchValue          | 受控搜索输入值。                                      | string                                                           | -       |
+| 名称                 | 说明                                           | 类型                                                             | 默认值  |
+| -------------------- | ---------------------------------------------- | ---------------------------------------------------------------- | ------- |
+| autoClearSearchValue | 在多种模式下选择或取消选择后清除搜索输入。     | boolean                                                          | true    |
+| filterTreeNode       | 根据搜索输入过滤树节点。                       | boolean \| `(inputValue: string, treeNode: DataNode) => boolean` | -       |
+| onSearch             | 当搜索输入更改时调用。                         | `(value: string) => void`                                        | -       |
+| searchValue          | 受控搜索输入值。                               | string                                                           | -       |
 | treeNodeFilterProp   | 启用 `filterTreeNode` 时用于过滤的树节点属性。 | string                                                           | `value` |
 
 ### DataNode
 
-| 名称 | 说明 | 类型 | 默认值 |
-| -------- | ---------------------- | ------------ | ------- |
-| children | 子树节点。      | `DataNode[]` | -       |
-| disabled | 禁用树节点。 | boolean      | false   |
-| key      | 唯一树节点 key。  | `React.Key`  | -       |
-| title    | 树节点标题。       | ReactNode    | -       |
-| value    | 树节点值。       | `SafeKey`    | -       |
+| 名称     | 说明             | 类型         | 默认值 |
+| -------- | ---------------- | ------------ | ------ |
+| children | 子树节点。       | `DataNode[]` | -      |
+| disabled | 禁用树节点。     | boolean      | false  |
+| key      | 唯一树节点 key。 | `React.Key`  | -      |
+| title    | 树节点标题。     | ReactNode    | -      |
+| value    | 树节点值。       | `SafeKey`    | -      |
 
 ### TreeNode
 
 推荐使用 `treeData`。`TreeNode` 仅为兼容旧用法保留。
 
-| 名称 | 说明 | 类型 | 默认值 |
-| -------- | ----------------------------- | --------- | ------- |
-| disabled | 禁用树节点。        | boolean   | false   |
-| isLeaf   | 标记节点为叶子节点。 | boolean   | false   |
-| key      | 唯一树节点 key。         | React.Key | -       |
-| title    | 树节点标题。              | ReactNode | -       |
-| value    | 树节点值。              | SafeKey   | -       |
+| 名称     | 说明                 | 类型      | 默认值 |
+| -------- | -------------------- | --------- | ------ |
+| disabled | 禁用树节点。         | boolean   | false  |
+| isLeaf   | 标记节点为叶子节点。 | boolean   | false  |
+| key      | 唯一树节点 key。     | React.Key | -      |
+| title    | 树节点标题。         | ReactNode | -      |
+| value    | 树节点值。           | SafeKey   | -      |
 
 ## 说明
 
