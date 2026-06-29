@@ -8,9 +8,23 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "paths": {
-      "@/*": ["src/*"],
-      "@@/*": [".dumi/tmp/*"],
-      "@rc-component/tree-select": ["src/index.tsx"]
-    }
-  }
+      "@/*": [
+        "src/*"
+      ],
+      "@@/*": [
+        ".dumi/tmp/*"
+      ],
+      "@rc-component/tree-select": [
+        "src/index.tsx"
+      ]
+    },
+    "ignoreDeprecations": "5.0"
+  },
+  "include": [
+    ".dumirc.ts",
+    ".fatherrc.ts",
+    "src",
+    "tests",
+    "examples"
+  ]
 }
