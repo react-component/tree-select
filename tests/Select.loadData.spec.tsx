@@ -1,7 +1,6 @@
-import { fireEvent } from '@testing-library/dom';
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
 import React from 'react';
-import { render, act } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 
 import TreeSelect from '../src';
 

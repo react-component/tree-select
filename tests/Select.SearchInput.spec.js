@@ -1,7 +1,6 @@
-import { fireEvent } from '@testing-library/dom';
 /* eslint-disable no-undef */
 import React, { useState } from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import TreeSelect, { TreeNode } from '../src';
 import { KeyCode } from '@rc-component/util';
 import { getInput, search, selectNode } from './util';

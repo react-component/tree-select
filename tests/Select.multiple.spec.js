@@ -1,6 +1,5 @@
-import { fireEvent } from '@testing-library/dom';
 /* eslint-disable no-undef */
-import { render, within, screen } from '@testing-library/react';
+import { render, fireEvent, within, screen } from '@testing-library/react';
 import { KeyCode } from '@rc-component/util';
 import React from 'react';
 import TreeSelect, { TreeNode } from '../src';

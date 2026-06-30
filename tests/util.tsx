@@ -1,5 +1,4 @@
-import { fireEvent, createEvent } from '@testing-library/dom';
-import { act } from '@testing-library/react';
+import { fireEvent, createEvent, act } from '@testing-library/react';
 import { KeyCode } from '@rc-component/util';
 
 const keyMap: Record<number, string> = {
