@@ -13,7 +13,6 @@ exports[`TreeSelect.multiple can hide search box by showSearch = false 1`] = `
     >
       <div
         class="rc-tree-select-placeholder"
-        style="visibility: visible;"
       />
     </div>
     <div

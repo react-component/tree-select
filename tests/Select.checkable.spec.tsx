@@ -242,9 +242,9 @@ describe('TreeSelect.checkable', () => {
     selectNode(0);
     search(container, 'foo');
 
-    // Clear all using mouseDown (same as wrapper.clearAll())
+    // Clear all using click (same as wrapper.clearAll())
     const clearButton = container.querySelector('.rc-tree-select-clear')!;
-    fireEvent.mouseDown(clearButton);
+    fireEvent.click(clearButton);
 
     // Check that no items are selected
     expect(container.querySelectorAll('.rc-tree-select-selection-item')).toHaveLength(0);

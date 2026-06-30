@@ -9,7 +9,6 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
   >
     <div
       class="rc-tree-select-placeholder"
-      style="visibility: visible;"
     />
     <input
       aria-autocomplete="list"
@@ -38,7 +37,6 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
   >
     <div
       class="rc-tree-select-placeholder"
-      style="visibility: visible;"
     />
     <input
       aria-autocomplete="list"
@@ -72,7 +70,6 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
     >
       <div
         class="awesome-placeholder"
-        style="visibility: visible;"
       />
     </div>
     <div
@@ -106,7 +103,6 @@ exports[`TreeSelect.basic render renders disabled correctly 1`] = `
   >
     <div
       class="rc-tree-select-placeholder"
-      style="visibility: visible;"
     />
     <input
       aria-autocomplete="list"
@@ -139,7 +135,6 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
       >
         <div
           class="rc-tree-select-placeholder"
-          style="visibility: visible;"
         />
       </div>
       <div
@@ -381,7 +376,6 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
     >
       <div
         class="rc-tree-select-placeholder"
-        style="visibility: visible;"
       />
       <input
         aria-autocomplete="list"
@@ -636,7 +630,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
     >
       <div
         class="rc-tree-select-placeholder"
-        style="visibility: visible;"
+        style=""
       />
       <input
         aria-autocomplete="list"
@@ -913,7 +907,6 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
   >
     <div
       class="rc-tree-select-placeholder"
-      style="visibility: visible;"
     />
     <input
       aria-autocomplete="list"
