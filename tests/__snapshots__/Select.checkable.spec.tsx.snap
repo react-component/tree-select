@@ -288,7 +288,6 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
       >
         <div
           class="rc-tree-select-placeholder"
-          style="visibility: visible;"
         />
       </div>
       <div
@@ -776,7 +775,6 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
       >
         <div
           class="rc-tree-select-placeholder"
-          style="visibility: visible;"
         />
       </div>
       <div

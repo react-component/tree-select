@@ -62,7 +62,7 @@ export function clearSelection(element: HTMLElement, index = 0) {
 }
 
 export function clearAll(element: HTMLElement) {
-  fireEvent.mouseDown(element.querySelector('.rc-tree-select-clear')!);
+  fireEvent.click(element.querySelector('.rc-tree-select-clear')!);
 }
 
 export function getSelections(element: HTMLElement = document.body) {
