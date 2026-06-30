@@ -62,7 +62,7 @@
     "@types/react-dom": "^18.3.7",
     "@types/warning": "^3.0.4",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
+    "@typescript-eslint/parser": "^8.62.0",
     "@umijs/fabric": "^4.0.1",
     "cross-env": "^10.1.0",
     "dumi": "^2.4.35",
