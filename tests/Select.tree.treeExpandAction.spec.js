@@ -1,6 +1,7 @@
+import { fireEvent } from '@testing-library/dom';
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import TreeSelect from '../src';
 
 describe('treeExpandAction with selectable props', () => {

@@ -1,6 +1,7 @@
+import { fireEvent } from '@testing-library/dom';
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
 import React from 'react';
-import { render, fireEvent, act } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 import { resetWarned } from '@rc-component/util';
 import TreeSelect, { TreeNode as SelectNode } from '../src';
 import { getVisibleTreeNodes, selectNode, triggerOpen, expectOpen } from './util';

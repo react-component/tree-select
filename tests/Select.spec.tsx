@@ -1,4 +1,5 @@
-import { act, createEvent, render, fireEvent } from '@testing-library/react';
+import { createEvent, fireEvent } from '@testing-library/dom';
+import { act, render } from '@testing-library/react';
 import { KeyCode } from '@rc-component/util';
 import React from 'react';
 import TreeSelect, { TreeNode } from '../src';

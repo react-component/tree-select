@@ -1,4 +1,5 @@
-import { render, fireEvent, within } from '@testing-library/react';
+import { fireEvent } from '@testing-library/dom';
+import { render, within } from '@testing-library/react';
 import { KeyCode } from '@rc-component/util';
 import { keyDown, keyUp } from './util';
 import React from 'react';

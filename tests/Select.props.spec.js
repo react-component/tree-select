@@ -1,7 +1,8 @@
+import { fireEvent } from '@testing-library/dom';
 /* eslint-disable no-undef, react/no-multi-comp, no-console */
 import { TreeNode } from '@rc-component/tree';
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import TreeSelect, { SHOW_ALL, SHOW_CHILD, SHOW_PARENT, TreeNode as SelectNode } from '../src';
 import {
