@@ -11,13 +11,7 @@
       "@@/*": ["./.dumi/tmp/*"],
       "@rc-component/tree-select": ["./src/index.tsx"]
     },
-    "noImplicitAny": false,
-    "strictNullChecks": false,
-    "strictPropertyInitialization": false,
-    "strictFunctionTypes": false,
     "strict": false,
-    "noImplicitThis": false,
-    "strictBindCallApply": false,
     "module": "ESNext"
   },
   "include": ["global.d.ts", ".dumirc.ts", ".fatherrc.ts", "src", "tests", "examples"]
