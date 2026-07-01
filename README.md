@@ -57,7 +57,7 @@ export default () => <TreeSelect treeData={treeData} placeholder="Select a node"
 Run the local dumi site:
 
 ```bash
-npm install
+ut install
 npm start
 ```
 
@@ -163,7 +163,7 @@ therefore differ.
 ## Development
 
 ```bash
-npm install
+ut install
 npm start
 npm test
 npm run lint
