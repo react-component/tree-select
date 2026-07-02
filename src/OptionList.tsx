@@ -79,7 +79,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     keyEntities,
   } = React.useContext(LegacyContext);
 
-  const treeRef = React.useRef<Tree>();
+  const treeRef = React.useRef<Tree>(null);
 
   const memoTreeData = useMemo(
     () => treeData,
