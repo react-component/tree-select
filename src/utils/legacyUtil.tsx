@@ -11,7 +11,7 @@ import TreeNode from '../TreeNode';
 
 export function convertChildrenToData(nodes: React.ReactNode): DataNode[] {
   return toArray(nodes)
-    .map((node: React.ReactElement) => {
+    .map((node: React.ReactElement<any>) => {
       if (!React.isValidElement(node) || !node.type) {
         return null;
       }
@@ -19,7 +19,7 @@ export function convertChildrenToData(nodes: React.ReactNode): DataNode[] {
       const {
         key,
         props: { children, value, ...restProps },
-      } = node as React.ReactElement;
+      } = node as React.ReactElement<any>;
 
       const data = {
         key,
@@ -119,12 +119,12 @@ export function fillAdditionalInfo(
             node: {
               props: { value: val1 },
             },
-          },
+          }: { node: React.ReactElement<any> },
           {
             node: {
               props: { value: val2 },
             },
-          },
+          }: { node: React.ReactElement<any> },
         ) => {
           const index1 = checkedValues.indexOf(val1);
           const index2 = checkedValues.indexOf(val2);
