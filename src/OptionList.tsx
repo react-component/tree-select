@@ -255,19 +255,13 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     if (!open) {
       return;
     }
-    let nextActiveKey = null;
-
     const getFirstNode = () => {
       const firstNode = getFirstMatchingNode(memoTreeData);
       return firstNode ? firstNode[fieldNames.value] : null;
     };
 
     // single mode active first checked node
-    if (!multiple && checkedKeys.length && !searchValue) {
-      nextActiveKey = checkedKeys[0];
-    } else {
-      nextActiveKey = getFirstNode();
-    }
+    const nextActiveKey = !multiple && checkedKeys.length && !searchValue ? checkedKeys[0] : getFirstNode();
 
     setActiveKey(nextActiveKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
