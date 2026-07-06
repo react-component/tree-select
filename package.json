@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@eslint/compat": "^2.1.0",
     "@rc-component/dialog": "^1.2.0",
     "@rc-component/father-plugin": "^2.2.0",
     "@rc-component/form": "^1.4.0",
