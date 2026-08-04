@@ -789,6 +789,71 @@ describe('TreeSelect.checkable', () => {
     expect(document.querySelector('.rc-tree-select-tree-treenode-checkbox-checked')).toBeTruthy();
   });
 
+  it('should keep disabled child selected when checking its parent', () => {
+    const treeData = [
+      {
+        title: 'Node1',
+        value: '0-0',
+        key: '0-0',
+        children: [
+          {
+            title: 'Child Node1',
+            value: '0-0-0',
+            key: '0-0-0',
+          },
+        ],
+      },
+      {
+        title: 'Node2',
+        value: '0-1',
+        key: '0-1',
+        children: [
+          {
+            title: 'Child Node3',
+            value: '0-1-0',
+            key: '0-1-0',
+            disabled: true,
+          },
+          {
+            title: 'Child Node4',
+            value: '0-1-1',
+            key: '0-1-1',
+          },
+          {
+            title: 'Child Node5',
+            value: '0-1-2',
+            key: '0-1-2',
+          },
+        ],
+      },
+    ];
+
+    const App = () => {
+      const [value, setValue] = React.useState(['0-1-0']);
+
+      return (
+        <TreeSelect
+          open
+          treeCheckable
+          treeDefaultExpandAll
+          showCheckedStrategy={SHOW_PARENT}
+          value={value}
+          onChange={setValue}
+          treeData={treeData}
+        />
+      );
+    };
+
+    const { container } = render(<App />);
+
+    selectNode(2);
+
+    expect(getSelections(container)).toHaveLength(2);
+    expect([getSelectionText(container, 0), getSelectionText(container, 1)]).toEqual(
+      expect.arrayContaining(['Node2', 'Child Node3']),
+    );
+  });
+
   // https://github.com/ant-design/ant-design/issues/32184
   it('should pass correct keys', () => {
     const { rerender } = render(
