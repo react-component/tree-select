@@ -33,7 +33,12 @@ export function formatStrategyValues(
     return values.filter(key => {
       const entity = keyEntities[key];
       const parent = entity ? entity.parent : null;
-      return !parent || isCheckDisabled(parent.node) || !valueSet.has(parent.key as SafeKey);
+      return (
+        !parent ||
+        isCheckDisabled(entity.node) ||
+        isCheckDisabled(parent.node) ||
+        !valueSet.has(parent.key as SafeKey)
+      );
     });
   }
   return values;
