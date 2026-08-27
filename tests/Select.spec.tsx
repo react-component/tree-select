@@ -139,6 +139,21 @@ describe('TreeSelect.basic', () => {
       );
       expect(container.firstChild).toMatchSnapshot();
     });
+
+    it('preserves a numeric zero key in treeDataSimpleMode', () => {
+      const onSelect = jest.fn();
+      const { container } = render(
+        <TreeSelect
+          treeData={[{ id: 'fallback', key: 0, value: 0, title: 'zero' }]}
+          treeDataSimpleMode
+          onSelect={onSelect}
+          open
+        />,
+      );
+
+      fireEvent.click(container.querySelector('.rc-tree-select-tree-node-content-wrapper'));
+      expect(onSelect).toHaveBeenCalledWith(0, expect.objectContaining({ key: 0 }));
+    });
   });
 
   it('sets default value', () => {
