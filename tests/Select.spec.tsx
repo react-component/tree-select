@@ -11,6 +11,7 @@ import {
   getVisibleTreeNodes,
   keyDown,
   keyUp,
+  search,
   selectNode,
   triggerOpen,
 } from './util';
@@ -259,6 +260,36 @@ describe('TreeSelect.basic', () => {
       expect(container.firstChild).toMatchSnapshot();
       rerender(<Wrapper searchValue="" treeDefaultExpandAll open />);
       expect(container.firstChild).toMatchSnapshot();
+    });
+
+    it('collapses search-expanded branches when search is cleared', () => {
+      const { container } = render(
+        <TreeSelect
+          open
+          showSearch={{ treeNodeFilterProp: 'title' }}
+          treeData={[
+            {
+              key: 'parent',
+              value: 'parent',
+              title: 'Parent',
+              children: [
+                { key: 'target', value: 'target', title: 'Target' },
+                { key: 'sibling', value: 'sibling', title: 'Sibling' },
+              ],
+            },
+            { key: 'other', value: 'other', title: 'Other root' },
+          ]}
+        />,
+      );
+      const getVisibleTitles = () => getVisibleTreeNodes(container).map(node => node.textContent);
+
+      expect(getVisibleTitles()).toEqual(['Parent', 'Other root']);
+
+      search(container, 'Target');
+      expect(getVisibleTitles()).toEqual(['Parent', 'Target']);
+
+      search(container, '');
+      expect(getVisibleTitles()).toEqual(['Parent', 'Other root']);
     });
 
     it('search nodes by filterTreeNode', () => {
