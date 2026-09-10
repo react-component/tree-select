@@ -693,7 +693,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
                   <div
                     aria-disabled="false"
                     aria-selected="false"
-                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-open rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf"
+                    class="rc-tree-select-tree-treenode rc-tree-select-tree-treenode-switcher-close rc-tree-select-tree-treenode-active rc-tree-select-tree-treenode-leaf"
                     draggable="false"
                     id="test-id-a"
                     role="treeitem"
