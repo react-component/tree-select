@@ -3,7 +3,7 @@ import type { TreeProps } from '@rc-component/tree';
 import Tree from '@rc-component/tree';
 import { UnstableContext } from '@rc-component/tree';
 import type { EventDataNode } from '@rc-component/tree';
-import { KeyCode, useEvent, useMemo } from '@rc-component/util';
+import { isReactRenderable, KeyCode, useEvent, useMemo } from '@rc-component/util';
 import * as React from 'react';
 import LegacyContext from './LegacyContext';
 import TreeSelectContext from './TreeSelectContext';
@@ -90,7 +90,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
 
   // ========================== Values ==========================
   const mergedCheckedKeys = React.useMemo(() => {
-    if (!checkable) {
+    if (!isReactRenderable(checkable)) {
       return null;
     }
 
@@ -117,7 +117,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   const onInternalSelect = (__: Key[], info: TreeEventInfo) => {
     const { node } = info;
 
-    if (checkable && isCheckDisabled(node)) {
+    if (isReactRenderable(checkable) && isCheckDisabled(node)) {
       return;
     }
 
@@ -261,7 +261,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     };
 
     // single mode active first checked node
-    const nextActiveKey = !multiple && checkedKeys.length && !searchValue ? checkedKeys[0] : getFirstNode();
+    const nextActiveKey =
+      !multiple && checkedKeys.length && !searchValue ? checkedKeys[0] : getFirstNode();
 
     setActiveKey(nextActiveKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -365,7 +366,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
           checkable={checkable}
           checkStrictly
           checkedKeys={mergedCheckedKeys}
-          selectedKeys={!checkable ? checkedKeys : []}
+          selectedKeys={!isReactRenderable(checkable) ? checkedKeys : []}
           defaultExpandAll={treeDefaultExpandAll}
           titleRender={treeTitleRender}
           {...treeProps}

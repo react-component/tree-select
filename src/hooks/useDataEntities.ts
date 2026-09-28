@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { convertDataToEntities } from '@rc-component/tree';
 import type { SafeKey, FieldNames } from '../interface';
-import { warning } from '@rc-component/util';
-import { isNil } from '../utils/valueUtil';
+import { isNonNullable, warning } from '@rc-component/util';
 
 export type DataEntity = ReturnType<typeof convertDataToEntities>['keyEntities'][string];
 
@@ -24,7 +23,7 @@ export default (treeData: any, fieldNames: FieldNames) =>
         if (process.env.NODE_ENV !== 'production') {
           const key = entity.node.key;
 
-          warning(!isNil(val), 'TreeNode `value` is invalidate: undefined');
+          warning(isNonNullable(val), 'TreeNode `value` is invalidate: undefined');
           warning(!wrapper.valueEntities.has(val), `Same \`value\` exist in the tree: ${val}`);
           warning(
             !key || String(key) === String(val),

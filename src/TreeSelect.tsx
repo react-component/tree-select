@@ -1,7 +1,7 @@
 import type { BaseSelectPropsWithoutPrivate, BaseSelectRef } from '@rc-component/select';
 import { BaseSelect } from '@rc-component/select';
 import { conductCheck } from '@rc-component/tree';
-import { useControlledState, useId } from '@rc-component/util';
+import { isNonNullable, isReactRenderable, useControlledState, useId } from '@rc-component/util';
 import * as React from 'react';
 import useCache from './hooks/useCache';
 import useCheckedKeys from './hooks/useCheckedKeys';
@@ -17,7 +17,7 @@ import TreeSelectContext from './TreeSelectContext';
 import { fillAdditionalInfo, fillLegacyProps } from './utils/legacyUtil';
 import type { CheckedStrategy } from './utils/strategyUtil';
 import { formatStrategyValues, SHOW_ALL, SHOW_CHILD, SHOW_PARENT } from './utils/strategyUtil';
-import { fillFieldNames, isNil, toArray } from './utils/valueUtil';
+import { fillFieldNames, toArray } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
 import type {
   LabeledValueType,
@@ -203,10 +203,11 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   } = props;
 
   const mergedId = useId(id);
-  const treeConduction = treeCheckable && !treeCheckStrictly;
-  const mergedCheckable = treeCheckable || treeCheckStrictly;
+  const hasTreeCheckable = isReactRenderable(treeCheckable);
+  const treeConduction = hasTreeCheckable && !treeCheckStrictly;
+  const mergedCheckable = hasTreeCheckable ? treeCheckable : treeCheckStrictly;
   const mergedLabelInValue = treeCheckStrictly || labelInValue;
-  const mergedMultiple = mergedCheckable || multiple;
+  const mergedMultiple = isReactRenderable(mergedCheckable) || multiple;
 
   const searchProps = {
     searchValue: legacySearchValue,
@@ -227,14 +228,14 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
   const [internalValue, setInternalValue] = useControlledState(defaultValue, value);
 
-  // `multiple` && `!treeCheckable` should be show all
+  // `multiple` && `!hasTreeCheckable` should be show all
   const mergedShowCheckedStrategy = React.useMemo(() => {
-    if (!treeCheckable) {
+    if (!hasTreeCheckable) {
       return SHOW_ALL;
     }
 
     return showCheckedStrategy || SHOW_CHILD;
-  }, [showCheckedStrategy, treeCheckable]);
+  }, [showCheckedStrategy, hasTreeCheckable]);
 
   // ========================== Warning ===========================
   if (process.env.NODE_ENV !== 'production') {
@@ -426,7 +427,12 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
 
     const firstVal = rawDisplayValues[0];
 
-    if (!mergedMultiple && firstVal && isNil(firstVal.value) && isNil(firstVal.label)) {
+    if (
+      !mergedMultiple &&
+      firstVal &&
+      !isNonNullable(firstVal.value) &&
+      !isNonNullable(firstVal.label)
+    ) {
       return [];
     }
 
@@ -451,12 +457,12 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
   const mergedMaxCount = React.useMemo(() => {
     if (
       mergedMultiple &&
-      (mergedShowCheckedStrategy === 'SHOW_CHILD' || treeCheckStrictly || !treeCheckable)
+      (mergedShowCheckedStrategy === 'SHOW_CHILD' || treeCheckStrictly || !hasTreeCheckable)
     ) {
       return maxCount;
     }
     return null;
-  }, [maxCount, mergedMultiple, treeCheckStrictly, mergedShowCheckedStrategy, treeCheckable]);
+  }, [maxCount, mergedMultiple, treeCheckStrictly, mergedShowCheckedStrategy, hasTreeCheckable]);
 
   // =========================== Change ===========================
   const triggerChange = useRefFunc(
@@ -533,7 +539,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
           mergedFieldNames,
         );
 
-        if (mergedCheckable) {
+        if (isReactRenderable(mergedCheckable)) {
           additionalInfo.checked = selected;
         } else {
           additionalInfo.selected = selected;
@@ -661,7 +667,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       onPopupScroll,
       leftMaxCount: maxCount === undefined ? null : maxCount - cachedDisplayValues.length,
       leafCountOnly:
-        mergedShowCheckedStrategy === 'SHOW_CHILD' && !treeCheckStrictly && !!treeCheckable,
+        mergedShowCheckedStrategy === 'SHOW_CHILD' && !treeCheckStrictly && hasTreeCheckable,
       valueEntities,
       classNames: treeSelectClassNames,
       styles,
@@ -682,7 +688,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     cachedDisplayValues.length,
     mergedShowCheckedStrategy,
     treeCheckStrictly,
-    treeCheckable,
+    hasTreeCheckable,
     valueEntities,
     treeSelectClassNames,
     styles,

@@ -1,4 +1,4 @@
-import { warning } from '@rc-component/util';
+import { isReactRenderable, warning } from '@rc-component/util';
 import type { TreeSelectProps } from '../TreeSelect';
 import { toArray } from './valueUtil';
 
@@ -27,7 +27,7 @@ function warningProps(props: TreeSelectProps & { searchPlaceholder?: string }) {
     );
   }
 
-  if (treeCheckStrictly || multiple || treeCheckable) {
+  if (treeCheckStrictly || multiple || isReactRenderable(treeCheckable)) {
     warning(
       !value || Array.isArray(value),
       '`value` should be an array when `TreeSelect` is checkable or multiple.',

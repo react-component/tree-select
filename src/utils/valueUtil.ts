@@ -33,5 +33,3 @@ export const getAllKeys = (treeData: DataNode[], fieldNames: FieldNames): SafeKe
 
   return keys;
 };
-
-export const isNil = (val: any): boolean => val === null || val === undefined;
