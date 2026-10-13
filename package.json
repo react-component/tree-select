@@ -43,9 +43,9 @@
     "*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
-    "@rc-component/select": "~1.11.0",
+    "@rc-component/select": "~1.12.0",
     "@rc-component/tree": "~1.5.3",
-    "@rc-component/util": "^1.11.1",
+    "@rc-component/util": "^1.14.0",
     "clsx": "^2.1.1"
   },
   "devDependencies": {
