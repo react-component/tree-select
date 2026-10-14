@@ -27,7 +27,7 @@ export default (treeData: any, fieldNames: FieldNames) =>
           warning(!isNil(val), 'TreeNode `value` is invalidate: undefined');
           warning(!wrapper.valueEntities.has(val), `Same \`value\` exist in the tree: ${val}`);
           warning(
-            !key || String(key) === String(val),
+            isNil(key) || String(key) === String(val),
             `\`key\` or \`value\` with TreeNode must be the same or you can remove one of them. key: ${key}, value: ${val}.`,
           );
         }
