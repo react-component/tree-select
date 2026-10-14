@@ -193,6 +193,39 @@ describe('TreeSelect.SearchInput', () => {
   });
 
   describe('keyboard events', () => {
+    it.each([
+      ['disabled', { disabled: true }],
+      ['non-selectable', { selectable: false }],
+    ])('should search selectable children of a %s parent', (_, parentProps) => {
+      const onSelect = jest.fn();
+      const { getByRole, container } = render(
+        <TreeSelect
+          showSearch
+          open
+          virtual={false}
+          onSelect={onSelect}
+          treeData={[
+            {
+              value: 'parent',
+              label: 'Parent',
+              ...parentProps,
+              children: [{ value: 'child', label: 'Matching child' }],
+            },
+          ]}
+        />,
+      );
+
+      const input = getByRole('combobox');
+      fireEvent.change(input, { target: { value: 'child' } });
+
+      expect(container.querySelector('.rc-tree-select-tree-treenode-active')).toHaveTextContent(
+        'Matching child',
+      );
+
+      fireEvent.keyDown(input, { keyCode: KeyCode.ENTER });
+      expect(onSelect).toHaveBeenCalledWith('child', expect.anything());
+    });
+
     it('should select first matched node when press enter', () => {
       const onSelect = jest.fn();
       const { getByRole } = render(
