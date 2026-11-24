@@ -1,4 +1,4 @@
-import { act, createEvent, render, fireEvent } from '@testing-library/react';
+import { act, createEvent, render, fireEvent, waitFor } from '@testing-library/react';
 import { KeyCode } from '@rc-component/util';
 import React from 'react';
 import TreeSelect, { TreeNode } from '../src';
@@ -519,6 +519,151 @@ describe('TreeSelect.basic', () => {
       keyUp(getInput(container), KeyCode.DOWN);
       keyDown(getInput(container), KeyCode.ENTER);
       expect(onChange).not.toHaveBeenCalled();
+    });
+
+    it.each([true, false])(
+      'exposes the active branch state to the combobox (virtual=%s)',
+      async virtual => {
+        const onChange = jest.fn();
+        const { container, getByRole } = render(
+          <TreeSelect
+            virtual={virtual}
+            onChange={onChange}
+            treeData={[{ value: 0, title: 'Parent', children: [{ value: 1, title: 'Child' }] }]}
+          />,
+        );
+        const input = getInput(container);
+        act(() => input.focus());
+        triggerOpen(container);
+        const parent = getByRole('treeitem', { name: 'Parent' });
+        expect(input).toHaveAttribute('aria-haspopup', 'tree');
+        expect(input).toHaveAttribute('aria-controls', getByRole('tree').id);
+        await waitFor(() => expect(input).toHaveAttribute('aria-activedescendant', parent.id));
+        expect(parent).toHaveAttribute('aria-expanded', 'false');
+
+        keyDown(input, KeyCode.RIGHT);
+        expect(parent).toHaveAttribute('aria-expanded', 'true');
+        expect(input).toHaveAttribute('aria-activedescendant', parent.id);
+        keyDown(input, KeyCode.LEFT);
+        expect(parent).toHaveAttribute('aria-expanded', 'false');
+        expect(input).toHaveAttribute('aria-activedescendant', parent.id);
+        keyDown(input, KeyCode.RIGHT);
+        keyDown(input, KeyCode.DOWN);
+        const child = getByRole('treeitem', { name: 'Child' });
+        await waitFor(() => expect(input).toHaveAttribute('aria-activedescendant', child.id));
+        expect(child).not.toHaveAttribute('aria-expanded');
+        expect(input).toHaveFocus();
+        expect(onChange).not.toHaveBeenCalled();
+        fireEvent.keyDown(input, { key: 'Escape', keyCode: KeyCode.ESC, which: KeyCode.ESC });
+        await waitFor(() => expect(input).not.toHaveAttribute('aria-activedescendant'));
+      },
+    );
+
+    it('clears the active descendant when a search has no matches', async () => {
+      const { container, getByRole } = render(
+        <TreeSelect open showSearch treeData={[{ value: 'first', title: 'First' }]} />,
+      );
+      const input = getInput(container);
+      await waitFor(() =>
+        expect(input).toHaveAttribute('aria-activedescendant', getByRole('treeitem').id),
+      );
+      search(container, 'missing');
+      expect(input).not.toHaveAttribute('aria-activedescendant');
+      expect(input).toHaveAttribute('aria-controls', getByRole('tree').id);
+      search(container, '');
+      await waitFor(() =>
+        expect(input).toHaveAttribute('aria-activedescendant', getByRole('treeitem').id),
+      );
+    });
+
+    it('keeps the custom input focused when the active tree item changes', async () => {
+      const inputRef = React.createRef<HTMLInputElement>();
+      const inputComponent = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
+        (props, ref) => <input {...props} data-custom-input ref={ref} />,
+      );
+      const treeData = [
+        { value: 'one', title: 'First' },
+        { value: 'two', title: 'Second' },
+      ];
+      const { container, getByRole, rerender } = render(
+        <TreeSelect components={{ input: inputComponent }} treeData={treeData} open />,
+      );
+      const input = getInput(container);
+      act(() => input.focus());
+      keyDown(input, KeyCode.DOWN);
+      await waitFor(() =>
+        expect(input).toHaveAttribute(
+          'aria-activedescendant',
+          getByRole('treeitem', { name: 'Second' }).id,
+        ),
+      );
+      rerender(<TreeSelect components={{ input: inputComponent }} treeData={treeData} open />);
+      expect(input).toHaveFocus();
+      expect(input).toHaveAttribute('data-custom-input');
+      expect(input).toHaveAttribute('aria-haspopup', 'tree');
+      rerender(
+        <TreeSelect components={{ input: <input ref={inputRef} /> }} treeData={treeData} open />,
+      );
+      expect(inputRef.current).toBe(getInput(container));
+      expect(inputRef.current).toHaveAttribute('aria-haspopup', 'tree');
+      await waitFor(() =>
+        expect(inputRef.current).toHaveAttribute(
+          'aria-activedescendant',
+          getByRole('treeitem', { name: 'Second' }).id,
+        ),
+      );
+    });
+
+    it('keeps the controlled branch state when expansion is declined', async () => {
+      const onTreeExpand = jest.fn();
+      const { container, getByRole } = render(
+        <TreeSelect
+          open
+          treeExpandedKeys={[]}
+          onTreeExpand={onTreeExpand}
+          treeData={[
+            { value: 'root', title: 'Parent', children: [{ value: 'child', title: 'Child' }] },
+          ]}
+        />,
+      );
+      const input = getInput(container);
+      const parent = getByRole('treeitem', { name: 'Parent' });
+      await waitFor(() => expect(input).toHaveAttribute('aria-activedescendant', parent.id));
+      keyDown(input, KeyCode.RIGHT);
+      expect(onTreeExpand).toHaveBeenCalledWith(['root']);
+      expect(input).toHaveAttribute('aria-activedescendant', parent.id);
+      expect(parent).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it('does not point to a different row when keys produce the same DOM ID', async () => {
+      const { container, getByRole } = render(
+        <TreeSelect
+          open
+          treeData={[
+            { value: '東京', title: 'Tokyo' },
+            { value: '大阪', title: 'Osaka' },
+          ]}
+        />,
+      );
+      const input = getInput(container);
+      await waitFor(() =>
+        expect(input).toHaveAttribute(
+          'aria-activedescendant',
+          getByRole('treeitem', { name: 'Tokyo' }).id,
+        ),
+      );
+      keyDown(input, KeyCode.DOWN);
+      await waitFor(() => expect(input).not.toHaveAttribute('aria-activedescendant'));
+      const fallback = document.querySelector('[aria-live="assertive"]');
+      expect(fallback).toHaveTextContent('大阪');
+      expect(fallback).not.toHaveAttribute('aria-hidden', 'true');
+      keyDown(input, KeyCode.UP);
+      await waitFor(() =>
+        expect(input).toHaveAttribute(
+          'aria-activedescendant',
+          getByRole('treeitem', { name: 'Tokyo' }).id,
+        ),
+      );
     });
 
     it('active index matches value', () => {

@@ -12,6 +12,7 @@ export interface TreeSelectContextProps {
   treeData: DataNode[];
   fieldNames: FieldNames;
   onSelect: (value: Key, info: { selected: boolean }) => void;
+  getInput: () => HTMLElement | null;
   treeExpandAction?: ExpandAction;
   treeTitleRender?: (node: any) => React.ReactNode;
   onPopupScroll?: React.UIEventHandler<HTMLDivElement>;

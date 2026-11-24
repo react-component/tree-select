@@ -14,7 +14,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly 1`] = `
       aria-autocomplete="list"
       aria-controls="test-id_list"
       aria-expanded="true"
-      aria-haspopup="listbox"
+      aria-haspopup="tree"
       aria-owns="test-id_list"
       autocomplete="new-password"
       class="rc-tree-select-input"
@@ -42,7 +42,7 @@ exports[`TreeSelect.basic render renders TreeNode correctly with falsy child 1`]
       aria-autocomplete="list"
       aria-controls="test-id_list"
       aria-expanded="true"
-      aria-haspopup="listbox"
+      aria-haspopup="tree"
       aria-owns="test-id_list"
       autocomplete="new-password"
       class="rc-tree-select-input"
@@ -79,7 +79,7 @@ exports[`TreeSelect.basic render renders correctly 1`] = `
       <input
         aria-autocomplete="list"
         aria-expanded="false"
-        aria-haspopup="listbox"
+        aria-haspopup="tree"
         autocomplete="new-password"
         class="awesome-input"
         id="test-id"
@@ -107,7 +107,7 @@ exports[`TreeSelect.basic render renders disabled correctly 1`] = `
     <input
       aria-autocomplete="list"
       aria-expanded="false"
-      aria-haspopup="listbox"
+      aria-haspopup="tree"
       autocomplete="new-password"
       class="rc-tree-select-input"
       disabled=""
@@ -145,7 +145,7 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
           aria-autocomplete="list"
           aria-controls="test-id_list"
           aria-expanded="true"
-          aria-haspopup="listbox"
+          aria-haspopup="tree"
           aria-owns="test-id_list"
           autocomplete="new-password"
           class="rc-tree-select-input"
@@ -190,6 +190,7 @@ exports[`TreeSelect.basic render renders tree correctly 1`] = `
           <div
             aria-activedescendant="test-id-0"
             class="rc-tree-select-tree-list"
+            id="test-id_list"
             role="tree"
             style="position: relative;"
           >
@@ -381,7 +382,7 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
         aria-autocomplete="list"
         aria-controls="test-id_list"
         aria-expanded="true"
-        aria-haspopup="listbox"
+        aria-haspopup="tree"
         aria-owns="test-id_list"
         autocomplete="new-password"
         class="rc-tree-select-input"
@@ -424,6 +425,7 @@ exports[`TreeSelect.basic render renders treeDataSimpleMode correctly 1`] = `
           <div
             aria-activedescendant="test-id-0"
             class="rc-tree-select-tree-list"
+            id="test-id_list"
             role="tree"
             style="position: relative;"
           >
@@ -526,7 +528,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
         aria-autocomplete="list"
         aria-controls="test-id_list"
         aria-expanded="true"
-        aria-haspopup="listbox"
+        aria-haspopup="tree"
         aria-owns="test-id_list"
         autocomplete="new-password"
         class="rc-tree-select-input"
@@ -568,6 +570,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 1`] = `
           <div
             aria-activedescendant="test-id-a"
             class="rc-tree-select-tree-list"
+            id="test-id_list"
             role="tree"
             style="position: relative;"
           >
@@ -636,7 +639,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
         aria-autocomplete="list"
         aria-controls="test-id_list"
         aria-expanded="true"
-        aria-haspopup="listbox"
+        aria-haspopup="tree"
         aria-owns="test-id_list"
         autocomplete="new-password"
         class="rc-tree-select-input"
@@ -678,6 +681,7 @@ exports[`TreeSelect.basic search nodes check tree changed by filter 2`] = `
           <div
             aria-activedescendant="test-id-a"
             class="rc-tree-select-tree-list"
+            id="test-id_list"
             role="tree"
             style="position: relative;"
           >
@@ -775,7 +779,7 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
         aria-autocomplete="list"
         aria-controls="test-id_list"
         aria-expanded="true"
-        aria-haspopup="listbox"
+        aria-haspopup="tree"
         aria-owns="test-id_list"
         autocomplete="new-password"
         class="rc-tree-select-input"
@@ -817,6 +821,7 @@ exports[`TreeSelect.basic search nodes filter node but not remove then 1`] = `
           <div
             aria-activedescendant="test-id-a"
             class="rc-tree-select-tree-list"
+            id="test-id_list"
             role="tree"
             style="position: relative;"
           >
@@ -912,7 +917,7 @@ exports[`TreeSelect.basic search nodes renders search input 1`] = `
       aria-autocomplete="list"
       aria-controls="test-id_list"
       aria-expanded="true"
-      aria-haspopup="listbox"
+      aria-haspopup="tree"
       aria-owns="test-id_list"
       autocomplete="new-password"
       class="rc-tree-select-input"

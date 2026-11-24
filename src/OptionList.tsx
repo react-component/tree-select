@@ -38,7 +38,8 @@ type ScrollTo = NonNullable<React.ComponentRef<typeof Tree>['scrollTo']>;
 type ReviseRefOptionListProps = Omit<RefOptionListProps, 'scrollTo'> & { scrollTo: ScrollTo };
 
 const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_, ref) => {
-  const { prefixCls, multiple, searchValue, toggleOpen, open, notFoundContent } = useBaseProps();
+  const { id, prefixCls, multiple, searchValue, toggleOpen, open, notFoundContent, components } =
+    useBaseProps();
 
   const {
     virtual,
@@ -48,6 +49,7 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     treeData,
     fieldNames,
     onSelect,
+    getInput,
     popupMatchSelectWidth,
     treeExpandAction,
     treeTitleRender,
@@ -80,6 +82,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   } = React.useContext(LegacyContext);
 
   const treeRef = React.useRef<Tree | null>(null);
+  const popupRef = React.useRef<HTMLDivElement>(null);
+  const liveRef = React.useRef<HTMLSpanElement>(null);
 
   const memoTreeData = useMemo(
     () => treeData,
@@ -251,6 +255,58 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   const [activeKey, setActiveKey] = React.useState<Key>(null);
   const activeEntity = keyEntities[activeKey as SafeKey];
 
+  const hasTree = memoTreeData.length > 0;
+  // Tree owns the item IDs and can update its active item after it has scrolled.
+  // Expose that same item on the combobox, where keyboard focus stays.
+  React.useEffect(() => {
+    const tree = popupRef.current?.querySelector('[role="tree"]');
+    const input = getInput();
+
+    if (!open || !tree || !input) return;
+
+    tree.id = `${id}_list`;
+    const root = input.getRootNode() as Document | ShadowRoot;
+
+    const syncActiveItem = () => {
+      const activeId = tree.getAttribute('aria-activedescendant');
+      const item = activeId && root.getElementById?.(activeId);
+
+      // Virtual scrolling can unmount a row. Different keys can also produce
+      // the same DOM ID. Only reference the row the tree actually highlights.
+      if (
+        item &&
+        tree.contains(item) &&
+        item.classList.contains(`${prefixCls}-tree-treenode-active`)
+      ) {
+        if (input.getAttribute('aria-activedescendant') !== activeId) {
+          input.setAttribute('aria-activedescendant', activeId);
+        }
+
+        if (liveRef.current?.getAttribute('aria-hidden') !== 'true') {
+          liveRef.current?.setAttribute('aria-hidden', 'true');
+        }
+      } else {
+        input.removeAttribute('aria-activedescendant');
+        liveRef.current?.removeAttribute('aria-hidden');
+      }
+    };
+
+    syncActiveItem();
+
+    const observer = new MutationObserver(syncActiveItem);
+
+    observer.observe(tree, {
+      childList: true,
+      subtree: true,
+      attributeFilter: ['aria-activedescendant', 'class'],
+    });
+
+    return () => {
+      observer.disconnect();
+      input.removeAttribute('aria-activedescendant');
+    };
+  }, [open, hasTree, id, getInput, components, multiple, prefixCls]);
+
   React.useEffect(() => {
     if (!open) {
       return;
@@ -261,7 +317,8 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
     };
 
     // single mode active first checked node
-    const nextActiveKey = !multiple && checkedKeys.length && !searchValue ? checkedKeys[0] : getFirstNode();
+    const nextActiveKey =
+      !multiple && checkedKeys.length && !searchValue ? checkedKeys[0] : getFirstNode();
 
     setActiveKey(nextActiveKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -318,7 +375,12 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   // ========================== Render ==========================
   if (memoTreeData.length === 0) {
     return (
-      <div role="listbox" className={`${prefixCls}-empty`} onMouseDown={onListMouseDown}>
+      <div
+        id={`${id}_list`}
+        role="tree"
+        className={`${prefixCls}-empty`}
+        onMouseDown={onListMouseDown}
+      >
         {notFoundContent}
       </div>
     );
@@ -335,9 +397,9 @@ const OptionList: React.ForwardRefRenderFunction<ReviseRefOptionListProps> = (_,
   }
 
   return (
-    <div onMouseDown={onListMouseDown}>
+    <div onMouseDown={onListMouseDown} ref={popupRef}>
       {activeEntity && open && (
-        <span style={HIDDEN_STYLE} aria-live="assertive">
+        <span ref={liveRef} style={HIDDEN_STYLE} aria-live="assertive">
           {activeEntity.node.value}
         </span>
       )}
