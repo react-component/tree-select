@@ -1,7 +1,7 @@
 import type { BaseSelectPropsWithoutPrivate, BaseSelectRef } from '@rc-component/select';
 import { BaseSelect } from '@rc-component/select';
 import { conductCheck } from '@rc-component/tree';
-import { useControlledState, useId } from '@rc-component/util';
+import { useComposeRef, useControlledState, useId } from '@rc-component/util';
 import * as React from 'react';
 import useCache from './hooks/useCache';
 import useCheckedKeys from './hooks/useCheckedKeys';
@@ -129,6 +129,8 @@ function isRawValue(value: SafeKey | LabeledValueType): value is SafeKey {
   return !value || typeof value !== 'object';
 }
 
+const defaultTreeInput = <input aria-haspopup="tree" />;
+
 const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref) => {
   const {
     id,
@@ -198,11 +200,44 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     onPopupScroll,
 
     classNames: treeSelectClassNames,
+    components,
     styles,
     ...restProps
   } = props;
 
   const mergedId = useId(id);
+  const selectRef = React.useRef<BaseSelectRef>(null);
+  const mergedRef = useComposeRef(selectRef, ref);
+
+  const getInput = React.useCallback(
+    () => selectRef.current?.nativeElement?.querySelector<HTMLElement>('[role="combobox"]') ?? null,
+    [],
+  );
+
+  const inputComponent = components?.input;
+
+  const treeInput = React.useMemo(() => {
+    if (!inputComponent) {
+      return defaultTreeInput;
+    }
+
+    const popupProps = { 'aria-haspopup': 'tree' } as const;
+
+    if (React.isValidElement<React.AriaAttributes>(inputComponent)) {
+      return React.cloneElement(inputComponent, popupProps);
+    }
+
+    const Input = inputComponent as React.ElementType;
+
+    return React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
+      (inputProps, inputRef) => <Input {...inputProps} {...popupProps} ref={inputRef} />,
+    );
+  }, [inputComponent]);
+
+  const treeComponents = React.useMemo(
+    () => ({ ...components, input: treeInput }),
+    [components, treeInput],
+  );
   const treeConduction = treeCheckable && !treeCheckStrictly;
   const mergedCheckable = treeCheckable || treeCheckStrictly;
   const mergedLabelInValue = treeCheckStrictly || labelInValue;
@@ -656,6 +691,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
       treeData: filteredTreeData,
       fieldNames: mergedFieldNames,
       onSelect: onOptionSelect,
+      getInput,
       treeExpandAction,
       treeTitleRender,
       onPopupScroll,
@@ -675,6 +711,7 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     filteredTreeData,
     mergedFieldNames,
     onOptionSelect,
+    getInput,
     treeExpandAction,
     treeTitleRender,
     onPopupScroll,
@@ -735,8 +772,9 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     <TreeSelectContext.Provider value={treeSelectContext}>
       <LegacyContext.Provider value={legacyContext}>
         <BaseSelect
-          ref={ref}
+          ref={mergedRef}
           {...restProps}
+          components={treeComponents}
           classNames={treeSelectClassNames}
           styles={styles}
           // >>> MISC

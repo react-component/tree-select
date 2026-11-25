@@ -85,7 +85,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
           aria-autocomplete="list"
           aria-controls="test-id_list"
           aria-expanded="true"
-          aria-haspopup="listbox"
+          aria-haspopup="tree"
           aria-owns="test-id_list"
           autocomplete="off"
           class="rc-tree-select-input"
@@ -130,6 +130,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 1
           <div
             aria-activedescendant="test-id-0"
             class="rc-tree-select-tree-list"
+            id="test-id_list"
             role="tree"
             style="position: relative;"
           >
@@ -298,7 +299,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
           aria-autocomplete="list"
           aria-controls="test-id_list"
           aria-expanded="true"
-          aria-haspopup="listbox"
+          aria-haspopup="tree"
           aria-owns="test-id_list"
           autocomplete="off"
           class="rc-tree-select-input"
@@ -343,6 +344,7 @@ exports[`TreeSelect.checkable uncheck remove by selector not treeCheckStrictly 2
           <div
             aria-activedescendant="test-id-0"
             class="rc-tree-select-tree-list"
+            id="test-id_list"
             role="tree"
             style="position: relative;"
           >
@@ -572,7 +574,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
           aria-autocomplete="list"
           aria-controls="test-id_list"
           aria-expanded="true"
-          aria-haspopup="listbox"
+          aria-haspopup="tree"
           aria-owns="test-id_list"
           autocomplete="off"
           class="rc-tree-select-input"
@@ -617,6 +619,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 1`] = `
           <div
             aria-activedescendant="test-id-0"
             class="rc-tree-select-tree-list"
+            id="test-id_list"
             role="tree"
             style="position: relative;"
           >
@@ -785,7 +788,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
           aria-autocomplete="list"
           aria-controls="test-id_list"
           aria-expanded="true"
-          aria-haspopup="listbox"
+          aria-haspopup="tree"
           aria-owns="test-id_list"
           autocomplete="off"
           class="rc-tree-select-input"
@@ -830,6 +833,7 @@ exports[`TreeSelect.checkable uncheck remove by tree check 2`] = `
           <div
             aria-activedescendant="test-id-0"
             class="rc-tree-select-tree-list"
+            id="test-id_list"
             role="tree"
             style="position: relative;"
           >
