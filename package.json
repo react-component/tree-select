@@ -1,6 +1,6 @@
 {
   "name": "@rc-component/tree-select",
-  "version": "1.19.0",
+  "version": "1.20.0",
   "description": "tree-select ui component for react",
   "keywords": [
     "react",
@@ -43,7 +43,7 @@
     "*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
-    "@rc-component/select": "~1.12.0",
+    "@rc-component/select": "~1.13.0",
     "@rc-component/tree": "~1.5.3",
     "@rc-component/util": "^1.14.0",
     "clsx": "^2.1.1"

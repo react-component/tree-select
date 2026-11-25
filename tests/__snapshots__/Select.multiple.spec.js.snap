@@ -23,7 +23,7 @@ exports[`TreeSelect.multiple can hide search box by showSearch = false 1`] = `
         aria-autocomplete="list"
         aria-expanded="false"
         aria-haspopup="tree"
-        autocomplete="new-password"
+        autocomplete="off"
         class="rc-tree-select-input"
         id="test-id"
         readonly=""
