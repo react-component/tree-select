@@ -531,6 +531,31 @@ describe('TreeSelect.checkable', () => {
       expect(getSelectionText(container, 0)).toEqual('0-0');
     });
 
+    it('preserves labels with SHOW_ALL', () => {
+      const { container } = render(
+        <TreeSelect
+          treeCheckable
+          showCheckedStrategy={SHOW_ALL}
+          labelInValue
+          value={[
+            { value: 'parent', label: 'First parent label' },
+            { value: 'parent', label: 'Second parent label' },
+            { value: 'child', label: 'Custom child' },
+          ]}
+        >
+          <TreeNode key="parent" value="parent" title="Parent">
+            <TreeNode key="child" value="child" title="Child" />
+          </TreeNode>
+        </TreeSelect>,
+      );
+
+      expect(getSelections(container)).toHaveLength(2);
+      expect([getSelectionText(container, 0), getSelectionText(container, 1)]).toEqual([
+        'First parent label',
+        'Custom child',
+      ]);
+    });
+
     // https://github.com/ant-design/ant-design/issues/38126
     it('keep label when not in options', () => {
       const onChange = jest.fn();

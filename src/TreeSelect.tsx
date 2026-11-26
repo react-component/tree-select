@@ -412,9 +412,18 @@ const TreeSelect = React.forwardRef<BaseSelectRef, TreeSelectProps>((props, ref)
     // Convert to value and filled with label
     const values = displayKeys.map(key => keyEntities[key]?.node?.[mergedFieldNames.value] ?? key);
 
+    // Avoid an O(displayed values × selected values) lookup
+    const labeledValueMap = new Map<SafeKey, LabeledValueType>();
+    rawLabeledValues.forEach(item => {
+      // Match `find` by keeping the first entry when controlled values contain duplicates.
+      if (!labeledValueMap.has(item.value)) {
+        labeledValueMap.set(item.value, item);
+      }
+    });
+
     // Back fill with origin label
     const labeledValues = values.map(val => {
-      const targetItem = rawLabeledValues.find(item => item.value === val);
+      const targetItem = labeledValueMap.get(val);
       const label = labelInValue ? targetItem?.label : treeTitleRender?.(targetItem);
       return {
         value: val,
