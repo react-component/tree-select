@@ -9,7 +9,7 @@ function buildTreeStructure(nodes: DataNode[], config: SimpleModeConfig): DataNo
 
   nodes.forEach(node => {
     const nodeKey = node[id];
-    const clonedNode = { ...node, key: node.key || nodeKey };
+    const clonedNode = { ...node, key: node.key ?? nodeKey };
     nodeMap.set(nodeKey, clonedNode);
   });
 

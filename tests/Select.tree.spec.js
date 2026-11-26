@@ -87,6 +87,16 @@ describe('TreeSelect.tree', () => {
     spy.mockRestore();
   });
 
+  it('warning if numeric zero key is not same as value', () => {
+    resetWarned();
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    render(<TreeSelect treeData={[{ title: 'zero', value: 'different', key: 0 }]} />);
+    expect(spy).toHaveBeenCalledWith(
+      'Warning: `key` or `value` with TreeNode must be the same or you can remove one of them. key: 0, value: different.',
+    );
+    spy.mockRestore();
+  });
+
   it('warning if node undefined value', () => {
     resetWarned();
     const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
